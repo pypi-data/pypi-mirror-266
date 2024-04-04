@@ -1,0 +1,76 @@
+Metadata-Version: 2.3
+Name: frameutils
+Version: 0.1.10
+Summary: Useful utilities for your Brilliant Frame AR glasses
+Project-URL: Homepage, https://github.com/brilliantlabsAR/frame-utilities-for-python
+Project-URL: Bug Tracker, https://github.com/brilliantlabsAR/frame-utilities-for-python/issues
+Author-email: Brilliant Labs <info@brilliant.xyz>
+License: ISC License
+        
+        Copyright © 2023 Brilliant Labs Ltd.
+        
+        Permission to use, copy, modify, and/or distribute this software for any purpose 
+        with or without fee is hereby granted, provided that the above copyright notice 
+        and this permission notice appear in all copies.
+        
+        THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH 
+        REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND 
+        FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, 
+        INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS 
+        OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER 
+        TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF 
+        THIS SOFTWARE.
+        
+        Unless specified otherwise (see below), the above license and copyright applies 
+        to all files within this repository. 
+        
+        Individual files or subdirectories may include additional copyright holders, or 
+        may be licensed under different terms.
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.7
+Requires-Dist: bleak
+Requires-Dist: numpy
+Requires-Dist: scikit-learn
+Description-Content-Type: text/markdown
+
+# Frame Utilities – for Python
+
+Useful utilities for your Brilliant Frame such as a Bluetooth communication library, and font generation tools.
+
+## Install
+
+```sh
+pip3 install frameutils
+```
+
+## Bluetooth communication library
+
+As simple as:
+
+```python
+import asyncio
+from frameutils import Bluetooth
+
+
+async def main():
+    bluetooth = Bluetooth()
+    await bluetooth.connect()
+
+    print(await bluetooth.send_lua("print('hello world')", await_print=True))
+    print(await bluetooth.send_lua("print(1 + 2)", await_print=True))
+
+    await bluetooth.disconnect()
+
+
+asyncio.run(main())
+
+```
+
+## Tests
+
+To run the unit tests, ensure you have an unconnected Frame device in range, and then run:
+
+```sh
+python3 -m pytest tests/test_bluetooth.py
+```
