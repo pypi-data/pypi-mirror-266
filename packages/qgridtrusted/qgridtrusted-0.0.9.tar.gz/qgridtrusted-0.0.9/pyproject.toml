@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qgridtrusted"
+dynamic = ["version"]
+readme = "README.md"
+description = "A fork of qgrid using trusted publishing."
+authors = [
+  { name = "Keith Maxwell", email = "keith.maxwell@gmail.com" },
+  { name = "Quantopian Inc.", email = "opensource@quantopian.com" },
+]
+license = { file = "LICENSE" }
+dependencies = [
+  "nbclassic",
+  "pandas",
+  "ipywidgets",
+]
+keywords = ["ipython", "jupyter", "widgets"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Framework :: IPython",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Science/Research",
+  "Topic :: Office/Business :: Financial",
+  "Topic :: Scientific/Engineering :: Information Analysis",
+  "Topic :: Multimedia :: Graphics",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
+
+[project.urls]
+Homepage = "https://github.com/maxwell-k/qgridtrusted/"
+
+[project.optional-dependencies]
+test = ["pytest", "flake8", "pandas-stubs", "usort"]
+
+[tool.setuptools]
+packages = ["qgrid", "qgrid.static"]
+
+[tool.setuptools.dynamic]
+version = { attr = "qgrid._version.__version__" }
+
+[tool.pytest.ini_options]
+filterwarnings = ["error"]
