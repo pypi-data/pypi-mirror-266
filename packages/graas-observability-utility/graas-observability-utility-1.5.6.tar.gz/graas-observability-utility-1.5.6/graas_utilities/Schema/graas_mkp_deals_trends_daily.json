@@ -1,0 +1,58 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Deals Trends Daily Report",
+    "description": "A JSON object representing a Deals Trends Daily Report ",
+    "type": "object",
+    "properties": {
+        "merchantID": {
+            "type": "string",
+            "description": "A unique merchant code for GRAAS clients"
+        },
+        "siteNickNameId": {
+            "type": "string",
+            "description": "A unique merchant's store code for GRAAS clients"
+        },
+        "countryCode": {
+            "type": "string",
+            "description": "The country code, e.g., 'SG', 'MY'."
+        },
+        "currencyCode": {
+            "type": "string",
+            "description": "The currency code, e.g., 'SGD', 'USD'."
+        },
+        "result": {
+            "type": "array",
+            "items": {
+                "anyOf": [
+                    {
+                        "$ref": "../graas_utilities/Schema/Shopee_Marketing_Flash_Deals_Trends_Daily_Report.json",
+                        "description": "Shopee Marketing Flash Deals Trends Daily Report"
+                    },
+                    {
+                        "$ref": "../graas_utilities/Schema/Shopee_Marketing_Voucher_Trends_Daily_Report.json",
+                        "description": "Shopee Marketing Voucher Trends Daily Report"
+                    },
+                    {
+                        "$ref": "../graas_utilities/Schema/Shopee_Marketing_Shipping_Fee_Promotion_Trends_Daily_Report.json",
+                        "description": "Shopee Marketing Shipping Fee Promotion Trends Daily Report"
+                    },
+                    {
+                        "$ref": "../graas_utilities/Schema/Shopee_Marketing_Add_On_Deal_Trends_Daily_Report.json",
+                        "description": "Shopee Marketing Add On Deal Trends Daily Report"
+                    },
+                    {
+                        "$ref": "../graas_utilities/Schema/Shopee_Marketing_Bundle_Deal_Trends_Daily_Report.json",
+                        "description": "Shopee Marketing Bundle Deal Trends Daily Report"
+                    }
+                ]
+            }
+        }
+    },
+    "required": [
+        "merchantID",
+        "siteNickNameId",
+        "countryCode",
+        "currencyCode",
+        "result"
+    ]
+}

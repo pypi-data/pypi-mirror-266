@@ -1,0 +1,223 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Lazada Onsite Campaign Report",
+    "description": "A JSON object representing a Onsite campaign report for a specific campaign.",
+    "type": "object",
+    "properties": {
+        "merchantID": {
+            "type": "string",
+            "description": "A unique merchant code for GRAAS clients"
+        },
+        "siteNickNameId": {
+            "type": "string",
+            "description": "A unique merchant's store code for GRAAS clients"
+        },
+        "countryCode": {
+            "type": "string",
+            "description": "The country code, e.g., 'SG', 'MY'."
+        },
+        "currencyCode": {
+            "type": "string",
+            "description": "The currency code, e.g., 'SGD', 'USD'."
+        },
+        "result": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "Date": {
+                        "type": "string",
+                        "description": "The date of the campaign report in 'dd-MM-yyyy' format.",
+                        "format": "dd-MM-yyyy",
+                        "pattern": "[0-9]{2}-[0-9]{2}-[1-2][0-9]{3}"
+                    },
+                    "Campaign_Name": {
+                        "type": ["number","string"],
+                        "description": "The name of the campaign."
+                    },
+                    "Campaign_ID": {
+                        "type": "number",
+                        "description": "The unique identifier for the campaign."
+                    },
+                    "Campaign_Type": {
+                        "type": "string",
+                        "description": "The type of campaign, e.g., 'Automated' or 'Manual'."
+                    },
+                    "Placement": {
+                        "type": "string",
+                        "description": "The placement and targeting for the campaign, e.g., 'All - Sponsored Products'."
+                    },
+                    "Budget": {
+                        "type": "object",
+                        "properties": {
+                            "amount": {
+                              "type": "number",
+                              "description": "The cost amount per conversion."
+                            },
+                            "currencyCode": {
+                              "type": "string",
+                              "description": "The currency code, e.g., 'SGD', 'USD'."
+                            }
+                        },
+                        "required": [
+                            "amount",
+                            "currencyCode"
+                        ],
+                        "description": "The campaign budget with currency information."
+                    },
+                    "Spend": {
+                        "type": "object",
+                        "properties": {
+                            "amount": {
+                              "type": "number",
+                              "description": "The cost amount per conversion."
+                            },
+                            "currencyCode": {
+                              "type": "string",
+                              "description": "The currency code, e.g., 'SGD', 'USD'."
+                            }
+                        },
+                        "required": [
+                            "amount",
+                            "currencyCode"
+                        ],
+                        "description": "The campaign spend with currency information."
+                    },
+                    "Impression": {
+                        "type": "integer",
+                        "description": "The number of times the campaign's ads were displayed."
+                    },
+                    "Clicks": {
+                        "type": "integer",
+                        "description": "The total number of clicks on the campaign's ads."
+                    },
+                    "CTR": {
+                        "type": "number",
+                        "description": "The Click-Through Rate (CTR) for the campaign, expressed as a percentage."
+                    },
+                    "CPC": {
+                        "type": "object",
+                        "properties": {
+                            "amount": {
+                              "type": "number",
+                              "description": "The cost amount per conversion."
+                            },
+                            "currencyCode": {
+                              "type": "string",
+                              "description": "The currency code, e.g., 'SGD', 'USD'."
+                            }
+                        },
+                        "required": [
+                            "amount",
+                            "currencyCode"
+                        ],
+                        "description": "The cost per click (CPC) with currency information."
+                    },
+                    "Store_Add_To_Cart_Units": {
+                        "type": "number",
+                        "description": "The number of units added to the cart during the campaign."
+                    },
+                    "Store_Orders": {
+                        "type": "number",
+                        "description": "The total number of orders generated as a result of the campaign."
+                    },
+                    "Store_CVR": {
+                        "type": "number",
+                        "description": "The Conversion Rate (CVR) for the campaign, expressed as a percentage."
+                    },
+                    "Store_Units_Sold": {
+                        "type": "number",
+                        "description": "The total number of units sold during the campaign."
+                    },
+                    "Store_Revenue": {
+                        "type": "object",
+                        "properties": {
+                            "amount": {
+                              "type": "number",
+                              "description": "The cost amount per conversion."
+                            },
+                            "currencyCode": {
+                              "type": "string",
+                              "description": "The currency code, e.g., 'SGD', 'USD'."
+                            }
+                        },
+                        "required": [
+                            "amount",
+                            "currencyCode"
+                        ],
+                        "description": "The revenue generated from the campaign."
+                    },
+                    "Store_ROI": {
+                        "type": "number",
+                        "description": "The Return on Ad Spend (ROAS) for the campaign, indicating the revenue generated per unit of ad spend."
+                    },
+                    "Direct_Add_To_Cart_Units": {
+                        "type": "number",
+                        "description": "The number of units directly added to the cart due to the campaign."
+                    },
+                    "Direct_Orders": {
+                        "type": "integer",
+                        "description": "The number of direct orders generated as a result of the campaign."
+                    },
+                    "Direct_CVR": {
+                        "type": "number",
+                        "description": "The Conversion Rate (CVR) for direct conversions, expressed as a percentage."
+                    },
+                    "Direct_Units_Sold": {
+                        "type": "integer",
+                        "description": "The total number of units directly sold during the campaign."
+                    },
+                    "Direct_Revenue": {
+                        "type": "object",
+                        "properties": {
+                            "amount": {
+                              "type": "number",
+                              "description": "The cost amount per conversion."
+                            },
+                            "currencyCode": {
+                              "type": "string",
+                              "description": "The currency code, e.g., 'SGD', 'USD'."
+                            }
+                        },
+                        "required": [
+                            "amount",
+                            "currencyCode"
+                        ],
+                        "description": "The direct revenue with currency information."
+                    }
+                },
+                "required": [
+                    "Date",
+                    "Campaign_Name",
+                    "Campaign_ID",
+                    "Campaign_Type",
+                    "Placement",
+                    "Store_Orders",
+                    "Store_CVR",
+                    "Impression",
+                    "Budget",
+                    "Spend",
+                    "Clicks",
+                    "CTR",
+                    "CPC",
+                    "Store_Add_To_Cart_Units",
+                    "Store_Units_Sold",
+                    "Store_Revenue",
+                    "Store_ROI",
+                    "Direct_Add_To_Cart_Units",
+                    "Direct_Orders",
+                    "Direct_CVR",
+                    "Direct_Units_Sold",
+                    "Direct_Revenue"
+                ]
+            }
+        }
+    },
+    "required": [
+        "merchantID",
+        "siteNickNameId",
+        "countryCode",
+        "currencyCode",
+        "result"
+    ]
+}

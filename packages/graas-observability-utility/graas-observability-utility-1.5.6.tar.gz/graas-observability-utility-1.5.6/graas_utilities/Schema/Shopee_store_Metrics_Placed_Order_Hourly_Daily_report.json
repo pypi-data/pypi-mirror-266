@@ -1,0 +1,98 @@
+{
+    "type": "object",
+    "title": "Shopee Store Metrics Placed Order Hourly Daily Report",
+    "description": "Hourly daily report providing key metrics related to placed orders in a Shopee store",
+    "properties": {
+      "Time": {
+        "type": "string",
+        "description": "Date and time of the report in the format 'MM-DD-YYYY HH:mm'",
+        "format": "dd-MM-yyyy HH:mm"
+      },
+      "Sales": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "description": "Total sales amount for the specified time period in the specified currency (SGD)"
+          },
+          "currencyCode": {
+            "type": "string",
+            "description": "Currency code for the sales amount (SGD)"
+          }
+        },
+        "required": ["amount", "currencyCode"],
+        "description": "Sales information for the specified time period"
+      },
+      "Orders": {
+        "type": "integer",
+        "description": "Total number of orders placed during the specified time period"
+      },
+      "Sales_per_Order": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "description": "Average sales amount per order in the specified currency (SGD)"
+          },
+          "currencyCode": {
+            "type": "string",
+            "description": "Currency code for the sales amount per order (SGD)"
+          }
+        },
+        "required": ["amount", "currencyCode"],
+        "description": "Average sales amount per order information"
+      },
+      "Page_Views": {
+        "type": "integer",
+        "description": "Total number of page views during the specified time period"
+      },
+      "Visitors": {
+        "type": "integer",
+        "description": "Total number of unique visitors during the specified time period"
+      },
+      "Conversion_Rate_Placed_Orders": {
+        "type": "number",
+        "description": "Conversion rate for placed orders as a percentage"
+      },
+      "Cancelled_Orders": {
+        "type": "integer",
+        "description": "Total number of cancelled orders during the specified time period"
+      },
+      "Cancelled_Sales": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "description": "Total sales amount for cancelled orders in the specified currency (SGD)"
+          },
+          "currencyCode": {
+            "type": "string",
+            "description": "Currency code for the sales amount for cancelled orders (SGD)"
+          }
+        },
+        "required": ["amount", "currencyCode"],
+        "description": "Sales information for cancelled orders"
+      },
+      "Returned_Refunded_Orders": {
+        "type": "integer",
+        "description": "Total number of returned or refunded orders during the specified time period"
+      },
+      "Returned_Refunded_Sales": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "description": "Total sales amount for returned or refunded orders in the specified currency (SGD)"
+          },
+          "currencyCode": {
+            "type": "string",
+            "description": "Currency code for the sales amount for returned or refunded orders (SGD)"
+          }
+        },
+        "required": ["amount", "currencyCode"],
+        "description": "Sales information for returned or refunded orders"
+      }
+    },
+    "required": ["Time"]
+  }
+  

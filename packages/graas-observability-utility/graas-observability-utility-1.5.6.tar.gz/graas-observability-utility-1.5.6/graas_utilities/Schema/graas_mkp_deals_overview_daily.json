@@ -1,0 +1,50 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Deals Overview Report",
+    "description": "A JSON object representing a Deals Overview Report ",
+    "type": "object",
+    "properties": {
+        "merchantID": {
+            "type": "string",
+            "description": "A unique merchant code for GRAAS clients"
+        },
+        "siteNickNameId": {
+            "type": "string",
+            "description": "A unique merchant's store code for GRAAS clients"
+        },
+        "countryCode": {
+            "type": "string",
+            "description": "The country code, e.g., 'SG', 'MY'."
+        },
+        "currencyCode": {
+            "type": "string",
+            "description": "The currency code, e.g., 'SGD', 'USD'."
+        },
+        "result": {
+            "type": "array",
+            "items": {
+                "anyOf": [
+                    {
+                        "$ref": "../graas_utilities/Schema/Shopee_Marketing_Add_On_Deal_Key_Metrics_Daily_Report.json",
+                        "description": "Shopee Marketing Add On Deal Key Metrics Daily Report"
+                    },
+                    {
+                        "$ref": "../graas_utilities/Schema/Shopee_Marketing_BundleDeal_Overview_Daily_Report.json",
+                        "description": "Shopee Marketing BundleDeal Overview Daily Report"
+                    },
+                    {
+                        "$ref": "../graas_utilities/Schema/Shopee_Marketing_Flash_Deals_Daily_Report.json",
+                        "description": "Shopee Marketing Flash Deals Daily Report"
+                    }
+                ]
+            }
+        }
+    },
+    "required": [
+        "merchantID",
+        "siteNickNameId",
+        "countryCode",
+        "currencyCode",
+        "result"
+    ]
+}

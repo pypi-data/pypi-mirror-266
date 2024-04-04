@@ -1,0 +1,95 @@
+{
+  "type": "object",
+  "title": "Shopee Marketing Add On Deal Trends Daily Report",
+  "description": "Daily report on add-on deal trends for Shopee marketing",
+  "properties": {
+    "Date_Period": {
+      "type": "string",
+      "description": "Date period for the report in the format 'MM-DD-YYYY'"
+    },
+    "Promotion_Type": {
+      "type": "string",
+      "description": "Type of promotion, specifically 'Add-on Discount'"
+    },
+    "Total_Sales_Main_Add_on_Items_Placed_Order_MYR": {
+      "type": "number",
+      "description": "Total sales of main and add-on items in MYR for placed orders"
+    },
+    "Total_Sales_Main_Add_on_Items": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Total sales of main and add-on items information"
+    },
+    "Main_Items_Sales_Placed_Order_MYR": {
+      "type": "number",
+      "description": "Total sales of main items in MYR for placed orders"
+    },
+    "Main_Items_Sales": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Sales of main items information"
+    },
+    "Add_on_Item_Sales_Placed_Order_MYR": {
+      "type": "number",
+      "description": "Total sales of add-on items in MYR for placed orders"
+    },
+    "Add_on_Item_Sales": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Sales of add-on items information"
+    },
+    "Orders_Placed_Order": {
+      "type": "integer",
+      "description": "Total number of orders for placed orders"
+    },
+    "Orders": {
+      "type": "integer",
+      "description": "Total number of orders"
+    },
+    "Buyers_Placed_Order": {
+      "type": "integer",
+      "description": "Total number of unique buyers for placed orders"
+    },
+    "Buyers": {
+      "type": "integer",
+      "description": "Total number of unique buyers"
+    },
+    "Main_Items_Units_Sold_Placed_Order": {
+      "type": "integer",
+      "description": "Total units of main items sold for placed orders"
+    },
+    "Main_Items_Units_Sold": {
+      "type": "integer",
+      "description": "Total units of main items sold"
+    },
+    "Add_on_Items_Units_Sold_Placed_Order": {
+      "type": "integer",
+      "description": "Total units of add-on items sold for placed orders"
+    },
+    "Add_on_Items_Units_Sold": {
+      "type": "integer",
+      "description": "Total units of add-on items sold"
+    },
+    "Main_Items_Sales_Per_Buyer_Placed_Order_MYR": {
+      "type": "number",
+      "description": "Sales per buyer of main items in MYR for placed orders"
+    },
+    "Main_Items_Sales_Per_Buyer": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Sales per buyer of main items information"
+    },
+    "Add_On_Items_Sales_Per_Buyer_Placed_Order_MYR": {
+      "type": "number",
+      "description": "Sales per buyer of add-on items in MYR for placed orders"
+    },
+    "Add_On_Items_Sales_Per_Buyer": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Sales per buyer of add-on items information"
+    }
+  },
+  "required": [
+    "Promotion_Type"
+  ]
+}

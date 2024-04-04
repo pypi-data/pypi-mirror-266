@@ -1,0 +1,103 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Marketing Add On Deal Key Metrics Daily Report",
+  "description": "Key metrics daily report for Marketing AddOnDeal",
+  "type": "object",
+  "properties": {
+    "Date_Period": {
+      "type": "string",
+      "description": "The period for which the report is generated (format: dd-MM-yyyy)"
+    },
+    "Promotion_Type": {
+      "type": "string",
+      "description": "Type of promotion (e.g., 'Add-on Discount')"
+    },
+    "Total_Sales_Main_Add_on_Items_Placed_Order_PHP": {
+      "type": "integer",
+      "description": "Total sales of main and add-on items in PHP for placed orders"
+    },
+    "Total_Sales_Main_Add_on_Items": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Total sales of main and add-on items with amount and currency"
+    },
+    "Main_Items_Sales_Placed_Order_PHP": {
+      "type": "integer",
+      "description": "Sales of main items in PHP for placed orders"
+    },
+    "Main_Items_Sales": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Sales of main items with amount and currency"
+    },
+    "Add_on_Item_Sales_Placed_Order_PHP": {
+      "type": "integer",
+      "description": "Sales of add-on items in PHP for placed orders"
+    },
+    "Add_on_Item_Sales": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Sales of add-on items with amount and currency"
+    },
+    "Orders_Placed_Order": {
+      "type": "integer",
+      "description": "Total number of orders for placed orders"
+    },
+    "Orders": {
+      "type": "integer",
+      "description": "Total number of orders"
+    },
+    "Buyers_Placed_Order": {
+      "type": "integer",
+      "description": "Total number of buyers for placed orders"
+    },
+    "Buyers": {
+      "type": "integer",
+      "description": "Total number of buyers"
+    },
+    "Main_Items_Units_Sold_Placed_Order": {
+      "type": "integer",
+      "description": "Total units of main items sold for placed orders"
+    },
+    "Main_Items_Units_Sold": {
+      "type": "integer",
+      "description": "Total units of main items sold"
+    },
+    "Add_on_Items_Units_Sold_Placed_Order": {
+      "type": "integer",
+      "description": "Total units of add-on items sold for placed orders"
+    },
+    "Add_on_Items_Units_Sold": {
+      "type": "integer",
+      "description": "Total units of add-on items sold"
+    },
+    "Main_Items_Sales_Per_Buyer_Placed_Order_PHP": {
+      "type": "number",
+      "description": "Sales of main items per buyer in PHP for placed orders"
+    },
+    "Main_Items_Sales_Per_Buyer": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Sales of main items per buyer with amount and currency"
+    },
+    "Add_On_Items_Sales_Per_Buyer_Placed_Order_PHP": {
+      "type": "number",
+      "description": "Sales of add-on items per buyer in PHP for placed orders"
+    },
+    "Add_On_Items_Sales_Per_Buyer": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Sales of add-on items per buyer with amount and currency"
+    },
+    "Date": {
+      "type": "string",
+      "description": "Date of the report (format: dd-MM-yyyy)",
+      "format": "dd-MM-yyyy",
+      "pattern": "[0-9]{2}-[0-9]{2}-[1-2][0-9]{3}"
+    }
+  },
+  "required": [
+    "Date",
+    "Promotion_Type"
+  ]
+}
