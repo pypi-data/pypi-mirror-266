@@ -1,0 +1,24 @@
+query ($names: [String], $start: Date, $end: Date, $params: String) {
+  calendar {
+    calendarFeeds(names: $names) {
+      name
+      verboseName
+      description
+      url
+      color
+      activated
+      events(start: $start, end: $end, params: $params) {
+        name
+        start
+        end
+        color
+        description
+        location
+        uid
+        allDay
+        status
+        meta
+      }
+    }
+  }
+}

@@ -1,0 +1,71 @@
+mutation createPersonalEvents($input: [BatchCreatePersonalEventInput]!) {
+  createPersonalEvents(input: $input) {
+    items: personalEvents {
+      id
+      title
+      description
+      location
+
+      datetimeStart
+      datetimeEnd
+      dateStart
+      dateEnd
+      recurrences
+
+      persons {
+        id
+        fullName
+      }
+      groups {
+        id
+        shortName
+      }
+    }
+  }
+}
+
+mutation deletePersonalEvents($ids: [ID]!) {
+  deletePersonalEvents(ids: $ids) {
+    deletionCount
+  }
+}
+
+mutation updatePersonalEvents($input: [BatchPatchPersonalEventInput]!) {
+  updatePersonalEvents(input: $input) {
+    items: personalEvents {
+      id
+      title
+      description
+      location
+
+      datetimeStart
+      datetimeEnd
+      dateStart
+      dateEnd
+      recurrences
+
+      persons {
+        id
+        fullName
+      }
+      groups {
+        id
+        shortName
+      }
+    }
+  }
+}
+
+query gqlPersons {
+  persons {
+    id
+    fullName
+  }
+}
+
+query gqlGroups {
+  groups {
+    id
+    shortName
+  }
+}
