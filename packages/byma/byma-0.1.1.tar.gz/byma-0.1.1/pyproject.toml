@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=61.0",
+  "setuptools-scm>=8.0",
+  ]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "byma"
+dynamic = ["version", "keywords"]
+authors = [
+  { name="Lorenzo Zambelli", email="bytemath@lorenzozambelli.it" },
+]
+description = "A Numerical Mathematics Packages with an easier and clean user interface."
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    'License :: OSI Approved :: BSD License',
+    'Topic :: Scientific/Engineering',
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://gitlab.com/ByteMath/python/byma"
+documentation = "https://bytemath.gitlab.io/python/ByMa/index.html"
+source = "https://gitlab.com/ByteMath/python/ByMa"
+download = "https://pypi.org/project/byma/#files"
+tracker = "https://gitlab.com/ByteMath/python/ByMa/-/issues"
+
+[tool.setuptools_scm]
+version_file = "byma/_version.py"
+version_scheme = "post-release"
+local_scheme = "no-local-version"
