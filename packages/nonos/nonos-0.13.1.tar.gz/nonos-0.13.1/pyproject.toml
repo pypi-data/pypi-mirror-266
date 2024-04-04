@@ -1,0 +1,129 @@
+[build-system]
+requires = [
+    "setuptools>=61.2",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nonos"
+description = "A tool to analyze results from idefix/pluto simulations (for protoplanetary disks more specifically)"
+authors = [
+    { name = "G. Wafflard-Fernandez" },
+    { name = "C.M.T. Robert" },
+]
+classifiers = [
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Typing :: Typed",
+]
+requires-python = ">=3.8"
+
+dependencies = [
+    "cblind>=2.3.0",
+    "inifix>=3.0.0",
+    "lick>=0.2.0",
+    "loguru>=0.5.3",
+    "matplotlib>=3.5.0",
+    "numpy>=1.18.5",
+    "rich>=10.13.0",
+    "scipy>=1.6.1",
+    "importlib_resources>=1.3 ; python_version < '3.9'",
+    "typing_extensions >= 4.4.0 ; python_version < '3.12'",
+]
+dynamic = ["version"]
+
+[project.license]
+text = "GPL-3.0"
+
+[project.readme]
+file = "README.md"
+content-type = "text/markdown"
+
+[project.scripts]
+nonos = "nonos.main:main"
+
+[project.urls]
+Homepage = "https://github.com/volodia99/nonos"
+
+[tool.setuptools]
+license-files = [
+    "LICENSE",
+]
+include-package-data = false
+
+[tool.setuptools.package-data]
+nonos = [
+    "py.typed",
+    "logo.txt",
+    "default.mplstyle",
+]
+
+[tool.setuptools.packages.find]
+namespaces = false
+
+[tool.setuptools.dynamic]
+version = {attr = "nonos.__version__.__version__"}
+
+[tool.ruff.lint]
+exclude = ["*__init__.py"]
+ignore = ["E501"]
+select = [
+    "E",
+    "F",
+    "W",
+    "ARG", # flake8-unused-arguments
+    "C4",  # flake8-comprehensions
+    "B",   # flake8-bugbear
+    "YTT", # flake8-2020
+    "I",   # isort
+    "UP",  # pyupgrade
+]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "error",
+    'ignore:datetime\.datetime\.utcfromtimestamp\(\) is deprecated:DeprecationWarning', # https://github.com/dateutil/dateutil/pull/1285
+    'ignore:The py23 module has been deprecated and will be removed in a future release:DeprecationWarning',
+]
+
+[tool.mypy]
+python_version = "3.8"
+show_error_codes = true
+warn_unused_configs = true
+warn_unused_ignores = true
+warn_unreachable = true
+show_error_context = true
+disallow_untyped_defs = false  # TODO: add missing annotations and switch this option to true
+ignore_missing_imports = true
+
+[tool.coverage.run]
+source = [
+    "nonos",
+    "tests",
+]
+omit = [
+    "nonos/_backports.py",
+    "nonos/__main__.py",
+    "nonos/api/from_simulation.py", # deprecated module
+]
+
+[tool.coverage.report]
+skip_covered = true
+exclude_lines = [
+    # a stricter default pragma
+    "\\# pragma: no cover\\b",
+
+    # allow defensive code
+    "^\\s*raise NotImplementedError\\b",
+    "^\\s*assert_never\\b",
+
+    # typing-related code
+    "^if TYPE_CHECKING:",
+    ": \\.\\.\\.(\\s*#.*)?$",
+    "^ +\\.\\.\\.$",
+    "-> ['\"]?NoReturn['\"]?:",
+]
