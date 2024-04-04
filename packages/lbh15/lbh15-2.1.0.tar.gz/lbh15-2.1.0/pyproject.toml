@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=61.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lbh15"
+dynamic = ["version"]
+authors = [
+    {name = "Daniele Panico", email = "daniele.panico@newcleo.com"},
+    {name = "Daniele Tomatis", email = "daniele.tomatis@newcleo.com"},
+]
+license = {text = "lgpl v3"}
+description = "Python implementation of liquid metal properties from Handbook on Lead-bismuth Eutectic Alloy and Lead Properties, Materials Compatibility, Thermal-hydraulics and Technologies"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+requires-python = ">=3.8.10"
+dependencies = ["scipy>=1.8.1", "numpy>=1.22.3", "sphinx>=6.2.1",
+                "sphinx-rtd-theme>=1.3.0", "myst-parser>=1.0.0", "sphinxcontrib-bibtex>=2.5.0"]
+
+[project.readme]
+file = "README.rst"
+content-type = "text/x-rst"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages]
+find = {namespaces = false}
+
+[tool.setuptools.dynamic]
+version = {attr = "lbh15.__version__"}
