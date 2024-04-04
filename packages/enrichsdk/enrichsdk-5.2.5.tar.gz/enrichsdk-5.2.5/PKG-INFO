@@ -1,0 +1,213 @@
+Metadata-Version: 2.1
+Name: enrichsdk
+Version: 5.2.5
+Summary: Enrich Developer Kit
+Home-page: http://github.com/pingali/scribble-enrichsdk
+Author: Venkata Pingali
+Author-email: pingali@scribbledata.io
+License: All rights reserved
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+License-File: LICENSE
+Requires-Dist: ruptures
+Requires-Dist: wheel
+Requires-Dist: click>=7.1.2
+Requires-Dist: aioitertools==0.8.0
+Requires-Dist: typing-extensions==4.8.0
+Requires-Dist: glob2==0.7
+Requires-Dist: httpx
+Requires-Dist: h2
+Requires-Dist: chardet==4.0.0
+Requires-Dist: requests>=2.31.0
+Requires-Dist: requests-oauthlib==0.8.0
+Requires-Dist: pytest>=5.2.5
+Requires-Dist: pandas<1.5,>=1.3.5
+Requires-Dist: distributed
+Requires-Dist: idna==2.8
+Requires-Dist: coverage>=7.4.3
+Requires-Dist: flake8
+Requires-Dist: raven==6.6.0
+Requires-Dist: python-json-logger==2.0.4
+Requires-Dist: python-dateutil>=2.8.1
+Requires-Dist: pydantic<=1.10.10
+Requires-Dist: numpy<=1.23.0
+Requires-Dist: s3fs
+Requires-Dist: boto3
+Requires-Dist: botocore>=1.34.0
+Requires-Dist: aiobotocore
+Requires-Dist: gcsfs
+Requires-Dist: colored==1.3.5
+Requires-Dist: humanize==0.5.1
+Requires-Dist: pytz>=2020.1
+Requires-Dist: Jinja2>=3.1.3
+Requires-Dist: pytest-cov
+Requires-Dist: Markdown>=2.9.10
+Requires-Dist: prompt-toolkit<3.1.0,>3.0.1
+Requires-Dist: pyarrow>=0.9.0
+Requires-Dist: cytoolz>=0.9.0.1
+Requires-Dist: jsonschema>=3.2.0
+Requires-Dist: scipy<=1.10.0
+Requires-Dist: seaborn
+Requires-Dist: packaging>=20.0
+Requires-Dist: prefect==2.16.5
+Requires-Dist: distro>=1.4.0
+Requires-Dist: jupyter-core>=5.7.0
+Requires-Dist: nbformat>=5.2.5
+Requires-Dist: tzlocal>=2.0.0
+Requires-Dist: texttable
+Requires-Dist: pykafka
+Requires-Dist: redis
+Requires-Dist: gitpython
+Requires-Dist: logstash_formatter
+Requires-Dist: pyhive
+Requires-Dist: pyfiglet
+Requires-Dist: sqlalchemy<2.0,>=1.4.0
+Requires-Dist: kafka-python==2.0.2
+Requires-Dist: pykafka==2.8.0
+Requires-Dist: papermill>=2.3.4
+Requires-Dist: sqllineage<=1.5.0
+Requires-Dist: google-cloud-logging
+Requires-Dist: unidecode
+Requires-Dist: faker
+Requires-Dist: xlsxwriter
+Requires-Dist: cryptography
+Requires-Dist: pymongo
+Requires-Dist: great-expectations>=0.18.0
+Requires-Dist: pandas-stubs==1.5.3.230321
+Requires-Dist: openai
+Requires-Dist: pretty-html-table
+Requires-Dist: plotly>=4.0.0
+Requires-Dist: prophet==1.1.5
+Requires-Dist: imblearn==0.0
+Requires-Dist: msgraph-sdk==1.0.0a13
+
+==========
+Enrich SDK
+==========
+
+Enrich is a customizable, privacy law-aware enterprise Feature Store
+of `Scribble Data`_. This SDK is part of the feature store stack. It
+enables local development, testing and documentation of simple to
+complex feature transformations and other modules required for
+building and managing robust features.
+
+This is not for general purpose use. Please get in touch with us at
+hello@scribbledata.io to discuss potential use of this SDK.
+
+For enterprise users of Enrich, the documentation is available on the
+server. Please see the Developer section.
+
+.. _Scribble Data: https://www.scribbledata.io
+
+
+Usage
+---------------
+
+1. sudo apt-get update
+2. sudo apt-get install python3.8-dev python3.8-venv
+3. python3 -m venv venv
+4. pip3 install wheel
+5. pip3 install enrichsdk
+6. enrichpkg start
+
+Docs
+---------------
+
+1. python3 -m venv venv
+2. pip3 install -r requirements.txt
+3. mkdocs serve
+
+Updating Release Tag
+------------------------------
+
+1. Add to $HOME/.bashrc. Make sure you source ~/.bashrc before using::
+
+     function git_move_tag {
+        git push origin; git tag -d $1; git tag $1 ; git push origin --tags --force
+     }
+
+     function git_push {
+        git push origin $1; git push origin $1 --tags ;
+        git push origin $1 refs/notes/*
+     }
+
+     function git_rm_tag {
+        git push origin; git tag -d $1; git push --delete origin $1
+     }
+
+2. Bump the version. Version is typically a.b.c::
+
+     # activate the environment
+     workon dev
+     cd scribble-enrichsdk # cd to the root
+
+     # If bumpversion doesnt exist
+     pip install bump2version
+
+     # Check existing tags once
+     git tag -l
+
+     # Bump the right version
+     bumpversion patch # for updating c
+     bumpversion minor # for updating b
+     bumpversion major # for updating a
+
+3. Push the changes to github::
+
+     # See above
+     git_push master
+
+4. Update deployment version::
+
+     cd scribble-deploy-v2/configuration
+
+     # update enrichsdk_branch
+     vi defaults.json
+
+     # Make
+     git commit -a -m "Updated enrichsdk version"
+
+     git push origin
+
+5. Install at customer::
+
+     cd scribble-deploy
+     fab install_enrichsdk:role=demo
+
+6. Upload to pypi.::
+
+     python3 setup.py sdist
+
+     # This will require token in ~/.pypirc
+     twine upload -r pypi dist/enrichsdk-5.0.4.tar.gz
+
+     cat ~/.pypirc
+     [pypi]
+     username = __token__
+     password = pypi-AgEIcHlwaS5v...
+
+7. Known issues
+
+   The package dependencies are a jungle.Problematic packages include:
+
+   boto3
+   botocore
+   aiobotocore
+   jupyter-events
+   nbconvert
+
+   Use the fix environment script to monkey-patch any dependencies in the worst case::
+
+        ./bin/fix-environment.py
+        Usage: fix-environment.py [OPTIONS] COMMAND [ARGS]...
+
+          This package will help fix the environment
+
+        Options:
+          --help  Show this message and exit.
+
+        Commands:
+          lib  Fix a library dependency
+
+

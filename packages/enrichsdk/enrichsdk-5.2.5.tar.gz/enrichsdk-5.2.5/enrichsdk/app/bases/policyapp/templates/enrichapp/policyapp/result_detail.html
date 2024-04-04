@@ -1,0 +1,73 @@
+{% extends 'gui2/appstore2/base.html' %}
+{% load dashboard_tags %}
+{% load fontawesome %}
+{% load static %}
+{% load i18n %}
+
+<!-- ============================= Address Bar Start =============================== -->
+{% block breadcrumbs %}
+<div id="address_content" style="display: none">
+    <ol class="breadcrumb mb-0" aria-label="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'dashboard:home' %}">Enrich</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'dashboard:index' %}">Usecases</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'dashboard:usecase_detail' usecase.org.name %}">{{usecase.org.name}}</a></li>
+        <li class="breadcrumb-item"><a href="{% url basenamespace|add:':index' %}">{{spec.name}}</a></li>
+        <li class="breadcrumb-item"><a href="{% url basenamespace|add:':result_index' %}">Results</a></li>
+	<li class="breadcrumb-item active">Detail</li>
+    </ol>
+</div>
+
+{% with tags=spec.tags|join:" " %}
+{% with knowledge=spec.name|add:' '|add:app.name|add:' '|add:tags %}{{ block.super }}{% endwith %}
+{% endwith %}
+
+{% endblock breadcrumbs %}
+<!-- ============================= Address Bar End =============================== -->
+{% block nav_index%}
+<!--Header tab name-->
+    {% with nav_data="apps" %}{{ block.super }}{% endwith %}
+{% endblock %}
+<!--============================= Help Content =============================== -->
+{% block help %}
+{% include 'sharedapp/partials/help.html' with app=app spec=spec extra="This page shows the details of one run of the pipeline" %}
+{{block.super}}
+{% endblock %}
+
+{% block customhead %}
+{% endblock %}
+<!--============================= Help Content End =============================== -->
+{% block content %}
+   <div class="hero-container">
+      <div class="container-fluid">
+         <div class="row">
+            <div class="col-md-12">
+               <div class="hero-content-box w-100 position-relative  d-flex flex-wrap align-items-center">
+                  <div class="hcb-left d-flex align-items-center">
+                     <div class="hcb-icon-box">
+                        {% if 'icon' in spec %}
+                            <img src="{% static 'gui2/appstore2/images/'|add:spec.icon|add:'.svg' %}" alt="" />
+                        {% else %}
+                            <img src="{% static 'gui2/appstore2/images/placholder.jpg' %}" alt="" />
+                        {% endif %}
+                     </div>
+                     <div class="hcb-text-box">
+                       <h3>{% translate 'Results for' %} {% translate name %}</h3>
+                       <p>App: {% translate spec.name %} | Type: {{app.verbose_name}}</p>
+                       {% include 'dashboard/_appusers.html' with usecase=usecase spec=spec %}
+                     </div>
+
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- !! -=============================  HERO START END HERE ==========================- -->
+  {% block result %}
+  <div class="row">
+    <p>{{path}}</p>
+    <pre>{{data|prettify}}</pre>
+  </div>
+  {% endblock %}
+</div>
+{% endblock %}

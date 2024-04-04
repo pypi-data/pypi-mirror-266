@@ -1,0 +1,6 @@
+{% load static %}
+{% load i18n %}
+
+<button class="btn btn-fixed-width btn-default" onclick="call_webhook('{{content.url}}');">
+    <img class="bt-icon-15" src={% static 'gui2/appstore2/images/'|add:content.icon|add:'.svg' %}  alt="" title="{{ content.title}}">{% translate content.title %}
+</button>

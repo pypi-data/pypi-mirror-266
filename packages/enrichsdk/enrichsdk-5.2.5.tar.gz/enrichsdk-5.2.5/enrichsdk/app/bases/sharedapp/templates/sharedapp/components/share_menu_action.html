@@ -1,0 +1,68 @@
+{% load static %}
+<div class="dropdown custom-dropdown">
+  <a class="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true"
+     aria-expanded="false" id="share-menu-click">
+    <img class="bt-icon" src="{% static 'gui2/appstore2/images/share_sharemenu.svg' %}" alt="{{content.icon}}" />
+  </a>
+  <div class="dropdown-menu dropdown-menu-end" id="share-menu">
+    {% for tgt in content.targets %}
+    {% if tgt.nature == "Email" or True %}
+    <a class="{{widget.id}}_workflowtarget dropdown-item"
+       data-row="{{content.data}}"
+       data-actionid="{{tgt.pk}}">
+      <img src="{% static 'gui2/appstore2/images/email_share_menu.svg' %}" alt="" /> {{tgt.name}} </a>
+    {% elif tgt.nature == "API" %}
+    <a class="{{widget.id}}_workflowtarget dropdown-item"
+       data-row="{{content.data}}"
+       data-actionid="{{tgt.pk}}">
+      <img src="{% static 'gui2/appstore2/images/cog-transfer_api_sharemenu.svg' %}" alt=""/> {{tgt.name}} </a>
+    {% elif tgt.nature == "Slack" %}
+    <a class="{{widget.id}}_workflowtarget dropdown-item"
+       data-row="{{content.data}}"
+       data-actionid="{{tgt.pk}}">
+      <img src="{% static 'gui2/appstore2/images/slack_sharemenu.svg' %}" alt="" /> {{tgt.name}}</a>
+    {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  $(document).on('click','.{{widget.id}}_workflowtarget',function(){
+      
+      var obj = $(this);
+      var row = obj.data("row");
+      var actionid = obj.data('actionid');
+      var cookie = '{{csrf_token}}';
+      
+      var data = {
+	  "actionid": actionid,
+	  "message": "{{content.message}}",
+	  "data": JSON.stringify(row)
+      };
+
+      console.log(data)
+      
+      $.ajax({
+          url: "{{content.url}}",
+          headers: {'X-CSRFToken': cookie},
+          type: 'POST',
+          data: data,
+          success: function (data) {
+              console.log(data);
+              if (data.status == "success") {
+                toastr.success(data.message);
+              } else {
+                toastr.error(data.message);
+              }
+	        var scrollPos =  $("#messages").offset().top;
+	        $(window).scrollTop(scrollPos);
+          },
+          error : function () {
+	          toastr.error("Failed to share!");
+              var scrollPos =  $("#messages").offset().top;
+              $(window).scrollTop(scrollPos);
+          }
+      });
+  });
+  
+  </script>

@@ -1,0 +1,78 @@
+{% load dashboard_tags %}
+{% load staticfiles %}
+{% load i18n %}
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart_{{content.id}});
+
+      function drawChart_{{content.id}}() {
+          var data = google.visualization.arrayToDataTable([
+              [{% for c in content.columns %}
+               '{{c}}'{% if not forloop.last %},{% endif %}
+               {% endfor %},
+              ],
+              {% for row in content.rows_matrix %}
+                {{row|jsonencode|safe}}{% if not forloop.last %},{% endif %}
+              {% endfor %}
+          ]);
+
+          var options = {
+              isStacked: true,
+              legend: {
+                  position: 'right'
+              },
+              pieSliceTextStyle: {
+                  fontSize:'8'
+              },
+              chartArea: {  width: "95%", height: "95%" },
+              {% if "chart_options" in content %}
+                {{ content.chart_options }},
+              {% endif %}
+              vAxis: {
+                  {% if "vtitle" in content %}
+                    title: '{{content.vtitle}}',
+                  {% endif %}
+              },
+              hAxis: {
+                  {% if "htitle" in content %}
+                    title: '{{content.htitle}}',
+                  {% endif %}
+              },
+              {% if "curvetype" in content %}
+                  curveType: '{{content.curvetype}}',
+              {% endif %}
+          };
+
+          var chart = new google.visualization.{{content.chart_type}}Chart(document.getElementById('curve_chart_{{content.id}}'));
+
+          chart.draw(data, options);
+
+          {#var g_collection = document.getElementsByTagName('g');#}
+          {#var g_array = Array.prototype.slice.call( g_collection, 0 );#}
+          {#var hAxis = g_array.filter(function(g){#}
+          {#    return g.logicalname && g.logicalname.indexOf("hAxis") > -1 && g.logicalname.indexOf("title") === -1#}
+          //});
+
+          {#var images_data = {{ widget.images_data | safe }}#}
+          {##}
+          {#hAxis.forEach(function(g, index){#}
+          {#     var image = document.createElementNS("http://www.w3.org/2000/svg", "image");#}
+          {#     var x = g.childNodes[0].getAttribute('x');#}
+          {#     var y = g.childNodes[0].getAttribute('y');#}
+          {#     image.setAttributeNS(null, "x", x - 25);#}
+          {#     image.setAttributeNS(null, "y", y - 70);#}
+          {#     image.setAttributeNS("http://www.w3.org/1999/xlink", "href", images_data[index]);#}
+          {#     image.setAttributeNS(null, "height", "50px");#}
+          {#     image.setAttributeNS(null, "width", "50px");#}
+          {#     image.setAttributeNS(null, "style","cursor:pointer");#}
+          {#     g.appendChild(image);#}
+          //});
+      }
+  });
+</script>
+
+
+<div id="curve_chart_{{content.id}}" style="{{content.chart_style}}"></div>

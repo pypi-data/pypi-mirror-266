@@ -1,0 +1,12 @@
+<div id="page_help_content" class="d-none">
+{% if app %}
+{{app.get_readme|safe}}
+{% elif "app_config" in spec %}
+{{spec.app_config.readme|safe}}
+
+{% endif %}
+
+{% if extra %}
+<br><p>{{extra}}</p>
+{% endif %}
+</div>

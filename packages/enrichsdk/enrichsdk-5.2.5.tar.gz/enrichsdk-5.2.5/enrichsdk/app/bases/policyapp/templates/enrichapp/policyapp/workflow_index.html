@@ -1,0 +1,288 @@
+{% extends 'gui2/appstore2/base.html' %}
+{% load dashboard_tags %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% load fontawesome %}
+{% load control %}
+{% load static %}
+{% load i18n %}
+
+<!-- ============================= Address Bar Start =============================== -->
+{% block breadcrumbs %}
+<div id="address_content" style="display: none">
+    <ol class="breadcrumb mb-0" aria-label="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'dashboard:home' %}">Enrich</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'dashboard:index' %}">Usecases</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'dashboard:usecase_detail' usecase.org.name %}">{{usecase.org.name}}</a></li>
+        <li class="breadcrumb-item"><a href="{% url basenamespace|add:':index' %}">{{spec.name}}</a></li>
+	<li class="breadcrumb-item active">Workflow</li>
+    </ol>
+</div>
+
+{% with tags=spec.tags|join:" " %}
+{% with knowledge=spec.name|add:' '|add:app.name|add:' '|add:tags %}{{ block.super }}{% endwith %}
+{% endwith %}
+
+{% endblock breadcrumbs %}
+<!-- ============================= Address Bar End =============================== -->
+{% block nav_index%}
+<!--Header tab name-->
+    {% with nav_data="apps" %}{{ block.super }}{% endwith %}
+{% endblock %}
+<!--============================= Help Content =============================== -->
+{% block help %}
+<div id="page_help_content" style="visibility: hidden">
+  {% translate 'Trigger workflows for' %} {{app.name}}
+</div>
+{{block.super}}
+{% endblock %}
+
+{% block customhead %}
+{% endblock %}
+<!--============================= Help Content End =============================== -->
+{% block content %}
+
+<div class="hero-container">
+      <div class="container-fluid">
+         <div class="row">
+            <div class="col-md-12">
+               <div class="hero-content-box w-100 position-relative  d-flex flex-wrap align-items-center">
+                  <div class="hcb-left d-flex align-items-center">
+                     <div class="hcb-icon-box">
+                        {% if 'icon' in spec %}
+                            <img src="{% static 'gui2/appstore2/images/'|add:spec.icon|add:'.svg' %}" alt="" />
+                        {% else %}
+                            <img src="{% static 'gui2/appstore2/images/placholder.jpg' %}" alt="" />
+                        {% endif %}
+                     </div>
+                     <div class="hcb-text-box">
+                        <h3>{% translate app.verbose_name %} - {% translate 'Trigger Workflow/Sharing' %}</h3>
+                        <p>{% translate 'For Specification:' %} {% translate spec.name %}</p>
+                         {% include 'dashboard/_appusers.html' with usecase=usecase spec=spec %}
+                     </div>
+
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+<div class="block-container">
+         <div class="container-fluid">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="block-content-box d-flex flex-wrap">
+                     <div class="sidebar-wrapper">
+                        <div class="sticky-top">
+                           <div class="sidebar-inside">
+                              <ul class="nav-menu-list" role="tablist">
+                                  <li class="nav-menu-item">
+                                    <a href="{% url basenamespace|add:':policy_index' %}" class="nav-menu-box" id="c-configurations" data-toggle="tab" >
+                                       <div class="nav-menu-icon">
+                                          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                             <path d="M5.83301 4.16667H17.4997V5.83333H5.83301V4.16667ZM5.83301 10.8333V9.16667H17.4997V10.8333H5.83301ZM3.33301 3.75C3.66453 3.75 3.98247 3.8817 4.21689 4.11612C4.45131 4.35054 4.58301 4.66848 4.58301 5C4.58301 5.33152 4.45131 5.64946 4.21689 5.88388C3.98247 6.1183 3.66453 6.25 3.33301 6.25C3.00149 6.25 2.68354 6.1183 2.44912 5.88388C2.2147 5.64946 2.08301 5.33152 2.08301 5C2.08301 4.66848 2.2147 4.35054 2.44912 4.11612C2.68354 3.8817 3.00149 3.75 3.33301 3.75ZM3.33301 8.75C3.66453 8.75 3.98247 8.8817 4.21689 9.11612C4.45131 9.35054 4.58301 9.66848 4.58301 10C4.58301 10.3315 4.45131 10.6495 4.21689 10.8839C3.98247 11.1183 3.66453 11.25 3.33301 11.25C3.00149 11.25 2.68354 11.1183 2.44912 10.8839C2.2147 10.6495 2.08301 10.3315 2.08301 10C2.08301 9.66848 2.2147 9.35054 2.44912 9.11612C2.68354 8.8817 3.00149 8.75 3.33301 8.75ZM5.83301 15.8333V14.1667H17.4997V15.8333H5.83301ZM3.33301 13.75C3.66453 13.75 3.98247 13.8817 4.21689 14.1161C4.45131 14.3505 4.58301 14.6685 4.58301 15C4.58301 15.3315 4.45131 15.6495 4.21689 15.8839C3.98247 16.1183 3.66453 16.25 3.33301 16.25C3.00149 16.25 2.68354 16.1183 2.44912 15.8839C2.2147 15.6495 2.08301 15.3315 2.08301 15C2.08301 14.6685 2.2147 14.3505 2.44912 14.1161C2.68354 13.8817 3.00149 13.75 3.33301 13.75Z"/>
+                                          </svg>
+                                               <span>{% translate 'Configurations' %}</span>
+                                       </div>
+                                    </a>
+                                 </li>
+                                  <li class="nav-menu-item active">
+                                      <a href="{% url basenamespace|add:':result_index' %}" class="nav-menu-box" id="c-anomalies" data-toggle="tab" >
+                                           <div class="nav-menu-icon">
+                                              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                 <path d="M5.83301 4.16667H17.4997V5.83333H5.83301V4.16667ZM5.83301 10.8333V9.16667H17.4997V10.8333H5.83301ZM3.33301 3.75C3.66453 3.75 3.98247 3.8817 4.21689 4.11612C4.45131 4.35054 4.58301 4.66848 4.58301 5C4.58301 5.33152 4.45131 5.64946 4.21689 5.88388C3.98247 6.1183 3.66453 6.25 3.33301 6.25C3.00149 6.25 2.68354 6.1183 2.44912 5.88388C2.2147 5.64946 2.08301 5.33152 2.08301 5C2.08301 4.66848 2.2147 4.35054 2.44912 4.11612C2.68354 3.8817 3.00149 3.75 3.33301 3.75ZM3.33301 8.75C3.66453 8.75 3.98247 8.8817 4.21689 9.11612C4.45131 9.35054 4.58301 9.66848 4.58301 10C4.58301 10.3315 4.45131 10.6495 4.21689 10.8839C3.98247 11.1183 3.66453 11.25 3.33301 11.25C3.00149 11.25 2.68354 11.1183 2.44912 10.8839C2.2147 10.6495 2.08301 10.3315 2.08301 10C2.08301 9.66848 2.2147 9.35054 2.44912 9.11612C2.68354 8.8817 3.00149 8.75 3.33301 8.75ZM5.83301 15.8333V14.1667H17.4997V15.8333H5.83301ZM3.33301 13.75C3.66453 13.75 3.98247 13.8817 4.21689 14.1161C4.45131 14.3505 4.58301 14.6685 4.58301 15C4.58301 15.3315 4.45131 15.6495 4.21689 15.8839C3.98247 16.1183 3.66453 16.25 3.33301 16.25C3.00149 16.25 2.68354 16.1183 2.44912 15.8839C2.2147 15.6495 2.08301 15.3315 2.08301 15C2.08301 14.6685 2.2147 14.3505 2.44912 14.1161C2.68354 13.8817 3.00149 13.75 3.33301 13.75Z"/>
+                                              </svg>
+                                                   <span>{% translate 'Results' %}</span>
+                                           </div>
+                                      </a>
+                                  </li>
+                              </ul>
+                           </div>
+                        </div>
+                     </div>
+                      <div class="block-content">
+                        <div class="block-widget-box">
+                            <div class="block-filter-container d-flex flex-wrap align-items-center">
+                                    <div class="crc-head-inside d-flex align-items-center">
+                                       <div class="crc-head-icon"  data-bs-toggle="collapse" data-bs-target="#collapsesummary" aria-expanded="true">
+                                          <img class="expand-open" src={% static 'gui2/appstore2/images/new-caret-icon-1.svg' %} "include/images/new-caret-icon-1.svg" alt="" />
+                                          <img class="expand-add" src={% static 'gui2/appstore2/images/expand-add.svg' %} "include/images/expand-add.svg" alt="" />
+                                       </div>
+                                       <div class="accor-right">
+                                           <div class="block-filter-left">
+                                              <ul class="cp-text-list d-flex align-items-center">
+                                                 <li><b>{% translate 'Summary' %}</b></li>
+                                              </ul>
+                                           </div>
+                                           <div class="block-filter-option ms-auto d-flex align-items-center justify-content-end">
+                                               <div class="cp-toggle">
+                                                    <div class="dropdown custom-dropdown">
+                                                       <a class="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true"
+                                                          aria-expanded="false" id="shae-menu-click">
+                                                          <img src="{% static 'gui2/appstore2/images/share-icon.svg' %}" alt="" />
+                                                       </a>
+                                                       <div class="dropdown-menu dropdown-menu-end" id="share-menu">
+                                                          <a class="dropdown-item" href="#">API</a>
+                                                          <a class="dropdown-item" href="#">Email</a>
+                                                          <a class="dropdown-item" href="#">Slack</a>
+                                                       </div>
+                                               </div>
+                                             </div>
+                                           </div>
+                                       </div>
+                                 </div>
+                          </div>
+
+                           <div id="collapsesummary" class="crc-body accordion-collapse collapse show">
+                                 <div class="bw-body">
+                                      <div class="table-responsive">
+                                         <table class="table table-striped no-fixed-width">
+                                              <thead>
+                                                <tr><th>Attribute</th><th>Value</th></tr>
+                                              </thead>
+                                              <tbody>
+                                                {% for k, v in data.items %}
+                                                <tr><th>{{k}}</th><td>{{v}}</td></tr>
+                                                {% endfor %}
+                                              </tbody>
+                                         </table>
+                                      </div>
+                                 </div>
+                           </div>
+                        </div>
+                        <div class="mt-4"></div>
+                        <div class="accordion">
+                              <div class="code-panel-box">
+                                  <div class="code-panel-head d-flex align-items-center">
+                                     <div class="cph-left d-flex align-items-center flex-wrap" style="width: auto;">
+                                        <div class="cph-icon"  data-bs-toggle="collapse" data-bs-target="#collapsecomments" aria-expanded="true">
+                                           <img class="expand-open" src={% static 'gui2/appstore2/images/new-caret-icon-1.svg' %} alt="" />
+                                           <img class="expand-add" src={% static 'gui2/appstore2/images/expand-add.svg' %} alt="" />
+                                        </div>
+                                        <div class="accor-right"><div class="title" id="codeblockCommentsTitle">{% translate 'Comments' %}</div></div>
+                                     </div>
+                                  </div>
+                                  <div class="code-panel-body accordion-collapse collapse show background-white" id="collapsecomments">
+                                     <div class="cp-widget-body">
+                                        <div class="cp-form-widget">
+                                            <div class="cp-widget-row d-flex flex-wrap">
+                                                <div class="cp-widget-column">
+                                                    <form method="post" class="uniForm">
+                                                        {% csrf_token %}
+                                                        <div class="form-group">
+                                                            {{ form|crispy }}
+                                                        </div>
+
+                                                        <div class="form-group d-flex">
+                                                            <button type="submit" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Add" name="submit">{% translate 'Add' %}</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+
+                                  </div>
+                               </div>
+                          </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+
+
+<div class="container mb-30">
+  <hr>
+  <div class="row">
+    <div class="col-md-12">
+      <p>Share a message. We will send the context along for better understanding
+    </div>
+  </div>
+  <br>
+  <div class="row">    
+    <div class="col-md-9">
+      <div class="form-group">
+	<label for="description">Observation</label>
+	<textarea class="form-control" type="text" id="description">
+	</textarea>
+      </div>
+      <div class="form-group">
+	<label for="context">Context</label>
+	<table class="table" id="context">
+	  <thead>
+	    <tr><th>Attribute</th><th>Value</th></tr>
+	  </thead>
+	  <tbody>
+	    {% for k, v in data.items %}
+	    <tr><th>{{k}}</th><td>{{v}}</td></tr>
+	    {% endfor %}
+	  </tbody>
+	</table>
+
+      </div>
+    </div>
+    <div class="col-md-3"></div>
+    <div class="col-md-9">
+      <table>
+	<tbody>
+	  <tr>
+	  {% for t in targets %}
+	  <td>
+	    {% if t.nature == "Email" %}
+	    <button data-pk={{t.pk}} class="actionbtn btn btn-sm btn-primary mr-2">{% fontawesome_icon 'envelope' %} {{t.name}}</button>
+	    {% elif t.nature == "Slack" %}
+	    <button data-pk={{t.pk}} class="actionbtn btn btn-sm btn-primary mr-2">{% fontawesome_icon 'slack' %} {{t.name}}</button>
+	    {% endif %}
+	  </td>
+	  {% endfor %}
+	  </tr>
+	</tbody>
+      </table>
+    </div>    
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+
+      var record = {{data|prettify|safe}};
+      $(".actionbtn").on("click", function(){
+	  var btn = $(this);
+          var cookie = '{{csrf_token}}';
+
+	  var description = $("#description").val();
+
+	  if (description.length == 0){
+	      $('#description').css("border-color", "red");
+	      $("#description").focus();
+	      return;
+	  }
+	  
+	  var data = {
+	      "actionid": btn.data('pk'),
+	      "message": description,
+	      "data": JSON.stringify(record)
+	  };
+
+          $.ajax({
+              url: "{% url basenamespace|add:':workflow_action' %}?name={{name}}",
+              headers: {'X-CSRFToken': cookie},
+              type: 'POST',
+              data: data,
+              success: function (data) {
+                  window.location.href = "{% url basenamespace|add:':result_detail' %}?name={{name}}";
+              },
+              error : function () {
+                  window.location.href = "{% url basenamespace|add:':result_detail' %}?name={{name}}";		  
+              }
+          });
+	  
+      });
+
+  });
+  
+</script>
+{% endblock %}

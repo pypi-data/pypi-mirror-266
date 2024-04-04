@@ -1,0 +1,163 @@
+{% load staticfiles %}
+{% load dashboard_tags %}
+{% load i18n %}
+
+<!--
+Jinja2 partial to render a table widget
+
+{ % include 'sharedapp/partials/table.html' with usecase=usecase spec=spec widget=widget % }
+
+-->
+<div class="block-widget-box width-all" id="widget_{{widget.id}}">
+  <div class="block-filter-container d-flex flex-wrap align-items-center">
+    <div class="crc-head-inside d-flex align-items-center">
+      <div class="crc-head-icon"  data-bs-toggle="collapse" data-bs-target="#collapsetable_{{widget.id}}" aria-expanded="true">
+        <img class="expand-open" src={% static 'gui2/appstore2/images/new-caret-icon-1.svg' %} alt="" />
+        <img class="expand-add" src={% static 'gui2/appstore2/images/expand-add.svg' %} alt="" />
+      </div>
+      <div class="accor-right">
+        <div class="block-filter-left">
+          <ul class="cp-text-list d-flex align-items-center">
+            <li><b>{% translate widget.name|safe %}</b></li>
+            <li>{%  if widget.results_count %} {{ widget.results_count }} {% else %} {{ widget.rows | length }} {% endif %} {% translate 'results' %}</li>
+          </ul>
+        <p>{% translate widget.description|safe %}</p>
+        </div>
+      </div>
+    </div>
+    <div class="block-filter-option ms-auto d-flex align-items-center justify-content-end">
+        {% for k,values in widget.header_components.items %}
+              {% for v in  values %}
+                  <div class="cp-download">
+                    {% include 'sharedapp/components/'|add:v.template|add:'.html' with content=v %}
+                  </div>
+              {% endfor %}
+        {% endfor %}
+    </div>
+  </div>
+  <div id="collapsetable_{{widget.id}}" class="crc-body accordion-collapse collapse show">
+    <div class="cp-widget-body">
+        <div class="cp-widget-row d-flex flex-wrap">
+            <div class="cp-widget-column">
+                <form class="uniForm"  method="GET">
+                    <div class="form-group" id="multi-text">
+                      <label>{% translate 'Free Text search in ' %}  {{ widget.search_columns.search_column_names|join:" / " }} </label>
+
+                        {% for key, values in widget.search.search_params.items %}
+                            <input type="hidden" name="{{ key }}" value="{{ values }}" />
+                        {% endfor %}
+                        {% if not widget.search.search_query %}{% endif %}
+                      <textarea class="form-control" id="query" name="query" placeholder="Enter query in english">{{ widget.search.search_query|default_if_none:''}}</textarea>
+                    </div>
+                    <div class="content-row-btn">
+                        <button type="submit" class="btn btn-sm btn-default" data-toggle="tooltip" title="Search"><img src="{% static 'gui2/appstore2/images/play.svg' %}" alt="" />{% translate 'Search' %}</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="bw-body">
+      <div class="dataTables_wrapper no-footer">
+
+          {%  if widget.structure == 'flat' %}
+              <table class="table table-striped" id="{{widget.id}}_table">
+                  <thead>
+                    <tr>
+                        {% for c in widget.columns %}
+                          <th class="sorting_disabled"></th>
+                        {% endfor %}
+                    </tr>
+                  </thead>
+                  <tbody>
+                        {% for row in widget.rows %}
+                            <tr>
+                                {% for v in row %}
+                                  {% if forloop.counter0 == 0 %}
+                                      <td class="table-column-heighlight td-align-left td-width-200 wordwrap">{{v}}</td>
+                                  {% else %}
+                                            {% if row.0 in widget.search_columns.search_column_names %}
+                                                <td class="{{widget.td_class}}"><a href="{{widget.search_columns.url}}{{v}}">{{v|truncatechars:"100"}}</a></td>
+                                              {% else %}
+                                                <td class="{{widget.td_class}}">{{v | truncatechars:"200"}}</td>
+                                            {% endif %}
+                                  {% endif %}
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                  </tbody>
+              </table>
+          {% else %}
+              <table class="table dataTable widgettable" id="{{widget.id}}_table">
+                  <thead>
+                    <tr>
+                      {% for col in widget.columns %}
+                          <th class="{{widget.thead_th_class}}">{{col}}</th>
+                      {% endfor %}
+                    </tr>
+                  </thead>
+                  <tbody>
+                        {% for row in widget.rows %}
+                        <tr>
+                            {% for col in widget.columns %}
+                              <td class="{{widget.td_class}}">{{row|get_item:col}}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                  </tbody>
+              </table>
+          {% endif %}
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+<script>
+  $(document).ready(function() {
+      $.fn.dataTable.ext.classes.sPageButton = 'paginate_link';
+        var table = $('#{{widget.id}}_table').removeAttr('width').DataTable({
+            "autoWidth": true,
+            "pagingType": "full_numbers",
+	    {% if widget.page_size > 0 %}
+	    "pageLength": {{widget.page_size}},
+	    {% endif %}
+            "lengthMenu": [10, 25, 50, 100, 150],
+            "paging": true,
+            "searching": true,
+            "ordering": {% if 'order' in widget %} true {% else %} false {% endif %},
+            "info": true,
+	    {% if 'order' in widget %}
+            "order": {{widget.order|jsonencode|safe}},
+	    {% endif %}
+            'processing': true,
+            "initComplete": function (settings, json) {
+		$("#{{widget.id}}_table").wrap("<div style='overflow:auto; width:100%;position:relative;'></div>");
+            },
+            "language": {
+		"paginate": {
+		    "first": "<img src=\"{% static 'gui2/appstore2/images/blue-show-first-button.svg' %}\" alt=\"\" title=\"Go To First Page\" />",
+		    "last": "<img src=\"{% static 'gui2/appstore2/images/blue-show-last-button.svg' %}\" alt=\"\" title=\"Go To Last Page\" />",
+		    "next": "<img src=\"{% static 'gui2/appstore2/images/blue-right-angle-icon.svg' %}\" alt=\"\" title=\"Go To Next Page\" />",
+		    "previous": "<img src=\"{% static 'gui2/appstore2/images/blue-left-angle-icon.svg' %}\" alt=\"\" title=\"Go To Previous Page\" />"
+		}
+            },
+            "dom": "<<t><\"table-bottom\"ilp>>",
+            fnDrawCallback : function() {
+                reset_table_bottom("#featuretable_list");
+		if ($(this).find('.dataTables_empty').length == 1) {
+		    $(".table-bottom").hide();
+		} else {
+                    $(".table-bottom").show();
+		}
+            }
+	});
+  });
+
+  $("#{{widget.id}}_search").on('keyup', function () {
+        $('#{{widget.id}}_table').dataTable().fnFilter(this.value);
+  });
+
+</script>
+

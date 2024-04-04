@@ -1,0 +1,232 @@
+{% extends 'gui2/appstore2/base.html' %}
+{% load static %}
+{% load dashboard_tags %}
+{% load humanize %}
+{% load fontawesome %}
+{% load i18n %}
+<!-- ============================= Address Bar Start =============================== -->
+{% block breadcrumbs %}
+<div id="address_content" style="display: none">
+    <ol class="breadcrumb mb-0" aria-label="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'dashboard:application_index' %}">App Store</a></li>
+      <li class="breadcrumb-item active"><a href="{% url basenamespace|add:':index' %}">{{spec.name}}</a></li>
+      {% if data.breadcrumb %}
+      <li class="breadcrumb-item active">{{data.breadcrumb}}</a></li>
+      {% endif %}
+      {% if data.breadcrumbs %}
+      {% for breadcrumb in data.breadcrumbs %}
+      {% if 'url' in breadcrumb %}
+      <li class="breadcrumb-item"><a href="{{breadcrumb.url}}">{{breadcrumb.name}}</a></li>
+      {% else %}
+      <li class="breadcrumb-item active">{{breadcrumb.name}}</a></li>
+      {% endif %}
+      {% endfor %}
+      {% endif %}
+    </ol>
+</div>
+{% with tags=spec.tags|join:" " %}
+{% with knowledge=spec.name|add:' '|add:tags %}{{ block.super }}{% endwith %}
+{% endwith %}
+{% endblock breadcrumbs %}
+<!-- ============================= Address Bar End =============================== -->
+{% block nav_index %}
+<!--Header tab name-->
+    {% with nav_data="apps" %}{{ block.super }}{% endwith %}
+{% endblock %}
+<!--============================= Help Content =============================== -->
+
+{% block help %}
+{% include 'sharedapp/partials/help.html' with spec=spec app=app %}
+{{block.super}}
+{% endblock %}
+<!--============================= Help Content End =============================== -->
+
+{% block content %}
+<!--
+{
+    "sidebar_targets": [
+        {
+            "name": "target1",
+            "label": "Target 1"
+        },
+        {
+            "name": "targetn",
+            "label": "Target N"
+        }
+    ],
+    "widgets": [
+        {
+            "name": "Widget 1",
+            "type": "full_width_key_value_pairs",
+            "details": {
+                "key1": "value1",
+                "key2": "value2"
+            }
+        },
+        {
+            "name": "Widget 2",
+            "type": "full_width_table",
+            "columns": [
+                "col1",
+                "col2"
+            ],
+            "rows": [
+                {
+                    "col1": "val11",
+                    "col2": "val12"
+                },
+                {
+                    "col1": "val21",
+                    "col2": "val22"
+                }
+            ],
+            "actions": [
+                {
+                    "name": "chart",
+                    "params": {
+                        "key1": "val1",
+                        "key2": "val2"
+                    }
+                }
+            ]
+        }
+    ]
+}
+-->
+
+
+<div class="hero-container">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="hero-content-box w-100 position-relative  d-flex flex-wrap align-items-center">
+          <div class="hcb-left d-flex flex-wrap align-items-center">
+            <div class="hcb-icon-box">
+              {% if 'icon' in spec %}
+              <img src="{% static 'gui2/appstore2/images/'|add:spec.icon|add:'.svg' %}" alt="" />
+              {% else %}
+              <img src="{% static 'gui2/appstore2/images/placholder.jpg' %}" alt="" />
+              {% endif %}
+            </div>
+            <div class="hcb-text-box">
+              <h3>{% translate  spec.name %}{% if 'title' in data %} - {% translate data.title %}{% endif %}</h3>
+              {% if "description" in data %}
+              <p> {% translate data.description %}</p>
+              {% else %}
+                  <p> {% translate spec.description %}</p>
+              {% endif %}
+              {% include 'dashboard/_appusers.html' with usecase=usecase spec=spec %}
+              <ul class="hcb-step-list d-flex">
+                     {% for o in data.order %}
+                         {% if forloop.counter < currpos|add:1 %}
+                            <li class="hcb-step-item complete">
+                         {% elif forloop.counter == currpos|add:1 %}
+                            <li class="hcb-step-item active">
+                        {% else %}
+                            <li class="hcb-step-item">
+                        {% endif %}
+                            <div class="hcb-step-box w-100 h-100 d-flex flex-wrap flex-column">
+                                <div class="hcb-step-icon-box">
+                                    <div class="step-number-text">{{ forloop.counter }}</div>
+                                    <div class="step-check-icon">
+                                        <img src="{% static 'gui2/appstore2/images/check-icon.svg' %}" alt="" />
+                                    </div>
+                                </div>
+                                <h6><a href="?stage={{o}}">{% translate o.title %}</a></h6>
+                            </div>
+                        </li>
+                    {% endfor %}
+              </ul>
+            </div>
+          </div>
+          <div class="hcb-right ms-auto">
+          <form class="uniForm"  method="GET">
+          <ul class="v-line-text-list d-flex flex-wrap">
+              {% for k,values in data.header.components.items %}
+                  {% for v in  values %}
+                          <div class="v-box p-2">
+                            {% include 'sharedapp/components/'|add:v.template|add:'.html' with dropdown=v %}
+                          </div>
+
+                          <div class="v-box p-2 mt-3">
+                              <div class="column">
+                                  <div class=" form-group d-flex">
+                                    <button name="submit" id="submit" value="select" type="submit" class="btn btn-default btn-fixed-width" data-toggle="tooltip" data-placement="bottom" title="Submit"><img src="{% static 'gui2/appstore2/images/play.svg' %}" alt="" />Select</button>
+                                  </div>
+                              </div>
+                          </div>
+                  {% endfor %}
+              {% endfor %}
+          </ul>
+
+          </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="block-container">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="block-content-box d-flex flex-wrap padding-24">
+          <div class="sidebar-wrapper">
+            <div class="sticky-top">
+              <div class="sidebar-inside">
+                <ul class="nav-menu-list">
+                  {% for target in data.sidebar_targets %}
+                  <li class="nav-menu-item">
+                      {% if target.link %}
+                      <a href="{{target.link}}"
+			 target="{{target.target}}"
+			 class="nav-menu-box">
+                          <div class="nav-menu-icon">
+                                {% include 'sharedapp/partials/sidebar_menu_icon.html' with target=target %}
+                            <span>{% translate target.label %}</span>
+                          </div>
+                        </a>
+                      {% else %}
+                        <a href="{% url basenamespace|add:':index' %}?{{target.params|get_encoded_dict}}" class="nav-menu-box">
+                          <div class="nav-menu-icon">
+                                {% include 'sharedapp/partials/sidebar_menu_icon.html' with target=target %}
+                            <span>{% translate target.label %}</span>
+                          </div>
+                        </a>
+                      {% endif %}
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="block-content padding-24">
+            {% for widget in data.widgets %}
+	    {% if 'dict' in widget|get_type %}
+            {% include 'sharedapp/partials/'|add:widget.type|add:'.html' with usecase=usecase spec=spec widget=widget %}
+	    {% else %}
+	    {{widget|safe}}
+	    {% endif %}
+            {% endfor %}
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if 'scripts' in data %}
+{% for s in data.scripts %}
+<script src="{{s}}"></script>
+{% endfor %}
+{% endif %}
+
+<script>
+  $(document).ready(function() {
+      $.fn.dataTable.ext.classes.sPageButton = 'paginate_link';
+      $('.single-select').selectpicker();
+  });
+</script>
+{% endblock %}

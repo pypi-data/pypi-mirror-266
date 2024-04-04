@@ -1,0 +1,20 @@
+{% load i18n %}
+{% load static %}
+{% load dashboard_tags %}
+
+{% if content.icon %}
+    <img src={% static 'gui2/appstore2/images/'|add:content.icon|add:'.svg' %} alt="Media" />
+{% endif %}
+{% if content.label|length > 0 %}
+    <strong>{{content.label}}</strong>
+{% endif %}
+<div id="{{ content.id }}">
+    <span class="media-desc">{% translate content.description %}</span>
+    <div>
+    {% if content.src %}
+        <img src="{{content.src}}" class="{{ content.css_class }}" />
+    {% else %}
+        <img src={% static 'gui2/appstore2/images/'|add:content.default_img %} alt="Placeholder" />
+    {% endif %}
+    </div>
+</div>

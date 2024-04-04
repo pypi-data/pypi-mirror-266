@@ -1,0 +1,263 @@
+{% load staticfiles %}
+{% load i18n %}
+{% load fontawesome %}
+{% load dashboard_tags %}
+
+<style>
+  .spinner-border{
+      width: 4.375rem;
+      height: 4.375rem;
+      position: fixed;
+      z-index: 999;
+      overflow: show;
+      margin: auto;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      display: none;
+  }
+</style>
+
+<!--
+Jinja2 partial to render a form
+
+{ % include 'sharedapp/partials/full_width_form.html' with usecase=usecase spec=spec widget=widget % }
+
+  -->
+<div class="block-widget-box width-all mb-3" id="{{widget.id}}">
+  <div class="block-filter-container d-flex flex-wrap align-items-center">
+    <div class="crc-head-inside d-flex align-items-center">
+      <div class="crc-head-icon"  data-bs-toggle="collapse" data-bs-target="#collapseresults" aria-expanded="true">
+        <img class="expand-open" src={% static 'gui2/appstore2/images/new-caret-icon-1.svg' %} alt="" />
+        <img class="expand-add" src={% static 'gui2/appstore2/images/expand-add.svg' %} alt="" />
+      </div>
+      <div class="accor-right">
+        <div class="block-filter-left">
+          <ul class="cp-text-list d-flex align-items-center">
+            <li><b>{% translate widget.name|safe %}</b></li>
+          </ul>
+            <p>{% translate widget.description|safe %}</p>
+        </div>
+      </div>
+    </div>
+    <div class="block-filter-option ms-auto d-flex align-items-center justify-content-center align-block-filter-option">
+    </div>
+  </div>
+  <div id="collapseresults" class="crc-body accordion-collapse collapse show">
+    <div class="cp-body">
+      <div class="row mb-30">
+	{% if "text" in widget %}
+	<div>{{widget.text|safe}}</div>
+	{% endif %}
+	{% if widget.method %}
+	<form class="uniForm"
+	      enctype="multipart/form-data"
+	      method="{{widget.method}}"
+	      id="form{{widget.id}}"
+	      {% if 'action' in widget %}action="{{widget.action}}"{% endif %}
+	      >
+        {% else %}
+	<form class="uniForm"
+	      enctype="multipart/form-data"
+	      method="GET"
+	      id="form{{widget.id}}"
+	      {% if 'action' in widget %}action="{{widget.action}}"{% endif %}>
+          {% endif %}
+	  {% if widget.method.lower == "post" %}
+	  {% csrf_token %}
+	  {% endif %}
+	  {% for name, value in widget.hidden_vars.items %}
+	  <input name="{{name}}" value="{{value}}" type="hidden"></input>
+	  {% endfor %}
+          <ul class="v-line-text-list d-flex flex-wrap">
+	    {% for element in widget.elements %}
+	    {% if element.type == "select" %}
+            <div class="v-box p-2">
+              <h4>{{element.label}}</h4>
+              <div class="column">
+	        <div class="form-group">
+                  <span class="multiselect-native-select">
+                    <select class="selectpicker form-control" id="{{element.id}}" name="{{element.name}}" data-live-search-placeholder="Search" data-live-search="true" data-container="body" data-size="5" autocomplete="off" {% if element.multiple %}multiple{% endif %}>
+		      {% if element.choices|get_class == "dict" %}
+                      {% for label,value in element.choices.items %}
+                      <option value="{{value}}" title="{{label}}" {% if element.selected_choice == value or value in element.selected_choice %}selected{% endif%}>{{label|safe}}</option>
+                      {% endfor %}
+		      {% else %}
+                      {% for choice in element.choices %}
+                      <option value="{{choice}}" title="{{choice}}" {% if element.selected_choice == choice %}selected{% endif%}>{{choice}}</option>
+                      {% endfor %}
+		      {% endif %}
+                    </select>
+                  </span>
+		  <div class="help-block">{{element.help}}</div>
+	        </div>
+              </div>
+            </div>
+	    {% elif element.type == "input" %}
+            <div class="v-box p-2">
+              <h4>{{element.label}}</h4>
+              <div class="column">
+                <div class="form-group" id="single-text-{{widget.id}}">
+                  <input type="text"
+			 class="form-control"
+			 id="{{element.name}}"
+			 name="{{element.name}}"
+			 value="{{element.value}}"
+			 placeholder="{{element.placeholder}}"
+			 {% if element.pattern %} pattern="{{element.pattern}}" {% endif %}
+			 {% if element.required %}required {% endif %}
+			 autocomplete="off"
+			 >
+                </div>
+		<div class="help-block">{{element.help}}</div>
+              </div>
+            </div>
+	    {% elif element.type == "date" %}
+            <div class="v-box p-2">
+              <h4>{{element.label}}</h4>
+              <div class="column">
+                <div class="form-group" id="single-text-{{widget.id}}">
+		  <input name="{{element.name}}"
+			 id="{{element.id}}"
+			 type="text"
+			 class="form-control datepicker"
+			 placeholder="{% now 'Y-m-d' %}"
+			 value="{{element.value}}"
+			 {% if element.required %}required {% endif %}
+			 autocomplete="off"
+			 >
+                </div>
+		<div class="help-block">{{element.help}}</div>
+              </div>
+            </div>
+	    {% elif element.type == "boolean" %}
+            <div class="v-box p-2">
+              <h4>{{element.label}}</h4>
+              <div class="column">
+		<div class="boolean">
+                  <div class="form-check form-switch">
+                    <input type="checkbox"
+			   class="form-check-input"
+			   id="{{element.id}}"
+			   name="{{element.name}}"
+			   value="{{element.value}}"
+			   role="switch"
+			   {% if element.required %}required {% endif %}
+			   >
+                    <label class="form-check-label" for="dimensions_{{forloop.counter}}"></label>
+                  </div>
+                </div>
+		<div class="help-block">{{element.help}}</div>
+              </div>
+            </div>
+	    {% elif element.type == "textarea" %}
+            <div class="v-box p-2">
+              <h4>{{element.label}}</h4>
+	      <div class="column">
+		<div class="form-group d-flex">
+		  <textarea class="{{element.class}}"
+			    id="{{ element.id }}"
+			    name="{{ element.id }}"
+			    rows="{{ element.rows }}"
+			    cols="{{ element.cols }}"
+			    {% if 'maxlength' in element %} maxlength="{{element.maxlength}}" {% endif %}
+			    placeholder="{{ element.placeholder }}"
+			    {% if element.required %}required {% endif %}
+			    >{{element.value}}</textarea>
+		</div>
+		<div class="help-block">{{element.help}}</div>
+	      </div>
+	    </div>
+	    {% elif element.type == "file" %}
+            <div class="v-box p-2">
+              <h4>{{element.label}}</h4>
+	      <div class="column">
+		<div id="div_id_uploaded_file" class="form-group">
+		  <div class="controls ">
+		    <input type="file" class="form-control" id="{{element.id}}" name="{{element.name}}"
+			   {% if element.required %}required {% endif %}
+			   />
+		  </div>
+		  <div class="help-block">{{element.help}}</div>
+		</div>
+	      </div>
+	    </div>
+	    {% elif element.type == "donothing" %}
+            <div class="v-box p-2">
+	      <div class="column">
+	      </div>
+	    </div>
+	    {% endif %}
+	    {% endfor %}
+          </ul>
+          <div class="v-box p-2">
+            <div class="column">
+	      <div class="form-group d-flex" id="formsubmitdiv">
+		<button  name="submit_{{widget.id}}" id="submit_{{widget.id}}" value="{% if 'submit' in widget %}{{widget.submit}}{% else %}Show{% endif %}" type="submit" class="btn btn-default {{widget.submit_class}}" data-toggle="tooltip" data-placement="bottom"><img src="{% static 'gui2/appstore2/images/play.svg' %}" alt="" />{% if 'submit' in widget %}{{widget.submit}}{% else %}Show{% endif %}</button>
+		<div class="spinner-border" role="status" id="spinner">
+		</div>
+	      </div>
+            </div>
+	  </div>
+	</form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade sd-modal" style="z-index: 9999;" id="confirm_dialog_{{widget.id}}">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="sd-content-box">
+        <div class="sd-modal-header" style="height: 100px !important;">
+          <div class="d-flex flex-wrap">
+            <div class="sd-modal-header-left-sm d-flex flex-wrap">
+              <strong>{{widget.submit_header}}</strong>
+            </div>
+            <div class="sd-modal-header-right ms-auto text-end">
+              <div class="sd-mhr-icon-group d-flex align-items-center justify-content-end">
+                <div id="sd-mhr-icon_{{widget.id}}" class="sd-mhr-icon" data-bs-dismiss="modal">
+                  <img src="{% static 'gui2/appstore2/images/modal-close-icon.svg' %}" alt="" /></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sd-modal-body">
+          <p>{{widget.submit_body}}</p>
+          <button type="button" class="btn btn-default" id="modal-btn-no_{{widget.id}}">No</button>
+          <button type="button" class="btn btn-primary" id="modal-btn-yes_{{widget.id}}">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% if widget.spinner_on_submit %}
+  <script>
+    $('#form{{widget.id}}').submit(function() {
+	$("#spinner").show();
+    });
+</script>
+{% endif %}
+
+<script>
+  $("#{{widget.id}} .confirmbtn").click(function (e) {
+      $('#confirm_dialog_{{widget.id}}').modal('show');
+      e.preventDefault();
+      e.stopPropagation();
+  });
+
+  $('#modal-btn-no_{{widget.id}}').click(function(e){
+      $('#sd-mhr-icon_{{widget.id}}').click();
+  });
+
+  $('#modal-btn-yes_{{widget.id}}').click(function(e){
+
+      {% if widget.submit_handler %}
+      {{widget.submit_handler|safe}}
+      {% endif %}
+      $("#form{{widget.id}}").submit();
+  })
+</script>

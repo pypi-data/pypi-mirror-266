@@ -1,0 +1,166 @@
+{% load staticfiles %}
+{% load dashboard_tags %}
+{% load i18n %}
+{% load fontawesome %}
+<!--
+Jinja2 partial to render a table widget
+
+{ % include 'sharedapp/partials/full_width_table.html' with usecase=usecase spec=spec widget=widget % }
+
+-->
+<div class="block-widget-box width-all mb-3" id="widget_{{widget.id}}">
+  <div class="block-filter-container d-flex flex-wrap align-items-center">
+    <div class="crc-head-inside d-flex align-items-center">
+      <div class="crc-head-icon"  data-bs-toggle="collapse" data-bs-target="#collapsetable_{{widget.id}}" aria-expanded="true">
+        <img class="expand-open" src={% static 'gui2/appstore2/images/new-caret-icon-1.svg' %} alt="" />
+        <img class="expand-add" src={% static 'gui2/appstore2/images/expand-add.svg' %} alt="" />
+      </div>
+      <div class="accor-right">
+        <div class="block-filter-left">
+          <ul class="cp-text-list d-flex align-items-center">
+            <li><b>{% translate widget.name|safe %}</b></li>
+            <li>{%  if widget.results_count %} {{ widget.results_count }} {% else %} {{ widget.rows | length }} {% endif %} {% translate 'results' %}</li>
+          </ul>
+         <p>{% translate widget.description|safe %}</p>
+        </div>
+      </div>
+    </div>
+    <div class="block-filter-option ms-auto d-flex align-items-center justify-content-end">
+        {% for k,values in widget.header_components.items %}
+        {% for v in  values %}
+        {% include 'sharedapp/components/'|add:v.template|add:'.html' with content=v widget=widget %}
+        {% endfor %}
+        {% endfor %}
+    </div>
+  </div>
+  <div id="collapsetable_{{widget.id}}" class="crc-body accordion-collapse collapse show">
+    <div class="bw-body">
+      <div class="dataTables_wrapper no-footer">
+          {%  if widget.structure == 'flat' %}
+              <table class="table table-striped" id="{{widget.id}}_table">
+                  <thead>
+                    <tr>
+                        {% for c in widget.columns %}
+                          <th class="sorting_disabled"></th>
+                        {% endfor %}
+                    </tr>
+              </thead>
+                  <tbody>
+                        {% for row in widget.rows %}
+                        <tr>
+                                {% for v in row %}
+                                  {% if forloop.counter0 == 0 %}
+                                      <td class="table-column-heighlight td-align-left td-width-200 wordwrap">{{v}}</td>
+                                  {% else %}
+                                      {% if v.template %}
+                                      {% else %}
+                                        <td class="{{widget.td_class}}">{{v | truncatechars:"200"|safe}}</td>
+                                      {% endif %}
+                                  {% endif %}
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                  </tbody>
+              </table>
+          {% else %}
+              <table class="table dataTable widgettable no-center" id="{{widget.id}}_table">
+                  <thead>
+                    <tr>
+                      {% for col in widget.columns %}
+                          {%  if 'ACTION_' in col %}
+                              <th class="sorting_disabled"></th>
+                          {% else %}
+                              <th class="{{widget.thead_th_class}}">{{col}}</th>
+                          {% endif %}
+
+                      {% endfor %}
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                        {% for row in widget.rows %}
+                        <tr>
+                            {% for col in widget.columns %}
+                              {%  if 'ACTION_' in col %}
+                                 {% for k,v in  row.items %}
+                                     {% if 'ACTION_' in k %}
+                                     <td>
+                                     {% include 'sharedapp/components/'|add:v.template|add:'.html' with content=v %}
+                                     </td>
+                                    {% endif %}
+                                 {% endfor %}
+                              {% else %}
+                              <td class="{{widget.td_class}}">{{row|get_item:col|safe}}</td>
+                              {% endif %}
+
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                  </tbody>
+              </table>
+
+          {% endif %}
+
+      </div>
+
+        {% if widget.body_components.result_urls %}
+            <div class="cp-widget-btn">
+                {% for k in widget.body_components.result_urls %}
+                    {% if k.nextoffset > 0 %}
+                        <a href="{{ k.next }}">
+                          <button class="btn btn-xs btn-default"><img src={% static 'gui2/appstore2/images/play.svg' %} alt="Next 50" title="Next 50 Results">{% translate 'Next ' %}{{ k.page }}</button>
+                        </a>
+                      {% endif %}
+                      {% if k.offset > 0 %}
+                          <a href="{{ k.previous }}">
+                          <button class="btn btn-xs btn-default"><img src={% static 'gui2/appstore2/images/play.svg' %} alt="Previous 50" title="Previous 50 Results">{% translate 'Previous ' %}{{ k.page }}</button>
+                        </a>
+                      {% endif %}
+                {% endfor %}
+                </div>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+
+<script>
+  $(document).ready(function() {
+      $.fn.dataTable.ext.classes.sPageButton = 'paginate_link';
+        var table = $('#{{widget.id}}_table').removeAttr('width').DataTable({
+            "autoWidth": true,
+            "pagingType": "full_numbers",
+            "paging": true
+	    {% if widget.page_size > 0 %}
+	    "pageLength": {{widget.page_size}},
+	    {% endif %}
+            "searching": true,
+            "ordering": {% if 'order' in widget %} true {% else %} false {% endif %},
+            "info": true,
+            {% if 'order' in widget %}
+                "order": {{widget.order|jsonencode|safe}},
+            {% endif %}
+            'processing': true,
+            "initComplete": function (settings, json) {
+		$("#{{widget.id}}_table").wrap("<div style='overflow:auto; width:100%;position:relative;'></div>");
+            },
+            "language": {
+		"paginate": {
+		    "first": "<img src=\"{% static 'gui2/appstore2/images/blue-show-first-button.svg' %}\" alt=\"\" title=\"Go To First Page\" />",
+		    "last": "<img src=\"{% static 'gui2/appstore2/images/blue-show-last-button.svg' %}\" alt=\"\" title=\"Go To Last Page\" />",
+		    "next": "<img src=\"{% static 'gui2/appstore2/images/blue-right-angle-icon.svg' %}\" alt=\"\" title=\"Go To Next Page\" />",
+		    "previous": "<img src=\"{% static 'gui2/appstore2/images/blue-left-angle-icon.svg' %}\" alt=\"\" title=\"Go To Previous Page\" />"
+		}
+            },
+            "dom": "<<t><\"table-bottom\"ilp>>",
+            fnDrawCallback : function() {
+		if ($(this).find('.dataTables_empty').length == 1) {
+		    $(".table-bottom").hide();
+		} else {
+                    $(".table-bottom").show();
+		}
+            }
+	});
+  });
+
+</script>
+

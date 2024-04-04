@@ -1,0 +1,42 @@
+{% load static %}
+{% load dashboard_tags %}
+{% load i18n %}
+{% load fontawesome %}
+
+<div class="block-content-box d-flex flex-wrap" id="widget_{{widget.id}}">
+      <div class="block-content">
+          <form class="uniForm" method="POST">
+          {% csrf_token %}
+            <div class="block-widget-box">
+                {% if currstage == "summary" %}
+                    {% include 'sharedapp/partials/full_width_text.html' with widget=widget %}
+                {% elif currstage == "details" %}
+                    {% include 'sharedapp/partials/full_width_text.html' with widget=widget %}
+                {% elif currstage == "assessment" %}
+                    {% include 'sharedapp/partials/full_width_text.html' with widget=widget %}
+                {% elif currstage == "recommendations" %}
+                    {% include 'sharedapp/partials/full_width_text.html' with widget=widget %}
+                {% elif currstage == "qna" %}
+                   {% include 'sharedapp/partials/full_width_text.html' with widget=widget %}
+                {% endif %}
+
+             </div>
+          </form>
+        </div>
+      <div class="mt-4"></div>
+</div>
+
+<script>
+    $("#updatebtn").on("click", function(){
+         alert("clicked");
+
+          $("#spinnerdiv").removeClass("d-none");
+          $(".spinner-border").show();
+
+          setTimeout(function () {
+                  window.location.href += "&done=true";
+              }, 15000);
+
+          return false;
+      });
+</script>

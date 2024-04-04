@@ -1,0 +1,27 @@
+{% load static %}
+<div class="dropdown custom-dropdown">
+  <a class="dropdown-toggle"
+     style="z-index: -1;"
+     data-bs-toggle="dropdown"
+     aria-haspopup="true"
+     aria-expanded="false"
+     id="{[widget.id}}_dropdown_list">
+    <img class="bt-icon dropdown-toggle"
+	 src="{% static 'gui2/appstore2/images/overflow.svg' %}"
+	 alt="{{content.title}}" />
+  </a>
+  <div class="dropdown-menu dropdown-menu-end"
+       id="{{widget.id}}_overflow_menu">
+    {% for tgt in content.targets %}
+    <a class="{{widget.id}}_workflowtarget dropdown-item {{tgt.class}}"
+       href="{{tgt.url}}"
+       {% if 'dataurl' in tgt %}
+       data-url="{{tgt.dataurl}}"
+       {% endif %}
+       >
+      <img src="{% static 'gui2/appstore2/images/'|add:tgt.icon|add:'.svg' %}" alt="" /> {{tgt.name}}</a>
+    {% endfor %}
+  </div>
+</div>
+
+

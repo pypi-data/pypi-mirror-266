@@ -1,0 +1,35 @@
+{% load i18n %}
+{% load static %}
+{% load dashboard_tags %}
+
+{% if content.icon %}
+    <img src={% static 'gui2/appstore2/images/'|add:content.icon|add:'.svg' %} alt="Threads" />
+{% endif %}
+{% if content.label|length > 0 %}
+    <strong>{{content.label}}</strong>
+{% endif %}
+<div class="{{ content.class }}" id="{{ content.id }}">
+       <ul id="threads_list" class="nav-menu-list">
+       {% if content.description %}
+           {% for l in content.description %}
+
+              <li class="threads-menu-item" id="{{ l.id }}">
+                 <a href="#!" class="threads-menu-box">
+                    <div class="threads-menu-icon">
+                       <span>{% translate l.thread %} ({{ l.date }})</span>
+                    </div>
+                 </a>
+              </li>
+           {% endfor %}
+
+       {% else %}
+           <li class="threads-menu-item">
+                 <a href="#!" class="threads-menu-box">
+                    <div class="threads-menu-icon">
+                       <span>default ({% now "jS F Y" %})</span>
+                    </div>
+                 </a>
+              </li>
+       {% endif %}
+       </ul>
+</div>

@@ -1,0 +1,22 @@
+{% load i18n %}
+{% load dashboard_tags %}
+
+{% if content.label %}
+    <h4>{% translate content.label %}</h4>
+{% endif %}
+    <div class="column">
+        <div class="form-group">
+        {%  if content.dropdown_type == 'select' %}
+                <select class="selectpicker form-control" id="{{content.id}}" name="{{content.id}}" data-live-search-placeholder="Search" data-live-search="true" data-container="body" data-size="5">
+                    {% for choice in content.choices %}
+                        <option value="{% if content.valuelist %}{{ content.valuelist|index:forloop.counter0 }}{% else %}{{choice}} {% endif %}" title="{{choice}}" {% if content.selected_choice == choice %}selected{% endif%}>{{choice}}</option>
+                    {% endfor %}
+                </select>
+                <label>{{content.description}}</label>
+        {% elif content.dropdown_type == 'date' %}
+                <input type="text" name="{{content.id}}" class="form-control datepicker" id="{{content.id}}" placeholder="Date e.g., 2023-01-01" value="{% if content.selected_choice %}{{ content.selected_choice }}{% else %}{% now 'Y-m-d' %}{% endif %}" autocomplete="off">
+
+                </select>
+        {% endif %}
+        </div>
+</div>

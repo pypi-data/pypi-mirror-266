@@ -1,0 +1,73 @@
+{% load staticfiles %}
+{% load i18n %}
+
+<!--
+Jinja2 partial to render an image
+
+{ % include 'sharedapp/partials/full_width_text.html' with usecase=usecase spec=spec widget=widget % }
+
+-->
+<div class="block-widget-box width-all mb-3" id="{{widget.id}}">
+  <div class="block-filter-container d-flex flex-wrap align-items-center">
+    <div class="crc-head-inside d-flex align-items-center">
+      <div class="crc-head-icon"  data-bs-toggle="collapse" data-bs-target="#collapseresults_{{widget.id}}" aria-expanded="true">
+        <img class="expand-open" src={% static 'gui2/appstore2/images/new-caret-icon-1.svg' %} alt="" />
+        <img class="expand-add" src={% static 'gui2/appstore2/images/expand-add.svg' %} alt="" />
+      </div>
+      <div class="accor-right">
+        <div class="block-filter-left">
+          <ul class="cp-text-list d-flex align-items-center">
+            <li><b>{% translate widget.name|safe %}</b></li>
+          </ul>
+            <p>{% translate widget.description|safe %}</p>
+        </div>
+      </div>
+    </div>
+    <div class="block-filter-option ms-auto d-flex align-items-center justify-content-end align-block-filter-option">
+      {% for k,values in widget.header_components.items %}
+      {% for v in  values %}
+      {% include 'sharedapp/components/'|add:v.template|add:'.html' with content=v widget=widget %}
+      {% endfor %}
+      {% endfor %}
+    </div>
+  </div>
+  <div id="collapseresults_{{widget.id}}" class="crc-body accordion-collapse collapse show">
+    <div class="cp-body text-widget-font">
+
+    {% if widget.text %}
+      <p>{{widget.text|safe}}</p>
+    {% else %}
+
+             <form class="uniForm"  method="GET">
+                <ul class="v-line-text-list d-flex flex-wrap">
+                  {% for k,values in widget.body_components.items %}
+                      {% for v in values %}
+                              <div class="v-box p-2">
+                                {% include 'sharedapp/components/'|add:v.template|add:'.html' with dropdown=v %}
+                              </div>
+                               {% if k == 'dropdown' %}
+                                  <div class="v-box p-2 mt-3">
+                                      <div class="column">
+                                          <div class="form-group d-flex">
+                                            <button name="submit" id="submit" value="select" type="submit" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Filter"><img src="{% static 'gui2/appstore2/images/play.svg' %}" alt="" />Filter</button>
+                                          </div>
+                                      </div>
+                                  </div>
+                                {% endif %}
+                      {% endfor %}
+                  {% endfor %}
+                </ul>
+             </form>
+
+            {% for k,values in widget.body_components.items %}
+                {% for v in  values %}
+                    {% include 'sharedapp/components/'|add:v.template|add:'.html' with content=v %}
+                {% endfor %}
+            {% endfor %}
+     {% endif %}
+    </div>
+  </div>
+</div>
+{% if 'script' in widget %}
+{{widget.script|safe}}
+{% endif %}

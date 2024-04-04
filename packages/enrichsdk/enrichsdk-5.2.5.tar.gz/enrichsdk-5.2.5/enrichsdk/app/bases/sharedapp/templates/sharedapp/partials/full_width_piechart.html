@@ -1,0 +1,75 @@
+{% load dashboard_tags %}
+{% load staticfiles %}
+{% load i18n %}
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart_{{widget.id}});
+
+      function drawChart_{{widget.id}}() {
+
+          var data = google.visualization.arrayToDataTable([
+              [{% for c in widget.columns %}
+               '{{c}}'{% if not forloop.last %},{% endif %}
+               {% endfor %},
+              ],
+              {% for row in widget.rows_matrix %}
+                {{row|jsonencode|safe}}{% if not forloop.last %},{% endif %}
+              {% endfor %}
+          ]);
+
+          var options = {
+              title: "{{widget.name}}",
+              is3D: true,
+              {% if "curvetype" in widget %}
+                  curveType: '{{widget.curvetype}}',
+              {% endif %}
+          };
+
+          var chart = new google.visualization.PieChart(document.getElementById('curve_chart_{{widget.id}}'));
+
+          chart.draw(data, options);
+      }
+  });
+</script>
+
+
+<!--
+Jinja2 partial to render an image
+
+{ % include 'sharedapp/partials/full_width_chart.html' with usecase=usecase spec=spec widget=widget % }
+
+-->
+<div class="block-widget-box mb-3" id="widget_{{widget.id}}">
+  <div class="block-filter-container d-flex flex-wrap align-items-center">
+    <div class="crc-head-inside d-flex align-items-center">
+      <div class="crc-head-icon"  data-bs-toggle="collapse" data-bs-target="#collapseresults_{{widget.id}}" aria-expanded="true">
+        <img class="expand-open" src={% static 'gui2/appstore2/images/new-caret-icon-1.svg' %} alt="" />
+        <img class="expand-add" src={% static 'gui2/appstore2/images/expand-add.svg' %} alt="" />
+      </div>
+      <div class="accor-right">
+        <div class="block-filter-left">
+          <ul class="cp-text-list d-flex align-items-center">
+            <li><b>{% translate widget.name|safe %}</b></li>
+          </ul>
+            <p>{% translate widget.description|safe %}</p>
+        </div>
+      </div>
+    </div>
+    <div class="block-filter-option ms-auto d-flex align-items-center justify-content-end">
+            {% include 'sharedapp/components/share_menu_action.html' %}
+    </div>
+  </div>
+  <div id="collapseresults_{{widget.id}}" class="crc-body accordion-collapse collapse show">
+    <div class="bw-body">
+        {% for k,values in widget.body_components.items %}
+            {% for v in  values %}
+                {% include 'sharedapp/components/'|add:v.template|add:'.html' with content=v %}
+            {% endfor %}
+        {% endfor %}
+      <div id="curve_chart_{{widget.id}}" style="{{widget.chart_style}}"></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,292 @@
+{% extends 'gui2/appstore2/base.html' %}
+{% load dashboard_tags %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% load fontawesome %}
+{% load control %}
+{% load i18n %}
+{% load static %}
+
+<!-- ============================= Address Bar Start =============================== -->
+{% block breadcrumbs %}
+<div id="address_content" style="display: none">
+    <ol class="breadcrumb mb-0" aria-label="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'dashboard:home' %}">Enrich</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'dashboard:index' %}">Usecases</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'dashboard:usecase_detail' usecase.org.name %}">{{usecase.org.name}}</a></li>
+        <li class="breadcrumb-item"><a href="{% url basenamespace|add:':index' %}">{{spec.name}}</a></li>
+	<li class="breadcrumb-item active">Configurations</li>
+    </ol>
+</div>
+
+{% with tags=spec.tags|join:" " %}
+{% with knowledge=spec.name|add:' '|add:app.name|add:' '|add:tags %}{{ block.super }}{% endwith %}
+{% endwith %}
+
+{% endblock breadcrumbs %}
+<!-- ============================= Address Bar End =============================== -->
+{% block nav_index%}
+<!--Header tab name-->
+    {% with nav_data="apps" %}{{ block.super }}{% endwith %}
+{% endblock %}
+<!--============================= Help Content =============================== -->
+{% block help %}
+{% include 'sharedapp/partials/help.html' with app=app spec=spec %}
+{{block.super}}
+{% endblock %}
+
+{% block customhead %}
+{% endblock %}
+
+{% block content %}
+<!-- !! -============================= HERO START HERE ==========================- -->
+   <div class="hero-container">
+      <div class="container-fluid">
+         <div class="row">
+            <div class="col-md-12">
+               <div class="hero-content-box w-100 position-relative  d-flex flex-wrap align-items-center">
+                  <div class="hcb-left d-flex align-items-center">
+                     <div class="hcb-icon-box">
+                        {% if 'icon' in spec %}
+                            <img src="{% static 'gui2/appstore2/images/'|add:spec.icon|add:'.svg' %}" alt="" />
+                        {% else %}
+                            <img src="{% static 'gui2/appstore2/images/placholder.jpg' %}" alt="" />
+                        {% endif %}
+                     </div>
+                     <div class="hcb-text-box">
+                       <h3>{% translate spec.name %} </h3>
+                       <p>Type: {{app.verbose_name}}
+                            {% with spec.app.spec.configuration as conf %}
+                            {% if conf.workflows == 'on' %}
+                            | Workflows: enabled
+			    {% endif %}
+                            {% if conf.pipeline == 'on' %}
+                            | Pipeline: enabled
+                            {% endif %}
+                            {% endwith %}
+                        </p>
+                         {% include 'dashboard/_appusers.html' with usecase=usecase spec=spec %}
+                     </div>
+
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- !! -=============================  HERO START END HERE ==========================- -->
+
+     <div class="block-container">
+         <div class="container-fluid">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="block-content-box d-flex flex-wrap">
+                      <div class="sidebar-wrapper">
+                        <div class="sticky-top">
+                           <div class="sidebar-inside">
+                              <ul class="nav-menu-list" role="tablist">
+                                  <li class="nav-menu-item active">
+                                    <a href="{% url basenamespace|add:':policy_index' %}" class="nav-menu-box" id="c-configurations" data-toggle="tab" >
+                                       <div class="nav-menu-icon">
+                                          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                             <path d="M5.83301 4.16667H17.4997V5.83333H5.83301V4.16667ZM5.83301 10.8333V9.16667H17.4997V10.8333H5.83301ZM3.33301 3.75C3.66453 3.75 3.98247 3.8817 4.21689 4.11612C4.45131 4.35054 4.58301 4.66848 4.58301 5C4.58301 5.33152 4.45131 5.64946 4.21689 5.88388C3.98247 6.1183 3.66453 6.25 3.33301 6.25C3.00149 6.25 2.68354 6.1183 2.44912 5.88388C2.2147 5.64946 2.08301 5.33152 2.08301 5C2.08301 4.66848 2.2147 4.35054 2.44912 4.11612C2.68354 3.8817 3.00149 3.75 3.33301 3.75ZM3.33301 8.75C3.66453 8.75 3.98247 8.8817 4.21689 9.11612C4.45131 9.35054 4.58301 9.66848 4.58301 10C4.58301 10.3315 4.45131 10.6495 4.21689 10.8839C3.98247 11.1183 3.66453 11.25 3.33301 11.25C3.00149 11.25 2.68354 11.1183 2.44912 10.8839C2.2147 10.6495 2.08301 10.3315 2.08301 10C2.08301 9.66848 2.2147 9.35054 2.44912 9.11612C2.68354 8.8817 3.00149 8.75 3.33301 8.75ZM5.83301 15.8333V14.1667H17.4997V15.8333H5.83301ZM3.33301 13.75C3.66453 13.75 3.98247 13.8817 4.21689 14.1161C4.45131 14.3505 4.58301 14.6685 4.58301 15C4.58301 15.3315 4.45131 15.6495 4.21689 15.8839C3.98247 16.1183 3.66453 16.25 3.33301 16.25C3.00149 16.25 2.68354 16.1183 2.44912 15.8839C2.2147 15.6495 2.08301 15.3315 2.08301 15C2.08301 14.6685 2.2147 14.3505 2.44912 14.1161C2.68354 13.8817 3.00149 13.75 3.33301 13.75Z"/>
+                                          </svg>
+                                               <span>{% translate 'Configurations' %}</span>
+                                       </div>
+                                    </a>
+                                 </li>
+                                  <li class="nav-menu-item">
+                                      <a href="{% url basenamespace|add:':result_index' %}" class="nav-menu-box" id="c-anomalies" data-toggle="tab" >
+                                           <div class="nav-menu-icon">
+                                              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M9.16667 12.5H14.1667V14.1667H9.16667V12.5ZM7.5 5.83333H5.83333V7.5H7.5V5.83333ZM9.16667 10.8333H14.1667V9.16667H9.16667V10.8333ZM9.16667 7.5H14.1667V5.83333H9.16667V7.5ZM7.5 9.16667H5.83333V10.8333H7.5V9.16667ZM17.5 4.16667V15.8333C17.5 16.75 16.75 17.5 15.8333 17.5H4.16667C3.25 17.5 2.5 16.75 2.5 15.8333V4.16667C2.5 3.25 3.25 2.5 4.16667 2.5H15.8333C16.75 2.5 17.5 3.25 17.5 4.16667ZM15.8333 4.16667H4.16667V15.8333H15.8333V4.16667ZM7.5 12.5H5.83333V14.1667H7.5V12.5Z" fill="#4F6683"/>
+                                              </svg>
+                                                       <span>{% translate 'Results' %}</span>
+                                           </div>
+                                      </a>
+                                  </li>
+                              </ul>
+                           </div>
+                        </div>
+                     </div>
+                      <div class="block-content">
+                          <div class="block-widget-box">
+                               <div class="block-filter-container d-flex flex-wrap align-items-center">
+                                   <div class="crc-head-inside d-flex align-items-center">
+                                       <div class="crc-head-icon"  data-bs-toggle="collapse" data-bs-target="#collapseresults" aria-expanded="true">
+                                          <img class="expand-open" src={% static 'gui2/appstore2/images/new-caret-icon-1.svg' %} alt="" />
+                                          <img class="expand-add" src={% static 'gui2/appstore2/images/expand-add.svg' %} alt="" />
+                                       </div>
+                                       <div class="accor-right">
+                                           <div class="block-filter-left">
+                                              <ul class="cp-text-list d-flex align-items-center">
+                                                 <li><b>{% translate 'Configurations' %}</b></li>
+                                                  <li>{{ policies|length }} {% translate 'results' %}</li>
+                                              </ul>
+                                           </div>
+                                       </div>
+                                 </div>
+                                  <div class="block-filter-option ms-auto d-flex align-items-center justify-content-end">
+                                        <a href="{% url basenamespace|add:':policy_select_dataset' %}">
+                                            <button class="btn btn-xs btn-default"><img class="bt-icon-15" src={% static 'gui2/appstore2/images/plus-small_new_config.svg' %} alt="Add New Config" title="Add New Config">{% translate 'Config' %}</button>
+                                        </a>
+                                      <div class="custom-search-box">
+                                        <input type="text" class="custom-search-input" value="" placeholder="{% translate 'Search in results' %}" id="policy_search"/>
+                                     </div>
+                                  </div>
+                               </div>
+                                <div id="collapseresults" class="crc-body accordion-collapse collapse show">
+                                    <div class="cp-body">
+                                      <div id="policies_table_list_wrapper" class="dataTables_wrapper no-footer">
+                                         <div>
+                                            <div>
+                                               <table class="table no-footer dataTable" id="policies_table" role="grid"
+                                                  aria-describedby="datatable_list_info" style="width: 100%;">
+                                                  <thead>
+                                                    <tr role="row">
+                                                    <th class="sorting_disabled"></th>
+
+                                                       {% with 'ID NAME DESCRIPTION ACTIVE UPDATED BY' as list %}
+                                                            {% for name in list.split %}
+                                                                    <th class="sorting" tabindex="0" aria-controls="policies_table"
+                                                                        rowspan="1" colspan="1"
+                                                                        aria-label="{{name}}"
+                                                                        aria-sort="ascending">{% translate name %}</th>
+                                                            {% endfor %}
+                                                        {% endwith %}
+                                                    <th class="sorting_disabled"></th>
+                                                    </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                        {% for policy in policies %}
+                                                            <tr class="{% if not policy.active %}text-secondary{% endif %}">
+                                                              <td class="details-control">
+                                                                <input type="hidden" value="{{policy.config|prettify}}" id="policy-details-{{forloop.counter}}"/>
+                                                              </td>
+                                                              <td class="td-align-left">{{policy.id}}</td>
+                                                              <td>{{policy.name}}</td>
+                                                              <td>{{policy.desc}}</td>
+                                                              <td>{% if policy.active %}Yes{% else %}No{% endif %}</td>
+                                                              <td>{{policy.modified_at|date:"c" }}</td>
+                                                              <td>{{policy.modified_by}}</td>
+                                                              <td>
+                                                                    <a class="icon-30" href="{% url basenamespace|add:':policy_toggle' policy.pk %}">
+                                                                    {% if policy.active %}
+                                                                    <img src={% static 'gui2/appstore2/images/toggle_1_on_30x30.svg' %} alt="Deactivate" title="Deactivate Policy">
+                                                                    {% else %}
+                                                                    <img src={% static 'gui2/appstore2/images/toggle_1_off_30x30_color_2.svg' %} alt="Activate" title="Activate Policy">
+                                                                    {% endif %}
+                                                                    </a>
+                                                              </td>
+
+                                                            </tr>
+                                                            {% endfor %}
+                                                  </tbody>
+                                               </table>
+                                            </div>
+                                         </div>
+                                      </div>
+                               </div>
+                                </div>
+                          </div>
+                        <div class="mt-4"></div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+
+<script>
+    function format ( d ) {
+    return (`
+        <div class="accordion">
+             <div class="accordion-collapse collapse show padding-accordion-collapse ">
+                    <div class="details-border">
+                        <div class="code-snippet-upper-group-1 code-snippet-group details-padding">
+                            <pre>${$('#policy-details-'+d).val()}</pre>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    `)
+}
+
+
+$(document).ready(function() {
+    $.fn.dataTable.ext.classes.sPageButton = 'paginate_link';
+    var table = $('#policies_table').DataTable({
+        "searching": true,
+        "ordering": true,
+        "paging": true,
+        "info": true,
+        "pagingType": 'full_numbers',
+        "order": [
+            [5, "desc"],
+            [1, "desc"]
+        ],
+        'processing': true,
+          "columnDefs": [
+               {
+                "type": "date",
+                "render": function (data, type, row, meta) {
+                    if (data) {
+                        if (type === 'display' || type === 'filter') {
+                            var d = new Date(data);
+                            return d.getDate() + '-' + (d.getMonth() + 1) + '-' + d.getFullYear();
+                        }
+                    }
+                 return data;
+                },
+                "targets": [5]
+              },
+              { "width": "1%", "targets": [0,7] }
+          ],
+          "language": {
+             "paginate": {
+		  "first": "<img src=\"{% static 'gui2/appstore2/images/blue-show-first-button.svg' %}\" alt=\"\" title=\"Go To First Page\" />",
+		  "last": "<img src=\"{% static 'gui2/appstore2/images/blue-show-last-button.svg' %}\" alt=\"\" title=\"Go To Last Page\" />",
+		  "next": "<img src=\"{% static 'gui2/appstore2/images/blue-right-angle-icon.svg' %}\" alt=\"\" title=\"Go To Next Page\" />",
+		  "previous": "<img src=\"{% static 'gui2/appstore2/images/blue-left-angle-icon.svg' %}\" alt=\"\" title=\"Go To Previous Page\" />"
+             }
+          },
+        "dom": "<<t><\"table-bottom\"ilp>>",
+        fnDrawCallback : function() {
+            reset_table_bottom("#policies_table");
+        }
+    });
+
+    $("#policy_search").on('keyup', function () {
+        $('#policies_table').dataTable().fnFilter(this.value);
+    });
+
+    $('#policies_table tbody').on('click', 'td.details-control', function(){
+
+        var tr = $(this).closest('tr');
+        var row = table.row( tr );
+        if(row.child.isShown()){
+            // This row is already open - close it
+            $('div.show', row.child()).slideUp( function () {
+                row.child.hide();
+                tr.removeClass('shown');
+            });
+        } else {
+            // Open this row
+            row.child(format(row.index($(this))+1)).show();
+            tr.addClass('shown');
+            $('div.show', row.child()).slideDown();
+        }
+    });
+
+    {# $('#policyswitch').change(function(){#}
+    {#  console.log($(this).is(':checked'))#}
+    {#     if ($(this).is(':checked')) {#}
+             {#$.get("{% url basenamespace|add:':policy_toggle' policy.pk %}", function(){#}
+             {#     console.log();#}
+             {# });#}
+    {#     }#}
+    {##}
+    //});
+});
+</script>
+{% endblock %}

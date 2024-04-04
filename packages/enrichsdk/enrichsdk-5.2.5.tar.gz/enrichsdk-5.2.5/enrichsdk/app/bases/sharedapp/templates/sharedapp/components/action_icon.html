@@ -1,0 +1,9 @@
+{% load static %}
+
+<div class="cp-download" id="{{ content.title }}">
+  <a {% if 'url' in content %} href="{{content.url}}" {% endif %} title="{{ content.title }}" data-url="{{ content.dataurl }}"
+     class="{{ content.class }}"
+     {% if 'onclick' in content %} onclick="{{content.onclick}}" {% endif %} data-info="{{ content.message }}">
+        <img class="action-icon-class" {% if 'id' in content %} id="{{ content.id }}" {% else %} id="{{ content.icon }}" {% endif %} src={% static 'gui2/appstore2/images/'|add:content.icon|add:'.svg' %} alt="" /> {{content.text}}
+    </a>
+</div>

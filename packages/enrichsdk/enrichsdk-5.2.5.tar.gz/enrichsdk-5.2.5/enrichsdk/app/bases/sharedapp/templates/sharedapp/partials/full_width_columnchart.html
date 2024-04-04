@@ -1,0 +1,123 @@
+{% load dashboard_tags %}
+{% load staticfiles %}
+{% load i18n %}
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart_{{widget.id}});
+
+      function drawChart_{{widget.id}}() {
+
+          var data = google.visualization.arrayToDataTable([
+              [{% for c in widget.columns %}
+               '{{c}}'{% if not forloop.last %},{% endif %}
+               {% endfor %},
+              ],
+              {% for row in widget.rows_matrix %}
+                {{row|jsonencode|safe}}{% if not forloop.last %},{% endif %}
+              {% endfor %}
+          ]);
+
+          var options = {
+              isStacked: true,
+              vAxis: {
+                  {% if "vtitle" in widget %}
+                    title: '{{widget.vtitle}}',
+                  {% endif %}
+              },
+              {% if "curvetype" in widget %}
+                  curveType: '{{widget.curvetype}}',
+              {% endif %}
+          };
+
+          var chart = new google.visualization.ColumnChart(document.getElementById('curve_chart_{{widget.id}}'));
+
+          chart.draw(data, options);
+
+          var g_collection = document.getElementsByTagName('g');
+          var g_array = Array.prototype.slice.call( g_collection, 0 );
+          var hAxis = g_array.filter(function(g){
+              return g.logicalname && g.logicalname.indexOf("hAxis") > -1 && g.logicalname.indexOf("title") === -1
+          });
+
+          var images_data = {{ widget.images_data | safe }}
+
+          hAxis.forEach(function(g, index){
+               var image = document.createElementNS("http://www.w3.org/2000/svg", "image");
+               var x = g.childNodes[0].getAttribute('x');
+               var y = g.childNodes[0].getAttribute('y');
+               image.setAttributeNS(null, "x", x - 25);
+               image.setAttributeNS(null, "y", y - 70);
+               image.setAttributeNS("http://www.w3.org/1999/xlink", "href", images_data[index]);
+               image.setAttributeNS(null, "height", "50px");
+               image.setAttributeNS(null, "width", "50px");
+               image.setAttributeNS(null, "style","cursor:pointer");
+               g.appendChild(image);
+          });
+      }
+  });
+</script>
+
+
+<!--
+Jinja2 partial to render an image
+
+{ % include 'sharedapp/partials/full_width_chart.html' with usecase=usecase spec=spec widget=widget % }
+
+-->
+<div class="block-widget-box mb-3" id="widget_{{widget.id}}">
+  <div class="block-filter-container d-flex flex-wrap align-items-center">
+    <div class="crc-head-inside d-flex align-items-center">
+      <div class="crc-head-icon"  data-bs-toggle="collapse" data-bs-target="#collapseresults_{{widget.id}}" aria-expanded="true">
+        <img class="expand-open" src={% static 'gui2/appstore2/images/new-caret-icon-1.svg' %} alt="" />
+        <img class="expand-add" src={% static 'gui2/appstore2/images/expand-add.svg' %} alt="" />
+      </div>
+      <div class="accor-right">
+        <div class="block-filter-left">
+          <ul class="cp-text-list d-flex align-items-center">
+            <li><b>{% translate widget.name|safe %}</b></li>
+          </ul>
+            <p>{% translate widget.description|safe %}</p>
+        </div>
+      </div>
+    </div>
+    <div class="block-filter-option ms-auto d-flex align-items-center justify-content-end">
+            {% include 'sharedapp/components/share_menu_action.html' %}
+    </div>
+  </div>
+  <div id="collapseresults_{{widget.id}}" class="crc-body accordion-collapse collapse show">
+    <div class="cp-body">
+        {% for k,values in widget.body_components.items %}
+            {% if k == 'dropdown' %}
+                <form class="uniForm"  method="GET">
+                {% for name, value in widget.hidden_vars.items %}
+                  <input name="{{name}}" value="{{value}}" type="hidden"></input>
+                {% endfor %}
+                    <ul class="v-line-text-list d-flex flex-wrap">
+                          {% for v in values %}
+                              {% include 'sharedapp/components/'|add:v.template|add:'.html' with dropdown=v %}
+                          {% endfor %}
+                    </ul>
+                    <div class="v-box">
+                      <div class="column">
+                          <div class="form-group d-flex">
+                            <button name="submit" id="submit" value="select" type="submit" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Filter"><img src="{% static 'gui2/appstore2/images/play.svg' %}" alt="" />Filter</button>
+                          </div>
+                      </div>
+                  </div>
+                </form>
+            {% else %}
+                 {% for v in values %}
+                    {% include 'sharedapp/components/'|add:v.template|add:'.html' with content=v %}
+                 {% endfor %}
+            {% endif %}
+        {% endfor %}
+
+
+      <div id="curve_chart_{{widget.id}}" style="{{widget.chart_style}}"></div>
+    </div>
+  </div>
+</div>

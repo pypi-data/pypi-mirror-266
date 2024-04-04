@@ -1,0 +1,72 @@
+{% load staticfiles %}
+{% load dashboard_tags %}
+{% load i18n %}
+
+<!--
+Jinja2 partial to render a table widget
+
+{ % include 'sharedapp/partials/table.html' with usecase=usecase spec=spec widget=widget % }
+
+-->
+<div class="block-widget-box width-all" id="widget_{{widget.id}}">
+  <div class="block-filter-container d-flex flex-wrap align-items-center">
+    <div class="crc-head-inside d-flex align-items-center">
+      <div class="crc-head-icon"  data-bs-toggle="collapse" data-bs-target="#collapsetable_{{widget.id}}" aria-expanded="true">
+        <img class="expand-open" src={% static 'gui2/appstore2/images/new-caret-icon-1.svg' %} alt="" />
+        <img class="expand-add" src={% static 'gui2/appstore2/images/expand-add.svg' %} alt="" />
+      </div>
+      <div class="accor-right">
+        <div class="block-filter-left">
+          <ul class="cp-text-list d-flex align-items-center">
+            <li><b>{% translate widget.name|safe %}</b></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="block-filter-option ms-auto d-flex align-items-center justify-content-end">
+    </div>
+  </div>
+  <div id="collapsetable_{{widget.id}}" class="crc-body accordion-collapse collapse show">
+    <div class="bw-body">
+    <div class="content-row-container">
+            <div class="three-column-row d-flex flex-wrap">
+                <div class="column">
+                    <form method="POST" enctype="multipart/form-data" class="uniForm" onsubmit="return getContent();">
+                            {% csrf_token %}
+                            <div class="form-group" id="single-text">
+                              <label for="query">Emails</label>
+                              <input type="text" class="form-control" id="emails" name="emails" value="{{widget.shareparams.emails|join:','}}" autocomplete="off" required>
+                              <span id="hint_id_dataset">Enter a list of emails separated by comma</span>
+                            </div>
+                            <div class="form-group" id="single-text">
+                            <textarea id="message" name="message" style="visibility:hidden; display:none"></textarea>
+
+                                <div contenteditable="true" id="messagediv">
+                                    Hi!
+                                    <br><br>
+                                    Please check the following <a href="{{widget.shareparams.url}}"><strong>Search Results</strong></a>. You can
+                                    explore and download the search results from the given url.
+                                    <br><br>
+                                    -{{widget.shareparams.user}}
+                                  </div>
+                                    <span id="hint_id_dataset">Doubleclick to edit the message to be sent</span>
+                                </div>
+
+                            <div class="cp-widget-btn">
+                                <button type="submit" class="btn btn-default"><img src="{% static 'gui2/appstore2/images/play.svg' %}" alt="" /> {% translate 'Send' %}</button>
+                            </div>
+                    </form>
+                </div>
+            </div>
+       </div>
+    </div>
+  </div>
+</div>
+<div class="mt-4"></div>
+
+<script>
+function getContent(){
+    var value = $("#messagediv").html()
+    document.getElementById("message").value = value;
+};
+</script>

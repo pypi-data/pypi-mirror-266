@@ -1,0 +1,127 @@
+import os
+import json
+import base64
+import traceback
+import random
+import platform
+
+from dateutil import parser as dateparser
+
+import pandas as pd
+import numpy as np
+
+from enrichsdk.app.bases.singlepageapp.views import AppBase
+from enrichsdk.lib.customer import find_usecase
+from enrichsdk.app.utils import clean_and_validate_widgets
+from enrichsdk.utils import SafeEncoder
+from django.contrib import messages
+
+class {{appname}}App(AppBase):
+
+    def __init__(self):
+        super().__init__()
+
+        self.name = "{{appname}}"
+        self.verbose_name = "{{appname}}"
+        self.description = "{{description}}"
+        self.category = "{{appname}}"
+        self.icon = "grid-icon-16"
+        self.templates.update({
+            'index': 'sharedapp/generic_index.html',
+        })
+
+    def get_readme(self):
+        return """Replace me with proper text"""
+
+    def get_reversals(self):
+        """
+        Replace this function with whatever makes sense
+        """
+
+        # cred = spec['cred']
+        # s3 = self.get_fs_handle(cred)
+
+        return pd.DataFrame([
+            {
+                "txnid": f"TPXY2919281{idx}",
+                "txnamount": round(random.random()*1000,2),
+                "txndate": "2022-01-01"
+            } for idx in range(1,100)
+        ])
+
+    def get_data(self, request, spec):
+        """
+        This returns the widget specification 
+        """
+
+        # Get the data to be rendered
+        revdf = self.get_reversals()
+
+        # Now render it using widgets
+        data = {
+            "sidebar_targets": [
+                {
+                    "name": "{{appname}}",
+                    "label": "{{appname}}"
+                }
+            ],
+            "widgets": [
+                {
+                    "name": "Name of Widget",
+                    "description": "A complex description",
+                    "type": "full_width_table",
+                    "columns": list(revdf.columns),
+                    "rows": list(revdf.to_dict('records')),
+                    "order": [0, "dsc"],
+                    "td_class": "white-space-normal wordwrap",
+                    "thead_th_class": "white-space-normal wordwrap",
+                }
+            ]
+        }
+
+        # Dont forget this...
+        clean_and_validate_widgets(data['widgets'])
+
+        return data
+
+def register():
+    """
+    Generate and add to the route configuration
+    """
+
+    # Register the reversals singlepageapp
+    reversals.register()
+
+    from .urls import urlpatterns
+    from dashboard.app import register_app_instance
+
+    # this should be what is specified in urls.py
+    app_name = "thisapp"
+
+    # in urls.py call this method
+    # from . import thisfilename
+    # app_name = "thisapp"
+    # urlpatterns = [...]
+    #
+    #thisfilename.register()
+
+    # url suffix
+    namespace = f"reversals"
+
+    app = {{appname}}App()
+    spec = {
+        "app": app,
+        "name": app.name,
+        "description": app.description,
+        "icon": "grid-icon-16",
+        'usecase': find_usecase(__file__),
+    }
+
+    # This has to be independent of the name...
+    register_app_instance(
+        appmod="enrichapp.dashboard.custom",
+        namespace=namespace,
+        rootnamespace=app_name,
+        urlpatterns=urlpatterns,
+        spec=spec,
+        app_urlpatterns=app.get_urlpatterns())

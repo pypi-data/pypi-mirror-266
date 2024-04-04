@@ -1,0 +1,25 @@
+{% load i18n %}
+{% load static %}
+{% load dashboard_tags %}
+
+{% if content.icon %}
+    <img src={% static 'gui2/appstore2/images/'|add:content.icon|add:'.svg' %} alt="Notes" />
+{% endif %}
+{% if content.label|length > 0 %}
+    <strong>{{content.label}}</strong>
+{% endif %}
+<div class="notes {{ content.class }}" id="{{ content.id }}">
+   {% if content.type == 'paragraph' %}
+       {% autoescape off %}
+        {% translate content.description %}
+       {% endautoescape %}
+   {% elif content.type == "list" %}
+       <ul>
+         {% for l in content.description %}
+             {% if l %}
+                <li style="list-style-type: disc; padding-bottom: 10px">{% translate l %} </li>
+             {% endif %}
+         {% endfor %}
+       </ul>
+   {% endif %}
+</div>

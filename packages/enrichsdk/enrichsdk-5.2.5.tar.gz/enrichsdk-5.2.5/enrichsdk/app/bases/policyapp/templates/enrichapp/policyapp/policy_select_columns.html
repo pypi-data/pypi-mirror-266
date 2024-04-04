@@ -1,0 +1,285 @@
+{% extends 'gui2/appstore2/base.html' %}
+{% load dashboard_tags %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% load fontawesome %}
+{% load control %}
+{% load i18n %}
+{% load static %}
+<!-- ============================= Address Bar Start =============================== -->
+{% block breadcrumbs %}
+<div id="address_content" style="display: none">
+    <ol class="breadcrumb mb-0" aria-label="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'dashboard:home' %}">Enrich</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'dashboard:index' %}">Usecases</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'dashboard:usecase_detail' usecase.org.name %}">{{usecase.org.name}}</a></li>
+        <li class="breadcrumb-item"><a href="{% url basenamespace|add:':index' %}">{{spec.name}}</a></li>
+	<li class="breadcrumb-item"><a href="{% url basenamespace|add:':policy_index' %}">Configurations</a></li>
+	<li class="breadcrumb-item active">Specify</li>
+    </ol>
+</div>
+
+{% with tags=spec.tags|join:" " %}
+{% with knowledge=spec.name|add:' '|add:app.name|add:' '|add:tags %}{{ block.super }}{% endwith %}
+{% endwith %}
+
+{% endblock breadcrumbs %}
+<!-- ============================= Address Bar End =============================== -->
+{% block nav_index%}
+<!--Header tab name-->
+    {% with nav_data="apps" %}{{ block.super }}{% endwith %}
+{% endblock %}
+<!--============================= Help Content =============================== -->
+{% block help %}
+{% include 'sharedapp/partials/help.html' with app=app spec=spec extra="This page allows you to complete the configuration" %}
+{{block.super}}
+{% endblock %}
+
+{% block customhead %}
+
+{% endblock %}
+<!--============================= Help Content End =============================== -->
+{% block content %}
+
+
+    <!-- !! -============================= HERO START HERE ==========================- -->
+   <div class="hero-container">
+      <div class="container-fluid">
+         <div class="row">
+            <div class="col-md-12">
+               <div class="hero-content-box w-100 position-relative  d-flex flex-wrap align-items-center">
+                  <div class="hcb-left d-flex align-items-center">
+                     <div class="hcb-icon-box">
+                         {% if 'icon' in spec %}
+                                <img src="{% static 'gui2/appstore2/images/'|add:spec.icon|add:'.svg' %}" alt="" />
+                        {% else %}
+                            <img src="{% static 'gui2/appstore2/images/placholder.jpg' %}" alt="" />
+                        {% endif %}
+                     </div>
+                     <div class="hcb-text-box">
+                        <h3>{% translate 'Select Parameters for the New Configuration' %}</h3>
+			<p>App: {% translate spec.name %} | Type: {{app.verbose_name}}</p>
+                        {% include 'dashboard/_appusers.html' with usecase=usecase spec=spec %}
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- !! -=============================  HERO START END HERE ==========================- -->
+    <div class="block-container">
+         <div class="container-fluid">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="block-content-box d-flex flex-wrap padding-24">
+                     <div class="sidebar-wrapper">
+                        <div class="sticky-top">
+                           <div class="sidebar-inside">
+                              <ul class="nav-menu-list" role="tablist">
+{#                                  {% with 'Anomalies Configurations' as list %}#}
+{#                                    {% for name in list.split %}#}
+{#                                        {%  if type == name %}#}
+{#                                            <li class="nav-menu-item active">#}
+{#                                         {% else %}#}
+{#                                             <li class="nav-menu-item">#}
+{#                                         {% endif %}#}
+{#                                            <a href="{% url basenamespace|add:':index' %}?type={{name}}" class="nav-menu-box" id="c-{{ name }}" data-toggle="tab" >#}
+{#                                               <div class="nav-menu-icon">#}
+{#                                                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">#}
+{#                                                     <path d="M5.83301 4.16667H17.4997V5.83333H5.83301V4.16667ZM5.83301 10.8333V9.16667H17.4997V10.8333H5.83301ZM3.33301 3.75C3.66453 3.75 3.98247 3.8817 4.21689 4.11612C4.45131 4.35054 4.58301 4.66848 4.58301 5C4.58301 5.33152 4.45131 5.64946 4.21689 5.88388C3.98247 6.1183 3.66453 6.25 3.33301 6.25C3.00149 6.25 2.68354 6.1183 2.44912 5.88388C2.2147 5.64946 2.08301 5.33152 2.08301 5C2.08301 4.66848 2.2147 4.35054 2.44912 4.11612C2.68354 3.8817 3.00149 3.75 3.33301 3.75ZM3.33301 8.75C3.66453 8.75 3.98247 8.8817 4.21689 9.11612C4.45131 9.35054 4.58301 9.66848 4.58301 10C4.58301 10.3315 4.45131 10.6495 4.21689 10.8839C3.98247 11.1183 3.66453 11.25 3.33301 11.25C3.00149 11.25 2.68354 11.1183 2.44912 10.8839C2.2147 10.6495 2.08301 10.3315 2.08301 10C2.08301 9.66848 2.2147 9.35054 2.44912 9.11612C2.68354 8.8817 3.00149 8.75 3.33301 8.75ZM5.83301 15.8333V14.1667H17.4997V15.8333H5.83301ZM3.33301 13.75C3.66453 13.75 3.98247 13.8817 4.21689 14.1161C4.45131 14.3505 4.58301 14.6685 4.58301 15C4.58301 15.3315 4.45131 15.6495 4.21689 15.8839C3.98247 16.1183 3.66453 16.25 3.33301 16.25C3.00149 16.25 2.68354 16.1183 2.44912 15.8839C2.2147 15.6495 2.08301 15.3315 2.08301 15C2.08301 14.6685 2.2147 14.3505 2.44912 14.1161C2.68354 13.8817 3.00149 13.75 3.33301 13.75Z"/>#}
+{#                                                  </svg>#}
+{#                                                       <span>{{ name }}</span>#}
+{#                                               </div>#}
+{#                                            </a>#}
+{#                                         </li>#}
+{#                                  {% endfor %}#}
+{#                                {% endwith %}#}
+                                  <li class="nav-menu-item active">
+                                    <a href="{% url basenamespace|add:':policy_index' %}" class="nav-menu-box" id="c-configurations" data-toggle="tab" >
+                                       <div class="nav-menu-icon">
+                                          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                             <path d="M5.83301 4.16667H17.4997V5.83333H5.83301V4.16667ZM5.83301 10.8333V9.16667H17.4997V10.8333H5.83301ZM3.33301 3.75C3.66453 3.75 3.98247 3.8817 4.21689 4.11612C4.45131 4.35054 4.58301 4.66848 4.58301 5C4.58301 5.33152 4.45131 5.64946 4.21689 5.88388C3.98247 6.1183 3.66453 6.25 3.33301 6.25C3.00149 6.25 2.68354 6.1183 2.44912 5.88388C2.2147 5.64946 2.08301 5.33152 2.08301 5C2.08301 4.66848 2.2147 4.35054 2.44912 4.11612C2.68354 3.8817 3.00149 3.75 3.33301 3.75ZM3.33301 8.75C3.66453 8.75 3.98247 8.8817 4.21689 9.11612C4.45131 9.35054 4.58301 9.66848 4.58301 10C4.58301 10.3315 4.45131 10.6495 4.21689 10.8839C3.98247 11.1183 3.66453 11.25 3.33301 11.25C3.00149 11.25 2.68354 11.1183 2.44912 10.8839C2.2147 10.6495 2.08301 10.3315 2.08301 10C2.08301 9.66848 2.2147 9.35054 2.44912 9.11612C2.68354 8.8817 3.00149 8.75 3.33301 8.75ZM5.83301 15.8333V14.1667H17.4997V15.8333H5.83301ZM3.33301 13.75C3.66453 13.75 3.98247 13.8817 4.21689 14.1161C4.45131 14.3505 4.58301 14.6685 4.58301 15C4.58301 15.3315 4.45131 15.6495 4.21689 15.8839C3.98247 16.1183 3.66453 16.25 3.33301 16.25C3.00149 16.25 2.68354 16.1183 2.44912 15.8839C2.2147 15.6495 2.08301 15.3315 2.08301 15C2.08301 14.6685 2.2147 14.3505 2.44912 14.1161C2.68354 13.8817 3.00149 13.75 3.33301 13.75Z"/>
+                                          </svg>
+                                               <span>{% translate 'Configurations' %}</span>
+                                       </div>
+                                    </a>
+                                 </li>
+                                  <li class="nav-menu-item">
+                                      <a href="{% url basenamespace|add:':result_index' %}" class="nav-menu-box" id="c-anomalies" data-toggle="tab" >
+                                           <div class="nav-menu-icon">
+                                              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M9.16667 12.5H14.1667V14.1667H9.16667V12.5ZM7.5 5.83333H5.83333V7.5H7.5V5.83333ZM9.16667 10.8333H14.1667V9.16667H9.16667V10.8333ZM9.16667 7.5H14.1667V5.83333H9.16667V7.5ZM7.5 9.16667H5.83333V10.8333H7.5V9.16667ZM17.5 4.16667V15.8333C17.5 16.75 16.75 17.5 15.8333 17.5H4.16667C3.25 17.5 2.5 16.75 2.5 15.8333V4.16667C2.5 3.25 3.25 2.5 4.16667 2.5H15.8333C16.75 2.5 17.5 3.25 17.5 4.16667ZM15.8333 4.16667H4.16667V15.8333H15.8333V4.16667ZM7.5 12.5H5.83333V14.1667H7.5V12.5Z" fill="#4F6683"/>
+                                              </svg>
+                                                   <span>{% translate 'Results' %}</span>
+                                           </div>
+                                      </a>
+                                  </li>
+
+                              </ul>
+                           </div>
+                        </div>
+                     </div>
+                      <div class="block-content">
+                      <form class="uniForm" method="POST" autocomplete="off">
+                          {% csrf_token %}
+                        <input type="hidden" name="source_id" value="{{source.id}}">
+                        <input type="hidden" name="dataset" value="{{source.name}}">
+
+                          <div class="block-widget-box">
+                              <div class="cr-inside w-100 flex-wrap">
+                                    <div class="accordion">
+                                      <div class="full-width overflow-hidden">
+                                         <div class="crc-head d-flex align-items-center">
+                                            <div class="crc-head-inside d-flex align-items-center">
+                                               <div class="crc-head-icon"  data-bs-toggle="collapse" data-bs-target="#collapsedataset" aria-expanded="true">
+                                                  <img class="expand-open" src={% static 'gui2/appstore2/images/new-caret-icon-1.svg' %} "include/images/new-caret-icon-1.svg" alt="" />
+                                                  <img class="expand-add" src={% static 'gui2/appstore2/images/expand-add.svg' %} "include/images/expand-add.svg" alt="" />
+                                               </div>
+                                               <div class="accor-right">
+                                                   <div class="block-filter-left">
+                                                      <ul class="cp-text-list d-flex align-items-center">
+                                                         <li><b>{% translate 'Dataset Profile' %}</b></li>
+                                                      </ul>
+                                                   </div>
+                                               </div>
+                                            </div>
+                                         </div>
+                                         <div id="collapsedataset" class="crc-body accordion-collapse collapse show">
+                                            <ul class="v-line-text-list d-flex flex-wrap">
+                                                <li>
+                                                    <div class="v-line-box">
+                                                        <h4>{% translate 'Name' %}</h4>
+                                                        <p>{{ source.name }}</p>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="v-line-box">
+                                                        <h4>{% translate 'Description' %}</h4>
+                                                        <p>{{ source.description }}</p>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="v-line-box">
+                                                        <h4>{% translate 'Type' %}</h4>
+                                                        <p>{{source.sourcetype}}</p>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="v-line-box">
+                                                        <h4>{% translate 'URI' %}</h4>
+                                                        <p>{{source.details.access.uri}}</p>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="v-line-box">
+                                                        <h4>{% translate 'Features' %}</h4>
+                                                        <p>{{source.num_features}}</p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                         </div>
+                                      </div>
+                                    </div>
+                                </div>
+                          </div>
+                          <div class="block-widget-box">
+                              <div class="cr-inside w-100 d-flex flex-wrap">
+                                    <div class="accordion">
+                                      <div class="full-width overflow-hidden">
+                                         <div class="crc-head d-flex align-items-center">
+                                            <div class="crc-head-inside d-flex align-items-center">
+                                               <div class="crc-head-icon"  data-bs-toggle="collapse" data-bs-target="#collapsesampledata" aria-expanded="true">
+                                                  <img class="expand-open" src={% static 'gui2/appstore2/images/new-caret-icon-1.svg' %} "include/images/new-caret-icon-1.svg" alt="" />
+                                                  <img class="expand-add" src={% static 'gui2/appstore2/images/expand-add.svg' %} "include/images/expand-add.svg" alt="" />
+                                               </div>
+                                               <div class="accor-right">
+                                                   <div class="block-filter-left">
+                                                      <ul class="cp-text-list d-flex align-items-center">
+                                                         <li><b>{% translate 'Sample Data' %}</b></li>
+                                                      </ul>
+                                                   </div>
+                                               </div>
+                                            </div>
+                                         </div>
+                                         <div id="collapsesampledata" class="crc-body accordion-collapse collapse show">
+                                             <div class="cp-body">
+                                                 <div id="datatable_list_wrapper" class="dataTables_wrapper no-footer">
+                                                       <table class="table no-footer dataTable" id="datatable_sample" role="grid"
+                                                          aria-describedby="datatable_list_info" style="width: 100%;">
+                                                          <thead>
+                                                            <tr role="row">
+                                                                <th></th>
+                                                            </tr>
+                                                          </thead>
+                                                          <tbody>
+                                                                <tr>
+                                                                  <td><pre>{{source.details.sample}}</pre></td>
+                                                                </tr>
+                                                          </tbody>
+                                                       </table>
+                                                 </div>
+                                             </div>
+                                         </div>
+                                      </div>
+                                    </div>
+                                </div>
+                          </div>
+                          {% include select_columns_helper with app=app spec=spec source=source features=features %}
+                      </form>
+                        <div class="mt-4"></div>
+                     </div>
+
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+
+    <script>
+
+$(document).ready(function() {
+    $.fn.dataTable.ext.classes.sPageButton = 'paginate_link';
+    var table = $('#datatable_list').DataTable({
+        "searching": true,
+        "ordering": true,
+        "paging": false,
+        "info": false,
+        "bLengthChange": true,
+        "order": [
+            [2, "desc"]
+        ],
+        'processing': true,
+          "columnDefs": [],
+          "language": {
+              "paginate": {
+		  "first": "<img src=\"{% static 'gui2/appstore2/images/blue-show-first-button.svg' %}\" alt=\"\" title=\"Go To First Page\" />",
+		  "last": "<img src=\"{% static 'gui2/appstore2/images/blue-show-last-button.svg' %}\" alt=\"\" title=\"Go To Last Page\" />",
+		  "next": "<img src=\"{% static 'gui2/appstore2/images/blue-right-angle-icon.svg' %}\" alt=\"\" title=\"Go To Next Page\" />",
+		  "previous": "<img src=\"{% static 'gui2/appstore2/images/blue-left-angle-icon.svg' %}\" alt=\"\" title=\"Go To Previous Page\" />"
+              }
+          },
+        "dom": "<<t><\"table-bottom\"ilp>>",
+        fnDrawCallback : function() {
+            reset_table_bottom("#datatable_list");
+        }
+    });
+
+    $('.single-select').selectpicker();
+
+    $("#search-input").on('keyup', function () {
+        $('#datatable_list').dataTable().fnFilter(this.value);
+    });
+
+    $(".custom-search-input").focus((e) => {
+        $(e.target).parent("div").addClass("input-focused-border");
+      });
+      $(".custom-search-input").focusout((e) => {
+        $(e.target).parent("div").removeClass("input-focused-border");
+      });
+
+
+
+});
+</script>
+{% endblock %}

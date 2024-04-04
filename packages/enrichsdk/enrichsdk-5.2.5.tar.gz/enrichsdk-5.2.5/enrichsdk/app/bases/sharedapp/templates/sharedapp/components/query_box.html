@@ -1,0 +1,14 @@
+<form class="uniForm"  method="GET">
+    <div class="form-group" id="multi-text">
+      <label>{% translate 'Free Text search (search Path & M' %}</label>
+
+        {% for key, values in widget.search.search_params.items %}
+            <input type="hidden" name="{{ key }}" value="{{ values }}" />
+        {% endfor %}
+        {{ widget.search.search_query }}
+      <textarea class="form-control" id="query" name="query" value="{{ widget.search.search_query }}" placeholder="Enter query in english"></textarea>
+    </div>
+    <div class="content-row-btn">
+        <button type="submit" class="btn btn-sm btn-default" data-toggle="tooltip" title="Search"><img src="{% static 'gui2/appstore2/images/play.svg' %}" alt="" />{% translate 'Search' %}</button>
+    </div>
+</form>

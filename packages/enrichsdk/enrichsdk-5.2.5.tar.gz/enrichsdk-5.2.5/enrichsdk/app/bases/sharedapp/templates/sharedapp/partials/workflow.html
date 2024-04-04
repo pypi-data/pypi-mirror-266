@@ -1,0 +1,39 @@
+{% load staticfiles %}
+{% load i18n %}
+{% load fontawesome %}
+{% load dashboard_tags %}
+
+<div class="hcb-text-box {{widget.class}}">
+  <ul class="hcb-step-list d-flex">
+    {% for o in widget.order %}
+    {% if forloop.counter < widget.currpos|add:1 %}
+    <li class="hcb-step-item complete">
+      {% elif forloop.counter == widget.currpos|add:1 %}
+    <li class="hcb-step-item active">
+      {% else %}
+    <li class="hcb-step-item">
+      {% endif %}
+      <div class="hcb-step-box w-100 h-100 d-flex flex-wrap flex-column">
+	<div class="hcb-step-icon-box">
+	  <div class="step-number-text">{{ forloop.counter }}</div>
+	  <div class="step-check-icon">
+            <img src="{% static 'gui2/appstore2/images/check-icon.svg' %}" alt="" />
+	  </div>
+	</div>
+	<h6>
+	  {% if o|get_class == "dict" %}
+          {%  if o.url %}
+              <a href="{{o.url}}">{% translate o.name %}</a>
+          {% else %}
+              {% translate o.name %}
+          {% endif %}
+	  {% else %}
+	  {% translate o %}
+	  {% endif %}
+	</h6>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+

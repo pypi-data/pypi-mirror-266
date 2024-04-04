@@ -1,0 +1,64 @@
+{% load staticfiles %}
+{% load dashboard_tags %}
+{% load i18n %}
+
+<!--
+Jinja2 partial to render a table widget
+
+{ % include 'sharedapp/partials/table.html' with usecase=usecase spec=spec widget=widget % }
+
+-->
+<div class="accordion" id="widget_{{widget.id}}">
+  <div class="code-panel-box">
+      <div class="code-panel-head d-flex align-items-center">
+         <div class="cph-left d-flex align-items-center flex-wrap" style="width: auto;">
+            <div class="cph-icon"  data-bs-toggle="collapse" data-bs-target="#collapsetable_{{widget.id}}" aria-expanded="true">
+               <img class="expand-open" src={% static 'gui2/appstore2/images/new-caret-icon-1.svg' %} alt="" />
+               <img class="expand-add" src={% static 'gui2/appstore2/images/expand-add.svg' %} alt="" />
+            </div>
+                <div class="accor-right">
+                    <div class="title" id="codeblockTitle_{{widget.id}}">{% translate widget.name|safe %}</div>
+                </div>
+            </div>
+         <div class="cph-right d-flex align-items-center flex-wrap ms-auto" style="width: auto;">
+             {% for k,values in widget.header_components.items %}
+                  {% for v in  values %}
+                        {% include 'sharedapp/components/'|add:v.template|add:'.html' with content=v %}
+                  {% endfor %}
+            {% endfor %}
+
+            <div class="code-block-line-numbers"></div>
+             <div class="cph-download-icon"><a href="javascript:saveTextAsFile(document.getElementById('codeblockTitle_{{widget.id}}'),document.getElementById('copyText_{{widget.id}}'));" data-toggle="tooltip" data-placement="bottom" title="Download"><img src={% static 'gui2/appstore2/images/get-app.svg' %} alt="" /></a></div>
+            <div class="code-block-copy"><a href="javascript:clickToCopyPreview(copyText_{{widget.id}});" data-toggle="tooltip" data-placement="bottom" title="Copy"><img src={% static 'gui2/appstore2/images/copy-icon.svg' %} alt=""></a></div>
+         </div>
+      </div>
+      <div class="code-block-panel-body light-bg accordion-collapse collapse show fixed-height" id="collapsetable_{{widget.id}}">
+         <div class="code-block-panel-body" id="copyText_{{widget.id}}">
+            <pre>{{widget.info|safe}}</pre>
+         </div>
+         <div class="code-panel-body code-snippet-upper-group-1 code-snippet-group"></div>
+      </div>
+   </div>
+</div>
+
+<form id="form" action="" method="POST" class="hidden" enctype="multipart/form-data">
+  {% csrf_token %}
+  <input type="hidden" name="referrer" id="referrer"/>
+  <input type="hidden" name="params" id="params"/>
+</form>
+
+<script>
+         var params = {{widget.info|safe}};
+
+         function call_webhook(url) {
+             if (url.length > 0) {
+                 $('#params').val(JSON.stringify(params));
+                 $('#form').attr('action', url);
+                 $('#form').submit();
+             }
+             ;
+             return false;
+         };
+
+</script>
+

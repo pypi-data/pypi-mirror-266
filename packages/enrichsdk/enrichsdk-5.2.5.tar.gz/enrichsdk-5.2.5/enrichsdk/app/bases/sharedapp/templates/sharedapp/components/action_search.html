@@ -1,0 +1,13 @@
+{% load i18n %}
+
+<div class="custom-search-box">
+  <input type="text" class="custom-search-input" value="" placeholder="{% translate 'Search in results' %}" id="{{widget.id}}_search"/>
+</div>
+
+<script>
+  $(document).ready(function(){
+      $("#{{widget.id}}_search").on('keyup', function () {
+          $('#{{widget.id}}_table').dataTable().fnFilter(this.value);
+      });
+  });
+</script>

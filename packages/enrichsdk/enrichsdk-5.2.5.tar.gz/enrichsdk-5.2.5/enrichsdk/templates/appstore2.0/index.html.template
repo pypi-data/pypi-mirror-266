@@ -1,0 +1,101 @@
+{% extends 'gui2/appstore2/base.html' %}
+{% load static %}
+{% load dashboard_tags %}
+{% load humanize %}
+{% load fontawesome %}
+{% load i18n %}
+<!-- ============================= Address Bar Start =============================== -->
+{% block breadcrumbs %}
+<div id="address_content" style="display: none">
+    <ol class="breadcrumb mb-0" aria-label="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'dashboard:home' %}">Enrich</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'dashboard:index' %}">Usecases</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'dashboard:usecase_detail' usecase.org.name %}">{{usecase.org.name}}</a></li>
+      <li class="breadcrumb-item active"><a href="{% url basenamespace|add:':index' %}">{{spec.name}}</a></li>
+    </ol>
+</div>
+{% with knowledge="CATEGORY" %}{{ block.super }}{% endwith %}
+{% endblock breadcrumbs %}
+<!-- ============================= Address Bar End =============================== -->
+{% block nav_index %}
+<!--Header tab name-->
+    {% with nav_data="usecases" %}{{ block.super }}{% endwith %}
+{% endblock %}
+<!--============================= Help Content =============================== -->
+
+{% block help %}
+<div id="page_help_content" style="visibility: hidden">
+Help for this page
+</div>
+{{block.super}}
+{% endblock %}
+<!--============================= Help Content End =============================== -->
+{% block content %}
+
+<!--
+DATASTRUCTURE
+-->
+
+
+<div class="hero-container">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="hero-content-box w-100 position-relative  d-flex flex-wrap align-items-center">
+          <div class="hcb-left d-flex flex-wrap align-items-center">
+            <div class="hcb-icon-box">
+              {% if 'icon' in spec %}
+              <img src="{% static 'gui2/appstore2/images/'|add:spec.icon|add:'.svg' %}" alt="" />
+              {% else %}
+              <img src="{% static 'gui2/appstore2/images/placholder.jpg' %}" alt="" />
+              {% endif %}
+            </div>
+            <div class="hcb-text-box">
+              <h3> {% translate  spec.name %}</h3>
+              <p> {% translate spec.description %}</p>
+              {% include 'dashboard/_appusers.html' with usecase=usecase spec=spec %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="block-container">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="block-content-box d-flex flex-wrap">
+          <div class="sidebar-wrapper">
+            <div class="sticky-top">
+              <div class="sidebar-inside">
+                <ul class="nav-menu-list">
+                  {% for target in data.sidebar_targets %}
+                  <li class="nav-menu-item">
+                    <a href="{% url basenamespace|add:':index' %}?target={{target.name}}" class="nav-menu-box">
+                      <div class="nav-menu-icon">
+			{% include 'sharedapp/partials/sidebar_menu_icon.html' %}
+                        <span>{% translate target.label %}</span>
+                      </div>
+                    </a>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="block-content">
+            {% if target == default_target %}
+            {% for widget in data.widgets %}
+	    {% include 'sharedapp/partials/'|add:widget.type|add:'.html' with usecase=usecase spec=spec widget=widget %}
+            {% endfor %}
+	    {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

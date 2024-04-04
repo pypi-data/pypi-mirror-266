@@ -1,0 +1,71 @@
+{% extends 'gui2/base.html' %}
+{% load dashboard_tags %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% load fontawesome %}
+{% load control %}
+{% load static %}
+
+<!-- ============================= Address Bar Start =============================== -->
+{% block breadcrumbs %}
+<div id="address_content" style="display: none">
+    <ol class="breadcrumb" aria-label="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'dashboard:home' %}">Enrich</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'dashboard:index' %}">Usecases</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'dashboard:usecase_detail' usecase.org.name %}">{{usecase.org.name}}</a></li>
+        <li class="breadcrumb-item active">{{spec.name}}</li>
+    </ol>
+</div>
+
+{% with tags=spec.tags|join:" " %}
+{% with knowledge=spec.name|add:' '|add:app.name|add:' '|add:tags %}{{ block.super }}{% endwith %}
+{% endwith %}
+
+{% endblock breadcrumbs %}
+<!-- ============================= Address Bar End =============================== -->
+{% block nav_index%}
+<!--Header tab name-->
+    {% with nav_data="apps" %}{{ block.super }}{% endwith %}
+{% endblock %}
+<!--============================= Help Content =============================== -->
+{% block help %}
+<div id="page_help_content" style="visibility: hidden">
+  Show {{app.name}} configurations
+</div>
+{{block.super}}
+{% endblock %}
+
+<!--============================= Help Content End =============================== -->
+{% block content %}
+
+<div class="container mb-30">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <div class="ptaa-box">
+            <div class="ptaa-icon">{% fontawesome_icon app.icon %}</div>
+            <div class="ptaa-content">
+	      {% block page_header %}
+              <h1>{{app.verbose_name}}</h1>
+              <p>{{spec.name}}: {{spec.description}}</p>
+	      {% endblock %}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="d-flex justify-content-end">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% include 'dashboard/_appusers.html' with usecase=usecase spec=spec %}
+  <hr>
+  {% block generic_content %}
+  Fill this generic block
+  {% endblock %}
+
+</div>
+
+{% endblock %}
