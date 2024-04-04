@@ -1,0 +1,15 @@
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('[data-content-import-picker="google"]').forEach(function (element) {
+            let googlePicker = new GooglePicker({
+                appId: '{{ app_id|escapejs }}',
+                clientId: '{{ client_id|escapejs }}',
+                pickerApiKey: '{{ picker_api_key|escapejs }}',
+            }, element.dataset.importPageUrl, '{{ csrf_token|escapejs }}');
+
+            element.addEventListener('openPicker', function() {
+                googlePicker.show();
+            });
+        });
+    });
+</script>

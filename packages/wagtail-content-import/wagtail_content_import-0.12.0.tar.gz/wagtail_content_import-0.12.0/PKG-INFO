@@ -1,0 +1,62 @@
+Metadata-Version: 2.1
+Name: wagtail_content_import
+Version: 0.12.0
+Summary: A module for Wagtail that provides functionality for importing page content from third-party sources.
+Home-page: https://github.com/torchbox/wagtail-content-import
+Author: Samir Shah, Jacob Topp-Mugglestone, Karl Hobley, Matthew Westcott
+Author-email: jacobtm@torchbox.com
+License: BSD
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 3.2
+Classifier: Framework :: Django :: 4.1
+Classifier: Framework :: Django :: 4.2
+Classifier: Framework :: Django :: 5.0
+Classifier: Framework :: Wagtail
+Classifier: Framework :: Wagtail :: 4
+Classifier: Framework :: Wagtail :: 5
+Classifier: Framework :: Wagtail :: 6
+Classifier: Topic :: Internet :: WWW/HTTP :: Site Management
+Description-Content-Type: text/markdown
+Provides-Extra: testing
+
+![Wagtail Content Import](docs/img/wagtail_content_import_logo_with_text.svg)
+
+Wagtail Content Import is a module for importing page content into Wagtail from third-party sources.
+Page content is imported into a StreamField, using a set of customisable mappings.
+Currently supports:
+
+### As sources:
+- Google Docs
+- OneDrive/SharePoint
+
+### As files:
+- Google Docs documents with:
+    - Rich text
+    - Tables
+    - Images
+    - Headings
+- Docx files with:
+    - Text with bold and italics
+    - Headings
+
+### Requirements:
+* Django >= 4.2
+* Wagtail >= 5.2 (for 6.0.x, 6.0.2 or later is required)
+
+For the full documentation, see: https://torchbox.github.io/wagtail-content-import/
+
+### Note for Google Import
+
+If using Google Docs import, for users to authenticate with Google they must either allow third party cookies or add `accounts.google.com` to their allowed domains ([Settings/Privacy and Security/Cookies and other site data in Chrome](chrome://settings/cookies) or [Preferences/Privacy & Security in Firefox](about:preferences#privacy)).
