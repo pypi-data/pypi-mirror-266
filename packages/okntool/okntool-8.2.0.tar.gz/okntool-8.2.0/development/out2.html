@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 500px;
+  height: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+td, th {
+  border: none;
+  text-align: center;
+  padding: 8px;
+}
+
+thead th {  border-bottom: 1px solid #000; 
+            border-top: 1px solid #000; }
+
+
+tfoot tr td {  border-top: 1px solid #000; }
+
+
+.sideline { border-left: 1px solid #000; }
+
+.above-line { border-top: 1px solid #000; }
+
+.bottom-line { border-bottom: 1px solid #000; }
+
+.bottom-sideline { border-bottom: 1px solid #000;
+                  border-left: 1px solid #000; }
+
+</style>
+</head>
+<body>
+
+<table>
+
+<thead>
+<tr>
+    <th rowspan="2" >Folder</th>
+    <th colspan="11" class="sideline">OKN detected for each logMAR</th>
+    <th rowspan="2" class="sideline">Total</th>
+</tr>
+<tr>
+    <th class="sideline">1</th>
+    <th>0.9</th>
+    <th>0.8</th>
+    <th>0.7</th>
+    <th>0.6</th>
+    <th>0.5</th>
+    <th>0.4</th>
+    <th>0.3</th>
+    <th>0.2</th>
+    <th>0.1</th>
+    <th>0.0</th>
+</tr>
+</thead>
+
+<tbody>
+  <tr>
+    <td >folder1</td>
+    <td class="sideline">5</td>
+    <td>5</td>
+    <td>5</td>
+    <td>5</td>
+    <td>5</td>
+    <td>5</td>
+    <td>5</td>
+    <td>3</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td class="sideline">38</td>
+  </tr>
+  <tr>
+    <td >folder2</td>
+    <td class="sideline">5</td>
+    <td>5</td>
+    <td>5</td>
+    <td>5</td>
+    <td>5</td>
+    <td>5</td>
+    <td>5</td>
+    <td>3</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td class="sideline">38</td>
+  </tr>
+  <tr>
+    <td >folder3</td>
+    <td class="sideline">5</td>
+    <td>5</td>
+    <td>5</td>
+    <td>5</td>
+    <td>5</td>
+    <td>5</td>
+    <td>5</td>
+    <td>3</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td class="sideline">38</td>
+  </tr>
+</tbody>
+
+
+<!-- The line across the bottom of table -->
+
+<tfoot>
+  <tr>
+    <td class="bottom-line">Total</td>
+    <td class="bottom-sideline">30</td>
+    <td class="bottom-line">30</td>
+    <td class="bottom-line">30</td>
+    <td class="bottom-line">30</td>
+    <td class="bottom-line">30</td>
+    <td class="bottom-line">30</td>
+    <td class="bottom-line">30</td>
+    <td class="bottom-line">30</td>
+    <td class="bottom-line">30</td>
+    <td class="bottom-line">30</td>
+    <td class="bottom-line">30</td>
+    <td class="bottom-sideline"></td>
+  </tr>
+</tfoot>
+
+
+
+</table>
+</body>
+</html>
