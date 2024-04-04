@@ -1,0 +1,71 @@
+[tool.poetry]
+name = "axem-dem"
+version = "0.4.0"
+description = "Manager for Containerized Development Environments"
+authors = ["Janos Murai <janos.murai@axemsolutions.io>"]
+license = "Eclipse Public License - v2.0"
+readme = "README.md"
+homepage = "https://axemsolutions.io/"
+documentation = "https://axemsolutions.io/dem_doc/"
+repository = "https://github.com/axem-solutions/dem"
+keywords = ["iot", "embedded", "edge", "development environment", "tools", "containers"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Build Tools",
+    "Topic :: Software Development :: Compilers",
+    "Topic :: Software Development :: Debuggers",
+    "Topic :: Software Development :: Embedded Systems",
+    "Topic :: Software Development :: Testing"
+]
+packages = [{include = "dem"}]
+
+[tool.poetry.scripts]
+dem = "dem.__main__:main"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+docker = "6.1.3"
+readchar = "4.0.5"
+requests = "2.31.0"
+rich = "13.4.2"
+typer = "0.9.0"
+
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
+mkdocs-material = "^9.1.7"
+mike = "^2.0.0"
+jinja2 = "^3.1.3"
+
+[tool.poetry.group.test]
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.3.1"
+mock = "^5.0.2"
+pytest-cov = "^4.1.0"
+
+[tool.coverage.report]
+# Regexes for lines to exclude from consideration
+exclude_also = [
+    "if __name__ == .__main__.:",
+]
+
+[tool.coverage.run]
+omit = [
+    # Tests are not needed for the absract base class.
+    "dem/core/user_output.py",
+]
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
