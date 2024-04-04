@@ -1,0 +1,8 @@
+[rattail.config.extensions]
+rattail_wave = rattail_wave.config:RattailWaveExtension
+
+[rattail.importing]
+to_rattail.from_wave.import = rattail_wave.importing.wave:FromWaveToRattail
+
+[rattail.subcommands]
+import-wave = rattail_wave.commands:ImportWave
