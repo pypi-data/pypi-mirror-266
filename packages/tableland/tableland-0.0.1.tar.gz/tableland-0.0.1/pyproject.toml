@@ -1,0 +1,63 @@
+[tool.poetry]
+name = "tableland"
+version = "0.0.1"
+description = "A minimal Tableland Python SDK for creating, writing, and reading onchain tables"
+authors = ["Dan Buchholz <dbuchholz30@gmail.com>"]
+license = "MIT AND Apache-2.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+web3 = "^6.16.0"
+requests = "^2.31.0"
+sqlglot = "^23.6.3"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.3.0"
+flake8 = "^7.0.0"
+isort = "^5.13.2"
+mypy = "^1.9.0"
+pre-commit = "^3.7.0"
+pytest = "^8.1.1"
+pytest-cov = "^5.0.0"
+poethepoet = "^0.25.0"
+types-requests = "^2.31.0.20240403"
+types-regex = "^2023.12.25.20240311"
+
+[tool.poe.tasks]
+pre-commit-install = "pre-commit install -t pre-commit"
+pre-push-install = "pre-commit install -t pre-push"
+pre-commit = ["pre-commit-install", "pre-push-install"]
+test = "pytest"
+coverage = "pytest --cov --cov-fail-under=90"
+isort = "isort --atomic ."
+black = "black ."
+flake8 = "flake8"
+mypy = "mypy"
+lint = ["black", "isort", "flake8", "mypy"]
+build = "poetry build"
+publish = "poetry publish --build"
+
+[tool.flake8]
+ignore = "E203, E266, E501, W503"
+max-line-length = 88
+max-complexity = 18
+select = "B,C,E,F,W,T4"
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+line_length = 88
+
+[tool.mypy]
+files = ["tableland", "test"]
+ignore_missing_imports = false
+
+[tool.pytest.ini_options]
+testpaths = ["test/"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
