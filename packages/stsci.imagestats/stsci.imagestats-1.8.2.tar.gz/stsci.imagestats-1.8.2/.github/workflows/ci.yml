@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches:
+    - master
+    - 'v*'
+    tags:
+    - '*'
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@v1
+    with:
+      envs: |
+        - name: Security audit
+          linux: bandit
+
+        - name: PEP 8
+          linux: codestyle
+
+        - name: Python 3.9 (Linux)
+          linux: py39-test
+          posargs: -v
+
+        - name: Python 3.9 (Linux; numpy 1.22)
+          linux: py39-test-numpy122
+          posargs: -v
+
+        - name: Python 3.9 (Linux; numpy 1.25)
+          linux: py39-test-numpy122
+          posargs: -v
+
+        - name: Python 3.10 (Linux)
+          linux: py310-test
+          posargs: -v
+
+        - name: Python 3.11 (Windows)
+          windows: py311-test
+          posargs: -v
+
+        - name: Python 3.11 (OSX)
+          macos: py311-test
+          posargs: -v
+
+        - name: Python 3.12 (Windows)
+          windows: py312-test
+          posargs: -v
+
+        - name: Python 3.12 (OSX)
+          macos: py312-test
+          posargs: -v
+
+        - name: Python 3.12 (Linux) with coverage
+          linux: py312-test-cov
+          posargs: -v
+          coverage: codecov
+
+        - name: Python 3.12 (Linux with dev dependencies)
+          linux: py312-test-devdeps
+          posargs: -v
+          pytest-results-summary: true
