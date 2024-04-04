@@ -1,0 +1,57 @@
+<div class="card shadow-sm  border-light" hx-get="{% url 'sonar_requests' %}" hx-trigger="every 5s" hx-swap="outerHTML">
+    <div class="card-header">
+        <h5 class="card-title">Requests</h5>
+    </div>
+    <div class="card-body">
+
+        {% if not sonar_requests %}
+            <div class="text-light-grey">No requests found</div>
+        {% else %}
+
+        <table class="table table-dashed table-row-dashed table-hover">
+            <thead>
+            <tr class="">
+                <th scope="col">Verb</th>
+                <th scope="col">Path</th>
+                <th scope="col">Status</th>
+                <th scope="col">Duration</th>
+                <th scope="col">Happened</th>
+                <th class="w-50px">&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for sonar_request in sonar_requests %}
+                <tr class="{% if not sonar_request.is_read %}bg-light{% endif %}">
+                    <td>
+                        <span class="badge bg-secondary">{{ sonar_request.verb }}</span>
+                    </td>
+                    <td>{{ sonar_request.path }}</td>
+                    <td>
+                        {% if sonar_request.status < '400' %}
+                            <span class="badge bg-success">{{ sonar_request.status }}</span>
+                        {% elif sonar_request.status >= '400' and sonar_request.status < '500' %}
+                            <span class="badge bg-warning">{{ sonar_request.status }}</span>
+                        {% else %}
+                            <span class="badge bg-danger">{{ sonar_request.status }}</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ sonar_request.duration }}ms</td>
+                    <td>{{ sonar_request.created_at|timesince }} ago</td>
+                    <td class="text-end">
+                        <a class="btn btn-sm btn-icon btn-primary"
+                           href="{% url 'sonar_request_detail' sonar_request.uuid %}"
+                           hx-get="{% url 'sonar_request_detail' sonar_request.uuid %}"
+                           hx-swap="innerHTML"
+                           hx-target="#main-content">
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        {% endif %}
+
+    </div>
+</div>
