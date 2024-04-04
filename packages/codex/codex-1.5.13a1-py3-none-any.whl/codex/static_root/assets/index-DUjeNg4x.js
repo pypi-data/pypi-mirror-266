@@ -1,0 +1,1 @@
+const r=function(e,t){navigator.clipboard.writeText(e).then(()=>(t.show=!0,setTimeout(()=>{t.show=!1},5e3),!0)).catch(console.warn)};function o(e){if(typeof e!="string")throw new TypeError("Expected a string");return e.toLowerCase().replaceAll(/(?:^|\s|-)\S/g,t=>t.toUpperCase())}export{r as c,o as t};
