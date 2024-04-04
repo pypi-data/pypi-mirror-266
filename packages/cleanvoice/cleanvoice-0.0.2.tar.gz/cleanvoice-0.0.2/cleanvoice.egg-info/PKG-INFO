@@ -1,0 +1,58 @@
+Metadata-Version: 2.1
+Name: cleanvoice
+Version: 0.0.2
+Summary: A Fast Speech Enhancement toolkit using Conv-TasNet
+Home-page: https://github.com/seanghay/cleanvoice
+Author: Seanghay Yath
+Author-email: seanghay.dev@gmail.com
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: English
+Requires-Python: >3.5
+Description-Content-Type: text/markdown
+Requires-Dist: onnxruntime
+Requires-Dist: librosa
+Requires-Dist: numpy
+
+## CleanVoice
+
+A Fast Speech Enhancement toolkit using [Conv-TasNet (Yi Luo, Nima Mesgarani)](https://arxiv.org/abs/1809.07454)
+
+> Only works with 16kHz audio.
+
+## Install
+
+```shell
+pip install cleanvoice
+```
+
+## Usage
+
+
+Audio file
+
+```python
+from cleanvoice import cleanvoice
+from scipy.io.wavfile import write as write_wav
+
+audio_data = cleanvoice("audio.wav")
+write_wav("audio-cleaned.wav", 16000, audio_data)
+```
+
+NumPy Array as input
+
+```python
+from cleanvoice import cleanvoice
+from scipy.io.wavfile import write as write_wav
+import librosa
+
+y, _ = librosa.load("audio.wav", mono=True, sr=16000)
+audio_data = cleanvoice(y)
+write_wav("audio-cleaned.wav", 16000, audio_data)
+```
+
+## License
+
+`Apache-2.0`
