@@ -1,0 +1,198 @@
+####################
+#   Build System   #
+####################
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+####################
+#     Metadata     #
+####################
+
+[project]
+name = "validators"
+description = "Python Data Validation for Humans™"
+authors = [{ name = "Konsta Vesterinen", email = "konsta@fastmonkeys.com" }]
+license = { text = "MIT" }
+readme = "README.md"
+keywords = ["validation", "validator", "python-validator"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+requires-python = ">=3.8"
+dynamic = ["version"]
+dependencies = []
+
+[project.urls]
+Homepage = "https://python-validators.github.io/validators"
+Documentation = "https://python-validators.github.io/validators"
+Repository = "https://github.com/python-validators/validators"
+Changelog = "https://github.com/python-validators/validators/blob/master/CHANGES.md"
+
+###########################
+#  Optional Dependencies  #
+###########################
+
+# [project.optional-dependencies]
+
+##############################
+#  Development Dependencies  #
+##############################
+
+[tool.pdm.dev-dependencies]
+docs-offline = [
+    "myst-parser>=2.0.0",
+    "pypandoc-binary>=1.13",
+    "sphinx>=7.1.2",
+    "furo>=2024.1.29",
+]
+docs-online = [
+    "mkdocs>=1.5.3",
+    "mkdocs-git-revision-date-localized-plugin>=1.2.4",
+    "mkdocs-material>=9.5.17",
+    "mkdocstrings[python]>=0.24.2",
+    "mike>=2.0.0",
+]
+hooks = ["pre-commit>=3.5.0"]
+package = ["build>=1.2.1"]
+runner = ["tox>=4.14.2"]
+sast = ["bandit[toml]>=1.7.8"]
+tooling = [
+    "black>=24.3.0",
+    "ruff>=0.3.5",
+    "pyright>=1.1.357",
+    "pytest>=8.1.1",
+    "pypandoc-binary>=1.13", # helps with type checking
+]
+
+####################
+#  Configurations  #
+####################
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["validators*"]
+namespaces = false
+
+[tool.setuptools.package-data]
+validators = ["py.typed"]
+
+[tool.setuptools.dynamic]
+version = { attr = "validators.__version__" }
+
+[tool.bandit]
+exclude_dirs = [
+    ".github",
+    ".pytest_cache",
+    ".tox",
+    ".venv",
+    ".venv.dev",
+    ".vscode",
+    "site",
+    "tests",
+]
+
+[tool.black]
+line-length = 100
+target-version = ["py38", "py39", "py310", "py311", "py312"]
+
+[tool.pyright]
+extraPaths = ["src"]
+exclude = [
+    "**/__pycache__/",
+    ".pytest_cache/",
+    ".tox/",
+    ".venv/",
+    ".venv.dev/",
+    "site/",
+]
+pythonVersion = "3.8"
+pythonPlatform = "All"
+typeCheckingMode = "strict"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+
+[tool.ruff]
+lint.select = [
+    # Pyflakes
+    "F",
+    # pycodestyle
+    "W",
+    "E",
+    # mccabe
+    # C90
+    # isort
+    "I",
+    # pep8-naming
+    "N",
+    # pydocstyle
+    "D",
+]
+line-length = 100
+target-version = "py38"
+extend-exclude = ["**/__pycache__", ".pytest_cache", "site"]
+
+[tool.ruff.lint.isort]
+# case-sensitive = true
+combine-as-imports = true
+force-sort-within-sections = true
+force-wrap-aliases = true
+known-local-folder = ["src"]
+relative-imports-order = "closest-to-furthest"
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+requires =
+    tox>=4
+env_list = lint, type, format, sast, py{38,39,310,311,312}
+
+[testenv:lint]
+description = ruff linter
+deps =
+    ruff
+commands = ruff check .
+
+[testenv:type]
+description = pyright type checker
+deps =
+    pyright
+    pypandoc-binary
+    pytest
+commands = pyright .
+
+[testenv:format]
+description = code formatter
+deps =
+    black
+commands = black .
+
+[testenv:sast]
+deps =
+    bandit[toml]
+commands = bandit -c pyproject.toml -r .
+
+[testenv]
+description = unit tests
+deps =
+    pytest
+commands = pytest .
+"""
