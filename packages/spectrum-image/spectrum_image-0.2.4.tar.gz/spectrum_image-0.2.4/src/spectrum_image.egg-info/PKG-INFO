@@ -1,0 +1,51 @@
+Metadata-Version: 2.1
+Name: spectrum_image
+Version: 0.2.4
+Summary: Python Package for EELS (Electron Energy Loss Spectroscopy) Analysis
+Author-email: Suk Hyun Sung <sukhsung@umich.edu>
+Project-URL: Homepage, https://github.com/sukhsung/spectrum_image
+Project-URL: Repository, https://github.com/sukhsung/spectrum_image
+Project-URL: Bug Tracker, https://github.com/sukhsung/spectrum_image/issues
+Keywords: Electron Microscopy,EELS,TEM,STEM,Electron Energy Loss Spectroscopy
+Classifier: Development Status :: 3 - Alpha
+Classifier: Programming Language :: Python
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: matplotlib
+Requires-Dist: jupyterlab
+Requires-Dist: ipympl
+Requires-Dist: scipy
+Requires-Dist: tqdm
+Requires-Dist: lmfit
+
+# Spectrum-Image: Interactive Data Explorer for Spatial Spectroscopic Dataset
+Spectrum-Image is Python packag for spectroscopic data, built with Jupter lab interactivity in mind, with minimal dependencies
+Most of code is written with EELS (Electron Energy Loss Spectroscopy) in mind, but is relevant for any highdimensional spectroscopic dataset.
+
+# Relevant techniques:
+EELS (Electron Energy Loss Spectroscopy)
+RIXS (Resonant Inelastic Xray Scattering)
+Raman Spatial Mapping
+
+Check out the notebook example (`example_eels.ipynb`) to get started.
+
+## Installation
+`pip install spectrum-image`
+
+## Dependencies
+`matplotlib`
+`jupyterlab`
+`ipympl`
+`scipy`
+`tqdm`
+`numpy`
+`lmfit`
+
+## Optional Dependencies for running example notebook
+`hyperspy`
+`tifffile`
+
+## Acknowledgements
+Some functionalities (background subtraction, local background averaging) was copied from eels.py of https://github.com/paradimdata/Cornell_EM_SummerSchool_2021/tree/main/Tutorial%204%20-%20Spectroscopy
