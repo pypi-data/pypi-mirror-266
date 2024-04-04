@@ -1,0 +1,73 @@
+Metadata-Version: 2.1
+Name: gene-trajectory
+Version: 0.1.5
+Summary: Compute gene trajectories
+Keywords: Gene trajectory scRNA-seq
+Author-Email: Francesco Strino <francesco.strino@pcmgf.com>, Rihao Qu <rihao.qu@yale.edu>
+Maintainer-Email: Francesco Strino <francesco.strino@pcmgf.com>
+License: MIT License
+        
+        Copyright (c) 2024 PCMGF-Limited
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Intended Audience :: Science/Research
+Project-URL: Documentation, https://github.com/KlugerLab/GeneTrajectory-python.git
+Project-URL: Repository, https://github.com/KlugerLab/GeneTrajectory-python.git
+Project-URL: Bug tracker, https://github.com/KlugerLab/GeneTrajectory-python/issues
+Requires-Python: >=3.9
+Requires-Dist: igraph>=0.10
+Requires-Dist: matplotlib>=3.6
+Requires-Dist: numpy>=1.23
+Requires-Dist: pandas>=1.5
+Requires-Dist: pot>=0.8.2
+Requires-Dist: scanpy>=1.9.3
+Requires-Dist: scikit-misc>=0.1.3
+Requires-Dist: scikit-learn>=0.24
+Requires-Dist: scipy>=1.8
+Requires-Dist: seaborn>=0.13
+Requires-Dist: tqdm>=4.64.1
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: twine; extra == "dev"
+Provides-Extra: dev
+Description-Content-Type: text/markdown
+
+# Python Gene Trajectory
+This package is a Python implementation of [GeneTrajectory](https://github.com/KlugerLab/GeneTrajectory), 
+which is implemented in R. 
+
+Note that, although the implementation is equivalent, it will produce slightly different results to the R implementation
+because the signs of eigenvectors may differ and because of the randomness of K-means during the `coarse_grain` step. 
+
+
+# Install #
+The development version of the package can be installed as 
+```
+pip install gene-trajectory
+```
+
+The development version of the package can be installed as 
+```
+pip install git+https://github.com/Klugerlab/GeneTrajectory-python.git
+```
+
+# Tutorial # 
+Please follow the Jupyter Notebook tutorials in the folder [notebooks](https://github.com/PCMGF-Limited/PGT/blob/main/notebooks/).
