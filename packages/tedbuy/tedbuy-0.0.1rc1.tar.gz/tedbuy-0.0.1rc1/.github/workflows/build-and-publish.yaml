@@ -1,0 +1,32 @@
+name: Release
+
+on:
+    release:
+      types: [published]
+    workflow_dispatch:
+        inputs:
+            release-version:
+                type: string
+                required: true
+                description: 'Version number (for example: 0.1.0)'
+jobs:
+    release:
+        runs-on: ubuntu-latest
+        environment: pypi-publish # pre-created environemnt used for workflow approval
+        permissions:
+            id-token: write  # This permission is required for trusted publishing
+        env:
+            PR_BRANCH_NAME: main
+        steps:
+            - name: Checkout the repository
+              uses: actions/checkout@v4
+            - name: Install Python
+              uses: actions/setup-python@v5
+              with:
+                python-version: 3.11
+            - name: Install packages for building distribution
+              run: pip install --upgrade build pip
+            - name: Build package
+              run: python -m build
+            - name: Publish package distributions to PyPI
+              uses: pypa/gh-action-pypi-publish@release/v1

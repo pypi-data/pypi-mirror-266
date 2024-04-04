@@ -1,0 +1,26 @@
+[build-system]
+requires = [
+    "setuptools>=60",
+    "setuptools-scm>=8.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tedbuy"
+dynamic = ["version"]
+authors = [
+  { name="ted chang", email="htchang@us.ibm.com" },
+]
+description = "A small example package"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/tedhtchang/tedbuy"
+Issues = "https://github.com/tedhtchang/tedbuy/issues"
+
+[tool.setuptools_scm]
+version_file = "tedbuy/_version.py"
