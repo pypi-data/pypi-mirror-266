@@ -1,0 +1,75 @@
+Metadata-Version: 2.1
+Name: aoba-ptycho
+Version: 0.1.1
+Summary: Ptychography on AOBA-S
+Home-page: https://github.com/keichi/aoba-ptycho.git
+Author: Keichi Takahashi
+Author-email: keichi@tohoku.ac.jp
+License: UNKNOWN
+Platform: UNKNOWN
+Description-Content-Type: text/markdown
+Requires-Dist: nlcpy (>=3.0.1)
+Requires-Dist: h5py (>=3.1.0)
+Requires-Dist: pytictoc (>=1.5.3)
+Requires-Dist: hdf5storage (==0.1.19)
+Requires-Dist: matplotlib (>=3.3.4)
+
+# aoba-ptycho
+
+## Prerequisites
+
+- Python 3.6
+- NLC 3.1.0
+
+## Installation
+
+1. Ensure pip is up to date:
+    ```
+    pip3 install --user -U pip
+    ```
+2. Install the wheel file:
+    ```
+    pip3 install --user aoba_ptycho-0.1.0-py3-none-any.whl
+    ```
+
+## Usage
+
+The package provides a CLI tool named  `aoba-ptycho`. The usage is as follows:
+
+```
+aoba-ptycho [-h] [--iter ITER] [--plot] [-v] input output
+```
+
+Positional arguments:
+  - `input`: Input file in MATLAB v7.3 format. Observations and configurations should be supplied
+    included in this file.
+  - `output`: Output file in MATLAB v7.3 format. It includes the complex object image and R-factor
+    history.
+
+Optional arguments:
+  - `-h`, `--help`: Show help message and exit.
+  - `--iter ITER`: Override the number of ePIE iterations.
+  - `--plot`: Generate plots (object phase image and R-factor)
+  - `-v`, `--version`: Show version information.
+
+## Building instructions
+
+The following commands should be executed on a front-end nodes of AOBA-S (compute nodes lack access
+to compilers).
+
+1. Compile the VE library:
+    ```
+    aoba/ptychography/jit/compile.sh
+    ```
+2. Update packaging tools:
+    ```
+    pip3 install --user -U pip wheel
+    ```
+2. Build the wheel:
+    ```
+    pip3 wheel --no-deps .
+    ```
+
+Distribute the generate wheel (`aoba_ptycho-x.y.z-py3-none-any.whl`) to users.
+
+
