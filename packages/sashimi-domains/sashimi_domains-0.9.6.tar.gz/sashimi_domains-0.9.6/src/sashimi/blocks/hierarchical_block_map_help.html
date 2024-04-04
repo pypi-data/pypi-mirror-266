@@ -1,0 +1,93 @@
+<h1>Essential Sashimi etiquette</h1>
+
+<h2>The domain-topic model</h2>
+<p>
+  Let's call a group of documents a "domain" and, correspondingly, a group of terms (words) a "topic". Documents contain terms, and the idea of a domain-topic model is to group documents that tend to share the same terms, and group terms that tend to appear in the same documents. These groups are chosen to be exclusive: each document will be placed in a single domain, and each term in a single topic. A domain will thus contain documents that share a preference for certain topics, just as a topic will contain terms that are preferentially employed in certain domains.
+</p>
+<p>
+  We may also refer to these groups, in general, as "blocks". So domains are blocks whose elements are documents, and topics are blocks whose elements are terms. We call these level-1 blocks, and grouping blocks themselves produces higher levels: level-2 blocks contain level-1 blocks, level-3 blocks contain level-2 blocks, and so forth. At the highest level, all blocks coalesce into a single super-block, which for documents/domains corresponds to the full corpus and, for terms/topics, to the corpus' vocabulary. Finally, we speak of super-block for a block that contains another, and sub-block for the one that is contained.
+</p>
+
+<h2>A la carte</h2>
+<p>
+  The map is a hierarchical block map, where each column stacks the blocks of a given level. Moving horizontally changes the level, with a block's super-block located to its left, and its sub-blocks to its right. To help distinguish the different types of blocks, domains are consistently presented in salmon, while topics employ the color tuna. Wasabi is used for other types of blocks, which we'll see later.
+</p>
+<p>Features of blocks on the map:
+  <ol>
+    <li>Color intensity conveys values for the salience of each block according to some criteria.
+      <ul>
+        <li>To adapt to the different scales presented in the block hierarchy, values are normalized at each level, so that the strongest color matches the strongest value for that level.
+        <li>As a consequence, color comparisons are only valid within each column of the same map.
+      </ul>
+    <li>Shown on the bottom-left is the original value, before normalization (useful for cross-level comparison).
+    <li>On the bottom-middle:
+      <ul>
+        <li>Domains display the number of documents they contain.
+        <li>Other types of blocks display the total usage of their elements (e.g., for a topic, the sum of the frequencies of its terms).
+      </ul>
+    <li>On the bottom-right, a label indicates the block's level, type, and numbering.
+  </ol>
+</p>
+In the starting maps, values correspond to the quantities shown in the bottom-middle relative to their totals: fractions of all documents found in a domain; fraction of total term usage coming from a topic. As we'll see, clicking on blocks on the opposite map will change this.
+</p>
+<p>
+  From the top-left, blocks contain text that qualifies the elements it contains. The form and meaning of this content will very depending on the type of block.
+</p>
+<p>Block contents for domains:
+  <ul>
+    <li>At level = 1: <em>specific elements</em> — topics that are most specific to the domain in question, with their most specific terms.
+    <li>At level > 1: <em>common elements</em> — topics that are specific to all subdomains of the domain.
+    <li>These lists are preceded by a fraction that tells the strength of the specificity/commonality, so that when it is <em>0.0</em> there's nothing to display.
+  </ul>
+</p>
+<p>Block contents for topics/other:
+  <ol>
+    <li><em>frequent elements</em>: top terms from the topic, ordered by highest frequency in the corpus.
+  </ol>
+</p>
+
+<h2>My cursor, <i>maihashi</i></h2>
+<p>
+  <strong>Scroll</strong> down and up to zoom in and out of blocks. To help navigate the hierarchy, zooming in on a block stops when the block fills the frame. Move the cursor lower in the hierarchy (to the right) to continue zooming. Zooming on a block that is partially hidden immediately brings it entirely into the frame.
+</p>
+<p>
+  <strong>Click</strong> on a block to select and learn more about it: on the opposite side, the Map and the Info tab will be updated with information on the selected block. <em>Shift-click</em> allows selecting multiple blocks, and <em>Ctrl-Shift-click</em> allows deselecting individual blocks. You may deselect all selected blocks in a map with a <em>Control-click</em> elsewhere on the map, or deselect everything in all maps by pressing <em>Escape</em> on the keyboard.
+</p>
+
+<h3>Upon selecting a domain</h3>
+<p>
+  The color and values of the Topic map will be updated to show, for each topic, the logarithm of the ratio between how much the topic is used in the selected domain(s) against how much it gets used overall. This quantity represents how much a topic is over (positive) or under (negative) represented in the selected domain, with shades of grey standing for negative values.
+</p>
+<h4>The <em>Domain info</em> tab</h4>
+<p>
+  Two line plots may appear on top of the tab. The first represents the distribution of documents along some dimension, usually time. It concerns the documents belonging to the (first chosen) domain. The red line corresponds to the fraction of documents at that point, and the grey line to the absolute number of documents. When a domain is selected, the plot gets restricted to the documents it contains. The second shows multiple colored lines, one for each characteristic topic, representing the distribution along the same dimension of documents using that topic.
+</p>
+<p>
+  Furthermore, the tab displays the full information partially seen on top of the domain block(s), plus a list of <em>titles</em> from documents in the domain, with links to those documents' URLs if that was provided when building the map.
+</p>
+<p>When selecting multiple domains, the Topic map's color and value will depend on the choice presented in the selector (below it and to the right of the Search bar):
+  <ul>
+    <li>Single: keeps those of the first chosen domain.
+    <li>Multi AND: for each topic, picks the minimum among the chosen domains.
+    <li>Multi OR: for each topic, picks the maximum among the chosen domains.
+  </ul>
+</p>
+
+<h3>Upon selecting a topic</h3>
+<p>
+  The color and values of the Domain map will be updated to show, for each domain, the logarithm of the ratio between how much the selected topic is used in each domain against how much it gets used overall. This quantity represents how much a domain over (positive) or under (negative) represents the selected topic, with shades of grey standing for negative values.
+</p>
+<p>
+  The <em>Topic info</em> tab, in addition to the full information seen on top of the topic block(s), will provide a list of <em>titles</em> from documents that contain any terms from the topic. At level 1, <em>frequent terms</em> displays the full list of terms in the topic.
+</p>
+<p>When selecting multiple topics, the Topic map's color and value behave in a manner analogous to multiple domains.</p>
+
+<h3>Searching</h3>
+
+You'll find a Search bar on top of the maps. It recognizes partial matches, and allows searching blocks by label (i.e. "L2D3", "L4T2"), by term (i.e. "green", "yellow") wihch will select the containing topic, and by title (i.e. "A study of wonderful things") which will select the containing domain. Use it wisely.
+
+<h2>Au revoir, <em>またいつか</em></h2>
+<h3>Bibliography (also to credit where appropriate)</h3>
+<p>
+  Hannud Abdo, A., Cointet, J.-P., Bourret, P., & Cambrosio, A. (2022). Domain-topic models with chained dimensions: Charting an emergent domain of a major oncology conference. Journal of the Association for Information Science and Technology, 73( 7), 992– 1011. <a href="https://doi.org/10.1002/asi.24606">https://doi.org/10.1002/asi.24606</a>
+</p>
