@@ -1,0 +1,52 @@
+[tool.poetry]
+name = "ficamp"
+version = "0.13.0"
+description = "Analyze your bank data and categorize it."
+authors = ["Santiago Fraire Willemoes <santiwilly@gmail.com>"]
+readme = "README.md"
+packages = [
+  { include = "ficamp", from = "src" }
+]
+
+[tool.poetry.dependencies]
+openpyxl = "^3.1.2"
+python = "^3.11"
+xlrd = "^2.0.1"
+requests = "^2.31.0"
+python-dotenv = "^1.0.1"
+numpy = "^1.26.4"
+scikit-learn = "^1.4.1.post1"
+sqlmodel = "^0.0.16"
+questionary = "^2.0.1"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.9.0"
+ruff = "^0.3.4"
+pytest = "^8.1.1"
+requests-mock = "^1.12.1"
+ipdb = "^0.13.13"
+pdbpp = "^0.10.3"
+types-requests = "^2.31.0"
+
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "$version"
+version_scheme = "pep440"
+version_provider = "poetry"
+update_changelog_on_bump = true
+major_version_zero = true
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+mypy_path = "src"
+ignore_missing_imports = true
+
+[tool.ruff.lint]
+select = ["I"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["ficamp", "tests"]
