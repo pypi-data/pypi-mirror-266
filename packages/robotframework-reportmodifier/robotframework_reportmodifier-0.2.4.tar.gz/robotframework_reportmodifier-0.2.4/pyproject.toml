@@ -1,0 +1,106 @@
+[tool.poetry]
+name = "robotframework-reportmodifier"
+version = "0.2.4"
+description = "Filter report content."
+authors = ["Matthias Gunther <matthiasgunther@gmail.com>"]
+homepage = "https://github.com/MarketSquare/robotframework-reportmodifier"
+readme = "README.md"
+packages = [
+    { include = "reportmodifier", from = "src" },
+    { include = "ReportModifierListener", from = "src" }
+  ]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+robotframework = "^6"
+
+[tool.poetry.group.config.dependencies]
+PyYAML = "^6.0"
+pathlib = "^1.0.1"
+regex = "^2023.10.3"
+
+[tool.poetry.group.dev.dependencies]
+robotframework = "^6.1"
+ruff = "*"
+mypy = "*"
+black = "*"
+
+[tool.ruff]
+line-length = 120
+target-version = "py38"
+exclude = [
+  ".vscode",
+  "\\.venv",
+  ".git",
+  ".mypy_cache",
+  ".ruff_cache",
+  "_build",
+  "buck-out",
+  "build",
+  "dist",
+  "tasks.py"
+]
+
+[tool.ruff.lint]  # File reference here - https://docs.astral.sh/ruff/rules/
+extend-select = ["E501"]
+ignore = ["E741", "N805", "PT009", "RET503"]
+select = [
+  "E",
+  "F",
+  "W",
+  "I",
+  "N",
+  "UP",
+  "YTT",
+  "BLE",
+  "B",
+  "A",
+  "C4",
+  "DTZ",
+  "T10",
+  "EM",
+  "G",
+  "INP",
+  "PIE",
+  "T20",
+  "PT",
+  "Q",
+  "RET",
+  "TID",
+  "TCH",
+  "ARG",
+  "PTH"
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+
+
+[tool.mypy]
+# MyPy config
+# File reference here - http://mypy.readthedocs.io/en/latest/config_file.html#config-file
+python_version = 3.8
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_return_any = true
+warn_unused_configs = true
+strict = true
+disallow_subclassing_any = false
+#ignore_missing_imports = true
+exclude = [
+  "\\.mypy_cache",
+  "\\.venv",
+  "build",
+  "dist",
+  "out",
+  "playground",
+  "scripts"
+]
+
+[[tool.mypy.overrides]]
+module = ["robot.*", "robotidy.*", "robocop.*"]
+ignore_missing_imports = true
