@@ -1,0 +1,2 @@
+class AIxBlockXMLSyntaxErrorSentryIgnored(Exception):
+    pass
