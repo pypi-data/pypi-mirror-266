@@ -1,0 +1,176 @@
+Metadata-Version: 2.1
+Name: RagCLI
+Version: 0.1.0
+Summary: This solution manages a full RAG by using FAISS, Ollama and sentence_transformers for embeddings.
+Author-email: Benoit Cayla <benoit@datacorner.fr>
+License: MIT License
+        
+        Copyright (c) 2023 Benoît Cayla
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Classifier: Development Status :: 3 - Alpha
+Classifier: Operating System :: OS Independent
+Classifier: Environment :: Console
+Classifier: Programming Language :: Python :: 3.10
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pandas ==2.2.1
+Requires-Dist: PyMuPDF ==1.24.0
+Requires-Dist: langchain ==0.1.13
+Requires-Dist: sentence-transformers ==2.6.0
+Requires-Dist: faiss-cpu ==1.8.0
+Requires-Dist: numpyencoder ==0.3.0
+Requires-Dist: langchain-experimental ==0.0.55
+
+# Description
+Intrigued by RAG's potential but lost in the labyrinth of code? Fear not, aspiring linguist! Buckle up for a playful Python playground where you can tinker with RAG concepts right on your local machine. Let's ditch the deep learning deployment and dive into an educational exploration of RAG, one command line at a time!
+
+This project aims to run locally (i mean on your laptop without GPUs) and leverages:
+* **Ollama** (https://ollama.com/) for running locally LLMs
+* **Sentence-transformers** (https://pypi.org/project/sentence-transformers/) for the embeddings management
+* potentially **llamaParse** from llamaindex (https://docs.llamaindex.ai/) can be used.
+* **langchain** (https://www.langchain.com/) for chunking (semantic or character)
+
+Several primitives (to run in command line) are provided:
+* **RagAdhocQueryDoc**: loads a pdf document in memeory and provides prompt query capability on it
+* **RagChunkText**: Chunk a text into several pieces (semantic or character chunk technique)
+* **RagEmbeddings**: Create embeddings for a single prompts or a list of strings (chunks)
+* **RagFaiss**: Meta Faiss support. Create a FAISS Index and/or enables memory search or index search.
+* **RagLLM**: Prompt an Ollama (pre installed) LLM by using the Ollama API
+* **RagPdf2Text**: Extract the pdf content (only text) into a text file
+* **RagPrompt**: Manages prompt templating
+
+# Installation/Preparation
+1) install ollama (https://ollama.com/)
+2) run ollama in the command line and pull at least one model. tinydolphin is a good choice as it is a very small model and can then run on a simple laptop without a big lattency.
+3) install ragcli by using pip:
+```
+pip install [--force-reinstall] wheel file
+```
+4) use the command lines provided (see in the reference below)
+
+**Note:** Some environment variables may need to be set:  
+* If you plan to use llamaParse, the llamaindex key (generated on the web site: https://cloud.llamaindex.ai/login) must be filled out to LLAMAINDEX_API_KEY 
+* If a specific log file must be specified (by default the programs create the ragcli.log file) with the environment variable RAGCLI_LOGFILE
+
+# CLI Reference
+## RagChunkText
+Chunks a text into several parts.  
+output Format is JSON: 
+```
+{'chunks': ['Transcript of ...', ...] }
+```
+2 techniques can be used (via option -chunktype):
+1) Semantic chunking
+2) character chunking
+```
+usage: RagChunkText [-h] 
+                        [-chunktype {character,semantic}] 
+                        -txt TXT 
+                        -chunks {Chunks JSON file output} 
+                        [-chunk_size {Chunk size for char chunking, def 500}]
+                        [-chunk_overlap {Chunk overlap for char chunking, def 50}] 
+                        [-sep {Chunk separator for char chunking, def .}]
+```
+## RagPdf2Text
+Read a PDF file and converts it into text.
+2 readers available:
+    1) Using pymupdf
+    2) using llamaparse
+Note: the env. variable LLAMAINDEX_API_KEY must be set with the llamaindex key
+```
+usage: RagPdf2Text [-h] 
+                    -pdf {PDF file and path} 
+                    -txt {Text file and path}  
+                    [-reader {pymupdf,llamaparse}]
+```
+
+## RagEmbeddings
+Create embeddings:
+    1) from a single string (prompt)
+    2) from a list of chunks (JSON)
+        Format -> {'chunks': ['Transcript of ...', ...] }
+```
+usage: RagEmbeddings [-h] 
+                        -embeddings {File and path for the embeddings / JSON}
+                        [-chunks {List of chunks in a JSON format}] 
+                        [-prompt {prompt}] 
+```
+## RagFaiss
+Manages Meta FAISS Interactions (search & store)
+```
+usage: RagFaiss [-h] 
+                [-action {memsearch,indexsearch,store}] 
+                [-embprompt {JSON with the prompt embeddings}] 
+                [-embchunks {JSON with the chunks embeddings}]
+                [-nearest {Number of nearest chunks}] 
+                [-faissname {Name of the FAISS index}] 
+                [-faisspath {Where to store the FAISS index and data}] 
+                [-nfile {list of the nearest chunks / json}] 
+```
+3 Usages (via option -action):
+* store -> Index/Store a PDF content : Mandatory parameters: -embchunks / -faissname / -faisspath
+* indexsearch -> Search on an existing index: Mandatory parameters: -embprompt / -faissname / -faisspath
+* memsearch -> Similarity search with PDF content (no index): -embchunks / -embchunks
+"""
+## RagPrompt
+Build a prompt based on a template. The template must contain the {context} and {prompt} tags inside.  
+
+*By default: "Question: {prompt}\n Please answer the question based on the informations listed below: {context}"*
+```
+usage: RagPrompt [-h] 
+                    -prompt {question to ask to the LLM} 
+                    -nfile {list of the nearest chunks / json}
+                    [-template {template string}] 
+```
+## RagLLM
+Prompt a LLM managed by Ollama and returns the response.
+```
+usage: RagLLM [-h] 
+                -prompt {question to the LLM} 
+                [-model {Ollama Model installed}] 
+                [-urlbase {Ollama URL base, def http://localhost:11434/api}] 
+                [-temperature {Model temperature, def 0.9}]
+```
+## RagAdhocQueryDoc
+You just want to query a pdf directly ... this command is provided for that purpose.
+```
+    usage: RagAdhocQueryDoc [-h] 
+                            -prompt {question to the LLM} 
+                            -pdf {PDF file and path} 
+                            [-temperature {LLM temperature}] 
+                            [-chunk_size {Chunk size for char chunking, def 500}]
+                            [-chunk_overlap {Chunk overlap for char chunking, def 50}] 
+                            [-sep {Chunk separator}] 
+                            [-nearest {Number of nearest chunks}] 
+                            [-model {Ollama LLM Model}]
+                            [-urlbase {Ollama URL}]
+```
+# CLI examples
+```
+RagQueryDoc -prompt "How many jobs Joe Biden wants to create ?" -pdf "C:\Git\fullRAG\data\Following is a transcript of President Biden.pdf"
+```
+```
+RagLLM -prompt "Do you know Pytorch ?"
+```
+```
+RagStoreDoc -faissname biden -faisspath "C:\Git\fullRAG\vstore\" -pdf "C:\Git\fullRAG\data\Following is a transcript of President Biden.pdf"
+```
