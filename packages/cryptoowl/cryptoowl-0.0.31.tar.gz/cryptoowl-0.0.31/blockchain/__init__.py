@@ -1,0 +1,4 @@
+from blockchain.constants import SOCIAL_INTELLIGENCE_READ_DB_SECRET_ID
+from db.databases import RDSConnection
+
+read_db = RDSConnection(db_secret_name=SOCIAL_INTELLIGENCE_READ_DB_SECRET_ID)
