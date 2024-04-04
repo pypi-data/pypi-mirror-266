@@ -1,0 +1,31 @@
+[tool.cibuildwheel]
+
+
+[tool.cibuildwheel.windows]
+archs=["AMD64"]
+before-all = "powershell {project}\\installGo.ps1"
+skip = "cp36-win*"
+environment= """
+PATH="C:\\Go\\bin;C:\\Program Files\\Go\\bin;$PATH"
+GOPATH="C:\\Go"
+"""
+
+[tool.cibuildwheel.linux]
+archs=["x86_64"]
+before-all = "yum install -y golang"
+environment = """
+CC=gcc
+CGO_ENABLED=1
+"""
+
+[[tool.cibuildwheel.overrides]]
+select = "*-musllinux*"
+before-all = "wget https://golang.org/dl/go1.21.1.linux-amd64.tar.gz;tar -C /usr/local -xzf go1.21.1.linux-amd64.tar.gz"
+environment = """
+PATH=$PATH:/usr/local/go/bin
+CGO_ENABLED=1
+CC=gcc
+"""
+
+
+
