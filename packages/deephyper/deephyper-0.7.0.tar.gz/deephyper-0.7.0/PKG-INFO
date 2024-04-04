@@ -1,0 +1,286 @@
+Metadata-Version: 2.1
+Name: deephyper
+Version: 0.7.0
+Summary: Scalable asynchronous neural architecture and hyperparameter search for deep neural networks.
+Home-page: https://github.com/deephyper
+Author: Prasanna Balaprakash <pbalapra@ornl.gov>, Romain Egele <romainegele@gmail.com>, Misha Salim, Romit Maulik, Venkat Vishwanath, Stefan Wild
+Maintainer: Prasanna Balaprakash
+Maintainer-email: pbalapra@ornl.gov
+License: BSD 3-clause
+Project-URL: Documentation, http://deephyper.readthedocs.io
+Project-URL: Changes, https://github.com/deephyper/deephyper/releases
+Project-URL: Source Code, https://github.com/deephyper/deephyper
+Project-URL: Issue Tracker, https://github.com/deephyper/deephyper/issues
+Project-URL: Discussion, https://github.com/deephyper/deephyper/discussions
+Classifier: Development Status :: 3 - Alpha
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE.md
+Requires-Dist: ConfigSpace>=0.4.20
+Requires-Dist: dm-tree
+Requires-Dist: Jinja2<3.1
+Requires-Dist: numpy>=1.20
+Requires-Dist: pandas>=0.24.2
+Requires-Dist: packaging
+Requires-Dist: parse
+Requires-Dist: scikit-learn>=0.23.1
+Requires-Dist: scipy>=1.10
+Requires-Dist: tqdm>=4.64.0
+Requires-Dist: pymoo>=0.6.0
+Requires-Dist: pyyaml
+Provides-Extra: autodeuq
+Requires-Dist: networkx; extra == "autodeuq"
+Requires-Dist: pydot; extra == "autodeuq"
+Requires-Dist: tensorflow>=2.0.0; extra == "autodeuq"
+Requires-Dist: tensorflow_probability; extra == "autodeuq"
+Requires-Dist: ray[default]>=1.3.0; extra == "autodeuq"
+Provides-Extra: automl
+Requires-Dist: xgboost; extra == "automl"
+Provides-Extra: jax-cpu
+Requires-Dist: jax[cpu]>=0.3.25; extra == "jax-cpu"
+Requires-Dist: numpyro[cpu]; extra == "jax-cpu"
+Provides-Extra: jax-cuda
+Requires-Dist: jax[cuda]>=0.3.25; extra == "jax-cuda"
+Requires-Dist: numpyro[cuda]; extra == "jax-cuda"
+Provides-Extra: hps
+Provides-Extra: nas
+Requires-Dist: networkx; extra == "nas"
+Requires-Dist: pydot; extra == "nas"
+Requires-Dist: tensorflow>=2.0.0; extra == "nas"
+Requires-Dist: tensorflow_probability; extra == "nas"
+Provides-Extra: hps-tl
+Requires-Dist: sdv>=0.17.1; extra == "hps-tl"
+Provides-Extra: mpi
+Requires-Dist: mpi4py>=3.1.3; extra == "mpi"
+Provides-Extra: ray
+Requires-Dist: ray[default]>=1.3.0; extra == "ray"
+Provides-Extra: redis
+Requires-Dist: redis; extra == "redis"
+Provides-Extra: redis-hiredis
+Requires-Dist: redis[hiredis]; extra == "redis-hiredis"
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: twine; extra == "dev"
+Requires-Dist: black==22.6.0; extra == "dev"
+Requires-Dist: flake8==5.0.4; extra == "dev"
+Requires-Dist: pre-commit; extra == "dev"
+Requires-Dist: rstcheck; extra == "dev"
+Requires-Dist: GitPython; extra == "dev"
+Requires-Dist: ipython; extra == "dev"
+Requires-Dist: nbsphinx; extra == "dev"
+Requires-Dist: sphinx<7,>=4; extra == "dev"
+Requires-Dist: sphinx-book-theme==1.0.1; extra == "dev"
+Requires-Dist: pydata-sphinx-theme==0.13.3; extra == "dev"
+Requires-Dist: sphinx-copybutton; extra == "dev"
+Requires-Dist: sphinx-gallery; extra == "dev"
+Requires-Dist: sphinx_lfs_content; extra == "dev"
+Requires-Dist: sphinx-togglebutton; extra == "dev"
+Provides-Extra: analytics
+Requires-Dist: altair; extra == "analytics"
+Requires-Dist: jupyter; extra == "analytics"
+Requires-Dist: jupyter_contrib_nbextensions>=0.5.1; extra == "analytics"
+Requires-Dist: nbconvert<6; extra == "analytics"
+Requires-Dist: streamlit; extra == "analytics"
+Requires-Dist: streamlit-aggrid; extra == "analytics"
+Requires-Dist: tinydb; extra == "analytics"
+Provides-Extra: hvd
+Requires-Dist: horovod>=0.21.3; extra == "hvd"
+Requires-Dist: mpi4py>=3.0.0; extra == "hvd"
+Provides-Extra: default
+Requires-Dist: ConfigSpace>=0.4.20; extra == "default"
+Requires-Dist: dm-tree; extra == "default"
+Requires-Dist: Jinja2<3.1; extra == "default"
+Requires-Dist: numpy>=1.20; extra == "default"
+Requires-Dist: pandas>=0.24.2; extra == "default"
+Requires-Dist: packaging; extra == "default"
+Requires-Dist: parse; extra == "default"
+Requires-Dist: scikit-learn>=0.23.1; extra == "default"
+Requires-Dist: scipy>=1.10; extra == "default"
+Requires-Dist: tqdm>=4.64.0; extra == "default"
+Requires-Dist: pymoo>=0.6.0; extra == "default"
+Requires-Dist: pyyaml; extra == "default"
+Requires-Dist: networkx; extra == "default"
+Requires-Dist: pydot; extra == "default"
+Requires-Dist: tensorflow>=2.0.0; extra == "default"
+Requires-Dist: tensorflow_probability; extra == "default"
+Requires-Dist: networkx; extra == "default"
+Requires-Dist: pydot; extra == "default"
+Requires-Dist: tensorflow>=2.0.0; extra == "default"
+Requires-Dist: tensorflow_probability; extra == "default"
+Requires-Dist: ray[default]>=1.3.0; extra == "default"
+Requires-Dist: sdv>=0.17.1; extra == "default"
+Requires-Dist: jax[cpu]>=0.3.25; extra == "default"
+Requires-Dist: numpyro[cpu]; extra == "default"
+
+<p align="center">
+<img src="docs/_static/logo/medium.png">
+</p>
+
+[![DOI](https://zenodo.org/badge/156403341.svg)](https://zenodo.org/badge/latestdoi/156403341)
+![GitHub tag (latest by date)](https://img.shields.io/github/tag-date/deephyper/deephyper.svg?label=version)
+[![Documentation Status](https://readthedocs.org/projects/deephyper/badge/?version=latest)](https://deephyper.readthedocs.io/en/latest/?badge=latest)
+![PyPI - License](https://img.shields.io/pypi/l/deephyper.svg)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/deephyper.svg?label=Pypi%20downloads)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/deephyper/tutorials/blob/main/tutorials/colab/DeepHyper_101.ipynb)
+<!-- [![Build Status](https://travis-ci.com/deephyper/deephyper.svg?branch=develop)](https://travis-ci.com/deephyper/deephyper) -->
+
+## What is DeepHyper?
+
+DeepHyper is a powerful Python package for automating machine learning tasks, particularly focused on optimizing hyperparameters, searching for optimal neural architectures, and quantifying uncertainty through the use of deep ensembles. With DeepHyper, users can easily perform these tasks on a single machine or distributed across multiple machines, making it ideal for use in a variety of environments. Whether you're a beginner looking to optimize your machine learning models or an experienced data scientist looking to streamline your workflow, DeepHyper has something to offer. So why wait? Start using DeepHyper today and take your machine-learning skills to the next level!
+
+## Install Instructions
+
+Installation with `pip`:
+
+```console
+# For the most basic set of features (hyperparameter search)
+pip install deephyper
+
+# For the default set of features including:
+# - hyperparameter search with transfer-learning
+# - neural architecture search
+# - deep ensembles
+# - Ray-based distributed computing
+# - Learning-curve extrapolation for multi-fidelity hyperparameter search
+pip install "deephyper[default]"
+```
+
+More details about the installation process can be found at [DeepHyper Installations](https://deephyper.readthedocs.io/en/latest/install/index.html).
+
+## Quickstart
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/deephyper/tutorials/blob/main/tutorials/colab/DeepHyper_101.ipynb)
+
+The black-box function named `run` is defined by taking an input job named `job` which contains the different variables to optimize `job.parameters`. Then the run-function is bound to an `Evaluator` in charge of distributing the computation of multiple evaluations. Finally, a Bayesian search named `CBO` is created and executed to find the values of config which **MAXIMIZE** the return value of `run(job)`.
+
+```python
+def run(job):
+    # The suggested parameters are accessible in job.parameters (dict)
+    x = job.parameters["x"]
+    b = job.parameters["b"]
+
+    if job.parameters["function"] == "linear":
+        y = x + b
+    elif job.parameters["function"] == "cubic":
+        y = x**3 + b
+
+    # Maximization!
+    return y
+
+
+# Necessary IF statement otherwise it will enter in a infinite loop
+# when loading the 'run' function from a new process
+if __name__ == "__main__":
+    from deephyper.problem import HpProblem
+    from deephyper.search.hps import CBO
+    from deephyper.evaluator import Evaluator
+
+    # define the variable you want to optimize
+    problem = HpProblem()
+    problem.add_hyperparameter((-10.0, 10.0), "x") # real parameter
+    problem.add_hyperparameter((0, 10), "b") # discrete parameter
+    problem.add_hyperparameter(["linear", "cubic"], "function") # categorical parameter
+
+    # define the evaluator to distribute the computation
+    evaluator = Evaluator.create(
+        run,
+        method="process",
+        method_kwargs={
+            "num_workers": 2,
+        },
+    )
+
+    # define your search and execute it
+    search = CBO(problem, evaluator, random_state=42)
+
+    results = search.search(max_evals=100)
+    print(results)
+```
+
+Which outputs the following results where the best parameters are with `function == "cubic"`, 
+`x == 9.99` and `b == 10`.
+
+```verbatim
+    p:b p:function       p:x    objective  job_id  m:timestamp_submit  m:timestamp_gather
+0     7     linear  8.831019    15.831019       1            0.064874            1.430992
+1     4     linear  9.788889    13.788889       0            0.064862            1.453012
+2     0      cubic  2.144989     9.869049       2            1.452692            1.468436
+3     9     linear -9.236860    -0.236860       3            1.468123            1.483654
+4     2      cubic -9.783865  -934.550818       4            1.483340            1.588162
+..  ...        ...       ...          ...     ...                 ...                 ...
+95    6      cubic  9.862098   965.197192      95           13.538506           13.671872
+96   10      cubic  9.997512  1009.253866      96           13.671596           13.884530
+97    6      cubic  9.965615   995.719961      97           13.884188           14.020144
+98    5      cubic  9.998324  1004.497422      98           14.019737           14.154467
+99    9      cubic  9.995800  1007.740379      99           14.154169           14.289366
+```
+
+The code defines a function `run` that takes a RunningJob `job` as input and returns the maximized objective `y`. The `if` block at the end of the code defines a black-box optimization process using the `CBO` (Centralized Bayesian Optimization) algorithm from the `deephyper` library.
+
+The optimization process is defined as follows:
+
+1. A hyperparameter optimization problem is created using the `HpProblem` class from `deephyper`. In this case, the problem has three variables. The `x` hyperparameter is a real variable in a range from -10.0 to 10.0. The `b` hyperparameter is a discrete variable in a range from 0 to 10. The `function` hyperparameter is a categorical variable with two possible values.
+2. An evaluator is created using the `Evaluator.create` method. The evaluator will be used to evaluate the function `run` with different configurations of suggested hyperparameters in the optimization problem. The evaluator uses the `process` method to distribute the evaluations across multiple worker processes, in this case, 2 worker processes.
+3. A search object is created using the `CBO` class, the problem and evaluator defined earlier. The `CBO` algorithm is a derivative-free optimization method that uses a Bayesian optimization approach to explore the hyperparameter space.
+4. The optimization process is executed by calling the `search.search` method, which performs the evaluations of the `run` function with different configurations of the hyperparameters until a maximum number of evaluations (100 in this case) is reached.
+5. The results of the optimization process, including the optimal configuration of the hyperparameters and the corresponding objective value, are printed to the console.
+
+## How do I learn more?
+
+* Documentation: <https://deephyper.readthedocs.io>
+
+* GitHub repository: <https://github.com/deephyper/deephyper>
+
+* Blog: <https://deephyper.github.io>
+
+## Contributions
+
+Find the list of contributors on the [DeepHyper Authors](https://deephyper.github.io/aboutus) page of the Documentation.
+
+## Citing DeepHyper
+
+If you wish to cite the Software, please use the following:
+
+```
+@misc{deephyper_software,
+    title = {"DeepHyper: A Python Package for Scalable Neural Architecture and Hyperparameter Search"},
+    author = {Balaprakash, Prasanna and Egele, Romain and Salim, Misha and Maulik, Romit and Vishwanath, Venkat and Wild, Stefan and others},
+    organization = {DeepHyper Team},
+    year = 2018,
+    url = {https://github.com/deephyper/deephyper}
+} 
+```
+
+Find all our publications on the [Research & Publication](https://deephyper.github.io/papers) page of the Documentation.
+
+## How can I participate?
+
+Questions, comments, feature requests, bug reports, etc. can be directed to:
+
+* Issues on GitHub
+
+Patches through pull requests are much appreciated on the software itself as well as documentation.
+Optionally, please include in your first patch a credit for yourself in the list above.
+
+The DeepHyper Team uses git-flow to organize the development: [Git-Flow cheatsheet](https://danielkummer.github.io/git-flow-cheatsheet/). For tests we are using: [Pytest](https://docs.pytest.org/en/latest/).
+
+## Acknowledgments
+
+* Scalable Data-Efficient Learning for Scientific Domains, U.S. Department of Energy 2018 Early Career Award funded by the Advanced Scientific Computing Research program within the DOE Office of Science (2018--Present)
+* Argonne Leadership Computing Facility: This research used resources of the Argonne Leadership Computing Facility, which is a DOE Office of Science User Facility supported under Contract DE-AC02-06CH11357.
+* SLIK-D: Scalable Machine Learning Infrastructures for Knowledge Discovery, Argonne Computing, Environment and Life Sciences (CELS) Laboratory Directed Research and Development (LDRD) Program (2016--2018)
+
+## Copyright and license
+
+Copyright © 2019, UChicago Argonne, LLC
+
+DeepHyper is distributed under the terms of BSD License. See [LICENSE](https://github.com/deephyper/deephyper/blob/master/LICENSE.md)
+
+Argonne Patent & Intellectual Property File Number: SF-19-007
