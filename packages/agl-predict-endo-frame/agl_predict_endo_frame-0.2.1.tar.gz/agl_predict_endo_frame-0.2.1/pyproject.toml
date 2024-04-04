@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "agl-predict-endo-frame"
+version = "0.2.1"
+description = "Multiclass prediction functionality for frames of endoscopy videos"
+authors = ["Thomas J. Lux <lux_t1@ukw.de>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "agl_predict_endo_frame"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+torchaudio = "^2.2.2"
+pytorch-lightning = "^2.2.1"
+torch = "^2.2.2"
+albumentations = "^1.4.1"
+scikit-learn = "^1.4.1.post1"
+numpy = "^1.26.4"
+# streamlit = "^1.26.0"
+matplotlib = "^3.7.2"
+flake8 = "^3.9.2"
+pillow = "^10.2.0"
+scipy = "^1.12.0"
+opencv-python = "^4.9.0.80"
+torchvision = "^0.17.1"
+endoreg-db = "^0.3.4"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+
+[tool.poetry.scripts]
+visualize = 'agl_predict_endo_frame.run_visualizer:main'
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
