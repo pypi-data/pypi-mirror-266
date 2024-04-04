@@ -1,0 +1,33 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+deprecated = "^1.2.14"
+
+[dev-packages]
+pipenv = "*"
+pylint = "*"
+autopep8 = "*"
+pytest = "*"
+pytest-cov = "*"
+ruff = "*"
+black = "*"
+mypy = "*"
+twine = "*"
+hatchling = "*"
+setuptools = "*"
+wheel = "*"
+types-deprecated = "*"
+
+[requires]
+python_version = "3.6"
+
+[scripts]
+test = "pytest"
+build = "./dist/build.sh"
+publish-test = "./dist/publish.sh --test"
+publish-real = "./dist/publish.sh"
+lint-check = "ruff check tinta"
+lint-fix = "ruff fix tinta"
