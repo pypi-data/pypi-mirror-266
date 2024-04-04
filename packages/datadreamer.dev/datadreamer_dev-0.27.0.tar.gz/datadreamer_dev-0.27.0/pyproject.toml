@@ -1,0 +1,130 @@
+[tool.poetry]
+name = "datadreamer.dev"
+version = "0.27.0"
+description = "Prompt. Generate Synthetic Data. Train & Align Models."
+license = "MIT"
+authors= [
+    "Ajay Patel <me@ajayp.app>"
+]
+maintainers = [
+    "Ajay Patel <me@ajayp.app>"
+]
+readme = "README.md"
+homepage = "https://datadreamer.dev/"
+repository = "https://github.com/datadreamer-dev/DataDreamer"
+documentation = "https://datadreamer.dev/docs/"
+keywords = ["python", "nlp", "machine learning", "natural language processing", "deep learning", "transformers", "pytorch", "openai", "alignment", "gpt", "nlp library", "synthetic data", "fine-tuning", "synthetic dataset generation", "llm", "llms", "llmops", "instruction-tuning"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence"
+]
+packages = [
+    {include = "datadreamer"}
+]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.14"
+click = ">=8.1.3"
+loguru = ">=0.7.0,<1.0.0"
+filelock = ">=3.13.1,<4.0.0"
+jsonlines = ">=4.0.0,<7.0.0"
+numpy = ">=1.26.2,<2.0.0"
+sortedcontainers = ">=2.4.0,<3.0.0"
+sqlitedict = ">=2.1.0,<3.0.0"
+pandas = ">=1.5.3,<2.0.0"
+tenacity = ">=8.2.2"
+dill = ">=0.3.7,<1.0.0"
+ring = ">=0.10.1,<1.0.0"
+psutil = ">=5.9.5"
+faiss-cpu = ">=1.7.4,<2.0.0"
+evaluate = ">=0.4.1,<1.0.0"
+tiktoken = ">=0.5.2,<1.0.0"
+sentence-transformers = ">=2.3.0,<3.0.0"
+setfit = ">=1.0.3,<2.0.0"
+openai = ">=1.10.0,<2.0.0"
+datasets = ">=2.17.0,<3.0.0"
+peft = ">=0.7.1,<1.0.0"
+bitsandbytes = ">=0.42.0,<1.0.0"
+huggingface-hub = ">=0.20.3,<1.0.0"
+optimum = ">=1.16.2,<2.0.0"
+accelerate = ">=0.26.1,<1.0.0"
+transformers = ">=4.37.1,<4.50.0"
+ctransformers = ">=0.2.27,<1.0.0"
+pyro5 = ">=5.15"
+litellm = "1.31.14"
+trl = "0.8.1"
+torch = ">=2.1.2,<3.0.0"
+
+[tool.poetry.group.dev.dependencies]
+poetry = "1.4.2"
+ruff = "0.1.9"
+sphinx = "7.0.1"
+furo = "2023.5.20"
+sphinx-inline-tabs = "2023.4.21"
+sphinx-autobuild = "2021.3.14"
+sphinx-copybutton = "0.5.2"
+sphinx-click = "4.4.0"
+sphinx-sitemap = "2.5.0"
+sphinx-autodoc-typehints = "1.23.0"
+sphinx-toolbox = "3.4.0"
+sphinx-design = "0.5.0"
+sphinx-reredirects = "0.1.3"
+
+[tool.ruff]
+extend-exclude = ["docs"]
+
+[tool.ruff.format]
+skip-magic-trailing-comma = true
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "B", "C90"]
+ignore = ["E203", "E501"]
+unfixable = ["B"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 12
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+
+[tool.pytest.ini_options]
+addopts = "-v --cov=src --cov-report term-missing --cov-report json"
+filterwarnings = ["ignore::DeprecationWarning:jupyter_client.*:"]
+
+[tool.mypy]
+check_untyped_defs = true
+warn_unused_ignores = true
+mypy_path = "src/_stubs"
+
+[[tool.mypy.overrides]]
+module = "click,wandb,wandb.*,click.testing,flaky,tensorflow,torch_xla,jax,datasets.features.features,datasets.iterable_dataset,datasets.fingerprint,datasets.builder,datasets.arrow_writer,datasets.splits,datasets.utils,datasets.utils.version,pyarrow.lib,huggingface_hub,huggingface_hub.utils._headers,huggingface_hub.utils._errors,dill,dill.source,transformers,bitsandbytes,sqlitedict,optimum.bettertransformer,optimum.bettertransformer.models,optimum.utils,transformers.utils.quantization_config,sortedcontainers,peft,psutil,ring,ctransformers,petals,petals.client.inference_session,hivemind.p2p.p2p_daemon_bindings.utils,huggingface_hub.utils,tqdm,ctransformers.transformers,vllm,litellm,litellm.llms.palm,litellm.exceptions,sentence_transformers,faiss,huggingface_hub.utils._validators,evaluate,transformers.trainer_callback,transformers.training_args,trl,guidance,sentence_transformers.models.Transformer,trl.trainer.utils,transformers.trainer_utils,setfit,joblib,setfit.modeling,transformers.utils.notebook,mistralai.models.chat_completion,accelerate.utils,accelerate.utils.constants,accelerate,transformers.trainer,sentence_transformers.util,Pyro5,Pyro5.server,Pyro5.api,Pyro5,datadreamer,huggingface_hub.repocard"
+ignore_missing_imports = true
+
+[tool.pyright]
+exclude = [".cluster/", ".venv/", ".venv_dev/", ".venv_poetry/"]
+
+[tool.coverage.run]
+omit = ["src/__main__.py", "src/project/*", "src/tests/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "@abc.abstractmethod",
+  "@abstractmethod",
+  "pragma: no cover",
+]   
+
+[tool.docs.sh]
+docs_author = "Ajay Patel"
+docs_author_website = "https://ajayp.app"
+autodoc_exclude_paths = "./datadreamer.py ./datasets/[!_]*.py ./steps/[!_]*.py ./errors/[!_]*.py ./llms/[!_]*.py ./embedders/[!_]*.py ./retrievers/[!_]*.py ./task_models/[!_]*.py ./trainers/[!_]*.py ./project/* ./logging/* ./pickling/* ./utils/* ./tests/*" # Space-separated, fnmatch-style
