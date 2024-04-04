@@ -1,0 +1,18 @@
+query actions($id: ID!) {
+  person: personById(id: $id) {
+    id
+    userid
+    fullName
+    canEditPerson
+    canDeletePerson
+    canChangePersonPreferences
+    canInvitePerson
+    canImpersonatePerson
+  }
+}
+
+mutation deletePersons($ids: [ID]!) {
+  deletePersons(ids: $ids) {
+    deletionCount
+  }
+}
