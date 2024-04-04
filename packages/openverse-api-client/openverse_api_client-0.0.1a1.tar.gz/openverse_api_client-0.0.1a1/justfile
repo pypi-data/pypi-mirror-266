@@ -1,0 +1,45 @@
+pnpm +args:
+    cd packages/openverse-api-client && pnpm {{ args }}
+
+
+_pyclean:
+    rm -rf dist
+    # Blank these files so generation still works
+    echo "" > src/openverse_api_client/async_client.py
+    echo "" > src/openverse_api_client/sync_client.py
+
+
+_tsclean:
+    rm -rf packages/openverse-api-client/dist
+    rm -f packages/openverse-api-client/src/types.ts
+
+
+clean: _pyclean _tsclean
+
+
+pytest *args: _pyclean
+    hatch run generate --py
+    hatch run test {{ quote(args) }}
+
+
+pytypes: _pyclean
+    hatch run generate --py
+    hatch run types
+
+
+tstest *args: _tsclean
+    hatch run generate --ts
+    just pnpm run test {{ quote(args) }}
+
+
+tstypes: _tsclean
+    hatch run generate --ts
+    just pnpm run build:types
+
+
+build: clean
+    hatch run generate
+
+    just pnpm run build
+    hatch build
+    just pnpm pack --pack-destination dist
