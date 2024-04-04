@@ -1,0 +1,57 @@
+Metadata-Version: 2.1
+Name: holcstore
+Version: 0.1.6
+Summary: A Django App to use a simple load curve store
+Home-page: 
+Author: Jean-Pierre Lartigue
+Author-email: 
+License: BSD-3-Clause
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 4.2
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Requires-Python: >=3.10
+License-File: LICENSE
+Requires-Dist: Django>=4.0.0
+Requires-Dist: pandas>=1.5.0
+Requires-Dist: pyarrow>=14.0.0
+
+============
+HoLcStore
+============
+
+HoLcStore is a Django app for creating a simple TimeSeries store in your database.
+
+Quick start
+-----------
+
+1. Add "holcstore" to your INSTALLED_APPS setting like this::
+
+    INSTALLED_APPS = [
+        ...,
+        "holcstore",
+    ]
+
+
+
+2. Start using the abstract model ``Store`` by importing it ::
+
+    from hostore.models import Store
+
+    class YourStore(Store):
+        # add new fields
+
+        class Meta(Store.Meta):
+            abstract = False
+            # add your meta
+
