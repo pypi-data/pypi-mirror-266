@@ -1,0 +1,44 @@
+[tool.poetry]
+    name          = "tasteful"
+    version       = "0.0.1-rc0"
+    description   = "Core library of the Tasteful framework"
+    authors       = ["Fabrice PONT <fa.pont@gmail.com>", "Gabriel CRETI <me@kaboo.boo>"]
+    readme        = "README.md"
+    license       = "Apache.2-0"
+    homepage      = "https://heka.ai"
+    repository    = "https://github.com/heka-ai/tasteful"
+    documentation = "https://heka-ai.github.io/tasteful"
+    keywords = [
+        "tasteful",
+        "flavor",
+        "fastapi",
+        "library"
+    ]
+    classifiers = [
+        "Development Status :: 1 - Planning",
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: Apache Software License",
+        "Framework :: FastAPI"
+    ]
+
+    [tool.poetry.dependencies]
+        python      = "^3.12"
+        fastapi     = { extras = ["all"], version = "^0.108.0" }
+        pydantic    = "^2.5"
+        orjson      = "^3.9"
+        httpx       = "^0.26"
+        uvicorn     = "^0.25"
+        sqlmodel    = "^0.0.16"
+        asyncpg     = "^0.29.0"
+        humps       = "^0.2.2"
+
+    [tool.poetry.group.dev]
+        optional = true
+        [tool.poetry.group.dev.dependencies]
+            debugpy = "^1.8.1"
+
+[build-system]
+    requires      = ["poetry-core"]
+    build-backend = "poetry.core.masonry.api"
+
+
