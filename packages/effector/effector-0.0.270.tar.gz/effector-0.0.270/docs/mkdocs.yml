@@ -1,0 +1,94 @@
+site_name: effector
+
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Global effect: global_effect_intro.md
+  - Regional effect: regional_effect_intro.md
+  - Tutorials:
+      - Synthetic Datasets:
+          - Linear Model: Tutorials/synthetic-examples/01_linear_model.md
+          - Global Effect - Methods Comparison: Tutorials/synthetic-examples/02_rhale_vs_ale_vs_pdp.md
+          - Regional Effect in depth (a): Tutorials/synthetic-examples/03_regional_effects_synthetic_f.md
+          - Regional Effect in depth (b): Tutorials/synthetic-examples/04_regional_effects_real_f.md
+      - Real Datasets:
+          - Bike Sharing: Tutorials/real-examples/01_bike_sharing_dataset.md
+      - Guides:
+          - Wrap black-models in common ML libraries: Tutorials/Guides/wrap_models.md
+  - API: api.md
+  - References: references.md
+
+
+theme:
+  name: material
+
+  font:
+    text: Roboto Flex
+    code: Roboto Mono
+
+  features:
+    - navigation.footer
+    - header.autohide
+    - content.code.copy
+    - content.code.select
+  icon:
+    repo: fontawesome/brands/github
+
+  palette:
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+
+
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+
+plugins:
+  - search
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          paths: [./../]
+          rendering:
+            show_source: true
+            heading_level: 2
+
+markdown_extensions:
+  - pymdownx.arithmatex:
+      generic: true
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+watch:
+  - ../effector
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/givasile/effector
