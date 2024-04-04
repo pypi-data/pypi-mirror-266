@@ -1,0 +1,42 @@
+Metadata-Version: 2.1
+Name: svc-toolkit
+Version: 1.0.2
+Summary: A self-contained singing voice conversion toolkit.
+Author: jljl1337
+Author-email: lckjack123@gmail.com
+Requires-Python: >=3.10,<3.13
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: huggingface-hub (==0.20.3)
+Requires-Dist: librosa (==0.10.1)
+Requires-Dist: lightning (==2.1.3)
+Requires-Dist: matplotlib (==3.8.1)
+Requires-Dist: numpy (==1.26.3)
+Requires-Dist: pandas (==2.1.3)
+Requires-Dist: pyside6 (==6.6.1)
+Requires-Dist: pyside6-utils (==1.2.2)
+Requires-Dist: pyyaml (==6.0.1)
+Requires-Dist: scikit-learn (==1.4.0)
+Requires-Dist: scipy (==1.12.0)
+Requires-Dist: so-vits-svc-fork (==4.1.40)
+Requires-Dist: torch (==2.1.1)
+Requires-Dist: torchaudio (==2.1.1)
+Requires-Dist: torchmetrics (==1.2.0)
+Description-Content-Type: text/markdown
+
+# Singing Voice Conversion with GUI
+
+![Tests](https://github.com/jljl1337/svc-toolkit/actions/workflows/tests.yml/badge.svg)
+[![Codecov](https://codecov.io/gh/jljl1337/svc-toolkit/graph/badge.svg?token=QBM6OLIG00)](https://codecov.io/gh/jljl1337/svc-toolkit)
+
+## Useful commands for singularity container
+
+```
+singularity shell --nv --bind /public:/public ~/test.simg 
+source ~/.bashrc
+conda activate svc
+python src/separation_train.py -t input_csv/train.csv -v input_csv/val.csv -e all
+```
