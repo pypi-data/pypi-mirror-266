@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "devon-agent"
+version = "0.0.7"
+description = ""
+authors = ["killind-dev <61808204+killind-dev@users.noreply.github.com>","mihir1003 <mihir1003@gmail.com>"]
+readme = "README.md"
+package-mode = true
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4.0"
+openai = "^1.14.1"
+anthropic = "^0.20.0"
+python-dotenv = "^1.0.1"
+pydantic = "^2.6.4"
+instructor = "^0.6.4"
+xmltodict = "^0.13.0"
+astroid = "^3.1.0"
+autopep8 = "^2.0.4"
+black = "^24.3.0"
+ruff = "^0.3.3"
+docker = "^7.0.0"
+pytest = "^8.1.1"
+unidiff = "^0.7.5"
+gitpython = "^3.1.42"
+pytest-json-report = "^1.5.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry.scripts]
+devon = "devon_agent.__main__:main"
+
