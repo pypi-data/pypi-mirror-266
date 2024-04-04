@@ -1,0 +1,53 @@
+[project]
+name = "typedllm"
+description = "A Pydantic LLM Interface that sparks Joy"
+authors = [
+    {name = "Todd Cullen", email = "todd@100-x.ai"},
+]
+dependencies = [
+    "pydantic>=2.6.3",
+    "httpx>=0.27.0",
+    "litellm>=1.34.1",
+    "typedtemplate>=0.1.6",
+]
+requires-python = ">=3.9"
+readme = "README.md"
+license = {text = "MIT"}
+dynamic = ["version"]
+
+[project.optional-dependencies]
+langchain = [
+    "langchain-core>=0.1.33",
+    "typedtemplate>=0.1.5",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = 'src/typedllm/version.py'
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.sdist]
+include = [
+    '/README.md',
+    '/HISTORY.md',
+    '/tests',
+    '/requirements',
+]
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "pytest>=8.0.2",
+    "pytest-asyncio>=0.23.5.post1",
+    "langchain-core>=0.1.33",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
