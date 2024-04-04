@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "spark-scaffolder-transforms-tools"
+version = "0.1.0"
+description = ""
+authors = ["jonathan <jony327@gmail.com>"]
+readme = "README.md"
+packages = [{include = "spark_scaffolder_transforms_tools"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+findspark = "2.0.1"
+pyspark = "3.1.1"
+pandas = "2.0.1"
+numpy = "1.24.3"
+setuptools = "58.2.0"
+wheel = "0.40.0"
+fastavro = "^1.8.2"
+fastparquet = "^2023.7.0"
+pyarrow = "^12.0.1"
+
+
+
+[tool.poetry.group.dev.dependencies]
+jupyterlab = "^4.0.0"
+twine = "^4.0.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
