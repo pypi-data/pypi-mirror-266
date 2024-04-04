@@ -1,0 +1,55 @@
+Metadata-Version: 2.1
+Name: srt-trans
+Version: 1.0.1
+Summary: A simple translator for any SubRip(.srt) files.
+Home-page: https://github.com/bumblezhou/srt_trans
+Author: Jack
+Author-email: bumble.zhou@gmail.com
+License: MIT
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: googletrans ==3.1.0a0
+Requires-Dist: pysrt >=1.1.2
+Requires-Dist: ffmpeg-python ==0.2.0
+
+# srt_trans
+## Translage any SubRip file from any source language to any target language, and merger them into the target SubRip(.srt) file.
+
+# How to usage:
+
+```bash
+Usage: srt_trans test_file.srt [-src_lang en -dest_lang zh-CN -proxy http://youdomain:your_port]
+Example:
+    srt_trans ./test_video.mkv
+    srt_trans ./test_video.mkv -src_lang en -dest_lang zh-TW
+    srt_trans ./test_video.mkv -src_lang en -dest_lang zh-CN -proxy http://127.0.0.1:8118
+    srt_trans ./test/test_file.srt
+    srt_trans ./test/test_file.srt -src_lang en -dest_lang zh-TW
+    srt_trans ./test/test_file.srt -src_lang en -dest_lang ja
+    srt_trans ./test/test_file.srt -src_lang en -dest_lang zh-CN
+    srt_trans ./test/test_file.srt -src_lang en -dest_lang fr -proxy http://127.0.0.1:8118
+```
+
+# Package
+```bash
+pip install wheel
+python setup.py sdist bdist_wheel
+```
+
+# Publish to pypi
+```bash
+pip install twine
+twine upload dist/*
+```
+
+# Installation
+## srt_trans is available on pypi. To intall it you can:
+```bash
+sudo pip install srt_trans
+```
