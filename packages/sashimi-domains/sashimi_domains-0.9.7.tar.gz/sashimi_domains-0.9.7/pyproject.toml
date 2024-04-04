@@ -1,0 +1,75 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "sashimi-domains"
+description = "A Python module for mixed-methods qualitative studies of large textual or symbolic corpora, providing applications of statistical models accompanied by tailored interactive visualizations. It affords the detection of both textual and metadata structures by employing stochastic block modeling (SBM) from `graph-tool` or (currently deprecated) word embedding from `gensim`."
+readme = "README.md"
+requires-python = ">=3.8"
+license = "GPL-3.0-or-later"
+keywords = []
+authors = [
+  { name = "Ale Abdo", email = "abdo@member.fsf.org" },
+]
+classifiers = [
+  "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Topic :: Sociology",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Topic :: Scientific/Engineering :: Visualization",
+]
+dependencies = [
+  "bokeh",
+  "colorcet",
+  # "gensim",
+  "lxml",
+  "matplotlib",
+  "numpy",
+  "pandas",
+  "scipy",
+  "spacy",
+  "tqdm",
+]
+dynamic = ["version"]
+
+[project.urls]
+Documentation = "https://gitlab.com/solstag/sashimi/"
+Issues = "https://gitlab.com/solstag/sashimi/-/issues"
+Source = "https://gitlab.com/solstag/sashimi/"
+
+[tool.hatch.version]
+path = "src/sashimi/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+[tool.hatch.build.targets.wheel]
+packages = ["src/sashimi"]
+
+[tool.hatch.envs.default]
+dependencies = [
+  "pytest",
+  "pytest-cov",
+]
+[tool.hatch.envs.default.scripts]
+cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=sashimi --cov=tests"
+no-cov = "cov --no-cov"
+
+[[tool.hatch.envs.test.matrix]]
+python = ["38", "39", "310"]
+
+[tool.coverage.run]
+branch = true
+parallel = true
+omit = [
+  "src/sashimi/__about__.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
+[tool.black]
