@@ -1,0 +1,12 @@
+import os
+
+SERVER_IP = os.environ['LABML_APP_SERVER_IP']
+PORT = os.environ['LABML_APP_SERVER_PORT']
+SERVER_URL = f'http://{SERVER_IP}:{PORT}'
+WEB_URL = f'http://{SERVER_IP}:{PORT}'
+
+FLOAT_PROJECT_TOKEN = 'floating_project'
+SAMPLES_PROJECT_TOKEN = 'samples'
+LABML_VERSION = '0.4.112'
+IS_LOCAL_SETUP = True
+INDICATOR_LIMIT = 100000000000
