@@ -1,0 +1,161 @@
+site_name: Authx
+site_description: Ready to use and customizable Authentications and Oauth2 management for FastAPI
+site_url: https://authx.yezz.me/
+
+theme:
+  name: 'material'
+  palette:
+    - scheme: default
+      primary: teal
+      accent: amber
+      toggle:
+          icon: material/lightbulb
+          name: Switch to dark mode
+    - scheme: slate
+      primary: teal
+      accent: amber
+      toggle:
+          icon: material/lightbulb-outline
+          name: Switch to light mode
+  logo: img/logo.png
+  favicon: img/icon.ico
+  features:
+  - search.suggest
+  - search.highlight
+  - content.tabs.link
+  - navigation.indexes
+  - content.tooltips
+  - navigation.path
+  - content.code.annotate
+  - content.code.copy
+  - content.code.select
+  - navigation.tabs
+  icon:
+    repo: fontawesome/brands/github
+  language: en
+repo_name: Yezz123/AuthX
+repo_url: https://github.com/yezz123/AuthX
+edit_uri: edit/main/docs/
+
+plugins:
+  - search: null
+  - social:
+      cards_layout_options:
+        background_color: "#009485"
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            extensions:
+            - griffe_typingdoc
+            show_root_heading: true
+            show_if_no_docstring: true
+            preload_modules:
+            - httpx
+            - starlette
+            - fastapi
+            - pydantic_settings
+            inherited_members: true
+            members_order: source
+            separate_signature: true
+            unwrap_annotated: true
+            filters:
+            - '!^_'
+            heading_level: 3
+            merge_init_into_class: true
+            docstring_section_style: spacy
+            signature_crossrefs: true
+            allow_inspection: true
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - abbr
+  - admonition
+  - pymdownx.details
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+nav:
+  - Authx: index.md
+  - Get Started:
+    - Installation: get-started/installation.md
+    - Basic Usage: get-started/basic-usage.md
+    - Payload Data: get-started/payload.md
+    - JWT Locations: get-started/location.md
+    - Refreshing Tokens: get-started/refresh.md
+    - Freshness Tokens: get-started/token.md
+  - Callbacks:
+    - User Serialization: callbacks/user.md
+    - Token Serialization: callbacks/token.md
+  - Dependencies:
+    - Dependencies: dependencies/dependencies.md
+    - Dependency Injection: dependencies/injection.md
+    - Dependency Aliases: dependencies/aliases.md
+    - Dependency Bundle: dependencies/bundle.md
+  - Extra Features:
+    - Oauth2 Features: extra/OAuth2.md
+    - Metrics Features: extra/Metrics.md
+    - Cache Features: extra/Cache.md
+    - Profiler Middleware: extra/profiler.md
+    - Sessions Middleware: extra/Sessions.md
+  - Reference - API:
+    - api/reference.md
+    - api/main.md
+    - api/config.md
+    - api/request.md
+    - api/token.md
+    - api/dependencies.md
+    - api/exceptions.md
+    - Internal:
+      - api/internal/callback.md
+      - api/internal/errors.md
+      - api/internal/memory.md
+      - api/internal/signature.md
+  - Development:
+    - Contributing: development/contributing.md
+  - FAQ:
+    - Frequently Asked Questions: faq/faq.md
+    - Help & Support: faq/help.md
+    - Code of Conduct: faq/code_of_conduct.md
+    - License: faq/license.md
+  - Release Notes: release.md
+
+
+extra:
+  generator: true
+  analytics:
+    provider: google
+    property: G-7RF17YL4KP
+  social:
+  - icon: fontawesome/brands/github-alt
+    link: https://github.com/yezz123/authx
+  - icon: fontawesome/brands/x-twitter
+    link: https://x.com/THyasser1
+  - icon: fontawesome/solid/globe
+    link: https://authx.yezz.me
+
+extra_css:
+  - css/termynal.css
+  - css/custom.css
+
+extra_javascript:
+  - js/termynal.js
+  - js/custom.js
