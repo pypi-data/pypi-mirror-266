@@ -1,0 +1,261 @@
+[tool.poetry]
+name = "graphene-django-query-optimizer"
+version = "0.5.1"
+description = "Automatically optimize SQL queries in Graphene-Django schemas."
+authors = [
+    "Matti Lamppu <lamppu.matti.akseli@gmail.com>",
+]
+packages = [
+    { include = "query_optimizer" },
+]
+license = "MIT"
+readme = "README.md"
+homepage = "https://mrthearman.github.io/graphene-django-query-optimizer"
+repository = "https://github.com/MrThearMan/graphene-django-query-optimizer"
+keywords = [
+    "django",
+    "graphene",
+    "sql",
+    "graphql",
+    "python",
+    "query",
+    "optimizer",
+    "optimization",
+]
+classifiers = [
+    "Environment :: Web Environment",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.0",
+]
+include = [
+    "README.md",
+    "LICENSE",
+]
+exclude = [
+    "tests",
+]
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/MrThearMan/graphene-django-query-optimizer/issues"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4"
+Django = ">=4.2"
+graphene-django = ">=3.0.0"
+django-filter = { version = ">=21.1", optional = true }
+typing-extensions = { version = ">=4.7.1", python = "<3.10" }
+django-settings-holder = ">=0.1.2"
+
+[tool.poetry.extras]
+filter = ["django-filter"]
+
+[tool.poetry.group.test.dependencies]
+pytest = "8.1.1"
+coverage = "7.4.4"
+pytest-django = "4.8.0"
+pre-commit = "3.7.0"
+tox = "4.14.2"
+tox-gh-actions = "3.2.0"
+faker = "24.4.0"
+factory-boy = "3.3.0"
+sqlparse = "0.4.4"
+django-graphiql-debug-toolbar = "0.2.0"
+py-spy = "0.3.14"
+
+[tool.poetry.group.docs.dependencies]
+mkdocs = "1.5.3"
+pymdown-extensions = "10.7.1"
+mkdocs-mermaid2-plugin = "1.1.1"
+
+[tool.poetry.group.lint.dependencies]
+mypy = "1.9.0"
+django-stubs = "4.2.7"
+
+[tool.ruff]
+fix = true
+line-length = 120
+extend-exclude = [
+    "tests/*",
+]
+
+[tool.ruff.lint]
+typing-modules = [
+    "query_optimizer.typing",
+]
+select = [
+    "A",        # flake8-builtins
+    "ANN",      # flake8-annotations
+    "ARG",      # flake8-unused-arguments
+    "B",        # flake8-bugbear
+    "BLE",      # flake8-blind-except
+    "C90",      # mccabe
+    "C4",       # flake8-comprehensions
+    "COM",      # flake8-commas
+    "D200",     # pydocstyle: One-line docstring should fit on one line
+    "D201",     # pydocstyle: No blank lines allowed before function docstring (found {num_lines})
+    "D202",     # pydocstyle: No blank lines allowed after function docstring (found {num_lines})
+    "D209",     # pydocstyle: Multi-line docstring closing quotes should be on a separate line
+    "D213",     # pydocstyle: Multi-line docstring summary should start at the second line
+    "DTZ",      # flake8-datetimez
+    "E",        # pycodestyle errors
+    "EM",       # flake8-errmsg
+    "F",        # pyflakes
+    "FBT",      # flake8-boolean-trap
+    "I",        # isort
+    "INP",      # flake8-no-pep420
+    "ISC",      # flake8-implicit-str-concat
+    "N",        # pep8-naming
+    "PERF",     # perflint
+    "PGH",      # pygrep-hooks
+    "PIE",      # flake8-pie
+    "PL",       # pylint
+    "PT",       # flake8-pytest-style
+    "PTH",      # flake8-use-pathlib
+    "PYI",      # flake8-pyi
+    "Q",        # flake8-quotes
+    "RET",      # flake8-return
+    "RSE",      # flake8-raise
+    "RUF",      # ruff-specific rules
+    "S",        # flake8-bandit
+    "SIM",      # flake8-simplify
+    "T20",      # flake8-print
+    "TCH",      # flake8-type-checking
+    "TRY",      # tryceratops
+    "UP",       # pyupgrade
+    "W",        # pycodestyle warnings
+]
+ignore = [
+    "ANN101",   # Missing type annotation for `self` in method
+    "ANN102",   # Missing type annotation for `cls` in method
+    "ANN401",   # Any-typing allowed
+    "ARG002",   # Unused method argument
+    "ARG003",   # Unused class method argument
+    "N805",     # First argument of a method should be named `self`
+    "SLF001",   # Accessing private members is allowed
+    "UP007",    # Use `X | Y` for union type annotations
+    #
+    # Conflicting with ruff-format
+    #
+    "COM812",   # missing-trailing-comma
+    "COM819",   # prohibited-trailing-comma
+    "D206",     # indent-with-spaces
+    "D300",     # triple-single-quotes
+    "E111",     # indentation-with-invalid-multiple
+    "E114",     # indentation-with-invalid-multiple-comment
+    "E117",     # over-indented
+    "ISC001",   # single-line-implicit-string-concatenation
+    "ISC002",   # multi-line-implicit-string-concatenation
+    "Q000",     # bad-quotes-inline-string
+    "Q001",     # bad-quotes-multiline-string
+    "Q002",     # bad-quotes-docstring
+    "Q003",     # avoidable-escaped-quote
+    "W191",     # tab-indentation
+]
+
+[tool.ruff.lint.extend-per-file-ignores]
+"test_*.py" = [
+    "S101",     # Assert is fine
+    "PLR2004",  # Allow constants
+    "ANN",      # No need to annotate tests
+    "UP",       # No upgrade rules
+]
+"conftest.py" = [
+    "ARG",      # Fixtures can be unused
+    "ANN",      # No need to annotate tests
+    "UP",       # No upgrade rules
+]
+
+[tool.ruff.lint.pylint]
+max-args = 7
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+plugins = [
+    "mypy_django_plugin.main",
+]
+
+[tool.django-stubs]
+django_settings_module = "tests.project.settings"
+
+[tool.coverage.run]
+relative_files = true
+
+[tool.coverage.report]
+omit = [
+    "tests/*",
+    "docs/*",
+    ".venv/*",
+    ".tox/*",
+]
+exclude_lines = [
+    "if TYPE_CHECKING:",
+    "except ImportError:",
+    "pragma: no cover",
+]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "tests.project.settings"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = py{39, 310, 311, 312}-django{42, 50}-gd{30, 31, 32}
+isolated_build = true
+
+[gh-actions]
+python =
+    3.9: py39
+    3.10: py310
+    3.11: py311
+    3.12: py312
+
+[testenv]
+allowlist_externals =
+    poetry
+setenv =
+    PYTHONPATH = {toxinidir}
+    DJANGO_SETTINGS_MODULE = tests.project.settings
+deps =
+    django42: Django >=4.2,<4.3
+
+    py39-django50: Django >=4.2,<4.3
+    py{310, 311, 312}-django50: Django >=5.0,<5.1
+
+    gd30: graphene-django >=3.0.0,<3.1.0
+    gd31: graphene-django >=3.1.0,<3.2.0
+    gd32: graphene-django >=3.2.0,<3.3.0
+
+    django-filter
+    django-settings-holder
+    typing-extensions
+
+    pytest
+    coverage
+    pytest-django
+    faker
+    factory-boy
+    sqlparse
+    django-graphiql-debug-toolbar
+commands =
+    coverage run -m pytest --disable-warnings
+"""
+
+[build-system]
+requires = ["poetry-core>=1.7.0"]
+build-backend = "poetry.core.masonry.api"
