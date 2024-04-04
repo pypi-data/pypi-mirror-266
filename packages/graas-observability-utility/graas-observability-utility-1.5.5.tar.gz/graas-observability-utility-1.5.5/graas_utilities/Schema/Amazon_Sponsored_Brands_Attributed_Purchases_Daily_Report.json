@@ -1,0 +1,72 @@
+{
+  "type": "object",
+  "title": "Amazon Sponsored Brands Attributed Purchases Daily Report",
+  "description": "Daily report for attributed purchases in Amazon Sponsored Brands",
+  "properties": {
+    "Date": {
+      "type": "string",
+      "description": "Date of the report in the format 'DD-MM-YYYY'",
+      "format": "dd-MM-yyyy",
+      "pattern": "[0-9]{2}-[0-9]{2}-[1-2][0-9]{3}"
+    },
+    "Currency": {
+      "type": "string",
+      "description": "Currency code for the amounts, e.g., 'INR'"
+    },
+    "Campaign_Name": {
+      "type": "string",
+      "description": "Name of the sponsored brands campaign"
+    },
+    "Attribution_type": {
+      "type": "string",
+      "description": "Type of attribution, e.g., 'Brand Halo'"
+    },
+    "Purchased_ASIN": {
+      "type": "string",
+      "description": "ASIN (Amazon Standard Identification Number) of the purchased product"
+    },
+    "14_Day_Total_Sales": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Details of total sales for the last 14 days"
+    },
+    "14_Day_Total_Orders": {
+      "type": "number",
+      "description": "Total number of orders placed in the last 14 days"
+    },
+    "14_Day_Total_Units": {
+      "type": "number",
+      "description": "Total number of units purchased in the last 14 days"
+    },
+    "14_Day_New_to_brand_Sales": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Details of new-to-brand sales for the last 14 days"
+    },
+    "14_Day_New_to_brand_Orders": {
+      "type": "number",
+      "description": "Number of new-to-brand orders in the last 14 days"
+    },
+    "14_Day_New_to_brand_Units": {
+      "type": "number",
+      "description": "Number of new-to-brand units purchased in the last 14 days"
+    },
+    "14_Day_of_Sales_New_to_brand": {
+      "type": "number",
+      "description": "Percentage of total sales attributed to new-to-brand purchases in the last 14 days"
+    },
+    "14_Day_of_Orders_New_to_brand": {
+      "type": "number",
+      "description": "Percentage of total orders attributed to new-to-brand purchases in the last 14 days"
+    },
+    "14_Day_of_Units_New_to_brand": {
+      "type": "number",
+      "description": "Percentage of total units attributed to new-to-brand purchases in the last 14 days"
+    }
+  },
+  "required": [
+    "Date",
+    "Campaign_Name",
+    "Purchased_ASIN"
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "type": "object",
+  "title": "Shopee Marketing Voucher Trends Daily Report",
+  "description": "Daily report on voucher trends for Shopee marketing",
+  "properties": {
+    "Sales": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Sales information"
+    },
+    "Claims": {
+      "type": "integer",
+      "description": "Total number of voucher claims"
+    },
+    "Orders": {
+      "type": "integer",
+      "description": "Total number of orders using vouchers"
+    },
+    "Usage_Rate": {
+      "type": "number",
+      "description": "Percentage of voucher claims used in orders"
+    },
+    "Buyers": {
+      "type": "integer",
+      "description": "Total number of unique buyers using vouchers"
+    },
+    "Cost": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Voucher cost information"
+    },
+    "Date": {
+      "type": "string",
+      "description": "Date of the report in the format 'dd-MM-YYYY'",
+      "format": "dd-MM-yyyy",
+      "pattern": "[0-9]{2}-[0-9]{2}-[1-2][0-9]{3}"
+    }
+  },
+  "required": [
+    "Date"
+  ]
+}

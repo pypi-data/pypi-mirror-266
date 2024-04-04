@@ -1,0 +1,109 @@
+{
+  "type": "object",
+  "title": "Amazon Sponsored Products Advertised Product Daily Report",
+  "description": "Daily report for an advertised product in Amazon Sponsored Products",
+  "properties": {
+    "Date": {
+      "type": "string",
+      "description": "Date of the report in the format 'DD-MM-YYYY'",
+      "format": "dd-MM-yyyy",
+      "pattern": "[0-9]{2}-[0-9]{2}-[1-2][0-9]{3}"
+    },
+    "Portfolio_name": {
+      "type": "string",
+      "description": "Name of the portfolio associated with the advertised product"
+    },
+    "Currency": {
+      "type": "string",
+      "description": "Currency code for the amounts, e.g., 'INR'"
+    },
+    "Campaign_Name": {
+      "type": "string",
+      "description": "Name of the sponsored products campaign"
+    },
+    "Ad_Group_Name": {
+      "type": "string",
+      "description": "Name of the ad group within the campaign"
+    },
+    "Advertised_SKU": {
+      "type": "string",
+      "description": "SKU (Stock Keeping Unit) of the advertised product"
+    },
+    "Advertised_ASIN": {
+      "type": "string",
+      "description": "ASIN (Amazon Standard Identification Number) of the advertised product"
+    },
+    "Impressions": {
+      "type": "integer",
+      "description": "Number of times the ad was displayed to users"
+    },
+    "Clicks": {
+      "type": "integer",
+      "description": "Number of clicks on the ad"
+    },
+    "Click_Thru_Rate_CTR": {
+      "type": "number",
+      "description": "Click-through rate (CTR) for the ad"
+    },
+    "Cost_Per_Click_CPC": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Details of the cost per click"
+    },
+    "Spend": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Details of the total spend"
+    },
+    "14_Day_Total_Sales": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Details of total sales for the last 14 days"
+    },
+    "Total_Advertising_Cost_of_Sales_ACOS": {
+      "type": "number",
+      "description": "Advertising cost of sales (ACOS) for the total sales"
+    },
+    "Total_Return_on_Advertising_Spend_ROAS": {
+      "type": "number",
+      "description": "Return on advertising spend (ROAS) for the total spend"
+    },
+    "14_Day_Total_Orders": {
+      "type": "integer",
+      "description": "Total number of orders placed in the last 14 days"
+    },
+    "14_Day_Total_Units": {
+      "type": "integer",
+      "description": "Total number of units purchased in the last 14 days"
+    },
+    "14_Day_Conversion_Rate": {
+      "type": "number",
+      "description": "Conversion rate for the last 14 days"
+    },
+    "14_Day_Advertised_SKU_Units": {
+      "type": "integer",
+      "description": "Number of units of the advertised SKU sold in the last 14 days"
+    },
+    "14_Day_Other_SKU_Units": {
+      "type": "integer",
+      "description": "Number of units of other SKUs sold in the last 14 days"
+    },
+    "14_Day_Advertised_SKU_Sales": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Details of sales for the advertised SKU in the last 14 days"
+    },
+    "14_Day_Other_SKU_Sales": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Details of sales for other SKUs in the last 14 days"
+    }
+  },
+  "required": [
+    "Date",
+    "Campaign_Name",
+    "Ad_Group_Name",
+    "Advertised_SKU",
+    "Advertised_ASIN"
+  ]
+}

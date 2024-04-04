@@ -1,0 +1,125 @@
+{
+  "type": "object",
+  "title": "Tokopedia Store Key Metrics Daily Report",
+  "description": "Daily report providing key metrics for a store on Tokopedia",
+  "properties": {
+    "Time": {
+      "type": "string",
+      "description": "Date of the report in the format 'MM-DD-YYYY'",
+      "format": "dd-MM-yyyy",
+      "pattern": "[0-9]{2}-[0-9]{2}-[1-2][0-9]{3}"
+    },
+    "Potential_sales": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Information about potential sales"
+    },
+    "Products_viewed": {
+      "type": "integer",
+      "description": "Total number of products viewed"
+    },
+    "Conversion": {
+      "type": "number",
+      "description": "Conversion rate as a percentage"
+    },
+    "Order": {
+      "type": "integer",
+      "description": "Total number of orders"
+    },
+    "Potential_Sales_From_Free_Postage": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Potential sales amount from free postage"
+    },
+    "Potential_Sales_from_Free_Postage_Served_by_Tokopedia": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Potential sales amount from free postage served by Tokopedia"
+    },
+    "The_potential_sales_are_not_from_free_postage": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Potential sales amount that is not from free postage"
+    },
+    "New_order_from_free_postage": {
+      "type": "integer",
+      "description": "Total number of new orders from free postage"
+    },
+    "New_orders_from_free_postage_served_by_Tokopedia": {
+      "type": "integer",
+      "description": "Total number of new orders from free postage served by Tokopedia"
+    },
+    "New_orders_are_not_from_free_postage": {
+      "type": "integer",
+      "description": "Total number of new orders that are not from free postage"
+    },
+    "Cancel_orders": {
+      "type": "integer",
+      "description": "Total number of cancelled orders"
+    },
+    "Cancellation_Automatic_canceled": {
+      "type": "integer",
+      "description": "Total number of automatic cancelled orders"
+    },
+    "Cancellation_Rejected_Seller": {
+      "type": "integer",
+      "description": "Total number of cancelled orders rejected by the seller"
+    },
+    "Cancellation_buyer_request": {
+      "type": "integer",
+      "description": "Total number of cancelled orders requested by the buyer"
+    },
+    "Average_transaction": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Average transaction amount"
+    },
+    "Average_number_of_goods": {
+      "type": "number",
+      "description": "Average number of goods in an order"
+    },
+    "Expenditure_estimation": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Estimated expenditure"
+    },
+    "Operational_expenditure_details_service_fees": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Operational expenditure details for service fees"
+    },
+    "Operational_expenditure_details_Transaction_service_fees": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Operational expenditure details for transaction service fees"
+    },
+    "Promotion_expenditure_details_free_postage": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Promotion expenditure details for free postage"
+    },
+    "Details_of_Promotion_Expenditures_Free_Postage_Served_Tokopedia": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Expenditure details for promotions related to free postage served by Tokopedia"
+    },
+    "Details_of_Promotion_Expenditures_Topads": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Expenditure details for promotions related to Topads"
+    },
+    "Details_of_Promotion_Expenditures_Broadcast_Chat": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Expenditure details for promotions related to Broadcast Chat"
+    },
+    "Promotion_expenditure_details_store_coupons": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Expenditure details for promotions related to store coupons"
+    },
+    "required": [
+      "Time"
+    ]
+  }
+}

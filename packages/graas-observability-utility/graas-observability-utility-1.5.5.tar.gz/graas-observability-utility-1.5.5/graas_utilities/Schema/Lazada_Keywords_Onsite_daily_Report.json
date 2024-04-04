@@ -1,0 +1,120 @@
+{
+  "type": "object",
+  "title": "Lazada Keywords Onsite Daily Report",
+  "description": "Daily performance report for Lazada Keywords Onsite Campaign",
+  "properties": {
+    "Date": {
+      "type": "string",
+      "description": "Date of the report in the format 'DD-MM-YYYY', e.g., '08-11-2023'",
+      "format": "dd-MM-yyyy",
+      "pattern": "[0-9]{2}-[0-9]{2}-[1-2][0-9]{3}"
+    },
+    "Campaign_Name": {
+      "type": "string",
+      "description": "Name of the Lazada Keywords Onsite Campaign, e.g., 'KEEPLEY - SEARCH - LEGO - NO END DO NOT DELETE'"
+    },
+    "Campaign_ID": {
+      "type": "number",
+      "description": "Unique identifier for the campaign, e.g., 101100028426296.0"
+    },
+    "Promoted_Products": {
+      "type": "string",
+      "description": "Name of the promoted product, e.g., 'QMAN Trans-Collector Mecha Dinosaur Deformation Robot Warlord Set 6 in 1 Building Blocks Children Toys, Gift for Kids, Boys ages  6 years and above'"
+    },
+    "Promoted_Product_ID_the_ID_of_this_product_in_promotion_campaign": {
+      "type": "number",
+      "description": "ID of the promoted product in the promotion campaign, e.g., 1783152410.0"
+    },
+    "Product_ID_the_ID_of_this_product_in_Product_Management": {
+      "type": "number",
+      "description": "ID of the product in Product Management, e.g., 3837932576.0"
+    },
+    "Keywords": {
+      "type": "string",
+      "description": "Keywords associated with the campaign, e.g., 'lego'"
+    },
+    "Match_Type": {
+      "type": "string",
+      "description": "Match type for the keywords, e.g., 'Broad Match'"
+    },
+    "Bid_Price": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Bid price details"
+    },
+    "Spend": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Spend details"
+    },
+    "Impression": {
+      "type": "number",
+      "description": "Number of impressions"
+    },
+    "Clicks": {
+      "type": "number",
+      "description": "Number of clicks"
+    },
+    "CTR": {
+      "type": "number",
+      "description": "Click-through rate"
+    },
+    "CPC": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Cost per click details"
+    },
+    "Add_To_Cart_Units": {
+      "type": "number",
+      "description": "Number of units added to cart"
+    },
+    "Orders": {
+      "type": "number",
+      "description": "Number of orders"
+    },
+    "CVR": {
+      "type": "string",
+      "description": "Conversion rate"
+    },
+    "Units_Sold": {
+      "type": "number",
+      "description": "Number of units sold"
+    },
+    "Revenue": {
+      "type": "number",
+      "description": "Revenue generated"
+    },
+    "ROAS": {
+      "type": "number",
+      "description": "Return on ad spend"
+    },
+    "Direct_Add_To_Cart_Units": {
+      "type": "number",
+      "description": "Number of units directly added to cart"
+    },
+    "Direct_Orders": {
+      "type": "number",
+      "description": "Number of direct orders"
+    },
+    "Direct_CVR": {
+      "type": "number",
+      "description": "Direct conversion rate"
+    },
+    "Direct_Units_Sold": {
+      "type": "number",
+      "description": "Number of units directly sold"
+    },
+    "Direct_Revenue": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Direct revenue details"
+    }
+  },
+  "required": [
+    "Date",
+    "Campaign_Name",
+    "Campaign_ID",
+    "Promoted_Product_ID_the_ID_of_this_product_in_promotion_campaign",
+    "Keywords"
+  ]
+}

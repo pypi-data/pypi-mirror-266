@@ -1,0 +1,170 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Shopee Product Overview Hourly Daily Report",
+  "description": "Hourly daily report providing an overview of product-related metrics on Shopee",
+  "type": "object",
+  "properties": {
+    "merchantID": {
+      "type": "string",
+      "description": "A unique merchant code for GRAAS clients"
+    },
+    "siteNickNameId": {
+      "type": "string",
+      "description": "A unique merchant's store code for GRAAS clients"
+    },
+    "countryCode": {
+      "type": "string",
+      "description": "The country code, e.g., 'SG', 'MY'."
+    },
+    "currencyCode": {
+      "type": "string",
+      "description": "The currency code, e.g., 'SGD', 'USD'."
+    },
+    "result": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Date": {
+            "type": "string",
+            "description": "Date and time of the report in the format 'MM-DD-YYYY HH:mm'",
+            "format": "dd-MM-yyyy",
+            "pattern": "[0-9]{2}-[0-9]{2}-[1-2][0-9]{3}"
+          },
+          "Product_Visitors_Visit": {
+            "type": "integer",
+            "description": "Total number of visitors who visited the product during the specified hour"
+          },
+          "Product_Page_Views": {
+            "type": "integer",
+            "description": "Total number of page views for the product during the specified hour"
+          },
+          "Items_Visited": {
+            "type": "integer",
+            "description": "Total number of items visited during the specified hour"
+          },
+          "Product_Bounce_Visitors": {
+            "type": "integer",
+            "description": "Total number of visitors who bounced from the product page during the specified hour"
+          },
+          "Product_Bounce_Rate": {
+            "type": "number",
+            "description": "Bounce rate for the product page during the specified hour as a percentage"
+          },
+          "Search_Clicks": {
+            "type": "integer",
+            "description": "Total number of clicks from search results to the product during the specified hour"
+          },
+          "Likes": {
+            "type": "integer",
+            "description": "Total number of likes received for the product during the specified hour"
+          },
+          "Product_Visitors_Add_to_Cart": {
+            "type": "integer",
+            "description": "Total number of visitors who added the product to the cart during the specified hour"
+          },
+          "Units_Add_to_Cart": {
+            "type": "integer",
+            "description": "Total number of units added to the cart for the product during the specified hour"
+          },
+          "Conversion_Rate_Add_to_Cart": {
+            "type": "number",
+            "description": "Conversion rate from product view to adding to cart during the specified hour as a percentage"
+          },
+          "Buyers_Placed_Order": {
+            "type": "integer",
+            "description": "Total number of buyers who placed an order during the specified hour"
+          },
+          "Units_Placed_Order": {
+            "type": "integer",
+            "description": "Total number of units placed in orders during the specified hour"
+          },
+          "Items_Placed": {
+            "type": "integer",
+            "description": "Total number of items placed in orders during the specified hour"
+          },
+          "Sales_Placed_Order": {
+            "type": "object",
+            "properties": {
+              "amount": {
+                "type": "number",
+                "description": "The cost amount per conversion."
+              },
+              "currencyCode": {
+                "type": "string",
+                "description": "The currency code, e.g., 'SGD', 'USD'."
+              }
+            },
+            "required": ["amount", "currencyCode"],
+            "description": "Sales amount information for placed orders during the specified hour"
+          },
+          "Conversion_Rate_Placed_Order": {
+            "type": "number",
+            "description": "Conversion rate from adding to cart to placing an order during the specified hour as a percentage"
+          },
+          "Buyers_Paid_Order": {
+            "type": "integer",
+            "description": "Number of buyers who paid for the order during the specified hour"
+          },
+          "Units_Paid_Order": {
+            "type": "integer",
+            "description": "Number of units paid for in the order during the specified hour"
+          },
+          "Items_Paid": {
+            "type": "integer",
+            "description": "Number of items paid for in the order during the specified hour"
+          },
+          "Sales_Paid_Order": {
+            "type": "object",
+            "properties": {
+              "amount": {
+                "type": "number",
+                "description": "The cost amount per conversion."
+              },
+              "currencyCode": {
+                "type": "string",
+                "description": "The currency code, e.g., 'SGD', 'USD'."
+              }
+            },
+            "required": ["amount", "currencyCode"],
+            "description": "Sales amount information for paid orders during the specified hour"
+          },
+          "Conversion_Rate_Paid_Order": {
+            "type": "number",
+            "description": "Conversion rate from placing an order to paying for the order during the specified hour as a percentage"
+          }
+        },
+        "required": [
+          "Date",
+          "Product_Visitors_Visit",
+          "Product_Page_Views",
+          "Items_Visited",
+          "Product_Bounce_Visitors",
+          "Product_Bounce_Rate",
+          "Search_Clicks",
+          "Likes",
+          "Product_Visitors_Add_to_Cart",
+          "Units_Add_to_Cart",
+          "Conversion_Rate_Add_to_Cart",
+          "Buyers_Placed_Order",
+          "Units_Placed_Order",
+          "Items_Placed",
+          "Sales_Placed_Order",
+          "Conversion_Rate_Placed_Order",
+          "Buyers_Paid_Order",
+          "Units_Paid_Order",
+          "Items_Paid",
+          "Sales_Paid_Order",
+          "Conversion_Rate_Paid_Order"
+        ]
+      }
+    }
+  },
+  "required": [
+    "merchantID",
+    "siteNickNameId",
+    "countryCode",
+    "currencyCode",
+    "result"
+  ]
+}

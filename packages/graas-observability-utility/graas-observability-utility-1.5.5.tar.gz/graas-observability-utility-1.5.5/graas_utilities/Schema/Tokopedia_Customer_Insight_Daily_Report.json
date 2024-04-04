@@ -1,0 +1,47 @@
+{
+    "type": "object",
+    "title": "Tokopedia Customer Insight Daily Report",
+    "description": "Daily report providing insights into customer demographics and behavior on Tokopedia",
+    "properties": {
+      "Time": {
+        "type": "string",
+        "description": "Date of the report in the format 'MM-DD-YYYY'",
+        "format": "dd-MM-yyyy",
+        "pattern": "[0-9]{2}-[0-9]{2}-[1-2][0-9]{3}"
+      },
+      "Buyer": {
+        "type": "integer",
+        "description": "Total number of buyers on the specified day"
+      },
+      "Man": {
+        "type": "integer",
+        "description": "Number of male buyers on the specified day"
+      },
+      "Woman": {
+        "type": "integer",
+        "description": "Number of female buyers on the specified day"
+      },
+      "Not_mentioned": {
+        "type": "integer",
+        "description": "Number of buyers with gender not mentioned on the specified day"
+      },
+      "New_buyer": {
+        "type": "integer",
+        "description": "Number of new buyers on the specified day"
+      },
+      "Regular_buyers": {
+        "type": "integer",
+        "description": "Number of regular buyers (not specified further) on the specified day"
+      },
+      "Loyal_buyer": {
+        "type": "integer",
+        "description": "Number of loyal buyers (not specified further) on the specified day"
+      },
+      "Followers": {
+        "type": "integer",
+        "description": "Total number of followers for the Tokopedia store"
+      }
+    },
+    "required": ["Time"]
+  }
+  
