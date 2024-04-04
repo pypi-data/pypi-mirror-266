@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "robotframework-creartramas"
+version = "2.1.3"
+description = "Creacion de tramas en hexadecimal"
+license = "Apache-2.0"
+authors = ["Anthony Arevalo"]
+maintainers = ["Anthony Arevalo"]
+readme = "./docs/README.md"
+homepage = "https://pypi.org/project/robotframework-creartramas"
+packages = [
+    { include = "TRAMAS" },
+]
+ 
+[tool.poetry.dependencies]
+python = "^3.8"
+robotframework = ">=4"
+robotframework-pythonlibcore = ">=3"
+opencv-python = "^4.5.5"
+ 
+[tool.poetry.dev-dependencies]
+pytest = "*"
+invoke = "*"
+coverage = "^6.3.2"
+ 
+[build-system]
+requires = ["poetry-core>=0.1.0"]
+build-backend = "poetry.core.masonry.api"
