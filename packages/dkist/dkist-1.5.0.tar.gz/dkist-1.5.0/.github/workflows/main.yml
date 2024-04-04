@@ -1,0 +1,107 @@
+name: CI
+
+on:
+  # Allow manual runs through the web UI
+  workflow_dispatch:
+  push:
+    # Only run CI on main, release branches, and pre-release auto PRs
+    branches:
+      - 'main'
+      - '*.*'
+      - 'prepare-v*'
+    tags:
+      - 'v*'
+      - '!*dev*'
+      - '!*pre*'
+      - '!*post*'
+  pull_request:
+  release:
+    types: [published]
+  schedule:
+    #        ┌───────── minute (0 - 59)
+    #        │ ┌───────── hour (0 - 23)
+    #        │ │ ┌───────── day of the month (1 - 31)
+    #        │ │ │ ┌───────── month (1 - 12 or JAN-DEC)
+    #        │ │ │ │ ┌───────── day of the week (0 - 6 or SUN-SAT)
+    - cron: '0 9 * * 1'  # Every Monday at 0900 UTC
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@main
+    with:
+      default_python: '3.10'
+      coverage: 'codecov'
+      posargs: '--color=yes'
+      envs: |
+        - linux: py312
+        - linux: py311
+        - windows: py311-online
+        - macos: py310
+        - linux: py310-oldestdeps
+    secrets:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  docs:
+    uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@main
+    with:
+      default_python: '3.10'
+      coverage: 'codecov'
+      envs: |
+        - linux: build_docs-notebooks
+          pytest: false
+          libraries:
+            apt:
+              - graphviz
+    secrets:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  sdist_verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - run: python -m pip install -U --user build
+      - run: python -m build . --sdist
+      - run: python -m pip install -U --user twine
+      - run: python -m twine check dist/*
+
+  allowed-fail-tests:
+    uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@main
+    with:
+      coverage: 'codecov'
+      posargs: '--color=yes'
+      envs: |
+        - linux: py311-devdeps
+    secrets:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  publish:
+    needs: [tests]
+    if: github.event_name != 'pull_request'
+    uses: OpenAstronomy/github-actions-workflows/.github/workflows/publish_pure_python.yml@main
+    with:
+      python-version: '3.10'
+      test_extras: tests
+      test_command: pytest --pyargs dkist
+      upload_to_pypi: ${{ startsWith(github.event.ref, 'refs/tags/v') && !endsWith(github.event.ref, '.dev') }}
+    secrets:
+      pypi_token: ${{ secrets.PYPI_API_TOKEN }}
+
+  notify:
+    if: always() && github.event_name != 'pull_request' && github.ref_name == 'main'
+    needs: [tests, allowed-fail-tests, publish]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Cadair/matrix-notify-action@main
+        with:
+          matrix_token: ${{ secrets.matrix_access_token }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          homeserver: ${{ secrets.matrix_homeserver }}
+          roomid: '!RehafayCrAiXbzVpXI:openastronomy.org'
+          ignore_pattern: '.*Load.*'
