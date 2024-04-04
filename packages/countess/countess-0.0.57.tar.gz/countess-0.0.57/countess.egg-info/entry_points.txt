@@ -1,0 +1,25 @@
+[console_scripts]
+countess_cmd = countess.core.cmd:main
+
+[countess_plugins]
+collate = countess.plugins.collate:CollatePlugin
+column = countess.plugins.column:ColumnToolPlugin
+correlation = countess.plugins.correlation:CorrelationPlugin
+data_table = countess.plugins.data_table:DataTablePlugin
+expression = countess.plugins.expression:ExpressionPlugin
+group_by = countess.plugins.group_by:GroupByPlugin
+hgvs_parser = countess.plugins.hgvs_parser:HgvsParserPlugin
+join = countess.plugins.join:JoinPlugin
+load_csv = countess.plugins.csv:LoadCsvPlugin
+load_fastq = countess.plugins.fastq:LoadFastqPlugin
+mutagenize = countess.plugins.mutagenize:MutagenizePlugin
+pivot = countess.plugins.pivot:PivotPlugin
+python = countess.plugins.python:PythonPlugin
+regex_reader = countess.plugins.regex:RegexReaderPlugin
+regex_tool = countess.plugins.regex:RegexToolPlugin
+save_csv = countess.plugins.csv:SaveCsvPlugin
+sequence = countess.plugins.sequence:SequencePlugin
+variants = countess.plugins.variant:VariantPlugin
+
+[gui_scripts]
+countess_gui = countess.gui.main:main
