@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "chess-utils"
+version = "0.1.6"
+authors = [
+    {name="Marcel Claramunt", email="marcel@moveread.com"}
+]
+description = "Higher level utilities over the `chess` library"
+dependencies = [
+    "chess", "pydantic"
+]
+requires-python = ">=3.10"
+readme = {file="README.md", content-type="text/markdown"}
+
+[project.optional-dependencies]
+test = [
+    "pytest", "hypothesis"
+]
+
+# [project.urls]
+# repo = "<GIT_REPO_URL>"
