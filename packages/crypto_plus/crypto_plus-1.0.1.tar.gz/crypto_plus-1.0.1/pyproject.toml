@@ -1,0 +1,70 @@
+[tool.poetry]
+name = "crypto_plus"
+version = "1.0.1"
+description = "A Easy-to-use Crypto Tool"
+readme = "README.md"
+authors = ["wmymz <wmymz@icloud.com>"]
+license = "MIT"
+classifiers = [
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.12",
+]
+
+[tool.poetry.dependencies]
+python = ">=3.6"
+#python = ">=3.12"
+cryptography = "*"
+pycryptodome = "*"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "*"
+tox = "*"
+mkdocs = "*"
+mkdocs-material = "*"
+ruff = "*"
+pre-commit = "*"
+
+
+[tool.poetry.scripts]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+[tool.pytest.ini_options]
+testpaths = "tests"
+python_files = "tests.py test_*.py *_tests.py"
+
+[[tool.poetry.source]]
+name = "tsinghua"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+priority = "default"
+
+[tool.ruff]
+line-length = 80
+
+[tool.ruff.lint]
+select = [
+    "E", # pycodestyle errors
+    "W", # pycodestyle warnings
+    "F", # pyflakes
+    "I", # isort
+    "C", # flake8-comprehensions
+    "B", # flake8-bugbear
+    "UP", # pyupgrade,
+    "N", # pep8-naming
+]
+ignore = [
+    "E501", # line too long, handled by black
+    "E741", # 允许l, i等变量的使用
+    "C901", # too complex,
+    "UP009", # [*] UTF-8 encoding declaration is unnecessary"
+    "B008", # do not perform function calls in argument defaults
+    "B023", # Function definition does not bind loop variable
+]
+
+[tool.ruff.lint.isort]
+force-single-line = true
+known-local-folder = ["src"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
