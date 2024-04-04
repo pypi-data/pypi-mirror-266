@@ -1,0 +1,148 @@
+Metadata-Version: 2.1
+Name: undertext
+Version: 0.3.0
+Summary: library to load, edit and save different formats of subtitles
+Home-page: https://github.com/utility-libraries/undertext-py
+Author: PlayerG9
+License: MIT
+Project-URL: Organisation Github, https://github.com/utility-libraries
+Project-URL: Homepage, https://github.com/utility-libraries/undertext-py/
+Project-URL: Documentation, https://utility-libraries.github.io/undertext-py/
+Project-URL: Bug Tracker, https://github.com/utility-libraries/undertext-py/issues
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Utilities
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Provides-Extra: all
+
+# undertext
+library to load, edit and save different formats of subtitles
+
+[![PyPI - Version](https://img.shields.io/pypi/v/undertext)
+](https://pypi.org/project/undertext/)
+
+> [!NOTE]
+> This Project is under development. Come back soon for updates
+
+<!-- TOC -->
+* [undertext](#undertext)
+  * [Installation](#installation)
+  * [File Formats](#file-formats)
+  * [Examples](#examples)
+  * [CLI](#cli)
+<!-- TOC -->
+
+## Installation
+
+```shell
+pip3 install undertext
+```
+
+## File Formats
+
+| ext    | name                      | read  | write | Flags |
+|--------|---------------------------|-------|-------|-------|
+| `.ass` | Advanced SubStation Alpha | ❌     | ❌     | TT    |
+| `.sbv` | SubViewer                 | ✅     | ✅     | TT    |
+| `.srt` | SubRip                    | ✅     | ✅     | TT    |
+| `.ssa` | Sub Station Alpha         | ❌     | ❌     | TT    |
+| `.sub` | MicroDVD                  | ✅     | ✅     | TF    |
+| `.vtt` | WebVTT                    | ✅     | ✅     | TT    |
+
+<small>Listed formats that are currently unsupported may be added at a later version</small>
+
+Flag Information:
+```text
+T. = Text Based
+B. = Bitmap Based
+.T = Time-Based
+.F = Frame-Based
+```
+
+## Examples
+
+```python
+import undertext
+
+captions = undertext.loads("example.en.srt")
+undertext.dumps(captions, "example.en.vtt")
+```
+
+```python
+import undertext
+
+captions = [
+    undertext.Caption(start=0, end=10, text="Hello"),
+    undertext.Caption(start=10, end=20, text="World"),
+]
+undertext.dumps(captions, "out.srt")
+```
+
+## CLI
+
+> [!NOTE]
+> During the installation the `undertext` command should be installed and then available.
+> If this didn't work you can invoke it with `python3 -m undertext` instead.
+
+```shell
+$ cat example.vtt
+WEBVTT
+
+00:00:00.000 --> 00:00:01.000
+hello world 0
+
+00:00:02.000 --> 00:00:03.000
+hello world 2
+
+00:00:04.000 --> 00:00:05.000
+hello world 4
+
+00:00:06.000 --> 00:00:07.000
+hello world 6
+
+00:00:08.000 --> 00:00:09.000
+hello world 8
+$ undertext read example.vtt
+<00:00:00.000 -> 00:00:01.000> 'hello world 0'
+<00:00:02.000 -> 00:00:03.000> 'hello world 2'
+<00:00:04.000 -> 00:00:05.000> 'hello world 4'
+<00:00:06.000 -> 00:00:07.000> 'hello world 6'
+<00:00:08.000 -> 00:00:09.000> 'hello world 8'
+```
+```shell
+$ undertext convert example.vtt output.srt 
+$ cat output.srt
+1
+00:00:00,000 --> 00:00:01,000
+hello world 0
+
+2
+00:00:02,000 --> 00:00:03,000
+hello world 2
+
+3
+00:00:04,000 --> 00:00:05,000
+hello world 4
+
+4
+00:00:06,000 --> 00:00:07,000
+hello world 6
+
+5
+00:00:08,000 --> 00:00:09,000
+hello world 8
+```
