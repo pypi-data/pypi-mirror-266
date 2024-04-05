@@ -1,0 +1,82 @@
+Metadata-Version: 2.1
+Name: simple-notifications
+Version: 0.1.3
+Summary: Send notfications by email or webhook
+Author: Christoph Stein
+License: MIT
+Project-URL: homepage, https://gitlab.com/s7one/simple-notifications
+Project-URL: documentation, https://s7one.gitlab.io/simple-notifications
+Project-URL: repository, https://gitlab.com/s7one/simple-notifications
+Keywords: Email,Notifications
+Classifier: Programming Language :: Python :: 3
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+
+# simple-notifications
+
+## Installation
+
+  * Install from pypi: ```pip install simple-notifications```
+
+## How to use
+
+See [the documentation](https://s7one.gitlab.io/simple-notifications) for more information
+
+### Send email with file attachments
+
+main.py
+```
+from simplenotifications import mail
+
+if __name__ == '__main__':
+    try:
+        mailer = mail.mail("myserver", "myuser", "mypassword", 25, "sender@example.com")
+
+        mailer.send('receiver@example.com',
+                    'My message',
+                    'My subject',
+                    ['c:\\test.txt',
+                     'c:\\test.png'])
+
+    except mail.mail_error as e:
+        print(e)
+```
+
+### Send email from template file
+
+main.py
+```
+from simplenotifications import mail
+
+if __name__ == '__main__':
+    try:
+        mailer = mail.mail("myserver", "myuser", "mypassword", 25, "sender@example.com")
+        mailer.send_template("receiver@example.com",
+                             "./template.txt'"
+                             { "name": "John"},
+                             'Testsubject')
+    except mail.mail_error as e:
+        print(e)
+```
+
+template.txt
+```
+Hello, $name!
+```
+
+### Send webhook message (http post request)
+
+main.py
+```
+from simplenotifications import webhook
+
+if __name__ == '__main__':
+    hook = webhook.webhook_post("http://example.com/webhook")
+    try:
+        hook.post("Hello, world!")
+    except webhook.webhook_error as e:
+        print(e)
+```
