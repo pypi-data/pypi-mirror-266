@@ -1,0 +1,48 @@
+CONOPT 1 0 CO 1 0 2 LP RMIP NLP CNS DNLP RMINLP QCP RMIQCP
+gmsgenus.run
+gmsgenux.out
+libco4cclib64.dylib co4 1 1
+
+CONVERT 103011 5 0001020304050607 0 0 2 LP MIP RMIP NLP MCP MPEC RMPEC CNS DNLP RMINLP MINLP QCP MIQCP RMIQCP EMP
+gmsgenus.run optconvert.def
+gmsgenux.out
+libcvdcclib64.dylib cvd 1 1
+
+CPLEX 2011 5 CPCL 1 0 2 LP MIP RMIP QCP MIQCP RMIQCP
+gmsgenus.run
+gmsgenux.out
+libcpxcclib64.dylib cpx 1 1
+
+GUSS 1001 5 0001020304050607 0 1 2 LP MIP RMIP NLP MCP CNS DNLP RMINLP MINLP QCP MIQCP RMIQCP
+gmsgenus.run
+gmsgenux.out
+libgsscclib64.dylib gss 1 0
+
+NLPEC 103001 0 0001020304050607 1 0 1 MCP MPEC RMPEC
+gmscvnus.run
+gmscvnux.out
+
+PATH 103001 5 PT 1 0 2 MCP CNS
+gmsgenus.run
+gmsgenux.out
+libptccclib64.dylib ptc 2 0
+
+SBB 11 5 SB 1 0 1 MINLP MIQCP
+gmssb_us.run
+gmssb_ux.out
+
+DEFAULTS
+LP CPLEX
+MIP CPLEX
+RMIP CPLEX
+NLP CONOPT
+MCP PATH
+MPEC NLPEC
+CNS CONOPT
+DNLP CONOPT
+RMINLP CONOPT
+MINLP SBB
+QCP CONOPT
+MIQCP SBB
+RMIQCP CONOPT
+EMP CONVERT
