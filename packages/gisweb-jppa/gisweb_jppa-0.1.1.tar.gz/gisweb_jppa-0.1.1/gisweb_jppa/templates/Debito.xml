@@ -1,0 +1,39 @@
+        
+        <TestataDebito>
+            <IDPos>{{debito.idpos}}</IDPos>
+            <CodiceTipoDebito>{{debito.codice}}</CodiceTipoDebito>
+            <DatiContribuente>
+                <IdentificativoUnivocoVersante>
+                    <tipoIdentificativoUnivoco>{{soggetto.tipo}}</tipoIdentificativoUnivoco>
+                    <codiceIdentificativoUnivoco>{{soggetto.codice}}</codiceIdentificativoUnivoco>
+                </IdentificativoUnivocoVersante>
+                <Nome>{{soggetto.nome}}</Nome>
+                <Cognome>{{soggetto.cognome}}</Cognome>
+                {%- if soggetto.indirizzo %}<Indirizzo>{{soggetto.indirizzo}}</Indirizzo>{% endif %}
+                {%- if soggetto.civico %}<Civico>{{soggetto.civico}}</Civico>{% endif %}
+                {%- if soggetto.cap %}<Cap>{{soggetto.cap}}</Cap>{% endif %}
+                {%- if soggetto.localita %}<Localita>{{soggetto.localita}}</Localita>{% endif %}
+                {%- if soggetto.provincia %}<Provincia>{{soggetto.provincia}}</Provincia>{% endif %}
+                {%- if soggetto.nazione %}<Nazione>{{soggetto.nazione}}</Nazione>{% endif %}
+                <Email>{{soggetto.email}}</Email>
+            </DatiContribuente>
+            <DettaglioPosizione>{{debito.dettaglio}}</DettaglioPosizione>
+        </TestataDebito>
+        <DettaglioDebito>
+            <IDDeb>{{debito.iddeb}}</IDDeb>
+            <Gruppo>{{debito.gruppo}}</Gruppo>
+            {%- if debito.ordinamento %}<Ordinamento>{{debito.ordinamento}}</Ordinamento>{% endif %}
+            <DataInizioValidita>{{debito.data_inizio}}</DataInizioValidita>
+            {%- if debito.data_fine %}<DataFineValidita>{{debito.data_fine}}</DataFineValidita>{% endif %}
+            {%- if debito.data_limite %}<DataLimitePagabilita>{{debito.data_limite}}</DataLimitePagabilita>{% endif %}
+            <ImportoDebito>{{debito.importo}}</ImportoDebito>
+            <CausaleDebito>{{debito.causale[:140]}}</CausaleDebito>
+            <DettagliImporto>{% for importo in debito.importi %}
+                <dettaglioImporto>
+                    <codice>{{importo.codice}}</codice>
+                    <descrizione>{{importo.descrizione}}</descrizione>
+                    <importo>{{importo.importo}}</importo>
+                    <capitoloBilancio>{{importo.capitolo}}</capitoloBilancio>
+                </dettaglioImporto>{% endfor %}
+            </DettagliImporto>
+        </DettaglioDebito>
