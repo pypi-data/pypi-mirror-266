@@ -1,0 +1,58 @@
+[package]
+name = "rbot_session"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+rbot_lib = { path = "../rbot_lib" }
+rbot_market = { path = "../rbot_market" }
+rbot_server = { path = "../rbot_server" }
+#rbot_server = {path = "../rbot_server"}
+
+anyhow = { version = "1.0.79" }
+
+rust_decimal = { version = "1.32.0" }
+rust_decimal_macros = { version = "1.32.0" }
+
+polars = { version = "0.37.0", features = [
+        "lazy", 
+        "ndarray", 
+        "dtype-time", 
+        "object",
+         "round_series", 
+         "temporal",
+         "pivot",
+         "dynamic_group_by",
+         "polars-ops",
+         "polars-plan",
+         "cum_agg"
+        ]}
+pyo3-polars = { version = "0.11.3" }
+
+serde = { version = "1.0"}
+serde_derive = { version = "1.0" }
+serde_json = { version = "1.0" }
+serde_with = { version = "3.6.1" }
+
+
+futures = { version = "0.3" }
+
+log = { version = "0.4" }
+env_logger = { version = "0.11.0" }
+
+crossbeam-channel = { version = "0.5.11" }
+
+async-stream = { version = "0.3.5" }
+
+tokio= { version = "1", features = ["full"] }
+
+# https://pyo3.rs/v0.13.2/faq
+[dependencies.pyo3]
+version = "0.20.3"
+features = ["rust_decimal", "auto-initialize", "abi3-py38"]
+
+[features]
+extension-module = ["pyo3/extension-module"]
+
