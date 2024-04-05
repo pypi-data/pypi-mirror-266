@@ -1,0 +1,48 @@
+[tool.poetry]
+name = "consoler"
+version = "0.1.6"
+description = ""
+authors = ["Hactar <systems@hactar.is>"]
+
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/hactar-is/consoler"
+repository = "https://github.com/hactar-is/consoler"
+keywords = ["console", "terminal", "logging"]
+classifiers = [
+    "Environment :: Console",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+include = [
+    "LICENSE",
+]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+arrow = "^1.2.3"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.8"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.ruff]
+target-version = "py310"  # Change this to match the project
+line-length = 100
+extend-exclude = ["tests", "*/migrations/*", "src/**/*"]
+
+[tool.ruff.lint]
+select = [
+    "E", "F", "B", "DJ", "C90", "S", "COM", "DTZ", "EM",
+    "PT", "RET", "SIM", "TCH", "ARG", "PTH", "PERF"
+]
+extend-ignore = ["E402", "RET504", "S101", "DJ012"]
+ignore-init-module-imports = true
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-wrap-aliases = true
