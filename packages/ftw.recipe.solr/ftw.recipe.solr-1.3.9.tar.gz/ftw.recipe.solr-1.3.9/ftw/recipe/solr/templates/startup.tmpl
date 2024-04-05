@@ -1,0 +1,107 @@
+#!/usr/bin/env bash
+
+DEFAULT_JVM_OPTS="-Dfile.encoding=UTF-8"
+JVM_OPTS=(${DEFAULT_JVM_OPTS[@]} {{ jvm_opts }})
+EXTRA_OPTS=({{ extra_opts }})
+
+JAVACMD="java"
+PID_FILE=${PID_FILE:="{{ pid_file }}"}
+
+SOLR_PORT=${SOLR_PORT:="{{ solr_port }}"}
+SOLR_HOME=${SOLR_HOME:="{{ solr_home }}"}
+SOLR_INSTALL_DIR=${SOLR_INSTALL_DIR:="{{ solr_install_dir }}"}
+SOLR_SERVER_DIR=${SOLR_SERVER_DIR:="{{ solr_install_dir }}/server"}
+
+SOLR_START_OPT=('-server' \
+"${JVM_OPTS[@]}" \
+-Djetty.host={{ solr_host }}
+-Djetty.port=$SOLR_PORT \
+-Djetty.home=$SOLR_SERVER_DIR \
+-Dsolr.solr.home=$SOLR_HOME \
+-Dsolr.install.dir=$SOLR_INSTALL_DIR \
+-Dsolr.log.dir={{ log_dir }} \
+-Dsolr.enableRemoteStreaming={{ enable_remote_streaming }} \
+-Dlog4j2.formatMsgNoLookups=true \
+-Dlog4j2.configurationFile=file:{{ log4j2_xml }} \
+"${EXTRA_OPTS[@]}")
+
+start() {
+    cd "$SOLR_SERVER_DIR"
+    nohup "$JAVACMD" "${SOLR_START_OPT[@]}" -Dsolr.log.muteconsole -jar start.jar --module=http >/dev/null 2>&1 &
+    echo $! > "$PID_FILE"
+    pid=`cat "$PID_FILE"`
+    echo "Solr started with pid $pid."
+}
+
+start_fg() {
+    cd "$SOLR_SERVER_DIR"
+    exec "$JAVACMD" "${SOLR_START_OPT[@]}" -jar start.jar --module=http
+}
+
+start_console() {
+    cd "$SOLR_SERVER_DIR"
+    exec "$JAVACMD" "${SOLR_START_OPT[@]}" -Dsolr.log.muteconsole -jar start.jar --module=http
+}
+
+stop() {
+    if [ -e $PID_FILE ]; then
+        pid=`cat "$PID_FILE"`
+        ps -p $pid -f | grep start.jar > /dev/null 2>&1
+        if [ $? -eq 0 ]
+        then
+            kill -TERM $pid
+            rm -f $PID_FILE
+            echo "Solr stopped successfully."
+        else
+            echo "Solr is not running."
+        fi
+    else
+        echo "Solr is not running."
+    fi
+}
+
+status() {
+    if [ -e $PID_FILE ]; then
+        pid=`cat "$PID_FILE"`
+        ps -p $pid -f | grep start.jar > /dev/null 2>&1
+        if [ $? -eq 0 ]
+        then
+            echo "Solr running with pid $pid."
+        else
+            echo "Solr is not running."
+        fi
+    else
+        echo "Solr is not running."
+    fi
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+
+    fg)
+        start_fg
+        ;;
+
+    console)
+        start_console
+        ;;
+
+    stop)
+        stop
+        ;;
+
+    restart)
+        stop
+        start
+        ;;
+
+    status)
+        status
+        ;;
+    *)
+        echo "Usage: `basename "$0"` {start|fg|console|stop|restart|status}" >&2
+        exit 1
+        ;;
+esac
