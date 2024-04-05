@@ -1,0 +1,91 @@
+
+
+
+
+#
+#	docker network create --subnet=192.168.0.0/24 container_network
+#	docker run --network container_network --ip 192.168.0.12 -v .:/somatic -it jumps:v2.1.0
+#	docker exec -it 2e2b78d589ed bash
+#
+
+#
+#	install:
+#		python3 /somatic/moves/install.py
+#
+
+#
+#	how to publish:
+#
+#		git add --all;
+#		git commit -m "somatic"
+#
+#		# Maybe push a git tag like "publish-1.1.4" with a commit to GL,
+#		# and then see if GL can run the tests and publish the module.
+#		
+#		python3 /somatic/venues/stages/somatic/_status/status.proc.py
+#		python3 /somatic/status_E2E/status.proc.py
+#		cp /somatic/venues/stages/somatic/module.MD readme.md
+#		(rm -rf dist && python3 -m build && twine upload dist/*)
+#
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "somatic"
+version = "3.0.0"
+dependencies = [
+	"volts",
+	"law_dictionary",
+	
+	"clique",
+	"esprima",
+	"flask",
+	"jsonschema",	
+	"mako",
+	"rich",
+	"sanic"
+]
+
+# license = { text = "license" }
+# license = { file = "license.txt" }
+license = { text = "GPL 3.0" }
+
+description = "The best documentation framework every created."
+readme = "readme.md"
+keywords = [
+	"documentation"
+]
+
+
+[project.urls]
+GitLab = "https://gitlab.com/offline-money/squash-1/somatic"
+
+[project.scripts]
+#
+#	https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#creating-executable-scripts
+#	from somatic import clique; clique ()
+#
+somatic = "somatic:clique"
+
+
+#
+#	maybe this performs the task..
+#
+# [tool.setuptools]
+# exclude = [ "folder_to_exclude" ]
+
+
+[tool.setuptools.packages.find]
+where = [ "venues/stages" ]
+
+#
+#	https://setuptools.pypa.io/en/latest/userguide/datafiles.html
+#
+[tool.setuptools.package-data]
+"*" = [ "*.html" ]
+
+
+
+
