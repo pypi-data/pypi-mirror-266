@@ -1,0 +1,96 @@
+Metadata-Version: 2.1
+Name: PythonProjectBootstrapperTesting
+Version: 0.1.4
+Summary: Python project bootstrapper test output
+Author-email: Varun Narayan <varun646@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/varun646/PythonProjectBootstrapperTest
+Project-URL: Documentation, https://github.com/varun646/PythonProjectBootstrapperTest
+Project-URL: Repository, https://github.com/varun646/PythonProjectBootstrapperTest
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: typer ~=0.9
+Provides-Extra: dev
+Requires-Dist: dbrownell-DevTools ; extra == 'dev'
+Provides-Extra: package
+Requires-Dist: build ==1.* ; extra == 'package'
+Requires-Dist: cx-Freeze ==6.* ; extra == 'package'
+Requires-Dist: twine ==4.* ; extra == 'package'
+
+# PythonProjectBootstrapperTest
+
+[![CI](https://github.com/varun646/PythonProjectBootstrapperTest/actions/workflows/standard.yaml/badge.svg?event=push)](https://github.com/varun646/PythonProjectBootstrapperTest/actions/workflows/standard.yaml)
+[![Code Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/varun646/0af5eebfd0b0868fd7bb6919b4ce9c37/raw/PythonProjectBootstrapperTest_coverage.json)](https://github.com/varun646/PythonProjectBootstrapperTest/actions)
+[![License](https://img.shields.io/github/license/varun646/PythonProjectBootstrapperTest?color=dark-green)](https://github.com/varun646/PythonProjectBootstrapperTest/blob/master/LICENSE.txt)
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/y/varun646/PythonProjectBootstrapperTest?color=dark-green)](https://github.com/varun646/PythonProjectBootstrapperTest/commits/main/)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/PythonProjectBootstrapperTesting?color=dark-green)](https://pypi.org/project/pythonprojectbootstrappertesting/)
+[![PyPI - Version](https://img.shields.io/pypi/v/PythonProjectBootstrapperTesting?color=dark-green)](https://pypi.org/project/pythonprojectbootstrappertesting/)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/PythonProjectBootstrapperTesting)](https://pypistats.org/packages/pythonprojectbootstrappertesting)
+
+# PythonProjectBootstrapperTest
+Python project bootstrapper test output
+
+### Overview
+
+TODO: Complete this section
+
+### How to use PythonProjectBootstrapperTest
+
+TODO: Complete this section
+
+## Installation via Executable
+
+Download an executable for Linux, MacOS, or Windows to use the functionality provided by this repository without a dependency on [Python](https://www.python.org).
+
+1. Download the archive for the latest release [here](https://github.com/varun646/PythonProjectBootstrapperTest/releases/latest); the files will begin with `exe.` and contain the name of your operating system.
+2. Decompress the archive
+
+## Installation via pip
+
+Install the PythonProjectBootstrapperTesting package via [pip](https://pip.pypa.io/en/stable/) (Package Installer for Python) to use it with your python code.
+
+`pip install PythonProjectBootstrapperTesting`
+
+## Local Development
+
+Follow these steps to prepare the repository for local development activities.
+
+1) Clone this repository
+2) Bootstrap the local repository by running...
+    | Operating System | Command |
+    | --- | --- |
+    | Linux / MacOS | <p>Standard:<br/>`Bootstrap.sh`</p><p>Standard + packaging:<br/>`Bootstrap.sh --package`</p> |
+    | Windows | <p>Standard:<br/>`Bootstrap.cmd`</p><p>Standard + packaging:<br/>`Bootstrap.cmd --package`</p> |
+3) Activate the development environment by running...
+    | Operating System | Command |
+    | --- | --- |
+    | Linux / MacOS | `. ./Activate.sh` |
+    | Windows | `Activate.cmd` |
+4) Invoke `Build.py`
+    | Command | Description | Example | Notes |
+    | --- | --- | --- | --- |
+    | `black` | Validates that the source code is formatted by [black](https://github.com/psf/black). | <p>Validation:<br/>`python Build.py black`</p><p>Perform formatting:<br/>`python Build.py black --format`</p> | |
+    | `pylint` | Validates the source code using [pylint](https://github.com/pylint-dev/pylint). | `python Build.py pylint` | |
+    | `pytest` | Runs automated tests using [pytest](https://docs.pytest.org/). | <p>Without Code Coverage:<br/>`python Build.py pytest`</p><p>With Code Coverage:<br/>`python Build.py pytest --code-coverage`</p> | |
+    | `update_version` | Updates the [semantic version](https://semver.org/) of the package based on git commits using [AutoGitSemVer](https://github.com/davidbrownell/AutoGitSemVer). | `python Build.py update_version` | |
+    | `package` | Creates a Python wheel package for distribution; outputs to the `/dist` directory. | `python Build.py package` | Requires `--package` when bootstrapping in step #2. |
+    | `publish` | Publishes a Python wheel package to [PyPi](https://pypi.org/). | <p>https://test.pypi.org:<br/>`python Build.py publish`</p><p>https://pypi.org:<br/>`python Build.py publish --production`</p> | Requires `--package` when bootstrapping in step #2. |
+    | `build_binary` | Builds an executable for your package that can be run on machines without a python installation; outputs to the `/build` directory. | `python Build.py build_binary` | Requires `--package` when bootstrapping in step #2. |
+
+5) [Optional] Deactivate the development environment by running...
+    | Operating System | Command |
+    | --- | --- |
+    | Linux / MacOS | `. ./Deactivate.sh` |
+    | Windows | `Deactivate.cmd` |
+
+## License
+
+PythonProjectBootstrapperTest is licensed under the <a href="https://choosealicense.com/licenses/mit/" target="_blank">MIT</a> license.
