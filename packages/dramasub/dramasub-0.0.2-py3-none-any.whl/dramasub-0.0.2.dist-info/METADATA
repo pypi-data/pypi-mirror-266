@@ -1,0 +1,37 @@
+Metadata-Version: 2.1
+Name: dramasub
+Version: 0.0.2
+Summary: script to generate accompanying visuals for voice dramas from .ass subtitle files
+Author: GenericTLAccount
+Project-URL: Homepage, https://github.com/GenericTLAccount/dramasub
+Keywords: drama cd,voice drama,subtitle,.ass,visuals
+Classifier: Development Status :: 3 - Alpha
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Operating System :: Microsoft :: Windows :: Windows 11
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE.md
+Requires-Dist: wand
+
+# Dramasub
+
+A tool for auto-generating visuals for a video based off of an `.ass` subtitle file. Intended for creating visual novel-style visual accompaniments for audio-only content, such as drama CDs.
+
+### Installation and Requirements:
+
+Dramasub can be installed via:
+
+`pip install dramasub`
+
+Requires [FFmpeg](https://ffmpeg.org/) to be installed and for both `ffmpeg` and `ffprobe` configured in PATH. Also requires the [Wand Python bindings](https://docs.wand-py.org/), which requires ImageMagick; please see the Wand documentation for installation instructions.
+
+Has only been tested with Windows, but may work on other platforms.
+
+
+### Args:
+* `-i`, `--input`: Input video file (audio and non-overlay background visuals, such as scene transitions)
+* `-o`, `--output`: Output video file
+* `-c`, `--config`: Config file (`.py`) that lists what visuals are assigned to each Actor and Effect specified in the .ass subtitle file. For more details, see `examples/example_config.py`.
+* `-a`, `-ass`: Input subtitle file (`.ass`). **IMPORTANT: Must be in the current working directory** (path your terminal is in) due to issues with ffmpeg. For an example actor/effect setup, see `examples/example_sub.ass`.
+* `--cook_only` (optional): For previewing visuals without processing the whole video. Only reads the `.ass` file and generates accompanying images to the `kitchen` path specified in the config. If set, does not require output video path to be specified, but input video is still required.
