@@ -1,0 +1,57 @@
+# JsonEx
+
+W tej bibliotece poprawiono tworzenie jsona gdzie wcześniej zwracało błędy
+
+Od teraz przy próbie zapisania do jsona `list`, `dicts`, `set` oraz customowych objektów nie powinno sprawiać problemu,
+dla objektów które nie mogą być sformatowane na json zostanie zwrócona wartość
+```python
+f"[custom type: {type(value).__name__}]"
+```
+
+
+## Przykłady
+```python
+from jsonex import JsonEx
+import numpy as np
+
+
+class CustomObject:
+    a: int
+    b: int
+
+df = np.DataSource()
+
+
+CustomObject.a = 42
+CustomObject.b = 33
+
+data = [
+    None,  # null w JSON
+    True,  # boolean true w JSON
+    False,  # boolean false w JSON
+    123,  # liczba całkowita (int)
+    45.67,  # liczba zmiennoprzecinkowa (float)
+    "tekst",  # ciąg znaków (str)
+    [1, 2, 3],  # tablica (list)
+    {"klucz": "wartość"},  # obiekt (dict)
+    (4, 5, 6),  # tuple
+    {7, 8, 9},  # set (zestaw)
+    # Dodatkowe przykłady dla pełności
+    456,  # kolejny int
+    78.9,  # kolejny float
+    "inny tekst",  # kolejny str
+    [4, 5, 6],  # kolejna list
+    {"inny_klucz": "inna_wartość", "klucz2": (1, 2, 3)},  # kolejny dict
+    (10, 11, 12),  # kolejny tuple
+    {10, 11, 12},  # kolejny set
+    True,  # kolejny bool
+    CustomObject(),
+    df,
+    {"a", "b", "c"}
+]
+print(JsonEx.dump(data))
+```
+Zwróci:
+```json
+[null, true, false, 123, 45.67, "tekst", [1, 2, 3], {"klucz": "warto\u015b\u0107"}, [4, 5, 6], [8, 9, 7], 456, 78.9, "inny tekst", [4, 5, 6], {"inny_klucz": "inna_warto\u015b\u0107", "klucz2": [1, 2, 3]}, [10, 11, 12], [10, 11, 12], true, "[custom type: CustomObject]", "[custom type: DataSource]", ["c", "b", "a"]]
+```
