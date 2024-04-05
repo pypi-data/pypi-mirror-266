@@ -1,0 +1,39 @@
+
+
+supertrend:
+
+	import pandas_ta as ta
+	sti = ta.supertrend (
+		DF ['high'], 
+		DF ['low'], 
+		DF ['close'], 
+		length = 7, 
+		multiplier = 3
+	)
+
+
+	DF_2 = DF.join (sti)
+
+	import numpy
+	chart.add_trace (
+		go.Scatter (
+			x = DF_2 ['UTC date string'],
+			y = DF_2 ["close"],
+			
+			marker_color = numpy.select (
+				[
+					DF_2 ["SUPERTd_7_3.0"] == -1, 
+					DF_2 ["SUPERTd_7_3.0"] == 1
+				], 
+				["orange", "purple"], 
+				"rgba(0,0,0,0)"
+			),
+			
+			mode = "markers",
+			#marker_color = "black",
+			yaxis = "y2",
+			name = "Bubble"
+		),
+		row = 1, 
+		col = 1
+	)

@@ -1,0 +1,65 @@
+
+
+slope:
+	formula:
+		z = multipliers
+		y = share prices
+		
+		= delta_z / delta_y 
+		
+		= (z2 - z1)
+		  ---
+		  (y2 - y1)
+		  
+	priorities, the slopes of the line from:
+		
+		1. 0 to the break even, this always = 0
+		
+		2. break even to infinity
+
+
+		example:
+			[{
+				"strike price": Fraction (7.5),
+				"option price": Fraction (0.15),
+			},
+			{
+				"strike price": Fraction (5),
+				"option price": Fraction (0.3)
+			},
+			{
+				"strike price": Fraction (2.5),
+				"option price": Fraction (3.2),
+			}]
+			
+			index 0:
+				strike price: 7.5
+				option price: 0.15
+				
+				break even: 7.65
+
+				0 to break even: (0 - 0) / 
+				
+				break even to infinity:
+					break even + 1:
+						multiplier
+							= (share_price - strike_price) / expense
+							= (8.65 - 7.5) / 0.15
+							= 1.15 / 0.15
+							= 23/3
+							= 7 2/3
+							
+						slope = (23/3 - 0) / (8.65 - 7.65)
+						slope = (23/3) / 1
+						slope = 23/3
+						
+					break even + 2:
+						multiplier
+							= (share_price - strike_price) / expense
+							= (9.65 - 7.5) / 0.15
+							= 2.15 / 0.15
+							= 43/3
+						
+						slope = (43/3 - 23/3) / (9.65 - 8.65)
+						slope = (20/3) / 1
+						slope = 20/3

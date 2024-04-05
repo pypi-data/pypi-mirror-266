@@ -1,0 +1,39 @@
+
+
+
+Coinbase Cloud:
+
+	agenda:
+		[ ] 
+			from operator import itemgetter
+			import rollercoaster.clouds.Coinbase.API.products.candles_v2 as Coinbase_API_product_candles_v2
+			candles = Coinbase_API_product_candles.proposal (
+				key_name = ellipsis ["name"],
+				key_secret = ellipsis ["privateKey"],
+				
+				product_id = "",
+				granularity = "FIFTEEN_MINUTE",
+				start = "",
+				end = ""
+			)
+			
+			
+
+	Authorization:
+		https://cloud.coinbase.com/access/api
+
+
+	Relevant:
+		https://docs.cloud.coinbase.com/exchange/reference/exchangerestapi_postorders
+		
+		'''
+		exchange = ccxt.coinbase ({
+			'apiKey': '',
+			'secret': '',
+			'headers': {
+				'Authorization': 'Bearer ' + JWT,
+			}
+		})
+		'''
+	
+	

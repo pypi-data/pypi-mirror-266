@@ -1,0 +1,153 @@
+
+
+
+
+
+
+#
+#	how to publish:
+#
+#		python3 /rollercoaster/venues/stages/rollercoaster/_status/insurance.proc.py
+#		python3 /rollercoaster/venues/stages/rollercoaster/_status/insurance_clouds.proc.py
+#	
+#		cp /rollercoaster/venues/stages/rollercoaster/home.MD /rollercoaster/readme.md
+#		(rm -rf dist && python3 -m build && twine upload dist/*)
+#
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rollercoaster"
+version = "2.1.1"
+dependencies = [
+	
+	"ramps_galactic",
+	
+	#--
+	
+	"volts",
+	"ships",
+	"somatic",
+	
+	#--
+	
+	
+	"semver",
+	"toml",
+
+	##
+	#
+	#
+
+	"alpaca-py",
+
+	"arrow",
+
+	"backtrader",
+
+	#
+	#	https://basana.readthedocs.io/en/latest/quickstart.html
+	#
+	"basana",
+
+	
+
+	# https://github.com/santosjorge/cufflinks
+	"cufflinks",
+
+	"cryptography",
+
+	"ccxt",
+
+	"click",
+
+	"dash",
+
+	"finvizfinance",
+
+	"ipychart",
+
+	#
+	#	This one install "uuid" which breaks flask
+	#
+	# http://lumibot.lumiwealth.com/getting_started.html#getting-started
+	#"lumibot",
+
+
+	"matplotlib",
+	"numpy",
+	"pandas",
+	"pandas_ta",
+	"pandas_datareader",
+
+	"plotly",
+	"pydash",
+	"PyJSONViewer",
+	"PyJWT",
+	"quandl",
+	
+	"sanic",
+	"stock_indicators",
+	"ta",
+	"tabulate",
+
+	# https://github.com/nardew/talipp
+	"talipp",
+
+	"technical_indicators_lib",
+
+	#tensortrade
+
+	"toml",
+
+	"tradingview-ta",
+	"tradingview-screener",
+
+	#vectorbt==0.25.5 
+
+	# https://pypi.org/project/yahooquery/
+	"yahooquery",
+
+	"yfinance"
+
+]
+
+license = { text = "GPL 3.0 + CC BY-NC-SA 4.0" }
+#license = { file = "license.txt" }
+
+description = "economic estimation"
+readme = "readme.md"
+keywords = [	 
+	"rain & pour",
+	"economic estimation",
+	"finance",
+	"commerce",
+	"wealth",
+	"money",
+	"treasures",
+	"treasury",
+	"subconscious trading"
+]
+
+[project.scripts]
+#
+#	https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#creating-executable-scripts
+#	from this_module import clique; clique ()
+#
+rollercoaster = "rollercoaster:clique"
+
+
+[tool.setuptools.packages.find]
+where = [ "venues/stages" ]
+
+#
+#	https://setuptools.pypa.io/en/latest/userguide/datafiles.html
+#
+[tool.setuptools.package-data]
+"*" = [ "*.html", "*.HTML" ]
+
+
+
+
