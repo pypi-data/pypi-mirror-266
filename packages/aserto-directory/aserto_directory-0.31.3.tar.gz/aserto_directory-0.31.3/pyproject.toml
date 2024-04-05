@@ -1,0 +1,46 @@
+[tool.poetry]
+name = "aserto-directory"
+version = "0.31.3"
+description = "gRPC client for Aserto Directory service instances"
+readme = "README.md"
+authors = ["Aserto, Inc. <pypi@aserto.com>"]
+homepage = "https://github.com/aserto-dev/python-directory"
+repository = "https://github.com/aserto-dev/python-directory"
+documentation = "https://github.com/aserto-dev/python-directory"
+license = "Apache-2.0"
+classifiers = [
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Software Development :: Libraries",
+  "Typing :: Typed",
+]
+packages = [
+    { include = "aserto", from = "src" },
+    { include = "google", from = "src" },
+    { include = "buf", from = "src" },
+]
+
+
+[tool.poetry.dependencies]
+python = ">=3.8,<4"
+grpcio = "^1.49"
+protobuf = "^4.21.0"
+
+[tool.poetry.dev-dependencies]
+black = "^23.11.0"
+isort = "^5.10.0"
+pyright = "^1.1.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
