@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dip-coater"
+version = "0.1.0"
+authors = [
+    {name="Rik Huygen", email="rik.huygen@kuleuven.be"}
+]
+dependencies = [
+    "textual",
+    "textual-dev",
+    "RPi.GPIO",
+    "rpimotorlib"
+]
+requires-python = ">=3.8, <4.0"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+scripts = [
+    "**/*.tcss",
+]
