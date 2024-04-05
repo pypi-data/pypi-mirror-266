@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "dddesign"
+description = "Domain Driven Design Library"
+version = "0.0.6"
+authors = ["davyddd"]
+license = "MIT"
+repository = "https://github.com/davyddd/dddesign"
+readme = "README.md"
+keywords = ["python", "ddd", "domain driven design", "ddd architecture", "ddd structure", "architecture", "structure", "dddesign"]
+packages = [{include = "dddesign"}]
+
+[tool.poetry.dependencies]
+python = ">=3.8"
+pydantic = {version = "^1.10", extras = ["email"]}
+email-validator = "*"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "1.1.1"
+ruff = "0.1.7"
+ipdb = "0.13.9"
+ipython = "8.12.3"
+pytest = "8.1.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
