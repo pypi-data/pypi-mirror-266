@@ -1,0 +1,33 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "benchify"
+version = "0.0.8"
+authors = [
+  { name="Max von Hippel", email="max@benchify.ai" },
+  { name="Juan Castaño", email="juan@benchify.ai" },
+  { name="Tyler Gabb", email="tylerjgabb@gmail.com" },
+]
+description = "Formal code intelligence"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "rich",
+    "requests",
+    "auth0-python",
+    "typer",
+]
+
+[project.scripts]
+benchify = "benchify.main:analyze"
+
+[project.urls]
+Homepage = "https://github.com/Benchify/benchify-api"
+Issues = "https://github.com/Benchify/benchify-api/issues"
