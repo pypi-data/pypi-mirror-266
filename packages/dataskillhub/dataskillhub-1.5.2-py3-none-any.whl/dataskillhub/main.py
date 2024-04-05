@@ -1,0 +1,84 @@
+from pathlib import Path
+import click
+from .consultant import (
+    export_consultant,
+    get_consultants,
+    add_consultant,
+    check_consultant,
+)
+from .init_src import copy_file, create_folder
+
+
+@click.group()
+def main():
+    pass
+
+
+@main.command()
+def init():
+    folder_list = ["assets/logos", "assets/icones", "assets/certifs", "templates", "config", "consultants"] # noqa
+    for folder in folder_list:
+        create_folder(f"{folder}/")
+    code_path = Path(__file__).parent
+    copy_file(code_path / "assets/logos", "assets/logos", "logo_datalyo.png")  # noqa
+    copy_file(code_path / "assets/logos", "assets/logos", "logo.png")  # noqa
+    copy_file(code_path / "assets/icones", "assets/icones", "icon_chat.png")  # noqa
+    copy_file(code_path / "assets/icones", "assets/icones", "icon_diploma.png")  # noqa
+    copy_file(code_path / "assets/icones", "assets/icones", "icon_person.png")  # noqa
+    copy_file(code_path / "assets/icones", "assets/icones", "icon_skill.png")  # noqa
+    copy_file(code_path / "assets/icones", "assets/icones", "icon_star.png")  # noqa
+    copy_file(code_path / "assets/certifs", "assets/certifs", "cert_psm.svg") # noqa
+    copy_file(code_path / "assets/certifs", "assets/certifs", "cert_tableau.png")  # noqa
+    copy_file(code_path / "assets/certifs", "assets/certifs","cert_talend.png")  # noqa
+    copy_file(code_path / "assets", "assets", "style.css")
+    copy_file(code_path / "templates", "templates", "index.html")  # noqa
+    copy_file(code_path / "config", "config", "anonyme.json")  # noqa
+    copy_file(code_path / "config", "config", "section.yaml")  # noqa
+    print("fichiers prêts")
+
+
+@main.group()
+def consultant():
+    pass
+
+
+@consultant.command()
+@click.argument("consultant")
+@click.option("--output_path", default="outputs", help="Where to place the cvs")  # noqa:
+@click.option("--asset_path_html", default="../../assets", help="Where the assets for html stock")  # noqa:
+@click.option("--asset_path_pdf", default="assets", help="Where the assets for pdf stock") # noqa:
+@click.option("--consultants_path_html", default="../../consultants", help="Where the avatar of consultant for html stock")  # noqa:
+@click.option("--consultants_path_pdf", default="consultants", help="Where the avatar of consultant for pdf stock") # noqa:
+def export(consultant, output_path="outputs",
+           asset_path_html="../../assets", asset_path_pdf="assets",
+           consultants_path_html="../../consultants",consultants_path_pdf="consultants"): # noqa:
+    if consultant == "all":
+        consultant_list = get_consultants()
+        for consul in consultant_list:
+            export_consultant(
+                consul, output_path, asset_path_html, asset_path_pdf, consultants_path_html,consultants_path_pdf)  # noqa:
+    else:
+        export_consultant(
+            consultant, output_path, asset_path_html, asset_path_pdf, consultants_path_html,consultants_path_pdf)  # noqa:
+
+
+@consultant.command()
+def list():
+    for consultant in get_consultants():
+        print(consultant)
+
+
+@consultant.command()
+@click.argument("consultant")
+def new(consultant):
+    add_consultant(consultant)
+
+
+@consultant.command()
+@click.argument("consultant")
+def check(consultant):
+    check_consultant(consultant)
+
+
+if __name__ == "__main__":
+    main()
