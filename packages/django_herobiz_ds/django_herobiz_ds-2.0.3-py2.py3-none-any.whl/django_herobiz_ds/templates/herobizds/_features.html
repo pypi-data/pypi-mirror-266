@@ -1,0 +1,60 @@
+{% load static %}
+
+<section id="features" class="features">
+  <div class="container" data-aos="fade-up">
+
+    <ul class="nav nav-tabs row gy-4 d-flex">
+      {% for item in features %}
+      <li class="nav-item col-6 col-md-4 col-lg-2">
+        {% if forloop.first %}
+        <a class="nav-link active show" data-bs-toggle="tab" data-bs-target="#tab-1">
+        {% else %}
+        <a class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-{% cycle '2' '3' '4' '5' '6' %}">
+        {% endif %}
+          <i class="bi {{ item.icon }} color-{% cycle 'cyan' 'indigo' 'teal' 'red' 'blue' 'orange' %}"></i>
+          <h4>{{ item.title }}</h4>
+        </a>
+      </li>
+      {% endfor %}
+
+    </ul>
+
+    <div class="tab-content">
+      {% for item in features %}
+      {% if forloop.first %}
+      <div class="tab-pane active show" id="tab-1">
+      {% else %}
+      <div class="tab-pane" id="tab-{% cycle '2' '3' '4' '5' '6' %}">
+      {% endif %}
+        <div class="row gy-4">
+          {% if forloop.first %}
+          <div class="col-lg-8 order-2 order-lg-1" data-aos="fade-up" data-aos-delay="100">
+          {% else %}
+          <div class="col-lg-8 order-2 order-lg-1">
+          {% endif %}
+            <h3>{{ item.title }}</h3>
+            <p class="fst-italic">
+              {{ item.p_upper }}
+            </p>
+            <ul>
+              {% for li in item.li %}
+              <li><i class="bi bi-check-circle-fill"></i> {{ li }}</li>
+              {% endfor %}
+            </ul>
+            <p class="fst-italic">
+              {{ item.p_lower }}
+            </p>
+          </div>
+          {% if forloop.first %}
+          <div class="col-lg-4 order-1 order-lg-2 text-center" data-aos="fade-up" data-aos-delay="200">
+          {% else %}
+          <div class="col-lg-4 order-1 order-lg-2 text-center">
+          {% endif %}
+            <img src="{% static 'img/herobizds/features/'|add:item.image %}" alt="" class="img-fluid">
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>

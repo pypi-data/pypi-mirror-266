@@ -1,0 +1,97 @@
+{% load static %}
+{% load herobizds_tags %}
+{% load django_calendards_tags %}
+{% load django_modalds_tags %}
+{% load django_analyticsds_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- ======= SEO ======= -->{% include 'herobizds/seo.html' %}<!-- End SEO -->
+
+  <!-- Vendor CSS Files -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="{% static 'herobizds/vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'herobizds/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'herobizds/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- Variables CSS Files. Uncomment your preferred color scheme -->
+  <link href="{% static 'herobizds/css/variables'|add:color|add:'.css' %}" rel="stylesheet">
+  <!-- <link href="{% static 'herobizds/css/variables-blue.css' %}" rel="stylesheet"> -->
+  <!-- <link href="{% static 'herobizds/css/variables-green.css' %}" rel="stylesheet"> -->
+  <!-- <link href="{% static 'herobizds/css/variables-orange.css' %}" rel="stylesheet"> -->
+  <!-- <link href="{% static 'herobizds/css/variables-purple.css' %}" rel="stylesheet"> -->
+  <!-- <link href="{% static 'herobizds/css/variables-red.css' %}" rel="stylesheet"> -->
+  <!-- <link href="{% static 'herobizds/css/variables-pink.css' %}" rel="stylesheet"> -->
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'herobizds/css/main.css' %}" rel="stylesheet">
+
+</head>
+
+<body>
+  <!-- ======= Header ======= -->{% include 'herobizds/header.html' %}<!-- End Header -->
+  <!-- ======= Hero Section ======= -->{% hero %}<!-- End Hero -->
+
+  <main id="main">
+    {% show_calendar %}
+    {% show_modal %}
+    {% make_analytics %}
+
+    {% for component, is_use, _, _ in components %}
+      {% if is_use %}
+        {% if component == 'featured_services' %}
+          <!-- ======= Featured Services Section ======= -->{% featured_services %}<!-- End Featured Services Section -->
+        {% elif component == 'about' %}
+          <!-- ======= About Section ======= -->{% about %}<!-- End About Section -->
+        {% elif component == 'clients' %}
+          <!-- ======= Clients Section ======= -->{% clients %}<!-- End Clients Section -->
+        {% elif component == 'cta' %}
+          <!-- ======= Call To Action Section ======= -->{% cta %}<!-- End Call To Action Section -->
+        {% elif component == 'onfocus' %}
+          <!-- ======= On Focus Section ======= -->{% onfocus %}<!-- End On Focus Section -->
+        {% elif component == 'features' %}
+          <!-- ======= Features Section ======= -->{% features %}<!-- End Features Section -->
+        {% elif component == 'services' %}
+          <!-- ======= Services Section ======= -->{% services %}<!-- End Services Section -->
+        {% elif component == 'testimonials' %}
+          <!-- ======= Testimonials Section ======= -->{% testimonials %}<!-- End Testimonials Section -->
+        {% elif component == 'pricing' %}
+          <!-- ======= Pricing Section ======= -->{% pricing %}<!-- End Pricing Section -->
+        {% elif component == 'faq' %}
+          <!-- ======= F.A.Q Section ======= -->{% faq %}<!-- End F.A.Q Section -->
+        {% elif component == 'portfolio' %}
+          <!-- ======= Portfolio Section ======= -->{% portfolio %}<!-- End Portfolio Section -->
+        {% elif component == 'team' %}
+          <!-- ======= Team Section ======= -->{% team %}<!-- End Team Section -->
+        {% elif component == 'blog' %}
+          <!-- ======= Recent Blog Posts Section ======= -->{% blog %}<!-- End Recent Blog Posts Section -->
+        {% elif component == 'contact' %}
+          <!-- ======= Contact Section ======= -->{% contact %}<!-- End Contact Section -->
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->{% include 'herobizds/footer.html' %}<!-- End Footer -->
+
+  <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+          crossorigin="anonymous"></script>
+  <script src="{% static 'herobizds/vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'herobizds/vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'herobizds/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'herobizds/vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <!-- <script src="{% static 'herobizds/vendor/php-email-form/validate.js' %}"></script> -->
+
+  <!-- Template Main JS File -->
+  <script src="{% static 'herobizds/js/main.js' %}"></script>
+</body>
+</html>

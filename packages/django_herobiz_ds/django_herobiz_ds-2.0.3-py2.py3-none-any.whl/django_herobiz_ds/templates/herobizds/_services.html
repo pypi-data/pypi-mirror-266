@@ -1,0 +1,32 @@
+{% load static %}
+
+<section id="services" class="services">
+  <div class="container" data-aos="fade-up">
+
+    <div class="section-header">
+      <h2>{{ services_h2 }}</h2>
+      <p>{{ services_p }}</p>
+    </div>
+
+    <div class="row gy-5">
+      {% for item in services %}
+      <div class="col-xl-4 col-md-6" data-aos="zoom-in" data-aos-delay="{% cycle '200' '300' '400' '500' '600' '700' %}">
+        <div class="service-item">
+          <div class="img">
+            <img src="{% static 'img/herobizds/services/'|add:item.image %}" class="img-fluid" alt="">
+          </div>
+          <div class="details position-relative">
+            <div class="icon">
+              <i class="bi {{ item.icon }}"></i>
+            </div>
+            <a href="#" class="stretched-link">
+              <h3>{{ item.h3 }}</h3>
+            </a>
+            <p>{{ item.p }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>

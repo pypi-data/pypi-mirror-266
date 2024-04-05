@@ -1,0 +1,34 @@
+{% load static %}
+
+<header id="header" class="header fixed-top" data-scrollto-offset="0">
+  <div class="container-fluid d-flex align-items-center justify-content-between">
+    <a href="{% url 'herobizds:home' %}" class="logo d-flex align-items-center scrollto me-auto me-lg-0">
+      {% if use_logo %}
+      <img src="{% static 'img/herobizds/logo.png' %}" alt="">
+      {% else %}
+      <h1>{{ logo_text }}<span>.</span></h1>
+      {% endif %}
+    </a>
+
+    <nav id="navbar" class="navbar">
+      <ul>
+        <!-- 메뉴 -->
+        {% for component, etc, title, is_show in components %}
+          {% if is_show %}
+            {% if component == 'direct_link' %}
+              <li><a class="nav-link scrollto" href="{{ etc }}">{{ title }}</a></li>
+            {% else %}
+              <li><a class="nav-link scrollto" href="{% url 'herobizds:home' %}#{{ component }}">{{ title }}</a></li>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </ul>
+      <i class="bi bi-list mobile-nav-toggle d-none"></i>
+    </nav><!-- .navbar -->
+    {% for component, is_use, _, _ in components %}
+    {% if component == menu_btn.component and is_use %}
+    <a class="btn-getstarted scrollto" href="#{{ menu_btn.component }}">{{ menu_btn.title }}</a>
+    {% endif %}
+    {% endfor %}
+  </div>
+</header>

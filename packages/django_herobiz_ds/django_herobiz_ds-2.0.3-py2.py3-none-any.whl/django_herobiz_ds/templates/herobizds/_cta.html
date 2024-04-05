@@ -1,0 +1,34 @@
+{% load static %}
+
+<section id="cta" class="cta">
+  <div class="container" data-aos="zoom-out">
+
+    <div class="row g-5">
+      {% autoescape off %}
+      <div class="col-lg-8 col-md-6 content d-flex flex-column justify-content-center order-last order-md-first">
+        <h3>{{ cta.h3 }}</h3>
+        <p> {{ cta.p }}</p>
+        <div class="row row-cols-auto">
+        {% for btn in cta.btns %}
+          <div class="col">
+            {% if btn.type == 'onclick' %}
+            <a class="cta-btn align-self-start" onclick="cta{{ forloop.counter }}_gtag_report_conversion('{{ btn.link }}')">{{ btn.title }}</a>
+            {% elif btn.type == 'href' %}
+            <a class="cta-btn align-self-start" href="{{ btn.link }}" target="_blank">{{ btn.title }}</a>
+            {% endif %}
+          </div>
+        {% endfor %}
+        </div>
+        {% endautoescape %}
+      </div>
+
+      <div class="col-lg-4 col-md-6 order-first order-md-last d-flex align-items-center">
+        <div class="img">
+          <img src="{% static 'img/herobizds/'|add:cta.image_filename %}" alt="" class="img-fluid">
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
