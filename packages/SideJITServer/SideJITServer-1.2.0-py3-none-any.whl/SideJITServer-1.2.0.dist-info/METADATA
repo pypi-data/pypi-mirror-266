@@ -1,0 +1,62 @@
+Metadata-Version: 2.1
+Name: SideJITServer
+Version: 1.2.0
+Summary: SideJITServer is an iOS 17 JIT enabler for Windows/macOS!
+Author: khanhduytran0
+Author-email: nythepegasus <me@nythepegas.us>, JoeMatt <git@joemattiello.com>
+Maintainer-email: nythepegasus <me@nythepegas.us>
+Project-URL: Homepage, https://github.com/nythepegasus/SideJITServer
+Project-URL: Bug Reports, https://github.com/nythepegasus/SideJITServer/issues
+Keywords: ios,automation,cli,jit
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: Microsoft :: Windows :: Windows 10
+Classifier: Operating System :: Microsoft :: Windows :: Windows 11
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: iOS
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3 :: Only
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: pymobiledevice3 <3.2.0,>=3.1.0
+Requires-Dist: Flask ==3.0.2
+Provides-Extra: dev
+Requires-Dist: build ; extra == 'dev'
+Requires-Dist: pylint ; extra == 'dev'
+
+# SideJITServer
+This project allows you to start a server that wirelessly gives you JIT for iOS 17+ on Windows/macOS. Linux support depends on a [kernel patch](https://github.com/doronz88/pymobiledevice3/issues/566#issuecomment-1850486679).
+
+
+To get it going: (run this in an admin terminal if you're on Windows)
+```sh
+python3 -m venv venv
+
+# If you're on macOS/Linux
+. ./venv/bin/activate
+# If you're on Windows using PowerShell
+.\venv\Scripts\Activate.ps1
+# CMD
+.\venv\Scripts\Activate.bat
+
+# All
+pip3 install -r requirements.txt
+# Windows
+.\venv\Scripts\python3.exe main.py
+# macOS
+sudo python3 -m SideJITServer --help
+```
+
+Or with PyPI:
+```
+python3 -m venv venv
+# Activate venv..
+
+pip3 install SideJITServer
+SideJITServer --help
+```
+
+Here is the [Shortcut](https://www.icloud.com/shortcuts/b0ffc9c3f0e74e7a8f8052c89fa322cf) that goes along with this.
