@@ -1,0 +1,250 @@
+Metadata-Version: 2.1
+Name: ftw.contentstats
+Version: 1.4.0
+Summary: Collect and display content statistics for Plone sites
+Home-page: https://github.com/4teamwork/ftw.contentstats
+Author: 4teamwork AG
+Author-email: mailto:info@4teamwork.ch
+License: GPL2
+Keywords: ftw content stats statistics
+Classifier: Framework :: Plone
+Classifier: Framework :: Plone :: 4.3
+Classifier: Framework :: Plone :: 5.1
+Classifier: License :: OSI Approved :: GNU General Public License (GPL)
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Dist: Plone
+Requires-Dist: Products.CMFCore
+Requires-Dist: Products.CMFPlone
+Requires-Dist: Products.GenericSetup
+Requires-Dist: plone.api
+Requires-Dist: setuptools
+Requires-Dist: zope.i18nmessageid
+Requires-Dist: tzlocal
+Requires-Dist: pytz
+Requires-Dist: requests
+Requires-Dist: path.py>=6.2
+Requires-Dist: fluent-logger
+Provides-Extra: tests
+Requires-Dist: ftw.builder; extra == "tests"
+Requires-Dist: ftw.testbrowser; extra == "tests"
+Requires-Dist: ftw.testing; extra == "tests"
+Requires-Dist: mock; extra == "tests"
+Requires-Dist: plone.app.testing; extra == "tests"
+Requires-Dist: plone.testing; extra == "tests"
+Requires-Dist: plone.app.contenttypes; extra == "tests"
+Requires-Dist: transaction; extra == "tests"
+Requires-Dist: zope.configuration; extra == "tests"
+Requires-Dist: freezegun<0.3.15; extra == "tests"
+Requires-Dist: requests_toolbelt; extra == "tests"
+Provides-Extra: scandir
+Requires-Dist: scandir; extra == "scandir"
+
+================
+ftw.contentstats
+================
+
+.. contents:: Table of Contents
+
+
+Introduction
+============
+
+``ftw.contentstats`` is a Plone add-on for collecting and displaying content
+statistics.
+
+
+Compatibility
+-------------
+
+Plone 4.3.x
+
+
+Installation
+============
+
+- Add the package to your buildout configuration:
+
+::
+
+    [instance]
+    eggs +=
+        ...
+        ftw.contentstats
+
+
+Usage
+=====
+
+Visit the ``@@content-stats`` view on a Plone site (requires the
+``cmf.ManagePortal`` permission by default).
+
+----
+
+.. image:: https://raw.githubusercontent.com/4teamwork/ftw.contentstats/master/docs/content-stats-view.png
+
+
+Collected stats
+===============
+
+Out of the box, ``ftw.contentstats`` will collect statistics for
+
+- **Types** (distinct ``portal_type``'s and their counts)
+- **Workflow states** (distinct ``review_state``'s and their counts)
+- **Disk Usage** (total disk usage of the deployment directory, filestorage and blobstorage)
+
+Add-on packages can have additional statistics collected by providing an
+``IStatsProvider`` adapter (see interface description for details).
+
+If ``ftw.monitor`` is installed, its performance metrics will also be
+included, grouped by instance.
+
+
+Logging content stats over time
+===============================
+
+In order to log content stats to a file, you can use the provided
+``bin/dump-content-stats`` script to have stats dumped to a logfile that
+contains on JSON entry per line, containing the raw stats for that time.
+
+Usage:
+
+``bin/dump-content-stats -s <plone_site_id>``
+
+The script will cause the stats to be dumped by making a request to the
+``@@dump-content-stats`` view. This view is accessible to Anonymous
+(``zope.Public``), but *only* when requested from localhost!
+
+So in order for this script to work, you'll have to invoke it on the same
+machine where your Zope instances run, and make sure the Plone site is **up
+and running**, and reachable from localhost.
+
+The logfile location will be in the same directory as the Z2 log, and the
+log will be named ``contentstats-json.log``.
+
+**Note**: In order to figure out the appropriate log directory,
+``ftw.contentstats`` needs to derive this information from the eventlog
+location. It's therefore important to have an eventlog configured, otherwise
+``ftw.contentstats`` will not be able to log any content stats, and complain
+noisily through the root logger.
+
+Logging to Fluentd
+------------------
+
+Instead of logging to a logfile, ``ftw.contentstats`` can also be configured
+to log to a Fluentd instance.
+
+If the environment variable ``FLUENT_HOST`` is set, it will log to that fluent
+host using the Fluentd Forward Protocol, instead of logging to a local file.
+``FLUENT_PORT`` (optional) allows to specify the port, and defaults to 24224
+if not set.
+
+In order for ftw.contentstats to use a proper tag for events logged to Fluentd,
+the Pod namespace needs to be exposed in the ``KUBERNETES_NAMESPACE`` env var.
+
+
+Development
+===========
+
+1. Fork this repo
+2. Clone your fork
+3. Shell: ``ln -s development.cfg buildout.cfg``
+4. Shell: ``python boostrap.py``
+5. Shell: ``bin/buildout``
+
+Run ``bin/test`` to test your changes.
+
+Or start an instance by running ``bin/instance fg``.
+
+
+Links
+=====
+
+- Github: https://github.com/4teamwork/ftw.contentstats
+- Issues: https://github.com/4teamwork/ftw.contentstats/issues
+- Pypi: http://pypi.python.org/pypi/ftw.contentstats
+
+
+Copyright
+=========
+
+This package is copyright by `4teamwork <http://www.4teamwork.ch/>`_.
+
+``ftw.contentstats`` is licensed under GNU General Public License, version 2.
+
+Changelog
+=========
+
+
+1.4.0 (2024-04-04)
+------------------
+
+- Add Python implementation for calculating disk usage. [buchi]
+
+- Add option to specify data path for disk usage calculation. [buchi]
+
+- Add zopectl command for dumping content stats. [buchi]
+
+- Make filestorage (Data.fs) and blobstorage path for disk usage configurable. [buchi]
+
+
+1.3.0 (2023-04-04)
+------------------
+
+- Add support for logging to Fluentd. [lgraf]
+
+
+1.2.0 (2020-05-04)
+------------------
+
+- Add perf_metrics provider that gathers performance metrics from ftw.monitor. [lgraf]
+
+
+1.1.1 (2018-12-28)
+------------------
+
+- Fixed test temp file isolation issues. [Rotonen]
+
+
+1.1.0 (2018-11-05)
+------------------
+
+- Include disk usage (Data.fs and blobstorage) in stats. [lgraf]
+
+- Add Plone 5 compatibility. [phgross]
+
+1.0.3 (2017-09-08)
+------------------
+
+- Make determining buildout path independent of working directory.
+  [lgraf]
+
+
+1.0.2 (2017-09-04)
+------------------
+
+- Properly build ++resource++ URLs by prefixing them with portal_url instead
+  of just a slash. [lgraf]
+
+
+1.0.1 (2017-09-04)
+------------------
+
+- Fail gracefully if eventlog config can't be found in order to derive
+  log location from it. Instead of potentially preventing instance startup,
+  log a noticeable error message using the root logger.
+  [lgraf]
+
+
+1.0.0 (2017-09-03)
+------------------
+
+- Introduce IStatsCollector component and implement portal_types collector. [mathias.leimgruber]
+
+- Rework ContenStats integration. Move "getting the content stats" from the view
+  to it's own module/class.
+  [mathias.leimgruber]
+
+- Initial implementation.
+  [lgraf]

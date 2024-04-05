@@ -1,0 +1,75 @@
+Changelog
+=========
+
+
+1.4.0 (2024-04-04)
+------------------
+
+- Add Python implementation for calculating disk usage. [buchi]
+
+- Add option to specify data path for disk usage calculation. [buchi]
+
+- Add zopectl command for dumping content stats. [buchi]
+
+- Make filestorage (Data.fs) and blobstorage path for disk usage configurable. [buchi]
+
+
+1.3.0 (2023-04-04)
+------------------
+
+- Add support for logging to Fluentd. [lgraf]
+
+
+1.2.0 (2020-05-04)
+------------------
+
+- Add perf_metrics provider that gathers performance metrics from ftw.monitor. [lgraf]
+
+
+1.1.1 (2018-12-28)
+------------------
+
+- Fixed test temp file isolation issues. [Rotonen]
+
+
+1.1.0 (2018-11-05)
+------------------
+
+- Include disk usage (Data.fs and blobstorage) in stats. [lgraf]
+
+- Add Plone 5 compatibility. [phgross]
+
+1.0.3 (2017-09-08)
+------------------
+
+- Make determining buildout path independent of working directory.
+  [lgraf]
+
+
+1.0.2 (2017-09-04)
+------------------
+
+- Properly build ++resource++ URLs by prefixing them with portal_url instead
+  of just a slash. [lgraf]
+
+
+1.0.1 (2017-09-04)
+------------------
+
+- Fail gracefully if eventlog config can't be found in order to derive
+  log location from it. Instead of potentially preventing instance startup,
+  log a noticeable error message using the root logger.
+  [lgraf]
+
+
+1.0.0 (2017-09-03)
+------------------
+
+- Introduce IStatsCollector component and implement portal_types collector. [mathias.leimgruber]
+
+- Rework ContenStats integration. Move "getting the content stats" from the view
+  to it's own module/class.
+  [mathias.leimgruber]
+
+- Initial implementation.
+  [lgraf]
