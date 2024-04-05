@@ -1,0 +1,44 @@
+[tool.poetry]
+name = "lissajou"
+version = "0.2.0"
+description = "A Python module for creating animations, including Lissajou curve simulations."
+authors = ["Hermann Agossou"]
+keywords = ["animation", "matplotlib", "simulation", "Lissajou", "parametric", "visualization"]
+license = "MIT"
+readme = "README.md"
+maintainers = [
+    "Hermann Agossou <agossouhermann7@gmail.com>"
+]
+homepage = "https://hermann-web.github.io/blog/projects/introducing-lissajou-for-animated-plots/"
+repository = "https://github.com/Hermann-web/lissajou"
+documentation = "https://github.com/Hermann-web/lissajou/blob/main/docs/index.md"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: MIT License",
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+numpy = "^1.23.0"
+matplotlib = "^3.4.0"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.0.0"
+isort = "^5.0.0"
+pydeps = "^1.12.20"
+
+[tool.isort]
+profile = "black"
+
+[tool.black]
+line-length = 88
+
+[tool.flake8]
+ignore = "E501"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
