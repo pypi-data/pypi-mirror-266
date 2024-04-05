@@ -1,0 +1,50 @@
+{
+  "type": "object",
+  "title": "Lazada Customers Insight Monthly Report",
+  "description": "Monthly report providing key insights into customer behavior and financial metrics on Lazada",
+  "properties": {
+    "Date": {
+      "type": "string",
+      "description": "Date of the report in the format 'MM-DD-YYYY'",
+      "format": "dd-MM-yyyy",
+      "pattern": "[0-9]{2}-[0-9]{2}-[1-2][0-9]{3}"
+    },
+    "Revenue": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Revenue information for the month"
+    },
+    "Conversion_Rate": {
+      "type": "number",
+      "description": "Conversion rate as a percentage for the month"
+    },
+    "Orders": {
+      "type": "integer",
+      "description": "Total number of orders for the month"
+    },
+    "Buyers": {
+      "type": "integer",
+      "description": "Total number of unique buyers for the month"
+    },
+    "New_buyers": {
+      "type": "integer",
+      "description": "Number of new buyers for the month"
+    },
+    "Existing_buyers": {
+      "type": "integer",
+      "description": "Number of existing buyers for the month"
+    },
+    "Average_order_value": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Average order value information for the month"
+    },
+    "Average_basket_size": {
+      "type": "number",
+      "description": "Average basket size for the month"
+    }
+  },
+  "required": [
+    "Date"
+  ]
+}

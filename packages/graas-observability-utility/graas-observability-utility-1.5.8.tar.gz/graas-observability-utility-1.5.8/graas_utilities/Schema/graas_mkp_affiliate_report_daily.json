@@ -1,0 +1,42 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Affiliate Report",
+    "description": "A JSON object representing a Affiliate Report",
+    "type": "object",
+    "properties": {
+        "merchantID": {
+            "type": "string",
+            "description": "A unique merchant code for GRAAS clients"
+        },
+        "siteNickNameId": {
+            "type": "string",
+            "description": "A unique merchant's store code for GRAAS clients"
+        },
+        "countryCode": {
+            "type": "string",
+            "description": "The country code, e.g., 'SG', 'MY'."
+        },
+        "currencyCode": {
+            "type": "string",
+            "description": "The currency code, e.g., 'SGD', 'USD'."
+        },
+        "result": {
+            "type": "array",
+            "items": {
+                "anyOf": [
+                    {
+                        "$ref": "../graas_utilities/Schema/Lazada_Product_Sponsored_Affiliate_Report_Daily_monthly_Report.json",
+                        "description": "Lazada Product Sponsored Affiliate Daily monthly Report"
+                    }
+                ]
+            }
+        }
+    },
+    "required": [
+        "merchantID",
+        "siteNickNameId",
+        "countryCode",
+        "currencyCode",
+        "result"
+    ]
+}
