@@ -1,0 +1,324 @@
+{
+    "re_patterns": {
+        "VGAT_MOUSE_NO": "Vgat.*?(\\d{1,3}).*jRGECO",
+        "TIFF_FRAME_NO": ".*(\\d{5})\\.tiff?$",
+        "TDMS_TRIALS_TABLE_TIME": "(\\d{4}_\\d{2}_\\d{2}_\\d{2}_\\d{2})\\.tdms$",
+        "TDMS_VIDEO_TRIAL_NO": ".*?(\\d+)\\.tdms$",
+        "FOV_NO": "^.*FOV.*?(\\d+).*$",
+        "CONDENSED_DATE": ".*?(20\\d{4,6}).*?",
+        "SESSION_NO": ".*?20\\d{4,6}_(\\d).*?",
+        "ALYX_PATH_EID": "\\w+(?:\\|\/)\\d{4}\\-\\d{2}\\-\\d{2}(?:\\|\/)\\d{3}",
+        "IOI_WHISKER": "^([a-zA-Z0-9]+)",
+        "IOI_WITH_VERSIONS": ".*_[vV]\\d"
+    },
+    "rules": {
+        "imaging_data_rule1": {
+            "if": {
+                "extension": {
+                    "exact": [
+                        "tif",
+                        "tiff"
+                    ]
+                },
+                "collection": {
+                    "contain": "imaging_data"
+                }
+            },
+            "on": {
+                "match": "rename",
+                "destination_exists": "abort",
+                "rename_unchanged": "exclude"
+            },
+            "rename": {
+                "object": "imaging",
+                "attribute": "frames",
+                "extra": {
+                    "pattern": "TIFF_FRAME_NO",
+                    "eval": "match[1].zfill(5)"
+                }
+            }
+        },
+        "imaging_data_rule2": {
+            "if": {
+                "object": "imaging",
+                "attribute": "frames",
+                "extra": {
+                    "exact_not": ""
+                }
+            },
+            "on": {
+                "match": "include"
+            },
+            "overrides": [
+                "imaging_data_rule1"
+            ]
+        },
+        "behavior_pupil_rule1": {
+            "if": {
+                "extension": "tdms",
+                "collection": {
+                    "contain": ["pupil"]
+                }
+            },
+            "on": {
+                "match": "rename"
+            },
+            "rename": {
+                "object": "behaviour",
+                "attribute": "video",
+                "collection": "behaviour_imaging\\pupil",
+                "extra": {
+                    "pattern": "TDMS_VIDEO_TRIAL_NO",
+                    "eval": "'pupil.' + match[1].zfill(5)"
+                }
+            }
+        },
+        "behavior_whiskers_rule1": {
+            "if": {
+                "extension": "tdms",
+                "collection": {
+                    "contain": ["whiskers","whisker"]
+                }
+            },
+            "on": {
+                "match": "rename"
+            },
+            "rename": {
+                "object": "behaviour",
+                "attribute": "video",
+                "collection": "behaviour_imaging\\whiskers",
+                "extra": {
+                    "pattern": "TDMS_VIDEO_TRIAL_NO",
+                    "eval": "'whiskers.' + match[1].zfill(5)"
+                }
+            }
+        },
+        "field_of_view_png_rule1": {
+            "if": {
+                "extension": ["png","PNG"],
+                "collection": ["","imaging_data"]
+            },
+            "on": {
+                "match": "rename"
+            },
+            "rename": {
+                "object": "imaging",
+                "attribute": "fieldOfView",
+                "collection": "imaging_data",
+                "extra": {
+                    "pattern": "FOV_NO",
+                    "eval": "match[1].zfill(2) if match is not None else ''"
+                }
+            }
+        },
+        "behavior_timeline_tdms_rule1": {
+            "if": {
+                "extension": "tdms",
+                "collection": ""
+            },
+            "on": {
+                "match": "rename"
+            },
+            "rename": {
+                "object": "trials",
+                "attribute": "eventTimeline",
+                "extra" : ""
+            }
+        },
+        "intrinsic_imaging_tdms_rule1": {
+            "if": {
+                "extension": "tdms",
+                "collection": {
+                    "exact":["intrinsic_optical_imaging","IOI"]
+                }
+            },
+            "on": {
+                "match": "rename"
+            },
+            "rename": {
+                "object": "imaging_intrinsic",
+                "attribute": "delta_stim_images",
+                "extra": {
+                    "search_on" : "object",
+                    "pattern": "IOI_WHISKER",
+                    "eval": "match[1]"
+                },
+                "collection" : "intrinsic_optical_imaging"
+            }
+        },
+        "intrinsic_imaging_vessels_rule1": {
+            "if": {
+                "extension": ["","tiff"],
+                "collection": {
+                    "exact": ["intrinsic_optical_imaging","IOI"]
+                },
+                "object" : {
+                    "contain": ["reference"]
+                }
+            },
+            "on": {
+                "match": "rename"
+            },
+            "rename": {
+                "object": "imaging_intrinsic",
+                "attribute": "vessels_reference",
+                "extension": "tiff",
+                "collection" : "intrinsic_optical_imaging"
+            }
+        },
+        "intrinsic_imaging_binaries_rule1": {
+            "if": {
+                "extension": [""],
+                "collection": {
+                    "exact": ["intrinsic_optical_imaging","IOI"]
+                },
+                "object" : {
+                    "contain_not": ["reference"]
+                }
+            },
+            "on": {
+                "match": "rename"
+            },
+            "rename": {
+                "object": "imaging_intrinsic",
+                "attribute": "bin_delta_stim_images",
+                "extension": "binlv",
+                "collection" : "intrinsic_optical_imaging",
+                "extra": {
+                    "search_on" : "object",
+                    "pattern": "IOI_WHISKER",
+                    "eval": "match[1]"
+                }
+            }
+        },
+        "intrinsic_imaging_exclude_versions_rule1": {
+            "if": {
+                "collection": {
+                    "exact": ["intrinsic_optical_imaging","IOI"]
+                },
+                "object" : {
+                    "match": "IOI_WITH_VERSIONS"
+                }
+            },
+            "on": {
+                "match": "exclude"
+            },
+            "overrides": [
+                "intrinsic_imaging_binaries_rule1",
+                "intrinsic_imaging_vessels_rule1",
+                "intrinsic_imaging_tdms_rule1"
+            ]
+        },
+        "behavior_trigger_text_pupil_rule1": {
+            "if": {
+                "extension": "txt",
+                "collection": {
+                    "contain": ["pupil"]
+                },
+                "object" : "Trigger"
+            },
+            "on": {
+                "match": "rename"
+            },
+            "rename" : {
+                "object": "behaviour",
+                "attribute": "video_triggers",
+                "collection": "behaviour_imaging\\pupil",
+                "extra" : "pupil"
+            }
+        },
+        "behavior_trigger_text_whiskers_rule1": {
+            "if": {
+                "extension": "txt",
+                "collection": {
+                    "contain": ["whiskers","whisker"]
+                },
+                "object" : "Trigger"
+            },
+            "on": {
+                "match": "rename"
+            },
+            "rename" : {
+                "object": "behaviour",
+                "attribute": "video_triggers",
+                "collection": "behaviour_imaging\\whiskers",
+                "extra" : "whiskers"
+            }
+        },
+        "behavior_cam_settings_text_pupil_rule1": {
+            "if": {
+                "extension": "txt",
+                "collection": {
+                    "contain": ["pupil"]
+                },
+                "object" : "CameraSettings"
+            },
+            "on": {
+                "match": "rename"
+            },
+            "rename" : {
+                "object": "behaviour",
+                "attribute": "camera_settings",
+                "collection": "behaviour_imaging\\pupil",
+                "extra" : "pupil"
+            }
+        },
+        "behavior_cam_settings_text_whiskers_rule1": {
+            "if": {
+                "extension": "txt",
+                "collection": {
+                    "contain": ["whiskers","whisker"]
+                },
+                "object" : "CameraSettings"
+            },
+            "on": {
+                "match": "rename"
+            },
+            "rename" : {
+                "object": "behaviour",
+                "attribute": "camera_settings",
+                "collection": "behaviour_imaging\\whiskers",
+                "extra" : "whiskers"
+            }
+        },
+        "delete_tdms_index_rule1": {
+            "if": {
+                "extension": "tdms_index"
+            },
+            "on": {
+                "match": "delete"
+            },
+            "overrides": ["intrinsic_imaging_exclude_versions_rule1"]
+        },
+        "exclude_Thumbs_rule1": {
+            "if": {
+                "extension": "db",
+                "object": "Thumbs"
+            },
+            "on": {
+                "match": "exclude"
+            }
+        },
+        "exclude_svg_files_rule1": {
+            "if": {
+                "extension": ["svg","SVG"]
+            },
+            "on": {
+                "match": "exclude"
+            }
+        }
+    },
+    "excluded_folders": [
+        "figures",
+        "preprocessing_saves",
+        "screen_captures",
+        "suite2p"
+    ],
+    "excluded_filenames": [
+        "session_meta.json",
+        "pipelines_arguments.json"
+    ],
+    "cleanup_folders":[
+        "pupil","whiskers","whisker"
+    ]
+}
