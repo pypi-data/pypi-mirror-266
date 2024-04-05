@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools >= 68.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "exponential_backoff_ca"
+version = "2.1"
+description = "An exponential backoff iterator with collision avoidance."
+readme = "README.md"
+requires-python = ">= 3.9"
+authors = [
+  {name = "IEDO Team"},
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "License :: OSI Approved :: MIT License",
+]
+
+[tool.setuptools.packages.find]
+include = ["exponential_backoff*"]
+
+#[tool.setuptools]
+#packages = ["exponential-backoff-ca"]
+
+[project.urls]
+Repository = "https://github.com/macrotex/python-exponential-backoff-ca"
+
