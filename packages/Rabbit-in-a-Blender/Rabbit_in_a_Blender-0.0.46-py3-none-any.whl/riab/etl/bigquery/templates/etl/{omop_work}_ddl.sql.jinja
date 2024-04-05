@@ -1,0 +1,25 @@
+{#- Copyright 2024 RADar-AZDelta -#}
+{#- SPDX-License-Identifier: gpl3+ -#}
+CREATE TABLE IF NOT EXISTS `{{dataset_work}}.{{omop_table}}` (
+  {%- for column in columns -%}
+      {%- if not loop.first -%}
+          {{ ',' }}
+      {%- endif %}
+      {{ column["cdmFieldName"] }} 
+      {%- if column["cdmFieldName"] in events or column["cdmFieldName"] in events.values() %} STRING
+      {%- else %} {{ column["cdmDatatype"] }}
+      {%- endif -%}
+      {%- if column['isRequired'] == "Yes" %} not null
+      {%- endif -%}
+  {%- endfor %}
+)
+{% if cluster_fields | length > 0 -%}
+  CLUSTER BY
+  {% for field in cluster_fields -%}
+      {%- if not loop.first -%}
+          {{ ',' }}
+      {%- endif -%}
+      {{ field }}   
+  {%- endfor -%}
+{%- endif -%}
+;

@@ -1,0 +1,20 @@
+{#- Copyright 2024 RADar-AZDelta -#}
+{#- SPDX-License-Identifier: gpl3+ -#}
+CREATE TABLE IF NOT EXISTS `{{dataset_work}}.{{primary_key_column}}_swap` 
+(x STRING,
+{%- for column in concept_id_columns -%}
+    {{column}} 
+    {% if not column in events.values() -%}
+        INT64,
+    {# {{column}}_source_value STRING, #}
+    {%- else -%}
+        STRING,
+    {%- endif -%}
+{%- endfor -%}
+{%- for column in events %}
+    {{column}} STRING,
+{%- endfor -%}
+    source STRING,
+    y INT64
+)
+CLUSTER BY x
