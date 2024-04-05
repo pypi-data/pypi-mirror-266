@@ -1,0 +1,48 @@
+{% set name = "ccpn_project_checker" %}
+{% set version = "0.1.16" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/ccpn_project_checker-{{ version }}.tar.gz
+  sha256: 283533fc28c5d980a69e67214658b8c449ad89cb55548b098893b6c4885343ec
+
+build:
+  entry_points:
+    - project_checker = ccpn_project_checker.main:main
+    - test_project_checker = ccpn_project_checker.test:run_tests
+  noarch: python
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  number: 0
+
+requirements:
+  host:
+    - python >=3.10
+    - hatchling
+    - pip
+  run:
+    - python >=3.10
+    - lxml >=4.9.0
+    - pytest >=7.4.0
+    - time-machine >=2.14.1
+
+test:
+  imports:
+    - ccpn_project_checker
+  commands:
+    - pip check
+    - project_checker --help
+    - test_project_checker --help
+  requires:
+    - pip
+
+about:
+  summary: A project checker for ccpn v3+ projects
+  license: ''
+  license_file: LICENSE.txt
+
+extra:
+  recipe-maintainers:
+    - varioustoxins
