@@ -1,0 +1,194 @@
+[project]
+name = "aioinject"
+version = "0.31.0"
+description = "Async dependency injection library"
+requires-python = ">=3.10"
+authors = [
+    { name = "Doctor", email = "thirvondukr@gmail.com" },
+    { name = "dexofan", email = "fadeddexofan@gmail.com" },
+]
+readme = "README.md"
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+]
+dependencies = [
+    "typing-extensions>=4.5.0",
+]
+
+[project.license]
+text = "MIT"
+
+[project.urls]
+Documentation = "https://thirvondukr.github.io/aioinject/"
+Repository = "https://github.com/ThirVondukr/aioinject"
+
+[build-system]
+requires = [
+    "pdm-pep517>=1.0",
+]
+build-backend = "pdm.pep517.api"
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "anyio>=4.3.0",
+    "asgi-lifespan>=2.1.0",
+    "black>=24.2.0",
+    "commitizen>=3.18.0",
+    "coverage[toml]>=7.4.3",
+    "fastapi>=0.110.0",
+    "litestar>=2.6.3",
+    "mypy>=1.9.0",
+    "pydantic-settings>=2.2.1",
+    "pytest>=8.1.1",
+    "ruff>=0.3.2",
+    "strawberry-graphql>=0.220.0",
+    "trio>=0.24.0",
+    "uvicorn>=0.28.0",
+]
+docs = [
+    "mkdocs>=1.5.3",
+    "mkdocs-material>=9.5.9",
+]
+
+[tool.pdm.build]
+includes = [
+    "aioinject",
+]
+
+[tool.pdm.scripts.lint]
+composite = [
+    "black .",
+    "ruff check --fix .",
+    "mypy .",
+    "black --check .",
+]
+
+[tool.pdm.scripts.test]
+composite = [
+    "coverage run",
+    "coverage report",
+]
+
+[tool.coverage.run]
+source = [
+    "aioinject",
+]
+command_line = "-m pytest -vvv"
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "class .*\\(.*\\bProtocol\\b.*\\):",
+    "@(?:typing\\.)?overload",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+]
+ignore_errors = false
+show_missing = true
+skip_covered = true
+skip_empty = true
+precision = 2
+fail_under = 100
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "0.31.0"
+version_files = [
+    "aioinject/__init__.py",
+    "pyproject.toml:version",
+]
+
+[tool.black]
+line_length = 79
+
+[tool.ruff]
+target-version = "py310"
+src = [
+    "aioinject",
+    "tests",
+]
+line-length = 79
+
+[tool.ruff.lint]
+select = [
+    "ALL",
+]
+fixable = [
+    "F",
+    "B",
+    "UP",
+    "I",
+    "PT",
+    "TID",
+    "COM",
+]
+unfixable = [
+    "F841",
+]
+ignore = [
+    "D",
+    "PD",
+    "E501",
+    "ANN101",
+    "ANN102",
+    "ANN401",
+    "TCH001",
+    "TCH002",
+    "TCH003",
+    "EXE",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "S101",
+]
+"docs/*" = [
+    "INP001",
+    "A002",
+    "S101",
+    "T201",
+]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 6
+
+[tool.ruff.lint.isort]
+lines-after-imports = 2
+known-first-party = [
+    "aioinject",
+]
+
+[tool.ruff.lint.flake8-quotes]
+inline-quotes = "double"
+
+[tool.ruff.lint.pep8-naming]
+classmethod-decorators = [
+    "classmethod",
+]
+staticmethod-decorators = [
+    "staticmethod",
+]
+
+[tool.ruff.lint.flake8-pytest-style]
+fixture-parentheses = false
+mark-parentheses = false
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.mypy]
+strict = true
+follow_imports = "normal"
+ignore_missing_imports = false
+allow_redefinition = false
+disallow_any_explicit = false
+ignore_errors = false
+local_partial_types = true
+no_implicit_optional = true
+strict_optional = true
+warn_no_return = true
+warn_return_any = false
+warn_unreachable = true
+pretty = true
+show_column_numbers = true
+show_error_codes = true
