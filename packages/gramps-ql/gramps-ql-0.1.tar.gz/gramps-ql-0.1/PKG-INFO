@@ -1,0 +1,34 @@
+Metadata-Version: 2.1
+Name: gramps-ql
+Version: 0.1
+Summary: A Python library to filter Gramps objects by a query syntax
+Author-email: "David M. Straub" <straub@protonmail.com>
+License: MIT
+Project-URL: homepage, https://github.com/DavidMStraub/gramps-ql
+Project-URL: repository, https://github.com/DavidMStraub/gramps-ql
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pyparsing
+
+# GQL &ndash; the Gramps Query Language
+
+This Python library provides GQL, a query language to a [Gramps](https://github.com/gramps-project/gramps) database. The syntax is inspired by JQL, the Jira Query Language.
+
+## Installation
+
+```
+python -m pip install gramps-ql
+```
+
+## Usage
+
+```python
+from gramps_ql import iter_objects
+
+db = ... # A Gramps DbReadBase instance
+
+# iterate over private people
+query = 'type=person AND private'
+
+for obj in iter_objects(query, db):
+    f(obj) # do something with the Gramps object obj
