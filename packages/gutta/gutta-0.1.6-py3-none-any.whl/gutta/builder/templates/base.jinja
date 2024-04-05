@@ -1,0 +1,63 @@
+{%extends 'core.jinja'%}
+
+{% block header %}
+    <link rel="stylesheet" href="{{static}}wc.css">
+    <link rel="icon" type="image/gif" href="{{assets}}{{favicon.src}}">      
+    {%if cactus is defined %}
+        <script type="text/javascript" src="https://latest.cactus.chat/cactus.js"></script>
+        <link rel="stylesheet" href="https://latest.cactus.chat/style.css" type="text/css">
+    {%endif%}
+{% endblock %}
+
+{% block boddy %}
+    <div class="container d-flex flex-column align-items-center gutta-body">
+        {% if banner is defined %}
+            <img class="gutta-banner" src="{{assets}}{{banner.src}}" width="100%">
+        {% endif %}
+        {% if navbar is defined %}
+            <nav class="navbar navbar-expand-md sticky-top d-flex flex-row justify-content-around gutta-navbar">
+                    {# <a class="navbar-brand" href="{{sroot}}">
+                        <img src="{{assets}}{{navbar.brand_icon}}" height="30" class="d-inline-block align-top" alt="">
+                        {{navbar.brand_text}}
+                    </a> #}
+                        {% for entry in navbar.entries %}
+                            <div class="nav-item gutta-navitem">
+                                <a class="nav-link gutta-navlink" id="gutta-navlink-{{entry.label}}" href="{{sroot}}{{entry.dest}}">{{entry.label}}</a>
+                            </div>
+                        {% endfor %}
+            </nav>
+        {% endif %}
+        {% if show_title %}
+            <h1 class="gutta-title">{{full_title}}</h1>
+        {% endif %}
+        {% if show_description %}
+            {% if description is defined %}
+            <div class="gutta-description gutta-paragraph">
+                {{description}}
+            </div>
+            {% endif %}
+        {%endif%}
+        {{body}}
+
+        {%-if cactus is defined-%}
+            <div id="comment-section"></div>
+        {%-endif-%}
+        <div class="gutta-scrollbuffer"></div>
+
+        <div class="gutta-acknowledgement text-muted">
+            <a href="https://github.com/cancrizans/gutta"><img src="{{static}}gutta_logo24.png"> made with gutta version {{gutta.version}}</a>
+        </div>
+    </div>
+
+    {%-if cactus is defined-%}
+        <script>
+            initComments({
+                node: document.getElementById("comment-section"),
+                defaultHomeserverUrl: "https://matrix.cactus.chat:8448",
+                serverName: "cactus.chat",
+                siteName: "{{cactus.site_name}}",
+                commentSectionId: "{{cactus.section_id}}"
+            })
+        </script>
+    {%-endif-%}
+{% endblock %}

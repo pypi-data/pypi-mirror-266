@@ -1,0 +1,218 @@
+@use "sass:math";
+
+@import url("https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css");
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css");
+
+// == Variable Definitions == 
+
+// Sizing
+
+$site-max-width: 940px !default;
+$extra-page-max-width: 700px !default;
+$root-font-size: 16px !default;
+$sidebox-width: 300px !default;
+
+// Colours
+
+$color-bg: rgb(226, 224, 217) !default;
+$color-fg: #222 !default;
+$color-accent: #1effa4 !default;
+
+$color-links: #01a8a0 !default;
+$color-links-hover: $color-accent !default;
+
+$color-galleryentry-bg: rgb(173, 171, 162) !default;
+$color-scrollcontent-bg: transparent !default;
+
+$color-navlinks: $color-links !default;
+$color-navlinks-hover: $color-links-hover !default;
+
+// Fonts
+
+$font-main: sans-serif !default;
+$font-weight-main: normal !default;
+
+$font-text: sans-serif !default;
+$font-weight-text: normal !default;
+
+
+// Layout Constants
+
+$gallery-columns-xs: 1 !default;
+$gallery-columns-sm: 2 !default;
+$gallery-columns-md: 3 !default;
+$gallery-columns-lg: 3 !default;
+
+
+// == (end of variable definitions) ==
+
+@mixin gutta-text {
+    font-family: $font-text;
+    font-weight: $font-weight-text;
+}
+
+
+html {
+    font-size: $root-font-size;
+}
+
+body {
+    background-color: $color-bg;
+    color: $color-fg;
+    font-family: $font-main;
+    font-weight: $font-weight-main;
+}
+
+.gutta-body {
+    max-width: $site-max-width;
+    padding:0px;
+}
+
+a {
+    color: $color-links;
+    text-decoration: none;
+}
+
+a:hover {
+    color: $color-links-hover;
+}
+
+.gutta-navbar {
+    width: 100%;
+    height: 40px;
+    background-color: rgba($color-bg,.95);
+}
+
+.gutta-navlink {
+    color: $color-navlinks;
+}
+
+.gutta-navlink:hover {
+    color: $color-navlinks-hover;
+}
+
+.gutta-gallery-entry{
+    background-color: $color-galleryentry-bg;
+}
+
+.gutta-next {
+    width: 100%;
+    padding: 3em;
+}
+
+.gutta-previous {
+    width:100%;
+    padding:1em;
+}
+
+.gutta-scrollbuffer{
+    width: 100%;
+    height: 75px;
+}
+
+.gutta-scroll-anchor{
+    height: 0px;
+    display: block;
+    position: relative;
+    top: -80px;
+    visibility: hidden;
+}
+
+.gutta-paragraph{
+    @include gutta-text;
+    margin: 10px;
+    font-size: 1.2rem;
+    padding: 1em 4em 1em 4em;
+    text-align: center;
+}
+
+.gutta-title{
+    font-family: $font-main;
+    font-weight: $font-weight-main;
+    margin: 10px 0px 10px 0px;
+    padding: 1em 10% 1em 10%;
+    text-align: center;
+    width: 100%;
+}
+
+.gutta-toc{
+    min-width: 70%;
+    font-size: 1.2em;
+}
+
+.gutta-toc-ul{
+    list-style: none;
+}
+
+
+.gutta-comic-page{
+    width:100%;
+    height:auto;
+}
+
+.gutta-sidebox-container{
+    width: 100%;
+    height:0px;
+    position: relative;
+}
+.gutta-sidebox{
+    position: absolute;
+    width:$sidebox-width;
+    right:-$sidebox-width;
+    padding: 1em;
+    border-top: dashed;
+}
+
+.gutta-sidebox-description{
+    @include gutta-text;
+}
+
+.gutta-acknowledgement{
+    padding-top: 3em;
+    padding-bottom: 3em;
+    text-align: center;
+}
+
+.gutta-extra {
+    padding-top: 3em;
+    padding-bottom: 3em;
+    padding-left: 1em;
+    padding-right: 1em;
+
+    max-width: $extra-page-max-width;
+}
+
+.gutta-extra > p {
+    @include gutta-text;
+}
+
+.gutta-scroll-subpage{
+    width:100%;
+
+}
+
+.gutta-scroll-content-container{
+    width: 100%;
+    background-color: $color-scrollcontent-bg;
+}
+
+.gallery > * {
+    flex: 0 0 auto;
+    width: (100% / $gallery-columns-xs);
+
+    @media (min-width: 576px){
+        width: (100% / $gallery-columns-sm);
+    }
+
+    @media (min-width: 768px){
+        width: (100% / $gallery-columns-md);
+    }
+
+    @media (min-width: 992px){
+        width: (100% / $gallery-columns-lg);
+    }
+}
+
+.gutta-gallery-description {
+    @include gutta-text;
+}
