@@ -1,0 +1,106 @@
+Metadata-Version: 2.1
+Name: turning_points
+Version: 0.0.3
+Summary: A package to find turing points in tracks, andd plot
+Home-page: https://github.com/lesptizami/turning_points
+Author: Your Name
+Author-email: Charles Fosseprez <charles.fosseprez.me@gmail.com>
+License: MIT License
+Project-URL: Homepage, https://github.com/lesptizami/turning_points
+Project-URL: Issues, https://github.com/lesptizami/turning_points/issues
+Keywords: trajectory-analysis,turning-points,transition-probabilities,data-science
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: colorama==0.4.6
+Requires-Dist: contourpy==1.2.1
+Requires-Dist: cycler==0.12.1
+Requires-Dist: exceptiongroup==1.2.0
+Requires-Dist: fonttools==4.50.0
+Requires-Dist: importlib_resources==6.4.0
+Requires-Dist: iniconfig==2.0.0
+Requires-Dist: kiwisolver==1.4.5
+Requires-Dist: matplotlib==3.8.4
+Requires-Dist: numpy==1.26.4
+Requires-Dist: packaging==24.0
+Requires-Dist: pillow==10.3.0
+Requires-Dist: pluggy==1.4.0
+Requires-Dist: pyparsing==3.1.2
+Requires-Dist: pytest==8.1.1
+Requires-Dist: python-dateutil==2.9.0.post0
+Requires-Dist: scipy==1.13.0
+Requires-Dist: six==1.16.0
+Requires-Dist: tomli==2.0.1
+Requires-Dist: zipp==3.18.1
+
+# Turning Point Analyzer
+
+## Overview
+The Turning Point Analyzer is a Python package for analyzing turning points in trajectories and calculating transition probabilities.
+
+## Installation
+You can install the Turning Point Analyzer package using pip:
+```bash
+pip install turning_point_analyzer
+```
+
+## Usage
+To use the Turning Point Analyzer in your Python code, you can import it as follows:
+
+```pytho
+from turning_points import TurningPointAnalyzer
+```
+
+Analyzing Turning Points
+```python
+from turning_points import TurningPointAnalyzer
+
+# Example trajectory data
+trajectories = [
+    [(0, 0), (1, 1), (2, 2), (3, 1), (4, 0)],  # Example trajectory 1
+    [(0, 0), (1, -1), (2, -2), (3, -1), (4, 0)]  # Example trajectory 2
+]
+
+# Create a TurningPointAnalyzer instance
+analyzer = TurningPointAnalyzer(trajectories)
+
+# Plot transition directions
+analyzer.plot_transition()
+
+# Plot frequency distribution of time between turns
+analyzer.plot_frequency()
+
+# Get the probability of same turn direction
+probability = analyzer.get_proba_same_turn()
+print("Probability of same turn direction:", probability)
+
+# Get the results
+results = analyzer.get_results()
+print("Results:", results)
+```
+
+## Testing
+To run tests for the Turning Point Analyzer, you can use the following command:
+
+```bash
+pytest
+```
+
+## Contributing
+Contributions are welcome! Please feel free to submit issues or pull requests.
+
+## License
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Citing
+If you use this package for your publication, don't hesitate to cite it.
+example provided in citations.md
+
+
+## thanks for the RDP algorythm
+
+The package use the [Ramer–Douglas–Peucker](http://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm) algorithm.
+It was obtained from: https://github.com/fhirschmann/rdp
