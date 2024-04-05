@@ -1,0 +1,185 @@
+Metadata-Version: 2.3
+Name: cumulusci
+Version: 3.86.0
+Summary: Build and release tools for Salesforce developers
+Project-URL: Homepage, https://github.com/SFDO-Tooling/CumulusCI
+Project-URL: Changelog, https://cumulusci.readthedocs.io/en/stable/history.html
+Project-URL: Bug Tracker, https://github.com/SFDO-Tooling/CumulusCI/issues
+Author-email: "Salesforce.org" <sfdo-mrbelvedere@salesforce.com>
+License: BSD 3-Clause License
+License-File: AUTHORS.rst
+License-File: LICENSE
+Keywords: cumulusci,salesforce
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.8
+Requires-Dist: appdirs==1.4.4
+Requires-Dist: authlib==1.3.0
+Requires-Dist: certifi==2024.2.2
+Requires-Dist: cffi==1.16.0
+Requires-Dist: charset-normalizer==3.3.2
+Requires-Dist: click==8.1.7
+Requires-Dist: cryptography==42.0.5
+Requires-Dist: defusedxml==0.7.1
+Requires-Dist: docutils==0.16
+Requires-Dist: faker-edu==1.1.0
+Requires-Dist: faker-nonprofit==1.0.0
+Requires-Dist: faker==24.4.0
+Requires-Dist: fs==2.4.16
+Requires-Dist: github3-py==4.0.1
+Requires-Dist: greenlet==3.0.3
+Requires-Dist: gvgen==1.0
+Requires-Dist: idna==3.6
+Requires-Dist: importlib-metadata==7.1.0
+Requires-Dist: jeepney==0.8.0
+Requires-Dist: jinja2==3.1.3
+Requires-Dist: keyring==23.0.1
+Requires-Dist: lxml==5.1.0
+Requires-Dist: markdown-it-py==2.2.0
+Requires-Dist: markupsafe==2.1.5
+Requires-Dist: mdurl==0.1.2
+Requires-Dist: natsort==8.4.0
+Requires-Dist: psutil==5.9.8
+Requires-Dist: pycparser==2.21
+Requires-Dist: pydantic==1.10.14
+Requires-Dist: pygments==2.17.2
+Requires-Dist: pyjwt[crypto]==2.8.0
+Requires-Dist: python-baseconv==1.2.2
+Requires-Dist: python-dateutil==2.9.0.post0
+Requires-Dist: pytz==2024.1
+Requires-Dist: pyyaml==6.0.1
+Requires-Dist: requests-futures==1.0.1
+Requires-Dist: requests==2.29.0
+Requires-Dist: rich==13.7.1
+Requires-Dist: robotframework-pabot==2.18.0
+Requires-Dist: robotframework-pythonlibcore==4.4.0
+Requires-Dist: robotframework-requests==0.9.6
+Requires-Dist: robotframework-seleniumlibrary==5.1.3
+Requires-Dist: robotframework-stacktrace==0.4.1
+Requires-Dist: robotframework==7.0
+Requires-Dist: rst2ansi==0.1.5
+Requires-Dist: salesforce-bulk==2.2.0
+Requires-Dist: sarge==0.1.7.post1
+Requires-Dist: secretstorage==3.3.3
+Requires-Dist: selenium==3.141.0
+Requires-Dist: simple-salesforce==1.11.4
+Requires-Dist: six==1.16.0
+Requires-Dist: snowfakery==3.6.2
+Requires-Dist: sqlalchemy==1.4.52
+Requires-Dist: typing-extensions==4.10.0
+Requires-Dist: unicodecsv==0.14.1
+Requires-Dist: uritemplate==4.1.1
+Requires-Dist: urllib3==1.26.18
+Requires-Dist: xmltodict==0.13.0
+Requires-Dist: zipp==3.18.1
+Provides-Extra: docs
+Requires-Dist: myst-parser; extra == 'docs'
+Requires-Dist: sphinx; extra == 'docs'
+Provides-Extra: lint
+Requires-Dist: black; extra == 'lint'
+Requires-Dist: flake8<4; extra == 'lint'
+Requires-Dist: isort; extra == 'lint'
+Requires-Dist: pre-commit; extra == 'lint'
+Provides-Extra: test
+Requires-Dist: coverage[toml]; extra == 'test'
+Requires-Dist: factory-boy; extra == 'test'
+Requires-Dist: furo; extra == 'test'
+Requires-Dist: jsonschema; extra == 'test'
+Requires-Dist: pytest-cov; extra == 'test'
+Requires-Dist: pytest-random-order; extra == 'test'
+Requires-Dist: pytest-vcr; extra == 'test'
+Requires-Dist: pytest<7.1; extra == 'test'
+Requires-Dist: responses; extra == 'test'
+Requires-Dist: testfixtures; extra == 'test'
+Requires-Dist: tox; extra == 'test'
+Requires-Dist: typeguard<=2.13.3; extra == 'test'
+Requires-Dist: vcrpy; extra == 'test'
+Description-Content-Type: text/markdown
+
+# CumulusCI
+
+[![Code Coverage](https://coveralls.io/repos/github/SFDO-Tooling/CumulusCI/badge.svg?branch=main)](https://coveralls.io/github/SFDO-Tooling/CumulusCI?branch=main)
+[![PyPI](https://img.shields.io/pypi/v/cumulusci)](https://pypi.org/project/cumulusci/)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/cumulusci)
+![PyPI - License](https://img.shields.io/pypi/l/cumulusci)
+[![Documentation Status](https://readthedocs.org/projects/cumulusci/badge/?version=latest)](https://cumulusci.readthedocs.io/en/latest/?badge=latest)
+
+CumulusCI helps build great applications on the Salesforce platform by
+automating org setup, testing, and deployment for everyone --- from
+developers and admins to testers and product managers.
+
+**Best practices, proven at scale.** CumulusCI provides a complete
+development and release process created by Salesforce.org to build and
+release applications to thousands of users on the Salesforce platform.
+It\'s easy to start new projects with a standard set of tasks (single
+actions) and flows (sequences of tasks), or customize by adding your
+own.
+
+**Batteries included.** Out-of-the-box features help you quickly:
+
+-   Build sophisticated orgs with automatic installation of
+    dependencies.
+-   Load and capture sample datasets to make your orgs feel real.
+-   Apply transformations to existing metadata to tailor orgs to your
+    specific requirements.
+-   Run builds in continuous integration systems.
+-   Create end-to-end browser tests and setup automation using [Robot
+    Framework](https://cumulusci.readthedocs.io/en/latest/robotframework.html).
+-   Generate synthetic data on any scale, from a single record to a
+    million, using
+    [Snowfakery](https://cumulusci.readthedocs.io/en/latest/cookbook.html#large-volume-data-synthesis-with-snowfakery).
+
+**Build anywhere.** Automation defined using CumulusCI is portable. It
+is stored in a source repository and can be run from your local command
+line, from a continuous integration system, or from a customer-facing
+MetaDeploy installer. CumulusCI can run automation on scratch orgs
+created using the Salesforce CLI, or on persistent orgs like sandboxes,
+production orgs, and Developer Edition orgs.
+
+## Learn more
+
+For a tutorial introduction to CumulusCI, complete the [Build
+Applications with
+CumulusCI](https://trailhead.salesforce.com/en/content/learn/trails/build-applications-with-cumulusci)
+trail on Trailhead.
+
+To go in depth, read the [full
+documentation](https://cumulusci.readthedocs.io/en/latest/).
+
+If you just want a quick intro, watch [these screencast
+demos](https://cumulusci.readthedocs.io/en/latest/demos.html) of using
+CumulusCI to configure a Salesforce project from a GitHub repository.
+
+For a live demo with voiceover, please see Jason Lantz\'s [PyCon 2020
+presentation](https://www.youtube.com/watch?v=XL77lRTVF3g) from minute
+36 through minute 54.
+
+## Questions?
+
+Ask in the [CumulusCI (CCI) group in the Trailblazer
+Community](https://success.salesforce.com/_ui/core/chatter/groups/GroupProfilePage?g=0F9300000009M9ZCAU).
+
+_Please note:_ CumulusCI is distributed under an [open source
+license](https://github.com/SFDO-Tooling/CumulusCI/blob/main/LICENSE)
+and is not covered by the Salesforce Master Subscription Agreement.
+
+<!-- Changelog -->
+## v3.86.0 (2024-03-27)
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+## What's Changed
+
+### Changes 🎉
+
+-   @W-15258380 - Reloading of login URL's from env before creating jwt session by [@lakshmi2506](https://github.com/lakshmi2506) in [#3765](https://github.com/SFDO-Tooling/CumulusCI/pull/3765)
+
+**Full Changelog**: https://github.com/SFDO-Tooling/CumulusCI/compare/v3.85.0...v3.86.0
