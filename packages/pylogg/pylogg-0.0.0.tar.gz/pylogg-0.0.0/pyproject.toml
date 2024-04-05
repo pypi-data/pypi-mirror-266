@@ -1,0 +1,52 @@
+[project]
+name = "pylogg"
+authors = [
+    { name="Akhlak Mahmood", email="akhlakm@gatech.edu" },
+]
+description = "Logging and YAML-based configuration modules in Python."
+readme = "README.md"
+requires-python = ">=3.10"
+
+dynamic = [
+    "version",
+]
+
+keywords = ["logging", "development"]
+
+classifiers = [
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+]
+
+dependencies = [
+    "pyyaml",
+]
+
+[project.optional-dependencies]
+postgres = [
+    "pandas",
+    "sshtunnel",
+    "psycopg[binary]",
+]
+
+dev = [
+    "pytest",
+    "pre-commit",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/akhlakm/python-logg"
+"Bug Tracker" = "https://github.com/akhlakm/python-logg/issues"
+
+[project.scripts]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["pylogg"]
+
+[tool.setuptools.dynamic]
+version = {attr = "pylogg.__version__"}
