@@ -1,0 +1,77 @@
+[project]
+name = "fzf-bin"
+description = "fzf - 🌸 A command-line fuzzy finder"
+version = "0.49.0"
+authors = [
+    { name = "dowon", email = "ks2515@naver.com" },
+]
+dependencies = []
+requires-python = ">=3.8"
+readme = "README.md"
+keywords = [
+    "fzf",
+    "tui",
+    "fuzzy finder",
+]
+classifiers = [
+    "Programming Language :: Other",
+    "Topic :: Software Development :: User Interfaces",
+]
+
+[project.license]
+text = "MIT"
+
+[project.urls]
+repository = "https://github.com/Bing-su/pip-binary-factory"
+
+[build-system]
+requires = [
+    "pdm-backend",
+    "wheel",
+]
+build-backend = "pdm.backend"
+
+[tool.pdm.build]
+is-purelib = false
+source-includes = [
+    "fzf/",
+]
+excludes = [
+    "bin/*",
+    ".gitignore",
+]
+
+[tool.pdm.build.wheel-data]
+scripts = [
+    "${BUILD_DIR}/bin/*",
+]
+
+[tool.ruff]
+select = [
+    "A",
+    "B",
+    "C4",
+    "C90",
+    "E",
+    "EM",
+    "F",
+    "FA",
+    "I001",
+    "ISC",
+    "N",
+    "PIE",
+    "PT",
+    "RET",
+    "RUF",
+    "SIM",
+    "UP",
+    "W",
+]
+ignore = [
+    "B008",
+    "B905",
+    "E501",
+]
+unfixable = [
+    "F401",
+]
