@@ -1,0 +1,79 @@
+Metadata-Version: 2.1
+Name: shuttleasgi
+Version: 3.0.1
+Summary: BlackSheep, but with ShuttleAI's customizations.
+Author-email: shuttleai <noreply@shuttleai.app>, Roberto Prevato <roberto.prevato@gmail.com>
+Project-URL: Homepage, https://github.com/ShuttleAI/ShuttleASGI
+Project-URL: Bug Tracker, https://github.com/ShuttleAI/ShuttleASGI/issues
+Keywords: blacksheep,web framework,asyncio,shuttleai,shuttleasgi
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Environment :: Web Environment
+Classifier: Operating System :: OS Independent
+Classifier: Framework :: AsyncIO
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: httptools >=0.5
+Requires-Dist: certifi >=2022.9.24
+Requires-Dist: charset-normalizer ~=3.1.0
+Requires-Dist: guardpost >=1.0.2
+Requires-Dist: rodi ~=2.0.2
+Requires-Dist: essentials <2.0,>=1.1.4
+Requires-Dist: essentials-openapi <1.1,>=1.0.6
+Requires-Dist: python-dateutil ~=2.8.2
+Requires-Dist: itsdangerous ~=2.1.2
+Provides-Extra: full
+Requires-Dist: cryptography <41.1.0,>=38.0.1 ; extra == 'full'
+Requires-Dist: PyJWT ~=2.6.0 ; extra == 'full'
+Requires-Dist: websockets ~=10.3 ; extra == 'full'
+Provides-Extra: jinja
+Requires-Dist: Jinja2 ~=3.1.2 ; extra == 'jinja'
+
+[![Build](https://github.com/Neoteroi/BlackSheep/workflows/Main/badge.svg)](https://github.com/Neoteroi/BlackSheep/actions)
+[![pypi](https://img.shields.io/pypi/v/BlackSheep-Shuttle.svg?color=blue)](https://pypi.org/project/BlackSheep-Shuttle/)
+[![versions](https://img.shields.io/pypi/pyversions/blacksheep-shuttle.svg)](https://github.com/herumes/blacksheep-shuttle)
+[![codecov](https://codecov.io/gh/Neoteroi/BlackSheep/branch/master/graph/badge.svg?token=Nzi29L0Eg1)](https://codecov.io/gh/Neoteroi/BlackSheep)
+[![license](https://img.shields.io/github/license/Neoteroi/blacksheep.svg)](https://github.com/Neoteroi/blacksheep/blob/main/LICENSE) [![Join the chat at https://gitter.im/Neoteroi/BlackSheep](https://badges.gitter.im/Neoteroi/BlackSheep.svg)](https://gitter.im/Neoteroi/BlackSheep?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![documentation](https://img.shields.io/badge/📖-docs-purple)](https://www.neoteroi.dev/blacksheep/)
+
+# BlackSheep-Shuttle
+BlackSheep-Shuttle is a fork of [BlackSheep](https://github.com/Neoteroi/BlackSheep) with numerous fixes, improvements, and new features.
+
+Credits to [RobertoPrevato](https://github.com/robertoprevato) for creating the original masterpiece.
+
+```ShellSession
+pip install -U blacksheep-shuttle
+```
+
+## Building
+Helpful commands for building and testing the project yourself.
+*Using mingw32k-make for Windows*
+### Make
+```ShellSession
+mingw32-make compile
+```
+### Build
+```ShellSession
+mingw32-make build
+```
+### Prepare for publishing
+```ShellSession
+mingw32-make prepforbuild
+```
+### Create dist
+```ShellSession
+python -m build
+```
+### Clean (Optional)
+```ShellSession
+mingw32-make clean
+```
+### Uploading to PyPi
+```ShellSession
+twine upload -r pypi dist/*
+```
