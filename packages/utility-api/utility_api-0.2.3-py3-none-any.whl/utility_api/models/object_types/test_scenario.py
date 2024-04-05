@@ -1,0 +1,31 @@
+"""The type of test credentials to submit."""
+from enum import Enum
+
+
+class TestScenario(Enum):
+    """The type of test credentials to submit."""
+
+    residential = "residential"
+    commercial = "commercial"
+    badlogin = "badlogin"
+    badlogin_after = "badlogin_after"
+    websitedown = "websitedown"
+    websitedown_after = "websitedown_after"
+    utilityerror = "utilityerror"
+    utilityerror_after = "utilityerror_after"
+    locked = "locked"
+    locked_after = "locked_after"
+    access_unsupported = "access_unsupported"
+    access_unsupported_after = "access_unsupported_after"
+    randomerror = "randomerror"
+    randomerror_after = "randomerror_after"
+    empty = "empty"
+    revoked = "revoked"
+    expired = "expired"
+    wait_to_login = "wait_to_login"
+    wait_to_login_after = "wait_to_login_after"
+    nobills = "nobills"
+    nointervals = "nointervals"
+    partialmeters = "partialmeters"
+    partialbills = "partialbills"
+    partialintervals = "partialintervals"
