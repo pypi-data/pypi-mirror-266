@@ -1,0 +1,33 @@
+file:
+  type: string
+  required: true
+name:
+  type: string
+  required: true
+header:
+  type: boolean
+setHeader:
+  type: string
+unstack:
+  type: 
+  - boolean
+  - list
+  schema:
+    type: integer
+skipElementText:
+  type: boolean
+fieldSeparator:
+  type: string
+decimalSeparator:
+  type: string
+quoting:
+  type: integer
+  allowed: # QUOTE_MINIMAL (0), QUOTE_ALL (1), QUOTE_NONNUMERIC (2) or QUOTE_NONE (3)
+  - 0
+  - 1
+  - 2
+  - 3
+trace:
+  type: integer
+toCSVArguments:
+  type: dict

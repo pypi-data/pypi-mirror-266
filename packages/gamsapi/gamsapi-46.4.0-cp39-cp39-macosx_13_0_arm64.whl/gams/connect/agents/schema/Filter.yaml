@@ -1,0 +1,60 @@
+name:
+  type: string
+  required: true
+newName:
+  type: string
+  required: true
+labelFilters:
+  type: list
+  schema:
+    type: dict
+    oneof_schema:
+      - column:
+          anyof:
+            - {type: integer, min: 1, max: 20}
+            - {type: string, allowed: [all]}
+          required: True
+        keep:
+          type: list
+          required: True
+      - column:
+          anyof:
+            - {type: integer, min: 1, max: 20}
+            - {type: string, allowed: [all]}
+          required: True         
+        reject:
+          type: list
+          required: True
+      - column:
+          anyof:
+            - {type: integer, min: 1, max: 20}
+            - {type: string, allowed: [all]}
+          required: True
+        regex:
+          type: string
+          required: True
+valueFilters:
+  type: list
+  schema:
+      type: dict
+      schema:
+        column:
+          type: string
+          required: True
+          allowed: ['all', 'value', 'level', 'marginal', 'upper', 'lower', 'scale']
+        ruleIdentifier:
+          type: string
+        rule:
+          type: string
+        eps:
+          type: boolean
+        infinity:
+          type: boolean
+        negativeInfinity: 
+          type: boolean
+        undf:
+          type: boolean
+        na:
+          type: boolean
+trace:
+  type: integer
