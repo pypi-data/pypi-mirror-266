@@ -1,0 +1,75 @@
+query gqlSubjects {
+  amendableSubjects: subjects {
+    id
+    name
+  }
+}
+
+query gqlPersons {
+  amendableTeachers: persons {
+    id
+    fullName
+  }
+}
+
+query gqlRooms {
+  amendableRooms: rooms {
+    id
+    name
+  }
+}
+
+mutation createAmendLessons($input: [BatchCreateLessonEventInput]!) {
+  createAmendLessons(input: $input) {
+    items: lessonEvents {
+      id
+      amends {
+        id
+      }
+      datetimeStart
+      datetimeEnd
+      subject {
+        id
+      }
+      teachers {
+        id
+      }
+      groups {
+        id
+      }
+      rooms {
+        id
+      }
+      cancelled
+      comment
+    }
+  }
+}
+
+mutation patchAmendLessons($input: [BatchPatchLessonEventInput]!) {
+  patchAmendLessons(input: $input) {
+    items: lessonEvents {
+      id
+      subject {
+        id
+      }
+      teachers {
+        id
+      }
+      groups {
+        id
+      }
+      rooms {
+        id
+      }
+      cancelled
+      comment
+    }
+  }
+}
+
+mutation deleteAmendLessons($ids: [ID]!) {
+  deleteAmendLessons(ids: $ids) {
+    deletionCount
+  }
+}
