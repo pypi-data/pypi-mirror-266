@@ -1,0 +1,94 @@
+[tool.poetry]
+
+name = "coveragespace"
+version = "6.1"
+description = "A place to track your code coverage metrics."
+
+license = "MIT"
+
+authors = ["Jace Browning <jacebrowning@gmail.com>"]
+
+readme = "README.md"
+
+homepage = "https://coverage.space/client/"
+documentation = "https://cli.coverage.space"
+repository = "https://github.com/jacebrowning/coverage-space-cli"
+
+keywords = [
+    "coverage",
+    "testing",
+    "command-line",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Software Development :: Testing",
+]
+
+[tool.poetry.dependencies]
+
+python = "^3.8"
+
+colorama = ">=0.4"
+coverage = ">=4.0"
+docopt = ">=0.6"
+minilog = ">=2.0"
+requests = "^2.28"
+
+[tool.poetry.dev-dependencies]
+
+# Formatters
+black = "^22.6"
+isort = "^5.10"
+
+# Linters
+mypy = "^1.7.1"
+pydocstyle = "*"
+pylint = "^2.6"
+types-requests = "*"
+types-setuptools = "*"
+
+# Testing
+pytest = "^7.0"
+pytest-cov = "*"
+pytest-describe = "^2.0"
+pytest-expecter = "*"
+pytest-random = "*"
+scripttest = "*"
+
+# Documentation
+mkdocs = "^1.4"
+pygments = "^2.15"
+
+# Tooling
+pyinstaller = "*"
+sniffer = "*"
+MacFSEvents = { version = "*", platform = "darwin" }
+pync = { version = "*", platform = "darwin" }
+
+[tool.poetry.scripts]
+
+coveragespace = "coveragespace.cli:main"
+
+[tool.black]
+
+quiet = true
+
+[tool.isort]
+
+profile = "black"
+
+[build-system]
+
+requires = ["poetry-core>=1.0"]
+build-backend = "poetry.core.masonry.api"
