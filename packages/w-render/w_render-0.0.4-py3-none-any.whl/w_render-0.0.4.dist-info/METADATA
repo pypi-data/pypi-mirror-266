@@ -1,0 +1,33 @@
+Metadata-Version: 2.1
+Name: w-render
+Version: 0.0.4
+Summary: Render a dynamical sites.
+Author: Andrey Plugin
+Author-email: 9keepa@gmail.com
+License: MIT
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+Requires-Dist: flask
+Requires-Dist: webdriver-manager
+Requires-Dist: waitress
+Requires-Dist: undetected-chromedriver
+Requires-Dist: python-dotenv
+
+### Description
+
+Web-render is a method of rendering dynamic web pages using Selenium.
+
+### Commands
+
+To start the rendering service, use the following command:
+
+```shell
+render-server "web-render -f selenium --headless --proxy=185.105.91.140:1021" "flask-backend"
+```
+
+To run a test, use the following command:
+
+```shell
+python -W ignore:ResourceWarning -m unittest web_render/base/test_webrender.py
+```
