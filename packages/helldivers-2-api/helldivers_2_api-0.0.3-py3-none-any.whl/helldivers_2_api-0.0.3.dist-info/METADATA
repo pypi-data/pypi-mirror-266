@@ -1,0 +1,95 @@
+Metadata-Version: 2.1
+Name: helldivers-2-api
+Version: 0.0.3
+Summary: A Python abstraction layer for the Helldivers 2 API
+Author-email: David Rodenkirchen <davidr.develop@gmail.com>
+Project-URL: Repository, https://git.jdrodenkirchen.de/drodenkirchen/helldivers-2-python-api
+Project-URL: Discord, https://discord.gg/kKuxparXWT
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: Other/Proprietary License
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Topic :: Games/Entertainment
+Classifier: Topic :: System :: Networking
+Classifier: Typing :: Typed
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENCE.md
+Requires-Dist: requests >=2.31.0
+
+# Helldivers 2 Python API
+
+A Python abstraction layer for the [Helldivers 2 API](https://github.com/helldivers-2/api/)
+
+## Key Features
+
+* Fully typed data model
+  - Planets
+  - Sectors
+  - Factions
+  - Events
+  - Campaigns
+  - Attacks
+* Supports multiple APIs
+  - Wraps the HellDiversTrainingManual API
+  - Wraps the *kinda unofficial* internal HellDivers2 API
+* Simple to use
+  - Use your IDE's autocompletion to simply traverse the data model tree
+* Easy Install
+  - Only dependency is [requests](https://pypi.org/project/requests/)!
+
+## How To Use
+
+Simply install the PyPI package via pip.
+
+Make sure to check out the [examples](https://git.jdrodenkirchen.de/drodenkirchen/helldivers-2-python-api/-/tree/main/examples).
+
+### Minimal usage example
+
+```python
+from helldivers2_api.api_client import ApiClient
+from helldivers2_api.planet_info_table import get_planet_by_id
+
+my_client = ApiClient()
+
+war_status = my_client.get_war_status()
+
+print(war_status.planet_attacks)
+
+#  [
+#    PlanetAttack(source_planet_id=125, target_planet_id=34), 
+#    PlanetAttack(source_planet_id=168, target_planet_id=34),
+#    ...
+#  ]
+
+planet_name = get_planet_by_id(34).name
+print(planet_name)
+
+#  Hellmire
+```
+
+
+## Credits
+
+This software uses the following open source packages:
+
+- [Python](https://www.python.org/)
+- [requests](https://pypi.org/project/requests/)
+
+## License
+
+```
+        DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+                Version 2, December 2004
+
+Copyright (C) 2024 David Rodenkirchen <davidr.develop@gmail.com>
+
+Everyone is permitted to copy and distribute verbatim or modified
+copies of this license document, and changing it is allowed as long
+as the name is changed.
+
+        DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+
+0. You just DO WHAT THE FUCK YOU WANT TO.
+```
