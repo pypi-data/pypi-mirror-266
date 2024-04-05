@@ -1,0 +1,48 @@
+[build-system]
+build-backend = 'mesonpy'
+requires = [
+    "meson-python",
+    "numpy>=1.19"
+]
+
+[project]
+name = "doki-Mowstyl"
+version = "1.5.2"
+description="Python interface for Doki (QSimov core)"
+long_description="Python module containing Doki, the core of QSimov quantum computer simulation platform. Written in C with OpenMP parallelism."
+readme = "README.md"
+requires-python = ">=3.8"
+license = {file = "LICENSE.md"}
+authors = [
+  {name = "Hernán Indíbil de la Cruz Calvo", email = "indikalesken@hotmail.com"},
+]
+dependencies = [
+    "numpy>=1.19"
+]
+
+[tool.cibuildwheel]
+archs = "auto64"
+skip = "pp*"
+test-requires = "scipy"
+test-command = [
+  "python {package}/tests/reg_creation_tests.py 1 5",
+  "python {package}/tests/one_gate_tests.py 1 5 1",
+  "python {package}/tests/one_gate_tests.py 1 5 8",
+  "python {package}/tests/measure_tests.py 1 5 1000 1",
+  "python {package}/tests/measure_tests.py 1 5 1000 8",
+  "python {package}/tests/multiple_gate_tests.py 2 5 1",
+  "python {package}/tests/multiple_gate_tests.py 2 5 8",
+  "python {package}/tests/join_regs_tests.py 5 1",
+  "python {package}/tests/join_regs_tests.py 5 8",
+  "python {package}/tests/canonical_form_tests.py 1 5",
+  "python {package}/tests/probability_tests.py 1 5 1",
+  "python {package}/tests/probability_tests.py 1 5 8",
+  "python {package}/tests/density_matrix_tests.py 1 5",
+]
+
+#[tool.cibuildwheel.linux]
+#before-test = "yum install -y openblas"
+
+[[tool.cibuildwheel.overrides]]
+select = "*musllinux*"
+before-test = "apk add openblas-dev"
