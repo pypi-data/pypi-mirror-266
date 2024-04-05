@@ -1,0 +1,20 @@
+# This workflow ensures that debug modes are turned off in all the files
+
+name: mode_check
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  # Build and test
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: GUI debug mode - ensure turned off
+      run: |
+        grep 'self.rundebug = False'  src/rimsschemedrawer/gui.py
