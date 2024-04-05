@@ -1,0 +1,27 @@
+[project]
+name = "dramasub"
+version = "0.0.2"
+authors = [
+    { name="GenericTLAccount"},
+]
+description = "script to generate accompanying visuals for voice dramas from .ass subtitle files"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["wand"]
+keywords = ["drama cd", "voice drama", "subtitle", ".ass", "visuals"]
+classifiers = [
+	"Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: Microsoft :: Windows :: Windows 11",
+]
+
+[project.urls]
+Homepage = "https://github.com/GenericTLAccount/dramasub"
+
+[project.scripts]	# this is required for setting up command line args in modern python, setup.py is outdated
+dramasub = "dramasub.dramasub:main"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
