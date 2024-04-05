@@ -1,0 +1,93 @@
+Metadata-Version: 2.1
+Name: pyimg4
+Version: 0.8.2
+Summary: A Python library/CLI tool for parsing Apple's Image4 format.
+Home-page: https://github.com/m1stadev/PyIMG4
+License: MIT
+Keywords: ios,jailbreak,iboot,img4,image4
+Author: m1stadev
+Author-email: adamhamdi31@gmail.com
+Requires-Python: >=3.8,<4.0
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Utilities
+Provides-Extra: compression
+Requires-Dist: apple-compress (>=0.2.3,<0.3.0) ; extra == "compression"
+Requires-Dist: asn1 (>=2.7.0,<3.0.0)
+Requires-Dist: click (>=8.1.7,<9.0.0)
+Requires-Dist: pycryptodome (>=3.18.0,<4.0.0)
+Requires-Dist: pyliblzfse (>=0.4.1,<0.5.0) ; extra == "compression"
+Requires-Dist: pylzss (>=0.3.4,<0.4.0) ; extra == "compression"
+Project-URL: Bug Tracker, https://github.com/m1stadev/PyIMG4/issues
+Project-URL: Repository, https://github.com/m1stadev/PyIMG4
+Description-Content-Type: text/markdown
+
+<p align="center">
+<img src=".github/assets/icon.png" alt="https://github.com/m1stadev/PyIMG4" width=256px> 
+</p>
+
+<h1 align="center">
+PyIMG4
+</h1>
+<p align="center">
+  <a href="https://github.com/m1stadev/PyIMG4/blob/master/LICENSE">
+    <image src="https://img.shields.io/github/license/m1stadev/PyIMG4">
+  </a>
+  <a href="https://github.com/m1stadev/PyIMG4/stargazers">
+    <image src="https://img.shields.io/github/stars/m1stadev/PyIMG4">
+  </a>
+  <a href="https://github.com/m1stadev/PyIMG4">
+    <image src="https://tokei.rs/b1/github/m1stadev/PyIMG4?category=code&lang=python&style=flat">
+  </a>
+  <a href="https://github.com/m1stadev/PyIMG4">
+    <image src="https://img.shields.io/github/actions/workflow/status/m1stadev/PyIMG4/.github/workflows/python-tests.yml">
+  </a>
+    <br>
+</p>
+
+<p align="center">
+A Python library/CLI tool for parsing Apple's <a href="https://www.theiphonewiki.com/wiki/IMG4_File_Format">Image4 format</a>.
+</p>
+
+## Usage
+```
+Usage: pyimg4 [OPTIONS] COMMAND [ARGS]...
+
+  A Python CLI tool for parsing Apple's Image4 format.
+
+Options:
+  --version  Show the version and exit.
+  -h, --help     Show this message and exit.
+
+Commands:
+  im4m  Image4 manifest commands.
+  im4p  Image4 payload commands.
+  im4r  Image4 restore info commands.
+  img4  Image4 commands.
+```
+
+## Requirements
+- Python 3.8 or higher
+
+## Installation
+- Install from [PyPI](https://pypi.org/project/pyimg4/):
+    - ```python3 -m pip install pyimg4```
+    - If you would like to use the compression features of PyIMG4, install the optional libraries:
+      - ```python3 -m pip install pyimg4[compression]```
+- Local installation:
+    - `./install.sh`
+    - Requires [Poetry](https://python-poetry.org)
+
+## Support
+
+For any questions/issues you have, [open an issue](https://github.com/m1stadev/PyIMG4/issues) or join my [Discord](https://m1sta.xyz/discord).
+
