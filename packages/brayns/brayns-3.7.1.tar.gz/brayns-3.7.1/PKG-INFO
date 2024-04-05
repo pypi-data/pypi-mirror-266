@@ -1,0 +1,95 @@
+Metadata-Version: 2.1
+Name: brayns
+Version: 3.7.1
+Summary: Brayns Python API
+Home-page: https://github.com/BlueBrain/Brayns
+Author: Blue Brain Project
+Author-email: bbp-open-source@googlegroups.com
+License: LGPLv3
+Download-URL: https://github.com/BlueBrain/Brayns
+Project-URL: Tracker, https://bbpteam.epfl.ch/project/issues/projects/BRAYNS/issues
+Project-URL: Source, https://github.com/BlueBrain/Brayns
+Keywords: brayns,raytracing,bbp,BlueBrain
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+
+# Brayns Python API
+
+> A client for [Brayns](../README.md) based on a websocket client to provide
+remote control on a running braynsService instance.
+
+# Table of Contents
+
+* [Installation](#installation)
+* [Usage](#usage)
+    * [Connection](#connection)
+    * [Raw requests](#rawrequests)
+    * [API](#api)
+* [Documentation](#documentation)
+
+## Installation
+---------------
+
+You can install this package from [PyPI](https://pypi.org/):
+
+```bash
+pip install brayns
+```
+
+Or from source:
+
+```bash
+git clone https://github.com/BlueBrain/Brayns.git
+cd Brayns/python
+python setup.py sdist
+pip install dist/* # Output in dist folder
+```
+
+## Usage
+--------
+
+### Connection
+
+Connect to a renderer backend instance:
+
+```py
+import brayns
+
+connector = brayns.Connector('localhost:5000')
+
+with connector.connect() as instance:
+    print(brayns.get_version(instance))
+```
+
+### Raw requests
+
+Raw JSON-RPC requests can be sent using the instance:
+
+```py
+result = instance.request('schema', {'endpoint': 'get-version'})
+```
+
+It will throw a brayns.RequestError if an error occurs.
+
+### API
+
+As raw requests can be tedious, a higher level API is also provided.
+
+```py
+models = brayns.get_models(instance)
+```
+
+## Documentation
+-----------------
+
+A more complete documentation is available
+[here](https://brayns.readthedocs.io/en/latest/).
+
+
