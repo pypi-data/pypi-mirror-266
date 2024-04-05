@@ -1,0 +1,46 @@
+[build-system]
+requires = [
+    "setuptools>=43.0.0",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "botl"
+description = "bot library"
+version = "106"
+authors = [
+    {name = "Bart Thate",email = "bthate@dds.nl"},
+]
+readme = "README.rst"
+license = {text="Public Domain"}
+classifiers = [ 
+    'Development Status :: 3 - Alpha',
+    'License :: Public Domain',
+    'Operating System :: Unix',
+    'Programming Language :: Python',
+    'Topic :: Utilities'
+]
+
+[project.scripts]
+"botl" = "botl.__main__:wrapped"
+
+
+[project.urls]
+"home" = "https://pypi.org/project/botl"
+"bugs" = "https://github.com/xobjectz/botl/issues"
+"source" = "https://github.com/xobjectz/botl"
+
+
+[tool.setuptools]
+packages = [
+    "botl",
+    "botl.modules"
+]
+zip-safe=true
+
+
+[tool.setuptools.data-files]
+"share/doc/botl" = [
+    "README.rst"
+]
