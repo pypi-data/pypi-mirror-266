@@ -1,0 +1,36 @@
+#!/usr/bin/env python3
+
+from ..version import __version__
+
+__doc__ = """
+Command line interface to Fragmenstein.
+The the first argument to the command is one of the three option:
+
+## extract
+Given a target folder (`-i <folder_name>`) 
+extract the mol files (with covalent atom if present) in an output folder (`-o <folder_name>`) 
+
+## merge
+
+
+## position
+
+NB. Please no spaces in the filenames. If spaces are present quote/double-quote the fle path.
+""".strip()
+
+
+from .parser import FragmensteinParser
+
+# imported solely for ease of subclassing by the user:
+from .monster import FragmensteinParserMonster
+from .base import FragmensteinParserBase
+
+
+def main():
+    FragmensteinParser.__doc__ = __doc__
+    # init configures the parser, calling it executes it
+    FragmensteinParser()()
+
+
+if __name__ == '__main__':
+    main()
