@@ -1,0 +1,78 @@
+Metadata-Version: 2.1
+Name: ain-py
+Version: 1.2.0
+Summary: AI Network Client Library for Python3
+Home-page: https://github.com/ainblockchain/ain-py
+Author: AIN Dev Team
+Author-email: dev@ainetwork.ai
+License: MPL license
+Keywords: ain,ainetwork,ainblockchain,API
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: typing-extensions==4.7.1
+Requires-Dist: pycryptodome==3.18.0
+Requires-Dist: coincurve==18.0.0
+Requires-Dist: aiohttp[speedups]==3.8.5
+Requires-Dist: jsonrpcclient==4.0.3
+Requires-Dist: mnemonic==0.20
+Requires-Dist: bip32==3.4
+
+# ain-py
+
+A python version of [ain-js](https://www.npmjs.com/package/@ainblockchain/ain-js).
+
+
+## Installation
+```
+pip install ain-py
+```
+
+
+## Examples
+```python
+from ain.ain import Ain
+import asyncio
+
+ain = Ain('https://mainnet-api.ainetwork.ai/')
+
+async def process():
+    accounts = await ain.db.ref('/accounts').getValue()
+    print(accounts)
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(process())
+```
+
+
+## Test How-To
+1. Clone AIN Blockchain and install
+```
+git clone git@github.com:ainblockchain/ain-blockchain.git
+yarn install
+```
+
+2. Start blockchain locally
+```
+bash start_local_blockchain.sh
+```
+
+3. Run tests
+```
+tox
+```
+
+
+## License
+
+This project is licensed under the MIT License
+
