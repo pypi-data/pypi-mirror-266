@@ -1,0 +1,35 @@
+### Tests
+bolton-logrus ~= 0.1.0
+freezegun ~= 1.1
+pytest < 8  # see https://github.com/smarie/python-pytest-cases/issues/330
+pytest-cov
+pytest-mock
+syrupy
+tox < 4
+tox-pyenv
+-e file:.#egg=bolton-clack>=0.dev
+
+### Lint
+black
+cogapp ~= 3.3
+flake8
+isort
+mypy != 0.920, != 0.921, != 0.930  # workaround for https://github.com/samuelcolvin/pydantic/pull/3175
+pydocstyle[toml]
+pylint
+
+### TYPES
+types-freezegun ~= 1.1
+types-pyyaml ~= 6.0
+
+### Docs
+m2r2
+sphinx
+sphinx-rtd-theme
+sphinx-autodoc-typehints
+
+### Misc
+bump2version
+cruft[pyproject]
+pip-tools
+setuptools_scm
