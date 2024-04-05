@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "pelage"
+version = "0.1.8"
+description = "This package contains a collection of tests to improve your Polars data analysis superpowers"
+authors = ["Alix Tiran-Cappello <alix.tiran-cappello@laposte.net>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">= 3.8, < 3.13"
+polars = " >= 0.19 < 0.21"
+
+[tool.poetry.group.dev.dependencies]
+black = ">=24.2.0"
+pytest = ">=8.0.2"
+isort = ">=5.13.2"
+ruff = ">=0.3.0"
+pre-commit = "*"
+coverage = ">=7.4.3"
+ipykernel = ">=6.29.3"
+
+
+
+[tool.poetry.group.extras.dependencies]
+seaborn = "^0.13.2"
+pyarrow = "^15.0.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
