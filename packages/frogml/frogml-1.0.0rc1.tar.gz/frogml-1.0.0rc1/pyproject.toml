@@ -1,0 +1,24 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools", "wheel"]
+
+[project]
+name = "frogml"
+version = "1.0.0rc1"
+authors = [
+    { name = "JFrog", email = "Shayb@jfrog.com" },
+]
+description = "JFrog ML package"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+[project.scripts]
+frogml = "jfrog_ml.cli._frogml_cli:main"
+
+[project.urls]
+Homepage = "https://github.com/jfrog/frogml"
+Issues = "https://github.com/jfrog/frogml/issues"
