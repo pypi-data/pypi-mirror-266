@@ -1,0 +1,894 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+# Note:
+#   Python profiling article: http://www.marinamele.com/7-tips-to-time-python-scripts-and-control-memory-and-cpu-usage
+
+import logging
+import sys
+import os
+import platform
+import subprocess
+import shutil
+import click
+import json
+import re
+from cleepcli.git import Git
+from cleepcli.module import Module
+from cleepcli.file import File
+from cleepcli.watch import CleepWatchdog
+from cleepcli.test import Test
+from cleepcli.package import Package
+from cleepcli.docs import Docs
+from cleepcli.check import Check
+from cleepcli.ci import Ci
+import cleepcli.config as config
+from cleepcli.version import VERSION
+
+if os.getcwd() == '/root/cleep-cli':
+    # in dev env, force debug log level by default
+    logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s [%(name)s:%(lineno)d]: %(message)s', stream=sys.stdout)
+else:
+    logging.basicConfig(level=logging.INFO, format='%(message)s', stream=sys.stdout)
+
+# install logging trace level
+level = logging.TRACE = logging.DEBUG - 5
+def log_logger(self, message, *args, **kwargs):
+    if self.isEnabledFor(level):
+        self._log(level, message, args, **kwargs)
+logging.getLoggerClass().trace = log_logger
+def log_root(msg, *args, **kwargs):
+    logging.log(level, msg, *args, **kwargs)
+logging.addLevelName(level, "TRACE")
+logging.trace = log_root
+
+PRAGMA_NO_COVER_PATTERN = r'#\s*pragma\s*:\s*no\s+cover'
+
+@click.group()
+def core():
+    pass
+
+def get_core_mods(git=None, branch=None):
+    """
+    Get all core modules from their repos
+
+    Args:
+        git (Git): Git instance. Create new instance if not provided
+        branch (str): branch name
+
+    Returns:
+        bool: True if modules installed successfully
+    """
+    g = git or Git()
+
+    for module in config.DEFAULT_MODULES:
+        module_path = os.path.join(config.MODULES_SRC, module)
+        if not os.path.exists(module_path):
+            res = g.clone_mod(module, branch)
+        else:
+            res = g.pull_mod(module, branch)
+
+        if not res:
+            logging.error('Error getting "%s" default module' % module)
+            return False
+
+    return True
+
+@core.command()
+def coreget():
+    """ 
+    Get or update core content from official repository
+    """
+    g = Git()
+    if not os.path.exists(config.CORE_SRC):
+        res = g.clone_core()
+    else:
+        res = g.pull_core()
+
+    if not res:
+        sys.exit(1)
+
+    # force coresync to synchronize installation with repo
+    f = File()
+    res = f.core_sync()
+
+    # core modules
+    if not get_core_mods():
+        sys.exit(1)
+
+@core.command()
+def coresync():
+    """
+    Synchronize core content between source and execution folders
+    """
+    logging.info('Synchronizing core sources...')
+    f = File()
+    res = f.core_sync()
+
+    if not res:
+        sys.exit(1)
+    logging.info('Done')
+
+@core.command()
+@click.option('--coverage', is_flag=True, help='Display coverage report.')
+@click.option('--output', is_flag=True, help='Display tests output.')
+@click.option('--xml', is_flag=True, default=False, help='Use xml reporting instead of default one (report).')
+@click.option('--quiet', is_flag=True, default=True, help='Display or not coverage warnings.')
+def coretests(coverage, output, xml, quiet):
+    """
+    Execute core tests
+    """
+    m = Test()
+    res = m.core_tests(coverage, output, xml)
+
+    if not res:
+        sys.exit(1)
+
+@core.command()
+@click.option('-j', '--json', 'as_json', is_flag=True, help='Output format as json')
+@click.option('--xml', is_flag=True, default=False, help='Use xml reporting instead of default one (report).')
+@click.option('--quiet', is_flag=True, default=True, help='Display or not coverage warnings.')
+def coretestscov(as_json, xml, quiet):
+    """
+    Display core tests coverage
+    """
+    t = Test()
+    try:
+        res = t.core_tests_coverage(as_json=as_json, xml=xml, quiet=quiet)
+
+        if as_json:
+            logging.info(json.dumps(res))
+        else:
+            logging.info(res)
+    except Exception as e:
+        if logging.getLogger().getEffectiveLevel() == logging.DEBUG:
+            logging.exception('Check frontend failed:')
+        logging.error(str(e))
+        sys.exit(1)
+
+@core.command()
+@click.option('--publish', is_flag=True, help='Publish documentation to github pages.')
+def coredocs(publish):
+    """
+    Generate and publih core documentation
+    """
+    d = Docs()
+    res = d.generate_core_docs(publish)
+
+    if not res:
+        sys.exit(1)
+
+@core.command()
+def cpuprof():
+    """
+    Run CPU profiler on cleep
+    """
+    try:
+        import socket
+        public_ip = socket.gethostbyname(socket.gethostname())
+        port = 4000
+
+        # stop running process
+        cmd = '/bin/systemctl stop cleep'
+        subprocess.call(cmd, shell=True)
+
+        logging.info('Follow live profiler analysis on "http://%s:%s". CTRL-C to stop.' % (public_ip, port))
+        cmd = '/usr/local/bin/cprofilev -a "%s" -p %s "/usr/bin/cleep"' % (public_ip, port)
+        logging.debug('Cpuprof cmd: %s' % cmd)
+        subprocess.call(cmd, shell=True)
+
+    except KeyboardInterrupt:
+        pass
+
+    except:
+        if logging.getLogger().getEffectiveLevel() == logging.DEBUG:
+            logging.exception('Error occured during cpuprof:')
+
+    finally:
+        # restart process
+        cmd = '/bin/systemctl start cleep'
+        subprocess.call(cmd, shell=True)
+
+@core.command()
+@click.option('--interval', default=10.0, help='Sampling period (in seconds). Default 10 seconds.')
+def memprof(interval):
+    """
+    Run memory profiler on cleep
+    """
+    MPROF = '/usr/local/bin/mprof'
+
+    try:
+        # memory profiling libraries are not installed because it is long to install.
+        import memory_profiler
+        import psutil
+        import matplotlib
+    except:
+        logging.error('Profiling libraries are not installed by cleep-cli. Please run following command: "python3 -m pip install memory-profiler>=0.55.0,psutil>=5.4.6,matplotlib>=2.2.4"')
+        sys.exit(1)
+
+    try:
+        # stop running process
+        cmd = '/bin/systemctl stop cleep'
+        subprocess.call(cmd, shell=True)
+
+        logging.info('Memory profiling is running. CTRL-C to stop.')
+        cmd = 'cd /tmp; "%(BIN)s" clean; "%(BIN)s" run --interval %(INTERVAL)s --multiprocess "/usr/bin/cleep"' % {'BIN': MPROF, 'INTERVAL': interval}
+        logging.debug('Memprof cmd: %s' % cmd)
+        subprocess.call(cmd, shell=True)
+
+    except KeyboardInterrupt:
+        # generate output graph
+        graph = '/tmp/cleep_memprof.png'
+        logging.info('Generating memory graph "%s"...' % graph)
+        cmd = 'cd /tmp; "%(BIN)s" plot --output "%(OUTPUT)s"' % {'BIN': MPROF, 'OUTPUT': graph}
+        logging.debug('Memprof cmd: %s' % cmd)
+        subprocess.call(cmd, shell=True)
+        logging.info('Done')
+
+    except:
+        if logging.getLogger().getEffectiveLevel()==logging.DEBUG:
+            logging.exception('Error occured during memprof:')
+
+    finally:
+        # restart process
+        cmd = '/bin/systemctl start cleep'
+        subprocess.call(cmd, shell=True)
+
+@core.command()
+@click.pass_context
+def reset(ctx):
+    """
+    Reset Cleep dev env
+    """
+    confirm = False
+    if os.path.exists(config.CORE_DST) or os.path.exists(config.HTML_DST):
+        if click.confirm('Existing installed Cleep files (not repo!) will be deleted. Confirm ?'):
+            confirm = True
+    else:
+        confirm = True
+
+    if confirm:
+        try:
+            if os.path.exists(config.CORE_DST):
+                shutil.rmtree(config.CORE_DST)
+            if os.path.exists(config.HTML_DST):
+                shutil.rmtree(config.HTML_DST)
+            ctx.invoke(coresync)
+            for module in config.DEFAULT_MODULES:
+                ctx.invoke(modsync, module=module)
+        except:
+            logging.exception('Error occured during init:')
+
+@click.group()
+def mod():
+    pass
+
+def get_module_name(ctx, param, value):
+    module_name = value or None
+    try:
+        current_path = os.getcwd()
+        if current_path.startswith(config.MODULES_SRC) and not module_name:
+            # we are already in module directory and no module specified
+            module_name = current_path.replace(config.MODULES_SRC + '/', '').split('/',1)[0]
+    except:
+        pass
+
+    if not module_name:
+        # prompt for module name
+        module_name = click.prompt('Module name')
+
+    return module_name
+
+@mod.command()
+@click.option('--run-scripts', default=False, is_flag=True, help='Also run preinst.sh and postinst.sh scripts')
+def modssync(run_scripts):
+    """
+    Synchronize all mandatory modules (system, network...)
+    """
+    logging.info('Synchronizing mandatory modules...')
+    f = File()
+
+    for module in config.MODULES_REPO_URL.keys():
+        res = f.module_sync(module)
+        if not res:
+            sys.exit(1)
+        res = f.module_run_install_scripts(module)
+        if not res:
+            sys.exit(1)
+
+    logging.info('Done')
+
+@mod.command()
+@click.option('--module', callback=get_module_name, help='Module name.')
+def modsync(module):
+    """
+    Synchronize core content between source and execution folders
+    """
+    logging.info('Synchronizing module "%s" sources...' % module)
+    f = File()
+    res = f.module_sync(module)
+
+    if not res:
+        sys.exit(1)
+    logging.info('Done')
+
+@mod.command()
+@click.option('--module', prompt='Module name', help='Module name.')
+def modcreate(module):
+    """
+    Create new module skeleton
+    """
+    m = Module()
+    res = m.create(module)
+
+    if not res:
+        sys.exit(1)
+
+@mod.command()
+@click.option('--module', callback=get_module_name, help='Module name.')
+def moddelete(module):
+    """
+    Delete all installed files for specified module
+    """
+    if click.confirm('All installed files for module "%s" will be deleted. Confirm ?' % module):
+        m = Module()
+        res = m.delete(module)
+
+        if not res:
+            sys.exit(1)
+
+@click.group()
+def watchdog():
+    pass
+
+@watchdog.command()
+@click.option('--quiet', is_flag=True, help='Disable logging.')
+@click.option('--loglevel', default=logging.INFO, help='Logging level (10=DEBUG, 20=INFO, 30=WARN, 40=ERROR).')
+@click.option('--rpc-url', default='https://127.0.0.1:443', help='Cleep RPC url (ex https://ip|host:port')
+def watch(quiet, loglevel, rpc_url):
+    """
+    Start watchdog that monitors filesystem changes on Cleep sources
+    """
+    if logging.getLogger().getEffectiveLevel() == logging.DEBUG:
+        # do not overwrite root logger level if configured to DEBUG (dev mode)
+        pass
+    elif quiet:
+        logging.disable(logging.CRITICAL)
+    else:
+        logging.getLogger().setLevel(loglevel)
+        
+    w = CleepWatchdog(rpc_url)
+    res = w.watch()
+
+    if not res:
+        sys.exit(1)
+
+@click.group()
+def test():
+    pass
+
+@test.command()
+@click.pass_context
+@click.option('--module', callback=get_module_name, help='Module name.')
+@click.option('--coverage', is_flag=True, help='Display coverage report.')
+@click.option('--copyto', help='Copy .coverage file to specified dir.')
+def modtests(ctx, module, coverage, copyto):
+    """
+    Execute module tests
+    """
+    # sync module
+    ctx.invoke(modsync, module=module)
+
+    m = Test()
+    res = m.module_tests(module, coverage, copyto)
+
+    if not res:
+        sys.exit(1)
+
+def is_file_coverage_valid(coverage_info):
+    """
+    Check if file is not respecting Cleep test practices
+    """
+    if coverage_info['file'].find('__init__.py') != -1:
+        # drop __init__.py
+        return True
+
+    if coverage_info['statements'] == 0 and coverage_info['coverage'] == 100:
+        # no statements covered
+        logging.error('File "%s" fully uncovered by tests' % coverage_info['file'])
+        return False
+
+    with open(coverage_info['file']) as fdesc:
+        lines = fdesc.readlines()
+    lines_count = len(lines)
+    max_pragma = max(int(lines_count / 150), 1)
+    count_pragma = len(re.findall(PRAGMA_NO_COVER_PATTERN, '\n'.join(lines)))
+    if count_pragma > max_pragma:
+        logging.error('Number of allowed "no cover" exceed max allowed (1 per 150 source lines) in "%s"' % coverage_info['file'])
+        return False
+
+    return True
+
+@test.command()
+@click.option('--module', callback=get_module_name, help='Module name.')
+@click.option('--missing', is_flag=True, help='Display missing statements.')
+@click.option('--threshold', default=0, help='Reject threshold (0-10)')
+@click.option('-j', '--json', 'as_json', is_flag=True, help='Output format as json')
+@click.option('--quiet', is_flag=True, default=True, help='Display or not coverage warnings.')
+def modtestscov(module, missing, threshold, as_json, quiet):
+    """
+    Display module tests coverage summary
+    """
+    t = Test()
+    try:
+        res = t.module_tests_coverage(module, missing, as_json, quiet=quiet)
+        if as_json:
+            logging.info(json.dumps(res))
+
+            # threshold
+            if threshold > 0 and res['score'] < threshold:
+                logging.info('Code confidence does not respect requirements (>=%s)' % threshold)
+                sys.exit(1)
+
+            # detect abused no cover usage
+            for info in res['files']:
+                if not is_file_coverage_valid(info):
+                    sys.exit(1)
+        else:
+            logging.info(res)
+    except Exception as e:
+        if logging.getLogger().getEffectiveLevel() == logging.DEBUG:
+            logging.exception('Module "%s" tests coverage failed:' % module)
+        logging.error(str(e))
+        sys.exit(1)
+
+@click.group()
+def package():
+    pass
+
+@package.command()
+def corebuild():
+    """
+    Build Cleep debian package
+    """
+    p = Package()
+    res = p.build_cleep()
+
+    if not res:
+        sys.exit(1)
+
+@package.command()
+@click.option('--version', required=True, help='Version to publish.')
+@click.option('--prerelease', is_flag=True, default=False, help='Pre-release flag')
+@click.option('--tag', required=True, help='Release git tag.')
+def corepublish(version, prerelease, tag):
+    """
+    Publish built Cleep debian package
+    """
+    p = Package()
+    res = p.publish_cleep(version, prerelease, tag)
+
+    if not res:
+        sys.exit(1)
+
+@package.command()
+@click.pass_context
+@click.option('--module', callback=get_module_name, help='Module name.')
+@click.option('--ci', is_flag=True, help='CI flag')
+def modbuild(ctx, module, ci):
+    """
+    Build application package
+    """
+    # sync module
+    f = File()
+    res = f.module_sync(module)
+    if not res:
+        sys.exit(1)
+
+    p = Package()
+    try:
+        res = p.build_module(module, ci)
+        logging.info(json.dumps(res))
+    except Exception as e:
+        if logging.getLogger().getEffectiveLevel() == logging.DEBUG:
+            logging.exception('Build module "%s" failed:' % module)
+        logging.error(str(e))
+        sys.exit(1)
+
+@click.group()
+def docs():
+    pass
+
+@docs.command()
+@click.option('--module', callback=get_module_name, help='Module name.')
+@click.option('--preview', is_flag=True, help='Preview generated api doc as text.')
+def modapidoc(module, preview):
+    """
+    Generate module api-doc in appropriate format
+    """
+    d = Docs()
+    res = d.generate_module_api_docs(module, preview)
+
+    if not res:
+        sys.exit(1)
+
+@docs.command()
+@click.option('--module', callback=get_module_name, help='Module name.')
+def modapidocpath(module):
+    """
+    Display generated api-doc archive path
+    """
+    d = Docs()
+    res = d.get_module_api_docs_archive_path(module)
+
+    if not res:
+        sys.exit(1)
+
+@docs.command()
+@click.option('--module', callback=get_module_name, help='Module name.')
+def moddoc(module):
+    """
+    Get module documentation as json
+    """
+    try:
+        d = Docs()
+        docs = d.generate_module_docs(module)
+        logging.info(json.dumps(docs))
+    except Exception as e:
+        if logging.getLogger().getEffectiveLevel() == logging.DEBUG:
+            logging.exception('Get module "%s" doc failed:' % module)
+        logging.error(str(e))
+        sys.exit(1)
+
+@docs.command()
+@click.option('--module', callback=get_module_name, help='Module name.')
+@click.option('--version', prompt="Module version", help='Module version.')
+def moddoctest(module, version):
+    """
+    Test
+    """
+    try:
+        d = Docs()
+        docs = d.generate_module_docs(module)
+        res = d.publish_app_docs(module, version, docs)
+    except Exception as e:
+        if logging.getLogger().getEffectiveLevel() == logging.DEBUG:
+            logging.exception('Test module "%s" doc failed:' % module)
+        logging.error(str(e))
+        sys.exit(1)
+
+@click.group()
+def check():
+    pass
+
+@check.command()
+@click.option('--module', callback=get_module_name, help='Module name.')
+@click.option('--author', help='Module author.')
+@click.option('-j', '--json', 'as_json', is_flag=True, help='Output format as json')
+def modcheckbackend(module, author, as_json):
+    """
+    Check module backend
+    """
+    c = Check()
+    try:
+        res = c.check_backend(module, author)
+        if as_json:
+            logging.info('%s' % json.dumps(res))
+        else:
+            logging.info('Errors:')
+            for error in res['errors']:
+                logging.info('  - %s' % error)
+            logging.info('Warnings:')
+            for warn in res['warnings']:
+                logging.info('  - %s' % warn)
+            logging.info('Metadata:')
+            logging.info(json.dumps(res['metadata'], sort_keys=True, indent=4))
+            logging.info('Files:')
+            logging.info(json.dumps(res['files'], sort_keys=True, indent=4))
+            if len(res['errors']) > 0:
+                sys.exit(1)
+    except Exception as e:
+        if logging.getLogger().getEffectiveLevel() == logging.DEBUG:
+            logging.exception('Check backend failed:')
+        logging.error(str(e))
+        sys.exit(1)
+
+@check.command()
+@click.option('--module', callback=get_module_name, help='Module name.')
+@click.option('-j', '--json', 'as_json', is_flag=True, help='Output format as json')
+def modcheckfrontend(module, as_json):
+    """
+    Check module frontend
+    """
+    c = Check()
+    try:
+        res = c.check_frontend(module)
+        if as_json:
+            logging.info('%s' % json.dumps(res))
+        else:
+            logging.info('Errors:')
+            for error in res['errors']:
+                logging.info('  - %s' % error)
+            logging.info('Warnings:')
+            for warn in res['warnings']:
+                logging.info('  - %s' % warn)
+            logging.info('Files:')
+            logging.info(json.dumps(res['files'], sort_keys=True, indent=4))
+            logging.info('Metadata:')
+            logging.info(json.dumps({'icon': res['icon']}, sort_keys=True, indent=4))
+            if len(res['errors']) > 0:
+                sys.exit(1)
+    except Exception as e:
+        if logging.getLogger().getEffectiveLevel() == logging.DEBUG:
+            logging.exception('Check frontend failed:')
+        logging.error(str(e))
+        sys.exit(1)
+
+@check.command()
+@click.option('--module', callback=get_module_name, help='Module name.')
+@click.option('-j', '--json', 'as_json', is_flag=True, help='Output format as json')
+def modcheckscripts(module, as_json):
+    """
+    Check module scripts
+    """
+    c = Check()
+    try:
+        res = c.check_scripts(module)
+        logging.debug('res: %s' % res)
+        if as_json:
+            logging.info('%s' % json.dumps(res))
+        else:
+            logging.info('Errors:')
+            for error in res['errors']:
+                logging.info('  - %s' % error)
+            logging.info('Warnings:')
+            for warn in res['warnings']:
+                logging.info('  - %s' % warn)
+            logging.info('Files:')
+            logging.info(json.dumps(res['files'], sort_keys=True, indent=4))
+            if len(res['errors']) > 0:
+                sys.exit(1)
+    except Exception as e:
+        if logging.getLogger().getEffectiveLevel() == logging.DEBUG:
+            logging.exception('Check scripts failed:')
+        logging.error(str(e))
+        sys.exit(1)
+
+@check.command()
+@click.option('--module', callback=get_module_name, help='Module name.')
+@click.option('-j', '--json', 'as_json', is_flag=True, help='Output format as json')
+def modchecktests(module, as_json):
+    """
+    Check module tests
+    """
+    c = Check()
+    try:
+        res = c.check_tests(module)
+        if as_json:
+            logging.info('%s' % json.dumps(res))
+        else:
+            logging.info('Errors:')
+            for error in res['errors']:
+                logging.info('  - %s : %s' % (error['code'], error['msg']))
+            logging.info('Warnings:')
+            for warn in res['warnings']:
+                logging.info('  - %s : %s' % (warn['code'], warn['msg']))
+            logging.info('Files:')
+            logging.info(json.dumps(res['files'], sort_keys=True, indent=4))
+            if len(res['errors']) > 0:
+                sys.exit(1)
+    except Exception as e:
+        if logging.getLogger().getEffectiveLevel() == logging.DEBUG:
+            logging.exception('Check tests failed:')
+        logging.error(str(e))
+        sys.exit(1)
+
+@check.command()
+@click.option('--module', callback=get_module_name, help='Module name.')
+@click.option('--threshold', default=0, help='Reject threshold (0-10)')
+@click.option('-j', '--json', 'as_json', is_flag=True, help='Output format as json')
+@click.option('-p', '--pylintrc', 'rewrite_pylintrc', is_flag=True, help='Write default .pylintrc file')
+def modcheckcode(module, threshold, as_json, rewrite_pylintrc):
+    """
+    Check module code
+    """
+    c = Check()
+    try:
+        res = c.check_code_quality(module, rewrite_pylintrc=rewrite_pylintrc)
+        if as_json:
+            logging.info('%s' % json.dumps(res))
+        else:
+            logging.info('Errors:')
+            for error in res['errors']:
+                logging.info('  - %s : %s' % (error['code'], error['msg']))
+            logging.info('Warnings:')
+            for warn in res['warnings']:
+                logging.info('  - %s : %s' % (warn['code'], warn['msg']))
+            logging.info('Score: %s' % res['score'])
+
+            if len(res['errors']) > 0:
+                sys.exit(1)
+            if threshold > 0 and res['score'] < threshold:
+                logging.info('Code quality does not respect requirements (>=%s)' % threshold)
+                sys.exit(1)
+    except Exception as e:
+        if logging.getLogger().getEffectiveLevel() == logging.DEBUG:
+            logging.exception('Check code failed:')
+        logging.error(str(e))
+        sys.exit(1)
+
+@check.command()
+@click.option('--module', callback=get_module_name, help='Module name.')
+@click.option('-j', '--json', 'as_json', is_flag=True, help='Output format as json.')
+def modcheckchangelog(module, as_json):
+    """
+    Check module changelog
+    """
+    c = Check()
+    try:
+        res = c.check_changelog(module)
+        if as_json:
+            logging.info('%s' % json.dumps(res))
+        else:
+            logging.info('%s' % res)
+    except Exception as e:
+        if logging.getLogger().getEffectiveLevel() == logging.DEBUG:
+            logging.exception('Check changelog failed:')
+        logging.error(str(e))
+        sys.exit(1)
+
+@check.command()
+@click.option('--module', callback=get_module_name, help='Module name.')
+@click.option('-j', '--json', 'as_json', is_flag=True, help='Output format as json.')
+def modcheckdoc(module, as_json):
+    """
+    Check module documentation
+    """
+    c = Check()
+    try:
+        res = c.check_module_documentation(module)
+
+        if as_json:
+            logging.info('%s' % json.dumps(res["details"]))
+        else:
+            logging.info('%s' % res["details"])
+
+        if res["invalid"]:
+            sys.exit(1)
+    except Exception as e:
+        if logging.getLogger().getEffectiveLevel() == logging.DEBUG:
+            logging.exception('Check documentation failed:')
+        logging.error(str(e))
+        sys.exit(1)
+
+@check.command()
+@click.option('--module', callback=get_module_name, help='Module name.')
+@click.option('-j', '--json', 'as_json', is_flag=True, help='Output format as json.')
+def modcheckbreakingchanges(module, as_json):
+    """
+    Check module breaking changes
+    """
+    d = Docs()
+    try:
+        res = d.check_module_breaking_changes(module)
+
+        if as_json:
+            logging.info('%s', json.dumps(res))
+        else:
+            if len(res["errors"]) == 0:
+                logging.info("No breaking changes detected")
+            else:
+                logging.info("List of detected breaking changes:")
+                for error in res["errors"]:
+                    logging.info(" - %s", error)
+            if len(res["warnings"]) > 0:
+                logging.info("List of warnings:")
+                for warning in res["warnings"]:
+                    logging.info(" - %s", warning)
+
+        if len(res["errors"]) > 0:
+            sys.exit(1)
+    except Exception as e:
+        if logging.getLogger().getEffectiveLevel() == logging.DEBUG:
+            logging.exception('Check documentation failed:')
+        logging.error(str(e))
+        sys.exit(1)
+
+@click.group()
+def ci():
+    pass
+
+@ci.command(hidden=True)
+@click.option('--package', prompt='Package path', help='Package path (zip archive).')
+@click.option('--nocompat', is_flag=True, help='Do not check module compatibility (deps only)')
+def cimodinstall(package, nocompat):
+    """
+    Install module. Useful for CI
+    """
+    c = Ci()
+    try:
+        package_infos = c.mod_check_package(package)
+        c.mod_extract_sources(package, package_infos)
+        c.mod_install_sources(package, package_infos, nocompat)
+    except Exception as e:
+        if logging.getLogger().getEffectiveLevel() == logging.DEBUG:
+            logging.exception('Module source installation failed:')
+        logging.error(str(e))
+        sys.exit(1)
+
+@ci.command(hidden=True)
+@click.option('--module', prompt='Module name', help='Module name.')
+def cimodcheck(module):
+    """
+    Shortcut for some module checkings. Useful for CI
+    """
+    c = Ci()
+    try:
+        c.mod_check(module)
+    except Exception as e:
+        if logging.getLogger().getEffectiveLevel() == logging.DEBUG:
+            logging.exception('Module checking failed:')
+        logging.error(str(e))
+        sys.exit(1)
+
+@ci.command(hidden=True)
+@click.option('--module', prompt='Module name', help='Module name.')
+@click.option('--version', prompt='Module version', help='Module version.')
+@click.option('--ghtoken', prompt='Github access token', help='Github access token', default=None)
+def cimoddocpublish(module, version, ghtoken):
+    """
+    Publish module documentation to keep track of changes and detect breaking changes. Useful for CI
+    """
+    d = Docs()
+    try:
+        d.publish_module_docs(module, version, ghtoken)
+    except Exception as e:
+        if logging.getLogger().getEffectiveLevel() == logging.DEBUG:
+            logging.exception('Module doc publication failed:')
+        logging.error(str(e))
+        sys.exit(1)
+
+@ci.command(hidden=True)
+@click.pass_context
+@click.option('--nosync', is_flag=True, default=False, help='Sync mods.')
+@click.option('--branch', default=None, help='Get apps specific branch')
+def cigetmods(ctx, nosync, branch):
+    """
+    Get all core modules from git repos
+    """
+    if not get_core_mods(branch=branch):
+        sys.exit(1)
+
+    if not nosync:
+        # sync mandatory apps + run install scripts
+        ctx.invoke(modssync, run_scripts=True)
+
+
+def print_version(ctx, param, value):
+    if not value or ctx.resilient_parsing:
+        return
+    click.echo('cleep-cli version %s' % VERSION)
+    ctx.exit()
+
+# https://github.com/pallets/click/issues/341
+@click.command(cls=click.CommandCollection, sources=[core, mod, watchdog, test, package, docs, check, ci])
+@click.option('--version', is_flag=True, callback=print_version, expose_value=False, is_eager=True)
+def cli():
+    pass
+
+
+if __name__ == '__main__':
+    def is_raspbian():
+        if platform.system()!='Linux':
+            return False
+        res = subprocess.Popen(u'cat /etc/os-release | grep -i raspbian | wc -l', stdout=subprocess.PIPE, shell=True)
+        stdout = res.communicate()[0]
+        if stdout.strip() == '0':
+            return False
+        return True
+
+    # execute only on raspbian
+    if is_raspbian():
+        cli()
+    else:
+        click.echo('Cleep-cli runs only on RaspberrypiOS distribution')
