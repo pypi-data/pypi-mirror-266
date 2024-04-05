@@ -1,0 +1,26 @@
+/*
+    This is the io library for Macal
+    You can use it by issuing this command:
+    include io;
+
+    This library is licensed under the MIT license.
+
+    (c) 2023 Westcon-Comstor
+    (c) 2023 WestconGroup, Inc.
+    (c) 2023 WestconGroup International Limited
+    (c) 2023 WestconGroup EMEA Operations Limited
+    (c) 2023 WestconGroup European Operations Limited
+    (c) 2023 Sama Development Team
+
+    Date:    17-11-2023
+    Version: 1.0.0
+*/
+
+
+LoadTextFile => (filename) external "ext_io", "loadTextFile";
+LoadJSONFile => (filename) external "ext_io", "readJSONFile";
+Exists => (filename) external "ext_io", "exists";
+SaveTextFile => (filename, content) external "ext_io", "saveTextFile";
+SaveJSONFile => (filename, content) external "ext_io", "writeJSONFile";
+GetLastRun => (name, defaultIsoNow) external "ext_io", "getLastRun";
+SetLastRun => (name, isoNow) external "ext_io", "setLastRun";
