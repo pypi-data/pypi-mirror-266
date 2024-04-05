@@ -1,0 +1,88 @@
+from rest_framework import serializers
+from collections.abc import Iterable
+from simo.core.middleware import get_current_request
+from simo.core.utils.api import ReadWriteSerializerMethodField
+from .models import (
+    User, PermissionsRole, InstanceInvitation, InstanceUser, Fingerprint
+)
+
+
+
+
+
+class UserSerializer(serializers.ModelSerializer):
+    avatar = serializers.SerializerMethodField()
+    role = serializers.IntegerField(source='role_id')
+    at_home = serializers.SerializerMethodField()
+    is_active = ReadWriteSerializerMethodField()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if isinstance(self.instance, Iterable):
+            for inst in self.instance:
+                inst.set_instance(self.context['instance'])
+        elif self.instance:
+            self.instance.set_instance(self.context['instance'])
+
+    class Meta:
+        model = User
+        fields = (
+            'id', 'email', 'name', 'avatar', 'role', 'is_active',
+            'at_home', 'last_action'
+        )
+        read_only_fields = (
+            'id', 'email', 'name', 'avatar', 'at_home', 'last_action', 'ssh_key'
+        )
+
+    def get_is_active(self, obj):
+        return obj.is_active
+
+    def get_avatar(self, obj):
+        if obj.avatar:
+            url = obj.avatar['avatar'].url
+            request = get_current_request()
+            if request:
+                url = request.build_absolute_uri(url)
+            return {
+                'url': url,
+                'last_change': obj.avatar_last_change.timestamp()
+            }
+        return None
+
+    def get_at_home(self, obj):
+        iu = InstanceUser.objects.filter(
+            user=obj, instance=obj._instance
+        ).first()
+        if iu:
+            return iu.at_home
+        return False
+
+
+
+class PermissionsRoleSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = PermissionsRole
+        fields = '__all__'
+
+
+class InstanceInvitationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = InstanceInvitation
+        fields = '__all__'
+        read_only_fields = (
+            'instance', 'token', 'from_user', 'taken_by',
+        )
+
+
+class FingerprintSerializer(serializers.ModelSerializer):
+    type = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Fingerprint
+        fields = 'id', 'type', 'value', 'user'
+        read_only_fields = ('id', 'type', 'value')
+
+    def get_type(self, obj):
+        return obj.type
