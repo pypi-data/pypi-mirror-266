@@ -1,0 +1,67 @@
+[package]
+name = "qcs-sdk-python-grpc-web"
+description = "Python bindings to qcs-sdk-rust"
+version = "0.17.4-rc.1"
+edition = "2021"
+license = "Apache-2.0"
+repository = "https://github.com/rigetti/qcs-sdk-rust"
+keywords = [ "pyquil", "SDK", "Rigetti", "Quil", "Quantum",]
+categories = [ "api-bindings", "compilers", "science", "emulators",]
+readme = "./README.md"
+
+[features]
+libquil = [ "qcs/libquil",]
+grpc-web = [ "qcs/grpc-web",]
+
+[lib]
+name = "qcs_sdk"
+crate-type = [ "cdylib", "rlib",]
+
+[dependencies]
+async-trait = "0.1.73"
+paste = "1.0.11"
+pyo3-log = "0.8.2"
+once_cell = "1.18.0"
+
+[dependencies.qcs]
+path = "../lib"
+features = [ "tracing",]
+
+[dependencies.qcs-api]
+workspace = true
+
+[dependencies.qcs-api-client-common]
+workspace = true
+
+[dependencies.qcs-api-client-grpc]
+workspace = true
+
+[dependencies.qcs-api-client-openapi]
+workspace = true
+
+[dependencies.pyo3]
+workspace = true
+
+[dependencies.pyo3-asyncio]
+workspace = true
+
+[dependencies.quil-rs]
+workspace = true
+
+[dependencies.serde_json]
+workspace = true
+
+[dependencies.tokio]
+workspace = true
+
+[dependencies.thiserror]
+workspace = true
+
+[dependencies.numpy]
+workspace = true
+
+[dependencies.rigetti-pyo3]
+workspace = true
+
+[build-dependencies.pyo3-build-config]
+workspace = true
