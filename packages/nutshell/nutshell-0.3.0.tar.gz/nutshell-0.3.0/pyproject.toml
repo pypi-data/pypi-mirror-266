@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "nutshell"
+version = "0.3.0"
+description = "Python wrapper on Nutshell CRM JSON RPC API"
+authors = ["Mark Nyberg <bigusdeveloper@gmail.com>"]
+license = "\"MIT\""
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+aiohttp = "^3.9.3"
+pydantic = "^2.6.4"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.1"
+python-dotenv = "^1.0.1"
+rich = "^13.7.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
