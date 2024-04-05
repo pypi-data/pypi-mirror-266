@@ -1,0 +1,39 @@
+[tool.poetry]
+name = "marcgrep"
+version = "0.3.0"
+description = "search MARC files for regex matches"
+authors = ["phette23 <phette23@gmail.com>"]
+license = "MIT"
+readme = "readme.md"
+homepage = "https://github.com/phette23/marcgreppy"
+repository = "https://github.com/phette23/marcgreppy"
+keywords = ["marc", "grep", "regex", "libraries", "cli", "metadata", "bibliographic", "cataloging"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Topic :: Utilities",
+]
+
+[tool.poetry.urls]
+"Issues" = "https://github.com/phette23/marcgreppy/issues"
+
+[tool.poetry.dependencies]
+python = ">3.8"
+pymarc = "5.1.2"
+click = "8.1.7"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "8.1.1"
+
+[tool.poetry.scripts]
+marcgrep = "marcgrep.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["marcgrep"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
