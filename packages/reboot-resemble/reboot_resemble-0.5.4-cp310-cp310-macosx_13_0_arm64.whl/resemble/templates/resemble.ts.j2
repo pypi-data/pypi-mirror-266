@@ -1,0 +1,154 @@
+{% macro name(type_full_name) -%}{{type_full_name.split(".")[-1]}}{%- endmacro %}
+import {
+  PartialMessage as __bufbuildProtobufPartialMessage,
+{% if google_protobuf_used_messages is defined and google_protobuf_used_messages|length > 0%}
+  {{ google_protobuf_used_messages|join(', \n	') }}
+{% endif %}
+} from "@bufbuild/protobuf";
+import {
+  {{ pb2_messages|map("replace", pb2_name + ".",
+  "")|unique|list|join(', \n	') }},
+} from "./{{ pb2_name.split(".")[-1][:-1] }}.js";
+// TODO: solve transitive depenencies.
+import {
+  Context,
+  Workflow,
+  ReaderContext,
+  WriterContext,
+} from "@reboot-dev/resemble";
+import { fileURLToPath } from "node:url";
+import * as path from "node:path";
+
+import * as resembleNative from "@reboot-dev/resemble/resemble_native.cjs";
+
+{# Start generated Interface code #}
+{% for service in services %}
+
+export abstract class {{ service.name }}Interface {
+  static __rsmModule__ = "{{ rsm_name }}";
+  static __servicerNodeAdaptor__ = "{{ service.name }}ServicerNodeAdaptor";
+
+  {% for method in service.methods %}
+  abstract {{ method.name }}(
+    {% if method.options.kind == 'reader'%}
+    context: ReaderContext,
+    {% endif %}
+    {% if method.options.kind == 'writer'%}
+    context: WriterContext,
+    {% endif %}
+    {% if not (method.options.kind == 'writer' and method.options.constructor) %}
+    state: {{ service.options.state_name }},
+    {% endif %}
+    request: {{ name(method.input_type) }},
+  ): Promise<
+  {%- if method.options.kind == 'writer' -%}
+  {{ service.name }}.{{ method.name }}.Effects
+  {%- else -%}
+  {{ name(method.output_type) }} | __bufbuildProtobufPartialMessage<{{ name(method.output_type) }}>
+  {%- endif -%}
+  >;
+
+  {% endfor %}
+  {% for method in service.methods %}
+  async _{{ method.name }}(
+     {% if method.options.kind == 'reader'%}
+    context: ReaderContext,
+    {% endif %}
+    {% if method.options.kind == 'writer'%}
+    context: WriterContext,
+    {% endif %}
+    {% if not(method.options.kind == 'writer' and method.options.constructor) %}
+    jsonState: string,
+    {% endif %}
+    jsonRequest: string
+  ): Promise<string> {
+    return JSON.stringify(
+      await this.{{ method.name }}(
+        context,
+        {% if not (method.options.kind == 'writer' and method.options.constructor) %}
+        new {{ service.options.state_name }}(JSON.parse(jsonState)),
+        {% endif %}
+        new {{ name(method.input_type) }}(JSON.parse(jsonRequest))
+      )
+    );
+  }
+
+  {% endfor %}
+}
+{% endfor %}
+{# End generated Interface code #}
+{# Start generated Service code #}
+{% for service in services %}
+
+export class {{ service.name }} {
+  #external;
+
+  static Interface = {{ service.name }}Interface;
+
+  {% for method in service.methods if method.options.kind == 'writer' %}
+
+  static {{ method.name }} = class {
+    static Effects = class {
+      state: {{ service.options.state_name }};
+      response: {{ name(method.output_type) }};
+
+      constructor(effects: {
+        state: __bufbuildProtobufPartialMessage<{{ service.options.state_name }}>;
+        response: __bufbuildProtobufPartialMessage<{{ name(method.output_type) }}>;
+      }) {
+        this.state = effects.state instanceof {{
+        service.options.state_name }} ? effects.state : new {{ service.options.state_name }}(effects.state);
+        this.response = effects.response instanceof {{
+        name(method.output_type) }} ? effects.response : new {{ name(method.output_type) }}(effects.response);
+      }
+    };
+  };
+  {% endfor %}
+
+  constructor(id: string) {
+    this.#external = resembleNative.Service_constructor({
+      rsmModule: "{{ rsm_name }}",
+      nodeAdaptor: "{{ service.name }}NodeAdaptor",
+      id: id,
+    });
+  }
+
+  {% for method in service.methods %}
+  async {{ method.name }}(
+    contextOrWorkflow: Context | Workflow,
+    partialRequest: __bufbuildProtobufPartialMessage<{{ name(method.input_type) }}>
+  ): Promise<{{ name(method.output_type) }}> {
+
+    const request = partialRequest instanceof {{ name(method.input_type) }} ?
+    partialRequest : new {{ name(method.input_type) }}(partialRequest);
+
+    return new {{ name(method.output_type) }}(
+      JSON.parse(
+        await resembleNative.Service_call({
+          external: this.#external,
+          kind: "{{ method.options.kind }}",
+          method: "{{ method.name }}",
+          requestModule: "{{ pb2_name }}",
+          requestType: "{{ name(method.input_type) }}",
+          contextOrWorkflow: contextOrWorkflow.external(),
+          jsonRequest: JSON.stringify(request),
+        })
+      )
+    );
+  }
+
+  {% endfor %}
+}
+
+{% for method in service.methods if method.options.kind == 'writer' %}
+export namespace {{ service.name }}.{{ method.name }} {
+  export type Effects = typeof {{ service.name }}.{{ method.name }}.Effects.prototype;
+}
+{% endfor %}
+
+{% endfor %}
+{# End generated Service code #}
+
+resembleNative.importPy("{{ pb2_name }}", "{{ base64_gzip_pb2_py }}");
+resembleNative.importPy("{{ pb2_grpc_name }}", "{{ base64_gzip_pb2_grpc_py }}");
+resembleNative.importPy("{{ rsm_name }}", "{{ base64_gzip_rsm_py }}");
