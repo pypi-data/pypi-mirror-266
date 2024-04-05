@@ -1,0 +1,52 @@
+---
+# https://taskfile.dev
+#
+# Taskfile.project.yml for your main project tasks. Must be commited.
+# If you always want the last version of the task templates, add the following line in your .gitignore file
+# /Taskfile.d/
+#
+version: '3'
+
+vars:
+  # TO MODIFY: Task templates to download separated by comma
+  # Example: TASK_TEMPLATES: go,lint,yarn
+  TASK_TEMPLATES: git,lint
+
+tasks:
+
+  00-get-list-templates:
+    # Get the list of templates to download
+    # Do not remove
+    cmds:
+      - echo "{{.TASK_TEMPLATES}}"
+    silent: true
+
+  project-set-version:
+    desc: "[PROJECT] Set version in different files. Arguments: VERSION|V=x.y.z"
+    vars:
+      PY_FILE_VERSION: src/task2md/task2md.py
+      MD_FILE_VERSION: docs/index.md
+      VERSION: '{{default .V .VERSION}}'
+    cmds:
+      - echo "Version {{.VERSION}}"
+      - sed -i.bu "s/0\.0\.0/{{.VERSION}}/g" pyproject.toml
+      - defer: rm -f pyproject.toml.bu
+      - sed -i.bu "s/0\.0\.0/{{.VERSION}}/g" {{.PY_FILE_VERSION}}
+      - defer: rm -f {{.PY_FILE_VERSION}}.bu
+      - sed -i.bu "s/0\.0\.0/{{.VERSION}}/g" {{.MD_FILE_VERSION}}
+      - defer: rm -f {{.MD_FILE_VERSION}}.bu
+    preconditions:
+      - sh: test -n "{{.VERSION}}"
+        msg: "VERSION|V argument is required"
+    silent: true
+
+  30-pre-commit:
+    desc: "[PROJECT] Pre-commit checks."
+    cmds:
+      - date > {{.FILE_TASK_START}}
+      - defer: rm -f {{.FILE_TASK_START}}
+      - task lint:pre-commit
+      - task lint:all MEX='"#docs" "#styles" "#Taskfile.d" "#.venv" "#.cache"'
+      - echo "run also -> rye run lint & rye fmt"
+      - echo "" && echo "Checks Start $(cat {{.FILE_TASK_START}}) - End $(date)"
+    silent: true

@@ -1,0 +1,35 @@
+---
+include:
+  - remote: 'https://gitlab.com/op_so/projects/gitlab-ci-templates/-/raw/main/templates/lint.gitlab-ci.yml'
+  - remote: 'https://gitlab.com/op_so/projects/gitlab-ci-templates/-/raw/main/templates/lint.python-rye.gitlab-ci.yml'
+  - remote: 'https://gitlab.com/op_so/projects/gitlab-ci-templates/-/raw/main/templates/gitlab-release.gitlab-ci.yml'
+  - remote: 'https://gitlab.com/op_so/projects/gitlab-ci-templates/-/raw/main/templates/python.rye-publish.gitlab-ci.yml'
+
+variables:
+  IMAGE_PYTHON: jfxs/rye
+  LINT_VALE: "true"
+  LINT_MARKDOWN_GLOB: '"**/*.md" "#docs"'
+
+stages:
+  - lint
+  - tests
+  - gitlab-release
+  - pypi-release
+  - pages-release
+
+tests:pytest:
+  image: $IMAGE_PYTHON
+  stage: tests
+  before_script:
+    - rye --version
+    - rye sync
+    - rye run pytest --version
+    - mkdir -p reports/cov
+  script:
+    - rye run test
+
+gitlab-release:
+  retry: 1
+  before_script:
+    - npx semantic-release --dry-run --no-ci
+    - if [ -s .VERSION ]; then task 00:project-set-version VERSION=$(cat .VERSION); fi
