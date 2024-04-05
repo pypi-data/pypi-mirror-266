@@ -1,0 +1,222 @@
+{
+  "type": "record",
+  "Aspect": {
+    "name": "schemaFieldProfile",
+    "type": "timeseries"
+  },
+  "name": "SchemaFieldProfile",
+  "namespace": "com.linkedin.pegasus2avro.dataset",
+  "fields": [
+    {
+      "type": "long",
+      "name": "timestampMillis",
+      "doc": "The event timestamp field as epoch at UTC in milli seconds."
+    },
+    {
+      "type": [
+        "null",
+        {
+          "type": "record",
+          "name": "TimeWindowSize",
+          "namespace": "com.linkedin.pegasus2avro.timeseries",
+          "fields": [
+            {
+              "type": {
+                "type": "enum",
+                "name": "CalendarInterval",
+                "namespace": "com.linkedin.pegasus2avro.timeseries",
+                "symbols": [
+                  "SECOND",
+                  "MINUTE",
+                  "HOUR",
+                  "DAY",
+                  "WEEK",
+                  "MONTH",
+                  "QUARTER",
+                  "YEAR"
+                ]
+              },
+              "name": "unit",
+              "doc": "Interval unit such as minute/hour/day etc."
+            },
+            {
+              "type": "int",
+              "name": "multiple",
+              "default": 1,
+              "doc": "How many units. Defaults to 1."
+            }
+          ],
+          "doc": "Defines the size of a time window."
+        }
+      ],
+      "name": "eventGranularity",
+      "default": null,
+      "doc": "Granularity of the event if applicable"
+    },
+    {
+      "type": [
+        {
+          "type": "record",
+          "name": "PartitionSpec",
+          "namespace": "com.linkedin.pegasus2avro.timeseries",
+          "fields": [
+            {
+              "type": {
+                "type": "enum",
+                "name": "PartitionType",
+                "namespace": "com.linkedin.pegasus2avro.timeseries",
+                "symbols": [
+                  "FULL_TABLE",
+                  "QUERY",
+                  "PARTITION"
+                ]
+              },
+              "name": "type",
+              "default": "PARTITION"
+            },
+            {
+              "TimeseriesField": {},
+              "type": "string",
+              "name": "partition",
+              "doc": "String representation of the partition"
+            },
+            {
+              "type": [
+                "null",
+                {
+                  "type": "record",
+                  "name": "TimeWindow",
+                  "namespace": "com.linkedin.pegasus2avro.timeseries",
+                  "fields": [
+                    {
+                      "type": "long",
+                      "name": "startTimeMillis",
+                      "doc": "Start time as epoch at UTC."
+                    },
+                    {
+                      "type": "com.linkedin.pegasus2avro.timeseries.TimeWindowSize",
+                      "name": "length",
+                      "doc": "The length of the window."
+                    }
+                  ]
+                }
+              ],
+              "name": "timePartition",
+              "default": null,
+              "doc": "Time window of the partition if applicable"
+            }
+          ],
+          "doc": "Defines how the data is partitioned"
+        },
+        "null"
+      ],
+      "name": "partitionSpec",
+      "default": {
+        "partition": "FULL_TABLE_SNAPSHOT",
+        "type": "FULL_TABLE",
+        "timePartition": null
+      },
+      "doc": "The optional partition specification."
+    },
+    {
+      "type": [
+        "null",
+        "string"
+      ],
+      "name": "messageId",
+      "default": null,
+      "doc": "The optional messageId, if provided serves as a custom user-defined unique identifier for an aspect value."
+    },
+    {
+      "TimeseriesField": {},
+      "type": [
+        "null",
+        "long"
+      ],
+      "name": "uniqueCount",
+      "default": null,
+      "doc": "The count of unique values for the field across the dataset.\nUseful for understanding the diversity of field values."
+    },
+    {
+      "TimeseriesField": {},
+      "type": [
+        "null",
+        "float"
+      ],
+      "name": "uniqueProportion",
+      "default": null,
+      "doc": "The proportion of unique values over the total number of non-null entries.\nHelps in assessing the uniqueness of the data in the field."
+    },
+    {
+      "TimeseriesField": {},
+      "type": [
+        "null",
+        "long"
+      ],
+      "name": "nullCount",
+      "default": null,
+      "doc": "The count of null or missing entries for the field.\nImportant for data quality assessments."
+    },
+    {
+      "TimeseriesField": {},
+      "type": [
+        "null",
+        "float"
+      ],
+      "name": "nullProportion",
+      "default": null,
+      "doc": "The proportion of null entries over the total number of entries in the field.\nUseful for identifying fields with a high rate of missing values."
+    },
+    {
+      "TimeseriesField": {},
+      "type": [
+        "null",
+        "string"
+      ],
+      "name": "min",
+      "default": null,
+      "doc": "The minimum value in the field for string-representable data types.\nProvides a sense of the lower bound of field values."
+    },
+    {
+      "TimeseriesField": {},
+      "type": [
+        "null",
+        "string"
+      ],
+      "name": "max",
+      "default": null,
+      "doc": "The maximum value in the field for string-representable data types.\nProvides a sense of the upper bound of field values."
+    },
+    {
+      "TimeseriesField": {},
+      "type": [
+        "null",
+        "string"
+      ],
+      "name": "mean",
+      "default": null,
+      "doc": "The mean (average) value of the field, represented as a string.\nUseful for numerical fields to understand the central tendency."
+    },
+    {
+      "TimeseriesField": {},
+      "type": [
+        "null",
+        "string"
+      ],
+      "name": "median",
+      "default": null,
+      "doc": "The median value of the field, represented as a string.\nUseful for understanding the middle value when data is sorted."
+    },
+    {
+      "TimeseriesField": {},
+      "type": [
+        "null",
+        "string"
+      ],
+      "name": "stdev",
+      "default": null,
+      "doc": "The standard deviation of the field values, represented as a string.\nIndicates the amount of variation or dispersion of field values."
+    }
+  ],
+  "doc": "Metrics corresponding to a single schema field.\nNotice that this aspect may be partially completed so the user\nshould filter for existence of the stats they need when querying.\n\nIn the long term, this serves as a replacement for the DatasetFieldProfile object.\nNote that it does not yet support quantiles, histograms, etc, but may evolve to in the future."
+}
