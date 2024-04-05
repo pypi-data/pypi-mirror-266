@@ -1,0 +1,64 @@
+on:
+  push:
+    branches: [master]
+    tags: ['v*']
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ${{ matrix.platform }}
+    strategy:
+      max-parallel: 8
+      matrix:
+        # https://help.github.com/articles/virtual-environments-for-github-actions
+        platform:
+          - ubuntu-latest  # ubuntu-18.04
+          # - macos-latest # macOS-10.14 casing trouble for requests-mock
+          # - windows-latest  # windows-2019 causing trouble for the test_xdist
+        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade setuptools pip wheel
+        # Use the latest published version for myself :)
+        python -m pip install tox-gh-actions
+    - name: Test with tox
+      run: tox
+    - name: Upload coverage.xml to codecov
+      if: ${{ matrix.python-version == '3.12' }}
+      uses: codecov/codecov-action@v4
+      with:
+        fail_ci_if_error: true
+        token: ${{ secrets.CODECOV_TOKEN }}
+
+  publish:
+    needs: [test]
+    runs-on: ubuntu-latest
+    # upload to PyPI on every tag starting with 'v'
+    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
+    # alternatively, to publish when a GitHub Release is created, use the following rule:
+    # if: github.event_name == 'release' && github.event.action == 'published'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        name: Install Python
+        with:
+          python-version: '3.12'
+
+      - name: Build package
+        run: |
+          pip install build
+          python -m build
+
+      - name: Publish package
+        uses: pypa/gh-action-pypi-publish@master
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
