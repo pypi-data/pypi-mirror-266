@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "teachbooks"
+version = "0.0.1"
+description = "TU Delft CiTG Jupyter Book Software Stack"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+  {name = "Caspar Jungbacker", email = "c.a.a.jungbacker@tudelft.nl"}
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+]
+dependencies = [
+  "jupyter-book ~= 1.0",
+  "numpy",
+  "matplotlib",
+  "scipy",
+  "pandas"
+]
+
+[project.scripts]
+teachbooks = "teachbooks.cli.main:main"
+
+[tool.setuptools.packages]
+find = {}
+
+[project.urls]
+"Homepage" = "https://gitlab.tudelft.nl/interactivetextbooks-citg/extensions/teachbooks-package"
+
+[project.entry-points."pybtex.style.formatting"]
+apa = "teachbooks.plugins.pybtex.formatting.apa:APAStyle"
+
+[project.entry-points."pybtex.style.labels"]
+apa = "teachbooks.plugins.pybtex.labels.apa:APALabelStyle"
+
+[project.entry-points."pybtex.style.names"]
+firstlast = "teachbooks.plugins.pybtex.names:FirstLastStyle"
+
+[project.entry-points."sphinxcontrib.bibtex.style.referencing"]
+author_year_round = "teachbooks.plugins.sphinxcontrib_bibtex.style.referencing.author_year_apa:AuthorYearRoundReferenceStyle"
