@@ -1,0 +1,13 @@
+recursive-include src/sagemaker_schema_inference_artifacts *.py
+
+recursive-include src/sagemaker_schema_inference_artifacts/huggingface *
+recursive-include requirements *
+
+include VERSION
+include LICENSE
+include README.rst
+
+prune tests
+
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
