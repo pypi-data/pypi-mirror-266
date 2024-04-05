@@ -1,0 +1,39 @@
+name: Test songbird
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install rust
+      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    - uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cargo/bin/
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+          target/
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.toml') }}
+    - name: Install dependency
+      run: |
+        curl -sSL https://install.python-poetry.org | python3 -
+        poetry install --no-ansi
+    - name: Compile dextbird
+      run: poetry run maturin dev
+    - name: Test library
+      run: poetry run pytest -s --log-cli-level=INFO
+      env:
+        DISCORD_TOKEN: ${{secrets.TOKEN}}

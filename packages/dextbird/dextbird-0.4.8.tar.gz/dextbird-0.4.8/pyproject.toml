@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "dextbird"
+version = "v0.1.0"
+description = "dextbird poetry description"
+authors = ["tuna2134"]
+
+[tool.poetry.dependencies]
+python = ">=3.8"
+yt-dlp = "^2024.3.10"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+pytest-asyncio = "^0.23.0"
+python-dotenv = "^1.0.0"
+discord-py = "^2.3.2"
+maturin = {extras = ["patchelf"], version = "^1.2.3"}
+black = "^24.0.0"
+pyright = "^1.1.326"
+pdoc3 = "^0.10.0"
+jishaku = "^2.5.2"
+
+[build-system]
+requires = ["maturin>=1.2,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "dextbird"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+]
+
+
+[tool.maturin]
+features = ["pyo3/extension-module"]

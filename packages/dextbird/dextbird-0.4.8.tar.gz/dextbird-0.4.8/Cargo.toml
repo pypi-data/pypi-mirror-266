@@ -1,0 +1,21 @@
+[package]
+name = "dextbird"
+version = "0.4.8"
+description = "Discord extensions voice library made with rust"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+name = "dextbird"
+crate-type = ["cdylib"]
+
+[dependencies]
+async-dropper = { version = "0.3.1", features = ["tokio", "simple"] }
+async-trait = "0.1.79"
+log = "0.4.21"
+pyo3 = "0.20.3"
+pyo3-asyncio = { version = "0.20.0", features = ["tokio-runtime"] }
+reqwest = { version = "0.11.7", default-features = false, features = ["rustls-tls"] }
+songbird = { version = "0.4.1", features = ["driver"] }
+symphonia = { version = "0.5.4", features = ["aac", "mp3", "isomp4", "alac"] }
+tokio = { version = "1.37.0", features = ["sync"] }
