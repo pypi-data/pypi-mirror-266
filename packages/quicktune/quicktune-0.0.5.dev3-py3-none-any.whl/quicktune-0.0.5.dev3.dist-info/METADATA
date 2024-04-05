@@ -1,0 +1,88 @@
+Metadata-Version: 2.1
+Name: quicktune
+Version: 0.0.5.dev3
+Summary: Quick-Tune: Quickly Learning Which Pretrained Model to Finetune and How
+Author-email: Ivo Rapant <rapanti@cs.uni-freiburg.de>
+License: BSD 3-Clause License
+        
+        Copyright (c) 2024, rapanti
+        
+        Redistribution and use in source and binary forms, with or without
+        modification, are permitted provided that the following conditions are met:
+        
+        1. Redistributions of source code must retain the above copyright notice, this
+           list of conditions and the following disclaimer.
+        
+        2. Redistributions in binary form must reproduce the above copyright notice,
+           this list of conditions and the following disclaimer in the documentation
+           and/or other materials provided with the distribution.
+        
+        3. Neither the name of the copyright holder nor the names of its
+           contributors may be used to endorse or promote products derived from
+           this software without specific prior written permission.
+        
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+        AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+        IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+        DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+        FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+        DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+        SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+        CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+        OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+        OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+        
+Project-URL: Homepage, https://github.com/rapanti/quicktune
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python
+Classifier: Topic :: Software Development
+Classifier: Topic :: Scientific/Engineering
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Unix
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: torch >=1.12.1
+Requires-Dist: torchvision >=0.13.1
+Requires-Dist: torchaudio >=0.12.1
+Requires-Dist: ConfigSpace
+Requires-Dist: gpytorch
+Requires-Dist: pandas
+Requires-Dist: pyyaml
+Requires-Dist: scikit-learn
+Requires-Dist: timm
+Requires-Dist: tqdm
+
+# QuickTune (WIP)
+## Quick-Tune: Quickly Learning Which Pre Trained Model to Fine Tune and How [ICLR2024](https://openreview.net/forum?id=tqh1zdXIra)
+
+This repo contains the code for running experiments with QuickTune
+
+![Architecture](figures/figure.svg)
+
+
+## Run QuickTune
+
+### Prepare Environment
+To install QuickTune, you can simply use `pip`:
+```bash
+pip install quicktune
+```
+
+### Download the QuickTune Meta-Dataset:
+```bash
+wget https://rewind.tf.uni-freiburg.de/index.php/s/oMxC5sfrkA53ESo/download/qt_metadataset.zip
+unzip qt_metadataset.zip
+```
+
+### Run on Custom Dataset
+The custom dataset must be in Pytorch's [ImageFolder](https://pytorch.org/vision/main/generated/torchvision.datasets.ImageFolder.html) format, e.g. download the Imagenette dataset:
+```bash
+wget https://s3.amazonaws.com/fast-ai-imageclas/imagenette2-320.tgz
+tar -xvzf imagenette2-320.tgz
+```
+
+Modify the quicktuning [script](examples/quicktuning.py) in the examples folder to your needs.
