@@ -1,0 +1,26 @@
+[build-system]
+requires = [ "hatchling" ]
+build-backend = "hatchling.build"
+
+[project]
+name = "petrichor-script-lexer"
+description = "A custom RegexLexer for Petrichor Script."
+version = "0.11.0-2"
+authors = [
+    { name = "SparkliTwizzl", email = "github@sparklitwizzl.com" }
+]
+license = { file="LICENSE" }
+requires-python = ">=3.12"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: Free To Use But Restricted",
+    "Operating System :: OS Independent",
+]
+dependencies = [ "pygments" ]
+
+[project.entry-points."pygments.lexers"]
+petrichorscriptlexer = "petrichorscriptlexer.petrichorscriptlexer:PetrichorScriptLexer"
+
+[project.urls]
+Repository = "https://github.com/sparklitwizzl/petrichor"
+Issues = "https://github.com/sparklitwizzl/petrichor/issues"
