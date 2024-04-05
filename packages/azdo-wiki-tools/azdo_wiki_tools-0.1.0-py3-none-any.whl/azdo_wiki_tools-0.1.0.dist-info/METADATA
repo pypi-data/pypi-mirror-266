@@ -1,0 +1,27 @@
+Metadata-Version: 2.1
+Name: azdo-wiki-tools
+Version: 0.1.0
+Summary: 
+Author: Dean Phillips
+Author-email: dean.phillips@e-hps.com
+Requires-Python: >=3.12,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: python-dotenv (>=1.0.1,<2.0.0)
+Requires-Dist: requests (>=2.31.0,<3.0.0)
+Description-Content-Type: text/markdown
+
+# Usage Example
+
+```
+if __name__ == "__main__":
+    ORGANIZATION = "<your organization>"
+    PROJECT = "<your project>"
+    WIKI_IDENTIFIER = "<your wiki identifier>"
+    PAT = os.getenv("AZURE_DEVOPS_PAT")
+
+    wiki_extractor = AzureDevOpsWikiExtractor(ORGANIZATION, PROJECT, WIKI_IDENTIFIER, PAT)
+    urls = wiki_extractor.get_wiki_page_urls()
+    for url in urls:
+        print(url)
+```
