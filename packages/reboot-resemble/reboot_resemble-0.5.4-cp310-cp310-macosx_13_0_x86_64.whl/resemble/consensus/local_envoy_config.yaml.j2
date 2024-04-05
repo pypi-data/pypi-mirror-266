@@ -1,0 +1,143 @@
+# Envoy configuration generated from `local_envoy_config.yaml.j2`.
+# This configuration will configure Envoy to...
+# 1. Serve on a single, free port.
+# 2. Run all incoming JSON requests through a transcoding filter.
+# 3. Forward on the gRPC request to the server behind the proxy.
+
+static_resources:
+  clusters:
+    - name: resemble_service
+      type: LOGICAL_DNS
+      lb_policy: ROUND_ROBIN
+      common_http_protocol_options:
+        idle_timeout: 0s
+      dns_lookup_family: V4_ONLY
+      http2_protocol_options: {}
+      load_assignment:
+        cluster_name: resemble_service
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address:
+                      address: host.docker.internal
+                      port_value: {{ proxied_server_port }}
+    - name: resemble_service_websocket
+      type: LOGICAL_DNS
+      lb_policy: ROUND_ROBIN
+      common_http_protocol_options:
+        idle_timeout: 0s
+      dns_lookup_family: V4_ONLY
+      load_assignment:
+        cluster_name: resemble_service_websocket
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address:
+                      address: host.docker.internal
+                      port_value: {{ proxied_server_websocket_port }}
+
+  listeners:
+    - name: main
+      address:
+        socket_address:
+          address: 0.0.0.0
+          port_value: {{ envoy_port }}
+      filter_chains:
+        - filters:
+            - name: envoy.filters.network.http_connection_manager
+              typed_config:
+                "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+                stat_prefix: grpc_json
+                upgrade_configs:
+                  - upgrade_type: websocket
+                stream_idle_timeout: 0s
+                codec_type: AUTO
+                route_config:
+                  name: local_route
+                  virtual_hosts:
+                    - name: local_service
+                      domains:
+                        - "*"
+                      # NOTE: if this CORS policy changes also consider if any changes
+                      # need to be made in resemble/controller/network_managers.py.
+                      cors:
+                        allow_origin_string_match:
+                          - safe_regex:
+                              google_re2: {}
+                              regex: \*
+                        allow_methods: GET, PUT, DELETE, POST, OPTIONS
+                        # If ever the x-resemble-* headers change, also update their
+                        # invariant counterparts in resemble/aio/headers.py.
+                        allow_headers: x-resemble-application-id,x-resemble-service-name,x-resemble-actor-id,x-resemble-consensus-id,x-resemble-idempotency-key,keep-alive,user-agent,cache-control,content-type,content-transfer-encoding,x-accept-content-transfer-encoding,x-accept-response-streaming,x-user-agent,grpc-timeout,authorization
+                        max_age: "1728000"
+                        expose_headers: grpc-status,grpc-message
+                      routes:
+                        - match:
+                            prefix: "/"
+                            headers:
+                              - name: "upgrade"
+                                string_match:
+                                  exact: "websocket"
+                          route:
+                            cluster: resemble_service_websocket
+                        - match:
+                            prefix: "/"
+                          route:
+                            cluster: resemble_service
+                            max_stream_duration:
+                              grpc_timeout_header_max: 0s
+                http_filters:
+                  - name: resemble.add_header_x_resemble_application_id
+                    typed_config:
+                      "@type": type.googleapis.com/envoy.extensions.filters.http.lua.v3.Lua
+                      default_source_code:
+                        inline_string: |
+                          function envoy_on_request(request_handle)
+                            request_handle:headers():add("x-resemble-application-id", "{{ application_id }}")
+                          end
+                  - name: resemble.mangled_http_path_filter
+                    typed_config:
+                      "@type": type.googleapis.com/envoy.extensions.filters.http.lua.v3.Lua
+                      default_source_code:
+                        inline_string: |
+                          function envoy_on_request(request_handle)
+                            {{ mangled_http_path_filter | indent(28) }}
+                          end
+                  - name: envoy.filters.http.grpc_json_transcoder
+                    typed_config:
+                      "@type": type.googleapis.com/envoy.extensions.filters.http.grpc_json_transcoder.v3.GrpcJsonTranscoder
+                      # ATTENTION: if you update this, also update the matching
+                      # values in `envoy_filter_generator.py` method
+                      # `generate_transcoding_filter`.
+                      convert_grpc_status: true
+                      print_options:
+                        add_whitespace: true
+                        always_print_enums_as_ints: false
+                        always_print_primitive_fields: true
+                        preserve_proto_field_names: false
+                      proto_descriptor_bin: {{ proto_descriptor_bin }}
+                      services:
+                        {% for service in services %}
+                        - {{ service }}
+                        {% endfor %}
+                  - name: envoy.filters.http.cors
+                    typed_config:
+                      "@type": type.googleapis.com/envoy.extensions.filters.http.cors.v3.Cors
+                  - name: envoy.filters.http.router
+                    typed_config:
+                      "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
+          transport_socket:
+            name: envoy.transport_sockets.tls
+            typed_config:
+              "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.DownstreamTlsContext
+              common_tls_context:
+                alpn_protocols:
+                - h2
+                tls_certificates:
+                - certificate_chain: {filename: "/etc/envoy/localhost.direct.crt"}
+                  private_key: {filename: "/etc/envoy/localhost.direct.key"}
+                validation_context:
+                  trusted_ca:
+                    filename: /etc/envoy/localhost.direct.crt
