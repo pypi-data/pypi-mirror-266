@@ -1,0 +1,45 @@
+file:
+  type: string
+  required: true
+mergedCells:
+  type: boolean
+columnDimension:
+  anyof:
+    - {type: integer, min: 0, max: 20}
+    - {type: string, allowed: [auto]}
+valueSubstitutions:
+  type: dict
+trace:
+  type: integer
+clearSheet:
+  type: boolean
+writeAll:
+  type:
+   - boolean
+   - string
+  allowed:
+   - true
+   - false
+   - auto
+  excludes: [symbols]
+symbols:
+  type: list
+  excludes: [writeAll]
+  schema:
+    type: dict
+    schema:
+      name:
+        type: string
+        required: true
+      range:
+        type: string
+      mergedCells:
+        type: boolean
+      columnDimension:
+        anyof:
+          - {type: integer, min: 0, max: 20}
+          - {type: string, allowed: [auto]}
+      valueSubstitutions:
+        type: dict
+      clearSheet:
+        type: boolean
