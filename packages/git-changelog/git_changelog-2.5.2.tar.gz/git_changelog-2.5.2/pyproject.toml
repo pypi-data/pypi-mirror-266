@@ -1,0 +1,69 @@
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[project]
+name = "git-changelog"
+description = "Automatic Changelog generator using Jinja2 templates."
+authors = [
+    { name = "Timothée Mazzucotelli", email = "dev@pawamoy.fr" },
+]
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = [
+    "git",
+    "changelog",
+    "changelog-generator",
+    "commit-style",
+    "commit-convention",
+]
+dynamic = []
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Documentation",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Documentation",
+    "Topic :: Utilities",
+    "Typing :: Typed",
+]
+dependencies = [
+    "appdirs>=1.4",
+    "Jinja2>=2.10",
+    "packaging>=24.0",
+    "semver>=2.13",
+    "tomli>=2.0; python_version < '3.11'",
+]
+version = "2.5.2"
+
+[project.license]
+text = "ISC"
+
+[project.urls]
+Homepage = "https://pawamoy.github.io/git-changelog"
+Documentation = "https://pawamoy.github.io/git-changelog"
+Changelog = "https://pawamoy.github.io/git-changelog/changelog"
+Repository = "https://github.com/pawamoy/git-changelog"
+Issues = "https://github.com/pawamoy/git-changelog/issues"
+Discussions = "https://github.com/pawamoy/git-changelog/discussions"
+Gitter = "https://gitter.im/git-changelog/community"
+Funding = "https://github.com/sponsors/pawamoy"
+
+[project.scripts]
+git-changelog = "git_changelog.cli:main"
+
+[tool.pdm.version]
+source = "scm"
+
+[tool.pdm.build]
+package-dir = "src"
+editable-backend = "editables"
