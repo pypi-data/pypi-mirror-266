@@ -1,0 +1,27 @@
+Metadata-Version: 2.1
+Name: deepview-converter
+Version: 2.6.7
+Summary: DeepView Converter Core
+Home-page: http://www.au-zone.com
+Author: Au-Zone Technologies
+Author-email: support@au-zone.com
+License: PROPRIETARY
+License-File: LICENSE.txt
+Requires-Dist: networkx (<3,>=2.5.1)
+Requires-Dist: h5py (>=3.8.0)
+Requires-Dist: keras (<=2.15.0,>=2.8.0)
+Requires-Dist: tensorflow (<=2.15.0,>=2.8.0)
+Requires-Dist: tflite (~=2.10.0)
+Requires-Dist: path
+Provides-Extra: modelserver
+Requires-Dist: itsdangerous (==2.0.1) ; extra == 'modelserver'
+Requires-Dist: flask (==1.1.2) ; extra == 'modelserver'
+Requires-Dist: flask-RESTful (==0.3.8) ; extra == 'modelserver'
+Requires-Dist: flask-cors (==3.0.10) ; extra == 'modelserver'
+Provides-Extra: onnx
+Requires-Dist: deepview-converter-onnx (~=2.5.22) ; extra == 'onnx'
+Provides-Extra: rtm
+Requires-Dist: deepview-converter-rtm (~=2.5.26) ; extra == 'rtm'
+Provides-Extra: tflite
+Requires-Dist: deepview-converter-tflite (~=2.5.22) ; extra == 'tflite'
+
