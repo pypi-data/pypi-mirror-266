@@ -1,0 +1,119 @@
+Metadata-Version: 2.1
+Name: daml
+Version: 0.45.0
+Summary: DAML provides a simple interface to characterize image data and its impact on model performance across classification and object-detection tasks
+Home-page: https://daml.ai/
+License: MIT
+Author: Andrew Weng
+Author-email: andrew.weng@ariacoustics.com
+Maintainer: ARiA
+Maintainer-email: daml@ariacoustics.com
+Requires-Python: >=3.8.1,<3.12
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Topic :: Scientific/Engineering
+Provides-Extra: all
+Provides-Extra: tensorflow
+Provides-Extra: torch
+Requires-Dist: matplotlib ; extra == "torch" or extra == "all"
+Requires-Dist: numpy (>=1.24.2,<2)
+Requires-Dist: nvidia-cudnn-cu11 (>=8.6.0.163) ; extra == "torch" or extra == "tensorflow" or extra == "all" or extra == "all"
+Requires-Dist: scikit-learn (>=1.2.1)
+Requires-Dist: scipy (>=1.10)
+Requires-Dist: tensorflow (>=2.13.1,<2.14.0) ; (python_full_version >= "3.8.1" and python_full_version < "3.9.0") and (extra == "tensorflow" or extra == "all")
+Requires-Dist: tensorflow (>=2.14.1,<2.16) ; (python_version >= "3.9" and python_version < "3.12") and (extra == "tensorflow" or extra == "all")
+Requires-Dist: tensorflow-io-gcs-filesystem (>=0.34.0,<0.35.0) ; (python_full_version >= "3.8.1" and python_full_version < "3.9.0") and (extra == "tensorflow" or extra == "all")
+Requires-Dist: tensorflow-io-gcs-filesystem (>=0.35.0,<0.37) ; (python_version >= "3.9" and python_version < "3.12") and (extra == "tensorflow" or extra == "all")
+Requires-Dist: tensorflow_probability (>=0.21.0,<0.22.0) ; (python_full_version >= "3.8.1" and python_full_version < "3.9.0") and (extra == "tensorflow" or extra == "all")
+Requires-Dist: tensorflow_probability (>=0.22.1,<0.24) ; (python_version >= "3.9" and python_version < "3.12") and (extra == "tensorflow" or extra == "all")
+Requires-Dist: torch (>=2.0.1,!=2.2.0) ; extra == "torch" or extra == "all"
+Project-URL: Documentation, https://daml.readthedocs.io/
+Project-URL: Repository, https://github.com/aria-ml/daml/
+Description-Content-Type: text/markdown
+
+# Data-Analysis Metrics Library (DAML)
+
+## About DAML
+
+The Data-Analysis Metrics Library, or DAML, focuses on characterizing image data and its impact on model performance across classification and object-detection tasks.
+
+<!-- start about -->
+
+**Model-agnostic metrics that bound real-world performance**
+- relevance/completeness/coverage
+- metafeatures (data complexity)
+
+**Model-specific metrics that guide model selection and training**
+- dataset sufficiency
+- data/model complexity mismatch
+
+**Metrics for post-deployment monitoring of data with bounds on model performance to guide retraining**
+- dataset-shift metrics
+- model performance bounds under covariate shift
+- guidance on sampling to assess model error and model retraining
+
+<!-- end about -->
+
+## Getting Started
+
+### Requirements
+- Python 3.8-3.11
+
+### Installing DAML
+
+You can install DAML directly from pypi.org using the following command.  The optional dependencies of DAML are `torch`, `tensorflow` and `all`.  Using `torch` enables Sufficiency metrics, and `tensorflow` enables Outlier Detection.
+
+```
+pip install daml[all]
+```
+
+### Installing DAML from GitHub
+
+To install DAML from source locally on Ubuntu, you will need `git-lfs` to download larger, binary source files and `poetry` for project dependency management.
+
+```
+sudo apt-get install git-lfs
+pip install poetry
+```
+
+Pull the source down and change to the DAML project directory.
+```
+git clone https://github.com/aria-ml/daml.git
+cd daml
+```
+
+
+
+Install DAML with optional dependencies for development.
+```
+poetry install --all-extras --with test,lint
+```
+
+Alternatively, you can install with optional dependencies used to generate documentation as well.
+```
+poetry install --all-extras --with test,lint,docs
+```
+
+Now that DAML is installed, you can run commands in the poetry virtual environment by prefixing shell commands with `poetry run`, or activate the virtual environment directly in the shell.
+```
+poetry shell
+```
+
+### Documentation and Tutorials
+For more ideas on getting started using DAML in your workflow, additional information and tutorials are in our Sphinx documentation hosted on [Read the Docs](https://daml.readthedocs.io/).
+
+## Attribution
+This project uses code from the [Alibi-Detect](https://github.com/SeldonIO/alibi-detect) python library developed by SeldonIO.  Additional documentation from the developers are also available [here](https://docs.seldon.io/projects/alibi-detect/en/stable/).
+
+## POCs
+- **POC**: Scott Swan @scott.swan
+- **DPOC**: Andrew Weng @aweng
+
