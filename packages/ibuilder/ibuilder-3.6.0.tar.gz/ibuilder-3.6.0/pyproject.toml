@@ -1,0 +1,37 @@
+[internal]
+created = 2019-06-15
+modified = 2024-01-06
+
+[tool.poetry]
+name = "ibuilder"
+version = "3.6.0"
+description = "build, tag, push, and sign docker images"
+authors = ["drad <sa@adercon.com>"]
+maintainers = ["drad <sa@adercon.com>"]
+license = "GPL-3.0-only"
+readme = "README.md"
+homepage = "https://gitlab.com/drad/ibuilder"
+repository = "https://gitlab.com/drad/ibuilder"
+keywords = ["cli", "docker", "containers", "build", "ci", "cd", "image", "tag", "git", "push", "sign", "cosign"]
+
+[tool.poetry.scripts]
+ib = "ibuilder.main:app"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+arrow = "^1.3.0"
+click = "^8.1.7"
+docker = "^7.0.0"
+packaging = "^24.0"
+pydantic = "^2.6.4"
+requests = "^2.31.0"
+rich = "^13.7.1"
+tinydb = "^4.8.0"
+tomli = "^2.0.1"
+typer = "^0.12.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
