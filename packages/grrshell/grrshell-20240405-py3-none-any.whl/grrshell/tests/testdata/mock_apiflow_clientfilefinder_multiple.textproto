@@ -1,0 +1,19 @@
+# proto-file: grr_response_proto/api/flow.proto
+# proto-message: ApiFlow
+urn: "aff4:/C.0000000000000001/CLIENTFILEFINDERHASHRUNNINGFLOWID"
+name: "ClientFileFinder"
+args {
+  [type.googleapis.com/grr.FileFinderArgs] {
+    action: {
+      action_type: HASH
+    }
+    paths: [
+      "C:/Users/ramoj/Downloads/Firefox Installer.exe",
+      "C:/Users/ramoj/Downloads/notepad++.exe"
+    ]
+  }
+}
+state: RUNNING
+flow_id: "CLIENTFILEFINDERHASHRUNNINGFLOWID"
+client_id: "C.0000000000000001"
+started_at: 11000000  # 11 seconds past epoch

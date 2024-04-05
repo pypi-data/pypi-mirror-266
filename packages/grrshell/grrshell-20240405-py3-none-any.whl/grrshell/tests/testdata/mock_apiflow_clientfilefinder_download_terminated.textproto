@@ -1,0 +1,20 @@
+# proto-file: grr_response_proto/api/flow.proto
+# proto-message: ApiFlow
+urn: "aff4:/C.0000000000000001/CLIENTFILEFINDERTERMINATEDFLOWID"
+name: "ClientFileFinder"
+args {
+  [type.googleapis.com/grr.FileFinderArgs] {
+    action: {
+      action_type: DOWNLOAD
+    }
+    paths: [
+      "/remote/path"
+    ]
+  }
+}
+state: TERMINATED
+flow_id: "CLIENTFILEFINDERTERMINATEDFLOWID"
+client_id: "C.0000000000000001"
+started_at: 6000000  # 6 seconds past epoch
+last_active_at: 20000000  # 20 seconds past epoch
+creator: "creator"

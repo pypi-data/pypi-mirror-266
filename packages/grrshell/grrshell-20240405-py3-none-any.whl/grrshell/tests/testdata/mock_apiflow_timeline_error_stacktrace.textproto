@@ -1,0 +1,16 @@
+# proto-file: grr_response_proto/api/flow.proto
+# proto-message: ApiFlow
+urn: "aff4:/C.0000000000000001/TIMELINEFLOWID"
+name: "TimelineFlow"
+args {
+  [type.googleapis.com/grr.TimelineArgs] {
+    root: "/"
+  }
+}
+state: ERROR
+flow_id: "TIMELINEFLOWID"
+client_id: "C.0000000000000001"
+started_at: 17000000  # 17 seconds past epoch
+last_active_at: 33000000  # 33 seconds past epoch
+creator: "creator"
+error_description: "Stacktrace placeholder\n  second line\n    third line\nfourth line"

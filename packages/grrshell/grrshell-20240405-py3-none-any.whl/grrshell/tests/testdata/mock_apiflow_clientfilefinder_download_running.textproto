@@ -1,0 +1,18 @@
+# proto-file: grr_response_proto/api/flow.proto
+# proto-message: ApiFlow
+urn: "aff4:/C.0000000000000001/CLIENTFILEFINDERRUNNINGFLOWID"
+name: "ClientFileFinder"
+args {
+  [type.googleapis.com/grr.FileFinderArgs] {
+    action: {
+      action_type: DOWNLOAD
+    }
+    paths: [
+      "/remote/path"
+    ]
+  }
+}
+state: RUNNING
+flow_id: "CLIENTFILEFINDERRUNNINGFLOWID"
+client_id: "C.0000000000000001"
+started_at: 5000000  # 5 seconds past epoch
