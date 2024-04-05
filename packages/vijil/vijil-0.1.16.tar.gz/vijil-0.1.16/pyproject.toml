@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "vijil"
+version = "0.1.16"
+description = "The official Python client for Vijil"
+authors = [
+    "vijil <contact@vijil.ai>"
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+requests = "^2.26.0"
+python-dotenv = "^1.0.0"
+click = "*"
+tabulate = "*"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+vijil = "vijil.cli:main"
