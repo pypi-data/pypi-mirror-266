@@ -1,0 +1,37 @@
+{% set separator = joiner(', ') %}
+spack:
+  include:
+{% if config.packages %}
+  - packages.yaml
+{% endif %}
+  - compilers.yaml
+  - config.yaml
+  config:
+    deprecated: {{ config.deprecated }}
+  concretizer:
+    unify: {{ config.unify }}
+    reuse: false
+  specs:
+{% for spec in config.specs %}
+  - {{ spec }}
+{% endfor %}
+  packages:
+    all:
+      compiler: [{% for c in config.compiler %}{{ separator() }}{{ c.spec }}{% endfor %}]
+    {% if config.variants %}
+      variants:
+      {% for variant in config.variants %}
+      - {{ variant }}
+      {% endfor %}
+    {% endif %}
+    {% if config.mpi.spec %}
+    mpi:
+      require: {{ config.mpi.spec }}
+    {% endif %}
+{% if config.view %}
+  view:
+    default:
+      {{ config.view.config|py2yaml(6) }}
+{% else %}
+  view: false
+{% endif %}
