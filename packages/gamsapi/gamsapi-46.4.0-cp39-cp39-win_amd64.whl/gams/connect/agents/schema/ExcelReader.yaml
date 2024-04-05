@@ -1,0 +1,99 @@
+file:
+  type: string
+  required: true
+columnDimension:
+  type: integer
+  min: 0
+  max: 20
+rowDimension:
+  type: integer
+  min: 0
+  max: 20
+type:
+  type: string
+  allowed:
+  - par
+  - set
+valueSubstitutions:
+  type: dict
+indexSubstitutions:
+  type: dict
+skipEmpty:
+  type: integer
+index:
+  type: string
+  required: True
+  excludes: [symbols]
+autoMerge:
+  type: boolean
+ignoreText:
+  type:
+   - boolean
+   - string
+  allowed:
+   - true
+   - false
+   - auto
+mergedCells:
+  type: boolean
+trace:
+  type: integer
+symbols:
+  type: list
+  required: True
+  excludes: [index]
+  schema:
+    type: dict
+    schema:
+      name:
+        type: string
+        required: true
+      range:
+        type: string
+      rowDimension:
+        type: integer
+        min: 0
+        max: 20
+      columnDimension:
+        type: integer
+        min: 0
+        max: 20
+      type:
+        type: string
+        allowed:
+        - par
+        - set
+      valueSubstitutions:
+        type: dict
+      indexSubstitutions:
+        type: dict
+      skipEmpty:
+        type: integer
+      autoMerge:
+        type: boolean
+      ignoreText:
+        type:
+         - boolean
+         - string
+        allowed:
+         - true
+         - false
+         - auto
+      ignoreRows:
+        type:
+        - list
+        - integer
+        schema:
+          type:
+          - integer
+      ignoreColumns:
+        type:
+        - list
+        - integer
+        - string
+        schema:
+          type:
+          - integer
+          - string
+      mergedCells:
+        type: boolean

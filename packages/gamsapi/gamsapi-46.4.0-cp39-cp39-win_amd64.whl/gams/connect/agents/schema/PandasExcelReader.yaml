@@ -1,0 +1,52 @@
+#deprecated
+file:
+  type: string
+  required: true
+columnDimension:
+  type: integer
+  min: 0
+rowDimension:
+  type: integer
+  min: 0
+multiColumnBlankRow:
+  type: boolean
+type:
+  type: string
+  allowed:
+  - par
+  - set
+trace:
+  type: integer
+excelFileArguments:
+  type: dict
+symbols:
+  type: list
+  required: true
+  schema:
+    type: dict
+    schema:
+      name:
+        type: string
+        required: true
+      range:
+        type: string
+        required: true
+      columnDimension:
+        type: integer
+        min: 0
+      rowDimension:
+        type: integer
+        min: 0
+      multiColumnBlankRow:
+        type: boolean
+      type:
+        type: string
+        allowed:
+        - par
+        - set
+      valueSubstitutions:
+        type: dict
+      drop:
+        type: string
+      readExcelArguments:
+        type: dict
