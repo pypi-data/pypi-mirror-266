@@ -1,0 +1,47 @@
+
+
+<pre>
+
+	<h1>symbols</h1>
+		# cymbals
+	
+	<h2>relevant</h2>
+	
+		<h3>Trading View Technicals</h3>
+			def symbol (the_symbol, description = "", exchange = "AMEX"):
+				return {
+					"symbol": the_symbol,
+					"screener": "america",
+					"exchange": exchange,
+					
+					"description": description
+				}
+		
+			import rollercoaster.clouds.TradingView.treasure.technicals as TV_treasure_tech
+			symbols_indicators = TV_treasure_tech.scan_symbols (
+				symbols = [
+					symbol ("VOO")
+				]
+			)
+			
+			rich.print_json (data = symbols_indicators)
+			TV_treasure_tech.print_symbols_table (symbols_indicators)
+
+		
+		<h3>Options Indicators</h3>
+
+
+
+		<h3>Analyst Opinions</h3>
+
+
+
+		<h3>Change Percentages</h3>
+			<h3>Market Cap</h3>
+			
+			
+		
+		<h3>Shareholder Equity</h3>
+			
+
+</pre>

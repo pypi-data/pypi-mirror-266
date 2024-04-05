@@ -1,0 +1,92 @@
+
+<pre>
+
+	<h1>aggregate multipliers</h1>
+
+	<h2>description</h2>
+	
+		
+	
+	<h2>prototypes</h2>
+
+		example 1:
+			share = 10
+		
+			aggregate call = 20	
+				-> 10x = 20 
+				-> x = 2
+			
+			
+			aggregate put = 5
+				-> 10x = 5 
+				-> x = 1/2
+		
+		
+			therefore by reciprocity:
+				put multiplier 0.5 == call multiplier 2.0 -> True
+			
+				put		call
+				1/2 <-> 2/1
+		
+		
+		example 2:
+			share price = 10
+
+			calls
+										|
+				strike	ask		open	|	bet		confidence		commitment
+				10		4		1		|	14		4				64
+				15		2		1		|	17		2				34
+				20		1		1		|	21		1				21
+				
+				call bet = strike + ask
+				
+				confidence = ask
+				commitment = bet * confidence
+				commitment sum = 64 + 34 + 21 = 119
+				confidence sum = 4 + 2 + 1 = 7
+				
+				union = confidence sum / commitment sum = 119 / 7 = (>=) 17
+					(aggregate break even)
+				
+				union multiplier 
+					= union / share price
+					= 17 / 10 = 1.7x
+				
+				
+			puts
+										|
+				strike	ask		open	|	bet		confidence		commitment
+				5		2		1		|	3		2				6
+				10		4		1		|	6		4				24
+				
+				put bet = strike - ask
+				
+				confidence = ask
+				commitment = bet * confidence
+				commitment sum = 6 + 24 = 30
+				confidence sum = 2 + 4 = 6
+				
+				union 	= confidence sum / commitment sum 
+						= 30 / 6
+						= 5
+						
+				put union multiplier
+					= union / share price
+					= 5 / 10
+					= 1/2
+				
+			therefore:
+				before reciprocity:
+					calls = 1.7x
+					puts = 0.5x
+					
+				after reciprocity:
+					calls = 1.7x
+					puts = 2.0x
+					
+				Therefore the puts are more expensive than the calls
+				and thus are perhaps favored.
+				
+			
+</pre>

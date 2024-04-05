@@ -1,0 +1,56 @@
+
+
+
+pandas:
+
+	agenda:
+		to_data_frame (
+			pieces = [{
+				close:
+				open:
+				high:
+				low
+			}]
+		)
+		
+	find index:
+		#print (DF.at [0, "close"])
+		print (DF ["close"].iloc [0])
+		print (DF ["close"].iloc [-1])
+		
+		
+	rename columns:
+		https://stackoverflow.com/questions/11346283/renaming-column-names-in-pandas
+	
+		data.rename (
+			columns = {
+				"High": "high", 
+				"Low": "low", 
+				
+				"Close": "close",
+				"Open": "open"
+			},
+			inplace = True
+		)
+
+
+	create data frame from list:
+		
+		import numpy
+		import pandas
+		
+		df2 = pandas.DataFrame (
+			numpy.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]]),
+            columns=['a', 'b', 'c']
+		)
+	
+	
+	
+	
+	
+	
+	
+	
+	dataframe to list:
+		
+	

@@ -1,0 +1,81 @@
+
+
+<pre>
+
+	<h1>aggregate PC ratio</h1>
+		# valuation ratios (and valuation sums)
+		# aggregate (PC) price ratios
+		# pc ratio squeezes
+		# aggregate PC ratio
+		# contract price sums and ratios
+		
+	<h2>tutorial</h2>
+		<code>
+		
+			Tradier_API_authorization = ""
+		
+			import rollercoaster.stats.aggregate_break_even as aggregate_break_even
+			import rollercoaster.clouds.Tradier.procedures.options.combine as combine_options  
+			PC_ratios = aggregate_PC_ratio.calc ({
+				"expirations": combine_options.presently ({
+					"symbol": "OTLY",
+					"authorization": Tradier_API_authorization
+				})
+			})
+
+			import rich
+			rich.print_json (data = {
+				"PC ratios": PC_ratios
+			})
+		
+		</code>
+
+
+	<h2>description</h2>
+		This calculates the sum of every call option for a symbol 
+		or "symbol and expiration".
+		
+		It also calculates the sum of every put option for a symbol 
+		or "symbol and expiration".
+		
+		The it calculates the ratio of the call sums to the put sums.
+		
+		
+
+		for each contract:
+			summation (
+				contract price * 
+				open interest * 
+				shares per contract
+			)
+
+
+		∑ (
+			contract price * 
+			open interest * 
+			shares per contract
+		) 
+		
+		code:
+			import propinquity.STATS.AGGREGATE_PC_RATIO as AGGREGATE_PC_RATIO
+			evaluation = AGGREGATE_PC_RATIO.calc (EXAMPLE_1)
+
+			import json
+			print ("evaluation:", json.dumps (evaluation, indent = 4))
+			
+		
+		plan:
+			calculates the sum and ratios of:
+
+			for one expiration:
+				summation (ask value of every call) : summation (ask value of every put)
+				summation (bid value of every call) : summation (bid value of every put)
+				summation (last value of every call) : summation (last value of every put)
+			
+			for every expiration:
+				summation (ask value of every call) : summation (ask value of every put)
+				summation (bid value of every call) : summation (bid value of every put)
+				summation (last value of every call) : summation (last value of every put)
+				
+			
+</pre>

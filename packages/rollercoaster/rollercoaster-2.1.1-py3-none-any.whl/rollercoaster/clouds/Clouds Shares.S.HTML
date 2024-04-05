@@ -1,0 +1,66 @@
+
+
+<pre>
+
+	<h1>Shares</h1>
+		scans:
+			tradingview
+			
+			finviz
+	
+		trading:
+			alpaca
+			finnhub
+			tradier
+			iexcloud
+	
+			https://www.composer.trade/
+	
+		info:
+			Tradier
+			Yahoo
+		
+		
+		
+	<h2>TV summaries</h2>
+		import rollercoaster.clouds.TradingView.treasure.technicals as TV_treasure_tech
+		symbols_indicators = TV_treasure_tech.scan_symbols (
+			symbols = [{
+				"symbol": "TSLA",
+				"screener": "america",
+				"exchange": "NASDAQ",
+				"description": "Tesla"
+			},{
+				"symbol": "OTLY",
+				"screener": "america",
+				"exchange": "NASDAQ"
+			}]
+		)
+		
+		rich.print_json (data = symbols_indicators)
+		TV_treasure_tech.print_symbols_table (symbols_indicators)
+	
+	
+	<h2>changes</h2>
+		import numpy
+		from datetime import datetime, timedelta
+		import rollercoaster.clouds.Yahoo.retrieve_change as Yahoo_retrieve_change
+		change = Yahoo_retrieve_change.perfectly (
+			symbol = "DFEN",
+			date_1 = datetime.today () - timedelta (days = 365),
+			date_2 = datetime.today ()
+		)
+					
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+

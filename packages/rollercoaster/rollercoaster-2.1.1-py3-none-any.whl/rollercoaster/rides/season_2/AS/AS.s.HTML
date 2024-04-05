@@ -1,0 +1,23 @@
+
+
+
+AS
+	Actual Span
+	
+		formula:
+
+			AS = float (max (
+				Fraction (place_2 ["high"]) - Fraction (place_2 ["low"]), 
+				abs (
+					Fraction (place_2 ["high"]) - Fraction (place_1 ["end"])
+				),				
+				abs (
+					Fraction (place_2 ["low"]) - Fraction (place_1 ["end"])
+				)
+			))
+			
+			     |
+			 |   |-
+			 |- -|
+			-|   |
+			 |

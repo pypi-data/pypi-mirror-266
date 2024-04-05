@@ -1,0 +1,46 @@
+
+<pre>
+
+	<h1>aggregate break even</h1>
+		
+		<h2>tutorial</h2>
+		<code>
+		
+			Tradier_API_authorization = ""
+		
+			import rollercoaster.stats.aggregate_break_even as aggregate_break_even
+			break_evens = aggregate_break_even.calc ({
+				"expirations": combine_options.presently ({
+					"symbol": "OTLY",
+					"authorization": Tradier_API_authorization
+				})
+			})
+		
+		</code>
+		
+		<b>priorities:</b>
+		
+			[ ] perhaps a version that is exclusively about
+				the ask price, and doesn't care about "open interest"
+		
+				A version like this would essentially show how 
+				expensive the options contracts are.
+		
+		<b>formulas</b>
+		
+			[ 
+				for every contract,
+				for every call,
+				for every put,
+				for every call at an expiration,
+				for every put at an expiration,			
+			]
+				summation (contract price * break even * open interest * shares per contract)
+				---
+				summation (contract price * open interest * shares per contract) 
+
+		<b>description</b>
+			<b>aggregates the break even value</b>
+			
+			
+</pre>

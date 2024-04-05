@@ -1,0 +1,59 @@
+
+
+<pre>
+
+	plotly:
+
+		annotations:
+		
+			chart.add_annotation(
+				x = row ['UTC date string'], 
+				y = 0.05, 
+				
+				xref = 'x', 
+				yref = 'paper',
+				xanchor = 'left',
+				
+				showarrow = False, 
+				 
+				text = text
+			)
+		
+
+		shapes & annotations:
+		
+			shapes.append (
+					dict (
+						x0 = row ['UTC date string'], 
+						x1 = row ['UTC date string'],
+						
+						y0 = 0, 
+						y1 = 1, 
+						
+						xref = 'x', 
+						yref = 'paper',
+						
+						line_width = 2
+					)
+				)
+				annotations.append (
+					dict (
+						x = row ['UTC date string'], 
+						y = 0.05, 
+						
+						xref = 'x', 
+						yref = 'paper',
+						xanchor = 'left',
+						
+						showarrow = False, 
+						 
+						text = text
+					)
+				)
+		
+			chart.update_layout (
+				shapes = shapes,
+				annotations = annotations
+			)
+			
+</pre>
