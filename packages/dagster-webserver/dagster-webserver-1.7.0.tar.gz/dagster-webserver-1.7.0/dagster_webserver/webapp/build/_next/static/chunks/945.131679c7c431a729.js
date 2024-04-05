@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[945],{78945:function(n,e,t){t.d(e,{_:function(){return useCanSeeConfig}});var a=t(73235),u=t(40794),c=t(60138);function _templateObject(){var n=(0,a._)(["\n  query InstanceConfigHasInfo {\n    instance {\n      id\n      hasInfo\n    }\n  }\n"]);return _templateObject=function(){return n},n}var useCanSeeConfig=function(){var n=(0,u.a)(r).data;return!!(null==n?void 0:n.instance.hasInfo)},r=(0,c.Ps)(_templateObject())}}]);
+//# sourceMappingURL=945.131679c7c431a729.js.map
