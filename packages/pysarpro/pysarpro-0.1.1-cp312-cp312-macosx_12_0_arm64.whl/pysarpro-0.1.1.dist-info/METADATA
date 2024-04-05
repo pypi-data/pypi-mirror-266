@@ -1,0 +1,200 @@
+Metadata-Version: 2.1
+Name: pysarpro
+Version: 0.1.1
+Summary: SAR processing in Python
+Home-page: https://pol-insar.github.io
+Maintainer-Email: pysarpro developers <pysarpro-core@@imansour.net>
+License: Files: *
+        Copyright: 2021-2023 the Pol-InSAR team
+        License: BSD-3-Clause
+        
+        License: BSD-2-Clause
+        
+        Redistribution and use in source and binary forms, with or without
+        modification, are permitted provided that the following conditions
+        are met:
+        1. Redistributions of source code must retain the above copyright
+           notice, this list of conditions and the following disclaimer.
+        2. Redistributions in binary form must reproduce the above copyright
+           notice, this list of conditions and the following disclaimer in the
+           documentation and/or other materials provided with the distribution.
+        .
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+        ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+        LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+        A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE HOLDERS OR
+        CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+        EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+        PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+        PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+        LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+        NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+        SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+        
+        License: BSD-3-Clause
+        
+        Redistribution and use in source and binary forms, with or without
+        modification, are permitted provided that the following conditions
+        are met:
+        1. Redistributions of source code must retain the above copyright
+           notice, this list of conditions and the following disclaimer.
+        2. Redistributions in binary form must reproduce the above copyright
+           notice, this list of conditions and the following disclaimer in the
+           documentation and/or other materials provided with the distribution.
+        3. Neither the name of the University nor the names of its contributors
+           may be used to endorse or promote products derived from this software
+           without specific prior written permission.
+        .
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+        ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+        LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+        A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE HOLDERS OR
+        CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+        EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+        PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+        PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+        LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+        NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+        SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+        
+        License: MIT
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: C
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Scientific/Engineering
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Unix
+Classifier: Operating System :: MacOS
+Project-URL: Homepage, https://pol-insar.github.io
+Project-URL: Documentation, https://pol-insar.github.io/docs/stable
+Project-URL: Source, https://github.com/Pol-InSAR/pysarpro
+Project-URL: Download, https://pypi.org/project/pysarpro/#files
+Project-URL: Tracker, https://github.com/Pol-InSAR/pysarpro/issues
+Requires-Python: >=3.9
+Requires-Dist: numpy>=1.23
+Requires-Dist: scipy>=1.8
+Requires-Dist: networkx>=2.8
+Requires-Dist: pillow>=9.1
+Requires-Dist: imageio>=2.33
+Requires-Dist: tifffile>=2022.8.12
+Requires-Dist: packaging>=21
+Requires-Dist: lazy_loader>=0.3
+Requires-Dist: meson-python>=0.15; extra == "build"
+Requires-Dist: wheel; extra == "build"
+Requires-Dist: setuptools>=67; extra == "build"
+Requires-Dist: packaging>=21; extra == "build"
+Requires-Dist: ninja; extra == "build"
+Requires-Dist: Cython>=3.0.4; extra == "build"
+Requires-Dist: pythran; extra == "build"
+Requires-Dist: numpy>=1.23; extra == "build"
+Requires-Dist: spin==0.7; extra == "build"
+Requires-Dist: build; extra == "build"
+Requires-Dist: pooch>=1.6.0; extra == "data"
+Requires-Dist: pre-commit; extra == "developer"
+Requires-Dist: ipython; extra == "developer"
+Requires-Dist: tomli; python_version <= "3.12" and extra == "developer"
+Requires-Dist: sphinx>=7.2; extra == "docs"
+Requires-Dist: sphinx-gallery>=0.14; extra == "docs"
+Requires-Dist: numpydoc>=1.6; extra == "docs"
+Requires-Dist: sphinx-copybutton; extra == "docs"
+Requires-Dist: pytest-runner; extra == "docs"
+Requires-Dist: matplotlib>=3.6; extra == "docs"
+Requires-Dist: dask[array]>=2022.9.2; extra == "docs"
+Requires-Dist: pandas>=1.5; extra == "docs"
+Requires-Dist: seaborn>=0.11; extra == "docs"
+Requires-Dist: pooch>=1.6; extra == "docs"
+Requires-Dist: tifffile>=2022.8.12; extra == "docs"
+Requires-Dist: myst-parser; extra == "docs"
+Requires-Dist: ipywidgets; extra == "docs"
+Requires-Dist: ipykernel; extra == "docs"
+Requires-Dist: plotly>=5.10; extra == "docs"
+Requires-Dist: kaleido; extra == "docs"
+Requires-Dist: scikit-learn>=1.1; extra == "docs"
+Requires-Dist: sphinx_design>=0.5; extra == "docs"
+Requires-Dist: pydata-sphinx-theme>=0.14.1; extra == "docs"
+Requires-Dist: PyWavelets>=1.1.1; extra == "docs"
+Requires-Dist: SimpleITK; extra == "optional"
+Requires-Dist: astropy>=5.0; extra == "optional"
+Requires-Dist: cloudpickle>=0.2.1; extra == "optional"
+Requires-Dist: dask[array]>=2021.1.0; extra == "optional"
+Requires-Dist: matplotlib>=3.6; extra == "optional"
+Requires-Dist: pooch>=1.6.0; extra == "optional"
+Requires-Dist: pyamg; extra == "optional"
+Requires-Dist: PyWavelets>=1.1.1; extra == "optional"
+Requires-Dist: scikit-learn>=1.1; extra == "optional"
+Requires-Dist: asv; extra == "test"
+Requires-Dist: matplotlib>=3.6; extra == "test"
+Requires-Dist: numpydoc>=1.5; extra == "test"
+Requires-Dist: pooch>=1.6.0; extra == "test"
+Requires-Dist: pytest>=7.0; extra == "test"
+Requires-Dist: pytest-cov>=2.11.0; extra == "test"
+Requires-Dist: pytest-localserver; extra == "test"
+Requires-Dist: pytest-faulthandler; extra == "test"
+Provides-Extra: build
+Provides-Extra: data
+Provides-Extra: developer
+Provides-Extra: docs
+Provides-Extra: optional
+Provides-Extra: test
+Description-Content-Type: text/markdown
+
+# pysarpro: SAR processing in Python
+
+[![Image.sc forum](https://img.shields.io/badge/dynamic/json.svg?label=forum&url=https%3A%2F%2Fforum.image.sc%2Ftags%2Fscikit-image.json&query=%24.topic_list.tags.0.topic_count&colorB=brightgreen&suffix=%20topics&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAABPklEQVR42m3SyyqFURTA8Y2BER0TDyExZ+aSPIKUlPIITFzKeQWXwhBlQrmFgUzMMFLKZeguBu5y+//17dP3nc5vuPdee6299gohUYYaDGOyyACq4JmQVoFujOMR77hNfOAGM+hBOQqB9TjHD36xhAa04RCuuXeKOvwHVWIKL9jCK2bRiV284QgL8MwEjAneeo9VNOEaBhzALGtoRy02cIcWhE34jj5YxgW+E5Z4iTPkMYpPLCNY3hdOYEfNbKYdmNngZ1jyEzw7h7AIb3fRTQ95OAZ6yQpGYHMMtOTgouktYwxuXsHgWLLl+4x++Kx1FJrjLTagA77bTPvYgw1rRqY56e+w7GNYsqX6JfPwi7aR+Y5SA+BXtKIRfkfJAYgj14tpOF6+I46c4/cAM3UhM3JxyKsxiOIhH0IO6SH/A1Kb1WBeUjbkAAAAAElFTkSuQmCC)](https://forum.image.sc/tags/pysarpro)
+[![Stackoverflow](https://img.shields.io/badge/stackoverflow-Ask%20questions-blue.svg)](https://stackoverflow.com/questions/tagged/pysarpro)
+[![project chat](https://img.shields.io/badge/zulip-join_chat-brightgreen.svg)](https://pysarpro.zulipchat.com)
+
+- **Website (including documentation):** [https://pysarpro.org/](https://pysarpro.org)
+- **Documentation:** [https://pysarpro.org/docs/stable/](https://pysarpro.org/docs/stable/)
+- **User forum:** [https://forum.image.sc/tag/pysarpro](https://forum.image.sc/tag/pysarpro)
+- **Developer forum:** [https://discuss.scientific-python.org/c/contributor/pysarpro](https://discuss.scientific-python.org/c/contributor/pysarpro)
+- **Source:** [https://github.com/pysarpro/pysarpro](https://github.com/pysarpro/pysarpro)
+
+## Installation
+
+- **pip:** `pip install pysarpro`
+- **conda:** `conda install -c conda-forge pysarpro`
+
+Also see [installing](https://github.com/scikit-image/scikit-image/blob/main/INSTALL.rst)`pysarpro`.
+
+## License
+
+See [LICENSE.txt](https://github.com/pysarpro/pysarpro/blob/main/LICENSE.txt).
+
+## Citation
+
+If you find this project useful, please cite:
+
+> Islam Mansour, and the pysarpro contributors. _pysarpro:
+> SAR processing in Python_. PeerJ 2:e453 (2024)
+> <https://doi.org/10.7717/peerj.99196>
