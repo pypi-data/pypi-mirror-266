@@ -1,0 +1,83 @@
+=====================
+Appendix C. Changelog
+=====================
+:Info: This is the changelog for rebookmaker.
+:Author: Shlomi Fish <shlomif@cpan.org>
+:Copyright: © 2020, Shlomi Fish.
+:License: BSD (see /LICENSE or :doc:`Appendix B <LICENSE>`.)
+:Date: 2024-04-05
+:Version: 0.8.11
+
+.. index:: CHANGELOG
+
+GitHub holds releases, too
+==========================
+
+More information can be found on GitHub in the `releases section
+<https://github.com/shlomif/rebookmaker/releases>`_.
+
+Version History
+===============
+
+0.8.11
+    Convert from the deprecated pkg_resources module to importlib_resources .
+
+0.8.10
+    Fix the rebookmaker script
+
+0.8.9
+    bs4 → beautifulsoup4
+
+0.8.8
+    Update code for version 3.x.y of jinja2.
+
+    Silence bs4 warning.
+
+0.8.7
+    Get XHTML ( *.xhtml ) pages to validate by stripping the <!DOCTYPE>
+
+    Refactoring.
+
+0.8.6
+    Get the EPUB to validate if there are .webp images.
+
+0.8.5
+    Handle case when h([1-6]) tags have min($1) > 1.
+
+0.8.4
+    More validation fixes.
+
+0.8.3
+    Place the mimetype file first in the ZipFile to
+    fix EPUB validation.
+
+    More validation fixes.
+
+    Generate EPUB 3.2 (for XHTML5 compatibility).
+
+0.8.2
+    Fix a broken link in the README.
+
+0.8.1
+    Clarified the description of the project.
+
+    Convert the build system to https://pypi.org/project/pydistman/
+    which was extracted from the code of this and other projects.
+
+0.8.0
+    Improve the documentation: add links and explanations.
+    Correct the spelling of the github username of "setanta".
+
+0.6.0
+    Set up a GitHub repo at https://pypi.org/project/rebookmaker/
+
+    Add make_epub_from_data().
+
+0.4.0
+    Add and install the rebookmaker executable.
+
+0.2.0
+    Add the compression parameter to EbookMaker.
+
+0.0.1
+    Initial release.

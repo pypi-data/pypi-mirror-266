@@ -1,0 +1,127 @@
+Metadata-Version: 2.1
+Name: rebookmaker
+Version: 0.8.11
+Summary: EPUB generator
+Home-page: https://github.com/shlomif/rebookmaker
+Author: Shlomi Fish
+Author-email: shlomif@cpan.org
+License: 3-clause BSD
+Keywords: rebookmaker
+Platform: any
+Classifier: Development Status :: 1 - Planning
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+License-File: LICENSE
+License-File: AUTHORS
+
+==============================================================================
+rebookmaker.  EPUB generator
+==============================================================================
+:Info: This is the README file for rebookmaker.
+:Author: Shlomi Fish <shlomif@cpan.org>
+:Copyright: © 2020, Shlomi Fish.
+:Date: 2024-04-05
+:Version: 0.8.11
+
+.. index: README
+.. image:: https://travis-ci.org/shlomif/rebookmaker.svg?branch=master
+   :target: https://travis-ci.org/shlomif/rebookmaker
+
+PURPOSE
+-------
+
+rebookmaker - an open source (MIT-licensed) re-implementation of
+Marcelo Lira’s ( @setanta ) ebookmaker.
+
+EPUB is a popular and open file format standard for electronic books (see
+https://en.wikipedia.org/wiki/EPUB for more information about it). What
+rebookmaker (= "re-ebook-maker") does is compile a definition of the
+book inside a JSON file along with some input HTML and image files into an
+.epub.
+
+See:
+
+* https://github.com/setanta/ebookmaker/ - does not have an explicit
+  licence, which prompted this re-implementation.
+* https://pypi.org/project/ebookmaker/ - GPLv3 by Project Gutenberg and
+  incompatible with @setanta 's .
+
+INSTALLATION
+------------
+
+pip3 install rebookmaker
+
+NOTES
+-----
+
+Since the name "ebookmaker" was taken on pypi and it is common courtesy to
+change the name, I picked "rebookmaker" since it was available
+on pypi and as a pun on `reboots in fiction <https://en.wikipedia.org/wiki/Reboot_%28fiction%29>`_
+because it was a rewrite.
+
+The issue where I requested an explicit licensing of the original
+project is here:
+https://github.com/setanta/ebookmaker/issues/8 but I have yet to receive a reply.
+
+You can find some examples for valid input by perusing the code in
+https://github.com/shlomif/screenplays-common and
+https://github.com/shlomif/shlomi-fish-homepage . Preparing some less
+generic examples is on my TODO list.
+
+This project aims for compatibility with setanta's project, but some functionality
+may be still missing and I also added some new one.
+
+Samples:
+--------
+
+* https://github.com/shlomif/english-humanity-the-movie-rebookmaker-example - under CC-BY-SA.
+
+Similar Projects:
+-----------------
+
+* http://docbook.sourceforge.net/release/xsl/current/epub/README - DocBook 5 can be
+  converted to EPUB.
+* https://github.com/shlomif/cookiecutter--shlomif-latemp-sites - contains some custom XSLT
+  stylesheets for reproducible builds and other features.
+* https://pypi.org/project/ebookmaker/ - by Project Gutenberg: accepts a different input.
+* https://packages.debian.org/source/sid/strip-nondeterminism - allow for reproducible
+  builds EPUBs.
+
+COPYRIGHT
+---------
+Copyright © 2020, Shlomi Fish.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+1. Redistributions of source code must retain the above copyright
+   notice, this list of conditions, and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions, and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+
+3. Neither the name of the author of this software nor the names of
+   contributors to this software may be used to endorse or promote
+   products derived from this software without specific prior written
+   consent.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
