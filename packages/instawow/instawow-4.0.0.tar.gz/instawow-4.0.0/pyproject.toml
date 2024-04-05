@@ -1,0 +1,164 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+dynamic = [
+  "version",
+]
+name = "instawow"
+requires-python = ">= 3.10"
+description = "World of Warcraft add-on manager"
+readme = "README.rst"
+license = "GPL-3.0-or-later"
+authors = [{ name = "layday", email = "layday@protonmail.com" }]
+urls."homepage" = "http://github.com/layday/instawow"
+
+dependencies = [
+  "aiohttp >= 3.9.3, < 4",
+  "aiohttp-client-cache >= 0.9.1",
+  "attrs >= 23.2.0",
+  "cattrs >= 23.2.3",
+  "click >= 8.1.6",
+  "diskcache >= 5.6.3",
+  "iso8601 >= 1.0.2",
+  "loguru >= 0.7.2",
+  "packaging >= 23.2",
+  "pluggy >= 1.4.0",
+  "prompt-toolkit >= 3.0.29",
+  "questionary >= 2",
+  "rapidfuzz >= 3.6.1",
+  "sqlalchemy >= 2.0.21",
+  "truststore >= 0.7.0",
+  "typing-extensions >= 4.6.0",
+  "yarl >= 1.9.2",
+]
+optional-dependencies."gui" = [
+  "aiohttp-rpc >= 1.0.0",
+  "anyio >= 4.3.0",
+  "toga >= 0.4.2",
+]
+optional-dependencies."test" = [
+  "aresponses >= 3",
+  "coverage[toml] >= 7.4.3",
+  "pytest >= 8",
+  "pytest-asyncio >= 0.23.5",
+  "pytest-xdist >= 3.5.0",
+]
+optional-dependencies."types" = [
+  "diskcache-stubs",
+]
+
+[project.entry-points."instawow.plugins"]
+"instawow_gui" = "instawow_gui._plugin"
+"instawow_wa_updater" = "instawow_wa_updater._plugin"
+
+[project.scripts]
+"instawow" = "instawow.cli:main"
+
+[tool.hatch.build.targets.sdist]
+only-include = [
+  "/instawow-gui/src/instawow_gui",
+  "/src",
+  "/tests",
+]
+exclude = [
+  ".gitignore",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = [
+  "/src/instawow",
+  "/src/instawow_wa_updater",
+  "/instawow-gui/src/instawow_gui",
+]
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/instawow/_version.py"
+template = """\
+from __future__ import annotations
+
+__version__ = {version!r}
+"""
+
+[tool.ruff]
+line-length = 99
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.ruff.lint]
+select = [
+  "B0",  # flake8-bugbear (without opinionated rules)
+  "C4",  # flake8-comprehensions
+  "DTZ", # flake8-datetimez
+  "E",   # pycodestyle
+  "F",   # pyflakes
+  "I",   # isort
+  "PGH", # pygrep-hooks
+  "PIE", # flake8-pie
+  "PT",  # flake8-pytest-style
+  "RUF", # ruff
+  "TRY", # tryceratops
+  "UP",  # pyupgrade
+  "W",   # pycodestyle
+  "YTT", # flake8-2020
+]
+ignore = [
+  "E501",   # pycodestyle: line-too-long
+  "TRY003", # tryceratops: raise-vanilla-args
+]
+
+[tool.ruff.lint.flake8-pytest-style]
+fixture-parentheses = false
+mark-parentheses = false
+
+[tool.ruff.lint.isort]
+known-first-party = [
+  "instawow",
+  "instawow_gui",
+  "instawow_wa_updater",
+]
+required-imports = [
+  "from __future__ import annotations",
+]
+
+[tool.ruff.lint.pyupgrade]
+keep-runtime-typing = true
+
+
+[tool.coverage.run]
+source_pkgs = [
+  "instawow",
+]
+omit = [
+  "**/instawow/_migrations/*",
+]
+parallel = true
+branch = true
+dynamic_context = "test_function"
+
+[tool.coverage.paths]
+combine = ["src/instawow", "**/instawow"]
+
+[tool.coverage.report]
+exclude_also = [
+  "raise NotImplementedError",
+  "@overload",
+]
+
+[tool.pytest.ini_options]
+markers = [
+  "iw_no_mock_http",
+]
+xfail_strict = true
+filterwarnings = [
+  "error",
+  'ignore:datetime\.datetime\.utcnow\(\) is deprecated:DeprecationWarning:aiohttp_client_cache',
+  'ignore:aresponses is asynchronous and explicitly requests the "event_loop" fixture:pytest.PytestDeprecationWarning:pytest_asyncio',
+]
+asyncio_mode = "auto"
+addopts = ["-ra", "--strict-config", "--strict-markers"]
