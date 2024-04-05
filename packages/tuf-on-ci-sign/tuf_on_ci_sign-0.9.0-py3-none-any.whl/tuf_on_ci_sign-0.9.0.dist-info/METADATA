@@ -1,0 +1,20 @@
+Metadata-Version: 2.3
+Name: tuf-on-ci-sign
+Version: 0.9.0
+Summary: Signing tools for TUF-on-CI
+Requires-Python: >=3.10
+Requires-Dist: click~=8.1
+Requires-Dist: packaging<25.0,>=23.2
+Requires-Dist: platformdirs~=4.2
+Requires-Dist: securesystemslib[awskms,azurekms,gcpkms,hsm,sigstore]~=0.31.0
+Requires-Dist: tuf~=3.0
+Provides-Extra: lint
+Requires-Dist: mypy==1.9.0; extra == 'lint'
+Requires-Dist: ruff==0.3.5; extra == 'lint'
+Description-Content-Type: text/markdown
+
+### TUF-on-CI Signing tools
+
+This package contains the signing tools for
+[TUF-on-CI](https://github.com/theupdateframework/tuf-on-ci). Please see
+TUF-on-CI README for usage.
