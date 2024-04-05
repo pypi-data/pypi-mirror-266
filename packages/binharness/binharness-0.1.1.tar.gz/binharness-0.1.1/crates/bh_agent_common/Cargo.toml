@@ -1,0 +1,19 @@
+[package]
+name = "bh_agent_common"
+version = "0.1.1"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = { version = "1.0.75", features = [] }
+tarpc = { version = "0.34.0", features = ["tokio1"] }
+serde = { version = "1.0.188", features = ["derive"] }
+thiserror = "1.0.48"
+pyo3 = { version = "0.20.3", optional = true }
+
+[target.'cfg(target_family = "unix")'.dependencies]
+nix = { version = "0.28.0", features = ["fs", "user"] }
+
+[features]
+python = ["pyo3"]

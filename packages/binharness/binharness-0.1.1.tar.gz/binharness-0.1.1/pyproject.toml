@@ -1,0 +1,104 @@
+[build-system]
+requires = ["maturin>=1.0,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "binharness"
+description = "A framework to analyze programs running in environments"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {file = "LICENSE"}
+authors = [{name = "Kevin Phoenix", email = "kevin@kphoenix.us"}]
+maintainers = [{name = "Kevin Phoenix", email = "kevin@kphoenix.us"}]
+dependencies = []
+dynamic = ["version"]
+
+[project.optional-dependencies]
+dev = [
+    "black>=23.3.0",
+    "coverage[toml]>=7.2.3",
+    "docker>=7.0.0",
+    "mock-ssh-server>=0.9.1",
+    "mypy>=1.2.0",
+    "paramiko>=3.4.0",
+    "pre-commit>=3.2.2",
+    "pytest>=7.3.1",
+    "pytest-cov>=4.0.0",
+    "pytest-mypy>=0.10.3",
+    "ruff>=0.0.262",
+    "types-paramiko>=3.4.0"
+]
+docker = ["docker>=7.0.0"]
+ssh = ["paramiko>=3.4.0"]
+
+[project.urls]
+homepage = "https://github.com/twizmwazin/binharness"
+repository = "https://github.com/twizmwazin/binarness.git"
+
+[tool.maturin]
+bindings = "pyo3"
+manifest-path = "crates/bh_agent_client/Cargo.toml"
+python-source = "python"
+python-packages = ["binharness"]
+strip = true
+sdist-generator = "cargo"
+features = ["pyo3/extension-module"]
+
+[tool.pytest.ini_options]
+addopts = "-ra --cov=binharness --cov-report lcov:.lcov --cov-report term-missing --mypy"
+markers = ["linux", "darwin", "win32"]
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+]
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "COM",
+    "D203",
+    "D213",
+    "FBT003",
+    "FIX",
+    "S108",
+    "S603",
+    "TD002",
+    "TD003",
+]
+ignore-init-module-imports = true
+
+[tool.ruff.lint.isort]
+known-first-party = ["binharness"]
+required-imports = ["from __future__ import annotations"]
+
+[tool.ruff.lint.per-file-ignores]
+"python/tests/*" = [
+    "D",
+    "INP001",
+    "S101",
+]
+"**/*.pyi" = [
+    "ANN101",
+    "FBT",
+    "PLR0913",
+]
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+warn_redundant_casts = true
+ignore_missing_imports = true
+exclude = [
+    "build",
+    ".venv",
+]

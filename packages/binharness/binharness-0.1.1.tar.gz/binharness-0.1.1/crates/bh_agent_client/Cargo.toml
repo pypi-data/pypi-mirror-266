@@ -1,0 +1,18 @@
+[package]
+name = "bh_agent_client"
+version = "0.1.1"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+name = "bh_agent_client"
+crate-type = ["cdylib"]
+
+[dependencies]
+bh_agent_common = { path = "../bh_agent_common", features = ["python"] }
+pyo3 = { version = "0.20.3" }
+pyo3-log = "0.9.0"
+tokio = "1.32.0"
+anyhow = "1.0.75"
+tarpc = { version = "0.34.0", features = ["full"] }
+log = "0.4.20"
