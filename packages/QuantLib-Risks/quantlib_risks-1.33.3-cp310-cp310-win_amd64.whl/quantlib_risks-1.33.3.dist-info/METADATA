@@ -1,0 +1,75 @@
+Metadata-Version: 2.1
+Name: QuantLib-Risks
+Version: 1.33.3
+Summary: Fast risks calculations in QuantLib
+Home-page: https://auto-differentiation.github.io
+License: AGPL-3.0-or-later
+Keywords: automatic-differentiation,derivatives,risk-management,quant-finance,greeks,risks
+Author: Auto Differentiation Dev Team
+Author-email: dev@auto-differentiation.com
+Requires-Python: >=3.8.1,<4.0
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Intended Audience :: Financial and Insurance Industry
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)
+Classifier: License :: Other/Proprietary License
+Classifier: Natural Language :: English
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Software Development
+Requires-Dist: xad (>=1.5.2)
+Project-URL: Documentation, https://auto-differentiation.github.io/quantlib-risks
+Project-URL: Repository, https://github.com/auto-differentiation/QuantLib-Risks-Py
+Project-URL: download, https://pypi.org/project/QuantLib-Risks/#files
+Project-URL: tracker, https://github.com/auto-differentiation/QuantLib-Risks-Py/issues
+Description-Content-Type: text/markdown
+
+This package enables fast risks calculations on the QuantLib Python package. 
+It provides the same interface as the [standard QuantLib package](https://pypi.org/project/QuantLib/), and in addition allows to calculate risks (sensitivities) using automatic differentiation via the [XAD automatic differentiation tool](https://auto-differentation.github.io).
+
+Useful links:
+
+-   [QuantLib Documentation](https://www.quantlib.org)
+-   [XAD Documentation, incl Python bindings and QuantLib integration](https://auto-differentiation.github.io/quantlib-risks/python/)
+
+## Installation
+
+```
+pip install QuantLib-Risks
+```
+
+## Usage Illustration
+
+```python
+import QuantLib_Risks as ql
+from xad.adj_1st import Tape
+
+with Tape() as t:
+    rate = ql.Real(0.2)
+    tape.registerInput(rate)
+    
+    # quantlib pricing code
+    ...
+    npv = option.NPV()
+    
+
+    tape.registerOutput(npv)
+    npv.derivative = 1.0
+    tape.computeAdjoints()
+
+    print(f"price = {npv}")
+    print(f"delta = {rate.derivative}")
+```
+
