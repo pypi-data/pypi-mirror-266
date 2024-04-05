@@ -1,0 +1,33 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "vcs"
+
+[project]
+name = "gidgetlab-kit"
+dynamic = ["version"]
+description = "Python package to interact with GitLab"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+license-files = { paths = ["LICENSE"] }
+authors = [{ name = "Benjamin Bertrand", email = "beenje@gmail.com" }]
+keywords = ["gitlab", "async"]
+dependencies = ["gidgetlab", "httpx", "typer>=0.9.0", "pydantic", "python-dateutil"]
+
+[project.urls]
+Source = "https://gitlab.com/beenje/gidgetlab-kit"
+
+[project.scripts]
+gidgetlab = "gidgetlab_kit.command:app"
+
+[project.optional-dependencies]
+tests = ["pytest", "pytest-cov", "pytest-asyncio", "pytest-mock"]
+
+[tool.black]
+target_version = ["py39"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "B"]
