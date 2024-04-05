@@ -1,0 +1,3185 @@
+__author__ = "Simon Nilsson"
+
+from itertools import combinations, permutations
+from typing import Optional, Tuple, Union, List
+import pandas as pd
+
+from sklearn.metrics import (adjusted_mutual_info_score, adjusted_rand_score,
+                             fowlkes_mallows_score)
+from sklearn.neighbors import LocalOutlierFactor
+
+try:
+    from typing import Literal
+except:
+    from typing_extensions import Literal
+
+import numpy as np
+from numba import (bool_, float32, float64, int8, jit, njit, objmode, optional,
+                   prange, typed, types)
+from scipy import stats
+from scipy.stats.distributions import chi2
+from sklearn.covariance import EllipticEnvelope
+
+from simba.mixins.feature_extraction_mixin import FeatureExtractionMixin
+from simba.utils.checks import (check_float, check_int, check_str,
+                                check_valid_array, check_valid_dataframe)
+from simba.utils.data import bucket_data, fast_mean_rank, fast_minimum_rank
+from simba.utils.enums import Options
+from simba.utils.errors import CountError, InvalidInputError
+
+
+class Statistics(FeatureExtractionMixin):
+    """
+    Primarily frequentist statistics methods used for feature extraction or drift assessment.
+
+    .. note::
+
+       Most methods implemented using `numba parallelization <https://numba.pydata.org/>`_ for improved run-times. See
+       `line graph <https://github.com/sgoldenlab/simba/blob/master/docs/_static/img/statistics_runtimes.png>`_ below for expected run-times for a few methods included in this class.
+
+       Most method has numba typed `signatures <https://numba.pydata.org/numba-doc/latest/reference/types.html>`_ to decrease
+       compilation time through reduced type inference. Make sure to pass the correct dtypes as indicated by signature decorators. If dtype is not specified at
+       array creation, it will typically be ``float64`` or ``int64``. As most methods here use ``float32`` for the input data argument,
+       make sure to downcast.
+
+       This class contains a few probability distribution comparison methods. These are being moved to ``simba.sandbox.distances`` (05.24).
+
+    .. image:: _static/img/statistics_runtimes.png
+       :width: 1200
+       :align: center
+
+    """
+
+    def __init__(self):
+        FeatureExtractionMixin.__init__(self)
+
+    @staticmethod
+    @jit(nopython=True)
+    def _hist_1d(
+        data: np.ndarray,
+        bin_count: int,
+        range: np.ndarray,
+        normalize: Optional[bool] = False,
+    ) -> np.ndarray:
+        """
+        Jitted helper to compute 1D histograms with counts or rations (if normalize is True)
+
+        .. note::
+           For non-heuristic rules for bin counts and bin ranges, see ``simba.data.freedman_diaconis`` or simba.data.bucket_data``.
+
+        :parameter np.ndarray data: 1d array containing feature values.
+        :parameter int bins: The number of bins.
+        :parameter: np.ndarray range: 1d array with two values representing minimum and maximum value to bin.
+        :parameter: Optional[bool] normalize: If True, then the counts are returned as a ratio of all values. If False, then the raw counts. Pass normalize as True if the datasets are unequal counts. Default: True.
+        """
+
+        hist = np.histogram(data, bin_count, (range[0], range[1]))[0]
+        if normalize:
+            total_sum = np.sum(hist)
+            if total_sum == 0:
+                pass
+            else:
+                return hist / total_sum
+        return hist.astype(np.float64)
+
+    @staticmethod
+    @njit("(float32[:], float64, float64)", cache=True)
+    def rolling_independent_sample_t(
+        data: np.ndarray, time_window: float, fps: float
+    ) -> np.ndarray:
+        """
+        Jitted compute independent-sample t-statistics for sequentially binned values in a time-series.
+        E.g., compute t-test statistics when comparing ``Feature N`` in the current 1s
+        time-window, versus ``Feature N`` in the previous 1s time-window.
+
+        :parameter ndarray data: 1D array of size len(frames) representing feature values.
+        :parameter int group_size_s: The size of the buckets in seconds.
+        :parameter int fps: Frame-rate of recorded video.
+
+        .. image:: _static/img/independent_t_tests.png
+           :width: 700
+           :align: center
+
+        .. attention::
+           Each window is compared to the prior window. Output for the windows without a prior window (the first window) is ``-1``.
+
+        :example:
+        >>> data_1, data_2 = np.random.normal(loc=10, scale=2, size=10), np.random.normal(loc=20, scale=2, size=10)
+        >>> data = np.hstack([data_1, data_2])
+        >>> Statistics().rolling_independent_sample_t(data, time_window=1, fps=10)
+        >>> [[-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -6.88741389, -6.88741389, -6.88741389, -6.88741389, -6.88741389, -6.88741389, -6.88741389, -6.88741389, -6.88741389, -6.88741389])
+
+        """
+
+        results = np.full((data.shape[0]), -1.0)
+        window_size = int(time_window * fps)
+        data = np.split(data, list(range(window_size, data.shape[0], window_size)))
+        for cnt, i in enumerate(prange(1, len(data))):
+            start, end = int((cnt + 1) * window_size), int(
+                ((cnt + 1) * window_size) + window_size
+            )
+            mean_1, mean_2 = np.mean(data[i - 1]), np.mean(data[i])
+            stdev_1, stdev_2 = np.std(data[i - 1]), np.std(data[i])
+            pooled_std = np.sqrt(
+                ((len(data[i - 1]) - 1) * stdev_1**2 + (len(data[i]) - 1) * stdev_2**2)
+                / (len(data[i - 1]) + len(data[i]) - 2)
+            )
+            results[start:end] = (mean_1 - mean_2) / (
+                pooled_std * np.sqrt(1 / len(data[i - 1]) + 1 / len(data[i]))
+            )
+        return results
+
+    @staticmethod
+    @njit(
+        [
+            (float32[:], float32[:], float64[:, :]),
+            (float32[:], float32[:], types.misc.Omitted(None)),
+        ]
+    )
+    def independent_samples_t(
+        sample_1: np.ndarray,
+        sample_2: np.ndarray,
+        critical_values: Optional[np.ndarray] = None,
+    ) -> (float, Union[None, bool]):
+        """
+        Jitted compute independent-samples t-test statistic and boolean significance between two distributions.
+
+        :parameter ndarray sample_1: First 1d array representing feature values.
+        :parameter ndarray sample_2: Second 1d array representing feature values.
+        :parameter ndarray critical_values: 2d array where the first column represents degrees of freedom and second column represents critical values.
+        :returns (float Union[None, bool]) t_statistic, p_value: Representing t-statistic and associated probability value. p_value is ``None`` if critical_values is None. Else True or False with True representing significant.
+
+        .. note::
+           Critical values are stored in simba.assets.lookups.critical_values_**.pickle
+
+        :example:
+        >>> sample_1 = np.array([1, 2, 3, 1, 3, 2, 1, 10, 8, 4, 10])
+        >>> sample_2 = np.array([2, 5, 10, 4, 8, 10, 7, 10, 7, 10, 10])
+        >>> Statistics().independent_samples_t(sample_1=sample_1, sample_2=sample_2)
+        >>> (-2.5266046804590183, None)
+        >>> critical_values = pickle.load(open("simba/assets/lookups/critical_values_05.pickle","rb"))['independent_t_test']['one_tail'].values
+        >>> Statistics().independent_samples_t(sample_1=sample_1, sample_2=sample_2, critical_values=critical_values)
+        >>> (-2.5266046804590183, True)
+        """
+
+        significance_bool = None
+        m1, m2 = np.mean(sample_1), np.mean(sample_2)
+        std_1 = np.sqrt(np.sum((sample_1 - m1) ** 2) / (len(sample_1) - 1))
+        std_2 = np.sqrt(np.sum((sample_2 - m2) ** 2) / (len(sample_2) - 1))
+        pooled_std = np.sqrt(
+            ((len(sample_1) - 1) * std_1**2 + (len(sample_2) - 1) * std_2**2)
+            / (len(sample_1) + len(sample_2) - 2)
+        )
+        t_statistic = (m1 - m2) / (
+            pooled_std * np.sqrt(1 / len(sample_1) + 1 / len(sample_2))
+        )
+        if critical_values is not None:
+            dof = (sample_1.shape[0] + sample_2.shape[0]) - 2
+            critical_value = np.interp(
+                dof, critical_values[:, 0], critical_values[:, 1]
+            )
+            if critical_value < abs(t_statistic):
+                significance_bool = True
+            else:
+                significance_bool = False
+
+        return t_statistic, significance_bool
+
+    @staticmethod
+    @njit("(float64[:], float64[:])", cache=True)
+    def cohens_d(sample_1: np.ndarray, sample_2: np.ndarray) -> float:
+        """
+        Jitted compute of Cohen's d between two distributions
+
+        :parameter ndarray sample_1: First 1d array representing feature values.
+        :parameter ndarray sample_2: Second 1d array representing feature values.
+        :returns float: Cohens D statistic.
+
+        :example:
+        >>> sample_1 = [2, 4, 7, 3, 7, 35, 8, 9]
+        >>> sample_2 = [4, 8, 14, 6, 14, 70, 16, 18]
+        >>> Statistics().cohens_d(sample_1=sample_1, sample_2=sample_2)
+        >>> -0.5952099775170546
+        """
+        return (np.mean(sample_1) - np.mean(sample_2)) / (
+            np.sqrt((np.std(sample_1) ** 2 + np.std(sample_2) ** 2) / 2)
+        )
+
+    @staticmethod
+    @njit("(float64[:], float64[:], float64)", cache=True)
+    def rolling_cohens_d(
+        data: np.ndarray, time_windows: np.ndarray, fps: float
+    ) -> np.ndarray:
+        """
+        Jitted compute of rolling Cohen's D statistic comparing the current time-window of
+        size N to the preceding window of size N.
+
+        :parameter ndarray data: 1D array of size len(frames) representing feature values.
+        :parameter np.ndarray[ints] time_window: Time windows to compute ANOVAs for in seconds.
+        :parameter int fps: Frame-rate of recorded video.
+        :returns np.ndarray: Array of size data.shape[0] x window_sizes.shape[1] with Cohens D.
+
+        :example:
+        >>> sample_1, sample_2 = np.random.normal(loc=10, scale=1, size=4), np.random.normal(loc=11, scale=2, size=4)
+        >>> sample = np.hstack((sample_1, sample_2))
+        >>> Statistics().rolling_cohens_d(data=sample, window_sizes=np.array([1]), fps=4)
+        >>> [[0.],[0.],[0.],[0.],[0.14718302],[0.14718302],[0.14718302],[0.14718302]])
+        """
+
+        results = np.full((data.shape[0], time_windows.shape[0]), 0.0)
+        for i in prange(time_windows.shape[0]):
+            window_size = int(time_windows[i] * fps)
+            data_split = np.split(
+                data, list(range(window_size, data.shape[0], window_size))
+            )
+            for j in prange(1, len(data_split)):
+                window_start = int(window_size * j)
+                window_end = int(window_start + window_size)
+                sample_1, sample_2 = data_split[j - 1].astype(np.float32), data_split[
+                    j
+                ].astype(np.float32)
+                d = (np.mean(sample_1) - np.mean(sample_2)) / (
+                    np.sqrt((np.std(sample_1) ** 2 + np.std(sample_2) ** 2) / 2)
+                )
+                results[window_start:window_end, i] = d
+        return results
+
+    @staticmethod
+    @njit("(float32[:], float64, float64)")
+    def rolling_two_sample_ks(
+        data: np.ndarray, time_window: float, fps: float
+    ) -> np.ndarray:
+        """
+        Jitted compute Kolmogorov two-sample statistics for sequentially binned values in a time-series.
+        E.g., compute KS statistics when comparing ``Feature N`` in the current 1s time-window, versus ``Feature N`` in the previous 1s time-window.
+
+        :parameter ndarray data: 1D array of size len(frames) representing feature values.
+        :parameter float time_window: The size of the buckets in seconds.
+        :parameter int fps: Frame-rate of recorded video.
+        :return np.ndarray: Array of size data.shape[0] with KS statistics
+
+        :example:
+        >>> data = np.random.randint(low=0, high=100, size=(200)).astype('float32')
+        >>> results = Statistics().rolling_two_sample_ks(data=data, time_window=1, fps=30)
+        """
+
+        window_size, results = int(time_window * fps), np.full((data.shape[0]), -1.0)
+        data = np.split(data, list(range(window_size, data.shape[0], window_size)))
+        for cnt, i in enumerate(prange(1, len(data))):
+            start, end = int((cnt + 1) * window_size), int(
+                ((cnt + 1) * window_size) + window_size
+            )
+            sample_1, sample_2 = data[i - 1], data[i]
+            combined_samples = np.sort(np.concatenate((sample_1, sample_2)))
+            ecdf_sample_1 = np.searchsorted(
+                sample_1, combined_samples, side="right"
+            ) / len(sample_1)
+            ecdf_sample_2 = np.searchsorted(
+                sample_2, combined_samples, side="right"
+            ) / len(sample_2)
+            ks = np.max(np.abs(ecdf_sample_1 - ecdf_sample_2))
+            results[start:end] = ks
+        return results
+
+    @staticmethod
+    @njit(
+        [
+            (float32[:], float32[:], float64[:, :]),
+            (float32[:], float32[:], types.misc.Omitted(None)),
+        ]
+    )
+    def two_sample_ks(
+        sample_1: np.ndarray,
+        sample_2: np.ndarray,
+        critical_values: Optional[float64[:, :]] = None,
+    ) -> (float, Union[bool, None]):
+        """
+        Compute the two-sample Kolmogorov-Smirnov (KS) test statistic and, optionally, test for statistical significance.
+
+        The two-sample KS test is a non-parametric test that compares the cumulative distribution functions (ECDFs) of two independent samples to assess whether they come from the same distribution.
+
+        :param np.ndarray data: The first sample array for the KS test.
+        :param np.ndarray data: The second sample array for the KS test.
+        :param Optional[bool] time_windows: An array of critical values for the KS test. If provided, the function will also check the significance of the KS statistic against the critical values. Default: None.
+        :returns (float Union[bool, None]): Returns a tuple containing the KS statistic and a boolean indicating whether the test is statistically significant.
+
+        :example:
+        >>> sample_1 = np.array([1, 2, 3, 1, 3, 2, 1, 10, 8, 4, 10]).astype(np.float32)
+        >>> sample_2 = np.array([10, 5, 10, 4, 8, 10, 7, 10, 7, 10, 10]).astype(np.float32)
+        >>> critical_values = pickle.load(open("simba/assets/lookups/critical_values_5.pickle", "rb"))['two_sample_KS']['one_tail'].values
+        >>> two_sample_ks(sample_1=sample_1, sample_2=sample_2, critical_values=critical_values)
+        >>> (0.7272727272727273, True)
+        """
+        significance_bool = None
+        combined_samples = np.sort(np.concatenate((sample_1, sample_2)))
+        ecdf_sample_1 = np.searchsorted(sample_1, combined_samples, side="right") / len(
+            sample_1
+        )
+        ecdf_sample_2 = np.searchsorted(sample_2, combined_samples, side="right") / len(
+            sample_2
+        )
+        ks = np.max(np.abs(ecdf_sample_1 - ecdf_sample_2))
+        if critical_values is not None:
+            combined_sample_size = len(sample_1) + len(sample_2)
+            critical_value = np.interp(
+                combined_sample_size, critical_values[:, 0], critical_values[:, 1]
+            )
+            if critical_value < abs(ks):
+                significance_bool = True
+            else:
+                significance_bool = False
+        return (ks, significance_bool)
+
+    @staticmethod
+    @jit(nopython=True)
+    def one_way_anova(
+        sample_1: np.ndarray,
+        sample_2: np.ndarray,
+        critical_values: Optional[np.ndarray] = None,
+    ) -> (float, float):
+        """
+        Jitted compute of one-way ANOVA F statistics and associated p-value for two distributions.
+
+        :parameter ndarray sample_1: First 1d array representing feature values.
+        :parameter ndarray sample_2: Second 1d array representing feature values.
+        :returns (float float): Representing ANOVA F statistic and associated probability value.
+
+        :example:
+        >>> sample_1 = np.array([1, 2, 3, 1, 3, 2, 1, 10, 8, 4, 10])
+        >>> sample_2 = np.array([8, 5, 5, 8, 8, 9, 10, 1, 7, 10, 10])
+        >>> Statistics().one_way_anova(sample_1=sample_2, sample_2=sample_1)
+        """
+
+        significance_bool = None
+        n1, n2 = len(sample_1), len(sample_2)
+        m1, m2 = np.mean(sample_1), np.mean(sample_2)
+        ss_between = (
+            n1 * (m1 - np.mean(np.concatenate((sample_1, sample_2)))) ** 2
+            + n2 * (m2 - np.mean(np.concatenate((sample_1, sample_2)))) ** 2
+        )
+        ss_within = np.sum((sample_1 - m1) ** 2) + np.sum((sample_2 - m2) ** 2)
+        df_between, df_within = 1, n1 + n2 - 2
+        ms_between, ms_within = ss_between / df_between, ss_within / df_within
+        f = ms_between / ms_within
+        if critical_values is not None:
+            critical_values = critical_values[:, np.array([0, df_between])]
+            critical_value = np.interp(
+                df_within, critical_values[:, 0], critical_values[:, 1]
+            )
+            if f > critical_value:
+                significance_bool = True
+            else:
+                significance_bool = False
+
+        return (f, significance_bool)
+
+    @staticmethod
+    @njit("(float32[:], float64[:], float64)", cache=True)
+    def rolling_one_way_anova(
+        data: np.ndarray, time_windows: np.ndarray, fps: int
+    ) -> np.ndarray:
+        """
+        Jitted compute of rolling one-way ANOVA F-statistic comparing the current time-window of
+        size N to the preceding window of size N.
+
+        :parameter ndarray data: 1D array of size len(frames) representing feature values.
+        :parameter np.ndarray[ints] time_windows: Time windows to compute ANOVAs for in seconds.
+        :parameter int fps: Frame-rate of recorded video.
+
+        .. image:: _static/img/rolling_anova.png
+           :width: 600
+           :align: center
+
+        :example:
+        >>> sample = np.random.normal(loc=10, scale=1, size=10).astype(np.float32)
+        >>> Statistics().rolling_one_way_anova(data=sample, time_windows=np.array([1.0]), fps=2)
+        >>> [[0.00000000e+00][0.00000000e+00][2.26221263e-06][2.26221263e-06][5.39119950e-03][5.39119950e-03][1.46725486e-03][1.46725486e-03][1.16392111e-02][1.16392111e-02]]
+        """
+
+        results = np.full((data.shape[0], time_windows.shape[0]), 0.0)
+        for i in prange(time_windows.shape[0]):
+            window_size = int(time_windows[i] * fps)
+            data_split = np.split(
+                data, list(range(window_size, data.shape[0], window_size))
+            )
+            for j in prange(1, len(data_split)):
+                window_start = int(window_size * j)
+                window_end = int(window_start + window_size)
+                sample_1, sample_2 = data_split[j - 1].astype(np.float32), data_split[
+                    j
+                ].astype(np.float32)
+                n1, n2 = len(sample_1), len(sample_2)
+                m1, m2 = np.mean(sample_1), np.mean(sample_2)
+                ss_between = (
+                    n1 * (m1 - np.mean(np.concatenate((sample_1, sample_2)))) ** 2
+                    + n2 * (m2 - np.mean(np.concatenate((sample_1, sample_2)))) ** 2
+                )
+                ss_within = np.sum((sample_1 - m1) ** 2) + np.sum((sample_2 - m2) ** 2)
+                df_between, df_within = 1, n1 + n2 - 2
+                ms_between, ms_within = ss_between / df_between, ss_within / df_within
+                f = ms_between / ms_within
+                results[window_start:window_end, i] = f
+
+        return results
+
+    def kullback_leibler_divergence(
+        self,
+        sample_1: np.ndarray,
+        sample_2: np.ndarray,
+        fill_value: Optional[int] = 1,
+        bucket_method: Literal[
+            "fd", "doane", "auto", "scott", "stone", "rice", "sturges", "sqrt"
+        ] = "auto",
+    ) -> float:
+        """
+        Compute Kullback-Leibler divergence between two distributions.
+
+        .. note::
+           Empty bins (0 observations in bin) in is replaced with passed ``fill_value``.
+
+           Its range is from 0 to positive infinity. When the KL divergence is zero, it indicates that the two distributions are identical. As the KL divergence increases, it signifies an increasing difference between the distributions.
+
+        :parameter ndarray sample_1: First 1d array representing feature values.
+        :parameter ndarray sample_2: Second 1d array representing feature values.
+        :parameter Optional[int] fill_value: Optional pseudo-value to use to fill empty buckets in ``sample_2`` histogram
+        :parameter Literal bucket_method: Estimator determining optimal bucket count and bucket width. Default: The maximum of the Sturges and Freedman-Diaconis estimators
+        :returns float: Kullback-Leibler divergence between ``sample_1`` and ``sample_2``
+        """
+        check_valid_array(
+            data=sample_1,
+            source=Statistics.jensen_shannon_divergence.__name__,
+            accepted_ndims=(1,),
+            accepted_dtypes=(np.float32, np.float64, np.int32, np.int64, int, float),
+        )
+        check_valid_array(
+            data=sample_2,
+            source=Statistics.jensen_shannon_divergence.__name__,
+            accepted_ndims=(1,),
+            accepted_dtypes=(np.float32, np.float64, np.int32, np.int64, int, float),
+        )
+        check_str(
+            name=f"{self.__class__.__name__} bucket_method",
+            value=bucket_method,
+            options=Options.BUCKET_METHODS.value,
+        )
+        check_int(
+            name=f"{self.__class__.__name__} fill value", value=fill_value, min_value=1
+        )
+        bin_width, bin_count = bucket_data(data=sample_1, method=bucket_method)
+        sample_1_hist = self._hist_1d(
+            data=sample_1,
+            bin_count=bin_count,
+            range=np.array([0, int(bin_width * bin_count)]),
+        )
+        sample_2_hist = self._hist_1d(
+            data=sample_2,
+            bin_count=bin_count,
+            range=np.array([0, int(bin_width * bin_count)]),
+        )
+        sample_1_hist[sample_1_hist == 0] = fill_value
+        sample_2_hist[sample_2_hist == 0] = fill_value
+        sample_1_hist, sample_2_hist = sample_1_hist / np.sum(
+            sample_1_hist
+        ), sample_2_hist / np.sum(sample_2_hist)
+        return stats.entropy(pk=sample_1_hist, qk=sample_2_hist)
+
+    def rolling_kullback_leibler_divergence(
+        self,
+        data: np.ndarray,
+        time_windows: np.ndarray,
+        fps: int,
+        fill_value: int = 1,
+        bucket_method: Literal[
+            "fd", "doane", "auto", "scott", "stone", "rice", "sturges", "sqrt"
+        ] = "auto",
+    ) -> np.ndarray:
+        """
+        Compute rolling Kullback-Leibler divergence comparing the current time-window of
+        size N to the preceding window of size N.
+
+        .. note::
+           Empty bins (0 observations in bin) in is replaced with ``fill_value``.
+
+        :parameter ndarray sample_1: 1d array representing feature values.
+        :parameter Literal bucket_method: Estimator determining optimal bucket count and bucket width. Default: The maximum of the Sturges and Freedman-Diaconis estimators
+        :parameter np.ndarray[floats] time_windows: Time windows to compute JS for in seconds.
+        :parameter int fps: Frame-rate of recorded video.
+        :returns np.ndarray: Size data.shape[0] x window_sizes.shape with Kullback-Leibler divergence. Columns represents different tiem windows.
+
+        :example:
+        >>> sample_1, sample_2 = np.random.normal(loc=10, scale=700, size=5), np.random.normal(loc=50, scale=700, size=5)
+        >>> data = np.hstack((sample_1, sample_2))
+        >>> Statistics().rolling_kullback_leibler_divergence(data=data, time_windows=np.array([1]), fps=2)
+        """
+
+        check_valid_array(data=data, source=self.__class__.__name__, accepted_sizes=[1])
+        check_valid_array(
+            data=time_windows, source=self.__class__.__name__, accepted_sizes=[1]
+        )
+        check_int(name=f"{self.__class__.__name__} fps", value=fps, min_value=1)
+        check_str(
+            name=f"{self.__class__.__name__} bucket_method",
+            value=bucket_method,
+            options=Options.BUCKET_METHODS.value,
+        )
+
+        results = np.full((data.shape[0], time_windows.shape[0]), 0.0)
+        for i in prange(time_windows.shape[0]):
+            window_size = int(time_windows[i] * fps)
+            data_split = np.split(
+                data, list(range(window_size, data.shape[0], window_size))
+            )
+            for j in prange(1, len(data_split)):
+                window_start = int(window_size * j)
+                window_end = int(window_start + window_size)
+                sample_1, sample_2 = data_split[j - 1].astype(np.float32), data_split[
+                    j
+                ].astype(np.float32)
+                bin_width, bin_count = bucket_data(data=sample_1, method=bucket_method)
+                sample_1_hist = self._hist_1d(
+                    data=sample_1,
+                    bin_count=bin_count,
+                    range=np.array([0, int(bin_width * bin_count)]),
+                )
+                sample_2_hist = self._hist_1d(
+                    data=sample_2,
+                    bin_count=bin_count,
+                    range=np.array([0, int(bin_width * bin_count)]),
+                )
+                sample_1_hist[sample_1_hist == 0] = fill_value
+                sample_2_hist[sample_2_hist == 0] = fill_value
+                sample_1_hist, sample_2_hist = sample_1_hist / np.sum(
+                    sample_1_hist
+                ), sample_2_hist / np.sum(sample_2_hist)
+                kl = stats.entropy(pk=sample_1_hist, qk=sample_2_hist)
+                results[window_start:window_end, i] = kl
+        return results
+
+    def jensen_shannon_divergence(
+        self,
+        sample_1: np.ndarray,
+        sample_2: np.ndarray,
+        bucket_method: Literal[
+            "fd", "doane", "auto", "scott", "stone", "rice", "sturges", "sqrt"
+        ] = "auto",
+    ) -> float:
+        """
+        Compute Jensen-Shannon divergence between two distributions. Useful for (i) measure drift in datasets, and (ii) featurization of distribution shifts across
+        sequential time-bins.
+
+        .. note::
+           JSD = 0: Indicates that the two distributions are identical.
+           0 < JSD < 1: Indicates a degree of dissimilarity between the distributions, with values closer to 1 indicating greater dissimilarity.
+           JSD = 1: Indicates that the two distributions are maximally dissimilar.
+
+        :parameter ndarray sample_1: First 1d array representing feature values.
+        :parameter ndarray sample_2: Second 1d array representing feature values.
+        :parameter Literal bucket_method: Estimator determining optimal bucket count and bucket width. Default: The maximum of the Sturges and Freedman-Diaconis estimators.
+        :returns float: Jensen-Shannon divergence between ``sample_1`` and ``sample_2``
+
+        :example:
+        >>> sample_1, sample_2 = np.array([1, 2, 3, 4, 5, 10, 1, 2, 3]), np.array([1, 5, 10, 9, 10, 1, 10, 6, 7])
+        >>> Statistics().jensen_shannon_divergence(sample_1=sample_1, sample_2=sample_2, bucket_method='fd')
+        >>> 0.30806541358219786
+        """
+
+        check_valid_array(
+            data=sample_1,
+            source=Statistics.jensen_shannon_divergence.__name__,
+            accepted_ndims=(1,),
+            accepted_dtypes=(np.float32, np.float64, np.int32, np.int64, int, float),
+        )
+        check_valid_array(
+            data=sample_2,
+            source=Statistics.jensen_shannon_divergence.__name__,
+            accepted_ndims=(1,),
+            accepted_dtypes=(np.float32, np.float64, np.int32, np.int64, int, float),
+        )
+        check_str(
+            name=f"{self.__class__.__name__} bucket_method",
+            value=bucket_method,
+            options=Options.BUCKET_METHODS.value,
+        )
+        bin_width, bin_count = bucket_data(data=sample_1, method=bucket_method)
+        sample_1_hist = self._hist_1d(
+            data=sample_1,
+            bin_count=bin_count,
+            range=np.array([0, int(bin_width * bin_count)]),
+        )
+        sample_2_hist = self._hist_1d(
+            data=sample_2,
+            bin_count=bin_count,
+            range=np.array([0, int(bin_width * bin_count)]),
+        )
+        mean_hist = np.mean([sample_1_hist, sample_2_hist], axis=0)
+        kl_sample_1, kl_sample_2 = stats.entropy(
+            pk=sample_1_hist, qk=mean_hist
+        ), stats.entropy(pk=sample_2_hist, qk=mean_hist)
+        return (kl_sample_1 + kl_sample_2) / 2
+
+    def rolling_jensen_shannon_divergence(
+        self,
+        data: np.ndarray,
+        time_windows: np.ndarray,
+        fps: int,
+        bucket_method: Literal[
+            "fd", "doane", "auto", "scott", "stone", "rice", "sturges", "sqrt"
+        ] = "auto",
+    ) -> np.ndarray:
+        """
+        Compute rolling Jensen-Shannon divergence comparing the current time-window of size N to the preceding window of size N.
+
+        :parameter ndarray data: 1D array of size len(frames) representing feature values.
+        :parameter np.ndarray[ints] time_windows: Time windows to compute JS for in seconds.
+        :parameter int fps: Frame-rate of recorded video.
+        :parameter Literal bucket_method: Estimator determining optimal bucket count and bucket width. Default: The maximum of the Sturges and Freedman-Diaconis estimators
+        """
+
+        check_valid_array(data=data, source=self.__class__.__name__, accepted_sizes=[1])
+        check_valid_array(
+            data=time_windows, source=self.__class__.__name__, accepted_sizes=[1]
+        )
+        check_int(name=f"{self.__class__.__name__} fps", value=fps, min_value=1)
+        check_str(
+            name=f"{self.__class__.__name__} bucket_method",
+            value=bucket_method,
+            options=Options.BUCKET_METHODS.value,
+        )
+        results = np.full((data.shape[0], time_windows.shape[0]), 0.0)
+        for i in prange(time_windows.shape[0]):
+            window_size = int(time_windows[i] * fps)
+            data_split = np.split(
+                data, list(range(window_size, data.shape[0], window_size))
+            )
+            for j in prange(1, len(data_split)):
+                window_start = int(window_size * j)
+                window_end = int(window_start + window_size)
+                sample_1, sample_2 = data_split[j - 1].astype(np.float32), data_split[
+                    j
+                ].astype(np.float32)
+                bin_width, bin_count = bucket_data(data=sample_1, method=bucket_method)
+                sample_1_hist = self._hist_1d(
+                    data=sample_1,
+                    bin_count=bin_count,
+                    range=np.array([0, int(bin_width * bin_count)]),
+                )
+                sample_2_hist = self._hist_1d(
+                    data=sample_2,
+                    bin_count=bin_count,
+                    range=np.array([0, int(bin_width * bin_count)]),
+                )
+                sample_1_hist, sample_2_hist = sample_1_hist / np.sum(
+                    sample_1_hist
+                ), sample_2_hist / np.sum(sample_2_hist)
+                mean_hist = np.mean([sample_1_hist, sample_2_hist], axis=0)
+                kl_sample_1, kl_sample_2 = stats.entropy(
+                    pk=sample_1_hist, qk=mean_hist
+                ), stats.entropy(pk=sample_2_hist, qk=mean_hist)
+                js = (kl_sample_1 + kl_sample_2) / 2
+                results[window_start:window_end, i] = js
+        return results
+
+    def wasserstein_distance(
+        self,
+        sample_1: np.ndarray,
+        sample_2: np.ndarray,
+        bucket_method: Literal[
+            "fd", "doane", "auto", "scott", "stone", "rice", "sturges", "sqrt"
+        ] = "auto",
+    ) -> float:
+        """
+        Compute Wasserstein distance between two distributions.
+
+        .. note::
+           Uses ``stats.wasserstein_distance``. I have tried to move ``stats.wasserstein_distance`` to jitted method extensively,
+           but this doesn't give significant runtime improvement. Rate-limiter appears to be the _hist_1d.
+
+        :parameter ndarray sample_1: First 1d array representing feature values.
+        :parameter ndarray sample_2: Second 1d array representing feature values.
+        :parameter Literal bucket_method: Estimator determining optimal bucket count and bucket width. Default: The maximum of the Sturges and Freedman-Diaconis estimators
+        :returns float: Wasserstein distance between ``sample_1`` and ``sample_2``
+
+        :example:
+
+        >>> sample_1 = np.random.normal(loc=10, scale=2, size=10)
+        >>> sample_2 = np.random.normal(loc=10, scale=3, size=10)
+        >>> Statistics().wasserstein_distance(sample_1=sample_1, sample_2=sample_2)
+        >>> 0.020833333333333332
+        """
+        check_valid_array(
+            data=sample_1,
+            source=Statistics.jensen_shannon_divergence.__name__,
+            accepted_ndims=(1,),
+            accepted_dtypes=(np.float32, np.float64, np.int32, np.int64, int, float),
+        )
+        check_valid_array(
+            data=sample_2,
+            source=Statistics.jensen_shannon_divergence.__name__,
+            accepted_ndims=(1,),
+            accepted_dtypes=(np.float32, np.float64, np.int32, np.int64, int, float),
+        )
+        check_str(
+            name=f"{self.__class__.__name__} bucket_method",
+            value=bucket_method,
+            options=Options.BUCKET_METHODS.value,
+        )
+        bin_width, bin_count = bucket_data(data=sample_1, method=bucket_method)
+        sample_1_hist = self._hist_1d(
+            data=sample_1,
+            bin_count=bin_count,
+            range=np.array([0, int(bin_width * bin_count)]),
+        )
+        sample_2_hist = self._hist_1d(
+            data=sample_2,
+            bin_count=bin_count,
+            range=np.array([0, int(bin_width * bin_count)]),
+        )
+        sample_1_hist, sample_2_hist = sample_1_hist / np.sum(
+            sample_1_hist
+        ), sample_2_hist / np.sum(sample_2_hist)
+        return stats.wasserstein_distance(
+            u_values=sample_1_hist, v_values=sample_2_hist
+        )
+
+    def rolling_wasserstein_distance(
+        self,
+        data: np.ndarray,
+        time_windows: np.ndarray,
+        fps: int,
+        bucket_method: Literal[
+            "fd", "doane", "auto", "scott", "stone", "rice", "sturges", "sqrt"
+        ] = "auto",
+    ) -> np.ndarray:
+        """
+        Compute rolling Wasserstein distance comparing the current time-window of size N to the preceding window of size N.
+
+        :parameter ndarray data: 1D array of size len(frames) representing feature values.
+        :parameter np.ndarray[ints] time_windows: Time windows to compute JS for in seconds.
+        :parameter int fps: Frame-rate of recorded video.
+        :parameter Literal bucket_method: Estimator determining optimal bucket count and bucket width. Default: The maximum of the Sturges and Freedman-Diaconis estimators
+        :returns np.ndarray: Size data.shape[0] x window_sizes.shape with Wasserstein distance. Columns represent different time windows.
+
+        :example:
+        >>> data = np.random.randint(0, 100, (100,))
+        >>> Statistics().rolling_wasserstein_distance(data=data, time_windows=np.array([1, 2]), fps=30)
+        """
+
+        check_valid_array(data=data, source=self.__class__.__name__, accepted_sizes=[1])
+        check_valid_array(
+            data=time_windows, source=self.__class__.__name__, accepted_sizes=[1]
+        )
+        check_int(name=f"{self.__class__.__name__} fps", value=fps, min_value=1)
+        check_str(
+            name=f"{self.__class__.__name__} bucket_method",
+            value=bucket_method,
+            options=Options.BUCKET_METHODS.value,
+        )
+        results = np.full((data.shape[0], time_windows.shape[0]), 0.0)
+        for i in prange(time_windows.shape[0]):
+            window_size = int(time_windows[i] * fps)
+            data_split = np.split(
+                data, list(range(window_size, data.shape[0], window_size))
+            )
+            for j in prange(1, len(data_split)):
+                window_start = int(window_size * j)
+                window_end = int(window_start + window_size)
+                sample_1, sample_2 = data_split[j - 1].astype(np.float32), data_split[
+                    j
+                ].astype(np.float32)
+                bin_width, bin_count = bucket_data(data=sample_1, method=bucket_method)
+                sample_1_hist = self._hist_1d(
+                    data=sample_1,
+                    bin_count=bin_count,
+                    range=np.array([0, int(bin_width * bin_count)]),
+                )
+                sample_2_hist = self._hist_1d(
+                    data=sample_2,
+                    bin_count=bin_count,
+                    range=np.array([0, int(bin_width * bin_count)]),
+                )
+                sample_1_hist, sample_2_hist = sample_1_hist / np.sum(
+                    sample_1_hist
+                ), sample_2_hist / np.sum(sample_2_hist)
+                w = stats.wasserstein_distance(
+                    u_values=sample_1_hist, v_values=sample_2_hist
+                )
+                results[window_start:window_end, i] = w
+
+        return results
+
+    @staticmethod
+    def total_variation_distance(
+        x: np.ndarray,
+        y: np.ndarray,
+        bucket_method: Optional[
+            Literal["fd", "doane", "auto", "scott", "stone", "rice", "sturges", "sqrt"]
+        ] = "auto",
+    ):
+        """
+        Calculate the total variation distance between two probability distributions.
+
+        :param np.ndarray x: A 1-D array representing the first sample.
+        :param np.ndarray y: A 1-D array representing the second sample.
+        :param Optional[str] bucket_method: The method used to determine the number of bins for histogram computation. Supported methods are 'fd' (Freedman-Diaconis), 'doane', 'auto', 'scott', 'stone', 'rice', 'sturges', and 'sqrt'. Defaults to 'auto'.
+        :return float: The total variation distance between the two distributions.
+
+        .. math::
+
+           TV(P, Q) = 0.5 \sum_i |P_i - Q_i|
+
+        where :math:`P_i` and :math:`Q_i` are the probabilities assigned by the distributions :math:`P` and :math:`Q`
+        to the same event :math:`i`, respectively.
+
+        :example:
+        >>> total_variation_distance(x=np.array([1, 5, 10, 20, 50]), y=np.array([1, 5, 10, 100, 110]))
+        >>> 0.3999999761581421
+        """
+
+        check_valid_array(
+            data=x,
+            source=Statistics.total_variation_distance.__name__,
+            accepted_ndims=(1,),
+            accepted_dtypes=(
+                np.int64,
+                np.int32,
+                np.int8,
+                np.float32,
+                np.float64,
+                int,
+                float,
+            ),
+        )
+        check_valid_array(
+            data=y,
+            source=Statistics.total_variation_distance.__name__,
+            accepted_ndims=(1,),
+            accepted_dtypes=(
+                np.int64,
+                np.int32,
+                np.int8,
+                np.float32,
+                np.float64,
+                int,
+                float,
+            ),
+        )
+        check_str(
+            name=f"{Statistics.total_variation_distance.__name__} method",
+            value=bucket_method,
+            options=Options.BUCKET_METHODS.value,
+        )
+        bin_width, bin_count = bucket_data(data=x, method=bucket_method)
+        s1_h = Statistics._hist_1d(
+            data=x,
+            bin_count=bin_count,
+            range=np.array([0, int(bin_width * bin_count)]),
+            normalize=True,
+        )
+        s2_h = Statistics._hist_1d(
+            data=y,
+            bin_count=bin_count,
+            range=np.array([0, int(bin_width * bin_count)]),
+            normalize=True,
+        )
+        return 0.5 * np.sum(np.abs(s1_h - s2_h))
+
+    def population_stability_index(
+        self,
+        sample_1: np.ndarray,
+        sample_2: np.ndarray,
+        fill_value: Optional[int] = 1,
+        bucket_method: Optional[
+            Literal["fd", "doane", "auto", "scott", "stone", "rice", "sturges", "sqrt"]
+        ] = "auto",
+    ) -> float:
+        """
+        Compute Population Stability Index (PSI) comparing two distributions.
+
+        .. note::
+           Empty bins (0 observations in bin) in is replaced with ``fill_value``. The PSI value ranges from 0 to positive infinity.
+
+        :parameter ndarray sample_1: First 1d array representing feature values.
+        :parameter ndarray sample_2: Second 1d array representing feature values.
+        :parameter Optional[int] fill_value: Empty bins (0 observations in bin) in is replaced with ``fill_value``. Default 1.
+        :parameter Literal bucket_method: Estimator determining optimal bucket count and bucket width. Default: The maximum of the Sturges and Freedman-Diaconis estimators
+        :returns float: PSI distance between ``sample_1`` and ``sample_2``
+
+        :example:
+        >>> sample_1, sample_2 = np.random.randint(0, 100, (100,)), np.random.randint(0, 10, (100,))
+        >>> Statistics().population_stability_index(sample_1=sample_1, sample_2=sample_2, fill_value=1, bucket_method='auto')
+        >>> 3.9657026867553817
+        """
+
+        check_valid_array(
+            data=sample_1, source=self.__class__.__name__, accepted_sizes=[1]
+        )
+        check_valid_array(
+            data=sample_2, source=self.__class__.__name__, accepted_sizes=[1]
+        )
+        check_int(name=self.__class__.__name__, value=fill_value)
+        check_str(
+            name=self.__class__.__name__,
+            value=bucket_method,
+            options=Options.BUCKET_METHODS.value,
+        )
+        bin_width, bin_count = bucket_data(data=sample_1, method=bucket_method)
+        sample_1_hist = self._hist_1d(
+            data=sample_1,
+            bin_count=bin_count,
+            range=np.array([0, int(bin_width * bin_count)]),
+        )
+        sample_2_hist = self._hist_1d(
+            data=sample_2,
+            bin_count=bin_count,
+            range=np.array([0, int(bin_width * bin_count)]),
+        )
+        sample_1_hist[sample_1_hist == 0] = fill_value
+        sample_2_hist[sample_2_hist == 0] = fill_value
+        sample_1_hist, sample_2_hist = sample_1_hist / np.sum(
+            sample_1_hist
+        ), sample_2_hist / np.sum(sample_2_hist)
+        samples_diff = sample_2_hist - sample_1_hist
+        log = np.log(sample_2_hist / sample_1_hist)
+        return np.sum(samples_diff * log)
+
+    def rolling_population_stability_index(
+        self,
+        data: np.ndarray,
+        time_windows: np.ndarray,
+        fps: int,
+        fill_value: int = 1,
+        bucket_method: Literal[
+            "fd", "doane", "auto", "scott", "stone", "rice", "sturges", "sqrt"
+        ] = "auto",
+    ) -> np.ndarray:
+        """
+        Compute rolling Population Stability Index (PSI) comparing the current time-window of
+        size N to the preceding window of size N.
+
+        .. note::
+           Empty bins (0 observations in bin) in is replaced with ``fill_value``.
+
+        :parameter ndarray sample_1: First 1d array representing feature values.
+        :parameter ndarray sample_2: Second 1d array representing feature values.
+        :parameter int fill_value: Empty bins (0 observations in bin) in is replaced with ``fill_value``.
+        :parameter Literal bucket_method: Estimator determining optimal bucket count and bucket width. Default: The maximum of the Sturges and Freedman-Diaconis estimators
+        :returns np.ndarray: PSI data of size len(data) x len(time_windows).
+        """
+
+        results = np.full((data.shape[0], time_windows.shape[0]), 0.0)
+        for i in prange(time_windows.shape[0]):
+            window_size = int(time_windows[i] * fps)
+            data_split = np.split(
+                data, list(range(window_size, data.shape[0], window_size))
+            )
+            for j in prange(1, len(data_split)):
+                window_start = int(window_size * j)
+                window_end = int(window_start + window_size)
+                sample_1, sample_2 = data_split[j - 1].astype(np.float32), data_split[
+                    j
+                ].astype(np.float32)
+                bin_width, bin_count = bucket_data(data=sample_1, method=bucket_method)
+                sample_1_hist = self._hist_1d(
+                    data=sample_1,
+                    bin_count=bin_count,
+                    range=np.array([0, int(bin_width * bin_count)]),
+                )
+                sample_2_hist = self._hist_1d(
+                    data=sample_2,
+                    bin_count=bin_count,
+                    range=np.array([0, int(bin_width * bin_count)]),
+                )
+                sample_1_hist[sample_1_hist == 0] = fill_value
+                sample_2_hist[sample_2_hist == 0] = fill_value
+                sample_1_hist, sample_2_hist = sample_1_hist / np.sum(
+                    sample_1_hist
+                ), sample_2_hist / np.sum(sample_2_hist)
+                samples_diff = sample_2_hist - sample_1_hist
+                log = np.log(sample_2_hist / sample_1_hist)
+                psi = np.sum(samples_diff * log)
+                results[window_start:window_end, i] = psi
+
+        return results
+
+    @staticmethod
+    @njit("(float64[:], float64[:])", cache=True)
+    def kruskal_wallis(sample_1: np.ndarray, sample_2: np.ndarray) -> float:
+        """
+        Jitted compute of Kruskal-Wallis H between two distributions.
+
+        :parameter ndarray sample_1: First 1d array representing feature values.
+        :parameter ndarray sample_2: Second 1d array representing feature values.
+        :returns float: Kruskal-Wallis H.
+
+        :example:
+        >>> sample_1 = np.array([1, 1, 3, 4, 5]).astype(np.float64)
+        >>> sample_2 = np.array([6, 7, 8, 9, 10]).astype(np.float64)
+        >>> Statistics().kruskal_wallis(sample_1=sample_1, sample_2=sample_2)
+        >>> 39.4
+        """
+
+        # sample_1 = np.concatenate((np.zeros((sample_1.shape[0], 1)), sample_1.reshape(-1, 1)), axis=1)
+        # sample_2 = np.concatenate((np.ones((sample_2.shape[0], 1)), sample_2.reshape(-1, 1)), axis=1)
+        data = np.vstack((sample_1, sample_2))
+        ranks = fast_mean_rank(data=data[:, 1], descending=False)
+        data = np.hstack((data, ranks.reshape(-1, 1)))
+        sample_1_summed_rank = np.sum(data[0 : sample_1.shape[0], 2].flatten())
+        sample_2_summed_rank = np.sum(data[sample_1.shape[0] :, 2].flatten())
+        h1 = 12 / (data.shape[0] * (data.shape[0] + 1))
+        h2 = (np.square(sample_1_summed_rank) / sample_1.shape[0]) + (
+            np.square(sample_2_summed_rank) / sample_2.shape[0]
+        )
+        h3 = 3 * (data.shape[0] + 1)
+        return h1 * h2 - h3
+
+    @staticmethod
+    @njit("(float64[:], float64[:])", cache=True)
+    def mann_whitney(sample_1: np.ndarray, sample_2: np.ndarray) -> float:
+        """
+        Jitted compute of Mann-Whitney U between two distributions.
+
+        :parameter ndarray sample_1: First 1d array representing feature values.
+        :parameter ndarray sample_2: Second 1d array representing feature values.
+        :returns float: Mann-Whitney U.
+
+        :references:
+            `Modified from James Webber gist on GitHub <https://gist.github.com/jamestwebber/38ab26d281f97feb8196b3d93edeeb7b>`__.
+
+        :example:
+        >>> sample_1 = np.array([1, 1, 3, 4, 5])
+        >>> sample_2 = np.array([6, 7, 8, 9, 10])
+        >>> results = Statistics().mann_whitney(sample_1=sample_1, sample_2=sample_2)
+        """
+
+        n1, n2 = sample_1.shape[0], sample_2.shape[0]
+        ranked = fast_mean_rank(np.concatenate((sample_1, sample_2)))
+        u1 = n1 * n2 + (n1 * (n1 + 1)) / 2.0 - np.sum(ranked[:n1], axis=0)
+        u2 = n1 * n2 - u1
+        return min(u1, u2)
+
+    @staticmethod
+    @jit(nopython=True, cache=True)
+    def levenes(
+        sample_1: np.ndarray,
+        sample_2: np.ndarray,
+        critical_values: Optional[np.ndarray] = None,
+    ) -> (float, Union[bool, None]):
+        """
+        Jitted compute of two-sample Leven's W.
+
+        :parameter ndarray sample_1: First 1d array representing feature values.
+        :parameter ndarray sample_2: Second 1d array representing feature values.
+        :parameter ndarray critical_values: 2D array with where first column represent dfn first row dfd with values represent critical values.
+                                            Can be found in ``simba.assets.critical_values_05.pickle``
+
+        :returns float: Leven's W.
+
+        :examples:
+        >>> sample_1 = np.array(list(range(0, 50)))
+        >>> sample_2 = np.array(list(range(25, 100)))
+        >>> Statistics().levenes(sample_1=sample_1, sample_2=sample_2)
+        >>> 12.63909108903254
+        >>> critical_values = pickle.load(open("simba/assets/lookups/critical_values_5.pickle","rb"))['f']['one_tail'].values
+        >>> Statistics().levenes(sample_1=sample_1, sample_2=sample_2, critical_values=critical_values)
+        >>> (12.63909108903254, True)
+        """
+
+        significance_bool = None
+        Ni_x, Ni_y = len(sample_1), len(sample_2)
+        Yci_x, Yci_y = np.median(sample_1), np.median(sample_2)
+        Ntot = Ni_x + Ni_y
+        Zij_x, Zij_y = np.abs(sample_1 - Yci_x).astype(np.float32), np.abs(
+            sample_2 - Yci_y
+        ).astype(np.float32)
+        Zbari_x, Zbari_y = np.mean(Zij_x), np.mean(Zij_y)
+        Zbar = ((Zbari_x * Ni_x) + (Zbari_y * Ni_y)) / Ntot
+        numer = (Ntot - 2) * np.sum(
+            np.array([Ni_x, Ni_y]) * (np.array([Zbari_x, Zbari_y]) - Zbar) ** 2
+        )
+        dvar = np.sum((Zij_x - Zbari_x) ** 2) + np.sum((Zij_y - Zbari_y) ** 2)
+        denom = (2 - 1.0) * dvar
+        l_statistic = numer / denom
+
+        if critical_values is not None:
+            dfn, dfd = 1, (Ni_x + Ni_y) - 2
+            idx = (np.abs(critical_values[0][1:] - dfd)).argmin() + 1
+            critical_values = critical_values[1:, np.array([0, idx])]
+            critical_value = np.interp(
+                dfd, critical_values[:, 0], critical_values[:, 1]
+            )
+            if l_statistic >= critical_value:
+                significance_bool = True
+            else:
+                significance_bool = False
+
+        return (l_statistic, significance_bool)
+
+    @staticmethod
+    @njit("(float64[:], float64[:], float64)", cache=True)
+    def rolling_levenes(
+        data: np.ndarray, time_windows: np.ndarray, fps: float
+    ) -> float:
+        """
+        Jitted compute of rolling Levene's W comparing the current time-window of size N to the preceding window of size N.
+
+        .. note::
+           First time bin (where has no preceding time bin) will have fill value ``0``
+
+        :parameter ndarray sample_1: First 1d array representing feature values.
+        :parameter ndarray sample_2: Second 1d array representing feature values.
+        :returns np.ndarray: Levene's W data of size len(data) x len(time_windows).
+
+        :example:
+        >>> data = np.random.randint(0, 50, (100)).astype(np.float64)
+        >>> Statistics().rolling_levenes(data=data, time_windows=np.array([1]).astype(np.float64), fps=5.0)
+        """
+
+        results = np.full((data.shape[0], time_windows.shape[0]), 0.0)
+        for i in prange(time_windows.shape[0]):
+            window_size = int(time_windows[i] * fps)
+            data_split = np.split(
+                data, list(range(window_size, data.shape[0], window_size))
+            )
+            for j in prange(1, len(data_split)):
+                window_start = int(window_size * j)
+                window_end = int(window_start + window_size)
+                sample_1, sample_2 = data_split[j - 1].astype(np.float32), data_split[
+                    j
+                ].astype(np.float32)
+                Ni_x, Ni_y = len(sample_1), len(sample_2)
+                Yci_x, Yci_y = np.median(sample_1), np.median(sample_2)
+                Ntot = Ni_x + Ni_y
+                Zij_x, Zij_y = np.abs(sample_1 - Yci_x).astype(np.float32), np.abs(
+                    sample_2 - Yci_y
+                ).astype(np.float32)
+                Zbari_x, Zbari_y = np.mean(Zij_x), np.mean(Zij_y)
+                Zbar = ((Zbari_x * Ni_x) + (Zbari_y * Ni_y)) / Ntot
+                numer = (Ntot - 2) * np.sum(
+                    np.array([Ni_x, Ni_y]) * (np.array([Zbari_x, Zbari_y]) - Zbar) ** 2
+                )
+                dvar = np.sum((Zij_x - Zbari_x) ** 2) + np.sum((Zij_y - Zbari_y) ** 2)
+                denom = (2 - 1.0) * dvar
+                w = numer / denom
+                results[window_start:window_end, i] = w
+        return results
+
+    @staticmethod
+    @jit(nopython=True, cache=True)
+    def brunner_munzel(sample_1: np.ndarray, sample_2: np.ndarray) -> float:
+        """
+        Jitted compute of Brunner-Munzel W between two distributions.
+
+        :parameter ndarray sample_1: First 1d array representing feature values.
+        :parameter ndarray sample_2: Second 1d array representing feature values.
+        :returns float: Brunner-Munzel W.
+
+        .. note::
+           Modified from ``scipy.stats.brunnermunzel``.
+
+        :example:
+        >>> sample_1, sample_2 = np.random.normal(loc=10, scale=2, size=10), np.random.normal(loc=20, scale=2, size=10)
+        >>> Statistics().brunner_munzel(sample_1=sample_1, sample_2=sample_2)
+        >>> 0.5751408161437165
+        """
+        nx, ny = len(sample_1), len(sample_2)
+        rankc = fast_mean_rank(np.concatenate((sample_1, sample_2)))
+        rankcx, rankcy = rankc[0:nx], rankc[nx : nx + ny]
+        rankcx_mean, rankcy_mean = np.mean(rankcx), np.mean(rankcy)
+        rankx, ranky = fast_mean_rank(sample_1), fast_mean_rank(sample_2)
+        rankx_mean, ranky_mean = np.mean(rankx), np.mean(ranky)
+        Sx = np.sum(np.power(rankcx - rankx - rankcx_mean + rankx_mean, 2.0)) / nx - 1
+        Sy = np.sum(np.power(rankcy - ranky - rankcy_mean + ranky_mean, 2.0)) / ny - 1
+        wbfn = nx * ny * (rankcy_mean - rankcx_mean)
+        wbfn /= (nx + ny) * np.sqrt(nx * Sx + ny * Sy)
+        return -wbfn
+
+    @staticmethod
+    @njit("(float32[:], float64[:], float64)", cache=True)
+    def rolling_barletts_test(
+        data: np.ndarray, time_windows: np.ndarray, fps: float
+    ) -> float:
+
+        results = np.full((data.shape[0], time_windows.shape[0]), 0.0)
+        for i in prange(time_windows.shape[0]):
+            window_size = int(time_windows[i] * fps)
+            data_split = np.split(
+                data, list(range(window_size, data.shape[0], window_size))
+            )
+            for j in prange(1, len(data_split)):
+                window_start = int(window_size * j)
+                window_end = int(window_start + window_size)
+                sample_1, sample_2 = data_split[j - 1].astype(np.float32), data_split[
+                    j
+                ].astype(np.float32)
+                n_1 = len(sample_1)
+                n_2 = len(sample_2)
+                N = n_1 + n_2
+                mean_variance_1 = np.sum((sample_1 - np.mean(sample_1)) ** 2) / (
+                    n_1 - 1
+                )
+                mean_variance_2 = np.sum((sample_2 - np.mean(sample_2)) ** 2) / (
+                    n_2 - 1
+                )
+                numerator = (N - 2) * (
+                    np.log(mean_variance_1) + np.log(mean_variance_2)
+                )
+                denominator = 1 / (n_1 - 1) + 1 / (n_2 - 1)
+                u = numerator / denominator
+                results[window_start:window_end, i] = u
+
+        return results
+
+    @staticmethod
+    @njit("(float32[:], float32[:])")
+    def pearsons_r(sample_1: np.ndarray, sample_2: np.ndarray) -> float:
+        """
+        Calculate the Pearson correlation coefficient (Pearson's r) between two numeric samples.
+
+        Pearson's r is a measure of the linear correlation between two sets of data points. It quantifies the strength and
+        direction of the linear relationship between the two variables. The coefficient varies between -1 and 1, with
+        -1 indicating a perfect negative linear relationship, 1 indicating a perfect positive linear relationship, and 0
+        indicating no linear relationship.
+
+        :example:
+        >>> sample_1 = np.array([7, 2, 9, 4, 5, 6, 7, 8, 9]).astype(np.float32)
+        >>> sample_2 = np.array([1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5]).astype(np.float32)
+        >>> Statistics().pearsons_r(sample_1=sample_1, sample_2=sample_2)
+        >>> 0.47
+        """
+
+        m1, m2 = np.mean(sample_1), np.mean(sample_2)
+        numerator = np.sum((sample_1 - m1) * (sample_2 - m2))
+        denominator = np.sqrt(
+            np.sum((sample_1 - m1) ** 2) * np.sum((sample_2 - m2) ** 2)
+        )
+        r = numerator / denominator
+        return r
+
+    @staticmethod
+    @njit("(float32[:], float32[:])")
+    def spearman_rank_correlation(sample_1: np.ndarray, sample_2: np.ndarray) -> float:
+        """
+        :example:
+        >>> sample_1 = np.array([7, 2, 9, 4, 5, 6, 7, 8, 9]).astype(np.float32)
+        >>> sample_2 = np.array([1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5]).astype(np.float32)
+        >>> Statistics().spearman_rank_correlation(sample_1=sample_1, sample_2=sample_2)
+        >>> 0.0003979206085205078
+        """
+
+        rank_x, rank_y = np.argsort(np.argsort(sample_1)), np.argsort(
+            np.argsort(sample_2)
+        )
+        d_squared = np.sum((rank_x - rank_y) ** 2)
+        return 1 - (6 * d_squared) / (len(sample_1) * (len(sample_2) ** 2 - 1))
+
+    @staticmethod
+    @njit("(float32[:], float32[:], float64[:], int64)")
+    def sliding_pearsons_r(
+        sample_1: np.ndarray, sample_2: np.ndarray, time_windows: np.ndarray, fps: int
+    ) -> np.ndarray:
+        """
+        Given two 1D arrays of size N, create sliding window of size time_windows[i] * fps and return Pearson's R
+        between the values in the two 1D arrays in each window. Address "what is the correlation between Feature 1 and
+        Feature 2 in the current X.X seconds of the video".
+
+        .. image:: _static/img/sliding_pearsons.png
+           :width: 600
+           :align: center
+
+        :parameter ndarray sample_1: First 1D array with feature values.
+        :parameter ndarray sample_1: Second 1D array with feature values.
+        :parameter float time_windows: The length of the sliding window in seconds.
+        :parameter int fps: The fps of the recorded video.
+        :returns np.ndarray: 2d array of Pearsons R of size len(sample_1) x len(time_windows). Note, if sliding window is 10 frames, the first 9 entries will be filled with 0.
+
+        :example:
+        >>> sample_1 = np.random.randint(0, 50, (10)).astype(np.float32)
+        >>> sample_2 = np.random.randint(0, 50, (10)).astype(np.float32)
+        >>> Statistics().sliding_pearsons_r(sample_1=sample_1, sample_2=sample_2, time_windows=np.array([0.5]), fps=10)
+        >>> [[-1.][-1.][-1.][-1.][0.227][-0.319][-0.196][0.474][-0.061][0.713]]
+        """
+
+        results = np.full((sample_1.shape[0], time_windows.shape[0]), 0.0)
+        for i in prange(time_windows.shape[0]):
+            window_size = int(time_windows[i] * fps)
+            for left, right in zip(
+                prange(0, sample_1.shape[0] + 1),
+                prange(window_size, sample_1.shape[0] + 1),
+            ):
+                s1, s2 = sample_1[left:right], sample_2[left:right]
+                m1, m2 = np.mean(s1), np.mean(s2)
+                numerator = np.sum((s1 - m1) * (s2 - m2))
+                denominator = np.sqrt(np.sum((s1 - m1) ** 2) * np.sum((s2 - m2) ** 2))
+                if denominator != 0:
+                    r = numerator / denominator
+                    results[right - 1, i] = r
+                else:
+                    results[right - 1, i] = -1.0
+
+        return results
+
+    @staticmethod
+    @njit(
+        [
+            "(float32[:], float32[:], float64[:,:], types.unicode_type)",
+            '(float32[:], float32[:], float64[:,:], types.misc.Omitted("goodness_of_fit"))',
+            "(float32[:], float32[:], types.misc.Omitted(None), types.unicode_type)",
+            '(float32[:], float32[:], types.misc.Omitted(None), types.misc.Omitted("goodness_of_fit"))',
+        ]
+    )
+    def chi_square(
+        sample_1: np.ndarray,
+        sample_2: np.ndarray,
+        critical_values: Optional[np.ndarray] = None,
+        type: Optional[Literal["goodness_of_fit", "independence"]] = "goodness_of_fit",
+    ) -> Tuple[float, Union[bool, None]]:
+        """
+        Jitted compute of chi square between two categorical distributions.
+
+        :parameter ndarray sample_1: First 1d array representing feature values.
+        :parameter ndarray sample_2: Second 1d array representing feature values.
+        :parameter ndarray critical_values: 2D array with where indexes represent degrees of freedom and values
+                                            represent critical values. Can be found in ``simba.assets.critical_values_05.pickle``
+
+        .. note::
+           Requires sample_1 and sample_2 has to be numeric. if working with strings, convert to
+           numeric category values before using chi_square.
+
+        .. warning:
+           Non-overlapping values (i.e., categories exist in sample_1 that does not exist in sample2) or small values may cause inflated chi square values.
+           If small contingency table small values, consider TODO Fisher's exact test
+
+        :example:
+        >>> sample_1 = np.array([1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5]).astype(np.float32)
+        >>> sample_2 = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).astype(np.float32)
+        >>> critical_values = pickle.load(open("simba/assets/lookups/critical_values_5.pickle", "rb"))['chi_square']['one_tail'].values
+        >>> chi_square(sample_1=sample_2, sample_2=sample_1, critical_values=critical_values, type='goodness_of_fit')
+        >>> (8.333, False)
+        >>>
+        """
+
+        chi_square, significance_bool = 0.0, None
+        unique_categories = np.unique(np.concatenate((sample_1, sample_2)))
+        sample_1_counts = np.zeros(len(unique_categories), dtype=np.int64)
+        sample_2_counts = np.zeros(len(unique_categories), dtype=np.int64)
+
+        for i in prange(len(unique_categories)):
+            sample_1_counts[i], sample_2_counts[i] = np.sum(
+                sample_1 == unique_categories[i]
+            ), np.sum(sample_2 == unique_categories[i])
+
+        for i in prange(len(unique_categories)):
+            count_1, count_2 = sample_1_counts[i], sample_2_counts[i]
+            if count_2 > 0:
+                chi_square += ((count_1 - count_2) ** 2) / count_2
+            else:
+                chi_square += ((count_1 - count_2) ** 2) / (count_2 + 1)
+
+        if critical_values is not None:
+            if type == "goodness_of_fit":
+                df = unique_categories.shape[0] - 1
+            else:
+                df = (len(sample_1_counts) - 1) * (len(sample_2_counts) - 1)
+
+            critical_value = np.interp(df, critical_values[:, 0], critical_values[:, 1])
+            if chi_square >= critical_value:
+                significance_bool = True
+            else:
+                significance_bool = False
+
+        return chi_square, significance_bool
+
+    @staticmethod
+    @njit("(float32[:], float32, float32, float32[:,:], float32)")
+    def sliding_independent_samples_t(
+        data: np.ndarray,
+        time_window: float,
+        slide_time: float,
+        critical_values: np.ndarray,
+        fps: float,
+    ) -> np.ndarray:
+        """
+        Jitted compute of sliding independent sample t-test. Compares the feature values in current time-window
+        to prior time-windows to find the length in time to the most recent time-window where a significantly different
+        feature value distribution is detected.
+
+        .. image:: _static/img/sliding_statistics.png
+           :width: 1500
+           :align: center
+
+        :parameter ndarray data: 1D array with feature values.
+        :parameter float time_window: The sizes of the two feature value windows being compared in seconds.
+        :parameter float slide_time: The slide size of the second window.
+        :parameter ndarray critical_values: 2D array with where indexes represent degrees of freedom and values
+                                            represent critical T values. Can be found in ``simba.assets.critical_values_05.pickle``.
+        :parameter int fps: The fps of the recorded video.
+        :returns np.ndarray: 1D array of size len(data) with values representing time to most recent significantly different feature distribution.
+
+        :example:
+        >>> data = np.random.randint(0, 50, (10)).astype(np.float32)
+        >>> critical_values = pickle.load(open("simba/assets/lookups/critical_values_05.pickle", "rb"))['independent_t_test']['one_tail'].values.astype(np.float32)
+        >>> results = Statistics().sliding_independent_samples_t(data=data, time_window=0.5, fps=5.0, critical_values=critical_values, slide_time=0.30)
+        """
+
+        results = np.full((data.shape[0]), 0.0)
+        window_size, slide_size = int(time_window * fps), int(slide_time * fps)
+        for i in range(1, data.shape[0]):
+            sample_1_left, sample_1_right = i, i + window_size
+            sample_2_left, sample_2_right = (
+                sample_1_left - slide_size,
+                sample_1_right - slide_size,
+            )
+            sample_1 = data[sample_1_left:sample_1_right]
+            dof, steps_taken = (sample_1.shape[0] + sample_1.shape[0]) - 2, 1
+            while sample_2_left >= 0:
+                sample_2 = data[sample_2_left:sample_2_right]
+                t_statistic = (np.mean(sample_1) - np.mean(sample_2)) / np.sqrt(
+                    (np.std(sample_1) / sample_1.shape[0])
+                    + (np.std(sample_2) / sample_1.shape[0])
+                )
+                critical_val = critical_values[dof - 1][1]
+                if t_statistic >= critical_val:
+                    break
+                else:
+                    sample_2_left -= 1
+                    sample_2_right -= 1
+                    steps_taken += 1
+                if sample_2_left < 0:
+                    steps_taken = -1
+            if steps_taken == -1:
+                results[i + window_size] = -1
+            else:
+                results[i + window_size] = steps_taken * slide_time
+
+        return results
+
+    @staticmethod
+    @njit("(float32[:], float64[:], float32)")
+    def rolling_mann_whitney(data: np.ndarray, time_windows: np.ndarray, fps: float):
+        """
+        Jitted compute of rolling Mann-Whitney U comparing the current time-window of
+        size N to the preceding window of size N.
+
+        .. note::
+           First time bin (where has no preceding time bin) will have fill value ``0``
+
+           `Modified from James Webber gist <https://gist.github.com/jamestwebber/38ab26d281f97feb8196b3d93edeeb7b>`__.
+
+        :parameter ndarray sample_1: First 1d array representing feature values.
+        :parameter ndarray sample_2: Second 1d array representing feature values.
+        :returns np.ndarray: Mann-Whitney U data of size len(data) x len(time_windows).
+
+        :examples:
+        >>> data = np.random.randint(0, 4, (200)).astype(np.float32)
+        >>> results = Statistics().rolling_mann_whitney(data=data, time_windows=np.array([1.0]), fps=1)
+        """
+
+        results = np.full((data.shape[0], time_windows.shape[0]), 0.0)
+        for i in prange(time_windows.shape[0]):
+            window_size = int(time_windows[i] * fps)
+            data_split = np.split(
+                data, list(range(window_size, data.shape[0], window_size))
+            )
+            for j in prange(1, len(data_split)):
+                window_start = int(window_size * j)
+                window_end = int(window_start + window_size)
+                sample_1, sample_2 = data_split[j - 1].astype(np.float32), data_split[
+                    j
+                ].astype(np.float32)
+                n1, n2 = sample_1.shape[0], sample_2.shape[0]
+                ranked = fast_mean_rank(np.concatenate((sample_1, sample_2)))
+                u1 = n1 * n2 + (n1 * (n1 + 1)) / 2.0 - np.sum(ranked[:n1], axis=0)
+                u2 = n1 * n2 - u1
+                u = min(u1, u2)
+                results[window_start:window_end, i] = u
+
+        return results
+
+    def chow_test(self):
+        pass
+
+    @staticmethod
+    @njit("(float32[:], float32[:], float64[:], int64)")
+    def sliding_spearman_rank_correlation(
+        sample_1: np.ndarray, sample_2: np.ndarray, time_windows: np.ndarray, fps: int
+    ) -> np.ndarray:
+        """
+        Given two 1D arrays of size N, create sliding window of size time_windows[i] * fps and return Spearman's rank correlation
+        between the values in the two 1D arrays in each window. Address "what is the correlation between Feature 1 and
+        Feature 2 in the current X.X seconds of the video.
+
+        .. image:: _static/img/sliding_spearman.png
+           :width: 600
+           :align: center
+
+        :parameter ndarray sample_1: First 1D array with feature values.
+        :parameter ndarray sample_1: Second 1D array with feature values.
+        :parameter float time_windows: The length of the sliding window in seconds.
+        :parameter int fps: The fps of the recorded video.
+        :returns np.ndarray: 2d array of Soearman's ranks of size len(sample_1) x len(time_windows). Note, if sliding window is 10 frames, the first 9 entries will be filled with 0. The 10th value represents the correlation in the first 10 frames.
+
+        :example:
+        >>> sample_1 = np.array([9,10,13,22,15,18,15,19,32,11]).astype(np.float32)
+        >>> sample_2 = np.array([11, 12, 15, 19, 21, 26, 19, 20, 22, 19]).astype(np.float32)
+        >>> Statistics().sliding_spearman_rank_correlation(sample_1=sample_1, sample_2=sample_2, time_windows=np.array([0.5]), fps=10)
+        """
+
+        results = np.full((sample_1.shape[0], time_windows.shape[0]), 0.0)
+        for i in prange(time_windows.shape[0]):
+            window_size = int(time_windows[i] * fps)
+            for left, right in zip(
+                prange(0, sample_1.shape[0] + 1),
+                prange(window_size, sample_1.shape[0] + 1),
+            ):
+                s1, s2 = sample_1[left:right], sample_2[left:right]
+                rank_x, rank_y = np.argsort(np.argsort(s1)), np.argsort(np.argsort(s2))
+                d_squared = np.sum((rank_x - rank_y) ** 2)
+                s = 1 - (6 * d_squared) / (len(s1) * (len(s2) ** 2 - 1))
+                results[right - 1, i] = s
+
+        return results
+
+    @staticmethod
+    @njit("(float32[:], float64, float64, float64)")
+    def sliding_autocorrelation(
+        data: np.ndarray, max_lag: float, time_window: float, fps: float
+    ):
+        """
+        Jitted compute of sliding auto-correlations (the correlation of a feature with itself using lagged windows).
+
+        :example:
+        >>> data = np.array([0,1,2,3,4, 5,6,7,8,1,10,11,12,13,14]).astype(np.float32)
+        >>> Statistics().sliding_autocorrelation(data=data, max_lag=0.5, time_window=1.0, fps=10)
+        >>> [ 0., 0., 0.,  0.,  0., 0., 0.,  0. ,  0., -3.686, -2.029, -1.323, -1.753, -3.807, -4.634]
+        """
+
+        max_frm_lag, time_window_frms = int(max_lag * fps), int(time_window * fps)
+        results = np.full((data.shape[0]), 0.0)
+        for right in prange(time_window_frms - 1, data.shape[0]):
+            left = right - time_window_frms + 1
+            w_data = data[left : right + 1]
+            corrcfs = np.full((max_frm_lag), np.nan)
+            corrcfs[0] = 1
+            for shift in range(1, max_frm_lag):
+                corrcfs[shift] = np.corrcoef(w_data[:-shift], w_data[shift:])[0][1]
+            mat_ = np.zeros(shape=(corrcfs.shape[0], 2))
+            const = np.ones_like(corrcfs)
+            mat_[:, 0] = const
+            mat_[:, 1] = corrcfs
+            det_ = np.linalg.lstsq(
+                mat_.astype(np.float32), np.arange(0, max_frm_lag).astype(np.float32)
+            )[0]
+            results[right] = det_[::-1][0]
+        return results
+
+    @staticmethod
+    def sliding_dominant_frequencies(
+        data: np.ndarray,
+        fps: float,
+        k: int,
+        time_windows: np.ndarray,
+        window_function: Literal["Hann", "Hamming", "Blackman"] = None,
+    ):
+        """Find the K dominant frequencies within a feature vector using sliding windows"""
+
+        results = np.full((data.shape[0], time_windows.shape[0]), 0.0)
+        for time_window_cnt in range(time_windows.shape[0]):
+            window_size = int(time_windows[time_window_cnt] * fps)
+            for left, right in zip(
+                range(0, data.shape[0] + 1), range(window_size, data.shape[0] + 1)
+            ):
+                window_data = data[left:right]
+                if window_function == "Hann":
+                    window_data = window_data * np.hanning(len(window_data))
+                elif window_function == "Hamming":
+                    window_data = window_data * np.hamming(len(window_data))
+                elif window_function == "Blackman":
+                    window_data = window_data * np.blackman(len(window_data))
+                fft_result = np.fft.fft(window_data)
+                frequencies = np.fft.fftfreq(window_data.shape[0], 1 / fps)
+                magnitude = np.abs(fft_result)
+                top_k_frequency = frequencies[np.argsort(magnitude)[-(k + 1) : -1]]
+                results[right - 1][time_window_cnt] = top_k_frequency[0]
+        return results
+
+    @staticmethod
+    @njit("(float32[:], float32[:])")
+    def kendall_tau(sample_1: np.ndarray, sample_2: np.ndarray) -> Tuple[float, float]:
+        """
+        Jitted Kendall Tau (rank correlation coefficient). Non-parametric method for computing correlation
+        between two time-series features. Returns tau and associated z-score.
+
+        :parameter ndarray sample_1: First 1D array with feature values.
+        :parameter ndarray sample_1: Second 1D array with feature values.
+        :returns Tuple[float, float]: Kendall Tau and associated z-score.
+
+        :examples:
+        >>> sample_1 = np.array([4, 2, 3, 4, 5, 7]).astype(np.float32)
+        >>> sample_2 = np.array([1, 2, 3, 4, 5, 7]).astype(np.float32)
+        >>> Statistics().kendall_tau(sample_1=sample_1, sample_2=sample_2)
+        >>> (0.7333333333333333, 2.0665401605809928)
+
+        References
+        ----------
+        .. [1] `Stephanie Glen, "Kendall’s Tau (Kendall Rank Correlation Coefficient)"  <https://www.statisticshowto.com/kendalls-tau/>`__.
+        """
+
+        rnks = np.argsort(sample_1)
+        s1_rnk, s2_rnk = sample_1[rnks], sample_2[rnks]
+        cncrdnt_cnts, dscrdnt_cnts = np.full((s1_rnk.shape[0] - 1), np.nan), np.full(
+            (s1_rnk.shape[0] - 1), np.nan
+        )
+        for i in range(s2_rnk.shape[0] - 1):
+            cncrdnt_cnts[i] = (
+                np.argwhere(s2_rnk[i + 1 :] > s2_rnk[i]).flatten().shape[0]
+            )
+            dscrdnt_cnts[i] = (
+                np.argwhere(s2_rnk[i + 1 :] < s2_rnk[i]).flatten().shape[0]
+            )
+        t = (np.sum(cncrdnt_cnts) - np.sum(dscrdnt_cnts)) / (
+            np.sum(cncrdnt_cnts) + np.sum(dscrdnt_cnts)
+        )
+        z = (
+            3
+            * t
+            * (np.sqrt(s1_rnk.shape[0] * (s1_rnk.shape[0] - 1)))
+            / np.sqrt(2 * ((2 * s1_rnk.shape[0]) + 5))
+        )
+
+        return t, z
+
+    @staticmethod
+    @njit("(float32[:], float32[:], float64[:], int64)")
+    def sliding_kendall_tau(
+        sample_1: np.ndarray, sample_2: np.ndarray, time_windows: np.ndarray, fps: float
+    ) -> np.ndarray:
+        """
+        Compute sliding Kendall's Tau correlation coefficient.
+
+        Calculates Kendall's Tau correlation coefficient between two samples over sliding time windows. Kendall's Tau is a measure of correlation between two ranked datasets.
+
+        The computation is based on the formula:
+
+        .. math::
+
+           \\tau = \\frac{{\\text{{concordant pairs}} - \\text{{discordant pairs}}}}{{\\text{{concordant pairs}} + \\text{{discordant pairs}}}}
+
+        where concordant pairs are pairs of elements with the same order in both samples, and discordant pairs are pairs with different orders.
+
+        References
+        ----------
+        .. [1] `Stephanie Glen, "Kendall’s Tau (Kendall Rank Correlation Coefficient)"  <https://www.statisticshowto.com/kendalls-tau/>`__.
+
+
+        :param np.ndarray sample_1: First sample for comparison.
+        :param np.ndarray sample_2: Second sample for comparison.
+        :param np.ndarray time_windows: Rolling time windows in seconds.
+        :param float fps: Frames per second (FPS) of the recorded video.
+        :return: Array of Kendall's Tau correlation coefficients corresponding to each time window.
+        """
+
+        results = np.full((sample_1.shape[0], time_windows.shape[0]), 0.0)
+        for time_window_cnt in range(time_windows.shape[0]):
+            window_size = int(time_windows[time_window_cnt] * fps)
+            for left, right in zip(
+                range(0, sample_1.shape[0] + 1),
+                range(window_size, sample_1.shape[0] + 1),
+            ):
+                sliced_sample_1, sliced_sample_2 = (
+                    sample_1[left:right],
+                    sample_2[left:right],
+                )
+                rnks = np.argsort(sliced_sample_1)
+                s1_rnk, s2_rnk = sliced_sample_1[rnks], sliced_sample_2[rnks]
+                cncrdnt_cnts, dscrdnt_cnts = np.full(
+                    (s1_rnk.shape[0] - 1), np.nan
+                ), np.full((s1_rnk.shape[0] - 1), np.nan)
+                for i in range(s2_rnk.shape[0] - 1):
+                    cncrdnt_cnts[i] = (
+                        np.argwhere(s2_rnk[i + 1 :] > s2_rnk[i]).flatten().shape[0]
+                    )
+                    dscrdnt_cnts[i] = (
+                        np.argwhere(s2_rnk[i + 1 :] < s2_rnk[i]).flatten().shape[0]
+                    )
+                results[right][time_window_cnt] = (
+                    np.sum(cncrdnt_cnts) - np.sum(dscrdnt_cnts)
+                ) / (np.sum(cncrdnt_cnts) + np.sum(dscrdnt_cnts))
+
+        return results
+
+    @staticmethod
+    def find_collinear_features(
+        df: pd.DataFrame,
+        threshold: float,
+        method: Optional[Literal["pearson", "spearman", "kendall"]] = "pearson",
+        verbose: Optional[bool] = False,
+    ) -> List[str]:
+        """
+        Identify collinear features in the dataframe based on the specified correlation method and threshold.
+
+        :param pd.DataFrame df: Input DataFrame containing features.
+        :param float threshold: Threshold value to determine collinearity.
+        :param Optional[Literal['pearson', 'spearman', 'kendall']] method: Method for calculating correlation. Defaults to 'pearson'.
+        :return: Set of feature names identified as collinear. Returns one feature for every feature pair with correlation value above specified threshold.
+
+        :example:
+        >>> x = pd.DataFrame(np.random.randint(0, 100, (100, 100)))
+        >>> names = Statistics.find_collinear_features(df=x, threshold=0.2, method='pearson', verbose=True)
+        """
+
+        check_valid_dataframe(
+            df=df,
+            source=Statistics.find_collinear_features.__name__,
+            valid_dtypes=(float, int, np.float32, np.float64, np.int32, np.int64),
+            min_axis_1=1,
+            min_axis_0=1,
+        )
+        check_float(
+            name=Statistics.find_collinear_features.__name__,
+            value=threshold,
+            max_value=1.0,
+            min_value=0.0,
+        )
+        check_str(
+            name=Statistics.find_collinear_features.__name__,
+            value=method,
+            options=("pearson", "spearman", "kendall"),
+        )
+        feature_names = set()
+        feature_pairs = list(combinations(list(df.columns), 2))
+
+        for cnt, i in enumerate(feature_pairs):
+            if verbose:
+                print(
+                    f"Analyzing feature pair collinearity {cnt + 1}/{len(feature_pairs)}..."
+                )
+            if (i[0] not in feature_names) and (i[1] not in feature_names):
+                sample_1, sample_2 = df[i[0]].values.astype(np.float32), df[
+                    i[1]
+                ].values.astype(np.float32)
+                if method == "pearson":
+                    r = Statistics.pearsons_r(sample_1=sample_1, sample_2=sample_2)
+                elif method == "spearman":
+                    r = Statistics.spearman_rank_correlation(
+                        sample_1=sample_1, sample_2=sample_2
+                    )
+                else:
+                    r = Statistics.kendall_tau(sample_1=sample_1, sample_2=sample_2)[0]
+                if abs(r) > threshold:
+                    feature_names.add(i[0])
+        if verbose:
+            print("Collinear analysis complete.")
+        return feature_names
+
+    @staticmethod
+    def local_outlier_factor(
+        data: np.ndarray,
+        k: Union[int, float] = 5,
+        contamination: Optional[float] = 1e-10,
+        normalize: Optional[bool] = False,
+    ) -> np.ndarray:
+        """
+        Compute the local outlier factor of each observation.
+
+        .. note::
+
+           The final LOF scores are negated. Thus, higher values indicate more atypical (outlier) data points.
+
+           Method calls ``sklearn.neighbors.LocalOutlierFactor`` directly. Previously called using own implementation JIT'ed method,
+           but runtime was 3x-ish slower than ``sklearn.neighbors.LocalOutlierFactor``.
+
+        :parameter ndarray data: 2D array with feature values where rows represent frames and columns represent features.
+        :parameter Union[int, float] k: Number of neighbors to evaluate for each observation. If the value is a float, then interpreted as the ratio of data.shape[0]. If the value is an integer, then it represent the number of neighbours to evaluate.
+        :parameter Optional[float] contamination: Small pseudonumber to avoid DivisionByZero error.
+        :parameter Optional[bool] normalize: Whether to normalize the Mahalanobis distances between 0 and 1. Defaults to False.
+        :returns np.ndarray: Array of size data.shape[0] with local outlier scores.
+
+        :example:
+        >>> data = np.random.normal(loc=45, scale=1, size=100).astype(np.float32)
+        >>> for i in range(5): data = np.vstack([data, np.random.normal(loc=45, scale=1, size=100).astype(np.float32)])
+        >>> for i in range(2): data = np.vstack([data, np.random.normal(loc=90, scale=1, size=100).astype(np.float32)])
+        >>> Statistics().local_outlier_factor(data=data, k=5)
+        >>> [1.004, 1.007, 0.986, 1.018, 0.986, 0.996, 24.067, 24.057]
+        """
+
+        check_valid_array(
+            source=f"{Statistics.__class__.__name__} local_outlier_factor",
+            data=data,
+            accepted_sizes=[2],
+        )
+        if k is not None:
+            check_float(name=f"{Statistics.__class__.__name__} k", value=k)
+            if isinstance(k, int):
+                k = min(k, data.shape[0])
+            elif isinstance(k, float):
+                k = int(data.shape[0] * k)
+                if k > data.shape[0]:
+                    k = data.shape[0]
+
+        check_float(
+            name=f"{Statistics.__class__.__name__} contamination",
+            value=contamination,
+            min_value=0.0,
+        )
+
+        lof_model = LocalOutlierFactor(n_neighbors=k, contamination=contamination)
+        _ = lof_model.fit_predict(data)
+        y = -lof_model.negative_outlier_factor_.astype(np.float32)
+        if normalize:
+            return (y - np.min(y)) / (np.max(y) - np.min(y))
+        else:
+            return y
+
+    @staticmethod
+    def elliptic_envelope(
+        data: np.ndarray,
+        contamination: Optional[float] = 1e-1,
+        normalize: Optional[bool] = True,
+    ) -> np.ndarray:
+        """
+        Compute the Mahalanobis distances of each observation in the input array using Elliptic Envelope method.
+
+        .. image:: _static/img/elliptic_envelope.png
+           :width: 800
+           :align: center
+
+        :param data: Input data array of shape (n_samples, n_features).
+        :param Optional[float] contamination: The proportion of outliers to be assumed in the data. Defaults to 0.1.
+        :param Optional[bool] normalize: Whether to normalize the Mahalanobis distances between 0 and 1. Defaults to True.
+        :return np.ndarray: The Mahalanobis distances of each observation in array. Larger values indicate outliers.
+
+        :example:
+        >>> data_path = '/Users/simon/Desktop/envs/NG_Unsupervised/project_folder/clusters/beautiful_beaver.pickle'
+        >>> x = read_pickle(data_path=data_path)['DR_MODEL']['MODEL'].embedding_
+        >>> y = elliptic_envelope(data=x, contamination=0.1)
+        >>> data = np.hstack((x, y.reshape(-1, 1)))
+        >>> img = PlottingMixin.continuous_scatter(data=data, columns=('X', 'Y', 'Mahalanobis distances'), size=20, palette='jet')
+        """
+
+        check_valid_array(
+            data=data,
+            accepted_ndims=(2,),
+            accepted_dtypes=(np.float64, np.float32, np.int32, np.int64, float, int),
+        )
+        check_float(
+            name=f"{Statistics.elliptic_envelope.__name__} contamination",
+            value=contamination,
+            min_value=0.0,
+            max_value=1.0,
+        )
+        mdl = EllipticEnvelope(contamination=contamination).fit(data)
+        y = -mdl.score_samples(data)
+        if normalize:
+            y = (y - np.min(y)) / (np.max(y) - np.min(y))
+        return y
+
+    @staticmethod
+    @jit(nopython=True)
+    def _hbos_compute(
+        data: np.ndarray, histograms: typed.Dict, histogram_edges: typed.Dict
+    ) -> np.ndarray:
+        """
+        Jitted helper to compute Histogram-based Outlier Score (HBOS) called by ``simba.mixins.statistics_mixin.Statistics.hbos``.
+
+        :parameter np.ndarray data: 2d array with frames represented by rows and columns representing feature values.
+        :parameter typed.Dict histograms: Numba typed.Dict with integer keys (representing order of feature) and 1d arrays as values representing observation bin counts.
+        :parameter: typed.Dict histogram_edges: Numba typed.Dict with integer keys (representing order of feature) and 1d arrays as values representing bin edges.
+        :return np.ndarray: Array of size data.shape[0] representing outlier scores, with higher values representing greater outliers.
+        """
+
+        results = np.full((data.shape[0]), np.nan)
+        data = data.astype(np.float32)
+        for i in prange(data.shape[0]):
+            score = 0.0
+            for j in prange(data.shape[1]):
+                value, bin_idx = data[i][j], np.nan
+                for k in np.arange(histogram_edges[j].shape[0], 0, -1):
+                    bin_max, bin_min = histogram_edges[j][k], histogram_edges[j][k - 1]
+                    if (value <= bin_max) and (value > bin_min):
+                        bin_idx = k
+                        continue
+                if np.isnan(bin_idx):
+                    bin_idx = 0
+                score += -np.log(histograms[j][int(bin_idx) - 1] + 1e-10)
+            results[i] = score
+        return results
+
+    def hbos(
+        self,
+        data: np.ndarray,
+        bucket_method: Literal[
+            "fd", "doane", "auto", "scott", "stone", "rice", "sturges", "sqrt"
+        ] = "auto",
+    ) -> np.ndarray:
+        """
+        Jitted compute of Histogram-based Outlier Scores (HBOS). HBOS quantifies the abnormality of data points based on the densities of their feature values
+        within their respective buckets over all feature values.
+
+        :parameter np.ndarray data: 2d array with frames represented by rows and columns representing feature values.
+        :parameter Literal bucket_method: Estimator determining optimal bucket count and bucket width. Default: The maximum of the Sturges and Freedman-Diaconis estimators.
+        :return np.ndarray: Array of size data.shape[0] representing outlier scores, with higher values representing greater outliers.
+
+        .. image:: _static/img/hbos.png
+           :width: 1200
+           :align: center
+
+        :example:
+        >>> sample_1 = np.random.random_integers(low=1, high=2, size=(10, 50)).astype(np.float64)
+        >>> sample_2 = np.random.random_integers(low=7, high=20, size=(2, 50)).astype(np.float64)
+        >>> data = np.vstack([sample_1, sample_2])
+        >>> Statistics().hbos(data=data)
+        """
+
+        check_valid_array(
+            data=data,
+            source=f"{Statistics.__class__.__name__} data",
+            accepted_sizes=[2],
+        )
+        check_str(
+            name=f"{Statistics.__class__.__name__} bucket_method",
+            value=bucket_method,
+            options=Options.BUCKET_METHODS.value,
+        )
+        min_vals, max_vals = np.min(data, axis=0), np.max(data, axis=0)
+        data = (data - min_vals) / (max_vals - min_vals) * (1 - 0) + 0
+        histogram_edges = typed.Dict.empty(
+            key_type=types.int64, value_type=types.float64[:]
+        )
+        histograms = typed.Dict.empty(key_type=types.int64, value_type=types.int64[:])
+        for i in range(data.shape[1]):
+            bin_width, bin_count = bucket_data(
+                data=data[:, i].flatten(), method=bucket_method
+            )
+            histograms[i] = self._hist_1d(
+                data=data[:, i].flatten(),
+                bin_count=bin_count,
+                range=np.array([0, int(bin_width * bin_count)]),
+            ).astype(np.int64)
+            histogram_edges[i] = np.arange(0, 1 + bin_width, bin_width).astype(
+                np.float64
+            )
+        results = self._hbos_compute(
+            data=data, histograms=histograms, histogram_edges=histogram_edges
+        )
+        return results.astype(np.float32)
+
+    def rolling_shapiro_wilks(
+        self, data: np.ndarray, time_window: float, fps: int
+    ) -> np.ndarray:
+        """
+        Compute Shapiro-Wilks normality statistics for sequentially binned values in a time-series. E.g., compute
+        the normality statistics of ``Feature N`` in each window of ``time_window`` seconds.
+
+        :parameter ndarray data: 1D array of size len(frames) representing feature values.
+        :parameter int time_window: The size of the buckets in seconds.
+        :parameter int fps: Frame-rate of recorded video.
+        :return np.ndarray: Array of size data.shape[0] with Shapiro-Wilks normality statistics
+
+        :example:
+        >>> data = np.random.randint(low=0, high=100, size=(200)).astype('float32')
+        >>> results = self.rolling_shapiro_wilks(data=data, time_window=1, fps=30)
+        """
+
+        check_valid_array(
+            data=data,
+            source=f"{Statistics.__class__.__name__} data",
+            accepted_sizes=[1],
+        )
+        check_float(
+            name=f"{Statistics.__class__.__name__} data",
+            value=time_window,
+            min_value=0.1,
+        )
+        check_int(
+            name=f"{Statistics.__class__.__name__} data", value=time_window, min_value=1
+        )
+        window_size, results = int(time_window * fps), np.full((data.shape[0]), -1.0)
+        data = np.split(data, list(range(window_size, data.shape[0], window_size)))
+        for cnt, i in enumerate(prange(1, len(data))):
+            start, end = int((cnt + 1) * window_size), int(
+                ((cnt + 1) * window_size) + window_size
+            )
+            results[start:end] = stats.shapiro(data[i])[0]
+        return results
+
+    @staticmethod
+    @njit("(float32[:], float64[:], int64,)")
+    def sliding_z_scores(
+        data: np.ndarray, time_windows: np.ndarray, fps: int
+    ) -> np.ndarray:
+        """
+        Calculate sliding Z-scores for a given data array over specified time windows.
+
+        This function computes sliding Z-scores for a 1D data array over different time windows. The sliding Z-score
+        is a measure of how many standard deviations a data point is from the mean of the surrounding data within
+        the specified time window. This can be useful for detecting anomalies or variations in time-series data.
+
+        :parameter ndarray data: 1D NumPy array containing the time-series data.
+        :parameter ndarray time_windows: 1D NumPy array specifying the time windows in seconds over which to calculate the Z-scores.
+        :parameter int time_windows: Frames per second, used to convert time windows from seconds to the corresponding number of data points.
+        :returns np.ndarray: A 2D NumPy array containing the calculated Z-scores. Each row corresponds to the Z-scores calculated for a specific time window. The time windows are represented by the columns.
+
+        :example:
+        >>> data = np.random.randint(0, 100, (1000,)).astype(np.float32)
+        >>> z_scores = Statistics().sliding_z_scores(data=data, time_windows=np.array([1.0, 2.5]), fps=10)
+        """
+
+        results = np.full((data.shape[0], time_windows.shape[0]), 0.0)
+        for i in range(time_windows.shape[0]):
+            window_size = int(time_windows[i] * fps)
+            for right in range(window_size - 1, data.shape[0]):
+                left = right - window_size + 1
+                sample_data = data[left : right + 1]
+                m, s = np.mean(sample_data), np.std(sample_data)
+                vals = (sample_data - m) / s
+                results[left : right + 1, i] = vals
+        return results
+
+    @staticmethod
+    @njit("(int64[:, :],)")
+    def phi_coefficient(data: np.ndarray) -> float:
+        """
+        Compute the phi coefficient for a Nx2 array of binary data.
+
+        The phi coefficient (a.k.a Matthews Correlation Coefficient (MCC)), is a measure of association for binary data in a 2x2 contingency table. It quantifies the
+        degree of association or correlation between two binary variables (e.g., binary classification targets).
+
+        The formula for the phi coefficient is defined as:
+
+        .. math::
+           \phi = \frac{(BC - AD)}{\sqrt{(C_1 + C_2)(R_1 + R_2)(C_1 + R_1)(C_2 + R_2)}}
+
+        where:
+        - BC: Hit rate (reponse and truth is both 1)
+        - AD: Correct rejections (response and truth are both 0)
+        - C1, C2: Counts of occurrences where the response is 1 and 0, respectively.
+        - R1, R2: Counts of occurrences where the truth is 1 and 0, respectively.
+
+        :param np.ndarray data: A NumPy array containing binary data organized in two columns. Each row represents a pair of binary values for two variables. Columns represent two features or two binary classification results.
+        :param float: The calculated phi coefficient, a value between 0 and 1. A value of 0 indicates no association between the variables, while 1 indicates a perfect association.
+
+        :example:
+        >>> data = np.array([[0, 1], [1, 0], [1, 0], [1, 1]]).astype(np.int64)
+        >>> Statistics().phi_coefficient(data=data)
+        >>> 0.8164965809277261
+        >>> data = np.random.randint(0, 2, (100, 2))
+        >>> result = Statistics.phi_coefficient(data=data)
+        """
+        cnt_0_0 = len(np.argwhere((data[:, 0] == 0) & (data[:, 1] == 0)).flatten())
+        cnt_0_1 = len(np.argwhere((data[:, 0] == 0) & (data[:, 1] == 1)).flatten())
+        cnt_1_0 = len(np.argwhere((data[:, 0] == 1) & (data[:, 1] == 0)).flatten())
+        cnt_1_1 = len(np.argwhere((data[:, 0] == 1) & (data[:, 1] == 1)).flatten())
+
+        BC, AD = cnt_1_1 * cnt_0_0, cnt_1_0 * cnt_0_1
+        nominator = BC - AD
+        denominator = np.sqrt(
+            (cnt_1_0 + cnt_1_1)
+            * (cnt_0_0 + cnt_0_1)
+            * (cnt_1_0 + cnt_0_0)
+            * (cnt_1_1 * cnt_0_1)
+        )
+        if nominator == 0 or denominator == 0:
+            return 1.0
+        else:
+            return np.abs(
+                (BC - AD)
+                / np.sqrt(
+                    (cnt_1_0 + cnt_1_1)
+                    * (cnt_0_0 + cnt_0_1)
+                    * (cnt_1_0 + cnt_0_0)
+                    * (cnt_1_1 * cnt_0_1)
+                )
+            )
+
+    @staticmethod
+    @njit("(int32[:, :], float64[:], int64)")
+    def sliding_phi_coefficient(
+        data: np.ndarray, window_sizes: np.ndarray, sample_rate: int
+    ) -> np.ndarray:
+        """
+        Calculate sliding phi coefficients for a 2x2 contingency table derived from binary data.
+
+        Computes sliding phi coefficients for a 2x2 contingency table derived from binary data over different
+        time windows. The phi coefficient is a measure of association between two binary variables, and sliding phi
+        coefficients can reveal changes in association over time.
+
+        :param np.ndarray data: A 2D NumPy array containing binary data organized in two columns. Each row represents a pair of binary values for two variables.
+        :param np.ndarray window_sizes: 1D NumPy array specifying the time windows (in seconds) over which to calculate the sliding phi coefficients.
+        :param int sample_rate: The sampling rate or time interval (in samples per second, e.g., fps) at which data points were collected.
+        :returns np.ndarray: A 2D NumPy array containing the calculated sliding phi coefficients. Each row corresponds to the phi coefficients calculated for a specific time point, the columns correspond to time-windows.
+
+        :example:
+        >>> data = np.random.randint(0, 2, (200, 2))
+        >>> Statistics().sliding_phi_coefficient(data=data, window_sizes=np.array([1.0, 4.0]), sample_rate=10)
+        """
+
+        results = np.full((data.shape[0], window_sizes.shape[0]), -1.0)
+        for i in prange(window_sizes.shape[0]):
+            window_size = int(window_sizes[i] * sample_rate)
+            for l, r in zip(
+                range(0, data.shape[0] + 1), range(window_size, data.shape[0] + 1)
+            ):
+                sample = data[l:r, :]
+                cnt_0_0 = len(
+                    np.argwhere((sample[:, 0] == 0) & (sample[:, 1] == 0)).flatten()
+                )
+                cnt_0_1 = len(
+                    np.argwhere((sample[:, 0] == 0) & (sample[:, 1] == 1)).flatten()
+                )
+                cnt_1_0 = len(
+                    np.argwhere((sample[:, 0] == 1) & (sample[:, 1] == 0)).flatten()
+                )
+                cnt_1_1 = len(
+                    np.argwhere((sample[:, 0] == 1) & (sample[:, 1] == 1)).flatten()
+                )
+                BC, AD = cnt_1_1 * cnt_0_0, cnt_1_0 * cnt_0_1
+                nominator = BC - AD
+                denominator = np.sqrt(
+                    (cnt_1_0 + cnt_1_1)
+                    * (cnt_0_0 + cnt_0_1)
+                    * (cnt_1_0 + cnt_0_0)
+                    * (cnt_1_1 * cnt_0_1)
+                )
+                if nominator == 0 or denominator == 0:
+                    results[r - 1, i] = 0.0
+                else:
+                    results[r - 1, i] = np.abs(
+                        (BC - AD)
+                        / np.sqrt(
+                            (cnt_1_0 + cnt_1_1)
+                            * (cnt_0_0 + cnt_0_1)
+                            * (cnt_1_0 + cnt_0_0)
+                            * (cnt_1_1 * cnt_0_1)
+                        )
+                    )
+
+        return results.astype(np.float32)
+
+    @staticmethod
+    @njit("int64[:], int64[:],")
+    def cohens_h(sample_1: np.ndarray, sample_2: np.ndarray) -> float:
+        """
+        Jitted compute Cohen's h effect size for two samples of binary [0, 1] values. Cohen's h is a measure of effect size
+        for comparing two independent samples based on the differences in proportions of the two samples.
+
+        .. note:
+           Modified from `DABEST <https://github.com/ACCLAB/DABEST-python/blob/fa7df50d20ab1c9cc687c66dd8bddf55d9a9dce3/dabest/_stats_tools/effsize.py#L216>`_
+           `Cohen's h wiki <https://en.wikipedia.org/wiki/Cohen%27s_h>`_
+
+        .. math::
+
+           \\text{Cohen's h} = 2 \\arcsin\\left(\\sqrt{\\frac{\\sum{sample_1}}{N_1}}\\right) - 2 \\arcsin\left(\\sqrt{\frac{\\sum{sample_2}}{N_2}}\\right)
+
+        Where N_1 and N_2 are the sample sizes of sample_1 and sample_2, respectively.
+
+        :param np.ndarray sample_1: 1D array with binary [0, 1] values (e.g., first classifier inference values).
+        :param np.ndarray sample_2: 1D array with binary [0, 1] values (e.g., second classifier inference values).
+        :return float: Cohen's h effect size.
+
+        :example:
+        >>> sample_1 = np.array([1, 0, 0, 1])
+        >>> sample_2 = np.array([1, 1, 1, 0])
+        >>> Statistics().cohens_h(sample_1=sample_1, sample_2=sample_2)
+        >>> -0.5235987755982985
+        """
+
+        sample_1_proportion = np.sum(sample_1) / sample_1.shape[0]
+        sample_2_proportion = np.sum(sample_2) / sample_2.shape[0]
+        phi_sample_1 = 2 * np.arcsin(np.sqrt(sample_1_proportion))
+        phi_sample_2 = 2 * np.arcsin(np.sqrt(sample_2_proportion))
+
+        return phi_sample_1 - phi_sample_2
+
+    @staticmethod
+    @jit("(float32[:], float64[:], int64,)")
+    def sliding_skew(
+        data: np.ndarray, time_windows: np.ndarray, sample_rate: int
+    ) -> np.ndarray:
+        """
+        Compute the skewness of a 1D array within sliding time windows.
+
+        :param np.ndarray data: Input data array.
+        :param np.ndarray data: 1D array of time window durations in seconds.
+        :param np.ndarray data: Sampling rate of the data in samples per second.
+        :return np.ndarray: 2D array of skewness`1 values with rows corresponding to data points and columns corresponding to time windows.
+
+        :example:
+        >>> data = np.random.randint(0, 100, (10,))
+        >>> skewness = Statistics().sliding_skew(data=data.astype(np.float32), time_windows=np.array([1.0, 2.0]), sample_rate=2)
+        """
+
+        results = np.full((data.shape[0], time_windows.shape[0]), 0.0)
+        for i in prange(time_windows.shape[0]):
+            window_size = int(time_windows[i] * sample_rate)
+            for j in range(window_size, data.shape[0] + 1):
+                sample = data[j - window_size : j]
+                mean, std = np.mean(sample), np.std(sample)
+                results[j - 1][i] = (1 / sample.shape[0]) * np.sum(
+                    ((data - mean) / std) ** 3
+                )
+
+        return results
+
+    @staticmethod
+    @jit("(float32[:], float64[:], int64,)")
+    def sliding_kurtosis(
+        data: np.ndarray, time_windows: np.ndarray, sample_rate: int
+    ) -> np.ndarray:
+        """
+        Compute the kurtosis of a 1D array within sliding time windows.
+
+        :param np.ndarray data: Input data array.
+        :param np.ndarray time_windows: 1D array of time window durations in seconds.
+        :param np.ndarray sample_rate: Sampling rate of the data in samples per second.
+        :return np.ndarray: 2D array of skewness`1 values with rows corresponding to data points and columns corresponding to time windows.
+
+        :example:
+        >>> data = np.random.randint(0, 100, (10,))
+        >>> kurtosis = Statistics().sliding_kurtosis(data=data.astype(np.float32), time_windows=np.array([1.0, 2.0]), sample_rate=2)
+        """
+        results = np.full((data.shape[0], time_windows.shape[0]), 0.0)
+        for i in prange(time_windows.shape[0]):
+            window_size = time_windows[i] * sample_rate
+            for j in range(window_size, data.shape[0] + 1):
+                sample = data[j - window_size : j]
+                mean, std = np.mean(sample), np.std(sample)
+                results[j - 1][i] = np.mean(((data - mean) / std) ** 4) - 3
+        return results
+
+    @staticmethod
+    @jit(nopython=True)
+    # @njit([(float32[:], float64, int64, boolean),])
+    def kmeans_1d(
+        data: np.ndarray, k: int, max_iters: int, calc_medians: bool
+    ) -> Tuple[np.ndarray, np.ndarray, Union[None, types.DictType]]:
+        """
+        Perform k-means clustering on a 1-dimensional dataset.
+
+        :parameter np.ndarray data: 1d array containing feature values.
+        :parameter int k: Number of clusters.
+        :parameter int max_iters: Maximum number of iterations for the k-means algorithm.
+        :parameter bool calc_medians: Flag indicating whether to calculate cluster medians.
+        :returns Tuple: Tuple of three elements. Final centroids of the clusters. Labels assigned to each data point based on clusters. Cluster medians (if calc_medians is True), otherwise None.
+
+        :example:
+        >>> data_1d = np.array([1, 2, 3, 55, 65, 40, 43, 40]).astype(np.float64)
+        >>> centroids, labels, medians = Statistics().kmeans_1d(data_1d, 2, 1000, True)
+        """
+
+        data = np.ascontiguousarray(data)
+        X = data.reshape((data.shape[0], 1))
+        labels, medians = None, None
+        centroids = X[np.random.choice(data.shape[0], k, replace=False)].copy()
+        for _ in range(max_iters):
+            labels = np.zeros(X.shape[0], dtype=np.int64)
+            for i in range(X.shape[0]):
+                min_dist = np.inf
+                for j in range(k):
+                    dist = np.abs(X[i] - centroids[j])
+                    dist_sum = np.sum(dist)
+                    if dist_sum < min_dist:
+                        min_dist = dist_sum
+                        labels[i] = j
+
+            new_centroids = np.zeros_like(centroids)
+            counts = np.zeros(k, dtype=np.int64)
+            for i in range(X.shape[0]):
+                cluster = labels[i]
+                new_centroids[cluster] += X[i]
+                counts[cluster] += 1
+
+            for j in range(k):
+                if counts[j] > 0:
+                    new_centroids[j] /= counts[j]
+
+            if np.array_equal(centroids, new_centroids):
+                break
+            else:
+                centroids = new_centroids
+
+        if calc_medians:
+            labels, medians = labels.astype(np.int64), {}
+            for i in prange(0, k, 1):
+                medians[i] = np.median(data[np.argwhere(labels == i).flatten()])
+
+        return centroids, labels, medians
+
+    @staticmethod
+    @njit(
+        [
+            (int8[:], int8[:], types.misc.Omitted(value=False), float32[:]),
+            (
+                int8[:],
+                int8[:],
+                types.misc.Omitted(value=False),
+                types.misc.Omitted(None),
+            ),
+            (int8[:], int8[:], bool_, float32[:]),
+            (int8[:], int8[:], bool_, types.misc.Omitted(None)),
+        ]
+    )
+    def hamming_distance(
+        x: np.ndarray,
+        y: np.ndarray,
+        sort: Optional[bool] = False,
+        w: Optional[np.ndarray] = None,
+    ) -> float:
+        """
+        Jitted calculate of the Hamming similarity between two vectors.
+
+        .. note::
+           Adapted from `pynndescent <https://pynndescent.readthedocs.io/en/latest/>`_.
+
+        :parameter np.ndarray x: First binary vector.
+        :parameter np.ndarray x: Second binary vector.
+        :parameter Optional[np.ndarray] w: Optional weights for each element. Can be classification probabilities. If not provided, equal weights are assumed.
+        :parameter Optional[bool] sort: If True, sorts x and y prior to hamming distance calculation. Default, False.
+
+        :example:
+        >>> x, y = np.random.randint(0, 2, (10,)).astype(np.int8), np.random.randint(0, 2, (10,)).astype(np.int8)
+        >>> Statistics().hamming_distance(x=x, y=y)
+        >>> 0.91
+        """
+        # pass
+        if w is None:
+            w = np.ones(x.shape[0]).astype(np.float32)
+
+        results = 0.0
+        if sort:
+            x, y = np.sort(x), np.sort(y)
+        for i in prange(x.shape[0]):
+            if x[i] != y[i]:
+                results += 1.0 * w[i]
+        return results / x.shape[0]
+
+    @staticmethod
+    @njit(
+        [(int8[:], int8[:], float32[:]), (int8[:], int8[:], types.misc.Omitted(None))]
+    )
+    def yule_coef(
+        x: np.ndarray, y: np.ndarray, w: Optional[np.ndarray] = None
+    ) -> float64:
+        """
+        Jitted calculate of the yule coefficient between two binary vectors (e.g., to classified behaviors). 0 represent independence, 2 represents
+        complete interdependence.
+
+        .. note::
+           Adapted from `pynndescent <https://pynndescent.readthedocs.io/en/latest/>`_.
+
+        :parameter np.ndarray x: First binary vector.
+        :parameter np.ndarray x: Second binary vector.
+        :parameter Optional[np.ndarray] w: Optional weights for each element. Can be classification probabilities. If not provided, equal weights are assumed.
+
+        :example:
+        >>> x = np.random.randint(0, 2, (50,)).astype(np.int8)
+        >>> y = x ^ 1
+        >>> Statistics().yule_coef(x=x, y=y)
+        >>> 2
+        >>> random_indices = np.random.choice(len(x), size=len(x)//2, replace=False)
+        >>> y = np.copy(x)
+        >>> y[random_indices] = 1 - y[random_indices]
+        >>> Statistics().yule_coef(x=x, y=y)
+        >>> 0.99
+        """
+        if w is None:
+            w = np.ones(x.shape[0]).astype(np.float32)
+
+        f_f, t_t, t_f, f_t = 0.0, 0.0, 0.0, 0.0
+        for i in prange(x.shape[0]):
+            if (x[i] == 1) and (y[i] == 1):
+                t_t += 1 * w[i]
+            if (x[i] == 0) and (y[i] == 0):
+                f_f += 1 * w[i]
+            if (x[i] == 0) and (y[i] == 1):
+                f_t += 1 * w[i]
+            if (x[i] == 1) and (y[i] == 0):
+                t_f += 1 * w[i]
+        if t_f == 0.0 or f_t == 0.0:
+            return 0.0
+        else:
+            return (2.0 * t_f * f_t) / (t_t * f_f + t_f * f_t)
+
+    @staticmethod
+    @njit(
+        [(int8[:], int8[:], types.misc.Omitted(None)), (int8[:], int8[:], float32[:])]
+    )
+    def sokal_sneath(
+        x: np.ndarray, y: np.ndarray, w: Optional[np.ndarray] = None
+    ) -> float64:
+        """
+        Jitted calculate of the sokal sneath coefficient between two binary vectors (e.g., to classified behaviors). 0 represent independence, 1 represents complete interdependence.
+
+        :parameter np.ndarray x: First binary vector.
+        :parameter np.ndarray x: Second binary vector.
+        :parameter Optional[np.ndarray] w: Optional weights for each element. Can be classification probabilities. If not provided, equal weights are assumed.
+
+        .. note::
+           Adapted from `pynndescent <https://pynndescent.readthedocs.io/en/latest/>`_.
+
+        :example:
+        >>> x = np.array([0, 1, 0, 0, 1]).astype(np.int8)
+        >>> y = np.array([1, 0, 1, 1, 0]).astype(np.int8)
+        >>> Statistics().sokal_sneath(x, y)
+        >>> 0.0
+        """
+        if w is None:
+            w = np.ones(x.shape[0]).astype(float32)
+        t_cnt, f_cnt, t_f, f_t = 0.0, 0.0, 0.0, 0.0
+        for i in prange(x.shape[0]):
+            if (x[i] == 1) and (y[i] == 1):
+                t_cnt += 1.0 * w[i]
+            elif (x[i] == 0) and (y[i] == 0):
+                f_cnt += 1.0 * w[i]
+            elif (x[i] == 0) and (y[i] == 1):
+                f_t += 1.0 * w[i]
+            elif (x[i] == 1) and (y[i] == 0):
+                t_f += 1.0 * w[i]
+
+        if t_f + f_t == 0.0:
+            return 0.0
+        else:
+            return (f_t + t_f) / (2 * (t_cnt + f_cnt) + f_t + t_f)
+
+    @staticmethod
+    @njit([(float32[:, :], float32[:, :]), (float32[:, :], types.misc.Omitted(None))])
+    def bray_curtis_dissimilarity(
+        x: np.ndarray, w: Optional[np.ndarray] = None
+    ) -> np.ndarray:
+        """
+        Jitted calculate of the Bray-Curtis dissimilarity matrix between samples based on feature values.
+
+        Useful for finding similar frames based on behavior.
+
+        .. note::
+           Adapted from `pynndescent <https://pynndescent.readthedocs.io/en/latest/>`_.
+
+        :parameter np.ndarray x: 2d array with likely normalized feature values.
+        :parameter Optional[np.ndarray] w: Optional 2d array with weights of same size as x. Default None and all observations will have the same weight.
+        :returns np.ndarray: 2d array with same size as x representing dissimilarity values. 0 and the observations are identical and at 1 the observations are completly disimilar.
+
+        :example:
+        >>> x = np.array([[1, 1, 1, 1, 1], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [1, 1, 1, 1, 1]]).astype(np.float32)
+        >>> Statistics().bray_curtis_dissimilarity(x=x)
+        >>> [[0, 1., 1., 0.], [1., 0., 0., 1.], [1., 0., 0., 1.], [0., 1., 1., 0.]]
+        """
+        if w is None:
+            w = np.ones((x.shape[0], x.shape[0])).astype(np.float32)
+        results = np.full((x.shape[0], x.shape[0]), 0.0)
+        for i in prange(x.shape[0]):
+            for j in range(i + 1, x.shape[0]):
+                s1, s2, num, den = x[i], x[j], 0.0, 0.0
+                for k in range(s1.shape[0]):
+                    num += np.abs(s1[k] - s2[k])
+                    den += np.abs(s1[k] + s2[k])
+                if den == 0.0:
+                    val = 0.0
+                else:
+                    val = (float(num) / den) * w[i, j]
+                results[i, j] = val
+                results[j, i] = val
+        return results.astype(float32)
+
+    @staticmethod
+    @njit((float32[:], float32[:]))
+    def _hellinger_helper(x: np.ndarray, y: np.ndarray):
+        """Jitted helper for computing Hellinger distances from ``hellinger_distance``"""
+        result, norm_x, norm_y = 0.0, 0.0, 0.0
+        for i in range(x.shape[0]):
+            result += np.sqrt(x[i] * y[i])
+            norm_x += x[i]
+            norm_y += y[i]
+        if norm_x == 0 and norm_y == 0:
+            return 0.0
+        elif norm_x == 0 or norm_y == 0:
+            return 1.0
+        else:
+            return np.sqrt(1 - result / np.sqrt(norm_x * norm_y))
+
+    def hellinger_distance(
+        self,
+        x: np.ndarray,
+        y: np.ndarray,
+        bucket_method: Optional[
+            Literal["fd", "doane", "auto", "scott", "stone", "rice", "sturges", "sqrt"]
+        ] = "auto",
+    ) -> float:
+        """
+        Compute the Hellinger distance between two vector distribitions.
+
+        .. note::
+           The Hellinger distance is bounded and ranges from 0 to √2. Distance of √2 indicates that the two distributions are maximally dissimilar
+
+        :param np.ndarray x: First 1D array representing a probability distribution.
+        :param np.ndarray y: Second 1D array representing a probability distribution.
+        :param Optional[Literal['fd', 'doane', 'auto', 'scott', 'stone', 'rice', 'sturges', 'sqrt']] bucket_method: Method for computing histogram bins. Default is 'auto'.
+        :returns float: Hellinger distance between the two input probability distributions.
+
+        :example:
+        >>> x = np.random.randint(0, 9000, (500000,))
+        >>> y = np.random.randint(0, 9000, (500000,))
+        >>> Statistics().hellinger_distance(x=x, y=y, bucket_method='auto')
+        """
+
+        check_valid_array(
+            data=x,
+            source=Statistics.hellinger_distance.__name__,
+            accepted_ndims=(1,),
+            accepted_dtypes=(
+                np.int64,
+                np.int32,
+                np.int8,
+                np.float32,
+                np.float64,
+                int,
+                float,
+            ),
+        )
+        check_valid_array(
+            data=y,
+            source=Statistics.hellinger_distance.__name__,
+            accepted_ndims=(1,),
+            accepted_dtypes=(
+                np.int64,
+                np.int32,
+                np.int8,
+                np.float32,
+                np.float64,
+                int,
+                float,
+            ),
+        )
+        check_str(
+            name=f"{Statistics.hellinger_distance.__name__} method",
+            value=bucket_method,
+            options=Options.BUCKET_METHODS.value,
+        )
+        bin_width, bin_count = bucket_data(data=x, method=bucket_method)
+        s1_h = self._hist_1d(
+            data=x, bin_count=bin_count, range=np.array([0, int(bin_width * bin_count)])
+        )
+        s2_h = self._hist_1d(
+            data=y, bin_count=bin_count, range=np.array([0, int(bin_width * bin_count)])
+        )
+        return self._hellinger_helper(
+            x=s1_h.astype(np.float32), y=s2_h.astype(np.float32)
+        )
+
+    @staticmethod
+    @njit("(int64[:],int64[:])")
+    def cohens_kappa(sample_1: np.ndarray, sample_2: np.ndarray):
+        """
+        Jitted compute Cohen's Kappa coefficient for two binary samples.
+
+        Cohen's Kappa coefficient between classifications and ground truth taking into account agreement between classifications and ground truth occurring by chance.
+        Interpretation: >0.8	Almost Perfect, >0.6	Substantial,  >0.4	Moderate >0.2	Fair, 0-0,2	Slight, <0	Poor ( Landis & Koch (1977)).
+
+        :example:
+        >>> sample_1 = np.random.randint(0, 2, size=(10000,))
+        >>> sample_2 = np.random.randint(0, 2, size=(10000,))
+        >>> Statistics.cohens_kappa(sample_1=sample_1, sample_2=sample_2))
+        """
+        sample_1 = np.ascontiguousarray(sample_1)
+        sample_2 = np.ascontiguousarray(sample_2)
+        data = np.hstack((sample_1.reshape(-1, 1), sample_2.reshape(-1, 1)))
+        tp = len(np.argwhere((data[:, 0] == 1) & (data[:, 1] == 1)).flatten())
+        tn = len(np.argwhere((data[:, 0] == 0) & (data[:, 1] == 0)).flatten())
+        fp = len(np.argwhere((data[:, 0] == 1) & (data[:, 1] == 0)).flatten())
+        fn = len(np.argwhere((data[:, 0] == 0) & (data[:, 1] == 1)).flatten())
+        data = np.array(([tp, fp], [fn, tn]))
+        sum0 = data.sum(axis=0)
+        sum1 = data.sum(axis=1)
+        expected = np.outer(sum0, sum1) / np.sum(sum0)
+        w_mat = np.full(shape=(2, 2), fill_value=1)
+        w_mat[0, 0] = 0
+        w_mat[1, 1] = 0
+        return 1 - np.sum(w_mat * data) / np.sum(w_mat * expected)
+
+    @staticmethod
+    def d_prime(
+        x: np.ndarray,
+        y: np.ndarray,
+        lower_limit: Optional[float] = 0.0001,
+        upper_limit: Optional[float] = 0.9999,
+    ) -> float:
+        """
+        Computes d-prime from two Boolean 1d arrays, e.g., between classifications and ground truth.
+
+        :param np.ndarray x: Boolean 1D array of response values, where 1 represents presence, and 0 representing absence.
+        :param np.ndarray y: Boolean 1D array of ground truth, where 1 represents presence, and 0 representing absence.
+        :param Optional[float] lower_limit: Lower limit to bound hit and false alarm rates. Defaults to 0.0001.
+        :param Optional[float] upper_limit: Upper limit to bound hit and false alarm rates. Defaults to 0.9999.
+        :return float: The calculated d' (d-prime) value.
+
+        :example:
+        >>> x = np.random.randint(0, 2, (1000,))
+        >>> y = np.random.randint(0, 2, (1000,))
+        >>> Statistics.d_prime(x=x, y=y)
+        """
+
+        check_valid_array(
+            data=x,
+            source=Statistics.d_prime.__name__,
+            accepted_ndims=(1,),
+            accepted_dtypes=(np.int64, np.int32, np.int8),
+        )
+        check_valid_array(
+            data=y,
+            source=Statistics.d_prime.__name__,
+            accepted_ndims=(1,),
+            accepted_dtypes=(np.int64, np.int32, np.int8),
+        )
+        if len(list({x.shape[0], y.shape[0]})) != 1:
+            raise CountError(
+                msg=f"The two arrays has to be equal lengths but got: {x.shape[0], y.shape[0]}",
+                source=Statistics.d_prime.__name__,
+            )
+        for i in [x, y]:
+            additional = list(set(list(np.sort(np.unique(i)))) - {0, 1})
+            if len(additional) > 0:
+                raise InvalidInputError(
+                    msg=f"D-prime requires binary input data but found {additional}",
+                    source=Statistics.d_prime().__name__,
+                )
+        target_idx = np.argwhere(y == 1).flatten()
+        hit_rate = np.sum(x[np.argwhere(y == 1)]) / target_idx.shape[0]
+        false_alarm_rate = np.sum(x[np.argwhere(y == 0)]) / target_idx.shape[0]
+        if hit_rate < lower_limit:
+            hit_rate = lower_limit
+        elif hit_rate > upper_limit:
+            hit_rate = upper_limit
+        if false_alarm_rate < lower_limit:
+            false_alarm_rate = lower_limit
+        elif false_alarm_rate > upper_limit:
+            false_alarm_rate = upper_limit
+        return stats.norm.ppf(hit_rate) - stats.norm.ppf(false_alarm_rate)
+
+    @staticmethod
+    def mcnemar(
+        x: np.ndarray,
+        y: np.ndarray,
+        ground_truth: np.ndarray,
+        continuity_corrected: Optional[bool] = True,
+    ) -> Tuple[float, float]:
+        """
+        McNemar's test to compare the difference in predictive accuracy of two models.
+
+        E.g., can be used to compute if the accuracy of two classifiers are significantly different when transforming the same data.
+
+        .. note::
+           `mlextend <https://github.com/rasbt/mlxtend/blob/master/mlxtend/evaluate/mcnemar.py>`__.
+
+        :param np.ndarray x: 1-dimensional Boolean array with predictions of the first model.
+        :param np.ndarray x: 1-dimensional Boolean array with predictions of the second model.
+        :param np.ndarray x: 1-dimensional Boolean array with ground truth labels.
+        :param Optional[bool] continuity_corrected : Whether to apply continuity correction. Default is True.
+
+        :example:
+        >>> x = np.random.randint(0, 2, (100000, ))
+        >>> y = np.random.randint(0, 2, (100000, ))
+        >>> ground_truth = np.random.randint(0, 2, (100000, ))
+        >>> Statistics.mcnemar(x=x, y=y, ground_truth=ground_truth)
+        """
+
+        check_valid_array(
+            data=x,
+            source=Statistics.mcnemar.__name__,
+            accepted_ndims=(1,),
+            accepted_dtypes=(np.int64, np.int32, np.int8),
+        )
+        check_valid_array(
+            data=y,
+            source=Statistics.mcnemar.__name__,
+            accepted_ndims=(1,),
+            accepted_dtypes=(np.int64, np.int32, np.int8),
+        )
+        check_valid_array(
+            data=ground_truth,
+            source=Statistics.mcnemar.__name__,
+            accepted_ndims=(1,),
+            accepted_dtypes=(np.int64, np.int32, np.int8),
+        )
+        if len(list({x.shape[0], y.shape[0], ground_truth.shape[0]})) != 1:
+            raise CountError(
+                msg=f"The three arrays has to be equal lengths but got: {x.shape[0], y.shape[0], ground_truth.shape[0]}",
+                source=Statistics.mcnemar.__name__,
+            )
+        for i in [x, y, ground_truth]:
+            additional = list(set(list(np.sort(np.unique(i)))) - {0, 1})
+            if len(additional) > 0:
+                raise InvalidInputError(
+                    msg=f"Mcnemar requires binary input data but found {additional}",
+                    source=Statistics.mcnemar.__name__,
+                )
+        data = np.hstack(
+            (x.reshape(-1, 1), y.reshape(-1, 1), ground_truth.reshape(-1, 1))
+        )
+        b = (
+            np.where((data == (0, 1, 0)).all(axis=1))[0].shape[0]
+            + np.where((data == (1, 0, 1)).all(axis=1))[0].shape[0]
+        )
+        c = (
+            np.where((data == (1, 0, 0)).all(axis=1))[0].shape[0]
+            + np.where((data == (0, 1, 1)).all(axis=1))[0].shape[0]
+        )
+        if not continuity_corrected:
+            x = (np.square(b - c)) / (b + c)
+        else:
+            x = (np.square(np.abs(b - c) - 1)) / (b + c)
+        p = chi2.sf(x, 1)
+        return x, p
+
+    @staticmethod
+    def cochrans_q(data: np.ndarray) -> Tuple[float, float]:
+        """
+        Compute Cochrans Q for 2-dimensional boolean array.
+
+        Can be used to evaluate if the performance of multiple (>=2) classifiers on the same data is the same or significantly different.
+
+        .. note::
+           If two classifiers, consider ``simba.mixins.statistics.Statistics.mcnemar``.
+           `Useful background  <https://psych.unl.edu/psycrs/handcomp/hccochran.PDF>`__.
+
+        :param np.ndarray data: Two dimensional array of boolean values where axis 1 represents classifiers or features and rows represent frames.
+        :return Tuple[float, float]: Cochran's Q statistic signidicance value.
+
+        :example:
+        >>> data = np.random.randint(0, 2, (100000, 4))
+        >>> Statistics.cochrans_q(data=data)
+        """
+        check_valid_array(
+            data=data, source=Statistics.cochrans_q.__name__, accepted_ndims=(2,)
+        )
+        additional = list(set(list(np.sort(np.unique(data)))) - {0, 1})
+        if len(additional) > 0:
+            raise InvalidInputError(
+                msg=f"Cochrans Q requires binary input data but found {additional}",
+                source=Statistics.cochrans_q.__name__,
+            )
+        col_sums = np.sum(data, axis=0)
+        row_sum_sum = np.sum(np.sum(data, axis=1))
+        row_sum_square_sum = np.sum(np.square(np.sum(data, axis=1)))
+        k = data.shape[1]
+        g2 = np.sum(sum(np.square(col_sums)))
+        nominator = (k - 1) * ((k * g2) - np.square(np.sum(col_sums)))
+        denominator = (k * row_sum_sum) - row_sum_square_sum
+        if nominator == 0 or denominator == 0:
+            return -1.0, -1.0
+        else:
+            q = (nominator / denominator,)
+            return q, stats.chi2.sf(q, k - 1)
+
+    @staticmethod
+    def hartley_fmax(x: np.ndarray, y: np.ndarray):
+        """
+        Compute Hartley's Fmax statistic to test for equality of variances between two features or groups.
+
+        Values close to one represents closer to equal variance.
+
+        :param np.ndarray x: 1D array representing numeric data of the first group/feature.
+        :param np.ndarray x: 1D array representing numeric data of the second group/feature.
+
+        :example:
+        >>> x = np.random.random((100,))
+        >>> y = np.random.random((100,))
+        >>> Statistics.hartley_fmax(x=x, y=y)
+        """
+        check_valid_array(
+            data=x,
+            source=Statistics.hartley_fmax.__name__,
+            accepted_ndims=(1,),
+            accepted_dtypes=(np.float32, np.float64, np.int64, np.float32),
+        )
+        check_valid_array(
+            data=y,
+            source=Statistics.hartley_fmax.__name__,
+            accepted_ndims=(1,),
+            accepted_dtypes=(np.float32, np.float64, np.int64, np.float32),
+        )
+        max_var = np.max((np.var(x), np.var(y)))
+        min_var = np.min((np.var(x), np.var(y)))
+        if (max_var == 0) or (min_var == 0):
+            return -1.0
+        return max_var / min_var
+
+    @staticmethod
+    def grubbs_test(x: np.ndarray, left_tail: Optional[bool] = False) -> float:
+        """
+        Perform Grubbs' test to detect outliers if the minimum or maximum value in a feature series is an outlier.
+
+        :param np.ndarray x: 1D array representing numeric data.
+        :param Optional[bool] left_tail: If True, the test calculates the Grubbs' test statistic for the left tail (minimum value). If False (default), it calculates the statistic for the right tail (maximum value).
+        :return float: The computed Grubbs' test statistic.
+
+        :example:
+        >>> x = np.random.random((100,))
+        >>> Statistics.grubbs_test(x=x)
+        """
+        check_valid_array(
+            data=x,
+            source=Statistics.grubbs_test.__name__,
+            accepted_ndims=(1,),
+            accepted_dtypes=(np.float32, np.float64, np.int64, np.float32),
+        )
+        x = np.sort(x)
+        if left_tail:
+            return (np.mean(x) - np.min(x)) / np.std(x)
+        else:
+            return (np.max(x) - np.mean(x)) / np.std(x)
+
+    @staticmethod
+    def wilcoxon(x: np.ndarray, y: np.ndarray):
+        """Non-parametric two-way within-subjects test"""
+        data = np.hstack((x.reshape(-1, 1), y.reshape(-1, 1)))
+        n = data.shape[0]
+        diff = np.diff(data).flatten()
+        diff_abs = np.abs(diff)
+        rank_w_ties = fast_mean_rank(data=diff_abs, descending=False)
+        signed_rank_w_ties = np.full((rank_w_ties.shape[0]), np.nan)
+        t_plus, t_minus = 0, 0
+
+        for i in range(diff.shape[0]):
+            if diff[i] < 0:
+                signed_rank_w_ties[i] = -rank_w_ties[i]
+                t_minus += np.abs(rank_w_ties[i])
+            else:
+                signed_rank_w_ties[i] = rank_w_ties[i]
+                t_plus += np.abs(rank_w_ties[i])
+        u_w = (n * (n + 1)) / 4
+        std_correction = 0
+        for i in range(signed_rank_w_ties.shape[0]):
+            same_rank_n = (
+                np.argwhere(signed_rank_w_ties == signed_rank_w_ties[i])
+                .flatten()
+                .shape[0]
+            )
+            if same_rank_n > 1:
+                std_correction += ((same_rank_n**3) - same_rank_n) / 2
+
+        std = np.sqrt(((n * (n + 1)) * ((2 * n) + 1) - std_correction) / 24)
+        W = np.min((t_plus, t_minus))
+        z = (W - u_w) / std
+        r = z / np.sqrt(n)
+        return z, r
+
+    @staticmethod
+    @njit(
+        "(float32[:,:], )",
+    )
+    def cov_matrix(data: np.ndarray):
+        """
+        Jitted helper to compute the covariance matrix of the input data. Helper for computing cronbach alpha,
+        multivariate analysis, and distance computations.
+
+        :param np.ndarray data: 2-dimensional numpy array representing the input data with shape (n, m), where n is the number of observations and m is the number of features.
+        :return: Covariance matrix of the input data with shape (m, m). The (i, j)-th element of the matrix represents the covariance between the i-th and j-th features in the data.
+
+        :example:
+        >>> data = np.random.randint(0,2, (200, 40)).astype(np.float32)
+        >>> covariance_matrix = Statistics.cov_matrix(data=data)
+        """
+        n, m = data.shape
+        cov = np.full((m, m), 0.0)
+        for i in prange(m):
+            mean_i = np.sum(data[:, i]) / n
+            for j in range(m):
+                mean_j = np.sum(data[:, j]) / n
+                cov[i, j] = np.sum((data[:, i] - mean_i) * (data[:, j] - mean_j)) / (
+                    n - 1
+                )
+        return cov
+
+    @staticmethod
+    @njit("(float32[:], float64,)")
+    def mad_median_rule(data: np.ndarray, k: int) -> np.ndarray:
+        """
+        Detect outliers using the MAD-Median Rule. Returns 1d array of size data.shape[0] with 1 representing outlier and 0 representing inlier.
+
+        :example:
+        >>> data = np.random.randint(0, 600, (9000000,)).astype(np.float32)
+        >>> Statistics.mad_median_rule(data=data, k=1.0)
+        """
+
+        median = np.median(data)
+        mad = np.median(np.abs(data - median))
+        threshold = k * mad
+        outliers = np.abs(data - median) > threshold
+        return outliers * 1
+
+    @staticmethod
+    @njit("(float32[:], float64, float64[:], float64)")
+    def sliding_mad_median_rule(
+        data: np.ndarray, k: int, time_windows: np.ndarray, fps: float
+    ) -> np.ndarray:
+        """
+        Count the number of outliers in a sliding time-window using the MAD-Median Rule.
+
+        :param np.ndarray data: 1D numerical array representing feature.
+        :param int k: The outlier threshold defined as k * median absolute deviation in each time window.
+        :param np.ndarray time_windows: 1D array of time window sizes in seconds.
+        :param float fps: The frequency of the signal.
+        :return np.ndarray: Array of size (data.shape[0], time_windows.shape[0]) with counts if outliers detected.
+
+        :example:
+        >>> data = np.random.randint(0, 50, (50000,)).astype(np.float32)
+        >>> Statistics.sliding_mad_median_rule(data=data, k=2, time_windows=np.array([20.0]), fps=1.0)
+        """
+        results = np.full((data.shape[0], time_windows.shape[0]), -1)
+        for time_window in time_windows:
+            w = int(fps * time_window)
+            for i in range(w, data.shape[0] + 1, 1):
+                w_data = data[i - w : i]
+                median = np.median(w_data)
+                mad = np.median(np.abs(w_data - median))
+                threshold = k * mad
+                outliers = np.abs(w_data - median) > threshold
+                results[i - 1] = np.sum(outliers * 1)
+        return results
+
+    @staticmethod
+    def dunn_index(x: np.ndarray, y: np.ndarray) -> float:
+        """
+        Calculate the Dunn index to evaluate the quality of clustered labels.
+
+        This function calculates the Dunn index, which is a measure of clustering quality.
+        The index considers the ratio of the minimum inter-cluster distance to the maximum
+        intra-cluster distance. A higher Dunn index indicates better clustering.
+
+        .. note::
+           Modified from `jqmviegas <https://github.com/jqmviegas/jqm_cvi/>`_
+           Wiki `https://en.wikipedia.org/wiki/Dunn_index <https://en.wikipedia.org/wiki/Dunn_index>`_
+           Uses Euclidean distances.
+
+        :param np.ndarray x: 2D array representing the data points. Shape (n_samples, n_features).
+        :param np.ndarray y: 2D array representing cluster labels for each data point. Shape (n_samples,).
+        :return float: The Dunn index value
+
+        :example:
+        >>> x = np.random.randint(0, 100, (100, 2))
+        >>> y = np.random.randint(0, 3, (100,))
+        >>> Statistics.dunn_index(x=x, y=y)
+        """
+
+        check_valid_array(
+            data=x,
+            source=Statistics.dunn_index.__name__,
+            accepted_ndims=(2,),
+            accepted_dtypes=(int, float, np.float64, np.float32, np.int64, np.int32),
+        )
+        check_valid_array(
+            data=y,
+            source=Statistics.dunn_index.__name__,
+            accepted_ndims=(1,),
+            accepted_shapes=[(x.shape[0],)],
+            accepted_dtypes=(int, float, np.float64, np.float32, np.int64, np.int32),
+        )
+        distances = FeatureExtractionMixin.cdist(
+            array_1=x.astype(np.float32), array_2=x.astype(np.float32)
+        )
+        ks = np.sort(np.unique(y)).astype(np.int64)
+        deltas = np.full((ks.shape[0], ks.shape[0]), np.inf)
+        big_deltas = np.zeros([ks.shape[0], 1])
+        for i, l in list(permutations(ks, 2)):
+            values = distances[np.where((y == i))][:, np.where((y == l))]
+            deltas[i, l] = np.min(values[np.nonzero(values)])
+        for k in ks:
+            values = distances[np.where((y == ks[k]))][:, np.where((y == ks[k]))]
+            big_deltas[k] = np.max(values)
+
+        return np.min(deltas) / np.max(big_deltas)
+
+    def davis_bouldin(x: np.ndarray, y: np.ndarray) -> float:
+        """
+        Calculate the Davis-Bouldin index for evaluating clustering performance.
+
+        Davis-Bouldin index measures the clustering quality based on the within-cluster
+        similarity and between-cluster dissimilarity. Lower values indicate better clustering.
+
+        .. note::
+           Modified from `scikit-learn <https://github.com/scikit-learn/scikit-learn/blob/f07e0138bfee41cd2c0a5d0251dc3fe03e6e1084/sklearn/metrics/cluster/_unsupervised.py#L390>`_
+
+        :param np.ndarray x: 2D array representing the data points. Shape (n_samples, n_features/n_dimension).
+        :param np.ndarray y: 2D array representing cluster labels for each data point. Shape (n_samples,).
+        :return float: Davis-Bouldin score.
+
+        :example:
+        >>> x = np.random.randint(0, 100, (100, 2))
+        >>> y = np.random.randint(0, 3, (100,))
+        >>> Statistics.davis_bouldin(x=x, y=y)
+        """
+
+        check_valid_array(
+            data=x,
+            source=Statistics.davis_bouldin.__name__,
+            accepted_ndims=(2,),
+            accepted_dtypes=(int, float, np.float64, np.float32, np.int64, np.int32),
+        )
+        check_valid_array(
+            data=y,
+            source=Statistics.davis_bouldin.__name__,
+            accepted_ndims=(1,),
+            accepted_shapes=[(x.shape[0],)],
+            accepted_dtypes=(int, float, np.float64, np.float32, np.int64, np.int32),
+        )
+        n_labels = np.unique(y).shape[0]
+        labels = np.unique(y)
+        intra_dists = np.full((n_labels), 0.0)
+        centroids = np.full((n_labels, x.shape[1]), 0.0)
+        for k in range(n_labels):
+            cluster_k = x[np.argwhere(y == labels[k])].reshape(-1, 2)
+            cluster_mean = np.full((x.shape[1]), np.nan)
+            for i in range(cluster_mean.shape[0]):
+                cluster_mean[i] = np.mean(cluster_k[:, i].flatten())
+            centroids[k] = cluster_mean
+            intra_dists[k] = np.average(
+                FeatureExtractionMixin.framewise_euclidean_distance(
+                    location_1=cluster_k,
+                    location_2=np.full(cluster_k.shape, cluster_mean),
+                    px_per_mm=1,
+                )
+            )
+        centroid_distances = FeatureExtractionMixin.cdist(
+            array_1=centroids.astype(np.float32), array_2=centroids.astype(np.float32)
+        )
+        if np.allclose(intra_dists, 0) or np.allclose(centroid_distances, 0):
+            return 0.0
+        centroid_distances[centroid_distances == 0] = np.inf
+        combined_intra_dists = intra_dists[:, None] + intra_dists
+        return np.mean(np.max(combined_intra_dists / centroid_distances, axis=1))
+
+    @staticmethod
+    @njit("(float32[:,:], int64[:])", cache=True)
+    def calinski_harabasz(x: np.ndarray, y: np.ndarray) -> float:
+        """
+        Compute the Calinski-Harabasz score to evaluate clustering quality.
+
+        The Calinski-Harabasz score is a measure of cluster separation and compactness.
+        It is calculated as the ratio of the between-cluster dispersion to the
+        within-cluster dispersion. A higher score indicates better clustering.
+
+        :param x: 2D array representing the data points. Shape (n_samples, n_features/n_dimension).
+        :param y: 2D array representing cluster labels for each data point. Shape (n_samples,).
+        :return float: Calinski-Harabasz score.
+
+        :example:
+        >>> x = np.random.random((100, 2)).astype(np.float32)
+        >>> y = np.random.randint(0, 100, (100,)).astype(np.int64)
+        >>> Statistics.calinski_harabasz(x=x, y=y)
+        """
+
+        n_labels = np.unique(y).shape[0]
+        labels = np.unique(y)
+        extra_dispersion, intra_dispersion = 0.0, 0.0
+        global_mean = np.full((x.shape[1]), np.nan)
+        for i in range(x.shape[1]):
+            global_mean[i] = np.mean(x[:, i].flatten())
+        for k in range(n_labels):
+            cluster_k = x[np.argwhere(y == labels[k]).flatten(), :]
+            mean_k = np.full((cluster_k.shape[1]), np.nan)
+            for i in range(cluster_k.shape[1]):
+                mean_k[i] = np.mean(cluster_k[:, i].flatten())
+            extra_dispersion += len(cluster_k) * np.sum((mean_k - global_mean) ** 2)
+            intra_dispersion += np.sum((cluster_k - mean_k) ** 2)
+
+        denominator = intra_dispersion * (n_labels - 1.0)
+        if denominator == 0.0:
+            return 0.0
+        else:
+            return extra_dispersion * (x.shape[0] - n_labels) / denominator
+
+    @staticmethod
+    def adjusted_rand(x: np.ndarray, y: np.ndarray) -> float:
+        """
+        Calculate the Adjusted Rand Index (ARI) between two clusterings.
+
+        :param np.ndarray x: 1D array representing the labels of the first model.
+        :param np.ndarray y: 1D array representing the labels of the second model.
+        :return float: 1 indicates perfect clustering agreement, 0 indicates random clustering, and negative values indicate disagreement between the clusterings.
+
+        :example:
+        >>> x = np.array([0, 0, 0, 0, 0])
+        >>> y = np.array([1, 1, 1, 1, 1])
+        >>> Statistics.adjusted_rand(x=x, y=y)
+        >>> 1.0
+        """
+
+        check_valid_array(
+            data=x,
+            source=Statistics.adjusted_rand.__name__,
+            accepted_ndims=(1,),
+            accepted_dtypes=(np.int64, np.int32, int),
+            min_axis_0=1,
+        )
+        check_valid_array(
+            data=y,
+            source=Statistics.adjusted_rand.__name__,
+            accepted_ndims=(1,),
+            accepted_dtypes=(np.int64, np.int32, int),
+            accepted_shapes=[(x.shape[0],)],
+        )
+        return adjusted_rand_score(labels_true=x, labels_pred=y)
+
+    @staticmethod
+    def fowlkes_mallows(x: np.ndarray, y: np.ndarray) -> float:
+        """
+        Calculate the Fowlkes-Mallows Index (FMI) between two clusterings.
+
+        :param np.ndarray x: 1D array representing the labels of the first model.
+        :param np.ndarray y: 1D array representing the labels of the second model.
+        :return float: Score between 0 and 1. 1 indicates perfect clustering agreement, 0 indicates random clustering.
+        """
+        check_valid_array(
+            data=x,
+            source=Statistics.fowlkes_mallows.__name__,
+            accepted_ndims=(1,),
+            accepted_dtypes=(np.int64, np.int32, int),
+            min_axis_0=1,
+        )
+        check_valid_array(
+            data=y,
+            source=Statistics.fowlkes_mallows.__name__,
+            accepted_ndims=(1,),
+            accepted_dtypes=(np.int64, np.int32, int),
+            accepted_shapes=[(x.shape[0],)],
+        )
+        return fowlkes_mallows_score(labels_true=x, labels_pred=y)
+
+    @staticmethod
+    def adjusted_mutual_info(x: np.ndarray, y: np.ndarray) -> float:
+        """
+        Calculate the Adjusted Mutual Information (AMI) between two clusterings as a meassure of similarity.
+        clusterings.
+
+        :param np.ndarray x: 1D array representing the labels of the first model.
+        :param np.ndarray y: 1D array representing the labels of the second model.
+        :return float: Score between 0 and 1, where 1 indicates perfect clustering agreement.
+
+        """
+        check_valid_array(
+            data=x,
+            source=Statistics.adjusted_mutual_info.__name__,
+            accepted_ndims=(1,),
+            accepted_dtypes=(np.int64, np.int32, int),
+            min_axis_0=1,
+        )
+        check_valid_array(
+            data=y,
+            source=Statistics.adjusted_mutual_info.__name__,
+            accepted_ndims=(1,),
+            accepted_dtypes=(np.int64, np.int32, int),
+            accepted_shapes=[(x.shape[0],)],
+        )
+        return adjusted_mutual_info_score(labels_true=x, labels_pred=y)
+
+
+# sample_1 = np.random.random_integers(low=1, high=2, size=(10, 50)).astype(np.float64)
+# sample_2 = np.random.random_integers(low=7, high=20, size=(10, 50)).astype(np.float64)
+# data = np.vstack([sample_1, sample_2])
+# Statistics().hbos(data=data)
+
+# sample_1 = np.random.normal(loc=10, scale=2, size=1000).astype(np.float64)
+# sample_2 = np.random.normal(loc=12, scale=2, size=10000).astype(np.float64)
+
+# sample_1 = np.random.randint(0, 100, (100, )).astype(np.float64)
+# sample_2 = np.random.randint(110, 200, (100, )).astype(np.float64)
+#
+# Statistics().jensen_shannon_divergence(sample_1=sample_1, sample_2=sample_2)
