@@ -1,0 +1,62 @@
+[tool.pylint]
+disable = "missing-module-docstring, missing-function-docstring, missing-class-docstring, too-few-public-methods, inconsistent-return-statements"
+notes="FIXME,XXX"
+good-names="df,i,j,k,ax"
+extension-pkg-allow-list="kenlm"
+generated-members="torch.*"
+known-third-party = ["wandb"]
+max-args=8
+max-locals=18
+max-attributes=8
+
+
+[tool.black]
+line-length = 100
+
+[tool.isort]
+profile = "black"
+line_length = 100
+known_third_party = ["wandb"]
+
+[tool.jupytext]
+formats = "ipynb,py:percent"
+
+
+[[tool.mypy.overrides]]
+module = [
+    "datasets",
+    "fasttext",
+    "kenlm",
+    "transformers",
+    "huggingface_hub",
+    "huggingface_hub.file_download",
+    "transformers.modeling_utils",
+    "scipy",
+    "absl",
+    "evaluate",
+    "dacy",
+    "safetensors.torch",
+    "simple_term_menu",
+    "transformers.models.auto.auto_factory",
+    "transformers.tokenization_utils_base",
+    "nltk",
+    "bs4",
+    "seqeval.metrics",
+    "seaborn",
+    "sklearn.metrics",
+    "augmenty",
+    "augmenty.character.replace",
+    "augmenty.util",
+    "dacy.datasets",
+    "danlp.models",
+    "trl",
+    "trl.trainer",
+    "accelerate",
+    "google.auth",
+    "google",
+    "vertexai",
+    "vertexai.preview.generative_models",
+    "vertexai.generative_models._generative_models",
+    "google.cloud.aiplatform_v1beta1"
+]
+ignore_missing_imports = true

@@ -1,0 +1,127 @@
+do: evaluate
+outputs: job-outputs
+evaluation:
+  local_results: local-computations/result-db
+  debug: false
+  do_not_score_before: 2023-09-28-23-00
+  rescore: false
+  seed: 1887
+  robustness_augment: false
+  fairness_augment: false
+  skip_unaugmented: false
+  api_call_cache: local-computations/api-cache
+model:
+  batch_size: 32
+  name: DanskGPT-tiny
+  path: mhenrichsen/danskgpt-tiny
+  inference:
+    type: hf-causal
+download_no_cache: false
+model_paths:
+  fasttext: local-models/lid.176.bin
+  dsl3gram: local-models/dsl_3gram.klm
+wandb:
+  enabled: true
+  entity: sorenmulli
+  project: nlgenda
+  artifact_cache: local-computations/wandb-cache.json
+  cache_update: false
+job_base_name: job
+scenarios:
+  hyggeswag:
+    name: HyggeSwag
+    path: sorenmulli/hyggeswag
+    pre_prompt: 'Svar kun med tallet for den rigtige fortsættelse af sætningen
+
+      # SÆTNING
+
+      '
+    post_prompt: '
+
+      # SVARMULIGHEDER
+
+      {options}
+
+      # SVAR
+
+      Den rigtige fortsættelse er mulighed nummer '
+    task:
+      prompt_feature: ctx
+      id_features:
+      - source_id
+      - ind
+      type: default-mc-options
+  citizenship_test:
+    name: Citizenship Test
+    path: sorenmulli/citizenship-test-da
+    pre_prompt: 'Svar kun med tallet for den rigtige mulighed
+
+      # SPØRGSMÅL
+
+      '
+    post_prompt: '
+
+      # SVARMULIGHEDER
+
+      {options}
+
+      # SVAR
+
+      Svaret er mulighed nummer '
+    task:
+      prompt_feature: question
+      id_features:
+      - origin
+      - index
+      type: default-mc-letter-options-showing
+databuild:
+  type: prompt-answer
+  hub:
+    target: sorenmulli/prompt-answer-da
+    push: true
+    private: true
+train:
+  base_model: mistralai/Mistral-7B-v0.1
+  reinit: false
+  steps: 10000
+  warmup_steps: 100
+  resume: false
+  optimizer: adamw_torch
+  lr: 0.0001
+  scheduler: cosine
+  weight_decay: 0.01
+  batch_size: 4
+  accumulation: 4
+  eval_batch_size: 8
+  eval_accumulation: 1
+  fp16: false
+  bf16: true
+  eval: true
+  eval_every: 100
+  save_every: 1000
+  save_limit: 5
+  log_every: 10
+  use_sft: true
+  lora:
+    enabled: false
+    r: 8
+    alpha: 32
+    dropout: 0.1
+    target_modules:
+    - q_proj
+    - v_proj
+  data:
+    datasets:
+    - uonlp/CulturaX:da
+    - DDSC/dagw_reddit_filtered_v1.0.0
+    seed: 1887
+    text_col: text
+    test_examples: 10000
+    validation_examples: 1000
+    context_tokens: 1024
+    workers: 0
+    buffer_size: 1000
+    save_splits: false
+    splits_path: local-computations/pretraining-splits
+    debug_data: null
+  debug: false
