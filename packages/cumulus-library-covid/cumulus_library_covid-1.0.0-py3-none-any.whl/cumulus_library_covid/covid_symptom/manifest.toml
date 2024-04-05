@@ -1,0 +1,44 @@
+study_prefix = "covid_symptom"
+
+[sql_config]
+file_names = [
+#    "define_age_pediatric.sql",
+     "define_age_general.sql", # CDC pilot sites other than BCH should use general age group instead.
+    "define_study_period.sql", # BCH Symptom study period ended June 1, 2022. For CDC Pilot Sites, OK to extend.
+    "define_pcr.sql",
+    "define_pcr_positive.sql",
+    "define_pcr_negative.sql",
+    "define_pcr_custom.sql",
+    "define_dx_icd10.sql",
+    "define_dx_snomed.sql",
+    "define_ed_note.sql",
+    "define_symptom.sql",
+
+    "table_study_period.sql",
+    "table_pcr.sql",
+    "table_dx.sql",
+    "table_symptom.sql",
+    "table_prevalence_ed.sql",
+
+    "version.sql"
+]
+
+[counts_builder_config]
+file_names = [
+    "counts.py"
+]
+
+[export_config]
+export_list = [
+    "covid_symptom__count_pcr_week",
+    "covid_symptom__count_pcr_month",
+    "covid_symptom__count_dx_week",
+    "covid_symptom__count_dx_month",
+    "covid_symptom__count_prevalence_ed_month",
+    "covid_symptom__count_study_period_week",
+    "covid_symptom__count_study_period_month",
+    "covid_symptom__count_symptom_week",
+    "covid_symptom__count_symptom_month",
+    "covid_symptom__meta_date",
+    "covid_symptom__meta_version",
+]
