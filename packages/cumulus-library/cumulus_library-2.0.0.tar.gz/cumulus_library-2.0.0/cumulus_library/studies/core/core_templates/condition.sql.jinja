@@ -1,0 +1,87 @@
+{% import 'core_utils.jinja' as utils %}
+
+CREATE TABLE core__condition AS
+WITH temp_condition AS (
+    SELECT
+         {{- 
+            utils.basic_cols(
+                'condition',
+                'c',
+                [
+                    'id',
+                ]
+            ) 
+        }},
+        {{- 
+            utils.nullable_cols(
+                'condition',
+                'c',
+                [
+                    'category',
+                    ('subject', 'reference', 'subject_ref'),
+                    ('encounter', 'reference', 'encounter_ref'),
+                ], 
+                schema
+            ) 
+        }},
+        {{- 
+            utils.basic_cols(
+                'core__condition_codable_concepts_all',
+                'cca',
+                [
+                    'code',
+                    'code_system',
+                    'display'
+                ]
+            ) 
+        }},
+        {{- 
+            utils.date_cols_from_str(
+                'condition',
+                'c',
+                ['recordedDate'],
+                schema
+            ) 
+        }},
+        {{- 
+            utils.truncate_date_cols(
+                'condition',
+                'c',
+                [
+                    ('recordedDate', 'week'),
+                    ('recordedDate', 'month'),
+                    ('recordedDate', 'year'),
+                ],
+                schema
+            ) 
+        }},
+        c.verificationStatus,
+        c.clinicalStatus
+    FROM condition AS c
+    LEFT JOIN core__condition_codable_concepts_all AS cca ON c.id = cca.id
+)
+
+SELECT
+    tc.id,
+    t_category_coding.category_row.code AS category_code,
+    t_category_coding.category_row.display AS category_display,
+    tc.code,
+    tc.code_system,
+    tc.display AS code_display,
+    tc.subject_ref,
+    tc.encounter_ref,
+    concat('Condition/', tc.id) AS condition_ref,
+    tc.recordedDate,
+    tc.recordedDate_week,
+    tc.recordedDate_month,
+    tc.recordedDate_year,
+    t_clinicalStatus_coding.clinicalStatus_row.code AS clinicalStatus_code,
+    t_verificationStatus_coding.verificationStatus_row.code AS verificationStatus_code
+FROM temp_condition AS tc,
+    unnest(category) AS t_category (category_coding),
+    unnest(category_coding.coding) AS t_category_coding (category_row),
+    unnest(clinicalStatus.coding) AS t_clinicalStatus_coding (clinicalStatus_row),
+    unnest(verificationStatus.coding)
+        AS t_verificationStatus_coding (verificationStatus_row)
+
+WHERE tc.recordedDate BETWEEN date('2016-01-01') AND current_date;

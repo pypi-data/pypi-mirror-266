@@ -1,0 +1,89 @@
+{% import 'core_utils.jinja' as utils %}
+-- noqa: PRS
+CREATE TABLE core__documentreference AS
+WITH temp_documentreference AS (
+    SELECT DISTINCT
+        {{- utils.basic_cols(
+                'documentreference',
+                'dr',
+                [
+                    'id',
+                ]
+            ) 
+        }},
+        {#- TODO: validate usage of author vs spec language of period -#}
+        {{- utils.nullable_cols(
+                'documentreference',
+                'dr',
+                [
+                    'type',
+                    'status',
+                    'date',
+                    'docStatus',
+                    'context',                
+                    ('subject', 'reference', 'subject_ref'),
+                    ('context', 'period', 'start', 'author_date')
+                ], 
+                schema
+            ) 
+        }},
+        {{- utils.truncate_date_cols(
+                'documentreference',
+                'dr',
+                [
+                    ('context', 'period', 'start', 'author_day', 'day'),
+                    ('context', 'period', 'start', 'author_week', 'week'),
+                    ('context', 'period', 'start', 'author_month', 'month'),
+                    ('context', 'period', 'start', 'author_year', 'year'),
+                ],
+                schema
+            ) 
+        }},
+        cdrt.code as type_code,
+        cdrt.code_system as type_code_system,
+        cdrt.display as type_display,
+        cdrc.code as category_code,
+        cdrf.code as format_code
+    FROM documentreference AS dr
+    LEFT JOIN core__documentreference_dn_type AS cdrt ON dr.id = cdrt.id
+    LEFT JOIN core__documentreference_dn_category AS cdrc ON dr.id = cdrc.id
+    LEFT JOIN core__documentreference_dn_format AS cdrf ON dr.id = cdrf.id
+),
+
+temp_encounters AS (
+    SELECT
+        tdr.id,
+
+{% if schema["documentreference"]["context"]["encounter"] %}
+        context_encounter.encounter.reference AS encounter_ref
+    FROM temp_documentreference AS tdr,
+         unnest(context.encounter) AS context_encounter (encounter) --noqa
+
+{% else %}
+        '' AS encounter_ref
+    FROM temp_documentreference AS tdr
+    WHERE 1=0 -- forces an empty table
+
+{% endif %}
+)
+
+SELECT DISTINCT
+    tdr.id,
+    tdr.status,
+    tdr.type_code,
+    tdr.type_code_system,
+    tdr.type_display,
+    tdr.category_code,
+    tdr.docStatus,
+    tdr."date",
+    tdr.author_day,
+    tdr.author_week,
+    tdr.author_month,
+    tdr.author_year,
+    tdr.format_code,
+    tdr.subject_ref,
+    te.encounter_ref,
+    concat('DocumentReference/', tdr.id) AS documentreference_ref
+FROM temp_documentreference AS tdr
+LEFT JOIN temp_encounters AS te ON tdr.id = te.id
+WHERE date(tdr.author_day) BETWEEN date('2016-06-01') AND current_date;
