@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "spectral_recovery"
+requires-python = ">=3.10"
+authors = [
+    {name = "Sarah Zwiep", email = "sarahvz@mail.ubc.ca"},
+]
+maintainers = [
+  {name = "Sarah Zwiep", email = "sarahvz@mail.ubc.ca"}
+]
+readme = "README.md"
+license = {file = "LICENSE"}
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python"
+]
+version = "0.3.2"
+dependencies = [
+    "geopandas >= 0.13.2",
+    "rioxarray >= 0.14.1",
+    "rasterio >= 1.3.7",
+    "xarray >= 2023.5.0",
+    "spyndex == 0.5.0",
+    "numpy >= 1.24.3",
+    "click >= 8.1.3",
+    "dask >= 2023.5.1, < 2024.3",
+    "distributed >= 2023.5.1, < 2024.3",
+    "matplotlib >= 3.7.1",
+    "seaborn >= 0.12.2",
+    "prettytable >= 3.9.0",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest >= 7.3.2",
+    "pytest-mock == 3.12.0",
+]
+lint = [
+    "pylint",
+    "pylint-exit",
+    "black == 23.12.0",
+    "flake8",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["spectral_recovery*", "scripts*"]
+exclude = ["tests*"]
+
+[project.scripts]
+specrec = "scripts.cli:cli"
