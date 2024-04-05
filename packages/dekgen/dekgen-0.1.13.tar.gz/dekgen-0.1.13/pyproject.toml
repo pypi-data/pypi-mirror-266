@@ -1,0 +1,31 @@
+[project]
+name = "dekgen"
+version = "0.1.13"
+description = ""
+authors = [
+    { name = "sanzenwin", email = "sanzenwin@gmail.com" },
+]
+dependencies = [
+    "jinja2<=3.1.2",
+    "black<=23.1.0",
+    "dektools<1.0.0",
+]
+requires-python = ">=3.10"
+readme = "README.md"
+
+[project.license]
+text = "MIT"
+
+[project.scripts]
+dekgen = "dekgen.click.__entry__:main"
+
+[tool.pdm.build]
+includes = [
+    "dekgen",
+]
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"

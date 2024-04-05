@@ -1,0 +1,24 @@
+func: !f/aaa/bbb/ccc
+  a: (-( aaa )-)
+  b: (-( bbb )-)
+  c: (-( ccc )-)
+
+key: !c/func:prev/xxx/yyy/zzz
+  u: uuu
+  v: vvv
+
+func2: !f/aaa/bbb/ccc/ddd
+  =: !e/func
+    d: (-( ddd )-)
+
+key2: !c/func2:prev/xxx/yyy/zzz/mmm
+  u: uuu
+  v: vvv
+
+func3: !f/aaa=1234
+  a: (-( aaa )-)
+
+key3:
+  =: !c/func3/xxx
+  u: uuu
+  v: vvv
