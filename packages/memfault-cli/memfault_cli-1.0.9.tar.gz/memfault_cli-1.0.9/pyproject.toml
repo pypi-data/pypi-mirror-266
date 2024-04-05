@@ -1,0 +1,104 @@
+[tool.poetry]
+name = "memfault-cli"
+version = "1.0.9"
+description = "Memfault CLI tool"
+license = "Apache-2.0"
+homepage = "https://docs.memfault.com"
+documentation = "https://docs.memfault.com/docs/ci/install-memfault-cli"
+authors = ["Memfault Inc <hello@memfault.com>"]
+readme = "README.md"
+
+[tool.poetry.scripts]
+memfault = 'memfault_cli.cli:main'
+
+[tool.poetry.dependencies]
+python = "^3.6"              # CLI's lowest supported Python version (despite 3.6 being EOL)
+Click = ">=7,<9"
+requests = "^2.27.1"
+mflt-build-id = "^1.0.1"
+# use the below for internal testing
+# see https://python-poetry.org/docs/dependency-specification/#path-dependencies
+# mflt-build-id = { path = "../../py-packages/mflt-build-id/", develop = false }
+mflt-pyelftools = "^0.30.1"
+
+more-itertools = ">=8.0.2"
+pyaxmlparser = "^0.3.24"
+tqdm = "^4.44.1"
+urllib3 = ">=1.26.7"
+# older version of importlib-metadata backport that supports Python 3.6
+importlib-metadata = { version = "4.8.3", python = "<3.8" }
+# dataclasses backport that supports Python 3.6
+dataclasses = { version = "0.8", python = "<3.7" }
+# extremely annoying, but we need a version of requests that's supported on
+# python3.6/3.7, and without pinning chardet, we end up with request spitting
+# out nuisance warning on 'chardet version unsupported'. so pin this to a
+# compatible version. this also forces us to be on an old tox version.
+chardet = "<5.0"
+# lxml 5.2.0 no longer supports Python 3.6. This is a dependency of pyaxmlparser.
+lxml = "<5.2.0"
+pyserial = "^3.5"
+
+[tool.poetry.dev-dependencies]
+faker = "^4"
+invoke = "^2"
+snappy = { path = "../../py-packages/snappy", develop = true }
+# pinning packaging and colorama (tox transitive deps) to exclude python 3.6 to
+# avoid dependency conflict
+packaging = { version = "^23", python = ">=3.7,<4.0" }
+colorama = { version = ">=0.4.6", python = ">=3.7,<4.0" }
+pytest = ">=6"
+requests-mock = "^1.7.0"
+tomlkit = ">=0.8.0"
+tox = { version = "^3.28.0", python = ">=3.8" }
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+min_version = 4.4.4
+env_list = py{36,37,38,39,310,311}
+
+[testenv]
+allowlist_externals =
+    bash
+    poetry
+    rm
+# we use poetry to install the package, so skip the tox install
+skip_install = true
+setenv =
+    # required on certain poetry/python versions to prevent install error
+    PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring
+commands_pre =
+    # note: intentially not running with --sync, there seems to be occassional
+    # flakes when poetry removes packages.
+    poetry install --no-ansi
+commands =
+    # By default pytest captures stdout/stderr which causes problems with the PySerial class Console
+    # --capture=tee-sys is required to workaround this issue
+    poetry run pytest --capture=tee-sys tests_cli/ --import-mode importlib {posargs}
+    poetry run memfault --version
+    poetry run memfault --help
+
+[testenv:py36]
+passenv =
+    LC_ALL
+    LANG
+commands_pre =
+    # build the dist with the host python
+    rm -rf dist
+    poetry build
+    # make sure we install the wheel with the venv python. bash to expand the
+    # wildcard
+    bash -c "{envpython} -m pip install $(ls dist/memfault_cli-*.whl)"
+commands =
+    # skip test suite
+    memfault --version
+    memfault --help
+"""
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+# set an empty pytest config section, to prevent pytest from walking up the
+# directory tree trying to find a config file
+[tool.pytest.ini_options]
