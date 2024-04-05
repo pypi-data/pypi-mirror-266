@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rtisdev"
+version = "2.12.3"
+description = "Python module to make it easy to code with RTIS devices"
+readme = {file = "README.md", content-type = "text/markdown"}
+authors = [{ name = "Wouter Jansen", email = "wouter.jansen@uantwerpen.be" },
+           { name = "Arne Aerts", email = "arne.aerts@uantwerpen.be"},
+           { name = "Dennis Laurijssen", email = "dennis.laurijssen@uantwerpen.be"},
+           { name = "Jan Steckel", email = "jan.steckel@uantwerpen.be"}]
+maintainers = [{name = "Wouter Jansen", email = "wouter.jansen@uantwerpen.be"}]
+license = { file = "LICENSE" }
+classifiers = [
+    "Development Status :: 6 - Mature",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: Unix",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Software Development",
+]
+keywords = ["rtisdev", "rtis", "sonar"]
+dependencies = [
+    "scipy",
+    "numpy",
+    "multiprocessing-logging",
+    "uuid",
+]
+requires-python = ">=3.6"
+
+[project.urls]
+Repository = "https://cosysgit.uantwerpen.be/rtis-software/rtisdev"
+Documentation = "https://cosysgit.uantwerpen.be/rtis-software/rtisdev/-/wikis/home"
+
+[tool.setuptools]
+package-dir = {"" = "."}
+include-package-data = false
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.setuptools.package-data]
+"*" = ["*mat", "*.json", "*.csv", "simulate.bin"]
