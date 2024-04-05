@@ -1,0 +1,49 @@
+base_model: "mistralai/Mistral-7B-v0.1"
+reinit: false
+
+steps: 10_000
+warmup_steps: 100
+resume: false
+
+optimizer: "adamw_torch"
+lr: 1e-4
+scheduler: "cosine"
+weight_decay: 0.01
+
+batch_size: 4
+accumulation: 4
+eval_batch_size: 8
+eval_accumulation: 1
+
+fp16: false
+bf16: true
+
+eval: true
+eval_every: 100
+save_every: 1000
+save_limit: 5
+log_every: 10
+
+use_sft: true
+
+lora:
+  enabled: false
+  r: 8
+  alpha: 32
+  dropout: 0.1
+  target_modules: ["q_proj", "v_proj"]
+
+data:
+  datasets: ["uonlp/CulturaX:da", "DDSC/dagw_reddit_filtered_v1.0.0"]
+  seed: 1887
+  text_col: "text"
+  test_examples: 10000
+  validation_examples: 1000
+  context_tokens: 1024
+  workers: 0
+  buffer_size: 1000
+  save_splits: false
+  splits_path: "local-computations/pretraining-splits"
+  debug_data: null
+
+debug: false
