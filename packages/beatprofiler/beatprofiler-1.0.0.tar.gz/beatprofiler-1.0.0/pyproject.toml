@@ -1,0 +1,36 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "beatprofiler"
+version = "1.0.0"
+authors = [
+  { name="Youngbin Kim", email="xmicroby@gmail.com" },
+  { name="Kunlun Wang", email="kw2964@columbia.edu" },
+]
+description = "Cardiac functional analysis tool for in vitro models"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  "scikit-video",
+  "nd2reader",
+  "tifffile",
+  "openpyxl",
+  "pyts",
+]
+keywords = ["beatprofiler", "cardiac", "function", "analysis", "contractility", "calcium", "force", "tissue", "monolayer", "spheroid", "iPSC", "cardiomyocytes", "tissue engineering", "eht"]
+
+[project.optional-dependencies]
+tissue = [
+  "ultralytics"
+]
+
+[project.urls]
+Homepage = "https://beatprofiler.github.io"
+GitHub = "https://github.com/youngbinkim0/BeatProfiler"

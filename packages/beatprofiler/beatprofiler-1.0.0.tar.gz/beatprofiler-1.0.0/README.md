@@ -1,0 +1,1 @@
+BeatProfiler is an all-in-one analysis software to extract functional metrics of _in vitro_ cardiac models. BeatProfiler enables processing of contractile and calcium videos and traces in a fast, reliable manner. To read more about BeatProfiler or download a GUI version, visit our [website](https://beatprofiler.github.io/) for tutorials, documentation, and a download link.
