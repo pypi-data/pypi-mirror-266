@@ -1,0 +1,88 @@
+{#
+    haiku/layout.html
+    ~~~~~~~~~~~~~~~~~
+
+    Sphinx layout template for the haiku theme.
+
+    :copyright: Copyright 2007-2017 by the Sphinx team, see AUTHORS.
+    :license: BSD, see LICENSE for details.
+#}
+{%- extends "basic/layout.html" %}
+
+{# do not display relbars #}
+{% block relbar1 %}{% endblock %}
+{% block relbar2 %}{% endblock %}
+
+
+{% macro topnav() %}
+{#
+    This was written to add top level navigation to the top nav bar.
+    It does not work well with any extension of the documentation and has to be
+    extended manually.
+#}
+        <p>
+        {%- block haikurel3 %}
+        <a href="{{ pathto('search') }}">Search</a>
+        &#160;&#160;&#160;&#160;
+        [<a href="{{ pathto(master_doc) }}">Home</a>&#160;&#160;::&#160;&#160;
+        <a href="{{ pathto('getting-started/index') }}">Getting Started</a>&#160;&#160;::&#160;&#160;
+        <a href="{{ pathto('documentation/index') }}">Documentation</a>&#160;&#160;::&#160;&#160;
+        <a href="{{ pathto('changelog') }}">Changelog</a>&#160;&#160;::&#160;&#160;
+        <a href="{{ pathto('faqs') }}">FAQs</a>]
+        {%- endblock %}
+        </p>
+{% endmacro %}
+
+{% macro nav() %}
+
+        <p>
+        {%- block haikurel1 %}
+        {%- endblock %}
+        {%- if prev %}
+        «&#160;&#160;<a href="{{ prev.link|e }}">{{ prev.title }}</a>
+        &#160;&#160;::&#160;&#160;
+        {%- endif %}
+        <a class="uplink" href="{{ pathto(master_doc) }}">{{ _('Contents') }}</a>
+        {%- if next %}
+        &#160;&#160;::&#160;&#160;
+        <a href="{{ next.link|e }}">{{ next.title }}</a>&#160;&#160;»
+        {%- endif %}
+        {%- block haikurel2 %}
+        {%- endblock %}
+        <!-- {% include "localtoc.html" %} -->
+        </p>
+{% endmacro %}
+
+{% block content %}
+      <div class="header" role="banner">
+        {%- block haikuheader %}
+        {%- if theme_full_logo != "false" %}
+        <a href="{{ pathto('index') }}">
+          <img class="logo" src="{{ pathto('_static/' + logo, 1) }}" alt="Logo"/>
+        </a>
+        {%- else %}
+        {%- if logo -%}
+          <img class="rightlogo" src="{{ pathto('_static/' + logo, 1) }}" alt="Logo"/>
+        {%- endif -%}
+        <h1 class="heading"><a href="{{ pathto('index') }}">
+          <span>{{ shorttitle|e }}</span></a></h1>
+        <h2 class="heading"><span>{{ title|striptags|e }}</span></h2>
+        {%- endif %}
+        {%- endblock %}
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      {{ topnav() }}
+      </div>
+      <div class="content">
+        {#{%- if display_toc %}
+        <div id="toc">
+          <h3>{{ _('Table Of Contents') }}</h3>
+          {{ toc }}
+        </div>
+        {%- endif %}#}
+        {% block body %}{% endblock %}
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      {{ nav() }}
+      </div>
+{% endblock %}
