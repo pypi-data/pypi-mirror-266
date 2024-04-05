@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "icutil_IGNchinmay"
+version = "0.0.6"
+authors = [
+  { name="Chinmay", email="chinmayananda.sahu@ignitarium.com" },
+]
+description = "A small CV test package"
+readme = "README.md"
+requires-python = ">=3.8"
+dynamic = ["dependencies"]              #used for requiremnts.txt file
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[project.urls]
+Homepage = "https://github.com/IGNchinmay/PypiPublishTest"
+Issues = "https://github.com/IGNchinmay/PypiPublishTest/issues"
