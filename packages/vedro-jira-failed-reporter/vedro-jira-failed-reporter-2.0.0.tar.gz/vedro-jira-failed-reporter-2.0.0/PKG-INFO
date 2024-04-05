@@ -1,0 +1,51 @@
+Metadata-Version: 2.1
+Name: vedro-jira-failed-reporter
+Version: 2.0.0
+Summary: vedro.io plugin for reporting about flaky tests into jira (with plugin enabled in flaky check runs)
+Home-page: https://github.com/ko10ok/vedro-jira-failed-reporter
+Author: Yuriy Sagitov
+Author-email: pro100.ko10ok@gmail.com
+License: Apache-2.0
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Typing :: Typed
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: vedro<2.0,>=1.7
+Requires-Dist: jira<3.7,>=3.6.0
+Requires-Dist: rtry<2.0,>=1.4.0
+
+# vedro-jira-failed-reporter
+
+Make report to jira when scenario fails
+
+
+## Install & setup
+
+Add config
+```
+class Config(vedro.Config):
+
+    class Plugins(vedro.Config.Plugins):
+    
+        class VedroJiraReporter(vedro_jira_failed_reporter.FailedJiraReporter):
+            enabled = True
+            report_enabled = True
+
+            jira_server = 'https://jira.com'
+            jira_user = '***'
+            jira_password = '***'
+            jira_project = 'ProjewctName'
+            jira_components = ['chat']
+            jira_labels: list[str] = ['flaky', 'tech_debt_qa']
+
+            jira_search_statuses: list[str] = ['Взят в бэклог', 'Open', 'Reopened', 'In Progress']
+            report_project_name: str = 'Chat'
+            job_path = 'https://gitlab.com/chat-space/chat/-/jobs/{job_id}'
+            job_id: str = '_job_id_'
+
+            dry_run: bool = False
+
+            exceptions: list[str] = []
+```
