@@ -1,0 +1,155 @@
+Macal Package
+
+This is the installation package for Macal, a Python script Language by Marco Caspers.
+
+Macal was developed for a limited and specific use.
+
+Creating a human and machine readable configuration file that loads data, transforms the data and emits the data. Loading happens by calling functions from libraries specific to a particular (Rest/XML) API.
+
+Emitting data is currently limited to the console and SysLog.
+
+In the tests folder find the test.py utility that contains several tests.
+
+13-12-2021: Please note that this package was previously called pyql, however there already existed a pyql project so i renamed it.
+
+Whats new in 2.0:
+
+Fully revised lexer, parser and interpreter.
+Script language now support defining functions.
+The interface for libraries was changed to make it much easier to write libraries.
+Published on github in a private repository.
+Extension for examples changed from .pyql into .mcl
+Examples in example subfolder
+Removed http library, may be re-added later
+Removed external dependancies due to removal of http library
+Changed interface of syslog commands
+Version 2.0.1:
+
+Minor bugfix, validatefunction throws an exception which needed scope to be passed, but the function didn't have that arg.
+Function Parameters/Arguments for library RegisterFunction now created by FuncArg() instead of ExpressionItem() to make the name more obvious and easier to read.
+Version 3.0.0:
+
+Lexer token is now a class.
+Rewrite of Lexer to greatly simplify it.
+Changes to parser to take into account changes in the Lexer/Lexer token.
+Version 3.0.1:
+
+MANY bugfixes in the interpreter.
+Several updates to libraries.
+Version 3.0.3 - 13-01-2022:
+
+Updated this document.
+Trying to fix issue with pip where it doesn't go to the normal branch but to legacy?
+Version 3.0.5 - 14-01-2022:
+
+Fixed parser issue with comments in blocks (parse_instruction). When a block contained a comment just before the closing bracket the skipping of the comment caused the closing bracket itself to be considered an illegal character.
+Version 3.0.6 - 26-01-2022:
+
+Fixed dependancy on Python 3.8.4 and later by removing type decorators for lists.
+Version 3.0.7 - 26-01-2022:
+
+Fixed interpreter version # 3.0.1 > 3.0.6
+Updated this readme.
+Version 3.1.0 - 04-05-2022:
+
+Added "include" command to the language. Usage: include name[, name]...;
+
+"name" is the filename of the to be included "library" without the .mcl extension.
+
+Any function defined therein can be called. Any variable defined can also be used.
+
+Macal will try to prevent including files that are already included to prevent having to run an interpreter on the same file multiple times.
+
+
+Version 3.5.0 - 14-05-2022:
+
+Libraries are now truely separated from the main code.
+Libraries are now also .mcl files.
+Libraries can have external dependancies in python files.
+Theoretically you can now also include libraries from other programming languages as long as you can link them through a python file.
+
+Version 3.5.1 - ~25-05-2022:
+
+Changed source code file headers. Removed all old history from all files, from here on out only the history of that one file is in that file.
+Version numbering has been moved to __about__.py, no longer getting different version numbers from different files.
+README.md changed, history of that file has been moved here to history.txt
+README.md now includes documentation for the language.
+
+Include files can now also reside in the same folder as you include them from, appart from the main library files that are delivered with the package and the library files that are used defined.
+
+Math library included with some math functions.
+Strings library was expanded with padleft, padright.
+System library had PI removed, that's now in the math library.
+System library expanded with 7 new functions regarding type and records.
+
+Lexer now uses source location object inside lexer token to hold line number and column number.
+Fixed some issues with location inside the lexer, it now properly sets the line and column number inside the location object.
+Previous versions could set the wrong line/column numbers here.
+
+fixed a bug in the interpreter/scope where functions with return used from within functions with return defined in code would cause the outer function to return as well as the inner function.
+
+Added tests for lexer and parser to the test.py script. usage: python3 test.py lexer (or parser) instead of a number of the test file to run.
+lexer and parser tests run off of lexer_test.mcl a copy of that exists in test10.mcl so you can also test the interpreter with test.py 10.
+
+Continue command added in foreach loop so you can skip some part of code, continuing with the next iteration.
+
+Changed strategy with imports. Can now import everything from the macal module. No longer needed to interact with all the internal modules.
+
+LexTokenTypes is now an enum.
+ParserNodeTypes is now an enum.
+VariableTypes is now an enum.
+ExpressionTypes is now an enum.
+
+Changing coding style to have functions separated by 3 blank lines.
+
+All the named tuple stuff is gone.
+Now correctly annotating function returns when they're returning tuples.
+
+
+3.5.2:
+
+	Minor bugix in strings library.
+	
+
+3.5.3:
+
+	String interpolation was changed.
+	Previously only the console() function from the system library performed an interpolation type process on a string.
+	However now string interpolation is universal and can be used everywhere.
+	Also it changed from having parameters separately after the string, the expressions are now included inside the curley brackets ({}) inside the string:
+
+	Example:
+
+	var = $"{a}&{b}@{c+2}";
+
+	
+4.0.0
+
+	- Requires Python 3.7 or later.
+	- Prefers Python 3.9 or later (because it's tested on least 3.9/3.10 but still should be backwards compatible with 3.7)
+	- Small improvements to readme.md
+	- Overhaul of the lexer.
+	- Overhaul of the parser.
+	- Overhaul of the interpreter.
+	- Added mi cli macal interpreter tool.
+	- Removed the test utility.
+	- Better error messages.
+	- The cureley brackets in interpolation can now be escaped {{}}.
+	- While was implemented.
+	- While has by default infinite loop protection enabled. After 25000 iterations the while loop will exit with an exception.
+	- GetInfiniteLoopProtectionCount can be used to retrieve the infinite loop protection maximum count value.
+	- SetInfiniteLoopProtectionCount(<int>) can be used to set the infinite loop protection maximum count value.
+	  Set to 0 to disable the infinite loop protection.
+
+4.0.74
+
+	- This is the 4.0 release candidate, todo: documentation updates.
+	- Type checking is enforced, this required refactoring and bugs were squashed, hopefully no new bugs were introduced.
+	- Library function names now all start with a capital letter to distingish them from variable names.
+	- String interpolation will throw an exception if no expression is within the curley brackets ({}) and/or there are no curley brackets in the string at all.
+	- Any old code using library functions will need to be updated.
+
+4.0.76
+
+	- Updated __about__.py version no + e-mail address.
+	- Updated build number.

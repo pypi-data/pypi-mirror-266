@@ -1,0 +1,19 @@
+// This is the root scope.
+
+var = 13;
+display => (arg) {
+    // This is the function scope. It cannot use the variable "var" 
+    // unless it is defined here. If you uncomment the next line
+    // the language will report: "Runtime error: Variable not found var at 8, 11"
+    // print(var);
+    
+    print(arg);
+}
+
+display("test");
+
+func = display;
+
+func(42);
+
+print("end of test.");

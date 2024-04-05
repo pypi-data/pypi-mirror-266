@@ -1,0 +1,12 @@
+source = {'firmware': nil, 'address': nil, 'serial': nil};
+device = {'name': nil, 'model': 'VMX-M', 'productType': nil, 'serial': 'Q2DZ-U67K-WC6N', 'mac': nil, 'apiname': 'Q2DZ-U67K-WC6N', 'networkId': 'N_3714906742627238058', 'latency': nil, 'uplstat': nil, 'performance': nil, 'bandwidth': nil, 'bandwidth_sent': nil, 'bandwidth_recv': nil, 'HA': nil, 'HARole': nil, 'listed': nil};
+
+select firmware, address, serial as DS from source where serial == device['serial'] merge into device;
+var = false;
+select distinct * from var into statuses;
+
+print("Expected: []");
+print("Actual:   ", statuses);
+
+
+print(device);

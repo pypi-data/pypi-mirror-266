@@ -1,0 +1,31 @@
+# This will test the if statement.
+
+drivers = 29;
+print("start");
+print("drivers = ", drivers);
+print("First test is for drivers > 30");
+print("Then elif drivers == 30");
+print("Then elif drivers < 30");
+print("Inside the elif drivers < 30 is a nested if else");
+print("this tests if drivers < 29");
+print("Then else");
+print();
+print("The expected outcome is this message being printed:\nwe don't get here for drivers < 30 when drivers == 29");
+print();
+print("The actual outcome is this message being printed:");
+if drivers > 30 {
+    print("we do not get here for drivers > 30 when drivers == 30");
+} elif drivers == 30 {
+    print("True if drivers == 30");
+} elif drivers < 30 {
+    # nested if else
+    if drivers < 29 {
+        print("True if drivers == 29");
+    } else {
+        print("we don't get here for drivers < 30 when drivers == 29");
+    }    
+} else {
+    print("we don't get here either.");
+}
+print();
+print('finish');

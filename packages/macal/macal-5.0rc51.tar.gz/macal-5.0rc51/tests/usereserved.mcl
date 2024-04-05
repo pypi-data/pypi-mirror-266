@@ -1,0 +1,22 @@
+/* 
+   Demoing the use of reserved variables in a script.
+   To make use of this feature the script must be compiled either with mi or mr with the -r option.
+   This option needs to be provided with a string that contains a comma separated list of the reserved variables.
+
+   Also the Python application that is used to run the script must set the values for these variables with the:
+    SetReservedVariable() function.
+*/
+
+print("This script is running with the following reserved variables:");
+print("org_name:      ", org_name);
+print("org_id:        ", org_id);
+print("host_name:     ", host_name);
+print("script:        ", script);
+print("api_key:       ", api_key);
+print("configuration: ", configuration);
+
+if org_id == nil {
+    print("orgid is nil");
+} else {
+    print("orgid is not nil");
+}

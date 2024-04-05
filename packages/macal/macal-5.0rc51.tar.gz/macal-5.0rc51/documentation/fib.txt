@@ -1,0 +1,101 @@
+Decompiled:
+0x00000000: DATA   0x00000163
+main: 
+0x00000009: PUSH   RBP
+0x0000000B: MOVRR  RBP, RSP
+block_start: function_definition: 
+0x0000000E: JMP    0x00000121
+fib: 
+0x00000017: PUSH   RBP
+0x00000019: MOVRR  RBP, RSP
+block_start: if: expression: binary_expression: expression: binary_expression: expression: variable_expression: 
+0x0000001C: LOADR  RAX, STACK[RBP+-4]
+0x00000026: PUSH   RAX
+expression: literal_expression: 
+0x00000028: MOVRI  RAX, 1 (INTEGER)
+0x00000033: PUSH   RAX
+0x00000035: POP    RBX
+0x00000037: POP    RAX
+0x00000039: CMPRR  RAX, RBX
+0x0000003C: SETZR  RAX
+0x0000003E: PUSH   RAX
+expression: binary_expression: expression: variable_expression: 
+0x00000040: LOADR  RAX, STACK[RBP+-4]
+0x0000004A: PUSH   RAX
+expression: literal_expression: 
+0x0000004C: MOVRI  RAX, 2 (INTEGER)
+0x00000057: PUSH   RAX
+0x00000059: POP    RBX
+0x0000005B: POP    RAX
+0x0000005D: CMPRR  RAX, RBX
+0x00000060: SETZR  RAX
+0x00000062: PUSH   RAX
+0x00000064: POP    RBX
+0x00000066: POP    RAX
+0x00000068: ORRR   RAX, RBX
+0x0000006B: PUSH   RAX
+0x0000006D: POP    RAX
+0x0000006F: CMPRI  RAX, True (BOOLEAN)
+0x00000073: JMPNZ  0x000000A7
+block_start: return: expression: literal_expression: 
+0x0000007C: MOVRI  RAX, 1 (INTEGER)
+0x00000087: PUSH   RAX
+0x00000089: POP    RAX
+0x0000008B: STORR  STACK[RBP+-3], RAX
+0x00000095: JMP    0x0000011B
+block_end: 
+0x0000009E: JMP    0x000000A7
+label_end: label_jnz: return: expression: binary_expression: expression: function_call_expression: expression: binary_expression: expression: variable_expression: 
+0x000000A7: LOADR  RAX, STACK[RBP+-4]
+0x000000B1: PUSH   RAX
+expression: literal_expression: 
+0x000000B3: MOVRI  RAX, 1 (INTEGER)
+0x000000BE: PUSH   RAX
+0x000000C0: POP    RBX
+0x000000C2: POP    RAX
+0x000000C4: SUBRR  RAX, RBX
+0x000000C7: PUSH   RAX
+0x000000C9: CALL   0x00000017
+expression: function_call_expression: expression: binary_expression: expression: variable_expression: 
+0x000000D2: LOADR  RAX, STACK[RBP+-4]
+0x000000DC: PUSH   RAX
+expression: literal_expression: 
+0x000000DE: MOVRI  RAX, 2 (INTEGER)
+0x000000E9: PUSH   RAX
+0x000000EB: POP    RBX
+0x000000ED: POP    RAX
+0x000000EF: SUBRR  RAX, RBX
+0x000000F2: PUSH   RAX
+0x000000F4: CALL   0x00000017
+0x000000FD: POP    RBX
+0x000000FF: POP    RAX
+0x00000101: ADDRR  RAX, RBX
+0x00000104: PUSH   RAX
+0x00000106: POP    RAX
+0x00000108: STORR  STACK[RBP+-3], RAX
+0x00000112: JMP    0x0000011B
+fib_exit: block_end: 
+0x0000011B: MOVRR  RSP, RBP
+0x0000011E: POP    RBP
+0x00000120: RET
+fib_end: assign: 
+0x00000121: XOR    RAX, RAX
+0x00000124: PUSH   RAX
+expression: function_call_expression: expression: literal_expression: 
+0x00000126: MOVRI  RAX, 5 (INTEGER)
+0x00000131: PUSH   RAX
+0x00000133: CALL   0x00000017
+0x0000013C: POP    RAX
+0x0000013E: STOR   STACK[3], RAX
+print: expression: variable_expression: 
+0x00000148: LOAD   RAX, STACK[3]
+0x00000152: PUSH   RAX
+0x00000154: POP    RAX
+0x00000156: PRNT
+0x00000157: MOVRI  RAX, <cr> (STRING)
+0x0000015C: PRNT
+exit: block_end: 
+0x0000015D: MOVRR  RSP, RBP
+0x00000160: POP    RBP
+0x00000162: RET
+0x00000163: 

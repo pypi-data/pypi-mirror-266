@@ -1,0 +1,17 @@
+// Select Merge test.
+
+include aor;
+
+select author as Author, title, test as Title from var where author == 'J.R.R. Tolkien' into y;
+select distinct author as Author, title, test as Title from var where author == 'Douglas Adams' merge into y;
+
+print("Expected: 3 rows: 'Author', 'title', 'Title'");
+foreach y {
+    print(it);
+}
+print();
+print("Explanation: Distinct guarantees a single record as the output of the select statement.");
+print("Because both select statements have the distinct keyword, the second select statement will\nnot add any rows to the output regardless of the fact that it has the merge statement.");
+print();
+print("Expected: {'Author': 'J.R.R. Tolkien', 'title': 'The Hobbit', 'Title': 'nil'}");
+print("Result:   ",y);       

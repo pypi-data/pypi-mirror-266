@@ -1,0 +1,13 @@
+// Select Merge test.
+
+include aor;
+
+select distinct author as Author, title, test as Title from var where author == 'J.R.R. Tolkien' into y;
+select author as Author, title, test as Title from var where author == 'Douglas Adams' merge into y;
+
+print("This select/merge test will return 2 records.");
+
+foreach y {
+       print(it);
+}
+

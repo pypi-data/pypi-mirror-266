@@ -1,0 +1,27 @@
+# This is a test for a variable that is indexed, where we want to get the type of a value at a given index.
+include strings;
+uplink = {'networkId': 'N_3714906742627238058', 
+          'serial': 'Q2DZ-U67K-WC6N', 
+          'model': 'VMX-M', 
+          'highAvailability': {'enabled': false, 'role': 'primary'}, 'lastReportedAt': '2023-11-26T16:54:22Z', 
+              'uplinks': [
+                   {'interface': 'wan1', 'status': 'active', 'ip': '172.20.253.4', 'gateway': '172.20.253.1', 
+                   'publicIp': '20.82.51.246', 'primaryDns': '172.20.1.4', 'secondaryDns': '172.20.1.5', 'ipAssignedBy': 'dhcp'
+                   }]
+        };
+uplstat = [];
+
+if uplink["uplinks"] != nil and IsArray(uplink["uplinks"]) and Len(uplink["uplinks"]) > 0 {
+    select interface as uplink, ip, status from uplink["uplinks"] where interface != nil merge into uplstat;
+}
+
+# print the results of the test:
+
+print("Test IsArray(var[<index>]");
+print("Expected:   ", "{'uplink': 'wan1', 'ip': '172.20.253.4', 'status': 'active'}");
+print("Actual:     ", uplstat);
+
+print();
+print("Type(nn[<index>]) test");
+print("Expected:   ", "array");
+print("Actual:     ", Type(uplink["uplinks"]));

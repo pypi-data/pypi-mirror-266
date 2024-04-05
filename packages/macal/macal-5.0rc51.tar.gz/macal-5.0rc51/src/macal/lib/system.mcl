@@ -1,0 +1,55 @@
+/*
+    This is the system library for Macal
+    You can use it by issuing this command:
+    include system;
+    
+    Author:    Marco Caspers
+    Date:      16-09-2022
+
+    
+    This library is licensed under the MIT license.
+
+    (c) 2023 Westcon-Comstor
+    (c) 2023 WestconGroup, Inc.
+    (c) 2023 WestconGroup International Limited
+    (c) 2023 WestconGroup EMEA Operations Limited
+    (c) 2023 WestconGroup European Operations Limited
+    (c) 2023 Sama Development Team
+
+    Date:    17-11-2023
+    Version: 1.1.0
+
+    Added GetType function to determine the type of a variable or value.
+
+    Date:    23-11-2023
+    Version: 1.1.1
+
+    Removed GetType function. The language has a built in type to replace it.
+
+*/
+
+
+Console => (params args) external 'ext_system', 'Console';
+Print => (params args) external 'ext_system', 'Console';
+
+Array => (params args) external 'ext_system', 'Array';
+List => (params args) external 'ext_system', 'Array';
+
+# There is actually a bytecode instruction that does this, so perhaps next version we make 
+# this part of the language instead of having it as a library function.
+RecordHasField => (record rec, string fieldname) external "ext_system", "RecordHasField";
+
+Platform => () external "ext_system", "GetPlatform";
+
+Items => (variable var) external "ext_system", "RecordItems";
+Key => (variable var) external "ext_system", "RecordItemKey";
+Value => (variable var) external "ext_system", "RecordItemValue";
+Keys => (variable var) external "ext_system", "RecordKeys";
+Values => (variable var) external "ext_system", "RecordValues";
+
+Env => (string varname) external "ext_system", "GetEnv";
+SetEnv => (string varname, string value) external "ext_system", "SetEnv";
+
+Args => () external "ext_system", "GetArgs";
+Arg => (int index) external "ext_system", "GetArg";
+ArgCount => () external "ext_system", "GetArgCount";

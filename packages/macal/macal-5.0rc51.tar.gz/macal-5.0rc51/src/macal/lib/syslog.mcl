@@ -1,0 +1,21 @@
+/*
+    This is the syslog library for Macal
+    You can use it by issuing this command:
+    include syslog;
+    
+    This library is licensed under the MIT license.
+
+    (c) 2023 Westcon-Comstor
+    (c) 2023 WestconGroup, Inc.
+    (c) 2023 WestconGroup International Limited
+    (c) 2023 WestconGroup EMEA Operations Limited
+    (c) 2023 WestconGroup European Operations Limited
+    (c) 2023 Sama Development Team
+
+    Date:    17-11-2023
+    Version: 1.0.0
+*/
+
+Syslog => (level, message) external "ext_syslog", "Syslog";
+SyslogInit => (remote) external "ext_syslog", "SyslogInit";
+SyslogSetAddress => (address, port) external "ext_syslog", "SyslogSetAddress";

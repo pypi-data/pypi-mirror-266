@@ -1,0 +1,47 @@
+/*
+    Macal Meraki device info script for Check Mk 2.x
+
+    Version  5.0.0
+    Date:    2023-11-24
+    Author:  Marco Caspers
+    Contact: samadevteam@westcon.com
+    License: MIT
+    Company: Westcon-Comstor 
+
+*/
+include meraki_v1;
+
+// Display variables retrieved from the Meraki Agent.
+
+print("Agent version: ", agent_version);
+print("Org name:      ", org_name);
+print("Org ID:        ", org_id);
+print("API key:       ", "**********");
+print("Host name:     ", host_name);
+print("Serial number: ", serial_number);
+
+result = InitDashboardApi(api_key);
+if result == false {
+	print("@Failed to initialize Meraki Dasboard API");
+	print("@ ", GetLastErrorMessage());
+	halt 1;
+}
+
+if org_id == nil or org_id == "" {
+	select distinct id from result where name == org_name into org_id;
+}
+elif org_id != nil or org_name == "" {
+	select distinct name from get_org_Organizations() where id == org_id into org_name;
+}
+if org_id == nil {
+    print("@No organization found with name: ", org_name);
+    print(GetLastErrorMessage());
+    halt 1;
+}
+
+if org_name == nil {
+    print("@No organization found with ID: ", org_id);
+    halt 1;
+}
+
+print("Hello World, the organisation ID is: ", org_id);

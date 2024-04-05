@@ -1,0 +1,21 @@
+// select test with a function in the from field.
+
+func2 => (a)
+{
+    return a + 1;
+}
+
+func => () {
+    return [{"a": 1, "b": 2}, {"a": 3, "b": 4}, {"a": 5, "b": 6}];
+}
+
+result = func2(1);
+
+print("Expected: 2");
+print($"result:   {result}");
+
+print("Expected: ", func());
+
+select * from func() into var;
+
+print("Result:   ", var);

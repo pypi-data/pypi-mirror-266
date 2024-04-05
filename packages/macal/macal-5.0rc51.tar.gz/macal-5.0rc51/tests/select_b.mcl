@@ -1,0 +1,11 @@
+// Select empty record with known fields.
+
+include aor;
+
+# this select statement should result in a record comprised of the titles with nil values.
+select id, author, title, year from var where id == 1000 into books;
+
+print("Expected: {'id': nil, 'author': nil, 'title': nil, 'year': nil}");
+print("Actual:   ", books);
+
+

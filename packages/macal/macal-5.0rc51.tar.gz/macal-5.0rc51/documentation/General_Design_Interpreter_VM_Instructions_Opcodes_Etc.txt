@@ -1,0 +1,94 @@
+10-10-2023 MACAL2 current state:
+
+The MACAL 2 language contains a lexer, parser, compiler, decompiler and interpreter (runtime VM)
+The compiler compiles directly to bytecode instructions.
+
+--
+Interpreter:
+--
+
+The VM itself is a stack/register hybrid.
+I call it hybrid because this VM doesn't place its stack in memory, it places it in a separate array.
+Also the norm for a stack is that it grows from the highest address down, in our case it's the other way around, we start at entry 0.
+The registers resemble Intel CPU registers (x64 instructionset) for the most part.
+There is a FLAGS register, but only realistically the Zero Flag is used in the current implementation.
+
+--
+
+When preparing for code execution:
+
+Code is read from a binary file, this file has 3 magic bytes which are validated.
+
+These magic bytes are: BMC
+
+Then what follows is the version number of the file format, this is an int64 (8 bytes).
+
+This version number is validated against the supported versions list. At the moment there only exists version 1.
+Once the magic bytes and the version number have been validated, the rest of the binary file is read into the memory of the VM.
+The memory of the VM consists of a Python bytecode array of 1 megabyte in size.
+
+--
+
+Before starting execution of the program the following is done:
+
+-> VM Registers are reset.
+-> VM Stack is cleared.
+-> An int64 with the value 0 is pushed onto the stack, it will serve as the exit code for the application.
+-> An int64 with the value 0 is pushed onto the stack, it will serve as the return address for the virtual call instruction to the start of the code.
+-> A runtime scope is created.
+-> The metadata is read into the runtime scope, this will cause the RIP register is set with the value found in the label main in the metadata. This should be 9. 
+   The first 9 bytes are BC_METADATA and an int64 that indicates the address at which the metadata starts.
+
+Then execution of the program starts.
+
+--
+
+There are two categories of instructions:
+1). Bytecode instructions
+2). Metadata instructions
+
+Bytecode instructions are directly executable by the VM and do not require special handling.
+The interpreter uses the function "run_code" to execute these.
+
+Metadata instructions require special handling and are mainly in place for the decompiler.
+
+The "run_code" function will execute Bytecode instructions in an infinite loop until one of these 3 conditions is met:
+1). An instruction opcode encountered with a value > 127. A value of 127 and higher indicates a meadata instruction.
+2). The VM was halted, by the halt instruction, the exit code will be set to the value of the expression in this instruction. 
+3). The VM was halted, by reaching the end of the program, the exitcode will be set.
+
+The calling function will need to test for these conditions.
+
+Meta data instructions will always consist of the following header information:
+
+1). Opcode with a value > 127 to indicate it is a metadata instruction, this is a single byte.
+2). Line number of the instruction in the source code (int64)
+3). Column number of the instruction in the source code (int64)
+
+More metadata fields may follow that but these are dependant on the instruction itself.
+
+--
+Metadata instructions
+--
+
+BLOCK(opcode, line, column, Metadata instruction count)
+	This is a special metadata instruction that denotes a block of instructions following.
+	It in and of itself is not a runnable instruction.
+	It is used within If, Elif, Else, Foreach, While and Function.
+
+ASSIGNMENT_STATEMENT(opcode, line, column)
+PRINT_STATEMENT(opcode, line, column) 
+   This instruction ends with the special PRINT instruction end marker. This is a one byte metadata instruction that does not have the line/column with it as it is not a real instruction.
+WHILE_STATEMENT(opcode, line, column)   
+FOREACH_STATEMENT(opcode, line, column)
+BREAK_STATEMENT(opcode, line, column)
+CONTINUE_STATEMENT(opcode, line, column)
+HALT_STATEMENT(opcode, line, column)
+RETURN_STATEMENT(opcode, line, column)
+FUNCTION_CALL(opcode, line, column, function_name(str), arg_count(int64)) * The arg count is no longer needed, that loop is unrolled by the compiler and now consists of purely vm opcodes. pending removal.
+FUNCTION_DEFINITION(opcode, line, column) **** This Metadata instruction is unreachable it is surrounded by jump instructions.
+FUNCTION(opcode, line, column, function_name(str), arg_count(int64), arglist [(type, value)*])
+IF_STATEMENT(opcode, line, column) This is the toplevel function, the 3 below here are executed from here, if they are encountered.
+ELIF_STATEMENT_LIST(opcode, line, column, elif_count(int64))
+ELIF_STATEMENT(opcode, line, column) * This is ran from ELIF_STATEMENT_LIST if any exists.
+ELSE_STATEMENT(opcode, line, column) * This is ran from the IF or ELIF_STATEMENT_LIST if the IF condition, and/or all the ELIF conditions fail.

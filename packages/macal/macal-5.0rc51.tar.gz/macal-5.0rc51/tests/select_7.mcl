@@ -1,0 +1,10 @@
+# Test for Indexed select into
+
+var = [{"id": 1, "name": "test"}, {"id": 2, "name": "test2"}];
+
+var2 = [{"id": 3, "name": "test4"}, {}];
+
+select distinct * from var where id == 1 into var2[1];
+
+print("Expected: [{'id': 3, 'name': 'test4'}, {'id': 1, 'name': 'test'}]");
+print("Result:   ",var2);

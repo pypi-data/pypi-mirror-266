@@ -1,0 +1,23 @@
+var = [{'id': '12345', 
+         'name': 'Test company', 
+         'url': 'https://1', 
+         'samlConsumerUrl': 'https://2', 
+         'samlConsumerUrls': ['https://3'], 
+         'api': {'enabled': true}, 
+         'licensing': {'model': 'co-term'}, 
+         'cloud': {'region': {'name': 'Europe'}}, 
+         'management': {'details': []}}];
+
+org_id = '12345';
+print();
+print("Select:");
+select name from var where id == org_id into org;
+print("Expected: [{'name': 'Test company'}]");
+print("Result:   ",org);
+print();
+
+print("Select distinct:");
+select distinct name from var where id == org_id into org2;
+print("Expected: Test company");
+print("Result:   ",org2);
+print();
