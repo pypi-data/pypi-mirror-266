@@ -1,0 +1,64 @@
+Metadata-Version: 2.1
+Name: misspy
+Version: 2.0a2
+Summary: Fast, asynchronous Misskey API framework
+Home-page: https://rewrite.misspy.xyz/
+License: MIT
+Keywords: misskey,misskey-api,misskey-bot
+Author: sonyakun
+Author-email: owner@sonyakun.com
+Requires-Python: >=3.8,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Dist: aiodns (>=3.1.1,<4.0.0)
+Requires-Dist: aiohttp (>=3.9.1,<4.0.0)
+Requires-Dist: brotli (>=1.1.0,<2.0.0)
+Requires-Dist: brotlicffi (>=1.1.0.0,<2.0.0.0)
+Requires-Dist: charset-normalizer (>=3.3.2,<4.0.0)
+Requires-Dist: mitypes (>=0.1.0,<0.2.0)
+Requires-Dist: orjson (>=3.9.10,<4.0.0)
+Requires-Dist: pydantic (>=2.6.3,<3.0.0)
+Requires-Dist: requests (>=2.31.0,<3.0.0)
+Requires-Dist: tenacity (>=8.2.3,<9.0.0)
+Requires-Dist: websockets (>=12.0,<13.0)
+Project-URL: Documentation, https://rewrite.misspy.xyz/docs/
+Project-URL: Repository, https://go.misspy.xyz/rewrite
+Description-Content-Type: text/markdown
+
+# misspy
+> [!WARNING]
+> This is in the development phase. Do not use in a production environment.
+
+Fast, asynchronous misskey API framework.
+
+### Features✨
+- asynchronous
+- Fast
+- Automatic detection of Misskey version (can also be set manually)
+
+### Install
+```
+$ pip install git+https://github.com/misspy-dev/misspy-rewrite.git
+```
+
+### Tested Software
+- Misskey v13 onward (Unavailable endpoints are designed to send an error, so they are available in v10 or later Misskey versions and forks.)
+
+### example
+An example can be found in [example directory](/example).
+
+## Other
+
+### Supported Version
+misspy currently supports all versions of Python 3.8 and later.
+
+### Docs
+Documentation can be found at: https://rewrite.misspy.xyz/docs
+

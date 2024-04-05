@@ -1,0 +1,1 @@
+# とりあえず未実装。OAuthは:neko_dakara_wakannyai2:
