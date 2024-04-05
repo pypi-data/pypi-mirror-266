@@ -1,0 +1,69 @@
+name: Tests
+
+on: [push, pull_request]
+
+jobs:
+  run_test_site:
+    name: ${{ matrix.os }}-py${{ matrix.PYTHON_VERSION }}${{ matrix.LABEL }}
+    runs-on: ${{ matrix.os }}-latest
+    timeout-minutes: 30
+    env:
+      MPLBACKEND: agg
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu, windows, macos]
+        PYTHON_VERSION: ['3.9', '3.10']
+        LABEL: ['']
+        include:
+          - os: ubuntu
+            PYTHON_VERSION: '3.8'
+          - os: ubuntu
+            PYTHON_VERSION: '3.11'
+          - os: ubuntu
+            PYTHON_VERSION: '3.12'
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: get repository name
+        shell: bash
+        run: echo "REPOSITORY_NAME=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
+
+      - name: Fetch tags upstream
+        if: ${{ github.repository_owner != 'hyperspy' }}
+        # Needs to fetch the tags from upstream to get the
+        # correct version with setuptools_scm
+        run: |
+          git remote add upstream https://github.com/hyperspy/${{ env.REPOSITORY_NAME }}.git
+          git fetch upstream --tags
+
+      - uses: actions/setup-python@v5
+        name: Install Python
+        with:
+          python-version: ${{ matrix.PYTHON_VERSION }}
+
+      - name: Display version
+        run: |
+          python --version
+          pip --version
+
+      - name: Install
+        run: |
+          pip install -e .[tests]
+
+      - name: Pip list
+        run: |
+          pip list
+
+      - name: Run test suite
+        run: |
+          pytest --pyargs holospy --cov=. --cov-report=xml
+
+      - name: Upload coverage to Codecov
+        if: ${{ always() }}
+        uses: codecov/codecov-action@v4
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
