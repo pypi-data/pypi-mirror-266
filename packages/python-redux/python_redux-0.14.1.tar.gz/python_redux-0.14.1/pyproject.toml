@@ -1,0 +1,78 @@
+[tool.poetry]
+name = "python-redux"
+version = "0.14.1"
+description = "Redux implementation for Python"
+authors = ["Sassan Haradji <sassanh@gmail.com>"]
+license = "Apache-2.0"
+readme = "README.md"
+packages = [{ include = "redux" }, { include = "redux_pytest" }]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+python-immutable = "^1.0.5"
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+poethepoet = "^0.24.4"
+pyright = "^1.1.357"
+ruff = "^0.3.5"
+pytest = "^8.1.1"
+pytest-cov = "^4.1.0"
+pytest-timeout = "^2.3.1"
+pytest-mock = "^3.14.0"
+tenacity = "^8.2.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+demo = "demo:main"
+todo_demo = "todo_demo:main"
+
+[tool.poe.tasks]
+lint = "ruff check . --unsafe-fixes"
+typecheck = "pyright -p pyproject.toml ."
+test = "pytest --cov --cov-report=term-missing --cov-report=html --cov-report=xml"
+sanity = ["typecheck", "lint", "test"]
+
+[tool.ruff]
+lint.select = ['ALL']
+lint.ignore = ['INP001', 'PLR0911', 'D203', 'D213']
+lint.fixable = ['ALL']
+lint.unfixable = []
+
+[tool.ruff.lint.flake8-quotes]
+docstring-quotes = "double"
+inline-quotes = "single"
+multiline-quotes = "double"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101", "PLR0915"]
+
+[tool.ruff.format]
+quote-style = 'single'
+
+[tool.isort]
+profile = "black"
+
+[tool.pyright]
+exclude = ['typings']
+filterwarnings = 'error'
+
+[tool.pytest.ini_options]
+log_cli = 1
+log_cli_level = 'ERROR'
+timeout = 1
+
+[tool.coverage.report]
+exclude_also = ["if TYPE_CHECKING:"]
+
+[tool.coverage.run]
+source = ['redux', 'redux_pytest']
+omit = ['redux_pytest/plugin.py']
+
+[tool.poetry.plugins.pytest11]
+redux = "redux_pytest.plugin"
