@@ -1,0 +1,30 @@
+# TODO: This schema is not completely correct. Need oneof_schema for writeAll/symbols
+dropDomainViolations:
+  type: boolean
+writeAll:
+  type: 
+   - boolean
+   - string
+  allowed:
+   - true
+   - false
+   - auto
+symbols:
+  type: list
+  schema:
+    type: dict
+    schema:
+      name:
+        type: string
+        required: true
+      dropDomainViolations:
+        type: 
+        - boolean
+        - string
+        allowed:
+        - true
+        - false
+        - before
+        - after
+trace:
+  type: integer

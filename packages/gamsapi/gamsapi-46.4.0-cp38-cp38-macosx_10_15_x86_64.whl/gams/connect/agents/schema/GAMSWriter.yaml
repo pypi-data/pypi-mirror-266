@@ -1,0 +1,58 @@
+writeAll:
+  type: 
+   - boolean
+   - string
+  allowed:
+   - true
+   - false
+   - auto
+mergeType:
+  type: string
+  allowed:
+  - replace
+  - merge
+  - default
+domainCheckType:
+  type: string
+  allowed:
+  - filtered
+  - checked
+  - default
+duplicateRecords:
+  type: string
+  allowed:
+  - all
+  - first
+  - last
+  - none
+symbols:
+  type: list
+  schema:
+    type: dict
+    schema:
+      name:
+        type: string
+        required: true
+      newName:
+        type: string
+      mergeType:
+        type: string
+        allowed:
+        - replace
+        - merge
+        - default
+      domainCheckType:
+        type: string
+        allowed:
+        - filtered
+        - checked
+        - default
+      duplicateRecords:  
+        type: string
+        allowed:
+        - all
+        - first
+        - last
+        - none
+trace:
+  type: integer
