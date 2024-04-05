@@ -1,0 +1,40 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools>=69"]
+
+[tool.black]
+include = "service_oriented(_test)?/.*\\.py$"
+line-length = 88
+target-version = ["py39"]
+
+[tool.flake8]
+ignore = ["E203", "E251", "E701", "N805", "W503", "DAR101", "DAR201", "DAR301", "DAR401"]
+max-line-length = 88
+min_python_version = "3.9.0"
+
+[tool.isort]
+include_trailing_comma = true
+known_first_party = ["service_oriented", "service_oriented_test"]
+line_length = 88
+lines_after_imports = 2
+multi_line_output = 3
+profile = "black"
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+use_parentheses = true
+
+[tool.mypy]
+check_untyped_defs = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+ignore_missing_imports = false
+plugins = ["pydantic.mypy"]
+warn_redundant_casts = true
+warn_return_any = true
+warn_unused_configs = true
+warn_unused_ignores = true
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+
+[tool.pytest.ini_options]
+markers = ["integration_test: marks tests as integration tests (deselect with '-m \"not integration_test\"')"]
