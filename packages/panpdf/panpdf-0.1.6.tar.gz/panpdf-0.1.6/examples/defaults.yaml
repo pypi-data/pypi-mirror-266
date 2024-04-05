@@ -1,0 +1,57 @@
+table-of-contents: true
+toc-depth: 2
+number-sections: true
+wrap: preserve
+
+resource-path:
+- .
+- ${.}/images
+
+pdf-engine: lualatex
+pdf-engine-opts:
+  - -interaction=nonstopmode
+  - -halt-on-error
+  - -shell-escape
+
+# csl: ${.}/ieee.csl
+csl: https://www.zotero.org/styles/ieee
+include-in-header: ${.}/include-in-header.tex
+include-before-body: ${.}/include-before-body.tex
+include-after-body: ${.}/include-after-body.tex
+
+metadata:
+  toc-title: 目次
+  reference-section-title: 参考文献
+  reference-equation-name: 式
+  reference-figure-name: 図
+  reference-table-name: 表
+  link-citations: true
+
+variables:
+  colorlinks: true
+  toccolor: Maroon
+  linkcolor: RedViolet
+  filecolor: RedViolet
+  citecolor: NavyBlue
+  urlcolor: NavyBlue
+  indent: true
+  documentclass: jlreq
+  papersize: a4
+  classoption:
+    - jafontscale=0.92
+    - hanging_punctuation
+    - head_space=24.8mm
+    - foot_space=24.8mm
+  mainfont: TeX Gyre Pagella
+  mathfont: TeX Gyre Pagella Math
+  # sansfont: Fira Sans
+  # sansfontoptions:
+  #   - Scale=1.00
+  # monofont: Fira Code
+  # monofontoptions:
+  #   - Scale=0.85
+  luatexjapresetoptions:
+    - deluxe
+    - match
+    - nfssonly
+    - jis2004
