@@ -1,0 +1,43 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "lscsde_workspace_mgmt"
+dynamic = ["version"]
+authors = [
+  { name="Shaun Turner", email="shaun.turner1@nhs.net" },
+]
+description = "LSCSDE Workspace Management" 
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+  "pydantic",
+  "kubernetes-asyncio",
+  'importlib-metadata; python_version<"3.10"',
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/lsc-sde/py-lscsde-workspace-mgmt"
+Issues = "https://github.com/lsc-sde/py-lscsde-workspace-mgmt/issues"
+
+[tool.coverage.run]
+source = ["src"]
+
+[tool.hatch.version]
+path = "src/lscsde_workspace_mgmt/_version.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/lscsde_workspace_mgmt"]
+
+
+[tool.hatch.build]
+exclude = [
+  "test.py",
+  "integrationtest.py"
+]
