@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "BasicLibrary.PY"
+version = "0.6.19"
+description = ""
+authors = ["解大劦 <9727005@qq.com>"]
+readme = "README.md"
+packages = [{ include = "BasicLibrary" }]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pillow = "^10.2.0"
+pandas = "^2.2.1"
+sxtwl = "^2.0.6"
+chardet = "^5.2.0"
+python-dotenv = "^1.0.1"
+
+[tool.poetry.group.dev.dependencies]
+pylint = "^3.1.0"
+pytest = "^8.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+# 使用国内的类库镜像源
+[[tool.poetry.source]]
+name = "mirrors"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
+priority = "default"
