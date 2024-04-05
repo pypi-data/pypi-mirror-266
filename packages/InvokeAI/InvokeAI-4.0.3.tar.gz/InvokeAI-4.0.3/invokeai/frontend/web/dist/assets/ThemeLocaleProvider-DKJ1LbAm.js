@@ -1,0 +1,1 @@
+import{h as s,A as n,kv as i,kw as c,C as o,kx as d,ky as u,kz as m}from"./index-MDF-DOT9.js";function x({children:t}){const{i18n:r}=n(),e=r.dir(),a=s.useMemo(()=>i({...c,direction:e}),[e]);return s.useEffect(()=>{document.body.dir=e},[e]),o.jsx(d,{theme:a,toastOptions:u,children:o.jsx(m,{children:t})})}const h=s.memo(x);export{h as default};
