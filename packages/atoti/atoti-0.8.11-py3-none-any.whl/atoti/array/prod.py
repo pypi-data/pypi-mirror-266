@@ -1,0 +1,31 @@
+from __future__ import annotations
+
+from .._measure_convertible import NonConstantMeasureConvertible
+from .._measure_description import MeasureDescription, convert_to_measure_description
+from .._measures.calculated_measure import CalculatedMeasure, Operator
+from ._utils import check_array_type
+
+
+def prod(measure: NonConstantMeasureConvertible, /) -> MeasureDescription:
+    """Return a measure equal to the product of all the elements of the passed array measure.
+
+    Example:
+        >>> pnl_table = session.read_csv(
+        ...     f"{RESOURCES}/pnl.csv",
+        ...     array_separator=";",
+        ...     keys=["Continent", "Country"],
+        ...     table_name="PnL",
+        ... )
+        >>> cube = session.create_cube(pnl_table)
+        >>> l, m = cube.levels, cube.measures
+        >>> m["Product"] = tt.array.prod(m["PnL.SUM"])
+        >>> m["Empty product"] = tt.array.prod(m["PnL.SUM"][0:0])
+        >>> cube.query(m["PnL.SUM"], m["Product"], m["Empty product"])
+                                  PnL.SUM             Product Empty product
+        0  doubleVector[10]{-20.163, ...}  122,513,372,194.94          1.00
+
+    """
+    check_array_type(measure)
+    return CalculatedMeasure(
+        Operator("product_vector", [convert_to_measure_description(measure)])
+    )
