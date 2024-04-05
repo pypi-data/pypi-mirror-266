@@ -1,0 +1,63 @@
+# feno - Flexible Exercise Notation Organizer
+
+A ferramenta `feno` é um formatador de atividades de programação e conta com uma série de ferramentas integradas.
+
+- Um preprocessador de Markdown (toc, include).
+- Um gerador de arquivos html usando pandoc.
+- Um gerador de links absolutos para arquivos locais.
+- Uma ferramenta para filtrar rascunhos de código.
+- Um indexador de questões.
+- Um gerador de arquivos para serem utilizados no VPL do Moodle ou via tko.
+
+## Instalação
+
+```bash
+pip install feno
+
+# tko para gerar e converter os testes e testar os códigos
+pip install tko
+
+# pandoc para gerar os htmls
+sudo apt install pandoc
+```
+
+## Modo básico
+
+Em uma pasta de nome `label` , crie um arquivo `Readme.md` com o seguinte formato:
+
+    # @label - Título da atividade
+
+    A descrição que você quiser
+
+    ```txt
+    >>>>>>>> teste 1
+    entrada
+    entrada
+    ========
+    saida
+    saida
+    <<<<<<<<
+    
+    >>>>>>>> teste 2
+    entrada
+    entrada
+    ========
+    saida
+    saida
+    <<<<<<<<
+
+    ```
+
+- O rótulo label pode ser qualquer nome e estar em qualquer lugar do título e a pasta deve ter o mesmo nome do rótulo.
+- Você pode inserir quantos testes quiser.
+- Execute o `feno` na pasta local com:
+
+```bash
+feno .
+```
+
+Ele vai criar uma pasta `.cache` com:
+
+- `q.html` - Um arquivo html com as questões.
+- `q.tio` - Um arquivo com as questões no formato tio.
+- `mapi.json` - Um arquivo com o mapeamento dos testes para o moodle.
