@@ -1,0 +1,22 @@
+[build-system]
+requires = ["maturin>=1.5,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "embed_anything"
+requires-python = ">=3.8"
+description = "Embed anything at lightning speed"
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)"
+]
+dynamic = ["version"]
+[tool.maturin]
+features = ["pyo3/extension-module"]
+license = {file = "LICENSE"}
+
+[project.urls]
+Homepage = "https://github.com/StarlightSearch/EmbedAnything/tree/main"
