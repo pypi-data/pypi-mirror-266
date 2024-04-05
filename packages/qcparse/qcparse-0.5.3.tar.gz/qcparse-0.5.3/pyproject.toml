@@ -1,0 +1,55 @@
+[tool.poetry]
+name = "qcparse"
+version = "0.5.3"
+description = "A package for parsing Quantum Chemistry program file outputs into structured qcio data objects."
+authors = ["Colton Hicks <github@coltonhicks.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pydantic = ">=2.0.0"
+qcio = ">=0.7.1"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.1.1"
+isort = "^5.12.0"
+pytest = "^7.2.2"
+pre-commit = "^3.2.0"
+pytest-cov = "^4.0.0"
+black = ">=24.0.0"
+ruff = "^0.0.275"
+
+[tool.poetry.scripts]
+qcparse = "qcparse.cli:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+testpaths = "tests/"
+
+[tool.black]
+line-length = 88
+
+[tool.isort]
+force_grid_wrap = 0
+include_trailing_comma = true
+line_length = 88
+multi_line_output = 3
+use_parentheses = true
+
+[tool.coverage.run]
+branch = true
+omit = ["*/tests/*", "*/migrations/*", "*site-packages*", "*__init__.py"]
+
+[tool.mypy]
+plugins = "pydantic.mypy"
+ignore_missing_imports = true
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+warn_untyped_fields = true
