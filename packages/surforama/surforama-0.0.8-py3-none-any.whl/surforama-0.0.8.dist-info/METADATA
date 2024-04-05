@@ -1,0 +1,114 @@
+Metadata-Version: 2.1
+Name: surforama
+Version: 0.0.8
+Summary: a tool for using surfaces to explore volumetric data in napari
+Home-page: https://github.com/cellcanvas/surforama
+Author: Kyle Harrington
+Author-email: surforama@kyleharrington.com
+License: MIT
+Project-URL: Bug Tracker, https://github.com/cellcanvas/surforama/issues
+Project-URL: Documentation, https://github.com/cellcanvas/surforama#README.md
+Project-URL: Source Code, https://github.com/cellcanvas/surforama
+Project-URL: User Support, https://github.com/cellcanvas/surforama/issues
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Framework :: napari
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Scientific/Engineering :: Image Processing
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: magicgui
+Requires-Dist: mrcfile
+Requires-Dist: numpy
+Requires-Dist: pooch
+Requires-Dist: qtpy
+Requires-Dist: pyacvd
+Requires-Dist: pyvista
+Requires-Dist: rich
+Requires-Dist: scikit-image
+Requires-Dist: starfile
+Requires-Dist: trimesh
+Requires-Dist: typer
+Provides-Extra: dev
+Requires-Dist: napari ; extra == 'dev'
+Requires-Dist: pyqt5 ; extra == 'dev'
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: pytest-cov ; extra == 'dev'
+Requires-Dist: pytest-qt ; extra == 'dev'
+Requires-Dist: tox ; extra == 'dev'
+Requires-Dist: pre-commit ; extra == 'dev'
+Provides-Extra: napari
+Requires-Dist: napari[all] ; extra == 'napari'
+Provides-Extra: testing
+Requires-Dist: napari ; extra == 'testing'
+Requires-Dist: pyqt5 ; extra == 'testing'
+Requires-Dist: pytest ; extra == 'testing'
+Requires-Dist: pytest-cov ; extra == 'testing'
+Requires-Dist: pytest-qt ; extra == 'testing'
+Requires-Dist: tox ; extra == 'testing'
+
+# surforama
+a napari-based tool for using surfaces to explore volumetric data in napari
+
+inspired by [membranorama](https://github.com/dtegunov/membranorama)
+
+![Screenshot of surforama showing a surface in the slice of a tomogram](surforama_screenshot.png)
+
+## installation
+`surforama` requires the napari viewer. If you would like to install napari and surforama together in one line, you can use the following command:
+
+```bash
+pip install "surforama[napari]"
+```
+
+
+If you already have napari installed, you can directly install surforama in the same environment:
+
+```bash
+pip install surforama
+```
+
+## usage
+### launch with demo data
+If you'd like to test surforama out, you can launch surforama with demo data:
+
+```bash
+surforama --demo
+```
+
+### launch without data
+You can launch surforama using the command line interface. After you have installed surforama, you can launch it with the following command in your terminal:
+
+```bash
+surforama
+```
+After surforama launches, you can load your image and mesh into napari and get surfing!
+
+### launch with data
+If you have an MRC-formatted tomogram and an obj-formatted mesh, you can launch using the following command:
+
+```bash
+surforama --image-path /path/to/image.mrc --mesh-path /path/to/mesh.obj
+```
+
+## developer installation
+
+If you would like to make changes to the surforama source code, you can install surformama with the developer tools as follows:
+
+```bash
+cd /path/to/your/surforama/source/code/folder
+pip install -e ".[dev]"
+```
+We use pre-commit to keep the code tidy. Install the pre-commit hooks to activate the checks:
+
+```bash
+pre-commit install
+```
