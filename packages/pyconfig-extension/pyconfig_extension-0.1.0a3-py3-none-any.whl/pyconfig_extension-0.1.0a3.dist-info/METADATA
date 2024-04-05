@@ -1,0 +1,95 @@
+Metadata-Version: 2.1
+Name: pyconfig-extension
+Version: 0.1.0a3
+Summary: configuration manager for python
+Author: Reza Sadeghi
+Author-email: rezasadeghikhas@gmail.com
+License: Apache2
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: System :: Logging
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Internet :: Log Analysis
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: json5 ==0.9.24
+Requires-Dist: multipledispatch ==1.0.0
+
+
+
+===============
+
+Configuration Manager for Python
+
+===============
+
+
+
+
+
+Python Configuration
+
+********************************
+
+
+
+This library is designed for managing Configuration in Python projects and is inspired by
+
+the Microsoft.Extensions.Configuration library in C#.
+
+
+
+Installation
+
+------------
+
+
+
+This library can be installed via pip:
+
+
+
+.. code-block:: bash
+
+
+
+    pip install pyconfig
+
+
+
+Usage
+
+-----
+
+To use the configuration manager, you first need to create a `ConfigurationBuilder`
+
+object and add one or more configuration sources.
+
+For example, you can add a JSON file source and an environment variable source like this:
+
+
+
+.. code-block:: python
+
+
+
+    from pyconfig import ConfigurationBuilder, IConfigurationBuilder
+
+
+
+    builder: IConfigurationBuilder = ConfigurationBuilder() \
+
+        .add_json_file('config.json') \
+
+        .add_environment_variables()
+
+
+
+    config = builder.build()
+
+
+
+
+
