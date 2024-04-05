@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 210mm; /* A4 width */
+            height: 297mm; /* A4 height */
+            margin: auto;
+            padding: 0mm; /* adjust this for your desired margins */
+            box-sizing: border-box;
+			position: relative;
+            border: .2mm solid #ccc;
+        }
+        .container_vertical {
+            width: 297mm; /* A4 width */
+            height: 210mm; /* A4 height */
+            margin: auto;
+            padding: 0mm; /* adjust this for your desired margins */
+            box-sizing: border-box;
+			position: relative;
+            border: .2mm solid #ccc;
+            transform-origin: center;
+            transform: rotate(90deg);
+        }
+        
+		
+		@media print {
+            .container {
+                border: none;
+            }
+		}
+    </style>
+</head>
+<body>
+    
+    
+        <div class="container" style="padding: 15mm;"><style>
+    .overview_table {
+        font-size: 14px;
+        border-collapse: collapse;
+        min-width: 150mm;
+    }
+    .overview_table th, .overview_table td {
+        border: 1px solid black;
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+    .exam_sheet_info {
+        font-size: 12px;
+        margin-bottom: 5mm;
+    }
+    .exam_sheet_info td {
+        padding-right: 5mm;
+    }
+</style>
+
+
+  
+
+
+
+
+<h2 style="text-align:center;">Example Exam</h1>
+<h3 style="text-align:center;">Supervision List for A101.</h3>
+
+<table class="exam_sheet_info">
+    <tr><td colspan="2">University of Example</td></tr>
+    <tr><td colspan="2">Department of Example</td></tr>
+    <tr><td colspan="2">Bachelor of Example</td></tr>
+    <tr><td colspan="2">&nbsp;</td></tr>
+    <tr><td>Exam:</td><td>Example Exam&nbsp;&nbsp;Winter Semester 2023/2024</td></tr>
+    
+    <tr><td>Examiner 1:</td><td>Prof. Dr. John Doe</td></tr>
+    
+    <tr><td>Examiner 2:</td><td>Prof. Dr. Jane Doe</td></tr>
+    
+    <tr><td>Date:</td><td>01.01.2024</td></tr>
+</table>
+<table border="1" class="overview_table">
+    <thead><tr><th>Name</th><th>First Name</th><th>Room / Seat</th><th>Signature</th><th>Info</th></tr></thead>
+    <tbody>
+        
+          
+          <tr><td>Doe</td><td>John</td><td>A101 / 1</td><td style="min-width:30mm;"></td><td style="min-width: 15mm;"></td></tr>
+          
+        
+          
+          <tr><td>Doe</td><td>Jane</td><td>A101 / 2</td><td style="min-width:30mm;"></td><td style="min-width: 15mm;"></td></tr>
+          
+        
+          
+        
+    </tbody>
+</table>
+<table style="margin-top: 15mm;">
+    <tr>
+        <th></th><td style="border-bottom: 1px solid black;min-width: 50mm;"></td>
+    </tr>
+    <tr>
+        <th></th><td class="signature-name">Place, Date, Signature of Supervisor</td>
+    </tr>
+</table>
+</div>
+        <div class="container"></div>
+        
+        
+            <div class="container"><!-- Template that creates an A4 page with a space for notes on top and the seating card at the bottom -->
+
+<style>
+    .half-container {
+        border: .2mm solid #ccc;
+        width: 100%;
+        height: 148.3mm; /* half of A4 height */
+        box-sizing: border-box;
+        padding: 20mm; /* adjust this for your desired margins */
+        padding-top: 15mm;
+    }
+    .cut-line {
+      border-top: 3px dashed #000;
+      position: absolute;
+      top: 148.5mm;
+      width: 200mm;
+      margin-left: 7mm;
+    }
+
+    .cut-line:before {
+      content: "\2702"; /* This is the HTML entity for scissors */
+      position: absolute;
+      top: -23px;
+      left: -20px;
+      font-size: 30px;
+    }
+    
+    .line {
+        display: block;
+        padding-top: 5mm;
+        text-align: center;
+        overflow-wrap: break-word;
+    }
+
+</style>
+
+<div class="half-container">
+    <!-- Space for notes -->
+    <h4>
+        
+            Space for notes
+        
+    </h4>
+</div>
+<div class="cut-line"></div>
+<div class="half-container">
+    <!-- Seating card --> 
+    <span class="line" style="font-weight:bold;font-size:12mm">Doe</span>
+    <span class="line" style="font-size:10mm">John</span>
+    <span class="line" style="font-size:5mm;white-space: no-wrap">Example Exam</span>
+    <span class="line" style="font-weight:bold;font-size:12mm">A101</span>
+    <span class="line" style="font-weight:bold;font-size:12mm">1</span>
+</div></div>
+            <div class="container"><style>
+    .half-container {
+        border: .2mm solid #ccc;
+        width: 100%;
+        height: 148.3mm; /* half of A4 height */
+        box-sizing: border-box;
+        padding: 20mm; /* adjust this for your desired margins */
+        padding-top: 15mm;
+    }
+    .header {
+        text-align: center;
+    }
+
+    .info-table {
+        width: 11cm;
+        margin: 0 auto;
+    }
+    .info-table table {
+        width: 100%;
+    }
+    .spacer {
+        width: 2cm;
+    }
+    .login-box {
+        border: 1mm solid #ccc;
+        border-radius: 3mm;
+
+        padding: 5mm;
+        padding-top: 2mm;
+        box-sizing: border-box;
+        margin: 0 auto;
+        margin-top: 8mm;
+        width: 11cm;
+        text-align: center;
+    }
+    .login-box table {			
+        margin: 0 auto;
+        margin-top: 2mm;
+    }
+    th, td {
+        text-align: left;
+        border: none;
+        padding: 0;
+        margin: 0;
+    }
+    .login-info-header {
+        color: #888;
+
+        margin: 0 auto;
+    }
+    .signature-name {
+        text-align: center;
+        font-size: 12px;
+    }
+    .signature-line {
+        border-bottom: 1px solid black;
+    }
+
+    .vspace {
+        height: 10mm;
+        box-sizing: border-box;
+        display: inline-block;
+    }
+
+
+    .fill-in table {
+      margin: 0  auto;
+      border-collapse: collapse;
+    }
+    .cut-line {
+      border-top: 3px dashed #000;
+      position: absolute;
+      top: 148.5mm;
+      width: 200mm;
+      margin-left: 7mm;
+    }
+
+    .hashcode-char {
+      padding: 5mm 3mm;
+      border: 1px solid #999;
+    }
+    .hashcode-dash {
+      padding: 0 1mm;
+      font-size: 30px;
+      font-weight: bold;
+      color: #999;
+    }
+
+    .cut-line:before {
+      content: "\2702"; /* This is the HTML entity for scissors */
+      position: absolute;
+      top: -23px;
+      left: -20px;
+      font-size: 30px;
+    }
+    
+    @media print {
+        .hashcode-dash {
+            -webkit-print-color-adjust: exact; /* For Chrome and Safari */
+            print-color-adjust: exact; /* For compatibility */
+            color-adjust: exact; /* For Firefox */
+        }
+        .half-container {
+            border: none;
+        }
+    }
+</style>
+
+
+  
+
+
+
+
+
+
+<div class="half-container">
+    <!-- Hand In Sheet -->
+    <div class="header">
+    <h2>Hand In</h2>
+    <h3>Example Exam</h3>
+    </div>
+    <div class="info-table">
+        <table>
+            <tr>
+                <th>Room:</th><td>A101</td><td class="spacer"></td><th>Date:</th><td>01.01.2024</td>
+            </tr>
+            <tr>
+                <th>Name:</th>
+                <td colspan="4">John&nbsp;Doe</td>
+            </tr>
+        </table>
+    </div>
+    <div class="login-box">
+        <span class="login-info-header">Login Info</span>
+        <table>
+            <tr>
+                <th>Username:</th><td class="spacer"><td>johndoe</td>
+            </tr>
+            <tr>
+                <th>Password:</th><td class="spacer"><td>password</td>
+            </tr>
+        </table>
+    </div>
+    <div class="fill-in">
+        <h4 style="text-align: center;">Fill In When Handing In</h4>
+        <table>
+            
+<tr style="padding-bottom: 10mm;">
+    <th id="hashcode">Hashcode:</th><td style="width: 5mm;"></td>
+    
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+        
+            <td class="hashcode-dash">-</td>
+        
+    
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+        
+            <td class="hashcode-dash">-</td>
+        
+    
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+        
+    
+</tr>
+
+            <tr class="vspace"></tr>
+            <tr>
+                <th>Signature:</th><td style="width: 5mm;"></td><td colspan="14" class="signature-line"></td>
+            </tr>
+            <tr>
+                <th></th><td style="width: 5mm;"></td><td colspan="14" class="signature-name">John&nbsp;Doe</td>
+            </tr>
+        </table>
+    </div>
+    <!-- End Of Hand In Sheet -->
+</div>
+<div class="cut-line"></div>
+<div class="half-container">
+    <!-- Take Home Sheet -->
+    <div class="header">
+    <h2>Take Home</h2>
+    <h3>Example Exam</h3>
+    </div>
+    <div class="info-table">
+        <table>
+            <tr>
+                <th>Room:</th><td>A101</td><td class="spacer"></td><th>Date:</th><td>01.01.2024</td>
+            </tr>
+            <tr>
+                <th>Name:</th>
+                <td colspan="4">John&nbsp;Doe</td>
+            </tr>
+        </table>
+    </div>
+    <div style="height: 2cm;"></div>
+    <div class="fill-in">
+        <h4 style="text-align: center;">Fill In When Handing In</h4>
+        <table>
+            
+<tr style="padding-bottom: 10mm;">
+    <th id="hashcode">Hashcode:</th><td style="width: 5mm;"></td>
+    
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+        
+            <td class="hashcode-dash">-</td>
+        
+    
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+        
+            <td class="hashcode-dash">-</td>
+        
+    
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+        
+    
+</tr>
+
+        </table>
+    </div>
+</div></div>    
+        
+            <div class="container"><!-- Template that creates an A4 page with a space for notes on top and the seating card at the bottom -->
+
+<style>
+    .half-container {
+        border: .2mm solid #ccc;
+        width: 100%;
+        height: 148.3mm; /* half of A4 height */
+        box-sizing: border-box;
+        padding: 20mm; /* adjust this for your desired margins */
+        padding-top: 15mm;
+    }
+    .cut-line {
+      border-top: 3px dashed #000;
+      position: absolute;
+      top: 148.5mm;
+      width: 200mm;
+      margin-left: 7mm;
+    }
+
+    .cut-line:before {
+      content: "\2702"; /* This is the HTML entity for scissors */
+      position: absolute;
+      top: -23px;
+      left: -20px;
+      font-size: 30px;
+    }
+    
+    .line {
+        display: block;
+        padding-top: 5mm;
+        text-align: center;
+        overflow-wrap: break-word;
+    }
+
+</style>
+
+<div class="half-container">
+    <!-- Space for notes -->
+    <h4>
+        
+            Space for notes
+        
+    </h4>
+</div>
+<div class="cut-line"></div>
+<div class="half-container">
+    <!-- Seating card --> 
+    <span class="line" style="font-weight:bold;font-size:12mm">Doe</span>
+    <span class="line" style="font-size:10mm">Jane</span>
+    <span class="line" style="font-size:5mm;white-space: no-wrap">Example Exam</span>
+    <span class="line" style="font-weight:bold;font-size:12mm">A101</span>
+    <span class="line" style="font-weight:bold;font-size:12mm">2</span>
+</div></div>
+            <div class="container"><style>
+    .half-container {
+        border: .2mm solid #ccc;
+        width: 100%;
+        height: 148.3mm; /* half of A4 height */
+        box-sizing: border-box;
+        padding: 20mm; /* adjust this for your desired margins */
+        padding-top: 15mm;
+    }
+    .header {
+        text-align: center;
+    }
+
+    .info-table {
+        width: 11cm;
+        margin: 0 auto;
+    }
+    .info-table table {
+        width: 100%;
+    }
+    .spacer {
+        width: 2cm;
+    }
+    .login-box {
+        border: 1mm solid #ccc;
+        border-radius: 3mm;
+
+        padding: 5mm;
+        padding-top: 2mm;
+        box-sizing: border-box;
+        margin: 0 auto;
+        margin-top: 8mm;
+        width: 11cm;
+        text-align: center;
+    }
+    .login-box table {			
+        margin: 0 auto;
+        margin-top: 2mm;
+    }
+    th, td {
+        text-align: left;
+        border: none;
+        padding: 0;
+        margin: 0;
+    }
+    .login-info-header {
+        color: #888;
+
+        margin: 0 auto;
+    }
+    .signature-name {
+        text-align: center;
+        font-size: 12px;
+    }
+    .signature-line {
+        border-bottom: 1px solid black;
+    }
+
+    .vspace {
+        height: 10mm;
+        box-sizing: border-box;
+        display: inline-block;
+    }
+
+
+    .fill-in table {
+      margin: 0  auto;
+      border-collapse: collapse;
+    }
+    .cut-line {
+      border-top: 3px dashed #000;
+      position: absolute;
+      top: 148.5mm;
+      width: 200mm;
+      margin-left: 7mm;
+    }
+
+    .hashcode-char {
+      padding: 5mm 3mm;
+      border: 1px solid #999;
+    }
+    .hashcode-dash {
+      padding: 0 1mm;
+      font-size: 30px;
+      font-weight: bold;
+      color: #999;
+    }
+
+    .cut-line:before {
+      content: "\2702"; /* This is the HTML entity for scissors */
+      position: absolute;
+      top: -23px;
+      left: -20px;
+      font-size: 30px;
+    }
+    
+    @media print {
+        .hashcode-dash {
+            -webkit-print-color-adjust: exact; /* For Chrome and Safari */
+            print-color-adjust: exact; /* For compatibility */
+            color-adjust: exact; /* For Firefox */
+        }
+        .half-container {
+            border: none;
+        }
+    }
+</style>
+
+
+  
+
+
+
+
+
+
+<div class="half-container">
+    <!-- Hand In Sheet -->
+    <div class="header">
+    <h2>Hand In</h2>
+    <h3>Example Exam</h3>
+    </div>
+    <div class="info-table">
+        <table>
+            <tr>
+                <th>Room:</th><td>A101</td><td class="spacer"></td><th>Date:</th><td>01.01.2024</td>
+            </tr>
+            <tr>
+                <th>Name:</th>
+                <td colspan="4">Jane&nbsp;Doe</td>
+            </tr>
+        </table>
+    </div>
+    <div class="login-box">
+        <span class="login-info-header">Login Info</span>
+        <table>
+            <tr>
+                <th>Username:</th><td class="spacer"><td>janedoe</td>
+            </tr>
+            <tr>
+                <th>Password:</th><td class="spacer"><td>password</td>
+            </tr>
+        </table>
+    </div>
+    <div class="fill-in">
+        <h4 style="text-align: center;">Fill In When Handing In</h4>
+        <table>
+            
+<tr style="padding-bottom: 10mm;">
+    <th id="hashcode">Hashcode:</th><td style="width: 5mm;"></td>
+    
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+        
+            <td class="hashcode-dash">-</td>
+        
+    
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+        
+            <td class="hashcode-dash">-</td>
+        
+    
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+        
+    
+</tr>
+
+            <tr class="vspace"></tr>
+            <tr>
+                <th>Signature:</th><td style="width: 5mm;"></td><td colspan="14" class="signature-line"></td>
+            </tr>
+            <tr>
+                <th></th><td style="width: 5mm;"></td><td colspan="14" class="signature-name">Jane&nbsp;Doe</td>
+            </tr>
+        </table>
+    </div>
+    <!-- End Of Hand In Sheet -->
+</div>
+<div class="cut-line"></div>
+<div class="half-container">
+    <!-- Take Home Sheet -->
+    <div class="header">
+    <h2>Take Home</h2>
+    <h3>Example Exam</h3>
+    </div>
+    <div class="info-table">
+        <table>
+            <tr>
+                <th>Room:</th><td>A101</td><td class="spacer"></td><th>Date:</th><td>01.01.2024</td>
+            </tr>
+            <tr>
+                <th>Name:</th>
+                <td colspan="4">Jane&nbsp;Doe</td>
+            </tr>
+        </table>
+    </div>
+    <div style="height: 2cm;"></div>
+    <div class="fill-in">
+        <h4 style="text-align: center;">Fill In When Handing In</h4>
+        <table>
+            
+<tr style="padding-bottom: 10mm;">
+    <th id="hashcode">Hashcode:</th><td style="width: 5mm;"></td>
+    
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+        
+            <td class="hashcode-dash">-</td>
+        
+    
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+        
+            <td class="hashcode-dash">-</td>
+        
+    
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+        
+    
+</tr>
+
+        </table>
+    </div>
+</div></div>    
+        
+            <div class="container"><!-- Template that creates an A4 page with a space for notes on top and the seating card at the bottom -->
+
+<style>
+    .half-container {
+        border: .2mm solid #ccc;
+        width: 100%;
+        height: 148.3mm; /* half of A4 height */
+        box-sizing: border-box;
+        padding: 20mm; /* adjust this for your desired margins */
+        padding-top: 15mm;
+    }
+    .cut-line {
+      border-top: 3px dashed #000;
+      position: absolute;
+      top: 148.5mm;
+      width: 200mm;
+      margin-left: 7mm;
+    }
+
+    .cut-line:before {
+      content: "\2702"; /* This is the HTML entity for scissors */
+      position: absolute;
+      top: -23px;
+      left: -20px;
+      font-size: 30px;
+    }
+    
+    .line {
+        display: block;
+        padding-top: 5mm;
+        text-align: center;
+        overflow-wrap: break-word;
+    }
+
+</style>
+
+<div class="half-container">
+    <!-- Space for notes -->
+    <h4>
+        
+            Space for notes
+        
+    </h4>
+</div>
+<div class="cut-line"></div>
+<div class="half-container">
+    <!-- Seating card --> 
+    <span class="line" style="font-weight:bold;font-size:12mm">Student</span>
+    <span class="line" style="font-size:10mm">Backup</span>
+    <span class="line" style="font-size:5mm;white-space: no-wrap">Example Exam</span>
+    <span class="line" style="font-weight:bold;font-size:12mm">A101</span>
+    <span class="line" style="font-weight:bold;font-size:12mm">3</span>
+</div></div>
+            <div class="container"><style>
+    .half-container {
+        border: .2mm solid #ccc;
+        width: 100%;
+        height: 148.3mm; /* half of A4 height */
+        box-sizing: border-box;
+        padding: 20mm; /* adjust this for your desired margins */
+        padding-top: 15mm;
+    }
+    .header {
+        text-align: center;
+    }
+
+    .info-table {
+        width: 11cm;
+        margin: 0 auto;
+    }
+    .info-table table {
+        width: 100%;
+    }
+    .spacer {
+        width: 2cm;
+    }
+    .login-box {
+        border: 1mm solid #ccc;
+        border-radius: 3mm;
+
+        padding: 5mm;
+        padding-top: 2mm;
+        box-sizing: border-box;
+        margin: 0 auto;
+        margin-top: 8mm;
+        width: 11cm;
+        text-align: center;
+    }
+    .login-box table {			
+        margin: 0 auto;
+        margin-top: 2mm;
+    }
+    th, td {
+        text-align: left;
+        border: none;
+        padding: 0;
+        margin: 0;
+    }
+    .login-info-header {
+        color: #888;
+
+        margin: 0 auto;
+    }
+    .signature-name {
+        text-align: center;
+        font-size: 12px;
+    }
+    .signature-line {
+        border-bottom: 1px solid black;
+    }
+
+    .vspace {
+        height: 10mm;
+        box-sizing: border-box;
+        display: inline-block;
+    }
+
+
+    .fill-in table {
+      margin: 0  auto;
+      border-collapse: collapse;
+    }
+    .cut-line {
+      border-top: 3px dashed #000;
+      position: absolute;
+      top: 148.5mm;
+      width: 200mm;
+      margin-left: 7mm;
+    }
+
+    .hashcode-char {
+      padding: 5mm 3mm;
+      border: 1px solid #999;
+    }
+    .hashcode-dash {
+      padding: 0 1mm;
+      font-size: 30px;
+      font-weight: bold;
+      color: #999;
+    }
+
+    .cut-line:before {
+      content: "\2702"; /* This is the HTML entity for scissors */
+      position: absolute;
+      top: -23px;
+      left: -20px;
+      font-size: 30px;
+    }
+    
+    @media print {
+        .hashcode-dash {
+            -webkit-print-color-adjust: exact; /* For Chrome and Safari */
+            print-color-adjust: exact; /* For compatibility */
+            color-adjust: exact; /* For Firefox */
+        }
+        .half-container {
+            border: none;
+        }
+    }
+</style>
+
+
+  
+
+
+
+
+
+
+<div class="half-container">
+    <!-- Hand In Sheet -->
+    <div class="header">
+    <h2>Hand In</h2>
+    <h3>Example Exam</h3>
+    </div>
+    <div class="info-table">
+        <table>
+            <tr>
+                <th>Room:</th><td>A101</td><td class="spacer"></td><th>Date:</th><td>01.01.2024</td>
+            </tr>
+            <tr>
+                <th>Name:</th>
+                <td colspan="4">Backup&nbsp;Student</td>
+            </tr>
+        </table>
+    </div>
+    <div class="login-box">
+        <span class="login-info-header">Login Info</span>
+        <table>
+            <tr>
+                <th>Username:</th><td class="spacer"><td>backupstudent</td>
+            </tr>
+            <tr>
+                <th>Password:</th><td class="spacer"><td>password</td>
+            </tr>
+        </table>
+    </div>
+    <div class="fill-in">
+        <h4 style="text-align: center;">Fill In When Handing In</h4>
+        <table>
+            
+<tr style="padding-bottom: 10mm;">
+    <th id="hashcode">Hashcode:</th><td style="width: 5mm;"></td>
+    
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+        
+            <td class="hashcode-dash">-</td>
+        
+    
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+        
+            <td class="hashcode-dash">-</td>
+        
+    
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+        
+    
+</tr>
+
+            <tr class="vspace"></tr>
+            <tr>
+                <th>Signature:</th><td style="width: 5mm;"></td><td colspan="14" class="signature-line"></td>
+            </tr>
+            <tr>
+                <th></th><td style="width: 5mm;"></td><td colspan="14" class="signature-name">Backup&nbsp;Student</td>
+            </tr>
+        </table>
+    </div>
+    <!-- End Of Hand In Sheet -->
+</div>
+<div class="cut-line"></div>
+<div class="half-container">
+    <!-- Take Home Sheet -->
+    <div class="header">
+    <h2>Take Home</h2>
+    <h3>Example Exam</h3>
+    </div>
+    <div class="info-table">
+        <table>
+            <tr>
+                <th>Room:</th><td>A101</td><td class="spacer"></td><th>Date:</th><td>01.01.2024</td>
+            </tr>
+            <tr>
+                <th>Name:</th>
+                <td colspan="4">Backup&nbsp;Student</td>
+            </tr>
+        </table>
+    </div>
+    <div style="height: 2cm;"></div>
+    <div class="fill-in">
+        <h4 style="text-align: center;">Fill In When Handing In</h4>
+        <table>
+            
+<tr style="padding-bottom: 10mm;">
+    <th id="hashcode">Hashcode:</th><td style="width: 5mm;"></td>
+    
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+        
+            <td class="hashcode-dash">-</td>
+        
+    
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+        
+            <td class="hashcode-dash">-</td>
+        
+    
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+            <td class="hashcode-char"></td>
+        
+        
+    
+</tr>
+
+        </table>
+    </div>
+</div></div>    
+        
+    
+   
+</body>
+</html>
