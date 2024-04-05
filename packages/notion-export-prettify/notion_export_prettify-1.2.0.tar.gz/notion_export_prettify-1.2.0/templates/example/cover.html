@@ -1,0 +1,63 @@
+<html>
+  <head>
+    <style type="text/css">
+      
+@page {
+  /* To allow positioning based on page borders */
+  margin: 0
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  position: relative; /* Add this to define a positioning context */
+}
+
+
+.metadata {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);  /* for absolute centering */
+  width: 80%;
+  text-align: center;
+  color: #0C395F;
+  font-family: Calibri, 'Trebuchet MS', sans-serif;
+  font-weight: bold;
+  /* border: 1px solid red; */
+}
+
+.title {
+  font-size: 40px;
+  top: 6cm;
+}
+.project {
+  font-size: 30px;
+  top: 19cm;
+}
+.author {
+  font-size: 25px;
+  top: 21cm;
+}
+.date {
+  font-size: 25px;
+  top: 22cm;
+  color: gray;
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="metadata title">
+      {{title}}
+    </div>
+    <div class="metadata project">
+      {{project}}
+    </div>
+    <div class="metadata author">
+      {{author}}
+    </div>
+    <div class="metadata date">
+      {{date}}
+    </div>
+  </body>
+</html>

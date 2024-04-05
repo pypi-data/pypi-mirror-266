@@ -1,0 +1,82 @@
+<html>
+    <head>
+        <style>
+
+@page {
+    /* overwrite to allow absolute position to the page borders */
+    margin: 0
+}
+
+header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* border: 1px solid blue; */
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    /* border: 1px solid red; */
+}
+
+/* Trick to hide the page 1 header if there is no cover page */
+.header-page-1 {
+    display: none;
+}
+.hasCoverPage .header-page-1 {    
+    display: block;
+}
+
+.header-container {
+    margin-top: 1.8cm;
+    margin-left: 2cm;
+}
+
+.footer-container {
+    margin: 0 3cm 1.4cm 2.5cm;
+    color: white;    
+}
+
+.doc-project {
+    font-weight: bold;
+}
+.doc-title {
+    float: right;
+    font-weight: bold;
+}
+.doc-copyright {
+    font-size: 80%;
+}
+
+.page-number {
+    color: black;
+    position: absolute;
+    bottom: 1cm;
+    right: 1.0cm;
+    width: 1.2cm;
+    height: 0.5cm;
+    text-align: center;
+    font-size: 20px;
+}
+
+        </style>
+    </head>
+    <body class="{{hasCoverPage}}">
+        <header class="header-page-{{pageNumber}}">
+            <div class="header-container">
+                <div class="doc-project">{{project}}</div>
+                <div class="doc-date">{{date}}</div>
+            </div>            
+        </header>
+        <footer>
+            <div class="footer-container">
+                <div class="doc-title">{{title}}</div>                
+            </div>            
+            <div class="page-number">{{pageNumber}}</div>
+        </footer>
+    </body>
+</html>
