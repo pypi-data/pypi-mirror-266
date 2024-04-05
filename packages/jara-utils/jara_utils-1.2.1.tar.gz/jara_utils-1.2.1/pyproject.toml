@@ -1,0 +1,112 @@
+[tool.poetry]
+name = "jara-utils"
+version = "1.2.1"
+description = "A package with basic stuff."
+authors = ["Serban Senciuc <senciuc.serban@gmail.com>"]
+readme = "README_pypi.rst"
+repository = "https://github.com/senciucserban/jara-utils"
+classifiers = [
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Utilities"
+]
+packages = [
+    { include = "jara_utils" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+python-dotenv = {version = "^1.0.0", optional = true}
+pytz = "^2024.1"
+types-pytz = "^2024.1.0.20240203"
+
+[tool.poetry.extras]
+dotenv = ["python-dotenv"]
+all = ["python-dotenv"]
+
+
+[tool.poetry.group.test.dependencies]
+faker = ">=16.4,<25.0"
+pytest = ">=7.2.1,<9.0.0"
+pytest-cov = "^4.0.0"
+pytest-asyncio = ">=0.20.3,<0.24.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest-sugar = ">=0.9.6,<1.1.0"
+pytest-deadfixtures = "^2.2.1"
+ipython = "^8.8.0"
+ipdb = "^0.13.11"
+
+[tool.poetry.group.lint.dependencies]
+mypy = ">=0.991,<1.10"
+bandit = "^1.7.4"
+ruff = ">=0.0.284,<0.3.5"
+black = ">=23.7,<25.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+# -------------------- ruff --------------------
+[tool.ruff]
+src = ["src", "test"]
+output-format = "grouped"
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["D", "S", "DTZ", "FBT", "ANN101", "ANN102", "ANN401", "ANN002", "ANN003"]
+
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+per-file-ignores = {}
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.lint.flake8-quotes]
+docstring-quotes = "double"
+inline-quotes = "single"
+multiline-quotes = "single"
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+known-first-party = ["src"]
+
+# -------------------- black --------------------
+[tool.black]
+line-length = 120
+skip-string-normalization = true
+target-version = ["py311"]
+
+# -------------------- pytest --------------------
+#[tool.pytest]
+
+[tool.pytest.ini_options]
+addopts = "-v --cov=jara_utils --cov-report=term --no-cov-on-fail"
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+# -------------------- pytest-cov --------------------
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "pass",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "nocov",
+    "if TYPE_CHECKING:",
+    "@abstractmethod",
+]
+fail_under = 95
+show_missing = true
+
+[tool.coverage.run]
+branch = true
+omit = ["tests/*"]
