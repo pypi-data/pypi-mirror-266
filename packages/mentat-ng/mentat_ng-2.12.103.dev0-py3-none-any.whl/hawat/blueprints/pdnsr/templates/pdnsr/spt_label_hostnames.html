@@ -1,0 +1,53 @@
+{%- set content_id = get_uuid4() -%}
+<div class="popover-hover" role="button" data-popover-content="#po-{{ content_id }}">
+    <span class="badge text-bg-secondary">
+        {{ get_icon('module-pdnsr') }} | {{ search_result[0].get('domain', _('-- undefined --')) }}{% if search_result|length > 1 %} ({{ _('%(cnt)d more', cnt = (search_result|length -1))}}){% endif %}
+    </span>
+    <div id="po-{{ content_id }}" class="d-none">
+        <div class="popover top">
+            <div class="popover-arrow" data-popper-arrow></div>
+            <h3 class="popover-title">
+                <a href="{{ url_for('pdnsr.search', submit = _('Search'), search = search_item, sortby = 'count.desc') }}" data-bs-toggle="tooltip" title="{{ _('Go to full search page') }}">
+                    {{ get_icon('module-pdnsr') }} {{ _('PassiveDNS') }} - {{ _('Hostname resolving') }}
+                </a>
+                <span class="float-end">
+                    <span data-bs-toggle="tooltip" title="{{ _('Query time') }}: {{ get_timedelta(g.requeststart) }}">
+                        {{ get_icon('stopwatch') }}
+                    </span>
+                </span>
+            </h3>
+            <div class="popover-content">
+                <table class="table table-sm">
+                    <tr>
+                        <th></th>
+                        <th>
+                            {{ _('IP') }}
+                        </th>
+                        <th>
+                            {{ get_icon('domain') }} {{ _('Domain') }}
+                        </th>
+                        <th>
+                            {{ get_icon('time-from') }} {{ _('First seen') }}
+                        </th>
+                        <th>
+                            {{ get_icon('time-to') }} {{ _('Last seen') }}
+                        </th>
+                        <th>
+                            {{ get_icon('cnt') }} {{ _('Count') }}
+                        </th>
+                    </tr>
+    {%- for sritem in search_result %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ sritem.get('ip', _('-- undefined --')) }}</td>
+                        <td>{{ sritem.get('domain', _('-- undefined --')) }}</td>
+                        <td>{{ sritem.get('time_first', _('-- undefined --')) }}</td>
+                        <td>{{ sritem.get('time_last', _('-- undefined --')) }}</td>
+                        <td>{{ sritem.get('count', _('-- undefined --')) }}</td>
+                    </tr>
+    {%- endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

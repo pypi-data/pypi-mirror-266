@@ -1,0 +1,13 @@
+{{ _('Dear group manager,') | wordwrap }}
+
+{{ _('filter "%(filter_name)s" of group "%(group_id)s" was just updated in %(app_name)s by %(author)s. Here is the difference:', filter_name = _filter.name, app_name = hawat_appname, group_id = _filter.group.name, author = author) | wordwrap }}
+
+{{ diff | wordwrap(width=75, break_long_words=False) | indent(width=4, first=True) }}
+
+{{ _('Details of the filter can be found here:') | wordwrap }}
+
+  {{ url_for('filters.show', _external = True, item_id = _filter.id ) }}
+
+{{ _('Have a nice day') | wordwrap }}
+
+-- {{ hawat_appname }}

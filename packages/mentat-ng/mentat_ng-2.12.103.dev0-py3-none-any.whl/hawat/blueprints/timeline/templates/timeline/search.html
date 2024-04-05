@@ -1,0 +1,139 @@
+{% extends "_layout_events_search.html" %}
+
+{% block sectionabout %}
+                    <p>
+                        {{ _('This module displays various statistics of IDEA events calculated for given network and optional time interval and with emphasis on said event timelines. These statistics are calculated directly from IDEA event database, so depending on the size of the selected network, the interval and number of related IDEA events these visualisations may take some time, even on the order of minutes. Please, be patient. Events are included into the result based on their detection time.') | safe }}
+                    </p>
+{% endblock sectionabout %}
+
+{% block sectionsearchresult %}
+
+            <!-- Search result dump - BEGIN ----------------------------------->
+            <script>
+                var search_result_statistics = {{ statistics | tojson }};
+            </script>
+            <!-- Search result dump - END ------------------------------------->
+            <!-- Rendering functions storage definition - BEGIN --------------->
+            <script>
+                var rendering_functions = {};
+            </script>
+            <!-- Rendering functions storage definition - END ----------------->
+            <div class="card overflow-hidden">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">{{ _('Result summary') }}</h5>
+                </div>
+                <table class="table">
+                    <tr>
+                        <th>{{ _('Number of events') }}:</th>
+                        <td>{{ babel_format_decimal(items_count) }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ _('Time interval') }}:</th>
+                        <td>{{ babel_format_datetime(statistics['timeline_cfg']['dt_from']) }} - {{ babel_format_datetime(statistics['timeline_cfg']['dt_to']) }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ _('Time interval delta') }}:</th>
+                        <td>{{ babel_format_timedelta(statistics['timeline_cfg']['dt_to'] - statistics['timeline_cfg']['dt_from']) }}</td>
+                    </tr>
+                    {%- if permission_can('admin') and 'timeline_cfg' in statistics %}
+                    <tr>
+                        <th><span class="float-end">{{ get_icon('role-admin') }}</span>{{ _('Timeline steps') }}:</th>
+                        <td>{{ babel_format_decimal(statistics['timeline_cfg']['count']) }} x {{ statistics['timeline_cfg']['step'].__str__() }}</td>
+                    </tr>
+                    {%- endif %}
+                </table>
+            </div>
+
+            <p class="my-3"><strong>{{ macros_site.render_endpoint_link('events.search', query_params, label = _("View these results on event search page"), with_icon = True) }}</strong></p>
+
+            {%- set show_count_timeline = 'cnt_events' in all_aggregations %}
+            {%- set count_data_available = 'cnt_events' in statistics['timeline'] %}
+            {%- set active_section = form_data['section'] if form_data['section'] in all_aggregations else None %}
+            {%- set active_count = show_count_timeline and active_section in ('cnt_events', None) %}
+
+
+            <!-- Tab navigation - BEGIN --------------------------------------->
+            <ul class="nav nav-tabs nav-tabs-tooltipped" role="tablist">
+            {%- if show_count_timeline %}
+                <li role="presentation" class="nav-item text-center">
+                    <a id="tab-cnt_events" role="tab" data-bs-toggle="tab"{%- if not count_data_available %}data-api-url="{{ get_search_url('cnt_events') }}"{%- endif %} data-dict-key="cnt_events" href="#tab-stats-totals" class="nav-link{%- if active_count %} active{%- endif %} chart-tab">
+                        <span class="tab-tag">#</span>{{ _('events') }}
+                    </a>
+                </li>
+            {%- endif %}
+                {{
+                    macros_chart.render_dashboard_nav(
+                        statistics,
+                        'stats',
+                        render_empty = True,
+                        active_first = not active_count,
+                        active_section = active_section,
+                        only_sections = all_aggregations,
+                        get_url_func = get_search_url
+                    )
+                }}
+            </ul>
+            <!-- Tab navigation - END ----------------------------------------->
+
+            <!-- Tab panels - BEGIN ------------------------------------------->
+            <div class="tab-content">
+            {%- if show_count_timeline %}
+                <!-- Tab panel - BEGIN ---------------------------------------->
+                <div role="tabpanel" class="tab-pane fade{%- if active_count %} in show active{%- endif %}" id="tab-stats-totals">
+                    <div class="clearfix">
+                        <h4>{{ _('Total event counts') }}</h4>
+                        {%- if not count_data_available %}
+                        <button class="btn btn-secondary float-end ms-2 mb-2 tab-reload-btn" data-target-tab-id="tab-cnt_events" aria-label="{{ _('Reload data') }}" data-bs-toggle="tooltip" data-bs-title="{{ _('Reload data') }}">
+                            {{ get_icon('action-reload') }}
+                        </button>
+                        {%- endif %}
+                        <p>
+                            {{ _('This view shows total numbers of IDEA events related to given network.') | safe }}
+                        </p>
+                    </div>
+
+                    <div class="errors" data-text-error-occurred="{{ _('An error occurred while retrieving data: ') }}"></div>
+                {%- if not count_data_available and permission_can('power') %}
+                    {{ macros_site.render_sql_queries([], key='cnt_events') }}
+                    {{ macros_site.render_timemarks([], key='cnt_events', show_to_render_time=False) }}
+                {%- endif %}
+
+                    {%-
+                        set data_series = [
+                            ['cnt_events', _('total events')]
+                        ]
+                    %}
+                    {{
+                        macros_chart.render_chart_timeline_list(
+                            statistics,
+                            'search_result_statistics' if count_data_available else None,
+                            'totals',
+                            data_series,
+                            dict_key = 'cnt_events',
+                            cfg_params = {'timezone': form_data['timezone']}
+                        )
+                    }}
+                </div> <!-- /.tabpanel #tab-stats-totals -->
+            {%- endif %}
+                {{
+                    macros_chart.render_dashboard_panels(
+                        statistics,
+                        'search_result_statistics',
+                        'stats',
+                        only_sections = all_aggregations,
+                        render_empty = True,
+                        active_first = not active_count,
+                        active_section = active_section,
+                        cfg_params = {'timezone': form_data['timezone']}
+                    )
+                }}
+            </div>
+            <!-- Tab panels - END --------------------------------------------->
+
+            {%- if permission_can('developer') %}
+            <hr>
+            {{ macros_site.render_raw_var('search_result', search_result) }}
+            {{ macros_site.render_raw_var('statistics', statistics) }}
+            {%- endif %}
+
+{% endblock sectionsearchresult %}
