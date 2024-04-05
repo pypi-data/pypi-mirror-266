@@ -1,0 +1,84 @@
+:py:mod:`abacusai.api_class.project`
+====================================
+
+.. py:module:: abacusai.api_class.project
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   abacusai.api_class.project.FeatureMappingConfig
+   abacusai.api_class.project.ProjectFeatureGroupTypeMappingsConfig
+
+
+
+
+.. py:class:: FeatureMappingConfig
+
+
+   Bases: :py:obj:`abacusai.api_class.abstract.ApiClass`
+
+   Feature mapping configuration for a feature group type.
+
+   :param feature_name: The name of the feature in the feature group.
+   :type feature_name: str
+   :param feature_mapping: The desired feature mapping for the feature.
+   :type feature_mapping: str
+   :param nested_feature_name: The name of the nested feature in the feature group.
+   :type nested_feature_name: str
+
+   .. py:attribute:: feature_name
+      :type: str
+
+      
+
+   .. py:attribute:: feature_mapping
+      :type: str
+
+      
+
+   .. py:attribute:: nested_feature_name
+      :type: str
+
+      
+
+
+.. py:class:: ProjectFeatureGroupTypeMappingsConfig
+
+
+   Bases: :py:obj:`abacusai.api_class.abstract.ApiClass`
+
+   Project feature group type mappings.
+
+   :param feature_group_id: The unique identifier for the feature group.
+   :type feature_group_id: str
+   :param feature_group_type: The feature group type.
+   :type feature_group_type: str
+   :param feature_mappings: The feature mappings for the feature group.
+   :type feature_mappings: List[FeatureMappingConfig]
+
+   .. py:attribute:: feature_group_id
+      :type: str
+
+      
+
+   .. py:attribute:: feature_group_type
+      :type: str
+
+      
+
+   .. py:attribute:: feature_mappings
+      :type: List[FeatureMappingConfig]
+
+      
+
+   .. py:method:: from_dict(input_dict)
+      :classmethod:
+
+
+
