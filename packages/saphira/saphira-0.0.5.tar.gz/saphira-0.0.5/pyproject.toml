@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "saphira"
+version = "0.0.5"
+description = "Access parameters from the Saphira.ai SysEng SSoT"
+readme = "README.md"
+authors = [{ name = "Saphira AI", email = "contact@saphira.ai" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["saphira", "parameter", "hardware"]
+dependencies = ["requests"]
+requires-python = ">=3.9"
+
+[project.optional-dependencies]
+dev = ["black", "bumpver", "isort", "pip-tools", "pytest"]
+
+[project.urls]
+Homepage = "https://www.saphira.ai"
