@@ -1,0 +1,24 @@
+/*
+    This is the interface for the keyring module. 
+    It is used to store and retrieve passwords.
+
+    You can use it by issuing this command:
+    include keyring;
+
+    This library is licensed under the MIT license.
+
+    (c) 2023 Westcon-Comstor
+    (c) 2023 WestconGroup, Inc.
+    (c) 2023 WestconGroup International Limited
+    (c) 2023 WestconGroup EMEA Operations Limited
+    (c) 2023 WestconGroup European Operations Limited
+    (c) 2023 Sama Development Team
+
+    Date:    17-11-2023
+    Version: 1.0.0
+*/
+
+SetPassword => (username, password) external "ext_keyring", "SetPassword";
+GetPassword => (username) external "ext_keyring", "GetPassword";
+SetMerakiApiKey => (customer, key) external "ext_keyring", "SetMerakiApiKey";
+GetMerakiApiKey => (customer) external "ext_keyring", "GetMerakiApiKey";
