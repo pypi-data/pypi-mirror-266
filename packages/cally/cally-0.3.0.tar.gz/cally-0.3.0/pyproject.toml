@@ -1,0 +1,131 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cally"
+dynamic = ["version"]
+dependencies = [
+  "cdktf",
+  "click",
+  "dynaconf",
+  "PyYAML",
+]
+requires-python = ">=3.8"
+authors = [
+  {name = "Leon Wright", email = "techman83@gmail.com"},
+]
+description = "A config as infrastructure foundation for your Internal Developer Platform"
+readme = "README.md"
+license = {file = "LICENSE"}
+
+[project.urls]
+Repository = "https://github.com/CallyCo-io/Cally/"
+Issues = "https://github.com/CallyCo-io/Cally/issues"
+
+[project.optional-dependencies]
+development = [
+  "black",
+  "build",
+  "coverage",
+  "isort",
+  "mypy",
+  "pytest",
+  "pytest-black",
+  "pytest-mypy",
+  "pytest-ruff<0.3",  # 0.3 + 0.3.1 are currently not working
+  "ruff",
+  "types-PyYAML",
+]
+test = [
+  "black",
+  "build",
+  "coverage",
+  "mypy",
+  "pytest",
+  "pytest-black",
+  "pytest-mypy",
+  "pytest-ruff<0.3",  # 0.3 + 0.3.1 are currently not working
+  "ruff",
+  "types-PyYAML",
+]
+provider_build = [
+  "build"
+]
+docs = [
+  "sphinx",
+  "sphinx-issues",
+  "sphinxcontrib-log-cabinet",
+  "sphinx-tabs",
+  "Pallets-Sphinx-Themes",
+]
+
+[project.scripts]
+cally = "cally.cli:cally"
+
+[tool.black]
+skip-string-normalization = true
+
+[tool.coverage.run]
+branch = true
+omit = ["tests/*", "docs/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "if TYPE_CHECKING:",
+    "    pass",
+]
+
+[[tool.mypy.overrides]]
+module = "pallets_sphinx_themes.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "dynaconf.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "cally.providers.*"
+ignore_missing_imports = true
+
+[tool.isort]
+profile = "black"
+src_paths = ["src", "tests"]
+
+[tool.pytest.ini_options]
+pythonpath = "src"
+testpaths = "tests"
+addopts = "-p no:cacheprovider --black --mypy --ruff"
+filterwarnings = [
+    "ignore",
+    "default:::cally.*",
+    "default:::tests.*"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.dynamic]
+version = {attr = "cally.cli._version.VERSION"}
+
+[tool.ruff]
+preview = true
+exclude = ["docs"]
+
+[tool.ruff.lint]
+select = [
+    # flake8
+    "A", "ARG", "B", "BLE", "C4", "PIE", "RET", "SIM", "S",
+    "F",  # pyflakes
+    "N",  # pep8-nameing
+    "PL", # pylint
+    "E",  # error
+    "W",  # warning
+    "PTH", # pathlib
+    "RUF", # ruff
+]
+[tool.ruff.lint.per-file-ignores]
+"src/cally/cli/tools/provider.py" = [
+    "S404",  # `subprocess` module is possibly insecure - used for 'cdktf get'
+    "S602"  # `subprocess` call with `shell=True` identified - required for 'cdktf get'
+]
