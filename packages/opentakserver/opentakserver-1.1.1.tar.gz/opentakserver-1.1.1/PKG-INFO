@@ -1,0 +1,113 @@
+Metadata-Version: 2.1
+Name: opentakserver
+Version: 1.1.1
+Summary: A server for ATAK, WinTAK, and iTAK
+Home-page: https://github.com/brian7704/OpenTAKServer
+License: GPL-3.0-or-later
+Author: OpenTAKServer
+Author-email: opentakserver@gmail.com
+Requires-Python: >=3.10,<4.0
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: Flask-Security-Too[common,mfa] (==5.4.3)
+Requires-Dist: PyJWT (==2.8.0)
+Requires-Dist: PyYAML (==6.0.1)
+Requires-Dist: adsbxcot (==6.0.4)
+Requires-Dist: beautifulsoup4 (==4.12.3)
+Requires-Dist: colorlog (==6.8.2)
+Requires-Dist: datetime (==5.3)
+Requires-Dist: eventlet (==0.35.2)
+Requires-Dist: ffmpeg-python (==0.2.0)
+Requires-Dist: flask (==3.0.2)
+Requires-Dist: flask-apscheduler (==1.13.1)
+Requires-Dist: flask-cors (==4.0.0)
+Requires-Dist: flask-socketio (==5.3.6)
+Requires-Dist: flask-sqlalchemy (==3.1.1)
+Requires-Dist: gevent (==23.9.1)
+Requires-Dist: lastversion
+Requires-Dist: lxml (==5.1.0)
+Requires-Dist: pika (==1.3.2)
+Requires-Dist: poetry-dynamic-versioning[plugin] (==1.2.0)
+Requires-Dist: psutil (==5.9.8)
+Requires-Dist: pyOpenSSL (==23.3.0)
+Requires-Dist: pygc (==1.3.0)
+Requires-Dist: pyotp (==2.9.0)
+Requires-Dist: pytak (==6.3.2)
+Requires-Dist: pytest (==7.4.4)
+Requires-Dist: pytest-cov (==4.1.0)
+Requires-Dist: python-socketio[asyncio-client,client,websocket-client] (==5.10.0)
+Requires-Dist: sqlalchemy (==2.0.28)
+Requires-Dist: sqlalchemy-utils (==0.41.1)
+Requires-Dist: tldextract (==5.1.2)
+Project-URL: Documentation, https://docs.opentakserver.io
+Project-URL: Repository, https://github.com/brian7704/OpenTAKServer
+Description-Content-Type: text/markdown
+
+# OpenTAKServer
+
+OpenTAKServer (OTS) is yet another open source TAK Server for ATAK, iTAK, and WinTAK. OTS's goal is to be easy to install and use, and to run on both servers and SBCs (ie Raspberry Pi).
+
+This project is just beginning and not yet suitable for production.
+
+## Current Features
+- Connect via TCP from ATAK and WinTAK
+- SSL
+- Authentication
+- Client certificate enrollment
+- Send and receive messages
+- Send and receive points
+- Send and receive routes
+- Send and receive images
+- Share location with other users
+- Save CoT messages to a database
+- Data Packages
+- Alerts
+- CasEvac
+- Optional Mumble server authentication
+  - Use your OpenTAKServer username and password to log into your Mumble server
+
+## Planned Features
+- iTAK support (This may already work, just needs to be tested)
+- API to query saved CoT messages
+- WebUI
+  - Live Map
+  - View saved CoT messages
+  - Chat with EUDs
+- Mission support
+- Video Streaming
+- Federation
+
+## Requirements
+- python = "^3.10"
+- flask = "^3.0.0"
+- bleach = "*"
+- colorlog = "^6.7.0"
+- flask-socketio = "^5.3.6"
+- bs4 = "^0.0.1"
+- datetime = "^5.3"
+- gevent = "^23.9.1"
+- ownca = "^0.4.0"
+- pika = "^1.3.2"
+- sqlalchemy = "^2.0.23"
+- sqlalchemy-utils = "^0.41.1"
+- flask-sqlalchemy = "^3.1.1"
+- Flask-Security-Too = "^5.3.2"
+- RabbitMQ
+- MediaMTX (Only required for video streaming)
+- openssl
+- nginx
+
+## Installation
+```
+apt install python3-pip rabbitmq-server git openssl # Or substitude your distro's package manager
+pip3 install poetry
+git clone https://github.com/brian7704/OpenTAKServer.git
+cd OpenTAKServer
+poetry install
+```
+
+## Usage
+```poetry run python opentakserver/app.py```
