@@ -1,0 +1,63 @@
+# Database Library
+
+A simple Python library for managing data with file-based storage.
+
+## Installation
+
+You can install the library via pip:
+
+```bash
+pip install database-library
+```
+
+## Usage
+
+```python
+from database import Database
+
+# Initialize the database with options
+db = Database({
+    'path': 'data/db.json',  # Path to the JSON file
+    'logs': True  # Enable logging (optional, default is True)
+})
+
+# Set data
+db.set('key', 'value')
+
+# Get data
+data = db.get('key')
+
+# Add numeric values
+db.add('numeric_key', 5)
+
+# Remove numeric values
+db.remove('numeric_key', 2)
+
+# Push value to an array
+db.push('array_key', 'new_value')
+
+# Remove value from an array
+db.unpush('array_key', 'value_to_remove')
+
+```
+
+## Methods
+
+- `set(name, value)`: Set a key-value pair in the database.
+- `get(name)`: Get the value associated with a key from the database.
+- `add(name, value)`: Add a numeric value to an existing numeric value in the database.
+- `remove(name, value)`: Remove a numeric value from an existing numeric value in the database.
+- `push(name, value)`: Push a value to an array stored in the database.
+- `unpush(name, value)`: Remove a value from an array stored in the database.
+
+## Contributing
+
+Contributions are welcome! Please feel free to open an issue or submit a pull request.
+
+## License
+
+This library is licensed under the MIT License.
+
+```rust
+This README provides installation instructions, usage examples, methods overview, contribution guidelines, and licensing information for the database library in English.
+```
