@@ -1,0 +1,277 @@
+Metadata-Version: 2.1
+Name: asktable
+Version: 0.13.6
+Summary: AskTable SDK
+Home-page: https://asktable.com/
+Author: lele
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+Requires-Dist: tabulate
+Requires-Dist: pybase62
+
+# Python Client SDK（Python客户端SDK）
+
+## APIs（API 接口）
+
+> API 接口列表： https://api.asktable.com/
+ 
+## 认证方法
+需要在 Header 中增加 Authorization 字段，值为 `Bearer <token>`，其中 `<token>` 为用户的 Token。
+
+注意：新用户请联系 `contact@datamini.ai` 获得token。
+
+## 安装
+
+```shell
+pip install asktable
+```
+
+
+## 使用方式
+
+   - **命令行CLI**
+       ```shell
+       $ pip install asktable
+       $ asktable -t <token>
+    
+       -- AskTable 客户端(0.7.19)初始化完成！
+       -- 连接服务器(-a)： https://api.asktable.com/
+       -- 使用Token (-t)： token01
+       -- 您可以使用 'at' 来访问 AskTable，比如：通过 'at.datasources' 来查询数据源列表
+          完整的使用方法，请参考帮助文档：https://pypi.org/project/asktable/
+    
+
+       In [1]: at.datasources.latest.ask('你好')
+       Out[1]: [OK-2s]|| 你好！有什么可以帮助你的吗？
+       ```
+
+- **Python SDK**
+    
+    ```python
+    from asktable import AskTable 
+    at = AskTable(token='your_token')
+    ds = at.datasources.create_from_local_file("your_excel_file_path")
+    ds.ask('总共有多少行？')
+    ```
+
+## 使用示例
+
+以下示例使用命令行CLI方式演示。
+
+### 注册数据源
+
+1. 注册 MySQL 数据源，这个地址必须是 AskTable Server可访问的
+    ```python
+    at.datasources.register(
+        type="mysql",
+        access_config={
+            "host": "localhost",
+            "port": 3306,
+            "user": "root",
+            "password": "",
+            "db": "test"  # 可选
+        }
+    )
+    Data Source ds_2MSqC5EUFawpK0nVOg8MXN: Wait for 1 seconds and check again. Current status: processing
+    Data Source ds_2MSqC5EUFawpK0nVOg8MXN: Wait for 2 seconds and check again. Current status: processing
+    Data Source ds_2MSqC5EUFawpK0nVOg8MXN: Wait for 3 seconds and check again. Current status: processing
+    Data Source ds_2MSqC5EUFawpK0nVOg8MXN: Wait for 5 seconds and check again. Current status: processing
+    Data Source ds_2MSqC5EUFawpK0nVOg8MXN: Wait for 8 seconds and check again. Current status: processing
+    Data Source ds_2MSqC5EUFawpK0nVOg8MXN  AI Process Success.
+    ```
+2. 注册一个可下载的文件(Excel或CSV)
+    ```python
+    at.datasources.register(
+        type="csv",
+        access_config={
+            "location_url": "https://example.com/path/to/myfile.csv",
+            "location_type": "http",
+        }
+    )
+    ```
+
+3. 上传并注册一个本地的文件（Excel或CSV）
+    ```python
+    In [69]: at.datasources.create_from_local_file(local_file_path="/DataMini/asktable/sample_data/tests/test_chart.xlsx", direct_to_oss=True)
+    Out[69]: <ds_mrQq88Pu2DaBLCUZwgBAO: 月销售数据 >
+    ```
+
+### 查找数据源
+
+1. 所有数据源
+    ```python
+    In [54]: at.datasources
+    Out[54]: 
+    id                         created_at           name                                     type
+    ds_1MEd5IA392sgt7mw5PcwgV  2024-01-21T17:09:18  高校讲师工作量汇总                       excel
+    ds_5DuPVZbOo5iRx9ZRWNtDCj  2024-01-22T15:44:52  求公式数据汇总                           excel
+    ds_2Vl6Y5bypIJE0J19ulmiBL  2024-01-28T19:03:02  2024天津公务员招考                       excel
+    ds_3IrvrL6oFd1SIQ6FEKUPCn  2024-02-03T11:34:45  学生成绩总览                             excel
+    ds_2TDFez0l0qiSwFLsGvRKvV  2024-02-25T14:40:14  杭州房产信息                             csv
+    ```
+
+2. 最新的数据源
+    
+    ```python
+    In [55]: at.datasources.latest
+    Out[55]: <ds_2TDFez0l0qiSwFLsGvRKvV: 杭州房产信息 >
+
+    ```
+
+3. 根据ID精确查找
+    ```python
+    In [56]: at.datasources.get('ds_2TDFez0l0qiSwFLsGvRKvV')
+    Out[56]: <ds_2TDFez0l0qiSwFLsGvRKvV: 杭州房产信息 >
+
+    ```
+
+4. 根据Name查找（可能重名，返回List）
+    ```python
+    In [57]: at.datasources.get(name='杭州房产信息')
+    Out[57]: 
+    [<ds_25vqFPq3wAgzcCVGoygBOO: 杭州房产信息 >,
+     <ds_2eGWHUvUbWN0AAbke0aKIb: 杭州房产信息 >,
+     <ds_2TDFez0l0qiSwFLsGvRKvV: 杭州房产信息 >]
+    ```
+
+### 管理数据源
+
+1. 查看Meta（在AskTable中管理的Meta）
+    ```python
+    In [15]: at.datasources.latest.meta
+    Out[15]: 
+    test (测试环境数据库)
+    ------------------------------
+    Table Name       Table Desc            Fields(analysed/all)
+    alembic_version  数据库迁移版本控制表  1/1
+    chats            聊天记录表            4/4
+    users            用户信息表            2/2
+    ```
+   
+2. 查看 RuntimeMeta（运行时，即原文件或者原数据库中最新的Meta）
+    ```python
+    In [16]: at.datasources.latest.meta_runtime
+    Out[16]: 
+    test
+    ------------------------------
+    Table Name       Table Desc    Fields(analysed/all)
+    alembic_version                0/1
+    chats                          1/4
+    users                          1/2
+    ```
+3. 更新Meta（即将 RuntimeMeta 更新到 AskTable 中，并自动分析和识别含义）
+    ```python
+    In [17]: at.datasources.latest.meta.update()
+    Data Source ds_39dJslzX5G2TDofefHJ0t9 Meta 状态为 processing，正在等待完成...
+    等待 1 秒后重新检查。当前状态: processing
+    Data Source ds_39dJslzX5G2TDofefHJ0t9 Meta 更新成功。
+    Out[17]: 
+    test (测试环境数据库)
+    ------------------------------
+    Table Name       Table Desc            Fields(analysed/all)
+    alembic_version  数据库迁移版本控制表  1/1
+    chats            聊天记录表            4/4
+    users            用户信息表            2/2
+    ```
+
+4. 查看 Meta 状态
+    ```python
+    In [21]: at.datasources.latest.meta.status
+    Out[21]: 'success'
+    ```
+   
+4. 删除 Meta（将AskTable中保存的Meta删除）
+    ```python
+    In [18]: at.datasources.latest.meta.delete()
+    Out[18]: True
+    ```
+
+4. 查看示例问题
+    ```python
+    In [62]: ds = at.datasources.latest
+    
+    In [63]: ds.sample_questions
+    Out[63]: '- 查询杭州房产的平均总价\n- 统计各区域房产数量 \n（为了方便沟通，您可以直接指定列名：城市, 区域, 子区域, 小区, 总价, 单价, 户型, 楼层, 建筑面积, 套内面积, 装修, 梯户比例, 电梯, 别墅类型, 挂牌日期, 产权, 房屋用途, 房龄, 链接）'
+    ```
+5. 删除数据源
+
+    ```python 
+    In [65]: ds = at.datasources.latest.delete()  # 删除最新的数据源
+    Out[65]: True
+    ```
+
+### 开始对话
+
+1. 快速提问
+    ```python
+    In [8]: answer = at.datasources.latest.ask('你好')
+    Out[8]: [msg_5PvPIvwPofYG9HkUzjzzRc] [ai] [OK-10s] 你好！有什么可以帮助你的吗？   [Just now]>
+    ```
+
+2. 选择多个数据源，一起提问
+    ```python
+    In [9]: chat = at.chats.create(['ds_2MSqC5EUFawpK0nVOg8MXN', 'ds_34LANTyIJi0srCJrHFxRZ'])
+
+    In [10]: answer = chat.ask('你好')
+    
+    In [11]: answer.to_dict()
+    Out[11]: 
+    {'id': 'msg_4wQf4lD2AqDiPikRW4Tijk',
+     'chat_id': 'chat_G5g0FKbGQlljAKHrKz160',
+     'created': 1712287283,
+     'role': 'ai',
+     'content': {'status': 'OK',
+      'elapsed_time': 2,
+      'answer_text': '你好！有什么可以帮到您的吗？',
+      'answer_file_url': None,
+      'answer_image_url': None,
+      'structure_queries': None,
+      'statistics': None},
+     'reply_to_msg_id': 'msg_7aEuVCH8fX9BzlS3EvwKnl'}
+    ```
+   
+### 查看对话
+
+1. 查看所有对话
+    ```python
+    In [40]: at.chats
+    Out[40]: 
+    id                           created              datasource_ids                   human_msgs    ai_msgs  latest_msg
+    chat_E90pdsNUlDE7wo8gsjahf   2024-01-06 12:10:00  ['ds_1ZAoAyIn1ph0lldief4cP5']             2          2  2024-01-07 01:26:48
+    chat_ql7vWZEIqafqg9dMAaNpi   2024-01-07 05:35:03  ['ds_S0tdSsWcuB2HxEA1BQICE']              0          0
+    chat_1SfzrRkiIlKyvHtOTbX7qW  2024-01-07 05:46:21  ['ds_6tWxUjnKbK2JwJRmLuPTj9']             4          4  2024-01-07 05:50:59
+    chat_2WEHFozMZPFQhYkqLwvufZ  2024-01-07 10:34:15  ['ds_5Jydks0MbCJ3atBIHBC98']              1          1  2024-01-07 10:35:02
+    ```
+2. 获取最后一个对话
+    ```python
+    In [41]: at.chats.latest
+    Out[41]: <Chat chat_6LYoQImReUun8gR8q32LZm [2024-02-06 06:33:47]>
+    ```
+3. 根据ID查找对话
+    ```python
+    In [44]: at.chats.get('chat_1SfzrRkiIlKyvHtOTbX7qW')
+    Out[44]: <Chat chat_1SfzrRkiIlKyvHtOTbX7qW [2024-01-07 05:46:21]>
+    ```
+   
+4. 查看某个对话的历史消息
+    ```python
+    In [43]: at.chats.latest.messages
+    Out[43]: 
+    id                          created                 role    content
+    msg_1x0t6ch4KzZiSPFDbrL1iC  2 hours 59 minutes ago  human   将B列的数据拆分为姓名、手机号和地址三列
+    msg_5D5bdJ2vBYjhpjlVuqyN5N  2 hours 59 minutes ago  ai      [OK-22s] 很抱歉，由于元数据中并未提供包含电话号码和地址的字段信息，我们无法直接从数据库中分割列B的数据为姓名、电话号码和地址三个独立的列。如果您能提供更详细的数据格式或者具体的分割规则，我们可能会有其他方式来帮助您处理这个问题。
+    msg_1rnZp94PzQeMetZxV2W3VC  2 hours 57 minutes ago  human   看起来好像可以按照换行来拆分
+    msg_1igXXP1VBMSVx2iW8DENVt  2 hours 57 minutes ago  ai      [OK-34s] 已经根据您的要求将B列的数据拆分为姓名、手机号和地址三列。您可以查看处理好的数据。 [File:https://0vc.cc/KcZzK]
+    ```
+
+### 删除对话
+
+删除某个对话
+
+    ```python
+    In [45]: chat = at.chats.latest
+    
+    In [46]: chat.delete()
+    Out[46]: True
+    ```
+
