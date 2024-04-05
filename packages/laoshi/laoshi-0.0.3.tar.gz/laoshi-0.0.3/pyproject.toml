@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "laoshi"
+version = "0.0.3"
+description = ""
+authors = ["Ruben Serradas <rubenserradas@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pypinyin = "^0.50.0"
+googletrans = "4.0.0rc1"
+gtts = "^2.5.0"
+genanki = "^0.13.1"
+requests = "^2.31.0"
+click = "^8.1.7"
+starcc = "^0.0.5"
+
+[tool.poetry.group.dev.dependencies]
+pylint = "^3.0.3"
+black = "^23.12.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+laoshi = 'laoshi.main:cli_group'
