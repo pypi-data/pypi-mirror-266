@@ -1,0 +1,186 @@
+Metadata-Version: 2.1
+Name: dg_face_tracking
+Version: 0.0.11
+Summary: DeGirum Face Tracking Application Package
+Home-page: https://github.com/degirum
+Author: DeGirum Corp.
+Author-email: support@degirum.com
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Development Status :: 3 - Alpha
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: Other/Proprietary License
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: config
+Requires-Dist: ffmpeg
+Requires-Dist: pandas
+Requires-Dist: opencv-python
+Requires-Dist: degirum
+Requires-Dist: degirum-tools
+Requires-Dist: names-generator
+Requires-Dist: filterpy
+Requires-Dist: scikit-learn
+Requires-Dist: rich
+Requires-Dist: lancedb
+Requires-Dist: validators
+
+# Face Tracking Demo
+
+Demonstrates the following technologies:
+- Face Detection in a video stream. Yolo models from DeGirum zoo are used.
+- Creating face embeddings by [DeepFace](https://github.com/serengil/deepface)
+- Saving face metadata, including embeddings, in a vector database ([LanceDB](https://lancedb.com/)) 
+- Recognition of detected faces, using saved faces metadata.
+
+Used as a mock-up for development of hybrid deployment of a vector db.
+
+## 1.Installation
+
+
+Create a new conda environment:
+```
+conda env create -f environment.yml
+```
+
+Activate it:
+```
+conda activate dg_face_tracking
+```
+
+Create a database folder:
+```
+mkdir db
+```
+
+Open env.ini file and fill the DEGIRUM_CLOUD_TOKEN field with a valid DeGirum cloud platform API access token. 
+
+## 2. Running
+
+A laptop with an enabled camera must be used. 
+
+
+Start the face tracking app:
+```
+python track.py -d <deployment>  -c <config>
+``` 
+Options:
+
+- deployment: cloud, local or docker
+- config: config path, relative to Configs subfolder  
+
+
+Press OK button to finalize keying. 
+
+Ctrl+C stops the app.
+
+## 3. Creating a dataset.
+1. Edit the `face_tracker_camera.cfg` config file by adding
+```commandline
+ [${data_source.id}, ${dataset_writer}]
+```
+line in `data_connections` section.
+
+
+2. In `dataset` section of `LocalDBWriter.cfg` config file:
+- Set the valid paths for catalogue (`catalogue_path`) and the datasets path (`datasets_path`);
+- Set dataset name `dataset_name`
+- If you want to overwrite the existing dataset, set `write_mode` as "overwrite"
+
+Run the application.
+
+To stop data collection, press Ctrl+C
+
+## 4. Running on a dataset
+```
+python DataFace.py  face_tracker_dataset
+``` 
+`dataset` section of `FaceTrackerDataset.cfg` must contain the valid parameters of the dataset to be used:
+
+- Set the valid paths for catalogue (`catalogue_path`) and the datasets path (`datasets_path`);
+- Set the dataset name (`dataset_name`)
+
+Run the application.
+
+To stop running, press Ctrl+C
+
+## 5. CI/CD
+
+To make new release perform the following steps:
+
+1. Assign new git tag by running the following command:
+
+    ```
+    ./rel-tag.sh x.y.z
+    ```
+
+    where `x.y.z` is semantic version of new release.
+
+2. Open [Github Release action page](https://github.com/DeGirum/dg_face_tracking/actions/workflows/release.yml) and configure release action
+by clicking **Run workflow** combo box, selecting **Tags** tab in **Branch** combo box, and specifying the tag, which corresponds to the released version:
+
+    ![image](https://github.com/DeGirum/dg_face_tracking/assets/78237151/ab57bac6-59e4-42cd-86b1-d22af480f71a)
+
+3. Start release action by pressing green **Run workflow** button.
+4. Make sure Release action finishes successfully (green checkmark new recent Release action run status)
+5. Open [Github Upload action page](https://github.com/DeGirum/dg_face_tracking/actions/workflows/upload.yml) and configure upload action
+by clicking **Run workflow** combo box and specifying the release version tag in **Release tag containing wheels to upload** edit box:
+
+    ![image](https://github.com/DeGirum/dg_face_tracking/assets/78237151/84685ca8-1a8c-49b4-b9b9-5abde828964f)
+
+6. Start upload action by pressing green **Run workflow** button.
+7. Make sure Upload action finishes successfully (green checkmark new recent Upload action run status)
+8. Verify, that release is avaiable for installation by running the following command:
+    ```
+    pip uninstall -y dg_face_tracking && pip install -U dg_face_tracking
+    ```
+
+    You should see the following prompt:
+
+    ```
+    Successfully installed dg_face_tracking-x.y.z
+    ```
+   
+## 6. Orin Local Demo Installation
+
+#### 6.1 Prerequisites
+- Install the NVIDIA Container Toolkit and Configure Docker
+
+https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html
+
+- Start AIServer in Docker with nvidia runtime:
+   ```commandline
+   docker run -d -p 8778:8778 -v /my/model/zoo/dir:/zoo --runtime nvidia --privileged degirum/aiservertrt:latest
+   ```
+- Download models from DeGirum cloud zoo 
+https://docs.degirum.com/documentation/PySDK-0.11.0/user-guide/cli/
+
+
+#### 6.2. Create conda environment and install dg_face_tracking package
+
+   ```commandline
+   conda create --name face_tracking python=3.9
+   conda activate face_tracking
+   pip install dg_face_tracking
+   ```
+
+#### 6.3 Run the Demo
+   ```commandline
+    dr_face_tracking   
+   ```
+To stop the demo: hit "x".
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
