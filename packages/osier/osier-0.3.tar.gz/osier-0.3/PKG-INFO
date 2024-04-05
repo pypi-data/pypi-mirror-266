@@ -1,0 +1,118 @@
+Metadata-Version: 2.1
+Name: osier
+Version: 0.3
+Summary: osier: A justice oriented energy system optimization tool
+Home-page: https://osier.readthedocs.io/en/latest/
+Download-URL: http://github.com/arfc/osier
+Author: Samuel Dotson
+Author-email: sgd2@illinois.edu
+Maintainer: Samuel Dotson
+Maintainer-email: samgdotson@gmail.com
+License: BSD-3
+Platform: OS Independent
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Topic :: Scientific/Engineering
+Requires: numpy
+Requires: pandas
+Requires: matplotlib
+Requires: pytest
+Requires: dill
+Requires: openpyxl
+Requires: nrelpy
+Requires: unyt
+Requires: pymoo
+Requires: pyentrp
+Requires: deap
+Requires-Python: >= 3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: matplotlib
+Requires-Dist: pytest
+Requires-Dist: dill
+Requires-Dist: openpyxl
+Requires-Dist: nrelpy
+Requires-Dist: unyt
+Requires-Dist: pymoo
+Requires-Dist: pyentrp
+Requires-Dist: deap
+Provides-Extra: doc
+Requires-Dist: sphinx>=5.1; extra == "doc"
+Requires-Dist: sphinx-autobuild; extra == "doc"
+Requires-Dist: myst-parser; extra == "doc"
+Requires-Dist: sphinx_design; extra == "doc"
+Requires-Dist: sphinx-autodoc-typehints; extra == "doc"
+Requires-Dist: numpydoc; extra == "doc"
+Requires-Dist: pydata_sphinx_theme; extra == "doc"
+Requires-Dist: nbsphinx; extra == "doc"
+Requires-Dist: pandoc; extra == "doc"
+
+# osier
+/ˈōZHər/ <br>
+Open source multi-objective energy system framework
+
+[![Build Status](https://github.com/arfc/osier/actions/workflows/CI.yml/badge.svg)](https://github.com/arfc/osier/actions/workflows/CI.yml)
+[![Documentation Status](https://readthedocs.org/projects/osier/badge/?version=latest)](https://osier.readthedocs.io/en/latest/?badge=latest)
+
+
+
+## Installation
+
+`osier` is available through [PyPI](https://pypi.org/project/osier/). It may be installed with 
+```bash
+python -m pip install osier pyomo==6.4.1
+``` 
+or by cloning this repository and building from source:
+
+```bash
+git clone git@github.com:arfc/osier.git  # requires ssh-keys
+# or
+git clone https://github.com/arfc/osier.git
+cd osier
+# for a basic installation
+pip install .
+# to also install the documentation dependencies
+pip install .[doc]
+
+# followed by 
+pip install pyomo==6.4.1
+```
+
+
+```{note}
+Although `pyomo` is a dependency, the current version of `pyomo` (6.7.1, as of 2/29/24) has a bug
+that prints erroneous errors during an `osier` simulation. Therefore, users are recommended to 
+install a specific version of `pyomo` after the main installation of `osier`. There is an open issue [#50](https://github.com/arfc/osier/issues/50) 
+related to this concern.
+```
+
+## Documentation
+The documentation for `osier` can be viewed [here](https://osier.readthedocs.io/en/latest/). 
+You can also build the docs locally with:
+
+```bash
+cd osier/docs
+make html
+cd build/html
+# to serve the documentation
+python -m http.server
+```
+
+## Tests
+`osier`'s tests can be run by executing `pytest` in the top-level directory 
+of `osier`.
+
+
+## Contributing
+
+Contributions to `osier` are welcome. For details on how to make bug reports, pull requests, and other information, check the [contributing page](docs/source/contrib.md).
+
+
+## Credits
+Some of the documentation infrastructure was inspired by and borrowed from the [`watts` documentation](https://watts.readthedocs.io/en/latest/index.html).
