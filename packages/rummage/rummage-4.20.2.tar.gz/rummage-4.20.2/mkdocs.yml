@@ -1,0 +1,134 @@
+site_name: Rummage Documentation
+site_url: https://facelessuser.github.io/Rummage
+repo_url: https://github.com/facelessuser/Rummage
+edit_uri: tree/master/docs/src/markdown
+site_description: A search and replace tool written in Python.
+copyright: |
+  Copyright &copy; 2013 - 2023 <a href="https://github.com/facelessuser" target="_blank" rel="noopener">Isaac Muse</a>
+
+docs_dir: docs/src/markdown
+theme:
+  name: material
+  custom_dir: docs/theme
+  logo: images/logo.svg
+  palette:
+    scheme: dracula
+    primary: deep purple
+    accent: deep purple
+  font:
+    text: Roboto
+    code: Roboto Mono
+  features:
+    - navigation.tabs
+    - navigation.top
+    - navigation.instant
+    - navigation.sections
+    - navigation.indexes
+    - toc.follow
+    - content.code.copy
+    - navigation.footer
+    - search.share
+    - search.highlight
+    - search.suggest
+  pymdownx:
+    sponsor: "https://github.com/sponsors/facelessuser"
+
+nav:
+  - Home:
+    - Rummage: index.md
+    - Installation: installation.md
+    - Basic Usage: usage.md
+    - Search Features: search.md
+    - Settings: preferences.md
+    - Extras: extras.md
+  - About:
+    - Contributing &amp; Support: about/contributing.md
+    - Changelog: about/changelog.md
+    - License: about/license.md
+
+markdown_extensions:
+  - markdown.extensions.toc:
+      slugify: !!python/object/apply:pymdownx.slugs.slugify {kwds: {case: lower}}
+      permalink: ""
+  - markdown.extensions.smarty:
+      smart_quotes: false
+  - pymdownx.betterem:
+  - markdown.extensions.attr_list:
+  - markdown.extensions.tables:
+  - markdown.extensions.abbr:
+  - markdown.extensions.footnotes:
+  - markdown.extensions.md_in_html:
+  - pymdownx.superfences:
+      preserve_tabs: true
+      custom_fences:
+        - name: flow
+          class: uml-flowchart
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      extend_pygments_lang:
+        - name: pycon3
+          lang: pycon
+          options:
+            python3: true
+      linenums_style: pymdownx-inline
+  - pymdownx.inlinehilite:
+  - pymdownx.magiclink:
+      repo_url_shortener: true
+      repo_url_shorthand: true
+      social_url_shorthand: true
+      user: facelessuser
+      repo: Rummage
+  - pymdownx.tilde:
+  - pymdownx.caret:
+  - pymdownx.smartsymbols:
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.escapeall:
+      hardbreak: True
+      nbsp: True
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.striphtml:
+  - pymdownx.snippets:
+      base_path:
+      - docs/src/markdown/.snippets
+      - LICENSE.md
+      auto_append:
+      - refs.md
+  - pymdownx.keys:
+      separator: "\uff0b"
+  - pymdownx.blocks.admonition:
+      types:
+      - new
+      - settings
+      - note
+      - abstract
+      - info
+      - tip
+      - success
+      - question
+      - warning
+      - failure
+      - danger
+      - bug
+      - example
+      - quote
+  - pymdownx.blocks.html:
+  - pymdownx.blocks.definition:
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/facelessuser
+    - icon: fontawesome/brands/discord
+      link: https://discord.gg/UjXwf4F
+
+plugins:
+  - search
+  - git-revision-date-localized:
+      fallback_to_build_date: true
+      strict: false
+  - mkdocs_pymdownx_material_extras
+  - minify:
+      minify_html: true
