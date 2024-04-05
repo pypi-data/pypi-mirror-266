@@ -1,0 +1,47 @@
+Metadata-Version: 2.1
+Name: geometricalgebra
+Version: 0.1.2
+Summary: A package for conformal geometric algebra
+Author: Daniel Vorberg
+Author-email: daniel.vorberg@wandelbots.com
+Requires-Python: >=3.9,<3.11
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Provides-Extra: all
+Requires-Dist: jax (==0.4.10) ; extra == "all"
+Requires-Dist: jaxlib (==0.4.10) ; extra == "all"
+Requires-Dist: matplotlib (>=3.4.2) ; extra == "all"
+Requires-Dist: numpy (>=1.19.0)
+Requires-Dist: scipy (>=1.8.0)
+Requires-Dist: tensorflow (==2.14.0) ; (sys_platform == "linux") and (extra == "all")
+Requires-Dist: tensorflow-macos (==2.14.1) ; (sys_platform == "darwin") and (extra == "all")
+Description-Content-Type: text/markdown
+
+# geometricalgebra
+
+![badge](https://github.com/wandelbotsgmbh/geometricalgebra/actions/workflows/python-app.yml/badge.svg)
+
+Library implementing conformal geometric algebra.
+
+The key features are:
+- Fast numerical implementation of multivector and its exterior algebra
+- The library supports various backends (numpy, tensorflow, jax)
+- Full support of autograd works when using jax and tensorflow
+- All operation work for single multivector or tensors of multivector. Broadcasting is also supported.
+
+
+# Installation
+
+    pip install geometricalgebra
+
+# Example
+
+    from geometricalgebra import cga3d
+    a = cga3d.e_0
+    b = cga3d.e_1.up()
+    c = cga3d.e_2.up()
+    circle = a ^ b ^ c
+    # The radius of a circle going through [0, 0, 0], [1, 0, 0], and [0, 1, 0]
+    radius = circle.circle_to_center_normal_radius()[2].to_scalar()
+

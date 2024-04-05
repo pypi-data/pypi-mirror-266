@@ -1,0 +1,74 @@
+[tool.poetry]
+name = "geometricalgebra"
+version = '0.1.2'
+description = "A package for conformal geometric algebra"
+authors = [
+    "Daniel Vorberg <daniel.vorberg@wandelbots.com>",
+]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.11"
+numpy = ">=1.19.0"
+scipy = ">=1.8.0"
+tensorflow = { version = "2.14.0", optional = true, platform = "linux" }
+tensorflow-macos = { version = "2.14.1", optional = true, platform = "darwin"}
+matplotlib = { version = ">=3.4.2", optional = true }
+jax = { version = "0.4.10", optional = true }
+jaxlib = { version = "0.4.10", optional = true }
+
+
+[tool.poetry.extras]
+all = ["matplotlib", "tensorflow", "tensorflow-macos", "jax", "jaxlib"]
+
+[tool.poetry.group.dev.dependencies]
+pytest = "7.4.4"
+pylint = "2.15.4"
+mypy = "^1.8.0"
+isort = "5.10.1"
+darglint = "1.8.1"
+black = "24.1.1"
+nbval = "0.10.0"
+pytest-cov = "4.1.0"
+pytest-mpl = "0.16.1"
+pdoc = "12.1.0"
+
+[tool.mypy]
+python_version = "3.9"
+ignore_missing_imports = true
+warn_unreachable = true
+warn_unused_configs = true
+junit_xml = "reports/mypy/mypy.xml"
+show_error_context = true
+warn_unused_ignores = true
+strict_equality = true
+mypy_path = ".mypy_stubs"
+files = "geometricalgebra"
+namespace_packages = true
+explicit_package_bases = true
+
+[tool.black]
+line-length = 120
+target-version = ['py39']
+exclude = "geometricalgebra/tests/test_cayley.py"
+
+[tool.isort]
+profile = "black"
+line_length = 120
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+addopts = """
+    --doctest-modules
+    --nbval
+    --mpl
+    --mpl-baseline-path=baseline
+    --nbval-current-env"""
+junit_family = "xunit2"
+norecursedirs = "develop .ipynb_checkpoints .venv .tox *.egg"
+testpaths = """
+    geometricalgebra notebooks
+"""
