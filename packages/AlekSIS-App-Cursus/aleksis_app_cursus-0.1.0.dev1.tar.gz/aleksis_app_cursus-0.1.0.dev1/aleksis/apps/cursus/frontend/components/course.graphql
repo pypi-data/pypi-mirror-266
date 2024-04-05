@@ -1,0 +1,77 @@
+query courses($orderBy: [String], $filters: JSONString) {
+  items: courses(orderBy: $orderBy, filters: $filters) {
+    id
+    name
+    subject {
+      id
+      name
+      colourFg
+      colourBg
+    }
+    teachers {
+      id
+      fullName
+    }
+    groups {
+      id
+      name
+    }
+    lessonQuota
+    canEdit
+    canDelete
+  }
+}
+
+mutation createCourses($input: [BatchCreateCourseInput]!) {
+  createCourses(input: $input) {
+    items: courses {
+      id
+      name
+      subject {
+        id
+        name
+      }
+      teachers {
+        id
+        fullName
+      }
+      groups {
+        id
+        name
+      }
+      lessonQuota
+      canEdit
+      canDelete
+    }
+  }
+}
+
+mutation deleteCourses($ids: [ID]!) {
+  deleteCourses(ids: $ids) {
+    deletionCount
+  }
+}
+
+mutation updateCourses($input: [BatchPatchCourseInput]!) {
+  updateCourses(input: $input) {
+    items: courses {
+      id
+      name
+      subject {
+        id
+        name
+      }
+      teachers {
+        id
+        fullName
+      }
+      groups {
+        id
+        name
+      }
+      lessonQuota
+      canEdit
+      canDelete
+    }
+  }
+}

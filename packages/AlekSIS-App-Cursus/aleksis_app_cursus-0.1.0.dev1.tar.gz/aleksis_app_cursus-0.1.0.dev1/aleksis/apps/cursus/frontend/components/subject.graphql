@@ -1,0 +1,71 @@
+query subjects($orderBy: [String], $filters: JSONString) {
+  items: subjects(orderBy: $orderBy, filters: $filters) {
+    id
+    name
+    shortName
+    parent {
+      id
+      name
+      colourFg
+      colourBg
+    }
+    colourFg
+    colourBg
+    teachers {
+      id
+      fullName
+    }
+    canEdit
+    canDelete
+  }
+}
+
+mutation createSubjects($input: [BatchCreateSubjectInput]!) {
+  createSubjects(input: $input) {
+    items: subjects {
+      id
+      name
+      shortName
+      parent {
+        id
+        name
+      }
+      colourFg
+      colourBg
+      teachers {
+        id
+        fullName
+      }
+      canEdit
+      canDelete
+    }
+  }
+}
+
+mutation deleteSubjects($ids: [ID]!) {
+  deleteSubjects(ids: $ids) {
+    deletionCount
+  }
+}
+
+mutation updateSubjects($input: [BatchPatchSubjectInput]!) {
+  updateSubjects(input: $input) {
+    items: subjects {
+      id
+      name
+      shortName
+      parent {
+        id
+        name
+      }
+      colourFg
+      colourBg
+      teachers {
+        id
+        fullName
+      }
+      canEdit
+      canDelete
+    }
+  }
+}
