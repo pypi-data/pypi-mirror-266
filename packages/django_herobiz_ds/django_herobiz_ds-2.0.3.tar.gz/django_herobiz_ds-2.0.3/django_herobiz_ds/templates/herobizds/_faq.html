@@ -1,0 +1,41 @@
+{% load static %}
+
+<section id="faq" class="faq">
+  <div class="container-fluid" data-aos="fade-up">
+
+    <div class="row gy-4">
+
+      <div class="col-lg-7 d-flex flex-column justify-content-center align-items-stretch  order-2 order-lg-1">
+
+        <div class="content px-xl-5">
+          <h3>Frequently Asked <strong>Questions</strong></h3>
+          <p>
+            {{ faq_subtitle }}
+          </p>
+        </div>
+
+        <div class="accordion accordion-flush px-xl-5" id="faqlist">
+          {% for item in faq %}
+          <div class="accordion-item" data-aos="fade-up" data-aos-delay="{% cycle '200' '300' '400' '500' '600' '700' '800' %}">
+            <h3 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#faq-content-{% cycle '1' '2' '3' '4' '5' '6' '7' %}">
+                <i class="bi bi-question-circle question-icon"></i>
+                {{ item.q }}
+              </button>
+            </h3>
+            <div id="faq-content-{% cycle '1' '2' '3' '4' '5' '6' '7' %}" class="accordion-collapse collapse" data-bs-parent="#faqlist">
+              <div class="accordion-body">
+                {% autoescape off %}
+                {{ item.a }}
+                {% endautoescape %}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col-lg-5 align-items-stretch order-1 order-lg-2 img" style='background-image: url("{% static 'herobizds/img/faq.jpg' %}");'>&nbsp;</div>
+    </div>
+  </div>
+</section>

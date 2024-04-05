@@ -1,0 +1,50 @@
+{% load static %}
+
+<style>
+.pricing .pricing-header {
+  background: linear-gradient(rgba(72, 86, 100, 0.9), rgba(72, 86, 100, 0.9)), url("{% static 'herobizds/img/pricing-bg.jpg' %}") center center;
+  background-size: cover;
+  text-align: center;
+  padding: 40px;
+  margin: -60px -40px 0;
+}
+</style>
+
+<section id="pricing" class="pricing">
+  <div class="container" data-aos="fade-up">
+
+    <div class="section-header">
+      <h2>{{ pricing_title }}</h2>
+      <p>{{ pricing_subtitle }}</p>
+    </div>
+
+    <div class="row gy-4">
+      {% for item in pricing %}
+      <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="{% cycle '200' '400' '600' %}">
+        {% if item.featured %}
+        <div class="pricing-item featured">
+        {% else %}
+        <div class="pricing-item">
+        {% endif %}
+          <div class="pricing-header">
+            <h3>{{ item.title }}</h3>
+            <h4><sup>₩</sup>{{ item.price }}<span> / month</span></h4>
+          </div>
+          <ul>
+            {% for pcontent in item.pcontents %}
+            <li><i class="bi bi-dot"></i> <span>{{ pcontent }}</span></li>
+            {% endfor %}
+            {% for ncontent in item.ncontents %}
+            <li class="na"><i class="bi bi-x"></i> <span>{{ ncontent }}</span></li>
+            {% endfor %}
+          </ul>
+          <div class="text-center mt-auto">
+            <a href="{{ pricing_btn.1 }}" class="buy-btn">{{ pricing_btn.0 }}</a>
+          </div>
+
+        </div>
+      </div>
+     {% endfor %}
+    </div>
+  </div>
+</section>

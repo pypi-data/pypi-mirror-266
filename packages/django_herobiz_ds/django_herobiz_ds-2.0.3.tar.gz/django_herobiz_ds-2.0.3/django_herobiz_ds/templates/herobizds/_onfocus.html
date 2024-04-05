@@ -1,0 +1,47 @@
+{% load static %}
+<style>
+.onfocus .video-play {
+  min-height: 400px;
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7)), url("{% static 'herobizds/img/onfocus-video-bg.jpg' %}") center center;
+  background-size: cover;
+}
+
+.onfocus .content {
+  background: linear-gradient(rgba(72, 86, 100, 0.5), rgba(72, 86, 100, 0.8)), url("{% static 'herobizds/img/onfocus-content-bg.jpg' %}") center center;
+  background-size: cover;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 40px;
+}
+
+</style>
+<section id="onfocus" class="onfocus">
+  <div class="container-fluid p-0" data-aos="fade-up">
+
+    <div class="row g-0">
+      <div class="col-lg-6 video-play position-relative">
+        {% if onfocus.video_link %}
+        <a href="{{ onfocus.video_link }}" class="glightbox play-btn"></a>
+        {% endif %}
+      </div>
+      <div class="col-lg-6">
+        <div class="content d-flex flex-column justify-content-center h-100">
+          {% autoescape off %}
+          <h3>{{ onfocus.h3 }}</h3>
+          <p class="fst-italic">
+            {{ onfocus.p }}
+          </p>
+          <ul>
+            {% for item in onfocus.li %}
+            <li><i class="bi bi-check-circle"></i>{{ item }}</li>
+            {% endfor %}
+          </ul>
+          {% endautoescape %}
+          {% if onfocus.btn.link %}
+          <a href="{{ onfocus.btn.link }}" class="read-more align-self-start"><span>{{ onfocus.btn.title }}</span><i class="bi bi-arrow-right"></i></a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

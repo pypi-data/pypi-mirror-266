@@ -1,0 +1,72 @@
+{% load static %}
+
+<style>
+  .about .about-img:before {
+  position: absolute;
+  inset: -60px 0 0 -60px;
+  z-index: -1;
+  content: "";
+  background: url("{% static 'herobizds/img/about-bg.png' %}") top left;
+  background-repeat: no-repeat;
+}
+</style>
+
+<section id="about" class="about">
+  <div class="container" data-aos="fade-up">
+
+    <div class="section-header">
+      <h2>About Us</h2>
+      <p>{{ about_p }}</p>
+    </div>
+
+    <div class="row g-4 g-lg-5" data-aos="fade-up" data-aos-delay="200">
+
+      <div class="col-lg-5">
+        <div class="about-img">
+          <img src="{% static 'img/herobizds/about.jpg' %}" class="img-fluid" alt="">
+        </div>
+      </div>
+
+      <div class="col-lg-7">
+        {% autoescape off %}
+        <h3 class="pt-0 pt-lg-5">{{ about_h3 }}</h3>
+
+        <!-- Tabs -->
+        <ul class="nav nav-pills mb-3">
+          {% for item in about %}
+          <li><a class="nav-link
+          {% if forloop.first %} active{% endif %}
+          " data-bs-toggle="pill" href="#tab{% cycle '1' '2' '3' '4' '5' %}">{{ item.title }}</a></li>
+          {% endfor %}
+        </ul><!-- End Tabs -->
+
+        <!-- Tab Content -->
+        <div class="tab-content">
+          {% for item in about %}
+          {% if forloop.first %}
+          <div class="tab-pane fade show active" id="tab1">
+          {% else %}
+          <div class="tab-pane fade show" id="tab{% cycle '2' '3' '4' '5' %}">
+          {% endif %}
+            {% if item.p_italic %}
+            <p class="fst-italic">{{ item.p_italic }}</p>
+            {% endif %}
+            {% for chk_item in item.check %}
+              {% if chk_item.h4 %}
+              <div class="d-flex align-items-center mt-4">
+                <i class="bi bi-check2"></i>
+                <h4>{{ chk_item.h4 }}</h4>
+              </div>
+              {% endif %}
+              {% if chk_item.p %}
+              <p>{{ chk_item.p }}</p>
+              {% endif %}
+            {% endfor %}
+          </div>
+          {% endfor %}
+        </div>
+        {% endautoescape %}
+      </div>
+    </div>
+  </div>
+</section>

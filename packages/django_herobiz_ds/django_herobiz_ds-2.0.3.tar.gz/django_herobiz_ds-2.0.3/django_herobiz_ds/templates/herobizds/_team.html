@@ -1,0 +1,42 @@
+{% load static %}
+
+<section id="team" class="team">
+  <div class="container" data-aos="fade-up">
+
+    <div class="section-header">
+      <h2>{{ team_title }}</h2>
+      <p>{{ team_subtitle }}</p>
+    </div>
+
+    <div class="row gy-5">
+      {% for member in team %}
+      <div class="col-xl-4 col-md-6 d-flex" data-aos="zoom-in" data-aos-delay="{% cycle '200' '400' '600' '800' %}">
+        <div class="team-member">
+          <div class="member-img">
+            {% cycle 'member1' 'member2' 'member3' 'member4' 'member5' 'member6' as member_dir silent %}
+            <img src="{% static 'img/herobizds/team/'|add:member_dir|add:'/profile.jpg' %}" class="img-fluid" alt="">
+          </div>
+          <div class="member-info">
+            <div class="social">
+              {% if member.social.twitter %}
+              <a href=""><i class="bi bi-twitter"></i></a>
+              {% endif %}
+              {% if member.social.facebook %}
+              <a href=""><i class="bi bi-facebook"></i></a>
+              {% endif %}
+              {% if member.social.instagram %}
+              <a href=""><i class="bi bi-instagram"></i></a>
+              {% endif %}
+              {% if member.social.linkedin %}
+              <a href=""><i class="bi bi-linkedin"></i></a>
+              {% endif %}
+            </div>
+            <h4>{{ member.name }}</h4>
+            <span>{{ member.title }}</span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>

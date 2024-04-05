@@ -1,0 +1,15 @@
+{% load static %}
+
+<section id="clients" class="clients">
+  <div class="container" data-aos="zoom-out">
+
+    <div class="clients-slider swiper">
+      <div class="swiper-wrapper align-items-center">
+        {% for filename in clients %}
+        <div class="swiper-slide"><img src="{% static 'img/herobizds/clients/'|add:filename %}" class="img-fluid" alt=""></div>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div>
+</section>

@@ -1,0 +1,100 @@
+### django-herobiz-ds
+
+#### Introduction 
+demiansoft homepage templates
+
+현재 blog, blog-details 미완성 상태
+
+---
+#### Requirements
+
+Django >= 5.0.3
+libsass>=0.23.0
+django-analyticsds >= 0.3.1
+django-calendards >= 0.4.0
+django-modalds >= 0.1.0
+django-utilsds >= 0.4.0
+
+---
+#### Install
+
+settings.py  
+```  
+INSTALLED_APPS = [    
+    ...  
+	'django_analyticsds',  
+	'django_utilsds',  
+	'django_calendards',  
+	'django_modalds',  
+	  
+	'django_herobiz_ds',
+]
+
+...
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, '_static/'),
+]
+
+MEDIA_URL = '/media/'  
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')  
+X_FRAME_OPTIONS = 'SAMEORIGIN'  
+  
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  
+```
+
+in the shell
+```
+>> pip install django-herobiz-ds
+>> python manage.py makemigrations django_calendards django_modalds
+>> python manage.py migrate
+>> python manage.py createsuperuser
+```
+
+
+urls.py
+```
+from django.contrib import admin  
+from django.urls import path, include  
+from django.conf import settings  
+from django.conf.urls.static import static  
+  
+urlpatterns = [  
+    path('admin/', admin.site.urls),  
+    path('', include('django_herobiz_ds.urls')),  
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+```
+
+---
+#### Composition
+
+프로젝트 내의 \_data 폴더 안에 herobizds.py 파일을 생성하고 다음과 같은 형식으로 작성한다.(예제 파일 참조)
+
+```
+context = {
+    "color": '-orange',  # ['', '-blue', '-green', '-orange', '-purple', '-red', '-pink']
+    "hero_type": 'fullscreen',  # ['animated', 'carousel', 'fullscreen', 'static']
+}
+
+context.update(base)
+context.update(seo)
+context.update(header)
+context.update(hero)
+context.update(featured_services)
+context.update(about)
+context.update(client)
+context.update(cta)
+context.update(onfocus)
+context.update(features)
+context.update(services)
+context.update(testimonials)
+context.update(pricing)
+context.update(faq)
+context.update(portfolio)
+context.update(team)
+context.update(blog)
+context.update(contact)
+
+```
+---
+

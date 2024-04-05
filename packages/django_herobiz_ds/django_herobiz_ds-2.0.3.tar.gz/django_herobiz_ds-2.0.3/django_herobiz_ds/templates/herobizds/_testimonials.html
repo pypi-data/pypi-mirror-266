@@ -1,0 +1,41 @@
+{% load static %}
+<style>
+  .testimonials {
+  padding: 80px 0;
+  background: url("{% static 'img/herobizds/testimonials-bg.jpg' %}") no-repeat;
+  background-position: center center;
+  background-size: cover;
+  position: relative;
+}
+</style>
+
+<section id="testimonials" class="testimonials">
+  <div class="container" data-aos="fade-up">
+
+    <div class="testimonials-slider swiper">
+      <div class="swiper-wrapper">
+        {% for item in testimonials %}
+        <div class="swiper-slide">
+          <div class="testimonial-item">
+            <img src="{% static 'img/herobizds/testimonials/'|add:item.photo %}" class="testimonial-img" alt="">
+            <h3>{{ item.name }}</h3>
+            {% autoescape off %}
+            <h4>{{ item.job }}</h4>
+            {% endautoescape %}
+            <div class="stars">
+              <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+            </div>
+            <p>
+              <i class="bi bi-quote quote-icon-left"></i>
+              {{ item.desc }}
+              <i class="bi bi-quote quote-icon-right"></i>
+            </p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+
+  </div>
+</section>

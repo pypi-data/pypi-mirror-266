@@ -1,0 +1,91 @@
+{% load static %}
+
+<footer id="footer" class="footer">
+
+    <div class="footer-content">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-3 col-md-6">
+            <div class="footer-info">
+              <h3>{{ footer_info.h3 }}</h3>
+              <p>
+                <!-- https://stackoverflow.com/questions/6721693/django-and-wrap-lines-problem -->
+                {{ footer_info.info1 | wordwrap:20 | linebreaksbr }}<br>
+                <strong>{{ footer_info.info2.0 }}:</strong> {{ footer_info.info2.1 }}<br>
+                <strong>{{ footer_info.info3.0 }}:</strong> {{ footer_info.info3.1 }}<br>
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-6 footer-links">
+            {% if footer_link1.links|length != 0 %}
+            <h4>{{ footer_link1.title }}</h4>
+            <ul>
+              {% for item in footer_link1.links %}
+              <li><i class="bi bi-chevron-right"></i> <a href="{{ item.1 }}">{{ item.0 }}</a></li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-links">
+            {% if footer_link2.links|length != 0 %}
+            <h4>{{ footer_link2.title }}</h4>
+            <ul>
+              {% for item in footer_link2.links %}
+              <li><i class="bi bi-chevron-right"></i> <a href="{{ item.1 }}">{{ item.0 }}</a></li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-newsletter">
+            {% if footer_newsletter.use_newsletter %}
+            <h4>{{ footer_newsletter.h4 }}</h4>
+            <p>{{ footer_newsletter.p }}</p>
+            <form action="" method="post">
+              <input type="email" name="email"><input type="submit" value="Subscribe">
+            </form>
+            {% endif %}
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-legal text-center">
+      <div class="container d-flex flex-column flex-lg-row justify-content-center justify-content-lg-between align-items-center">
+
+        <div class="d-flex flex-column align-items-center align-items-lg-start">
+          <div class="copyright">
+          &copy; Copyright <a href="https://demiansoft.com" target="_blank"><strong><span>Demiansoft</span></strong></a><a href="https://map.naver.com/v5/entry/place/13289684?c=15,0,0,0,dh" target="_blank">.</a> All Rights Reserved
+        </div>
+        <div class="credits">
+          {{ basic_info.company_name }} | {{ basic_info.owner}} | {{ basic_info.addr }} | 사업자등록번호: {{ basic_info.business_reg_number }}
+        </div>
+
+        </div>
+
+        <div class="social-links order-first order-lg-last mb-3 mb-lg-0">
+          {% if social.twitter %}
+          <a href="{{ social.twitter }}" class="twitter" title="{{ basic_info.clinic }} 트위터 바로가기" target="_blank"><i class="bi bi-twitter"></i></a>
+          {% endif %}
+          {% if social.facebook %}
+          <a href="{{ social.facebook }}" class="facebook" title="{{ basic_info.clinic }} 페이스북 바로가기" target="_blank"><i class="bi bi-facebook"></i></a>
+          {% endif %}
+          {% if social.instagram %}
+          <a href="{{ social.instagram }}" class="instagram" title="{{ basic_info.clinic }} 인스타그램 바로가기" target="_blank"><i class="bi bi-instagram"></i></a>
+          {% endif %}
+          {% if social.youtube %}
+          <a href="{{ social.youtube }}" class="youtube" title="{{ basic_info.clinic }} 유튜브 바로가기" target="_blank"><i class="bi bi-youtube"></i></a>
+          {% endif %}
+          {% if social.blog %}
+            <a href="{{ social.blog }}" class="blog" title="{{ basic_info.clinic }} 블로그 바로가기" target="_blank"><i class="bi bi-bootstrap-fill"></i></a>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+
+  </footer>

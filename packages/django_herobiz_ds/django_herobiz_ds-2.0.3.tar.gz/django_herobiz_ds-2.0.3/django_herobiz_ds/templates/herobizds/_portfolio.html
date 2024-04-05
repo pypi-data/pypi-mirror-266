@@ -1,0 +1,39 @@
+{% load static %}
+
+<section id="portfolio" class="portfolio" data-aos="fade-up">
+
+  <div class="container">
+
+    <div class="section-header">
+      <h2>{{ portfolio.title }}</h2>
+      <p>{{ portfolio.subtitle }}</p>
+    </div>
+
+  </div>
+
+  <div class="container-fluid" data-aos="fade-up" data-aos-delay="200">
+
+    <div class="portfolio-isotope" data-portfolio-filter="*" data-portfolio-layout="masonry" data-portfolio-sort="original-order">
+
+      <ul class="portfolio-flters">
+        <li data-filter="*" class="filter-active">All</li>
+        {% for filter in categories.all %}
+          <li data-filter=".filter-{{ filter }}">{{ filter }}</li>
+        {% endfor %}
+      </ul><!-- End Portfolio Filters -->
+
+      <div class="row g-0 portfolio-container">
+        {% for item in items.all %}
+        <div class="col-xl-3 col-lg-4 col-md-6 portfolio-item filter-{{ item.filter }}">
+          <img src="{{ item.image1.url }}" class="img-fluid" alt="">
+          <div class="portfolio-info">
+            <h4>{{ item.title }}</h4>
+            <a href="{{ item.image1.url }}" title="{{ item.title }}" data-gallery="portfolio-gallery" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+            <a href="{% url 'herobizds:details' item.id %}" title="More Details" class="details-link" target="_blank"><i class="bi bi-link-45deg"></i></a>
+          </div>
+        </div>
+        {% endfor %}
+      </div><!-- End Portfolio Container -->
+    </div>
+  </div>
+</section>
