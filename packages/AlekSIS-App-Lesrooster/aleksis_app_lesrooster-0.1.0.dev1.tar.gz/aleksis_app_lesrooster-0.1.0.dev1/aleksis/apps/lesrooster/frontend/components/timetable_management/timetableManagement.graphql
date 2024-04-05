@@ -1,0 +1,252 @@
+query group($id: ID!) {
+  groupById(id: $id) {
+    id
+    name
+  }
+}
+
+query gqlGroups($timeGrid: ID!) {
+  groups: groupsByTimeGrid(timeGrid: $timeGrid) {
+    id
+    name
+  }
+}
+
+query courses($group: ID!, $timeGrid: ID!) {
+  courses: courseObjectsForGroup(group: $group, timeGrid: $timeGrid) {
+    id
+    courseId
+    name
+    subject {
+      id
+      name
+      shortName
+      colourFg
+      colourBg
+      teachers {
+        id
+        fullName
+        shortName
+      }
+    }
+    teachers {
+      id
+      fullName
+      shortName
+    }
+    groups {
+      id
+      name
+      shortName
+    }
+    lessonQuota
+  }
+}
+
+query lessonObjects($group: ID!, $timeGrid: ID!) {
+  lessonObjects: lessonObjectsForGroup(group: $group, timeGrid: $timeGrid) {
+    id
+    slotStart {
+      id
+      period
+      weekday
+    }
+    slotEnd {
+      id
+      period
+      weekday
+    }
+    subject {
+      id
+      name
+      shortName
+      colourFg
+      colourBg
+      teachers {
+        id
+        fullName
+        shortName
+      }
+    }
+    teachers {
+      id
+      fullName
+      shortName
+    }
+    rooms {
+      id
+      name
+      shortName
+    }
+    course {
+      id
+      name
+      subject {
+        id
+        name
+        colourFg
+        colourBg
+        teachers {
+          id
+          fullName
+          shortName
+        }
+      }
+      teachers {
+        id
+        fullName
+        shortName
+      }
+      groups {
+        id
+        name
+        shortName
+      }
+    }
+    isOptimistic
+    recurrence
+    canEdit
+    canDelete
+  }
+}
+
+query overlayLessons($rooms: [ID]!, $teachers: [ID]!, $timeGrid: ID!) {
+  overlayLessons: lessonsObjectsForRoomsOrTeachers(
+    rooms: $rooms
+    teachers: $teachers
+    timeGrid: $timeGrid
+  ) {
+    id
+    slotStart {
+      id
+      period
+      weekday
+    }
+    slotEnd {
+      id
+      period
+      weekday
+    }
+    rooms {
+      id
+      shortName
+    }
+    teachers {
+      id
+      shortName
+    }
+  }
+}
+
+mutation createLessons($input: [BatchCreateLessonInput]!) {
+  createLessons(input: $input) {
+    items: lessons {
+      id
+      slotStart {
+        id
+        period
+        weekday
+      }
+      slotEnd {
+        id
+        period
+        weekday
+      }
+      subject {
+        id
+        name
+        shortName
+        colourFg
+        colourBg
+      }
+      teachers {
+        id
+        fullName
+        shortName
+      }
+      rooms {
+        id
+        name
+        shortName
+      }
+      course {
+        id
+        name
+        subject {
+          id
+          name
+          shortName
+          colourFg
+          colourBg
+        }
+        teachers {
+          id
+          fullName
+          shortName
+        }
+        groups {
+          id
+          name
+          shortName
+        }
+      }
+      isOptimistic
+      recurrence
+      canEdit
+      canDelete
+    }
+  }
+}
+
+mutation moveLesson($input: [BatchPatchLessonInput]!) {
+  updateLessons(input: $input) {
+    lessons {
+      id
+      slotStart {
+        id
+        period
+        weekday
+      }
+      slotEnd {
+        id
+        period
+        weekday
+      }
+      isOptimistic
+    }
+  }
+}
+
+mutation updateLessons($input: [BatchPatchLessonInput]!) {
+  updateLessons(input: $input) {
+    items: lessons {
+      id
+      subject {
+        id
+        name
+        shortName
+        colourFg
+        colourBg
+      }
+      teachers {
+        id
+        fullName
+        shortName
+      }
+      rooms {
+        id
+        name
+        shortName
+      }
+      isOptimistic
+      canEdit
+      canDelete
+    }
+  }
+}
+
+mutation deleteLessons($ids: [ID]!) {
+  deleteLessons(ids: $ids) {
+    deletionCount
+  }
+}

@@ -1,0 +1,84 @@
+query breakSlots($orderBy: [String], $filters: JSONString) {
+  items: breakSlots(orderBy: $orderBy, filters: $filters) {
+    id
+    name
+    timeGrid {
+      id
+      group {
+        id
+        name
+      }
+      validityRange {
+        id
+        name
+        dateStart
+        dateEnd
+      }
+    }
+    weekday
+    period
+    timeStart
+    timeEnd
+    canEdit
+    canDelete
+  }
+}
+
+mutation createBreakSlots($input: [BatchCreateBreakSlotInput]!) {
+  createBreakSlots(input: $input) {
+    items: breakSlots {
+      id
+      model
+      name
+      timeGrid {
+        id
+        group {
+          id
+          name
+        }
+        validityRange {
+          id
+          name
+        }
+      }
+      weekday
+      period
+      timeStart
+      timeEnd
+      canEdit
+      canDelete
+    }
+  }
+}
+
+mutation deleteBreakSlots($ids: [ID]!) {
+  deleteBreakSlots(ids: $ids) {
+    deletionCount
+  }
+}
+
+mutation updateBreakSlots($input: [BatchPatchBreakSlotInput]!) {
+  updateBreakSlots(input: $input) {
+    items: breakSlots {
+      id
+      name
+      timeGrid {
+        id
+        group {
+          id
+          name
+        }
+        validityRange {
+          id
+          name
+        }
+      }
+      weekday
+      period
+      timeStart
+      timeEnd
+      canEdit
+      canDelete
+    }
+  }
+}

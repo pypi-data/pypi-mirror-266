@@ -1,0 +1,130 @@
+query validityRanges($orderBy: [String], $filters: JSONString) {
+  items: validityRanges(orderBy: $orderBy, filters: $filters) {
+    id
+    name
+    status
+    schoolTerm {
+      id
+      name
+    }
+    timeGrids {
+      id
+      group {
+        id
+        name
+        shortName
+      }
+    }
+    dateStart
+    dateEnd
+    canEdit
+    canDelete
+  }
+}
+
+mutation createValidityRanges($input: [BatchCreateValidityRangeInput]!) {
+  createValidityRanges(input: $input) {
+    items: validityRanges {
+      id
+      name
+      status
+      schoolTerm {
+        id
+        name
+      }
+      timeGrids {
+        id
+        group {
+          id
+          name
+          shortName
+        }
+      }
+      dateStart
+      dateEnd
+      canEdit
+      canDelete
+    }
+  }
+}
+
+mutation deleteValidityRanges($ids: [ID]!) {
+  deleteValidityRanges(ids: $ids) {
+    deletionCount
+  }
+}
+
+mutation updateValidityRanges($input: [BatchPatchValidityRangeInput]!) {
+  utation: updateValidityRanges(input: $input) {
+    items: validityRanges {
+      id
+      name
+      status
+      schoolTerm {
+        id
+        name
+      }
+      timeGrids {
+        id
+        group {
+          id
+          name
+          shortName
+        }
+      }
+      dateStart
+      dateEnd
+      canEdit
+      canDelete
+    }
+  }
+}
+
+query currentValidityRange {
+  currentValidityRange {
+    id
+    name
+    dateStart
+    dateEnd
+  }
+}
+
+mutation createTimeGrids($input: [BatchCreateTimeGridInput]!) {
+  createTimeGrids(input: $input) {
+    items: timeGrids {
+      id
+      group {
+        id
+        name
+        shortName
+      }
+      validityRange {
+        id
+      }
+    }
+  }
+}
+
+mutation deleteTimeGrids($ids: [ID]!) {
+  deleteTimeGrids(id: $ids) {
+    deletionCount
+  }
+}
+
+query timeGrids($orderBy: [String], $filters: JSONString) {
+  items: timeGrids(orderBy: $orderBy, filters: $filters) {
+    id
+    group {
+      id
+      shortName
+      name
+    }
+    validityRange {
+      id
+      name
+      isCurrent
+      dateStart
+      dateEnd
+    }
+  }
+}

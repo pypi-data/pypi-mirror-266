@@ -1,0 +1,149 @@
+query slots($orderBy: [String], $filters: JSONString) {
+  items: slots(orderBy: $orderBy, filters: $filters) {
+    id
+    model
+    name
+    timeGrid {
+      id
+      group {
+        id
+        name
+      }
+      validityRange {
+        id
+        name
+      }
+    }
+    weekday
+    period
+    timeStart
+    timeEnd
+    canEdit
+    canDelete
+  }
+}
+
+mutation createSlots($input: [BatchCreateSlotInput]!) {
+  createSlots(input: $input) {
+    items: slots {
+      id
+      model
+      name
+      timeGrid {
+        id
+        group {
+          id
+          name
+        }
+        validityRange {
+          id
+          name
+        }
+      }
+      weekday
+      period
+      timeStart
+      timeEnd
+      canEdit
+      canDelete
+    }
+  }
+}
+
+mutation deleteSlots($ids: [ID]!) {
+  deleteSlots(ids: $ids) {
+    deletionCount
+  }
+}
+
+mutation updateSlots($input: [BatchPatchSlotInput]!) {
+  updateSlots(input: $input) {
+    items: slots {
+      id
+      name
+      timeGrid {
+        id
+        group {
+          id
+          name
+        }
+        validityRange {
+          id
+          name
+        }
+      }
+      weekday
+      period
+      timeStart
+      timeEnd
+      canEdit
+      canDelete
+    }
+  }
+}
+
+mutation carryOverSlots(
+  $timeGrid: ID!
+  $fromDay: Int!
+  $toDay: Int!
+  $only: [ID]
+) {
+  carryOverSlots(
+    timeGrid: $timeGrid
+    fromDay: $fromDay
+    toDay: $toDay
+    only: $only
+  ) {
+    deleted
+    result {
+      id
+      model
+      name
+      timeGrid {
+        id
+        group {
+          id
+          name
+        }
+        validityRange {
+          id
+          name
+        }
+      }
+      weekday
+      period
+      timeStart
+      timeEnd
+      canEdit
+      canDelete
+    }
+  }
+}
+
+mutation copySlotsFromGrid($toTimeGrid: ID!, $fromTimeGrid: ID!) {
+  copySlotsFromGrid(timeGrid: $toTimeGrid, fromTimeGrid: $fromTimeGrid) {
+    result {
+      id
+      model
+      name
+      timeGrid {
+        id
+        group {
+          id
+          name
+        }
+        validityRange {
+          id
+          name
+        }
+      }
+      weekday
+      period
+      timeStart
+      timeEnd
+      canEdit
+      canDelete
+    }
+    deleted
+  }
+}

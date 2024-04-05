@@ -1,0 +1,103 @@
+[tool.poetry]
+name = "AlekSIS-App-Lesrooster"
+version = "0.1.0.dev1"
+packages = [
+    { include = "aleksis" }
+]
+readme = "README.rst"
+include = [
+    { path = "aleksis/**/*.mo", format = ["sdist", "wheel"] },
+    { path = "*.rst", format = "sdist" },
+    { path = "tox.ini", format = "sdist" }
+]
+
+description = "AlekSIS (School Information System) — App Lesrooster (Manage lessons in a timetable schema)"
+authors = ["Jonathan Weth <dev@jonathanweth.de>"]
+license = "EUPL-1.2-or-later"
+homepage = "https://aleksis.org"
+repository = "https://edugit.org/AlekSIS/onboarding//AlekSIS-App-Lesrooster"
+documentation = "https://aleksis.org/official/AlekSIS/docs/html/"
+classifiers = [
+    "Environment :: Web Environment",
+    "Intended Audience :: Education",
+    "Topic :: Education"
+]
+maintainers = ["Jonathan Weth <dev@jonathanweth.de>", "Dominik George <dominik.george@teckids.org>"]
+
+[[tool.poetry.source]]
+name = "PyPI"
+priority = "primary"
+
+[[tool.poetry.source]]
+name = "gitlab"
+url = "https://edugit.org/api/v4/projects/461/packages/pypi/simple"
+priority = "supplemental"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+AlekSIS-Core = "^4.0.0.dev6"
+AlekSIS-App-Chronos = "^4.0.0.dev3"
+AlekSIS-App-Cursus = "^0.1.0.dev1"
+django-recurrence = "^1.11.1"
+
+[tool.poetry.plugins."aleksis.app"]
+lesrooster = "aleksis.apps.lesrooster.apps:DefaultConfig"
+
+
+[tool.poetry.group.dev.dependencies]
+django-stubs = "^4.2"
+safety = "^2.3.5"
+
+ruff = "^0.1.5"
+
+curlylint = "^0.13.0"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.2"
+pytest-django = "^4.1"
+pytest-django-testing-postgresql = "^0.2"
+pytest-cov = "^4.0.0"
+pytest-sugar = "^0.9.2"
+selenium = "<4.10.0"
+freezegun = "^1.1.0"
+
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
+sphinx = "^7.0"
+sphinxcontrib-django = "^2.3.0"
+sphinxcontrib-svg2pdfconverter = "^1.1.1"
+sphinx-autodoc-typehints = "^1.7"
+sphinx_material = "^0.0.35"
+
+[tool.curlylint]
+include = '\.html'
+
+[tool.curlylint.rules]
+aria_role = true
+django_forms_rendering = true
+image_alt = true
+indent = 2
+meta_viewport = true
+no_autofocus = true
+tabindex_no_positive = true
+
+
+[tool.ruff]
+exclude = ["migrations", "tests"]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "UP", "B", "SIM", "I", "DJ", "A", "S"]
+ignore = ["UP034", "UP015", "B028"]
+
+[tool.ruff.isort]
+known-first-party = ["aleksis"]
+section-order = ["future", "standard-library", "django", "third-party", "first-party", "local-folder"]
+
+[tool.ruff.isort.sections]
+django = ["django"]
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
