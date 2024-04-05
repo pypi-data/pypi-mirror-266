@@ -1,0 +1,2 @@
+from .zeroshot_image_classifier import ZeroshotImageClassifier
+from .zeroshot_image_config import ZeroshotImageClassifierConfig
