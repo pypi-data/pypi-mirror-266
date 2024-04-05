@@ -1,0 +1,83 @@
+# 项目
+
+- https://www.feicrypto.top
+- [联系方式-telegram](https://t.me/feicrypto)
+- 开发python版本:"<3.12,>=3.10"
+
+# 安装
+
+1. pipx install fei-crypto
+2. pipx upgrade fei-crypto
+
+# 命令行
+
+1. say -t 'hello world' # 打印内容
+2. os # operating system # 打印操作系统
+3. dt # 打印datetime
+4. ts # 打印timestamp
+5. ms # 打印milliseconds
+6. nano # 打印nanoseconds
+7. e # 打印环境变量
+    - 示例:`e 'PATH'`
+    - env_name:环境变量名
+    - --help:帮助
+8. uuid # 打印uuid
+9. btc-eth # 从币安获取比特币和以太坊的价格 支持socks5代理设置,设置环境变量->HTTP_PROXY=socks5h://127.0.0.1:7890
+10. rmw # 简单的去水印
+    - 示例:`rmw './1.png'`
+    - file_path:例如`./1.png`
+    - --colors:取色对比次数,默认值`5`
+    - --help:帮助文档
+11. tgl # telegram login bot或user获取sessionString
+12. captcha # 阿里云验证码识别
+    - 示例:`captcha 'file_abs_path' 'aliyun_ocr_appcode'`
+    - file_abs_path:图片绝对路径
+    - aliyun_ocr_appcode:
+      阿里云appcode [购买地址](https://market.aliyun.com/products/57124001/cmapi030368.html?spm=5176.2020520132.101.3.596972189IxPGX)
+    - --pri_id:文字类型（dn：纯数字，ne：英文数字，de：纯英文）
+13. t2m # 简单的文字转视频
+    - 依赖安装Ubuntu: `apt install -y gcc libpango1.0-dev pkg-config python3-dev ffmpeg`
+    - 依赖安装windows: `scoop install gcc msys2 ffmpeg`
+    - 示例:`t2m 'BTC-USDT' --out-filename btc --style 1 --preview`
+    - text:文本内容,文字长度最好不要超过15个字符
+    - --out_filename:输出文件名,输出目录为当前目录下的media文件夹,默认值`t2m`
+    - --quality:生成媒体质量,默认`low_quality`,还可设置为`medium_quality`|`high_quality`
+    - --out_format:输出格式`png`,`gif`,`mp4`,`webm`,`mov`. 默认`gif`
+    - --style:动画样式,默认值`0`
+    - --preview:是否生成后立即预览
+    - --help:帮助文档
+14. dcw # 使用discord webhook send发送消息
+    - 示例:`dc-send 'https://discord.com/api/webhooks/{}' --text 'hello' --file-paths 'e:/btc.mp4,e:/pepe.mp4'`
+    - webhook_url:webhook url
+    - --text:发送的文本
+    - --file-paths:发送的文件路径,多个路径用逗号分隔
+    - --proxy:使用代理,例如`http://127.0.0.1:7890`
+    - --help:帮助文档
+15. tgf # 转发telegram group或channel,支持用户转发和机器人转发,转发规则在配置文件`forwards`节点下
+    - 用户转发需申请对应的api_id,api_hash,并使用以上`tgl`命令获取`sesssionString`,网址:`https://my.telegram.org/auth`
+    - 用户转发需在配置文件中填写`API_ID`,`API_HASH`,`SESSION_STRING`
+    - 机器人转发直接到telegram`@BotFather` 里按流程申请Token
+    - 机器人转发需在配置文件中填写`BOT_TOKEN`
+    - 代理配置,在配置文件login下配置`"PROXY": "socks5://127.0.0.1:7890"`
+    - 示例:`tgf live -c "d:/tg.config.json"` 默认值:当前目录下的`tg.config.json`
+    - mode:`live`或者`past` live:实时转发 past:每分钟读取历史记录转发,第一次默认读取一个小时内的记录
+    - --config-path,-c: 可传入任意配置文件路径,不传会在当前目录下创建`tg.config.json`,在json文件中填写配置重新运行即可
+    - --version,-v: 查看版本信息
+    - --help:帮助文档
+    
+# dev
+
+```shell
+poetry shell
+poetry run python --version
+poetry run os
+poetry run dt
+poetry run ts
+```
+
+# publish
+
+```shell
+poetry build
+poetry publish
+```
