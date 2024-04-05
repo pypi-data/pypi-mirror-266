@@ -1,0 +1,151 @@
+{
+  "type": "object",
+  "title": "Amazon Sponsored Display Advertised Product Daily Report",
+  "description": "Daily performance report for an Amazon Sponsored Display Advertised Product",
+  "properties": {
+    "Date": {
+      "type": "string",
+      "description": "Date of the report in the format 'DD-MM-YYYY', e.g., '13-10-2023'",
+      "format": "dd-MM-yyyy",
+      "pattern": "[0-9]{2}-[0-9]{2}-[1-2][0-9]{3}"
+    },
+    "Currency": {
+      "type": "string",
+      "description": "Currency code, e.g., 'INR'"
+    },
+    "Campaign_Name": {
+      "type": "string",
+      "description": "Name of the campaign, e.g., 'COR | Global'"
+    },
+    "Portfolio_name": {
+      "type": "string",
+      "description": "Name of the portfolio"
+    },
+    "Cost_Type": {
+      "type": "string",
+      "description": "Cost type, e.g., 'VCPM'"
+    },
+    "Ad_Group_Name": {
+      "type": "string",
+      "description": "Name of the Ad Group, e.g., 'Global'"
+    },
+    "Bid_Optimisation": {
+      "type": "string",
+      "description": "Bid optimization strategy, e.g., 'SD_REACH'"
+    },
+    "Advertised_SKU": {
+      "type": "string",
+      "description": "Advertised Stock Keeping Unit (SKU)"
+    },
+    "Advertised_ASIN": {
+      "type": "string",
+      "description": "Advertised Amazon Standard Identification Number (ASIN)"
+    },
+    "Impressions": {
+      "type": "number",
+      "description": "Number of impressions"
+    },
+    "Viewable_Impressions": {
+      "type": "number",
+      "description": "Number of viewable impressions"
+    },
+    "Clicks": {
+      "type": "number",
+      "description": "Number of clicks"
+    },
+    "Click_Thru_Rate_CTR": {
+      "type": "number",
+      "description": "Click-through rate (CTR)"
+    },
+    "14_Day_Detail_Page_Views_DPV": {
+      "type": "number",
+      "description": "Number of detail page views in the last 14 days"
+    },
+    "Spend": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Spend details"
+    },
+    "Cost_Per_Click_CPC": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Cost per click (CPC) details"
+    },
+    "Cost_per_1000_viewable_impressions_VCPM": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Cost per 1000 viewable impressions (VCPM) details"
+    },
+    "Total_Advertising_Cost_of_Sales_ACOS": {
+      "type": "number",
+      "description": "Total Advertising Cost of Sales (ACOS)"
+    },
+    "Total_Return_on_Advertising_Spend_ROAS": {
+      "type": "number",
+      "description": "Total Return on Advertising Spend (ROAS)"
+    },
+    "14_Day_Total_Orders": {
+      "type": "number",
+      "description": "Number of total orders in the last 14 days"
+    },
+    "14_Day_Total_Units": {
+      "type": "number",
+      "description": "Number of total units sold in the last 14 days"
+    },
+    "14_Day_Total_Sales": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Details of total sales for the last 14 days"
+    },
+    "14_Day_New_to_brand_Orders": {
+      "type": "number",
+      "description": "Number of new-to-brand orders in the last 14 days"
+    },
+    "14_Day_New_to_brand_Sales": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Details of new-to-brand sales for the last 14 days"
+    },
+    "14_Day_New_to_brand_Units": {
+      "type": "number",
+      "description": "Number of new-to-brand units sold in the last 14 days"
+    },
+    "Total_Return_on_Advertising_Spend_ROAS_Click": {
+      "type": "number",
+      "description": "Total return on advertising spend (ROAS) for click interactions"
+    },
+    "14_Day_Total_Orders_Click": {
+      "type": "number",
+      "description": "Number of total orders from click interactions in the last 14 days"
+    },
+    "14_Day_Total_Units_Click": {
+      "type": "number",
+      "description": "Number of total units sold from click interactions in the last 14 days"
+    },
+    "14_Day_Total_Sales_Click": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Details of total sales from click interactions for the last 14 days"
+    },
+    "14_Day_New_to_brand_Orders_Click": {
+      "type": "number",
+      "description": "Number of new-to-brand orders from click interactions in the last 14 days"
+    },
+    "14_Day_New_to_brand_Sales_Click": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Details of new-to-brand sales from click interactions for the last 14 days"
+    },
+    "14_Day_New_to_brand_Units_Click": {
+      "type": "number",
+      "description": "Number of new-to-brand units sold from click interactions in the last 14 days"
+    }
+  },
+  "required": [
+    "Date",
+    "Campaign_Name",
+    "Ad_Group_Name",
+    "Advertised_ASIN",
+    "Advertised_SKU"
+  ]
+}

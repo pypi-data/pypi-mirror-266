@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Marketing Bundle Deal Overview Daily Report",
+  "description": "Daily overview report for a marketing bundle deal",
+  "type": "object",
+  "properties": {
+    "Bundle_ID": {
+      "type": "integer",
+      "description": "The unique identifier for the bundle deal"
+    },
+    "Bundle_Name": {
+      "type": "string",
+      "description": "The name of the marketing bundle deal"
+    },
+    "Period": {
+      "type": "string",
+      "description": "The time period during which the report is generated (format: DD-MM-YYYY HH:mm - DD-MM-YYYY HH:mm)"
+    },
+    "Units_Sold": {
+      "type": "integer",
+      "description": "Total units of the bundle deal sold"
+    },
+    "Orders": {
+      "type": "integer",
+      "description": "Total number of orders for the bundle deal"
+    },
+    "Buyers": {
+      "type": "integer",
+      "description": "Total number of unique buyers for the bundle deal"
+    },
+    "Sales": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Total sales with amount and currency"
+    },
+    "Sales_Per_Buyer": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Sales per buyer with amount and currency"
+    },
+    "Bundle_Deals_Ordered": {
+      "type": "integer",
+      "description": "Total number of times the bundle deal was ordered"
+    },
+    "Status": {
+      "type": "string",
+      "description": "Current status of the bundle deal (e.g., 'Expired')"
+    },
+    "Date": {
+      "type": "string",
+      "description": "Date of the report (format: DD-MM-YYYY)",
+      "format": "dd-MM-yyyy",
+      "pattern": "[0-9]{2}-[0-9]{2}-[1-2][0-9]{3}"
+    }
+  },
+  "required": [
+    "Bundle_ID",
+    "Bundle_Name",
+    "Date"
+  ]
+}
