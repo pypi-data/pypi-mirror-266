@@ -1,0 +1,21 @@
+// Select empty record test.
+
+var = [];
+print();
+print("This test should return an empty record. ([])");
+select * from var where author == 'Jan Wolkers' into y;
+
+print("Expected: []");
+print("Result:   ",y);
+
+var2 = [ { 'id': 1, 'author': 'Jan Wolkers' }, { 'id': 2, 'author': 'Jan Wolkers' }];
+
+print();
+print("This test should also return an empty record. ([])");
+select * from var2 where author == 'A.J. Kwak' into z;
+print("Expected: []");
+print("Result:   ",z);
+print();
+var3 = 10;
+print("Expected: 10");
+print("Result:   ",var3);

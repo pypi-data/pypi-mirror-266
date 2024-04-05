@@ -1,0 +1,32 @@
+/*
+    This is the time library for Macal
+    You can use it by issuing this command:
+    include time;
+    
+    Author:    Marco Caspers
+    Date:      27-09-2022
+
+    
+    This library is licensed under the MIT license.
+
+    (c) 2023 Westcon-Comstor
+    (c) 2023 WestconGroup, Inc.
+    (c) 2023 WestconGroup International Limited
+    (c) 2023 WestconGroup EMEA Operations Limited
+    (c) 2023 WestconGroup European Operations Limited
+    (c) 2023 Sama Development Team
+
+    Date:    17-11-2023
+    Version: 1.0.0
+*/
+
+DateToUnix=> (date_str) external "ext_time", "DateToUnix";
+IsoToUnix=> (date_str) external "ext_time", "IsoToUnix";
+DateFromUnix=> (seconds) external "ext_time", "DateFromUnix";
+IsoFromUnix=> (seconds) external "ext_time", "IsoFromUnix";
+UtcNow=> () external "ext_time", "UtcNow";
+UtcIsoNow=> () external "ext_time", "UtcIsoNow";
+IsoNow=> () external "ext_time", "IsoNow";
+Now=> () external "ext_time", "Now";
+PerfCounter=> () external "ext_time", "PerfCounter";
+        

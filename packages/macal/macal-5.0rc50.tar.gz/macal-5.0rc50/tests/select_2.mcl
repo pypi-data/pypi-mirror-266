@@ -1,0 +1,7 @@
+# test for the actual select statement.
+
+var = [{"id": 1, "name": "test"}, {"id": 2, "name": "test2"}];
+
+select * from var where id == 1 into var2;
+print("Expected: [{'id': 1, 'name': 'test'}]");
+print("Value:    ",var2);

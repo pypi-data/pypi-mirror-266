@@ -1,0 +1,55 @@
+# If test conditions false or nil on a non-boolean, non-nil value should return false
+
+value = {'name': 'Stage Entertainment', 'demo': true, 'show_firmware': true, 'show_address': true, 'enable_bandwidth': true, 'enable_public_ip': true, 'enable_switch_monitoring': false, 'enable_vpn_monitoring': false};
+
+if value == nil {
+    print('value is nil');
+} else {
+    print('value is not nil');
+}
+
+if value == false {
+    print('value is false');
+} else {
+    print('value is not false');
+}
+
+v1 = nil;
+
+if v1 == nil {
+    print('v1 is nil');
+} else {
+    print('v1 is not nil');
+}
+
+if v1 == true {
+    print('v1 is true');
+} else {
+    print('v1 is not true');
+}
+
+if v1 == false {
+    print('v1 is false');
+} else {
+    print('v1 is not false');
+}
+
+v2 = false;
+
+if v2 == nil {
+    print('v2 is nil');
+} else {
+    print('v2 is not nil');
+}
+
+if v2 == true {
+    print('v2 is true');
+} else {
+    print('v2 is not true');
+}
+
+if v2 == false {
+    print('v2 is false');
+} else {
+    print('v2 is not false');
+}

@@ -1,0 +1,15 @@
+# further tests for functions. Now with indexed variables.
+
+# the array we are going to use.
+av = [1, 2, 3, 4, 5];
+
+# just a simple function for testing.
+func => (a) {
+    print(a);
+}
+
+av[3] = func; # just plain regular assign the function to av[3].
+av[2] = "William of Orange!";
+
+# now we call the function.
+av[3](av[2]); # should print William of Orange!

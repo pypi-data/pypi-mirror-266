@@ -1,0 +1,413 @@
+// This is a test file showcasing syntax for the Macal DSL version 5.0
+// It is not meant to be run.
+
+// This is a single line comment
+
+/*
+    This is a multi-line comment
+    This is a multi-line comment
+    This is a multi-line comment
+*/
+
+# This is also a single line comment
+
+halt 1; # stop execution with exit code 1, this is to prevent the following code from running because
+        # it is not meant to be run. This is a test file showcasing syntax only.
+
+# Variables
+# Variables are declared by assigning a value to them like so:
+
+var = 1; # This assigns the integer value 1 to the variable var
+
+var = "Hello World"; # This assigns the string value "Hello World" to the variable var
+
+/*
+    This also assigns the string value "Hello World!" to the variable var.
+    You can use single or double quotes to declare strings, as long as you are consistent.
+*/
+
+var = 'Hello World!'; 
+
+var = 1.1; # This assigns the float value 1.1 to the variable var
+
+var = true; # This assigns the boolean value true to the variable var
+var = false; # This assigns the boolean value false to the variable var
+
+var = nil; # This assigns the nil value to the variable var (nil is equivalent to null or None in other languages)
+
+var = array; # This assigns the an empty array value to the variable var, this is for backwards compatibility with older versions of the language
+var = []; # This assigns the an empty array value to the variable var
+var = [1, "two", true, 4.0, nil]; # This assigns the an array value to the variable var, this array contains 5 elements, an integer, a string, a boolean, a float and a nil value
+
+var = record; # This assigns the an empty record value to the variable var, this is for backwards compatibility with older versions of the language
+var = {}; # This assigns the an empty record value to the variable var
+var = {'a': 1, 'b': "two", 'c': true, 'd': 4.0, 'e': nil}; # This assigns the an record value to the variable var, this record contains 5 elements, an integer, a string, a boolean, a float and a nil value
+# Records are also known as objects, dictionaries or maps in other languages or even key, value pairs.
+# The keys in a record are required to be strings.
+# The value can be any kind of value even arrays or other records.
+
+# You can do simple aritmatics with variables like so:
+var += 1;
+var = var + 1;
+var -= 1;
+var = var - 1;
+var *= 1;
+var = var * 1;
+var /= 1;
+var = var / 1;
+var %= 1;
+var = var % 1;
+var ^= 1;
+var = var ^ 1;
+
+# Standard pemdas rules apply to arithmatic operations.
+# You can also use parenthesis to group operations like so:
+
+var = (1 + 2) * 3;
+
+# You can also do comparisons with variables like so:
+var = a == 1; # This checks if the value of a is equal to 1 and assigns the boolean result to var
+var = a != 1; # This checks if the value of a is not equal to 1 and assigns the boolean result to var
+var = a > 1; # This checks if the value of a is greater than 1 and assigns the boolean result to var
+var = a >= 1; # This checks if the value of a is greater than or equal to 1 and assigns the boolean result to var
+var = a < 1; # This checks if the value of a is less than 1 and assigns the boolean result to var
+var = a <= 1; # This checks if the value of a is less than or equal to 1 and assigns the boolean result to var
+
+# You can also do boolean operations with variables like so:
+var = a and b; # This checks if the value of a and b are both true and assigns the boolean result to var
+var = a or b; # This checks if the value of a or b are true and assigns the boolean result to var
+var = not a; # This checks if the value of a is false and assigns the boolean result to var
+var = a xor b; # This checks if the value of a or b are true but not both and assigns the boolean result to var
+
+/*
+    In Macal you can also define constants.
+    Constants are "variables" that can not be changed after they have been declared.   
+*/
+
+const var = 1; # This assigns the integer value 1 to the constant var
+var = 2; # This will throw an error because var is a constant and can not be changed.
+
+
+print(var); # This prints the value of var to the console
+
+# In previous versions of Macal the print function was called "Console" and was provided by the system library.
+# The function is still in the system library for backwards compatibility.
+# The print function is now a built in function and does not require the system library to be included.
+
+
+/*
+    
+    This is a function definition. 
+    The function has no arguments.
+    Return types are not defined in the function definition.
+    The return type is inferred by the compiler if a return statement is used in the function.
+    If no return statement is used in the function, the function will return a nil value.
+
+*/
+
+var => () {
+    print("Hello World"); # This prints the string "Hello World" to the console
+}
+
+/*
+    This is a function definition, the function has an argument that can be used inside the function.
+    
+    Functions can be called recursively as shown in this implementation of a fibonaci sequence calculator.
+
+    This function returns an integer value using the return statement.
+*/
+
+fib => (n) {
+    if n == 1 or n == 2 {
+        return 1;
+    }
+    return fib(n-1) + fib(n-2);
+}
+
+/*
+    NOTE:
+
+    Macal does not have a stack overflow or underflow protection mechanism.
+    This means that if you call a function recursively too many times, 
+    the program will crash because it will run out of memory.
+
+    This is also important to note when using the while loop.
+    If you have a while loop that never terminates, the program may crash if it runs out of memory.
+
+    A foreach loop is limited to the number of elements in the array, record or string, so it is safer to use
+    because it will terminate once all the elements are iterated over.
+
+    Macal 5.0 does not have a fully functional type checker, so it is possible to pass 
+    the wrong type of argument to a function.
+    This may cause the function to crash or return an unexpected value.
+
+    You can also add types to the arguments of a function like so:
+
+    fib => (integer n) {
+        if n == 1 or n == 2 {
+            return 1;
+        }
+        return fib(n-1) + fib(n-2);
+    }
+
+    In addition to the string, integer, float, boolean, array and record types, there are also the following types:
+    
+    params
+    variable
+    function
+
+    These three special type can only be used in function definitions.
+
+    The params type is used to indicate that the function takes a variable number of arguments.
+    The variable type is used to indicate that the function takes a variable as an argument, so you can not use a literal value as an argument for that function.
+    The function type is used to indicate that the function takes a function as an argument, so you can not use a literal value as an argument for that function.
+    
+    A function can be assigned to a variable, and you can pass that variable as an argument to the function.
+    In this case the variable acts as an alias for the function name.
+    
+    In Macal version 5.0.0 type indicators have limited to no effect and rely upon correct implementation of the function 
+    by the programmer.
+
+    There is still a limited amount of type checking done in the parser, compiler stage as well as at runtime by
+    the runtime VM.
+
+    If a problem is catched at the parser, compiler stage you will an error message indicating a line number and column number as well as the filename of the file that contains the error.
+    If the problem is caught at runtime you will get an error message indicating the value of the RIP register.
+    The value of the RIP register is the memory address at which the instruction was found that caused the error.
+    NOTE: The actual value of the RIP register will point to the next instruction after the one that caused the error,
+          this is because the RIP register is incremented before each instruction is executed!
+          A Runtime error message will however take that into account and point you to the offending instruction.
+    
+*/
+
+/*
+    This is an external function definition.
+    External functions are implemented in Python (or another language that can be linked to the Macal compiler via a Python stub.)
+
+    The external function is named "GetPlatfrom" and is implemented in the "ext_system" module.
+
+*/
+
+Platform => () external "ext_system", "GetPlatform";
+
+/*
+  In the ext_system.py module this function defined like so:
+
+    import platform
+
+    def GetPlatform() -> str:
+        return platform.system()
+
+    This function returns a string value.
+
+    The Macal DSL does not require any dependancies in the Python module.
+    The only dependancies exist purely on the Macal end with the declaration of the external function.
+
+    Macal will keep track of the imported libraries and functions and will only import them once.
+
+    Macal does not have classes or namespaces, so all external functions must be named unique.
+
+*/
+
+/*
+    This includes the Macal system library. 
+    The function shown above is defined in the system library.
+    There are no libraries loaded by default, so you always have to include them manually.
+    You can include multiple libraries in a single line by separating them with a comma.
+
+*/
+include system; 
+
+/*
+    The following shows an example of the if/elif/else conditional statement.
+
+    The condition can be any kind of equasion that returns a boolean value.
+
+    The body of the if statement is executed if the condition is true.
+    The body of the elif statement is executed if the condition is false and the elif condition is true.
+    The body of the else statement is executed if the condition is false and the elif condition is false.
+
+    It is possible to have multiple elif statements, but only one else statement.
+*/
+
+if condition == true {
+    print("Hello World");
+}
+elif condition == false {
+    print("Hello World!");
+}
+else {
+    print("Hello World!!");
+}
+
+
+/*
+    This is a foreach loop in the Macal language, it is one of two possible loop types.
+    The other loop type is the while loop, which is shown below.
+
+    This loop iterates over the elements in the variable var and assigns the current element to the variable it.
+    The variable it is only available inside the loop.
+    The variable var is not modified by the loop.
+    The variable var must be an array, record or a string, otherwise the compiler will throw an error.
+*/
+
+foreach var {
+    print(it);
+}
+
+/*
+    This is a while loop in the Macal language, it is one of two possible loop types.
+    The other loop type is the foreach loop, which is shown above.
+    
+    This loop will continue as long as the condition is true.
+    The condition can be any kind of equasion that returns a boolean value.
+    The condition is checked before each iteration of the loop, so it will not run 
+    if the condition is false to begin with.
+
+    You can break out of a loop using the break statement.
+    You can continue to the next iteration of a loop using the continue statement.
+
+    In previous versions of Macal there was an infinite loop protection mechanism.
+    This has been removed in favor of performance, so infinite loops like the one 
+    below are definitly possible now.
+
+*/
+
+while condition == true {
+    print("Hello World");
+    if condition == false {
+        break; # This breaks out of the loop
+    }
+    else {
+        continue; # This continues to the next iteration of the loop, skipping the rest of the body.
+    }
+    print("This will never be printed");
+}
+
+/*
+    The switch statement is new in Macal 5.0.
+    It is similar to the switch statement in other languages.
+    The switch statement is used to compare a value to multiple possible cases.
+    The switch statement will execute the body of the first case that matches the value.
+    If no case matches the value, the default case will be executed.
+    The default case is optional.
+
+    As you can see, the cases can be different types.
+    The switch statement is built like a value map.
+    The value is used as the index into the value map, so the value must be a string, integer, boolean or float.
+    There is an O(1) lookup time for the switch statement.
+    If the value is not in the value map, the default case will be executed.
+*/
+
+switch var {
+    case 1: {
+        print("Hello World");
+    }
+    case "two": {
+        print("Hello World!");
+    }
+    case 3: {
+        print("Hello World!!");
+    }
+    default: {
+        print("Hello World!!!");
+    }
+}
+
+/*
+    Macal 5.0 like previous versions of Macal has support for a rudimentary form of string interpolation.
+    String interpolation is the process of evaluating a string literal that contains placeholders for variables.
+    The placeholders are replaced with the value of the variable.  
+
+    String interpolation is done by prefixing the string literal with the $ symbol.
+
+    String interpolation can be used with any kind of variable, it can also be used as an argument in functions.
+
+    Some examples of string interpolation:
+*/
+
+a = 1;
+b = 2;
+var = $"{a} + {b} = {a + b}"; # This assigns the string value "1 + 2 = 3" to the variable var
+
+print($"Fibonacci value for 10: {fib(10)}"); # This prints the string value "Fibonacci value for 10: 55" to the console
+
+
+/*
+    The most important and complex command in Macal is the "select" command.
+
+    It is almost like a SQL statement, however where SQL is used to query a database, 
+    the select command is used to query a record or a list of records that is either
+    provided through a variable or through a function call.
+
+    In theory you could implement a library with a function that retrieves data 
+    from a database and returns it as a record or list of records, but that would not be very efficient.
+    
+    The select command was designed to be used in conjunction with a library that gathers data using REST API calls.
+    Specifically in Macal 5.0.0 a limited subset of the Meraki Dashboard API is implemented in the meraki_v1 library,
+    that is now included in the distribution package.
+
+    Examples of the select command:
+
+*/
+
+select * from GetRecords() into var;
+# This will call the GetRecords function and assign the result to the variable var.
+# The * indicates that all fields in the record are returned.
+# In case the GetRecords() function returns nil, the variable var will be assigned an empty array.
+# In case the GetRecords() function returns multiple records the var variable will be an array of those records.
+# If only a single record is returned, the var variable will be a record.
+
+select * from GetRecords() where id == 1 into var;
+# This will call the GetRecords function and assign the result to the variable var.
+# The * indicates that all fields in the record are returned.
+# The where clause indicates that only records where the id field is equal to 1 will be returned.
+# In case the GetRecords() function returns nil, the variable var will be assigned an empty record.
+
+select * from GetRecords() where id == 1 and name == "test" into var;
+# This will call the GetRecords function and assign the result to the variable var.
+# The * indicates that all fields in the record are returned.
+# The where clause indicates that only records where the id field is equal to 1 and the name field is equal to "test" will be returned.
+
+select author, title from GetBooks() where isbn == 123456789 into var;
+# This will call the GetBooks function and assign the result to the variable var.
+# The author and title fields in the record are returned.
+# The where clause indicates that only records where the isbn field is equal to 123456789 will be returned.
+# In case the where clause does not match any records, the variable var will be assigned a record with the 
+# author and title fields set to nil.
+
+select distinct isbn, title as Title from GetBooks() where author == 'J.R.R. Tolkien' into var;
+# This will call the GetBooks function and assign the result to the variable var.
+# The isbn and title fields in the record are returned, the title field is renamed to Title in the result.
+# The where clause indicates that only records where the author field is equal to 'J.R.R. Tolkien' will be returned.
+# The distinct keyword indicates that only the first matching record will be returned.
+# In case the where clause does not match any records, the variable var will be assigned a record with the
+# isbn and Title fields set to nil.
+
+select * from GetBooks() where author == 'J.J. Abrams' merge into var;
+# This will call the GetBooks function and assign the result to the variable var.
+# The * indicates that all fields in the record are returned.
+# The where clause indicates that only records where the author field is equal to 'J.J. Abrams' will be returned.
+# The merge keyword indicates that the result will be merged into the var variable.
+# In case the where clause does not match any records, the variable var retains its 
+# previous value with no changes.
+# If the variable var is undefined, or has an empty value, the data collected by "from" will be assigned to it.
+# If both the variable var and the data collected by "from" are empty, the variable var will be assigned an empty array.
+# If the variable var was empty/nil and the resulting data from the where clause is also empty, 
+# an empty array will be assigned to the variable.
+
+# Note if you combine merge and distinct, the result will be the first record in the result after the merge is done.
+# It may be that this first record does not match the where clause, so be careful when using the combination of the two.
+
+select distinct author from books where title=="The Lord of the Rings" into var;
+# This is a very special use case of the select command.
+# While normally the value that is assigned to the variable is a record or an array of records, in this
+# special case it will be a string value representing the name of the author.
+# This behavior will also work without the distinct keyword if the result will be only a single record.
+# However for clarity you should always use distinct if you want to use this feature of the select command.
+
+
+
+
+
+

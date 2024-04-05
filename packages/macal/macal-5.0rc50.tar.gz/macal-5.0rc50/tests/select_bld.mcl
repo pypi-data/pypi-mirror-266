@@ -1,0 +1,215 @@
+/*
+    This test was used to build the select statement.
+    It should contain tests for all possible conditions and situations in a flat application
+    that only has a global body.
+*/
+
+// test with nil source data.
+// the result is an empty record when the select statement is finished.
+
+print("Select statement tests");
+print();
+print("Note the values may wander around in the output, as the order is not guaranteed.");
+print();
+
+print();
+print("Testing with nil as source data");
+source = nil;
+select * from source into destination;
+print("Expected: []");
+print("Actual:   ", destination);
+
+// test with empty source data.
+
+print();
+print("Testing with an empty data source");
+source = [];
+select * from source into destination;
+print("Expected: []");
+print("Actual:   ", destination);
+
+
+// test with false as source data.
+
+print();
+print("Testing with false as source data");
+source = [];
+select * from source into destination;
+print("Expected: []");
+print("Actual:   ", destination);
+
+
+// test with one record in source data.
+
+print();
+print("Testing with a single record in source data");
+source = [{'a':1, 'b':1}];
+select * from source into destination;
+print("Expected: [{'a': 1, 'b': 1}]");
+print("Actual:   ", destination);
+
+// test with two records in source data.
+
+print();
+print("Testing with two records in source data");
+source = [{'a':1, 'b':1}, {'a':2, 'b':2}];
+select * from source into destination;
+print("Expected: [{'a': 1, 'b': 1}, {'a': 2, 'b': 2}]");
+print("Actual:   ", destination);
+
+// test with two records in source data, with distinct.
+
+print();
+print("Testing with two records in source data, with distinct");
+source = [{'a':1, 'b':1}, {'a':2, 'b':2}];
+select distinct * from source into destination;
+print("Expected: {'a': 1, 'b': 1}");
+print("Actual:   ", destination);
+
+
+// test with nil source data, with merge, and destination contains 1 record.
+
+print();
+print("Testing with nil source data, with merge, and destination contains 1 record");
+source = nil;
+destination = [{'a':1, 'b':1}];
+select * from source merge into destination;
+print("Expected: {'a': 1, 'b': 1}");
+print("Actual:   ", destination);
+
+
+// test with boolean false data, with merge, and destination contains 1 record.
+
+print();
+print("Testing with boolean false source data, with merge, and destination contains 1 record");
+source = false;
+destination = [{'a':1, 'b':1}];
+select * from source merge into destination;
+print("Expected: {'a': 1, 'b': 1}");
+print("Actual:   ", destination);
+
+
+// test with empty source data, with merge, and destination contains 1 record.
+
+print();
+print("Testing with empty source data, with merge, and destination contains 1 record");
+source = [];
+destination = [{'a':1, 'b':1}];
+select * from source merge into destination;
+print("Expected: {'a': 1, 'b': 1}");
+print("Actual:   ", destination);
+
+// test with nil in source data, with where statement.
+
+print();
+print("Testing with nil in source data, with where statement");
+source = nil;
+select * from source where a == 1 into destination;
+print("Expected: []");
+print("Actual:   ", destination);
+
+// test with boolean false in source data, with where statement.
+
+print();
+print("Testing with nil in source data, with where statement");
+source = false;
+select * from source where a == 1 into destination;
+print("Expected: []");
+print("Actual:   ", destination);
+
+// test with an integer in source data, with where statement.
+// This will cause an error if uncommented.
+/*
+print();
+print("Testing with nil in source data, with where statement");
+source = 12;
+select * from source where a == 1 into destination;
+print("Expected: []");
+print("Actual:   ", destination);
+*/
+
+// test with 2 records in source data, with where statement that does have a match.
+
+print();
+print("Testing with 2 records in source data, with where statement that does have a match");
+source = [{'a':1, 'b':1}, {'a':2, 'b':2}];
+select * from source where a == 1 into destination;
+print("Expected: [{'a': 1, 'b': 1}]");
+print("Actual:   ", destination);
+
+// test with 2 records in source data, with where statement that does not have a match.
+
+print();
+print("Testing with 2 records in source data, with where statement that does not have a match");
+source = [{'a':1, 'b':1}, {'a':2, 'b':2}];
+select * from source where a == 3 into destination;
+print("Expected: []");
+print("Actual:   ", destination);
+
+// test with 2 records in source data, 1 record in destination data, a where statement that does have a match, and merge into.
+
+print();
+print("Testing with 2 records in source data, 1 record in destination data, a where statement that does have a match, and merge into.");
+source = [{'a':1, 'b':1}, {'a':2, 'b':2}];
+destination = [{'a':3, 'b':3}];
+select * from source where a == 2 merge into destination;
+print("Expected: [{'a': 3, 'b': 3}, {'a': 2, 'b': 2}]");
+print("Actual:   ", destination);
+
+
+// test with 2 records in source data, 1 record in destination data, a where statement that does not have a match, and merge into.
+
+print();
+print("Testing with 2 records in source data, 1 record in destination data, a where statement that doesn't have a match, and merge into.");
+source = [{'a':1, 'b':1}, {'a':2, 'b':2}];
+destination = [{'a':3, 'b':3}];
+select * from source where a == 4 merge into destination;
+print("Expected: {'a': 3, 'b': 3}");
+print("Actual:   ", destination);
+
+print();
+print("Testing with nil source data filtering fields by name");
+source = nil;
+select a as Id, b as Number from source into destination;
+print("Expected: []");
+print("Actual:   ", destination);
+
+print();
+print("Testing with boolean false source data filtering fields by name");
+source = false;
+select a as Id, b as Number from source into destination;
+print("Expected: []");
+print("Actual:   ", destination);
+
+print();
+print("Testing with empty source data filtering fields by name");
+source = [];
+select a as Id, b as Number from source into destination;
+print("Expected: []");
+print("Actual:   ", destination);
+
+print();
+print("Testing with 2 records in source data filtering fields by name and giving them a new name");
+source = [{'a':1, 'b':1}, {'a':2, 'b':2}];
+select a as Id, b as Number from source into destination;
+print("Expected: [{'Id': 1, 'Number': 1}, {'Id': 2, 'Number': 2}]");
+print("Actual:   ", destination);
+
+print();
+print("Testing with 2 records in source data filtering only 1 field, set distinct, and run into the special case.");
+source = [{'a':1, 'b':1}, {'a':2, 'b':2}];
+select distinct a from source into destination;
+print("Expected: 1");
+print("Actual:   ", destination);
+
+
+// test with 2 records in source data, 1 record in the destination with 1 more field than the source, with where statement that does have a match.
+print("this");
+print();
+print("Testing with 2 records in source data, with merge and destination has 1 more field.");
+source = [{'a':1, 'b':1}, {'a':2, 'b':2}];
+destination = [{'a':3, 'b':3, 'c':3}];
+select * from source where a == 1 or a == 2 merge into destination;
+print("Expected: [{'a': 3, 'b': 3, 'c': 3}, {'a': 1, 'b': 1, 'c': NIL}, {'a': 2, 'b': 2, 'c': NIL}]");
+print("Actual:   ", destination);
+

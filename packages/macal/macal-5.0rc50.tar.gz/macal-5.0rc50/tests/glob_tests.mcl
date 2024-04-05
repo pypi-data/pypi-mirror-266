@@ -1,0 +1,41 @@
+// tests with global variables
+
+include system;
+
+
+source = {'name': nil, 'model': 'VMX-M', 'productType': nil, 'serial': 'Q2DZ-U67K-WC6N', 'mac': nil, 'apiname': 'Q2DZ-U67K-WC6N', 'networkId': 'N_3714906742627238058', 'latency': nil, 'uplstat': nil, 'performance': nil, 'bandwidth': nil, 'bandwidth_sent': nil, 'bandwidth_recv': nil, 'HA': nil, 'HARole': nil, 'listed': nil};
+select distinct * from source into device;
+
+source = {'firmware': nil, 'address': nil, 'serial': nil};
+select distinct * from source into inventory;
+
+globTest = 123456;
+
+print(inventory);
+print();
+print(device);
+
+
+print();
+print();
+
+foreach device {
+    print("it: ", it);
+    print("globtest: ", globTest);
+    break;
+}
+
+f => (a, b) {
+    print("func: f");
+    print("a: ", a);
+    print("b: ", b);
+    // print("globtest: ", globTest); // uncommenting either of these 2 lines will cause a variable not found error message, correctly!    
+}
+
+g => () {
+    print("func: g");
+}
+
+print("function tests:");
+f(11, 23);
+g();

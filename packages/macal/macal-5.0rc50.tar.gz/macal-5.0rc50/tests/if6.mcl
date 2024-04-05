@@ -1,0 +1,33 @@
+# test Is<type> functions
+include strings;
+
+var = { 'a': 'b', 'c': 'd'};
+print("IsRecord: ", IsRecord(var));
+print("IsArray: ", IsArray(var));
+print("IsString: ", IsString(var));
+print("IsNumber: ", IsInt(var));
+print("IsBoolean: ", IsBool(var));
+
+if IsRecord(var) {
+    print("IsRecord: ", var);
+}
+
+if IsArray(var) {
+    print("IsArray: ", var);
+}
+
+if IsString(var) {
+    print("IsString: ", var);
+}
+
+if IsInt(var) {
+    print("IsInt: ", var);
+}
+
+if IsBool(var) {
+    print("IsBool: ", var);
+}
+
+if IsRecord(var) and Len(var) > 1 {
+    print("IsRecord:, len > 1 ", var);
+}

@@ -1,0 +1,83 @@
+Decompiled:
+0x00000000: DATA   0x0000013B
+main: 
+0x00000009: PUSH   RBP
+0x0000000B: MOVRR  RBP, RSP
+block_start: assign: 
+0x0000000E: XOR    RAX, RAX
+0x00000011: PUSH   RAX
+expression: literal_expression: 
+0x00000013: MOVRI  RAX, {'name': 'John', 'age': 30, 'car': 'Camaro SS'} (RECORD)
+0x00000046: PUSH   RAX
+0x00000048: POP    RAX
+0x0000004A: MOVROR [RBP + 0], RAX
+print: expression: literal_expression: 
+0x00000055: MOVRI  RAX, start (STRING)
+0x0000005E: PUSH   RAX
+0x00000060: POP    RAX
+0x00000062: PRNT
+0x00000063: MOVRI  RAX, <cr> (STRING)
+0x00000068: PRNT
+foreach_start: 
+0x00000069: PUSH   RBP
+0x0000006B: MOVRR  RBP, RSP
+expression: variable_expression: 
+0x0000006E: MOVRRO RAX, [RBP + -2]
+0x00000079: PUSH   RAX					var  [rbp + 0]
+0x0000007B: LEN    RAX
+0x0000007D: PUSH   RAX					len	 [rbp + 1]
+0x0000007F: XOR    RAX, RAX
+0x00000082: PUSH   RAX					it   [rbp + 2]
+foreach_loop_start: 
+0x00000084: MOVRRO RAX, [RBP + 0]		
+0x0000008F: MOVRRO RBX, [RBP + -1]
+0x0000009A: CMPRR  RAX, RBX
+0x0000009D: JMPZ   0x0000011E
+0x000000A6: MOVRR  RBX, RAX
+0x000000A9: MOVROR [RBP + -2], RAX
+0x000000B4: INDEX
+0x000000B5: PUSH   RAX
+block_start: print: expression: variable_expression: 
+0x000000B7: MOVRRO RAX, [RBP + -2]
+0x000000C2: PUSH   RAX
+0x000000C4: POP    RAX
+0x000000C6: PRNT
+expression: literal_expression: 
+0x000000C7: MOVRI  RAX,  :  (STRING)
+0x000000CE: PUSH   RAX
+0x000000D0: POP    RAX
+0x000000D2: PRNT
+expression: indexed_variable_expression: 
+0x000000D3: MOVRRO RAX, [RBP + -2]
+0x000000DE: PUSH   RAX
+expression: variable_expression: 
+0x000000E0: MOVRRO RAX, [RBP + -2]
+0x000000EB: PUSH   RAX
+0x000000ED: POP    RBX
+0x000000EF: POP    RAX
+0x000000F1: INDEX
+0x000000F2: PUSH   RAX
+0x000000F4: POP    RAX
+0x000000F6: PRNT
+0x000000F7: MOVRI  RAX, <cr> (STRING)
+0x000000FC: PRNT
+block_end: 
+0x000000FD: MOVRRO RAX, [RBP + 0]
+0x00000108: INC    RAX
+0x0000010A: MOVROR [RBP + 0], RAX
+0x00000115: JMP    0x00000084
+foreach_loop_end: 
+0x0000011E: MOVRR  RSP, RBP
+0x00000121: POP    RBP
+foreach_end: print: expression: literal_expression: 
+0x00000123: MOVRI  RAX, end (STRING)
+0x0000012A: PUSH   RAX
+0x0000012C: POP    RAX
+0x0000012E: PRNT
+0x0000012F: MOVRI  RAX, <cr> (STRING)
+0x00000134: PRNT
+exit: block_end: 
+0x00000135: MOVRR  RSP, RBP
+0x00000138: POP    RBP
+0x0000013A: RET
+0x0000013B: 

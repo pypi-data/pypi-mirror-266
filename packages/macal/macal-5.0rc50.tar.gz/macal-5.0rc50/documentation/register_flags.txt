@@ -1,0 +1,39 @@
+
+# This is the bytecode flags register for the vm.
+
+#The flags register in a CPU is used to store the status of the processor after an operation. In a Python application representing a virtual CPU, the flags register is used to store the status of the processor after an operation. The following are the flags and their meanings:
+
+# - **Carry flag (CF)**: Set when there is an overflow from the most significant bit (MSB) of the result. This flag is used to detect unsigned arithmetic overflow.
+# - **Zero flag (ZF)**: Set when the result of an operation is zero.
+# - **Sign flag (SF)**: Set when the result of an operation is negative.
+# - **Overflow flag (OF)**: Set when there is an overflow from the sign bit of the result. This flag is used to detect signed arithmetic overflow.
+# - **Direction flag (DF)**: Determines whether string operations increment or decrement their pointers.
+# - **Interrupt flag (IF)**: Determines whether interrupts are enabled or disabled.
+# - **Trap flag (TF)**: Determines whether single-step debugging is enabled or disabled.
+# - **Supervisor flag (SF)**: Determines whether the processor is running in user mode or supervisor mode.
+# - **Negative flag (NF)**: Set when the result of an operation has its most significant bit set.
+
+# The flags are set or cleared based on the result of an operation. For example, if a subtraction operation results in a negative number, then the sign and negative flags will be set. Similarly, if an addition operation results in a carry, then the carry flag will be set.
+
+
+# Source: Conversation with Bing, 27/09/2023
+# (1) What is flags in Python? - Stack Overflow. https://stackoverflow.com/questions/63191223/what-is-flags-in-python.
+# (2) python - How to rebuild tensorflow with the compiler flags? - Stack .... https://stackoverflow.com/questions/66092421/how-to-rebuild-tensorflow-with-the-compiler-flags.
+# (3) why do CPU architectures use a flags register (advantages?). https://cs.stackexchange.com/questions/30477/why-do-cpu-architectures-use-a-flags-register-advantages.
+# (4) abseil / Flags. https://abseil.io/docs/python/guides/flags.
+# (5) Flag register in 8085 microprocessor - GeeksforGeeks. https://www.geeksforgeeks.org/flag-register-8085-microprocessor/.
+# (6) FLAGS register - Wikipedia. https://en.wikipedia.org/wiki/FLAGS_register.
+# (7) Flag register of 8086 microprocessor - GeeksforGeeks. https://www.geeksforgeeks.org/flag-register-8086-microprocessor/.
+
+#
+#  NOTE: There is a flag called index. This is set when there was an indexed variable expression executed.
+# It is not a real flag, but used as such. This is so we know that there is extra information on the stack.
+# At the end of an expression, the value of the expression is put on the stack. However, in case of an
+# indexed variable acces we might need to be able to put a changed value into it at that particular index.
+# When the index flag is set, the item on the stack before the resulting value is a counter that tells us
+# how many indexes are stored on the stack, so we can retrieve them and use them again as an index into
+# the position that we need to store the value in.
+# The one advantage we have over a real stack is that the one we use is simulated.
+# It's just a python list and we can change values without having to worry about memory being
+# overwritten or any kind of other memory management related stuff.
+#

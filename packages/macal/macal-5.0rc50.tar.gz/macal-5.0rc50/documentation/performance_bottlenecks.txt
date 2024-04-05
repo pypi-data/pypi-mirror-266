@@ -1,0 +1,50 @@
+ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+     4457    0.009    0.000    0.012    0.000 bytecode_stack.py:17(push)
+     4457    0.003    0.000    0.003    0.000 bytecode_stack_entry.py:9(__init__)
+     4172    0.006    0.000    0.007    0.000 bytecode_stack.py:23(pop)
+     1543    0.002    0.000    0.003    0.000 runtime_vm.py:190(read_value)
+      838    0.001    0.000    0.001    0.000 bytecode_stack_entry.py:31(toRegister)
+      574    0.001    0.000    0.001    0.000 bytecode_register.py:205(fromRegister)
+      
+      2/1    0.000    0.000    0.081    0.081 {built-in method builtins.exec}
+        1    0.055    0.055    0.081    0.081 runtime_vm.py:223(Execute)
+        1    0.000    0.000    0.001    0.001 runtime_vm.py:720(import_module)
+        1    0.000    0.000    0.081    0.081 <string>:1(<module>)
+        1    0.000    0.000    0.001    0.001 __init__.py:108(import_module)
+        1    0.000    0.000    0.001    0.001 <frozen importlib._bootstrap>:921(_find_spec)
+        1    0.000    0.000    0.001    0.001 <frozen importlib._bootstrap>:987(_find_and_load_unlocked)
+        1    0.000    0.000    0.001    0.001 <frozen importlib._bootstrap>:1022(_find_and_load)
+        1    0.000    0.000    0.001    0.001 <frozen importlib._bootstrap>:1038(_gcd_import)
+
+read_type reads these types:
+We are now using ENUM, we may want to switch to just INT.
+
+AstNodetype.BC_METADATA : 1 x
+AstNodetype.VARIABLE : 1 x
+AstNodetype.FUNCTION : 1 x
+AstNodetype.LIBRARY : 1 x
+AstNodetype.LABEL : 1 x
+AstNodetype.STRING : 10 x
+AstNodetype.INTEGER : 1257 x
+AstNodetype.BOOLEAN : 276 x
+
+These are the opcode #'s that are read with their frequency.
+
+ 9 : 3885 PUSH
+10 : 3885 POP
+12 : 1267 MOVRI
+60 :  818 LOADR
+11 :  574 MOVRR
+17 :  552 CMPRR
+39 :  552 SETZR
+48 :  287 RET
+45 :  286 CALL
+61 :  286 STORR
+ 1 :  278 JMP
+33 :  276 ORRR
+16 :  276 CMPRI
+ 3 :  276 JMPNZ
+21 :  266 SUBRR
+19 :  133 ADDRR
+47 :   10 CALLE
+

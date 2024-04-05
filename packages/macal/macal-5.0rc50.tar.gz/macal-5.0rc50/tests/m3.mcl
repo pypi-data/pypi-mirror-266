@@ -1,0 +1,35 @@
+include strings, m4;
+
+print(test_remote_function(1));
+
+var = [
+        {'serial': '1', 'value1': '1', 'value2': 2, 'vpn': nil},
+        {'serial': '2', 'value1': '3', 'value2': 4, 'vpn': nil},
+        {'serial': '3', 'value1': '5', 'value2': 6, 'vpn': nil},
+        {'serial': '4', 'value1': '7', 'value2': 8, 'vpn': nil},
+        {'serial': '5', 'value1': '9', 'value2': 10, 'vpn': nil}
+        ];
+
+var2 = [
+        {'serial': '1', 'peers': [
+                                    {"peerId": "1", "name": "name1", "value": "value"},
+                                    {"peerId": "2", "name": "name1", "value": "value"}]},
+        {'serial': '4', 'peers': [
+                                    {"peerId": "3", "name": "another name", "value": "mixed value"},
+                                    {"peerId": "4", "name": "whose name", "value": "what value"}]}
+        ];
+
+foreach var {
+    print("foreach var loop");
+    print(it);
+    it["vpn"] = {};
+    print("goto collect data.");
+    GetExtraData(it, var2, 2);
+    print("tick");
+}
+
+print(var2);
+
+foreach var2 {
+    print(it);
+}

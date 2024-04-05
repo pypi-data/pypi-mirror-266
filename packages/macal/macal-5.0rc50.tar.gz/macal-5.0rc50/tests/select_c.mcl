@@ -1,0 +1,59 @@
+include system, strings;
+
+// device is a dictionary of the device that is currently selected
+
+device_original = {'networkId': nil, 
+                   'address': nil, 
+                   'url': nil, 
+                   'networkName': nil, 
+                   'apistatus': nil, 
+                   'model': 'MX100', 
+                   'DS': nil, 
+                   'templateId': nil, 
+                   'firmware': nil, 
+                   'listed': false, 
+                   'bandwidth_sent': nil, 
+                   'name': 'ST-DCP-FW01', 
+                   'uplstat': nil, 
+                   'serial': 'Q2JN-6UMT-2JTU', 
+                   'HA': nil, 
+                   'bandwidth': nil, 
+                   'apiname': 'Q2JN-6UMT-2JTU', 
+                   'performance': nil, 
+                   'HARole': nil, 
+                   'productType': 'appliance', 
+                   'bandwidth_recv': nil, 
+                   'mac': '34:56:fe:77:ab:48', 
+                   'publicIp': nil, 
+                   'latency': nil};
+device = device_original; # make a copy.
+
+// templates is the list of configuration templates for the customer.  This is populated by the get_org_ConfigTemplates(org_id) function
+
+templates = [];
+
+// This is the query that will try to set the templateName for the device based on the templateId.  If the templateId is not found in the templates list, then the templateName will be set to NIL
+select distinct name as templateName from templates where id == device["templateId"] merge into device;
+
+# IN this case, where the list of templates is not populated, the templateName will be set to NIL
+# The expected output is that device will be the same as the input.
+
+print("Key                   Original              Actual");
+foreach Keys(device_original) {   
+    print($"{PadRight(it," ",20)}  {PadRight(ToString(device_original[it])," ",20)}  {device[it]}");
+}
+print("\n\nAnd now for the bonus:\n");
+if RecordHasField(device, "templateName") {
+    print("Test Passed!");
+} else {
+    print("Test Failed :(");
+}
+
+if RecordHasField(device_original, "templateName") {
+    print("Test failed :(");
+} else {
+    print("Test passed!");
+}
+
+print("If both of the bonus tests passed, then the whole test has passed!");
+print("The resulting record has 1 more field than the original record.");
