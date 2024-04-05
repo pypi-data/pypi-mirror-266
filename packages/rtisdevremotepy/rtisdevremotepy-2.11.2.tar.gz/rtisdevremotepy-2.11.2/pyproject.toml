@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rtisdevremotepy"
+version = "2.11.2"
+description = "Python wrapper for using RTIS Dev remotely"
+readme = {file = "README.md", content-type = "text/markdown"}
+authors = [{ name = "Wouter Jansen", email = "wouter.jansen@uantwerpen.be" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "Development Status :: 6 - Mature",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: Unix",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Software Development",
+]
+keywords = ["rtisdev", "rtis", "sonar", "wrapper"]
+dependencies = [
+    "scipy",
+    "numpy",
+]
+requires-python = ">=3.6"
+
+[project.urls]
+Repository = "https://cosysgit.uantwerpen.be/rtis-software/rtisdevremotepy"
+Documentation = "https://cosysgit.uantwerpen.be/rtis-software/rtisdevremotepy/-/wikis/home"
+
+[tool.setuptools]
+package-dir = {"" = "."}
+include-package-data = false
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["rtisdevremotepy*"]
+
+
+
