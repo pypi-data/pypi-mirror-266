@@ -1,0 +1,129 @@
+{
+    "version": 1,
+    "name": "form",
+    "description": "form-filler app",
+    "template": "form",
+    "tutorial": [
+        "# example 1: do this",
+        "run -p your_argument"
+    ],
+    "remarks": [
+        "- remarks will appear as the epilogue of the -h print-out of cli mode",
+        "- use remarks to further explain usage of the app, its preconditions, etc.",
+        "- form app launches backend and feed the field values to it as arguments and waits for it to finish"
+    ],
+    "instances": 1,
+    "input": {
+        "text": {
+            "group": "page1",
+            "help": "text entry; use snake_case for keys; assign group to make entry appear on that page; use range to specify length limits, with null meaning no limit; key is used as the variable name and also the ui title by default",
+            "default": "hello text",
+            "presetable": true,
+            "range": [
+                0,
+                null
+            ]
+        },
+        "integer": {
+            "group": "page1",
+            "title": "custom entry title",
+            "help": "integer entry; use title to specify ui title; use range to specify value limits, with null meaning no limit; use step to specify increment/decrement steps size",
+            "default": 0,
+            "presetable": true,
+            "range": [
+                0,
+                null
+            ],
+            "step": 1
+        },
+        "float": {
+            "group": "page1",
+            "help": "floating-point entry; use precision to specify number of decimal places to display under gui mode",
+            "default": 1.63,
+            "presetable": true,
+            "range": [
+                0.0,
+                2.0
+            ],
+            "step": 0.01,
+            "precision": 2
+        },
+        "single_option": {
+            "group": "page1",
+            "help": "option entry; set range to [1, 1] to make it a single-choice entry; use choices to specify the options; use default to specify the default value",
+            "choices": [
+                "option1",
+                "option2",
+                "option3"
+            ],
+            "default": "option3",
+            "presetable": true,
+            "range": [
+                1,
+                1
+            ]
+        },
+        "multi_options": {
+            "group": "page1",
+            "help": "option entry; set range to [1, n](n>1) or [1, null] to make it a multiple-choice entry; use choices to specify the options; use default to specify the default value(s)",
+            "choices": [
+                "option1",
+                "option2",
+                "option3"
+            ],
+            "default": ["option1", "option3"],
+            "presetable": true,
+            "range": [
+                1,
+                null
+            ]
+        },
+        "bool": {
+            "group": "page1",
+            "help": "boolean entry",
+            "default": false,
+            "presetable": true
+        },
+        "list": {
+            "group": "profile",
+            "help": "list entry; essentially a text entry that recognizes multiples lines as list items under gui mode",
+            "default": ["item1", "item2"],
+            "presetable": true,
+            "range": [
+                0,
+                null
+            ]
+        },
+        "file": {
+            "group": "page2",
+            "help": "file-path entry; set type to file; use build variables to specify paths; use range to specify file-type patterns; available ones: $HOME$, $APPDATA$, $TEMP$, $CWD$, $APP$; on macOS, an extra file-pattern is added by code-gen to avoid crashes",
+            "type": "file",
+            "default": "$APPDATA$/$APP$/hello.txt",
+            "presetable": true,
+            "range": [
+                ["My Files", "*.ext"]
+            ],
+            "startDir": "$APPDATA$/$APP$"
+        },
+        "folder": {
+            "group": "page2",
+            "help": "folder-path entry; set type to folder; use build variables to specify paths",
+            "type": "folder",
+            "default": "$HOME$/Desktop",
+            "presetable": true,
+            "range": [
+                1,
+                null
+            ],
+            "startDir": "$HOME$"
+        }
+    },
+    "output": {},
+    "appearance": {
+        "title": "<form>",
+        "size": [
+            800,
+            600
+        ]
+    }
+}
