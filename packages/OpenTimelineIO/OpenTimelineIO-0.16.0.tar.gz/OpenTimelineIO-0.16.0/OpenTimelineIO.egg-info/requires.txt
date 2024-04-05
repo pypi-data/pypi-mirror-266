@@ -1,0 +1,18 @@
+pyaaf2<1.7,>=1.4
+
+[:python_version < "3.8"]
+importlib_metadata>=1.4
+
+[dev]
+check-manifest
+flake8>=3.5
+coverage>=4.5
+urllib3>=1.24.3
+
+[view]
+
+[view:platform_machine == "aarch64"]
+PySide6~=6.2
+
+[view:platform_machine == "x86_64"]
+PySide2~=5.11
