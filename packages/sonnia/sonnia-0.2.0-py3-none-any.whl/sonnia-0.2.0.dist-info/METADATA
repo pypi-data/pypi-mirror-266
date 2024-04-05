@@ -1,0 +1,27 @@
+Metadata-Version: 2.1
+Name: sonnia
+Version: 0.2.0
+Summary: Infer and compute selection factors of CDR3 sequences with neural networks.
+Home-page: https://github.com/statbiophys/soNNia
+Author: Giulio Isacchini
+Author-email: giulioisac@gmail.com
+License: GPLv3
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Healthcare Industry
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Classifier: Topic :: Scientific/Engineering :: Physics
+Classifier: Topic :: Scientific/Engineering :: Medical Science Apps.
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3.6
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: tensorflow >=2.1.0
+Requires-Dist: matplotlib
+Requires-Dist: olga >=1.1.3
+Requires-Dist: tqdm
+
+SoNNia is a python 3.6/2.7 software developed to infer selection pressures on features of amino acid CDR3 sequences. The inference is based on maximizing the likelihood of observing a selected data sample given a representative pre-selected sample. This method was first used in Elhanati et al (2014) to study thymic selection. For this purpose, the pre-selected sample can be generated internally using the OLGA software package, but SoNNia allows it also to be supplied externally, in the same way the data sample is provided. SoNNia takes as input TCR CDR3 amino acid sequences, with or without per sequence lists of possible V and J genes suspected to be used in the recombination process for this sequence. Its output is sequence level selection factors which indicate how more or less represented this sequence would be in the selected pool as compared to the the pre-selected pool. These in turn could be used to calculate the probability to observe any sequence after selection and sample from the selected repertoire. The current package is able to infer non linear selection models via a neural network architecture.
