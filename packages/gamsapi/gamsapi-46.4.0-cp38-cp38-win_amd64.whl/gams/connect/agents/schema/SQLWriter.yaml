@@ -1,0 +1,78 @@
+connection:
+  type: dict 
+  required: True
+schemaName:
+  type: string
+  nullable: True
+connectionType:
+  type: string
+  allowed:
+  - pyodbc
+  - sqlalchemy
+  - postgres
+  - sqlite
+  - mysql
+  - sqlserver
+  - access
+trace:
+  type: integer
+writeAll:
+  type: 
+   - boolean
+   - string
+  allowed:
+   - true
+   - false
+   - auto
+ifExists:
+  type: string
+  allowed:
+  - append
+  - replace
+  - fail
+connectionArguments:
+  type: dict
+toSQLArguments:
+  type: dict
+insertMethod:
+  type: string
+  allowed:
+  - bcp
+  - bulkInsert
+  - default
+unstack:
+  type: boolean
+valueSubstitutions:
+  type: dict
+symbols:         
+  type: list
+  schema:
+    type: dict
+    schema:
+      name:
+        type: string 
+        required: True
+      tableName:
+        type: string 
+        required: True
+      schemaName:
+        type: string
+        nullable: True
+      ifExists:
+        type: string
+        allowed:
+        - append
+        - replace
+        - fail
+      unstack:
+        type: boolean
+      valueSubstitutions:
+        type: dict
+      toSQLArguments:
+        type: dict
+      insertMethod:
+        type: string
+        allowed:
+        - bcp
+        - bulkInsert
+        - default

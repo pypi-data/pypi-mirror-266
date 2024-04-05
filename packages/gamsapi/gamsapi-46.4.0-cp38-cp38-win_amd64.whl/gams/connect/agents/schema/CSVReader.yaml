@@ -1,0 +1,78 @@
+file:
+  type: string
+  required: true
+name:
+  type: string
+  required: true
+indexColumns:
+  type:
+  - list
+  - string
+  - integer
+  schema:
+    type:
+    - integer
+    - string
+indexSubstitutions:
+  type: dict
+valueColumns:
+  type:
+  - list
+  - string
+  - integer
+  schema:
+    type:
+    - integer
+    - string
+valueSubstitutions:
+  type: dict
+textColumns:
+  type:
+  - list
+  - string
+  - integer
+  schema:
+    type:
+    - integer
+    - string
+textSubstitutions:
+  type: dict
+header:
+  type:
+  - boolean
+  - list
+  schema:
+    type: integer
+names:
+  type: list
+  schema:
+    type: string
+stack:
+  type: boolean
+skipRows:
+  type:
+  - list
+  - integer
+  schema:
+    type: integer
+autoColumn:
+  type: string
+autoRow:
+  type: string
+fieldSeparator:
+  type: string
+decimalSeparator:
+  type: string
+thousandsSeparator:
+  type: string
+quoting:
+  type: integer
+  allowed:
+  - 0
+  - 1
+  - 2
+  - 3
+trace:
+  type: integer
+readCSVArguments:
+  type: dict

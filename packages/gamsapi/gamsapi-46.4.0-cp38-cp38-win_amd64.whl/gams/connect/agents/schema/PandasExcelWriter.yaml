@@ -1,0 +1,27 @@
+#deprecated
+file:
+  type: string
+  required: true
+rowDimension:
+  type: integer
+excelWriterArguments:
+  type: dict
+trace:
+  type: integer
+symbols:
+  type: list
+  required: true
+  schema:
+    type: dict
+    schema:
+      name:
+        type: string
+        required: true
+      range:
+        type: string
+      rowDimension:
+        type: integer
+      valueSubstitutions:
+        type: dict
+      toExcelArguments:
+        type: dict
