@@ -1,0 +1,103 @@
+{# style_navbar #}
+iframe[title="streamlit_navigation_bar.st_navbar"] {
+    position: fixed;
+    z-index: 9999;
+    height: {{ ui.height }};
+    margin-top: calc(-6rem + -{{ ui.height }});
+    {% if margin %}
+    width: calc(100% - 5.125rem);
+    margin-left: 2.5625rem;
+    margin-right: 2.5625rem;
+    {% else %}
+    width: 100%;
+    {% endif %}
+    left: 0;
+}
+header[data-testid="stHeader"] {
+    z-index: 0;
+    height: {{ ui.height }};
+    background-color: {{ ui.bg_color }};
+}
+#stDecoration {
+    visibility: hidden;
+}
+
+{# style_menu #}
+{% if options["show_menu"] %}
+{% block make_menu_clickable %}{% endblock %}
+{% else %}
+{% block hide_menu %}{% endblock %}
+{% endif %}
+div[data-testid="stToolbar"] {
+    top: calc(({{ ui.height }} - 2rem) / 2);
+    right: 0.3125rem;
+}
+div[class="stStatusWidget"] {
+    visibility: hidden;
+}
+div[class="stDeployButton"] {
+    visibility: hidden;
+}
+span[data-testid="stMainMenu"] path:nth-of-type(2) {
+    fill: {{ ui.color }};
+}
+span[data-testid="stMainMenu"]:hover path:nth-of-type(2) {
+    fill: {{ ui.hover_color }};
+}
+span[data-testid="stMainMenu"] button[data-testid="baseButton-headerNoPadding"]:hover {
+    background-color: {{ ui.hover_bg_color }};
+}
+
+{# make_menu_clickable #}
+div[data-testid="stAppViewContainer"] {
+    pointer-events: none;
+}
+div[data-testid="collapsedControl"] {
+    pointer-events: auto;
+}
+section[data-testid="stSidebar"] {
+    pointer-events: auto;
+}
+section.main {
+    pointer-events: auto;
+    position: relative;
+    top: {{ ui.height }};
+}
+
+{# style_sidebar #}
+{% if not options["show_sidebar"] %}
+{% block hide_sidebar %}{% endblock %}
+{% endif %}
+div[data-testid="collapsedControl"] {
+    top: calc(({{ ui.height }} - 2rem) / 2);
+    left: 0.3125rem;
+}
+div[data-testid="collapsedControl"] path:nth-of-type(2) {
+    fill: {{ ui.color }};
+}
+div[data-testid="collapsedControl"]:hover path:nth-of-type(2) {
+    fill: {{ ui.hover_color }};
+}
+div[data-testid="collapsedControl"] button[data-testid="baseButton-headerNoPadding"]:hover {
+    background-color: {{ ui.hover_bg_color }};
+}
+div[data-testid="stSidebarContent"] button[data-testid="baseButton-header"]:hover {
+    background-color: rgba(151, 166, 195, 0.25);
+}
+
+{# fix_shadow #}
+{% if not options["fix_shadow"] %}
+{% block fix_shadow %}{% endblock %}
+{% endif %}
+
+{# adjust_body_padding #}
+div[data-testid="stVerticalBlockBorderWrapper"]:has(
+    div[data-testid="stVerticalBlock"]
+    > div.element-container
+    > div.stMarkdown
+    > div[data-testid="stMarkdownContainer"]
+    > p
+    > span.{{ key }}
+) {
+    margin-bottom: calc(-1rem + -{{ ui.height }});
+}
