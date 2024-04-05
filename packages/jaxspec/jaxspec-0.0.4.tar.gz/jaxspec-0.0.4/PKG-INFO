@@ -1,0 +1,65 @@
+Metadata-Version: 2.1
+Name: jaxspec
+Version: 0.0.4
+Summary: jaxspec is a bayesian spectral fitting library for X-ray astronomy.
+License: MIT
+Author: sdupourque
+Author-email: sdupourque@irap.omp.eu
+Requires-Python: >=3.10,<3.12
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: arviz (>=0.17.1,<0.18.0)
+Requires-Dist: astropy (>=6.0.0,<7.0.0)
+Requires-Dist: chainconsumer (>=1.0.0,<2.0.0)
+Requires-Dist: cmasher (>=1.6.3,<2.0.0)
+Requires-Dist: dm-haiku (>=0.0.11,<0.0.13)
+Requires-Dist: gpjax (>=0.8.0,<0.9.0)
+Requires-Dist: jax (>=0.4.23,<0.5.0)
+Requires-Dist: jaxlib (>=0.4.23,<0.5.0)
+Requires-Dist: jaxopt (>=0.8.1,<0.9.0)
+Requires-Dist: matplotlib (>=3.8.0,<4.0.0)
+Requires-Dist: mkdocstrings (>=0.24.0,<0.25.0)
+Requires-Dist: networkx (>=3.1,<4.0)
+Requires-Dist: numpy (>=1.26.1,<2.0.0)
+Requires-Dist: numpyro (>=0.13.2,<0.15.0)
+Requires-Dist: pandas (>=2.2.0,<3.0.0)
+Requires-Dist: scipy (<1.13)
+Requires-Dist: seaborn (>=0.13.1,<0.14.0)
+Requires-Dist: simpleeval (>=0.9.13,<0.10.0)
+Requires-Dist: sparse (>=0.15.1,<0.16.0)
+Requires-Dist: tinygp (>=0.3.0,<0.4.0)
+Description-Content-Type: text/markdown
+
+# jaxspec
+
+[![PyPI - Version](https://img.shields.io/pypi/v/jaxspec?style=for-the-badge&logo=pypi&color=rgb(37%2C%20150%2C%20190))](https://pypi.org/project/jaxspec/)
+[![Python package](https://img.shields.io/pypi/pyversions/jaxspec?style=for-the-badge)](https://pypi.org/project/jaxspec/)
+[![Read the Docs](https://img.shields.io/readthedocs/jaxspec?style=for-the-badge)](https://jaxspec.readthedocs.io/en/latest/)
+[![Codecov](https://img.shields.io/codecov/c/github/renecotyfanboy/jaxspec?style=for-the-badge)](https://app.codecov.io/gh/renecotyfanboy/jaxspec)
+[![Slack](https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white)](https://join.slack.com/t/jaxspec/shared_invite/zt-2cuxkdl2f-t0EEAKP~HBEHKvIUZJL2sg)
+
+> :warning: **jaxspec is still in early release**: expect bugs, breaking API changes, undocumented features and lack of functionalities
+
+`jaxspec` is an X-ray spectral fitting library built in pure Python. It can currently load an X-ray spectrum (in the OGIP standard), define a spectral model from the implemented components, and calculate the best parameters using state-of-the-art Bayesian approaches. It is built on top of JAX to provide just-in-time compilation and automatic differentiation of the spectral models, enabling the use of sampling algorithm such as NUTS.
+
+`jaxspec` is written in pure Python, and has no dependancy to [HEASoft](https://heasarc.gsfc.nasa.gov/docs/software/heasoft/), and can be installed directly using the `pip` command.
+
+Documentation : https://jaxspec.readthedocs.io/en/latest/
+
+## Installation
+
+We recommend the users to start from a fresh Python 3.10 [conda environment](https://conda.io/projects/conda/en/latest/user-guide/install/index.html). 
+
+```
+conda create -n jaxspec python=3.10
+conda activate jaxspec
+```
+
+Once the environment is set up, you can install jaxspec directly from pypi
+
+```
+pip install jaxspec --upgrade
+```
+
