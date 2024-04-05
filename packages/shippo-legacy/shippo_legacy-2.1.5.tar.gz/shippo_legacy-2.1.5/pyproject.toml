@@ -1,0 +1,26 @@
+[build-system]
+requires = ["poetry-core~=1.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "shippo-legacy"
+version = "2.1.5"
+authors = [
+  "rapid537 <rapid537@zoho.com>",
+]
+description = "Shipping API Python library (USPS, FedEx, UPS and more)"
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+homepage = "https://github.com/rapid537/shippo-legacy.git"
+packages = [
+    { include = "shippo" }
+]
+
+[tool.poetry.dependencies]
+chardet = "^5.2.0"
+requests = "^2.31.0"
+simplejson = ">=3.16.0, <=3.17.2"
