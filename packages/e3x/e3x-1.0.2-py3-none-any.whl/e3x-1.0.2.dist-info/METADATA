@@ -1,0 +1,96 @@
+Metadata-Version: 2.1
+Name: e3x
+Version: 1.0.2
+Summary: JAX-Library for building E(3)-equivariant deep learning architectures based on Flax.
+Keywords: equivariance,equivariant,invariance,invariant,E(3),SE(3),O(3),SO(3),Euclidean,Orthogonal,group,translation,translational,rotation,rotational,roto-translation,roto-translational,reflection,neural network,machine learning,deep learning
+Author-email: The e3x Authors <qcml@google.com>
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Intended Audience :: Science/Research
+Requires-Dist: absl-py
+Requires-Dist: etils[epath]
+Requires-Dist: flax
+Requires-Dist: jax
+Requires-Dist: jaxtyping
+Requires-Dist: more_itertools
+Requires-Dist: numpy
+Requires-Dist: sympy
+Requires-Dist: pytest ; extra == "dev"
+Requires-Dist: pytest-xdist ; extra == "dev"
+Requires-Dist: pylint>=2.6.0 ; extra == "dev"
+Requires-Dist: yapf ; extra == "dev"
+Requires-Dist: sphinx==7.2.6 ; extra == "dev"
+Requires-Dist: sphinx-autodoc-typehints==1.25.2 ; extra == "dev"
+Requires-Dist: sphinx-rtd-theme==2.0.0 ; extra == "dev"
+Requires-Dist: nbsphinx==0.9.3 ; extra == "dev"
+Requires-Dist: jupyter_sphinx==0.5.3 ; extra == "dev"
+Requires-Dist: ipykernel==6.29.0 ; extra == "dev"
+Requires-Dist: pypandoc_binary==1.12 ; extra == "dev"
+Requires-Dist: matplotlib==3.4.3 ; extra == "dev"
+Project-URL: homepage, https://github.com/google-research/e3x
+Project-URL: repository, https://github.com/google-research/e3x
+Provides-Extra: dev
+
+<div align="center">
+<img src="https://raw.githubusercontent.com/google-research/e3x/main/docs/source/_static/logo.svg" alt="logo" width="200"></img>
+</div>
+
+# E3x: E(3)-Equivariant Deep Learning Made Easy
+
+![Autopublish Workflow](https://github.com/google-research/e3x/actions/workflows/pytest_and_autopublish.yml/badge.svg)
+![PyPI version](https://img.shields.io/pypi/v/e3x)
+[![Documentation Status](https://readthedocs.org/projects/e3x/badge/?version=latest)](https://e3x.readthedocs.io/en/latest/?badge=latest)
+
+[E3x](https://e3x.readthedocs.io) is a [JAX](https://jax.readthedocs.io) library
+for constructing efficient E(3)-equivariant deep learning architectures built on
+top of [Flax](https://flax.readthedocs.io).
+
+The goal is to provide common neural network building blocks for
+E(3)-equivariant architectures to make the development of models operating on
+three-dimensional data (point clouds, polygon meshes, etc.) easier.
+
+This is not an officially supported Google product.
+
+## Installation
+
+The easiest way to install E3x is via the Python Package Index (PyPI). Simply
+run
+```console
+> python -m pip install --upgrade e3x
+```
+and you should be good to go.
+
+Alternatively, you can clone this repository, enter the directory and run:
+```console
+> python -m pip install .
+```
+
+If you are a developer, you might want to also install the optional development
+dependencies by running
+```console
+> python -m pip install .[dev]
+```
+instead.
+
+## Documentation
+
+Documentation for E3x, including usage examples and tutorials can be found
+[here](https://e3x.readthedocs.io). For a more detailed overview over the
+mathematical theory behind E3x, please refer to
+[this paper](https://arxiv.org/abs/2401.07595).
+
+## Citing E3x
+
+If you find E3x useful and use it in your work, please cite:
+```
+@article{unke2024e3x,
+  title={\texttt{E3x}: $\mathrm{E}(3)$-Equivariant Deep Learning Made Easy},
+  author={Unke, Oliver T. and Maennel, Hartmut},
+  journal={arXiv preprint arXiv:2401.07595},
+  year={2024}
+}
+```
+
