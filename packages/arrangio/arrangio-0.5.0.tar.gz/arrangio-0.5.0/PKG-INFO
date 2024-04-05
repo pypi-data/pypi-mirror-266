@@ -1,0 +1,148 @@
+Metadata-Version: 2.3
+Name: arrangio
+Version: 0.5.0
+Summary: Arranges a set of songs in groups with similar total play time.
+Project-URL: Documentation, http://electric-mass.github.io/arrangio
+Project-URL: Homepage, https://github.com/electric-mass/arrangio
+Project-URL: Source, https://github.com/electric-mass/arrangio
+Author: Frederico Martins
+License: MIT
+License-File: LICENSE
+Keywords: grouping,songs
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Utilities
+Classifier: Typing :: Typed
+Requires-Python: <4,>=3.8
+Provides-Extra: dev
+Requires-Dist: autopep8>=1.6.0; extra == 'dev'
+Requires-Dist: build>=0.8.0; extra == 'dev'
+Requires-Dist: coverage[toml]>=6.4.1; extra == 'dev'
+Requires-Dist: mypy>=0.950; extra == 'dev'
+Requires-Dist: pdoc3>=0.10.0; extra == 'dev'
+Requires-Dist: pylint>=2.13.9; extra == 'dev'
+Requires-Dist: pytest-cov>=3.0.0; extra == 'dev'
+Requires-Dist: pytest-custom-exit-code>=0.3.0; extra == 'dev'
+Requires-Dist: pytest-mock>=3.8.2; extra == 'dev'
+Requires-Dist: pytest>=7.1.2; extra == 'dev'
+Requires-Dist: ruff>=0.0.282; extra == 'dev'
+Requires-Dist: twine>=4.0.0; extra == 'dev'
+Requires-Dist: vermin>=1.4.0; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# arrangio
+
+Arranges a set of songs in groups with similar total play time.
+
+## Synopsis
+
+This tool will try to arrange a set of songs into subsets of songs
+(groups) whose total play time will be the most sililar possible.
+
+## Prerequisites
+
+Python, version 3.8 or above, needs to be installed on your local
+computer.
+
+### Python 3.x
+
+Python version 3.8 or above is required for the tool to work. Python
+setup can be found [here](https://www.python.org/downloads/).
+
+## Installation
+
+The simplest way to install this tool is using pip:
+
+```shell
+pip3 install arrangio
+```
+
+## Usage
+
+A simple example of how to use this tool:
+
+```shell
+arrangio --groups 2 --song song01:3m24s --song song02:4m01s  --song song03:1m47s
+```
+
+List of all the options:
+
+```shell
+usage: arrangio [-h] [-g [NUM]] [-q] -s LABEL:HHhMMmSSs [LABEL:HHhMMmSSs ...] [-v]
+
+options:
+  -h, --help            show this help message and exit
+  -g [NUM], --groups [NUM]
+                        number of groups to create (default: 2)
+  -q, --quiet           quiet mode (default: False)
+  -s LABEL:HHhMMmSSs [LABEL:HHhMMmSSs ...], --song LABEL:HHhMMmSSs [LABEL:HHhMMmSSs ...]
+                        song information (e.g.: song01:00h03m27s) (default: None)
+  -v, --version         show program's version number and exit
+```
+
+## Build (from source)
+
+[just](https://just.systems) is used to automate several steps of the
+development process.
+
+All of the commands described bellow are to be executed on the root folder
+of this project.
+
+A development environment can be created using the following command:
+
+```shell
+just init
+```
+
+To build a Python package for this library use the following command:
+
+```shell
+just build
+```
+
+After this you should have a wheel file (`*.whl`) inside a folder called
+`dist`.
+
+The library can be install using the wheel file and pip3:
+
+```shell
+pip3 --quiet install dist/arrangio-*.whl
+```
+
+## Contributing
+
+1. Fork it!
+2. Create your feature branch: `git checkout -b my-new-feature`
+3. Commit your changes: `git commit -am 'Add some feature'`
+4. Push to the branch: `git push origin my-new-feature`
+5. Submit a pull request
+
+Please read the [CONTRIBUTING.md](https://github.com/electric-mass/arrangio/blob/master/CONTRIBUTING.md)
+file for more details on how to contribute to this project.
+
+## Versioning
+
+This project uses [SemVer](http://semver.org/) for versioning. For the versions
+available, see the [tags on this repository](https://github.com/electric-mass/arrangio/tags).
+
+## Authors
+
+* **Frederico Martins** - [fscm](https://github.com/fscm)
+
+See also the list of [contributors](https://github.com/electric-mass/arrangio/contributors)
+who participated in this project.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/electric-mass/arrangio/blob/master/LICENSE)
+file for details
