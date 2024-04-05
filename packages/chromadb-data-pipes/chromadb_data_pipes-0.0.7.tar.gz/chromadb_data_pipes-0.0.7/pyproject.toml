@@ -1,0 +1,70 @@
+[tool.poetry]
+name = "chromadb-data-pipes"
+version = "0.0.7"
+description = "ChromaDB Data Pipes 🖇️ - The easiest way to get data into and out of ChromaDB"
+authors = ["Trayan Azarov <trayan.azarov@amikos.tech>"]
+license = "MIT"
+readme = "README.md"
+packages = [{ include = "chroma_dp" }]
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/amikos-tech/chromadb-data-pipes/issues"
+"Homepage" = "https://datapipes.chromadb.dev/"
+"Source" = "https://github.com/amikos-tech/chromadb-data-pipes/"
+
+[tool.poetry.scripts]
+"cdp" = "chroma_dp.main:app"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.12"
+chromadb = "0.4.22"
+datasets = "^2.15.0"
+tqdm = "^4.66.1"
+rich = "^13.7.0"
+typer = { extras = ["all"], version = "^0.9.0" }
+pydantic = "^2.5.3"
+tenacity = "^8.2.3"
+fastapi = "^0.108.0"
+langchain = "^0.1.0"
+pypdf = "^3.17.4"
+py-ulid = "^1.0.3"
+python-dotenv = "^1.0.1"
+orjson = "^3.9.12"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.3"
+black = "23.3.0"
+pre-commit = "^3.6.0"
+hypothesis = "^6.92.0"
+
+[tool.poetry.group.docs.dependencies]
+pypdf = "^3.17.4"
+unstructured = "^0.12.0"
+
+[tool.poetry.group.embeddings.dependencies]
+openai = "^1.8.0"
+cohere = "^4.44"
+unstructured = "^0.12.0"
+sentence-transformers = "^2.2.2"
+
+[tool.poetry.group.web.dependencies]
+beautifulsoup4 = "^4.12.3"
+unstructured = ">=0.12.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-rA -q"
+testpaths = [
+    "tests",
+    "integration",
+]
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
