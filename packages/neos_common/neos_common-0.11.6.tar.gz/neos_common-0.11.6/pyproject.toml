@@ -1,0 +1,167 @@
+[tool.poetry]
+name = "neos_common"
+version = "0.11.6"
+description = "Neos Common Code"
+authors = []
+license = "closed"
+repository="https://github.com/NEOS-Critical/neos-platform-common"
+homepage="https://github.com/NEOS-Critical/neos-platform-common"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+httpx = "^0"
+fastapi = "^0"
+pydantic = "^2"
+pydantic-settings = "^2.0.0"
+web-error = "^0.6"
+python-keycloak = "^3.9"
+confluent-kafka = "2.0.2" # Currently used Docker image python:3.10-alpine has only 2.0.2 version
+multidict = "^6.0.4"
+
+[tool.poetry.group.dev.dependencies]
+
+# Tests
+freezegun = "^1.2.1"
+pretend = "^1.0.9"
+pytest = "~7.1.2"
+pytest-asyncio = "^0.18.3"
+pytest-benchmark = "^3.4.1"
+pytest-cov = "^3.0.0"
+pytest-env = "^0.6.2"
+pytest-random-order = "^1.0.4"
+requests = "^2.28.1"
+pytest-httpx = "^0"
+
+# Style
+ruff = "^0.3"
+pre-commit = "^3.0.2"
+pyright = "^1.1.293"
+
+# Releases
+changelog-gen = {version = "^0.9", extras = ["bump-my-version"]}
+
+[tool.bumpversion]
+current_version = "0.11.6"
+commit = true
+tag = true
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+search = 'version = "{current_version}"'
+replace = 'version = "{new_version}"'
+
+[[tool.bumpversion.files]]
+filename = "README.md"
+
+[[tool.bumpversion.files]]
+filename = "neos_common/__init__.py"
+
+[tool.changelog_gen]
+release = true
+commit = true
+reject_empty = true
+allowed_branches = [
+    "main",
+]
+date_format = "(released %Y-%m-%d)"
+issue_link = "https://neom.atlassian.net/browse/::issue_ref::"
+commit_link = "https://github.com/NEOS-Critical/neos-platform-registry/commit/::commit_hash::"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+addopts = "--random-order --cov-append"
+env = [
+]
+
+[tool.coverage.report]
+sort = "cover"
+fail_under = 98
+show_missing = true
+skip_covered = true
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == '__main__':",
+    "if typing.TYPE_CHECKING:",
+    "@abc.abstractmethod",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["neos_common"]
+
+[tool.ruff]
+target-version = "py39"
+line-length = 120
+
+[tool.ruff.format]
+line-ending = "lf"
+quote-style = "double"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "B008",     # typer involves a lot of function calls in function definitions
+    "D203",     # No blankline before docstring
+    "D213",     # docstring starts on opening line
+    "PLR0913",  # too many arguments to a function call
+    "PLR2004",  # magic numbers in tests
+    "FIX002",   # Allow TODO's
+    "FA",
+    "G",        # REMOVE: logging(.., extra={}) does not appear to work
+    "TD002",    # REMOVE: add authors
+    "TD003",    # REMOVE: add links
+    "ANN002",   # REMOVE: type annotation on *args
+    "ANN003",   # REMOVE: type annotation on **kwargs
+    "ANN101",   # REMOVE: annotate self
+    "ANN102",   # REMOVE: annotate cls
+]
+
+[tool.ruff.lint.per-file-ignores]
+"neos_common/*"= [
+    "D104",  # Ignore public __init__ missing docstring.
+    # TODO: Clean up below violations
+    "D100",  # Missing docstring in public module
+    "D101",  # Missing docstring in public class
+    "D102",  # Missing docstring in public method
+    "D103",  # Missing docstring in public function
+    "D107",  # Missing docstring in __init__
+]
+"neos_common/error.py" = [
+    "D101",  # ignore missing docstrings on exception classes
+]
+"neos_common/authorization/base.py" = [
+    "D102",  # ignore missing docstrings in protocol __call__ definitions
+]
+"neos_common/schema.py" = [
+    "N805",  # first argument should be self, pydantic validators enforce `cls`
+    "ARG002",  # unused arguments abound in pydantic validators
+    "D101",  # ignore missing public class docstrings in schema
+]
+"tasks.py" = ["ANN", "E501", "INP001"]
+"tests/*" = ["ANN", "D", "SLF", "S101", "S105", "S106"]
+"tests/authorization/test_util.py" = ["N806", "S106"]
+
+[tool.ruff.lint.flake8-type-checking]
+exempt-modules = ["neos_common", "typing"]
+
+[tool.ruff.lint.flake8-quotes]
+docstring-quotes = "double"
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.pyright]
+include = ["neos_common"]
+exclude = [
+"tests/*",
+]
+
+[tool.poetry.plugins.pytest11]
+nc_plugin = "neos_common.pytest_plugin"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
