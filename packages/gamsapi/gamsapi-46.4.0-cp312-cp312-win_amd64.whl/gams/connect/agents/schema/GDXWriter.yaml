@@ -1,0 +1,37 @@
+file:
+  type: string
+  required: true
+writeAll:
+  type: 
+   - boolean
+   - string
+  allowed:
+   - true
+   - false
+   - auto
+duplicateRecords:
+  type: string
+  allowed:
+  - all
+  - first
+  - last
+  - none
+symbols:
+  type: list
+  schema:
+    type: dict
+    schema:
+      name:
+        type: string
+        required: true
+      newName:
+        type: string
+      duplicateRecords:  
+        type: string
+        allowed:
+        - all
+        - first
+        - last
+        - none
+trace:
+  type: integer
