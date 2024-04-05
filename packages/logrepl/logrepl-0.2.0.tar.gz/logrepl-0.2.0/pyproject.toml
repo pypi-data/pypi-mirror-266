@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "logrepl"
+version = "0.2.0"
+description = "By this command line tool, you can run a python repl which logs everying into a file."
+authors = ["bali <baluzeger@gmail.com>"]
+readme = "README.md"
+repository = "https://github.com/baliuzeger/logrepl"
+keywords = ["repl", "log", "logging"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+python-dotenv = "*"
+
+[tool.poetry.scripts]
+pylogrepl = 'logrepl.run:main'
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
