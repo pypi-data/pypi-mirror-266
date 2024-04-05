@@ -1,0 +1,2 @@
+SCHOOL_GRADE_GROUP_TYPE_NAME = "School grade"
+SCHOOL_CLASS_GROUP_TYPE_NAME = "School class"

@@ -1,0 +1,45 @@
+query gqlSchoolGrades($schoolTerm: ID!) {
+  grades: schoolGradesByTerm(schoolTerm: $schoolTerm) {
+    id
+    name
+    shortName
+    childGroups {
+      id
+      name
+      shortName
+      owners {
+        id
+        shortName
+      }
+    }
+  }
+}
+
+mutation gqlCreateGrades($input: [BatchCreateGroupInput]!) {
+  createGrades(input: $input) {
+    grades: groups {
+      id
+      name
+      shortName
+      schoolTerm {
+        id
+      }
+    }
+  }
+}
+
+mutation gqlCreateClasses($input: [BatchCreateGroupInput]!) {
+  createClasses(input: $input) {
+    classes: groups {
+      id
+      name
+      shortName
+      schoolTerm {
+        id
+      }
+      parentGroups {
+        id
+      }
+    }
+  }
+}
