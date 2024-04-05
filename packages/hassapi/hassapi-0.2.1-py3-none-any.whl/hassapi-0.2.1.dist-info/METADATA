@@ -1,0 +1,45 @@
+Metadata-Version: 2.1
+Name: hassapi
+Version: 0.2.1
+Summary: Home Assistant Python API
+Home-page: https://github.com/hass-api/hassapi
+Author: Vadim Titov
+Author-email: titov.hse@gmail.com
+Project-URL: Bug Tracker, https://github.com/hass-api/hassapi/issues
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Home Automation
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests
+Provides-Extra: test
+Requires-Dist: pytest ; extra == 'test'
+
+## [Home Assistant](https://www.home-assistant.io/) Web API Client for Python
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/hassapi?style=flat-square)](https://pypistats.org/packages/hassapi)
+
+## Examples
+```python
+from hassapi import Hass
+
+hass = Hass(hassurl="http://IP_ADDRESS:8123/", token="YOUR_HASS_TOKEN")
+
+hass.turn_on("light.bedroom_light")
+hass.run_script("good_morning")
+
+# If you want to bypass certificate verification. Default set to True
+hass = Hass(hassurl="http://IP_ADDRESS:8123/", token="YOUR_HASS_TOKEN", verify=False)
+```
+## Installation
+```
+pip install hassapi
+```
