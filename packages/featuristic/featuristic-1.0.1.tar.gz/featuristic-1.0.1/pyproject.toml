@@ -1,0 +1,135 @@
+[project]
+name = "featuristic"
+
+# Versions should comply with PEP 440
+version = "1.0.1"
+
+
+# This is a one-line description or tagline of what your project does. This
+# corresponds to the "Summary" metadata field:
+# https://packaging.python.org/specifications/core-metadata/#summary
+description = "Genetic algorithms for automated feature engineering and feature selection"
+
+
+# This is an optional longer description of your project that represents
+# the body of text which users will see when they visit PyPI.
+#
+# Often, this is the same as your README, so you can just read it in from
+# that file directly (as we have already done above)
+#
+# This field corresponds to the "Description" metadata field:
+# https://packaging.python.org/specifications/core-metadata/#description-optional
+readme = "readme.md" # Optional
+
+
+# Specify which Python versions you support. In contrast to the
+# 'Programming Language' classifiers above, 'pip install' will check this
+# and refuse to install the project if the version does not match. See
+# https://packaging.python.org/guides/distributing-packages-using-setuptools/#python-requires
+requires-python = ">=3.8"
+
+
+# This is either text indicating the license for the distribution, or a file
+# that contains the license
+# https://packaging.python.org/en/latest/specifications/core-metadata/#license
+license = { file = "LICENSE.txt" }
+
+
+# This field adds keywords for your project which will appear on the
+# project page. What does your project relate to?
+#
+# Note that this is a list of additional keywords, separated
+# by commas, to be used to assist searching for the distribution in a
+# larger catalog.
+keywords = [
+    "data",
+    "machine learning",
+    "feature engineering",
+    "feature selection",
+    "model selection",
+    "model evaluation",
+    "genetic algorithm",
+    "optimization",
+    "hyperparameter tuning",
+] # Optional
+
+
+# Classifiers help users find your project by categorizing it.
+#
+# For a list of valid classifiers, see https://pypi.org/classifiers/
+classifiers = [ # Optional
+    # Pick your license as you wish
+    "License :: OSI Approved :: MIT License",
+
+    # Specify the Python versions you support here. In particular, ensure
+    # that you indicate you support Python 3. These classifiers are *not*
+    # checked by "pip install". See instead "python_requires" below.
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3 :: Only",
+]
+
+
+dependencies = [
+    "matplotlib >= 3.0.0",
+    "numpy >= 1.25.0",
+    "pandas >= 2.0.0",
+    "Pyarrow >= 15.0.0",
+    "scikit-learn >= 1.4.0",
+    "tqdm >= 4.32.0",
+    "ucimlrepo >= 0.0.5",
+] # This field lists other packages that your project depends on to run.
+# Any package you put here will be installed by pip when your project is
+# installed, so they must be valid existing projects.
+#
+# For an analysis of this field vs pip's requirements files see:
+# https://packaging.python.org/discussions/install-requires-vs-requirements/
+
+
+# List additional groups of dependencies here (e.g. development
+# dependencies). Users will be able to install these using the "extras"
+# syntax, for example:
+#
+#   $ pip install sampleproject[dev]
+#
+# Similar to `dependencies` above, these must be valid existing
+# projects.
+[project.optional-dependencies] # Optional
+dev = [
+    "black",
+    "build",
+    "coverage",
+    "coveralls",
+    "isort",
+    "ipykernel",
+    "nbsphinx",
+    "pre-commit",
+    "pydata_sphinx_theme",
+    "pytest",
+    "pylint",
+    "Sphinx",
+]
+
+[tool.setuptools.packages.find]
+where = ["src/"]
+
+
+# [build-system]
+# These are the assumed default build requirements from pip:
+# https://pip.pypa.io/en/stable/reference/pip/#pep-517-and-518-support
+# requires = ["setuptools>=43.0.0", "wheel"]
+# build-backend = "setuptools.build_meta"
+
+[project.urls]
+
+# Project homepage, often a link to GitHub or GitLab
+# Often specified in the [project] table
+homepage = "https://www.featuristic.co.uk"
+
+# The source code repository, don't use this if your homepage
+# is the repo
+repository = "https://github.com/martineastwood/featuristic.git"
