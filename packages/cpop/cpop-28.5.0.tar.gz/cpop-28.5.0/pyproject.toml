@@ -1,0 +1,77 @@
+[build-system]
+requires = ["setuptools >= 61.0", "wheel", "Cython"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cpop"
+version = "28.5.0"
+description = "The Cython-Optimized Plugin Oriented Programming System"
+readme = "README.rst"
+authors = [
+    {name = "Tyler Levy Conde", email = "yonstib@gmail.com"},
+    {name = "Thomas Hatch", email = "thatch@saltstack.com"},
+]
+classifiers = [
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Development Status :: 5 - Production/Stable",
+]
+requires-python = ">=3.10"
+
+
+dependencies = [
+  "aiofiles",
+  "aiologger",
+  "argparse",
+  "PyYaml",
+]
+
+[project.optional-dependencies]
+test = [
+  "nest-asyncio",
+  "pytest",
+  "pytest-asyncio",
+]
+
+build = [
+  "auditwheel",
+  "Cython",
+  "setuptools",
+  "wheel",
+  "twine",
+]
+
+[tool.setuptools]
+packages = ["hub", "pop"]
+
+
+[project.scripts]
+hub = "hub.__main__:main"
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+include = '\.pyi?$'
+exclude = '''
+(
+  /(
+      \.eggs
+    | \.git
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+  )/
+)
+'''
+
+[tool.pytest.ini_options]
+testpaths = "tests"
+addopts = "--tb native --full-trace --color=no -vv"
+asyncio_mode = "auto"
