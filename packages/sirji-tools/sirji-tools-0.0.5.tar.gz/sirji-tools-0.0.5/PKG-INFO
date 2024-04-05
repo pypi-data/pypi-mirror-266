@@ -1,0 +1,69 @@
+Metadata-Version: 2.1
+Name: sirji-tools
+Version: 0.0.5
+Summary: Crawler and search tools used by Sirji.
+Home-page: https://github.com/sirji-ai/sirji
+Author: Sirji
+License: MIT
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests==2.31.0
+Requires-Dist: pypdf2==3.0.1
+Requires-Dist: markdownify==0.11.6
+Requires-Dist: playwright==1.42.0
+
+# sirji-tools
+
+`sirji-tools` is a PyPI package that provides tools for:
+
+- Crawling (downloading web pages to markdown files)
+- Searching (using the Google Search API for search results)
+- Custom Logging
+
+## Installation
+
+```
+pip install sirji-tools
+```
+
+## Usage
+
+### Crawl URLs
+
+Crawl URLs tool will be used to crawl the web pages and extract the information from the web pages. And store the information for the further processing by researcher.
+
+```python
+from sirji_tools import crawl_urls
+
+urls = ['https://www.google.com', 'https://www.yahoo.com']
+
+crawl_urls(urls, 'workspace/researcher')
+```
+
+### Search
+
+Search tool will be used to search the information from the web pages based on the search terms provided.
+It returns the list of URLs related to the search terms.
+
+```python
+from sirji_tools import search_for
+
+search_term = 'python programming'
+
+urls = search_for(search_term)
+```
+
+### Logger
+
+Logger tool will be used to log the information in the log file. It will be used to log the information to show the progress of the execution.
+
+```python
+from sirji_tools.logger import p_logger
+
+p_logger.info("Log line here")
+```
+
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
