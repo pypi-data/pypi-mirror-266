@@ -1,0 +1,39 @@
+{%- set content_id = get_uuid4() -%}
+<div class="popover-hover" role="button" data-popover-content="#po-{{ content_id }}">
+	<span class="badge text-bg-secondary">
+		{{ get_icon('module-dnsr') }} | {{ search_result[0]['value'] }}{% if search_result|length > 1 %} ({{ _('%(cnt)d more', cnt = (search_result|length -1))}}){% endif %}
+	</span>
+	<div id="po-{{ content_id }}" class="d-none">
+        <div class="popover top">
+            <div class="popover-arrow" data-popper-arrow></div>
+            <h3 class="popover-title">
+                {{ get_icon('module-dnsr') }} {{ _('DNS') }} - {{ _('Hostname resolving') }}
+                <span class="float-end">
+                    <span data-bs-toggle="tooltip" title="{{ _('Query time') }}: {{ get_timedelta(g.requeststart) }}">
+                        {{ get_icon('stopwatch') }}
+                    </span>
+                </span>
+            </h3>
+            <div class="popover-content-outer">
+                <div class="popover-content">
+                    <table class="table table-sm">
+                        <tr>
+                            <th></th>
+                            <th>{{ _('Type') }}</th>
+                            <th>{{ _('Value') }}</th>
+                        </tr>
+    {%- for sritem in search_result %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td><span class="badge text-bg-secondary">{{ sritem['type'] }}</span></td>
+                            <td>{{ sritem['value'] }}</td>
+                        </tr>
+    {%- endfor %}
+                    </table>
+               </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
