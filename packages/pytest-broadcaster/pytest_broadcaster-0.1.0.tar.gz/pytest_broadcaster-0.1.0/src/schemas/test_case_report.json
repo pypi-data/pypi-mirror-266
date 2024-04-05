@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "test_case_report.json",
+  "title": "Test Case Report",
+  "description": "Report for a single test case.",
+  "type": "object",
+  "required": [
+    "node_id",
+    "outcome",
+    "duration",
+    "setup",
+    "teardown",
+    "finished"
+  ],
+  "properties": {
+    "node_id": {
+      "type": "string",
+      "description": "Node ID."
+    },
+    "outcome": {
+      "$ref": "outcome.json/#",
+      "description": "Outcome of the test case."
+    },
+    "duration": {
+      "type": "number",
+      "description": "Duration of the test case in seconds."
+    },
+    "setup": {
+      "$ref": "test_case_setup.json/#",
+      "description": "Setup of the test case."
+    },
+    "call": {
+      "$ref": "test_case_call.json/#",
+      "description": "Call of the test case."
+    },
+    "teardown": {
+      "$ref": "test_case_teardown.json/#",
+      "description": "Teardown of the test case."
+    },
+    "finished": {
+      "$ref": "test_case_finished.json/#",
+      "description": "View of the test case after it has finished."
+    }
+  }
+}

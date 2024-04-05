@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://raw.githubusercontent.com/charbonnierg/pytest-broadcaster/main/schemas/test_case_outcome.json",
+  "title": "Test Case Finished",
+  "description": "Event emitted when a test case is finished (meaning all of setup, call and teardown steps are finished).",
+  "type": "object",
+  "required": [
+    "node_id",
+    "event_type",
+    "outcome",
+    "finished",
+    "duration",
+    "start",
+    "stop"
+  ],
+  "properties": {
+    "node_id": {
+      "type": "string",
+      "description": "Node ID."
+    },
+    "event_type": {
+      "const": "case_finished",
+      "description": "Event Type."
+    },
+    "outcome": {
+      "$ref": "https://raw.githubusercontent.com/charbonnierg/pytest-broadcaster/main/schemas/outcome.json",
+      "description": "Outcome of the test case."
+    },
+    "duration": {
+      "type": "number",
+      "description": "Duration of the test case in seconds (including setup and teardown)."
+    },
+    "start": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Start time of the test case (including setup)."
+    },
+    "stop": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Stop time of the test case (including teardown)."
+    }
+  }
+}

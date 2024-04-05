@@ -1,0 +1,29 @@
+name: Continuous Integration
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validation:
+    name: Validate
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      # Uses the same action as rye
+      # See: https://github.com/astral-sh/rye/blob/main/.github/workflows/python-lint.yml
+      - name: Install the latest version of rye
+        uses: eifinger/setup-rye@v2
+        with:
+          enable-cache: true
+
+      - name: Override python version required by project
+        run: echo "${{ matrix.python-version }}" > .python-version
+
+      - name: Run validation
+        run: rye run ci

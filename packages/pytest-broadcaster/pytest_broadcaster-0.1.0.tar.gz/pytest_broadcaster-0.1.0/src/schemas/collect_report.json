@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "collect_report.json",
+  "title": "Collect Report",
+  "description": "A report of collected items.",
+  "type": "object",
+  "required": [
+    "event",
+    "node_id",
+    "items"
+  ],
+  "properties": {
+    "event": {
+      "const": "CollectReport",
+      "description": "The event type."
+    },
+    "node_id": {
+      "type": "string",
+      "description": "The node id of the collector (if any)."
+    },
+    "items": {
+      "type": "array",
+      "description": "The collected items.",
+      "items": {
+        "oneOf": [
+          {"$ref": "test_directory.json/#", "description": "A test directory."},
+          {"$ref": "test_module.json/#", "description": "A test module."},
+          {"$ref": "test_suite.json/#", "description": "A test suite."},
+          {"$ref": "test_case.json/#", "description": "A test case."}
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "session_finish.json",
+  "title": "Session Finish",
+  "description": "Event emitted when the session is finished.",
+  "type": "object",
+  "required": [
+    "event",
+    "exit_status"
+  ],
+  "properties": {
+    "event": {
+      "const": "SessionFinish",
+      "description": "The event type."
+    },
+    "exit_status": {
+      "type": "integer",
+      "description": "The status which pytest will return to the system."
+    }
+  }
+}

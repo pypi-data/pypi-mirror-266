@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://raw.githubusercontent.com/charbonnierg/pytest-broadcaster/main/schemas/session_event.json",
+  "title": "Session Event",
+  "description": "An event within a pytest session.",
+  "type": "object",
+  "oneOf": [
+    {
+      "$ref": "https://raw.githubusercontent.com/charbonnierg/pytest-broadcaster/main/schemas/collect_report.json",
+      "description": "A collect report."
+    },
+    {
+      "$ref": "https://raw.githubusercontent.com/charbonnierg/pytest-broadcaster/main/schemas/test_case_finished.json",
+      "description": "A test case finished."
+    },
+    {
+      "$ref": "https://raw.githubusercontent.com/charbonnierg/pytest-broadcaster/main/schemas/test_case_setup.json",
+      "description": "A test case setup step finished."
+    },
+    {
+      "$ref": "https://raw.githubusercontent.com/charbonnierg/pytest-broadcaster/main/schemas/test_case_teardown.json",
+      "description": "A test case teardown step finished."
+    },
+    {
+      "$ref": "https://raw.githubusercontent.com/charbonnierg/pytest-broadcaster/main/schemas/test_case_call.json",
+      "description": "A test case call step finished."
+    },
+    {
+      "$ref": "https://raw.githubusercontent.com/charbonnierg/pytest-broadcaster/main/schemas/error_message.json",
+      "description": "An error occured."
+    },
+    {
+      "$ref": "https://raw.githubusercontent.com/charbonnierg/pytest-broadcaster/main/schemas/warning_message.json",
+      "description": "A warning was emitted."
+    },
+    {
+      "$ref": "https://raw.githubusercontent.com/charbonnierg/pytest-broadcaster/main/schemas/session_start.json",
+      "description": "A session started."
+    },
+    {
+      "$ref": "https://raw.githubusercontent.com/charbonnierg/pytest-broadcaster/main/schemas/session_finish.json",
+      "description": "A session finished."
+    }
+  ]
+}
