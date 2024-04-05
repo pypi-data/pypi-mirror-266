@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "bible_verse"
+version = "0.2.0"
+description = ""
+authors = ["AnaJuliaMM <ana.martins_2004@outlook.com>"]
+readme = "README.md"
+packages = [{include = "bible_verse"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+bible_verse_pt = "bible_verse.main:print_bible_verse_pt"
+bible_verse_en = "bible_verse.main:print_bible_verse_en"
