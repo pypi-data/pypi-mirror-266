@@ -1,0 +1,35 @@
+Metadata-Version: 2.1
+Name: pyvectorial_au
+Version: 1.0.5
+Summary: Utilities for running, saving, and interfacing with cometary vectorial models, like the one included in sbpy
+License: MIT
+Author: Shawn Oset
+Author-email: szo0032@auburn.edu
+Requires-Python: >=3.11,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: dill (>=0.3.7)
+Requires-Dist: matplotlib (>=3.8.2)
+Requires-Dist: numpy (>=1.26.2)
+Requires-Dist: pandas (>=2.1.3,<3.0.0)
+Requires-Dist: plotly (>=5.18.0)
+Requires-Dist: pyabel (>=0.9.0)
+Requires-Dist: pydantic (>=2.5.2,<3.0.0)
+Requires-Dist: pytest-cov (>=4.1.0,<5.0.0)
+Requires-Dist: returns (>=0.22.0,<0.23.0)
+Requires-Dist: rich (>=13.7.0,<14.0.0)
+Requires-Dist: sbpy (>=0.4.0,<0.5.0)
+Requires-Dist: sqlalchemy (>=2.0.24,<3.0.0)
+Description-Content-Type: text/markdown
+
+# Pyvectorial
+This is a library for interfacing with vectorial models of cometary atmospheres, namely the model included in sbpy, but other versions written in fortran and rust are supported also.
+Features include standardized model input and output, database caching of completed models, and parallel running of models.
+
+# Testing
+`pytest`
+
+## Coverage Report
+`pytest --cov-report term-missing --cov=pyvectorial src/pyvectorial/tests`
+
