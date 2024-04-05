@@ -1,0 +1,49 @@
+[build-system]
+requires = [
+    "setuptools>=65.5.1",
+    "setuptools-scm",
+    "wheel>=0.38.0"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "axisvm"
+version = "1.2.2"
+description = "A Python package for AxisVM."
+classifiers=[
+        "Development Status :: 5 - Production/Stable",
+        "License :: OSI Approved :: MIT License",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3 :: Only",
+        "Operating System :: Microsoft :: Windows :: Windows 10",
+        "Operating System :: Microsoft :: Windows :: Windows 11",
+]
+readme = {file = "README.md", content-type = "text/markdown"}
+authors = [
+    { name = "InterCAD Ltd.", email = "gbokor@axisvm.eu" }
+]
+maintainers = [
+    { name = "InterCAD Ltd.", email = "gbokor@axisvm.eu" }
+]
+license = { file = "LICENSE" }
+keywords = [
+    "engineering", "mechanics", "finite element method", "AxisVM", "civil engineering",
+    "steel design", "concrete design", "timber design"
+]
+requires-python = ">=3.10, <3.12"
+dynamic = ["dependencies", "optional-dependencies"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+optional-dependencies.test = { file = ["requirements-test.txt"] }
+optional-dependencies.dev = { file = ["requirements-dev.txt"] }
+optional-dependencies.docs = { file = ["docs/requirements.txt"] }
+
+[project.urls]
+Homepage = "https://github.com/AxisVM/pyaxisvm"
