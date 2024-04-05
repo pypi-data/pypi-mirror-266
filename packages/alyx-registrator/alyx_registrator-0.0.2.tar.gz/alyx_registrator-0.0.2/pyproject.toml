@@ -1,0 +1,31 @@
+[project]
+name = "alyx-registrator"
+description = "Utilitaries to easily register files to an alyx-database/ONE environment."
+authors = [
+    { name = "Timothe Jost-Mousseau", email = "timothe.jost-mousseau@pasteur.com" },
+]
+url = "https://gitlab.pasteur.fr/haisslab/data-management/one-registrator"
+dependencies = [
+    "numpy>=1.23",
+    "alyx-connector>=1.16",
+    "pandas>=1.4",
+]
+requires-python = ">=3.11"
+dynamic = []
+version = "0.0.2"
+
+[project.license]
+text = "MIT"
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.version]
+source = "file"
+path = "one_registrator/__init__.py"
