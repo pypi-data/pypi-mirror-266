@@ -1,0 +1,124 @@
+Metadata-Version: 2.1
+Name: signapse
+Version: 1.0.5
+Summary: Signapse_synthetic_signer
+Home-page: https://github.com/signapse/signapse
+Author: Basheer Alwaely
+Author-email: basheer@signapse.ai
+Classifier: Development Status :: 1 - Planning
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: essentials
+Requires-Dist: setuptools
+Requires-Dist: wheel
+Requires-Dist: mediapipe ==0.8.11
+Requires-Dist: opencv-python ==4.6.0.66
+Requires-Dist: opencv-python-headless ==4.5.5.62
+Requires-Dist: pandas
+Requires-Dist: pickle5
+Requires-Dist: protobuf ==3.20.*
+Requires-Dist: boto3 ==1.24.47
+Requires-Dist: ffmpeg-python ==0.2.0
+Requires-Dist: scipy ==1.7.3
+Requires-Dist: pycpd
+Requires-Dist: torch
+Requires-Dist: torchvision
+Requires-Dist: imageio
+Requires-Dist: PyYAML
+
+## Signapse synthetic signer
+![alt text](data:image/png;base64,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)
+
+
+# Synthetic Signer
+Requires python=3.7.0
+
+### Example command 
+
+```python inference.py "{\"GPU\":\"cpu\",\"input_video_path\":\"path/to/video.mp4\",\"input_type\":\"video\",\"start\":0,\"stop\":-1,\"num_workers\":1,\"GAN_folder\":\"GAN\",\"signer\":\"Barbara\",\"stereo\":\"False\",\"pro\":\"True\",\"detailed_video\":\"False\",\"organisation_id\":\"0\",\"sign_request_id\":\"0\",\"sign_result_queue_url\":\"0\",\"synthetic_sign_results_bucket\":\"0\"}" ```
+
+
+## GAN_Checkpoint files
+
+GAN input files need to be downloaded to the respective folders. The GAN files are saved on.
+
+To choose the output signer appearance, pass the respective `--signer XX` argument.
+
+### Barbara
+
+```--signer Barbara```
+
+Download the  folder and store as *./Barbara*. 
+
+
+### Safyan
+
+```--signer Safyan```
+
+Download the  folder and store as *./Safyan*.
+
+### Mia
+
+```--signer Mia```
+
+Download the folder and store as *./Mia*.
+
+## Face and Body Separate GANs
+
+### To run without Face and Body (--GAN_folder GAN)
+ 
+Pass the respective `--GAN_folder GAN` argument.
+
+```--GAN_folder GAN```
+
+### To run with Face and Body (--GAN_folder GAN_FaB)
+
+Pass the respective `--GAN_folder GAN_FaB` argument.
+
+```--GAN_folder GAN_FaB```
+
+## Face Mesh
+
+### To run with FaceMesh and FaceLandmarks (--GAN_folder GAN_FM)
+
+```--GAN_folder GAN_FM```
+
+### To run with FaceMesh and no FaceLandmarks (--GAN_folder GAN_FM_NoFL)
+
+```--GAN_folder GAN_FM_NoFL```
+
+## Stereo Data
+
+### To run with Stereo data (--input_type stereo and --input_video_path refers to the pickle file) 
+
+Pass the respective `--input_type stereo` argument.
+
+`--input_type stereo` 
+
+## Full pipeline
+
+```python ./inference.py --organisation_id 0  --sign_result_queue_url 0 --synthetic_sign_results_bucket 0 --input_video_path /home/basheer/Signapse/Stereo/video_1/H020_smile2.flircorder.H020_data_m6.H020.07042022.142814_recording_data.pkl  --stop 1000 --num_workers 8 --GPU cuda --sign_request_id NoFaB_100 --GAN_folder GAN --input_type stereo```
+
+## Numpy Data
+
+### To run with a Numpy file containing poses ( --input_type numpy and --input_video_path refers to the .npy file) 
+
+<<<<<<< HEAD
+```python ./inference.py --organisation_id 0  --sign_result_queue_url 0 --synthetic_sign_results_bucket 0 --input_video_path ./inputs/Example_Pose_Video_1.mp4 --stop 100 --num_workers 1 --GPU cuda --sign_request_id FaB_100 --GAN_folder GAN_FaB```
+
+
+## To run with Stereo data (--stereo True and --input_video_path refers to the pickle file) 
+
+Pass the respective *--stereo True* argument.
+
+```python ./inference.py --organisation_id 0  --sign_result_queue_url 0 --synthetic_sign_results_bucket 0 --input_video_path /home/basheer/Signapse/Stereo/video_1/H020_smile2.flircorder.H020_data_m6.H020.07042022.142814_recording_data.pkl  --stop 1000 --num_workers 8 --GPU cuda --sign_request_id NoFaB_100 --GAN_folder GAN --stereo True```
+
+=======
+Pass the respective `--input_type numpy` argument.
+>>>>>>> 66c02cb886bab2dfb428e57ab477c5bf8ab59209
