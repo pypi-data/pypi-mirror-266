@@ -1,0 +1,251 @@
+import sys
+from django.db.models import Q
+from rest_framework import viewsets, mixins, status
+from rest_framework.serializers import Serializer
+from rest_framework.decorators import action
+from rest_framework.response import Response as RESTResponse
+from rest_framework.exceptions import ValidationError
+from django.contrib.gis.geos import Point
+from django.utils import timezone
+from simo.core.api import InstanceMixin
+from .models import (
+    User, UserDevice, UserDeviceReportLog, PermissionsRole, InstanceInvitation,
+    Fingerprint
+)
+from .serializers import (
+    UserSerializer, PermissionsRoleSerializer, InstanceInvitationSerializer,
+    FingerprintSerializer
+)
+
+
+class UsersViewSet(mixins.RetrieveModelMixin,
+                   mixins.UpdateModelMixin,
+                   mixins.DestroyModelMixin,
+                   mixins.ListModelMixin,
+                   InstanceMixin,
+                   viewsets.GenericViewSet):
+    url = 'users/users'
+    basename = 'users'
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        queryset = User.objects.all().order_by(
+            '-last_action'
+        ).exclude(
+            email__in=('system@simo.io', 'device@simo.io')
+        ) # Exclude system user
+
+        return queryset.filter(roles__instance=self.instance)
+
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+
+        for key, val in request.data.items():
+            if key not in ('role', 'is_active'):
+                request.data.pop(key)
+
+        user = self.get_object()
+        user.set_instance(self.instance)
+
+        user_role = request.user.get_role(self.instance)
+        if not request.user.is_superuser:
+            if not user_role or not user_role.can_manage_users:
+                msg = 'You are not allowed to change this!'
+                print(msg, file=sys.stderr)
+                raise ValidationError(msg, code=403)
+
+        serializer = self.get_serializer(
+            user, data=request.data, partial=partial
+        )
+        try:
+            serializer.is_valid(raise_exception=True)
+        except Exception as e:
+            print(e, file=sys.stderr)
+            raise ValidationError(str(e), code=403)
+
+        try:
+            set_role_to = PermissionsRole.objects.get(
+                pk=request.data.get('role')
+            )
+        except:
+            pass
+        else:
+            if set_role_to != user.get_role(self.instance) and set_role_to.is_superuser \
+            and not user_role.is_superuser:
+                msg = "You are not allowed to grant superuser roles to others " \
+                      "if you are not a superuser yourself."
+                print(msg, file=sys.stderr)
+                raise ValidationError(msg, code=403)
+
+            if user == request.user \
+            and user_role and user_role.is_superuser \
+            and not set_role_to.is_superuser:
+            # User is trying to downgrade his own role from
+            # superuser to something lower, we must make sure
+            # there is at least one user left that has superuser role on this instance.
+                if not User.objects.filter(
+                    roles__instance=self.instance, roles__is_superuser=True
+                ).exclude(id=user.id).values('id').first():
+                    msg = "You are the only one superuser on this instance, " \
+                          "therefore you are not alowed to downgrade your role."
+                    print(msg, file=sys.stderr)
+                    raise ValidationError(msg, code=403)
+
+        self.perform_update(serializer)
+
+        if getattr(user, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            user._prefetched_objects_cache = {}
+
+        return RESTResponse(serializer.data)
+
+    def destroy(self, request, *args, **kwargs):
+        user = self.get_object()
+        if request.user.pk == user.pk:
+            raise ValidationError(
+                'Deleting yourself is not allowed!', code=403
+            )
+        if request.user.is_superuser:
+            pass
+        else:
+            role = request.user.get_role(self.instance)
+            if not role or not role.can_manage_users:
+                raise ValidationError(
+                    'You do not have permission for this!', code=403
+                )
+        self.perform_destroy(user)
+        return RESTResponse(status=status.HTTP_204_NO_CONTENT)
+
+
+class RolesViewsets(InstanceMixin, viewsets.ReadOnlyModelViewSet):
+    url = 'users/roles'
+    basename = 'roles'
+    serializer_class = PermissionsRoleSerializer
+    queryset = PermissionsRole.objects.all()
+
+    def get_queryset(self):
+        return PermissionsRole.objects.filter(instance=self.instance)
+
+
+class UserDeviceReport(InstanceMixin, viewsets.GenericViewSet):
+    url = 'users'
+    basename = 'device_report'
+    serializer_class = Serializer
+
+    @action(url_path='device-report', detail=False, methods=['post'])
+    def report(self, request, *args, **kwargs):
+
+        if not request.data.get('device_token'):
+            return RESTResponse(
+                {'status': 'error', 'msg': 'device_token - not provided'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        if not request.data.get('os'):
+            return RESTResponse(
+                {'status': 'error', 'msg': 'os - not provided'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        defaults = {'os': request.data['os'], 'user': request.user}
+        user_device, new = UserDevice.objects.get_or_create(
+            token=request.data['device_token'],
+            defaults=defaults
+        )
+        if not new:
+            for key, val in defaults.items():
+                setattr(user_device, key, val)
+        try:
+            location = Point(
+                *[float(c) for c in request.data.get('location').split(',')],
+                srid=4326
+            )
+        except:
+            location = None
+
+        user_device.last_seen = timezone.now()
+        if location:
+            user_device.last_seen_location = ','.join(
+                [str(i) for i in location]
+            ) if location else None
+        if request.data.get('app_open', False):
+            user_device.is_primary = True
+        user_device.save()
+
+        relay = None
+        if request.META.get('HTTP_HOST', '').endswith('.simo.io'):
+            relay = request.META.get('HTTP_HOST')
+
+        UserDeviceReportLog.objects.create(
+            user_device=user_device, instance=self.instance,
+            app_open=request.data.get('app_open', False),
+            location=','.join([str(i) for i in location]) if location else None,
+            relay=relay
+        )
+
+        return RESTResponse({'status': 'success'})
+
+
+class InvitationsViewSet(InstanceMixin, viewsets.ModelViewSet):
+    url = 'users/invitations'
+    basename = 'invitations'
+    serializer_class = InstanceInvitationSerializer
+
+    def get_queryset(self):
+        if not self.request.user.is_superuser:
+            role = self.request.user.get_role(self.instance)
+            if not role or not role.can_manage_users:
+                return InstanceInvitation.objects.none()
+        return InstanceInvitation.objects.filter(instance=self.instance)
+
+    def perform_create(self, serializer):
+        serializer.save(
+            from_user=self.request.user, instance=self.instance
+        )
+
+    @action(detail=True, methods=['post'])
+    def send(self, request, pk=None, *args, **kwargs):
+        invitation = self.get_object()
+        response = invitation.send()
+        if not response or response.status_code != 200:
+            return RESTResponse(
+                {'status': 'error',
+                 'msg': 'Something went wrong.'},
+                status=400
+            )
+        return RESTResponse(response.json())
+
+
+class FingerprintViewSet(
+    InstanceMixin,
+    mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin, mixins.ListModelMixin,
+    viewsets.GenericViewSet
+):
+    url = 'users/fingerprints'
+    basename = 'fingerprints'
+    serializer_class = FingerprintSerializer
+
+
+    def get_queryset(self):
+        return Fingerprint.objects.filter(
+            Q(user=None) | Q(user__roles__instance=self.instance)
+        )
+
+    def check_can_manage_user(self, request):
+        user_role = request.user.get_role(self.instance)
+        if not request.user.is_superuser:
+            if not user_role or not user_role.can_manage_users:
+                msg = 'You are not allowed to change this!'
+                print(msg, file=sys.stderr)
+                raise ValidationError(msg, code=403)
+
+    def update(self, request, *args, **kwargs):
+        self.check_can_manage_user(request)
+        return super().update(request, *args, **kwargs)
+
+    def destroy(self, request, *args, **kwargs):
+        self.check_can_manage_user(request)
+        return super().destroy(request, *args, **kwargs)
+
