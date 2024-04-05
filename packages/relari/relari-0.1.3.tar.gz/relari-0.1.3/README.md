@@ -1,0 +1,79 @@
+# Relari Evaluation Tookit
+
+## Requirements
+
+- Python >=3.9.0
+- Poetry, [official installation guide](https://python-poetry.org/docs/#installation)
+
+## Installation
+
+```bash
+poetry install
+```
+
+## Usage
+
+Before being able to use the evaluation toolkit, you need to export the API key
+
+```bash
+export RELARI_API_KEY=<your_api_key>
+```
+
+To run the evaluation toolkit, you then need to define the evaluation pipeline
+
+```python
+dataset = Dataset("<path_to_dataset>")
+
+retriever = Module(
+    name="retriever",
+    input=dataset.question,
+    output=List[Dict[str, str]],
+)
+
+reranker = Module(
+    name="reranker",
+    input=retriever,
+    output=List[Dict[str, str]],
+)
+
+llm = Module(
+    name="llm",
+    input=reranker,
+    output=str,
+)
+
+pipeline = Pipeline([retriever, reranker, llm], dataset=dataset)
+```
+
+this will inform the evaluator about the modules and the dataset you want to use. 
+
+Suppose you have three functions `retrieve`, `rerank`, and `ask` that implement the threes steps of the pipeline. 
+You can then use the ralari evaluation toolkit as follows:
+
+```python
+from relari.eval.manager import eval_manager
+from relari import RelariClient
+
+client = RelariClient()
+
+eval_manager.set_pipeline(pipeline)
+eval_manager.set_metadata({"name": "SimpleRAG"})
+with eval_manager.new_experiment as experiment:
+  for sample in experiment:
+    q = eval_manager.curr_sample["question"]
+    # Run and log Retriever results
+    retrieved_docs = retrieve(q)  # Your retrieve function
+    eval_manager.log("retriever", [doc.__dict__ for doc in retrieved_docs])
+    # Run and log Reranker results
+    reranked_docs = rerank(q, retrieved_docs) # Your rerank function
+    eval_manager.log("reranker", [doc.__dict__ for doc in reranked_docs])
+    # Run and log Generator results
+    response = ask(q, reranked_docs) # Your answer generation function
+    eval_manager.log("llm", response)
+    print(f"Q: {q}\nA: {response}\n")
+
+eval_manager.evaluation.save(Path("results.jsonl"))
+client.start_remote_evaluation()
+```
+
+This will run the evaluation pipeline on the dataset and log the results to the Relari API.
