@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "html-elements"
+version = "0.1.4"
+description = "HTML element objects to use in pure Python server side rendering"
+authors = ["Anton De Meester <antondemeester@gmail.com>"]
+readme = "README.md"
+packages = [{include = "html_elements"}]
+license = "MIT"
+
+[project.urls]
+Homepage = "https://github.com/AntonDeMeester/html-elements"
+Documentation = "https://antondemeester.github.io/html-elements/"
+Repository = "https://github.com/AntonDeMeester/html-elements"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.2"
+pyright = "^1.1.351"
+mypy = "^1.8.0"
+ruff = "^0.2.2"
+black = "^24.2.0"
+mkdocs = "^1.5.3"
+mkdocs-material = "^9.5.11"
+pytest-cov = "^4.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 128
+exclude = "docs_code|local"
+
+[tool.pyright]
+exclude = ["local", "site"]
+
+[tool.mypy]
+exclude = "site|local"
