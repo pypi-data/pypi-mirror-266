@@ -1,0 +1,111 @@
+[tool.poetry]
+name = "janus-core"
+version = "0.2.0b1"
+description = "Tools for machine learnt interatomic potentials"
+authors = [
+    "Elliott Kasoar",
+    "Federica Zanca",
+    "Patrick Austin",
+    "David Mason",
+    "Jacob Wilkins",
+    "Alin M. Elena",
+]
+readme = "README.md"
+packages = [{include = "janus_core"}]
+classifiers = [
+    "Programming Language :: Python",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: BSD License",
+    "Natural Language :: English",
+    "Development Status :: 3 - Alpha",
+]
+repository = "https://github.com/stfc/janus-core/"
+documentation = "https://stfc.github.io/janus-core/"
+
+[tool.poetry.scripts]
+janus = "janus_core.cli:app"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+ase = "^3.22.1"
+mace-torch = "^0.3.4"
+typer = "^0.9.0"
+pyaml = "^23.12.0"
+
+[tool.poetry.group.dev.dependencies]
+coverage = {extras = ["toml"], version = "^7.4.1"}
+pgtest = "^1.3.2"
+pytest = "^8.0"
+pytest-cov = "^4.1.0"
+tox = "^4.12.1"
+wheel = "^0.42"
+
+[tool.poetry.group.pre-commit]
+optional = true
+[tool.poetry.group.pre-commit.dependencies]
+black = "^24.1.1"
+pre-commit = "^3.6.0"
+pylint = "^2.15.10"
+
+[tool.poetry.group.docs]
+optional = true
+[tool.poetry.group.docs.dependencies]
+furo = "^2024.1.29"
+markupsafe = "<2.1"
+numpydoc = "^1.6.0"
+sphinx = "^7.2.6"
+sphinxcontrib-contentui = "^0.2.5"
+sphinxcontrib-details-directive = "^0.1"
+
+
+[tool.poetry.group.extra-mlips]
+optional = true
+[tool.poetry.group.extra-mlips.dependencies]
+dgl = "^1.1.3"
+chgnet = "^0.3.4"
+matgl = "^1.0.0"
+spglib = "<=2.2.0"
+torch-dftd = "^0.4.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+
+[tool.pylint.format]
+max-line-length = 88
+max-args = 10
+good-names = ["e", "i", "j", "k"]
+
+[tool.pytest.ini_options]
+# Configuration for [pytest](https://docs.pytest.org)
+python_files = "test_*.py"
+addopts = '--cov-report xml'
+pythonpath = ["."]
+
+[tool.coverage.run]
+# Configuration of [coverage.py](https://coverage.readthedocs.io)
+# reporting which lines of your plugin are covered by tests
+source=["janus_core"]
+
+[tool.isort]
+# Configuration of [isort](https://isort.readthedocs.io)
+line_length = 88
+force_sort_within_sections = true
+sections = ['FUTURE', 'STDLIB', 'THIRDPARTY', 'FIRSTPARTY', 'LOCALFOLDER']
+
+[tool.numpydoc_validation]
+# report on all checks, except the below
+checks = [
+    "all",
+    "EX01",
+    "SA01",
+    "ES01",
+]
+# Don't report on objects that match any of these regex
+exclude = [
+    ".__weakref__$",
+    ".__repr__$",
+]
