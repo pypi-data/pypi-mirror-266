@@ -1,0 +1,79 @@
+Metadata-Version: 2.1
+Name: integ-db
+Version: 0.0.7
+Summary: This package Integrated Database library
+Home-page: https://github.com/Byeongin-Jeong/integdb
+Author: byeongin.jeong
+Author-email: jbi0214@gmail.com
+Project-URL: Bug Tracker, https://github.com/Byeongin-Jeong/integdb/issues
+Keywords: mysql,mssql,mariadb,python db,python database,integrate database,sqlalchemy
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Topic :: Database
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pymysql
+Requires-Dist: mariadb
+Requires-Dist: pymssql
+Requires-Dist: pymysql-pool
+Requires-Dist: SQLAlchemy
+Requires-Dist: pandas
+
+# integdb
+### This package Integrated Database library, based on PyMySQL, pymssql, mariadb, SQLAlchemy.
+
+#### Requirements
+- MySQL
+- MSSQL(SQL Server)
+- MaridDB
+
+#### Controller Object
+- MySQL
+- MaridDB
+- MSSQL
+- SQLAlchemy
+
+#### Object that provides a pool
+- MySQL
+- MariaDB
+
+## Install
+#### From PIP
+```
+pip install integ-db
+```
+## Example
+```
+from integdb import Controller
+
+host = "localhost"
+user = "usrname"
+password = "password"
+port = 3306
+schema = "database_name"
+controller = Controller(
+                    host=host,
+                    user=user,
+                    password=password,
+                    port=port,
+                    schema=schema,
+                    connection_pool=False)
+try:
+    controller.MySQL.connect()
+    sql_context = "SELECT * FROM TEST_DB"
+    rows = controller.MySQL.sql_executer(sql_context)
+    print (rows)
+except Exception as e:
+    print (e)
+finally:
+    controller.MySQL.close()
+```
