@@ -1,0 +1,64 @@
+[project]
+name = "ddrage"
+description = "Simulator for ddRADseq (double digest restriction site associated DNA sequencing) datasets. Generates reads (FASTQ format) that can be analyzed and validated using a ground truth file (YAML)."
+readme = {file = "README.rst", content-type = "text/x-rst"}
+version = "1.8.0"
+authors = [{name = "Henning Timm", email = "henning.timm@uni-due.de"}]
+license = {file = "LICENSE.rst"}
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+    ]
+dependencies = [
+    "numpy",
+    "numba",
+    "matplotlib",
+    "seaborn",
+    "scipy >= 1.4.1",
+    "pyyaml",
+    "dinopy",
+]
+
+[project.optional-dependencies]
+BBD-visualization = ["bokeh"]
+documentation = ["sphinx >= 1.5.0"]
+
+[project.scripts]
+ddrage = "ddrage.__main__:main"
+learn_qmodel = "ddrage.tools.learn_qmodel:main"
+rage = "ddrage.__main__:main"
+randomize_fastq = "ddrage.tools.randomize_fastq:main"
+remove_annotation = "ddrage.tools.remove_annotation:main"
+split_by_p7_barcode = "ddrage.tools.split_by_p7_barcode:main"
+visualize_bbd = "ddrage.tools.bbd_visualization:main_standalone"
+
+[project.urls]
+Homepage = "https://ddrage.readthedocs.io/en/latest/"
+Documentation = "https://ddrage.readthedocs.io/en/latest/"
+Repository = "https://bitbucket.org/genomeinformatics/rage"
+"Bug Tracker" = "https://bitbucket.org/genomeinformatics/rage/issues"
+# This is a nicely rendered version of the file
+# https://bitbucket.org/genomeinformatics/rage/src/master/CHANGELOG.rst
+Changelog = "https://ddrage.readthedocs.io/en/latest/changelog/"
+
+[tools.setuptools.packages.find]
+where = ["ddrage"]
+
+[build-system]
+requires = [
+  "setuptools >= 60",
+  "setuptools-scm",
+]
+
+build-backend = "setuptools.build_meta"
