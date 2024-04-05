@@ -1,0 +1,36 @@
+Metadata-Version: 2.3
+Name: lscsde_workspace_mgmt
+Version: 0.1.3
+Summary: LSCSDE Workspace Management
+Project-URL: Homepage, https://github.com/lsc-sde/py-lscsde-workspace-mgmt
+Project-URL: Issues, https://github.com/lsc-sde/py-lscsde-workspace-mgmt/issues
+Author-email: Shaun Turner <shaun.turner1@nhs.net>
+License-File: LICENSE
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.8
+Requires-Dist: importlib-metadata; python_version < '3.10'
+Requires-Dist: kubernetes-asyncio
+Requires-Dist: pydantic
+Description-Content-Type: text/markdown
+
+# py-lscsde-workspace-mgmt
+Python Module for LSCSDE Workspace Management
+
+## Developer Instructions
+### Incrementing the version
+The version of this package is located in the following file:
+[/src/lscsde_workspace_mgmt/_version.py](./src/lscsde_workspace_mgmt/_version.py)
+
+Please increment this before building.
+
+### Building
+```bash
+python3 -m build
+```
+
+### Publishing built artifacts to pypi
+```bash
+python -m twine upload --repository pypi dist/*
+```
