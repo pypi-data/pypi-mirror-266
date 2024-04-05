@@ -1,0 +1,67 @@
+map:
+  type: dict
+  required: True
+  excludes: [case, regex, code]
+  schema:
+    setName:
+      type: string
+      required: true
+    invert:
+      type: boolean
+
+case:
+  type: dict
+  required: True
+  excludes: [map, regex, code]
+  schema:
+    rule: 
+      type: string
+      required: true
+      allowed: [lower, upper, capitalize]
+    outputSet:
+      type: string
+
+regex:
+  type: dict
+  required: True
+  excludes: [map, case, code]
+  schema:
+    pattern:
+      type: string
+      required: true
+    replace:
+      type: string
+      required: true
+    outputSet:
+      type: string
+
+code:
+  type: dict
+  required: True
+  excludes: [map, case, regex]
+  schema:
+    rule:
+      type: string
+      required: true
+    ruleIdentifier:
+      type: string
+    outputSet:
+      type: string
+
+writeAll:
+  type: [boolean, string]
+  allowed: [true, false, auto]
+
+symbols:
+  type: list
+  schema:
+    type: dict
+    schema:
+      name: 
+        type: string
+        required: true
+      newName:
+        type: string 
+
+trace:
+  type: integer
