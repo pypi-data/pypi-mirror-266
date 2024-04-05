@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "iso-standards"
+version = "0.1.2"
+description = "ISO standards"
+authors = ["Arkadii Yakovets <ark@cho.red>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.8, <4.0"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.2.0"
+pytest = "^8.0.0"
+requests = "^2.31.0"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.0.2"
+
+[tool.isort]
+known_first_party = ["iso_standards", "tests"]
+line_length = 100
+multi_line_output = 3
+no_inline_sort = true
+profile = "black"
+
+[tool.ruff]
+fix = true
+line-length = 100
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
