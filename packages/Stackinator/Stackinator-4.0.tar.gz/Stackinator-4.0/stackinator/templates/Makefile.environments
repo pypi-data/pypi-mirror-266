@@ -1,0 +1,76 @@
+{% set pipejoiner = joiner('|') %}
+-include ../Make.user
+
+MAKEFLAGS += --output-sync=recurse
+
+.PHONY: all .locks .packages.yaml
+
+all:{% for env in environments %} {{ env }}/generated/build_cache{% endfor %}
+
+
+# Ensure that spack.lock files are never removed as intermediate files
+.locks:{% for env in environments %} {{ env }}/spack.lock{% endfor %}
+
+# Ensure that package yaml files are never removed as intermediate files...
+.packages.yaml:{% for env in environments %} {{ env }}/packages.yaml{% endfor %}
+
+# Push built packages to a binary cache if a key has been provided
+{% for env, config in environments.items() %}
+{{ env }}/generated/build_cache: {{ env }}/generated/view_config
+{% if push_to_cache %}
+	$(SPACK) -e ./{{ env }} buildcache create --rebuild-index --allow-root --only=package alpscache \
+	$$($(SPACK) --color=never -e ./{{ env }} find --format '{name};{/hash};version={version}' \
+	| grep -v -E '^({% for p in config.exclude_from_cache %}{{ pipejoiner() }}{{ p }}{% endfor %});'\
+	| grep -v -E 'version=git\.'\
+	| cut -d ';' -f2)
+{% endif %}
+	touch $@
+
+{% endfor %}
+
+# Create environment view where requested
+{% for env, config in environments.items() %}
+{{ env }}/generated/view_config: {{ env }}/generated/env
+{% if config.view %}
+{% if develop or (spack_version>="0.21") %}
+	$(SPACK) env activate --with-view default --sh ./{{ env }} > $(STORE)/env/{{ config.view.name }}/activate.sh
+	$(SOFTWARE_STACK_PROJECT)/add-compiler-links.py  ./{{ env }}/compilers.yaml $(STORE)/env/{{ config.view.name }}/activate.sh $(SOFTWARE_STACK_PROJECT)
+{% else %}
+	$(SPACK) env activate --with-view --sh ./{{ env }} > $(STORE)/env/{{ config.view.name }}/activate.sh
+	$(SOFTWARE_STACK_PROJECT)/add-compiler-links.py  ./{{ env }}/compilers.yaml $(STORE)/env/{{ config.view.name }}/activate.sh $(SOFTWARE_STACK_PROJECT)
+{% endif %}
+{% endif %}
+	touch $@
+
+{% endfor %}
+
+
+{% for env in environments %}{{ env }}/config.yaml {% endfor %}: | store
+	$(SPACK) config --scope=user add config:install_tree:root:$(STORE)
+
+# Create the compilers.yaml configuration for each environment
+{% for env, config in environments.items() %}
+{{ env }}_PREFIX = {% for C in config.compiler %} $$($(SPACK) --color=never -e ../compilers/{{ C.toolchain }} find --format '{prefix}' {{ C.spec }}){% endfor %}
+
+{{ env }}/compilers.yaml:
+	$(SPACK) compiler find --scope=user $(call compiler_bin_dirs, $({{ env }}_PREFIX))
+
+{% endfor %}
+
+# Configure external system dependencies for each compiler toolchain
+{% for env, config in environments.items() %}
+{% if config.packages %}
+{{ env }}/packages.yaml:
+	$(SPACK) external find --not-buildable --scope=user {% for package in config.packages %} {{package}}{% endfor %}
+
+
+{% endif %}
+{% endfor %}
+
+-include ../Make.inc
+
+ifeq (,$(filter clean,$(MAKECMDGOALS)))
+{% for env in environments %}
+include {{ env }}/Makefile
+{% endfor %}
+endif
