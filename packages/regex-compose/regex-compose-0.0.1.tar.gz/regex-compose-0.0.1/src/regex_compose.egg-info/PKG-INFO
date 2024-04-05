@@ -1,0 +1,123 @@
+Metadata-Version: 2.1
+Name: regex-compose
+Version: 0.0.1
+Summary: Compose multiple regular expressions into one using a special syntax
+Author: Shae.c32
+Project-URL: Homepage, https://codeberg.org/Shae/RegExCompose
+Project-URL: Issues, https://codeberg.org/Shae/RegExCompose/issues
+Keywords: re,regex,regular,expression
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Software Development :: Compilers
+Classifier: Topic :: Software Development :: Interpreters
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Software Development :: Pre-processors
+Classifier: Topic :: Text Processing
+Classifier: Topic :: Utilities
+Classifier: Typing :: Typed
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# What it is
+A regular expression builder that manages cross-pattern references
+and allows for easy runtime mutability by default
+
+## Features
+
+### Simple syntax
+The syntax for cross-referencing regular expressions is simple, and defined by a small
+(customizable) regular expression, which by default matches text like `(?~name)`
+
+### Automatic reference management
+When using a `PatternComposer`, patterns are automatically tracked, so that when one
+changes, all the patterns that depend on it are recompiled as well
+
+# Why & priorities
+When working on my programming language, [Caustic](https://codeberg.org/Caustic),
+I was displeased at most of the parsers I found, and decided to make my own. For
+the parsing of regular expressions, I needed support for **runtime modification** due
+to Caustic's variable syntax. As such, arbitrary modifications can be made to the
+patterns by modifying either the pattern itself, or patterns it depends on.
+
+# Expression syntax
+Sub parts are denoted like `(?~name)` by default, but can be changed to any regular expression.
+As such, the following syntax and examples are only valid with the default part-pattern.
+
+|   Name   |         Pattern         |
+| :------: | :---------------------- |
+| `part_a` |          `\d`           |
+| `part_b` |       `[a-zA-Z]`        |
+|  `patt`  | `(?~part_a):(?~part_b)` |
+
+Given the table of patterns above, the pattern `patt` compiles to:
+> `\d:[a-zA-Z]`
+
+If `part_a` was changed to `-?\d`, then `patt` would recompile to:
+> `-?\d:[a-zA-Z]`
+
+# Examples
+Note that examples are given with the default matching pattern, so references will be made as `(?~name)`
+
+## [/examples/pragma-parser-2.py](https://codeberg.org/Shae/RegExCompose/src/branch/main/examples/pragma-parser-2.py)
+The following script runs a REPL that will match each line of input against
+a "pragma" statement that can change the patterns on-the-fly
+
+```python3
+#> Imports
+import re
+import regex_compose
+#</Imports
+
+#> Header
+base_patterns = {
+    'word': r'\w',
+    'number': r'\d',
+    'wordnum': r'(?~word)|(?~number)',
+}
+
+pragma_patterns = {
+    'pragma.start': r'^\$',
+    'pragma.stop': r'$',
+    'pragma.key': r'(?P<key>(?:(?~wordnum)|\.)+)',
+    'pragma.delim': r':',
+    'pragma.val': r'(?P<val>.*?)',
+    'pragma.flags': r'(?m)',
+    'pragma': r'(?~pragma.flags)(?~pragma.start)(?~pragma.key)(?~pragma.delim)(?~pragma.val)(?~pragma.stop)',
+}
+#</Header
+
+#> Main >/
+# Create parser and add `base_patterns` and `pragma_patterns`
+p = regex_compose.PatternComposer()
+p.multiadd(base_patterns)
+p.multiadd(pragma_patterns)
+
+print(f'Pragma pattern: {rc.patterns["pragma"]}\n -> {rc.compiled["pragma"]}')
+while True:
+    inp = input('Enter text to parse > ')
+    if m := re.match(p['pragma'], inp):
+        rc.add(m.group('key'), m.group('val'), replace=True)
+        print(p.compiled['pragma'])
+    else: print(inp) # echo the line back when there's no pragma
+```
+
+| Input              | Output
+| :----------------- | :-----
+|  N/A               | `Pragma pattern: (?~pragma.flags)(?~pragma.start)(?~pragma.key)(?~pragma.delim)(?~pragma.val)(?~pragma.stop)`
+|  N/A               | ` -> (?m)^\$(?P<key>(?:\w\|\d\|\.)+):(?P<val>.*?)$`
+| `test`             | `test`
+| `$pragma.start:%`  | `(?m)%(?P<key>(?:\w\|\d\|\.)+):(?P<val>.*?)$`
+| `%pragma.stop:;`   | `(?m)%(?P<key>(?:\w\|\d\|\.)+):(?P<val>.*?);`
+| `%pragma.delim:=;` | `(?m)%(?P<key>(?:\w\|\d\|\.)+)=(?P<val>.*?);`
+
+## Further examples
+For further examples, see [https://codeberg.org/Shae/RegExCompose/src/branch/main/examples](https://codeberg.org/Shae/RegExCompose/src/branch/main/examples)
+
+# Links
+- Source code: [https://codeberg.org/Shae/RegExCompose](https://codeberg.org/Shae/RegExCompose)
+- License: [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
