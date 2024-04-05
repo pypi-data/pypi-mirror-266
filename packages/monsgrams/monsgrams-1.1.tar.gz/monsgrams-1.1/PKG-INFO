@@ -1,0 +1,41 @@
+Metadata-Version: 2.1
+Name: monsgrams
+Version: 1.1
+Summary: A simple Python library for creating telegram bot.
+Home-page: https://github.com/tech-voyager/monsgrams/
+Author: grubx64
+License: MIT
+Description-Content-Type: text/markdown
+Requires-Dist: aiohttp>=3.9.3
+
+**This library provides interesting opportunities for creating telegram bots.
+convenient syntax, decorators.**
+
+# EXAMPLE USE!
+```python
+import asyncio
+from monsgrams import Bot
+bot = Bot("")
+
+@bot.command("start")
+async def start_command(context):
+    chat_info = await bot.get_chat(context.chat_id)
+    chat_id = chat_info['result']['id']
+    username = chat_info['result']['username']
+    await bot.send_message(chat_id, f"Hello, {username}!")
+
+@bot.command("avatar")
+async def avatar_command(context):
+    photos_info = await bot.get_user_profile_photos(context.user_id)
+    print(photos_info)
+    file_id = photos_info['result']['photos'][-1][-1]['file_id']
+    print(file_id)
+    await bot.send_photo(context.chat_id, file_id)
+
+async def main():
+    await bot.polling_loop()
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+DOCS - WRITING.
