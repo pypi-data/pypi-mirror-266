@@ -1,0 +1,122 @@
+Metadata-Version: 2.1
+Name: libresvip
+Version: 1.1.0
+Summary: Universal Converter for Singing Voice Projects
+Author-Email: SoulMelody <yjxrtzyx@gmail.com>
+License: MIT
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Environment :: Console
+Classifier: Operating System :: Unix
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: Microsoft :: Windows :: Windows 10
+Classifier: Operating System :: Microsoft :: Windows :: Windows 11
+Classifier: Framework :: Pydantic :: 2
+Classifier: Topic :: File Formats
+Classifier: Topic :: Multimedia :: Sound/Audio :: Sound Synthesis
+Classifier: Typing :: Typed
+Project-URL: Repository, https://github.com/SoulMelody/LibreSVIP
+Project-URL: Documentation, https://soulmelody.github.io/LibreSVIP
+Requires-Python: <3.13,>=3.9
+Requires-Dist: bidict<0.23.2,>=0.23.1
+Requires-Dist: charset-normalizer<4.0.0,>=3.3.2
+Requires-Dist: construct-typing<1.0.0,>=0.6.2
+Requires-Dist: drawsvg<3.0.0,>=2.3.0
+Requires-Dist: importlib-resources<7.0.0,>=6.4.0; python_version < "3.11"
+Requires-Dist: jinja2<4.0.0,>=3.1.3
+Requires-Dist: loguru<1.0.0,>=0.7.2
+Requires-Dist: mido-fix<2.0.0,>=1.2.12
+Requires-Dist: more-itertools<11.0.0,>=10.2.0
+Requires-Dist: omegaconf<3.0.0,>=2.3.0
+Requires-Dist: packaging<24.1,>=24.0
+Requires-Dist: parsimonious<0.11.0,>=0.10.0
+Requires-Dist: platformdirs<5.0.0,>=4.2.0
+Requires-Dist: portion<3.0.0,>=2.4.2
+Requires-Dist: proto-plus<2.0.0,>=1.23.0
+Requires-Dist: pydantic<3.0.0,>=2.6.4
+Requires-Dist: pydantic-extra-types<3.0.0,>=2.6.0
+Requires-Dist: pymediainfo<7.0.0,>=6.1.0
+Requires-Dist: pypinyin<1.0.0,>=0.51.0
+Requires-Dist: retrie<1.0.0,>=0.3.1
+Requires-Dist: rich<14.0.0,>=13.7.1
+Requires-Dist: srt<4.0.0,>=3.5.3
+Requires-Dist: typer-slim<1.0.0,>=0.12.0
+Requires-Dist: wanakana-python<2.0.0,>=1.2.2
+Requires-Dist: xsdata<24.5,>=24.4
+Requires-Dist: zhon<3.0.0,>=2.0.2
+Requires-Dist: zstandard<0.23.0,>=0.22.0; platform_python_implementation == "CPython"
+Requires-Dist: zstd<2.0.0,>=1.5.5.1; platform_python_implementation == "PyPy"
+Requires-Dist: ujson>=5.9.0; extra == "ujson"
+Requires-Dist: universal-pathlib<1.0.0,>=0.2.2; extra == "upath"
+Requires-Dist: ruamel.yaml>=0.18.6; extra == "ruamel-yaml"
+Requires-Dist: lxml>=5.2.1; extra == "lxml"
+Requires-Dist: nicegui[native]>=1.4.19; extra == "webui"
+Requires-Dist: libresvip[upath]; extra == "webui"
+Requires-Dist: pyside6!=6.6.3,<6.7.0,>=6.6.3.1; extra == "desktop"
+Requires-Dist: fonticon-materialdesignicons7>=7.2.96; extra == "desktop"
+Requires-Dist: httpx>=0.27.0; extra == "desktop"
+Requires-Dist: desktop-notifier>=3.5.6; platform_python_implementation == "CPython" and extra == "desktop"
+Requires-Dist: libresvip[upath]; extra == "desktop"
+Provides-Extra: ujson
+Provides-Extra: upath
+Provides-Extra: ruamel_yaml
+Provides-Extra: lxml
+Provides-Extra: webui
+Provides-Extra: desktop
+Description-Content-Type: text/markdown
+
+# LibreSVIP
+[![PyPi](https://img.shields.io/pypi/v/libresvip)](https://pypi.org/project/libresvip/)
+[![Python Version](https://img.shields.io/pypi/pyversions/libresvip.svg)](https://pypi.org/project/libresvip/)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/libresvip)](https://pypi.org/project/libresvip/)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
+[![License](https://img.shields.io/pypi/l/libresvip?color=blue)](https://opensource.org/licenses/MIT)
+[![GitHub Build](https://img.shields.io/github/actions/workflow/status/SoulMelody/LibreSVIP/package.yml?label=packaging)](https://github.com/SoulMelody/LibreSVIP/actions/workflows/package.yml?query=workflow%3APackaging)
+
+LibreSVIP is a cross-platform and universal converter for many Singing Voice Synthesis (aka SVS) project formats.
+
+## Installation
+
+Download from github releases: [Releases](https://github.com/SoulMelody/LibreSVIP/releases)
+
+Alternatively, you can install LibreSVIP with desktop support via pip (requires python 3.9+):
+
+```bash
+pip install libresvip[desktop]
+```
+
+## Translations
+
+![zh-CN translation](https://img.shields.io/badge/dynamic/json?color=blue&label=zh-CN&style=flat&logo=crowdin&query=%24.progress[?(@.data.languageId==%27zh-CN%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-16219268-645830.json)
+![ja translation](https://img.shields.io/badge/dynamic/json?color=blue&label=ja&style=flat&logo=crowdin&query=%24.progress[?(@.data.languageId==%27ja%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-16219268-645830.json)
+
+If you also want to add or contribute to a translation, check [LibreSVIP's page on Crowdin](https://crowdin.com/project/libresvip). 
+
+## References
+
+This project is highly inspired by following projects:
+
+- [OpenSVIP](https://github.com/yqzhishen/opensvip)
+- [Utaformatix3](https://github.com/sdercolin/utaformatix3)
+
+Other projects that are related to this project:
+
+- [QNrbf](https://github.com/SineStriker/QNrbf)
+
+The following article will give you a brief introduction about python libraries for text and binary parsing:
+
+- [Parsing In Python: Tools And Libraries](https://tomassetti.me/parsing-in-python/)
+
+## License
+LibreSVIP is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
