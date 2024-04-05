@@ -1,0 +1,40 @@
+trace:
+  type: integer
+outputDimensions:
+  anyof: 
+    - {type: list, schema: {type: string}}
+    - {type: string, allowed: [all]}
+dimensionMap:
+  type: dict
+universalDimension:
+  type: string
+emptyUel:
+  type: string
+setName:
+  type: string
+parameterName:
+  type: string
+skip:
+  type: string
+  nullable: True
+  allowed:
+   - set
+   - par
+concatenateAll:
+  type: 
+   - boolean
+   - string
+  allowed:
+   - true
+   - false
+   - auto
+symbols:
+  type: list
+  schema:
+    type: dict
+    schema:
+      name:
+        type: string
+        required: true
+      newName: 
+        type: string

@@ -1,0 +1,55 @@
+connection:
+  type: dict 
+  required: True
+connectionType:
+  type: string
+  allowed:
+  - pyodbc
+  - sqlalchemy
+  - postgres
+  - sqlite
+  - mysql
+  - sqlserver
+  - access
+type:               
+  type: string 
+  allowed: 
+  - par
+  - set
+dTypeMap:
+  type: dict
+trace:
+  type: integer
+connectionArguments: 
+  type: dict
+symbols:
+  type: list
+  required: True
+  schema:                  
+    type: dict
+    schema:
+      name:
+        type: string 
+        required: True
+      query:
+        type: string
+        required: True
+      type:
+        type: string 
+        allowed: 
+        - par 
+        - set
+      dTypeMap:
+        type: dict
+      indexSubstitutions: 
+        type: dict
+      valueColumns:       
+        type: 
+        - list 
+        - string
+        schema:
+          type: string
+      valueSubstitutions: 
+        type: dict
+      readSQLArguments:   
+        type: dict
