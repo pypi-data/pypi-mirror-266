@@ -1,0 +1,45 @@
+site_name: performance_assessor
+
+nav:
+    - Home: index.md
+    - Installation: installation.md
+    - Usage:
+        - Command line: usage/command_line.md
+        - Module: usage/module.md
+    - Code documentation:
+          - parse_argument:
+                - check_argument.py: code_documentation/parse_argument/check_argument.md
+                - define_argument.py: code_documentation/parse_argument/define_argument.md
+                - parse_argument.py: code_documentation/parse_argument/parse_argument.md
+          - class_performance_assessor.py: code_documentation/class_performance_assessor.md
+          - main.py: code_documentation/main.md
+          - testor.py: code_documentation/testor.md
+
+repo_url: https://github.com/FilouPlains/performance_assessor
+
+markdown_extensions:
+    - nl2br
+    - admonition
+    - pymdownx.details
+    - pymdownx.superfences
+
+plugins:
+    - search
+    - mkdocstrings
+    - callouts
+
+theme:
+    name: material
+    palette:
+        primary: red
+        scheme: default
+    highlightjs: true
+    hljs_languages:
+        - bash
+        - python
+        - yaml
+    font:
+        text: Roboto Light
+
+extra_css:
+    - style.css
