@@ -1,0 +1,488 @@
+Index: src/simplycli/decorators.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>_type = type\r\n\r\n\r\ndef description(content: str):\r\n    \"\"\"\r\n    A decorator for giving a command-like object a description\r\n    :param content: The description of the command\r\n    \"\"\"\r\n    if not isinstance(content, str):\r\n        raise ValueError(f\"description content must be type string, instead got {type(content)}\")\r\n\r\n    def description_inner(command_like):\r\n        command_like.__description__ = content\r\n        if getattr(command_like, \"__boundcommand__\", None):\r\n            command_like.__boundcommand__.description = content\r\n\r\n        return command_like\r\n\r\n    return description_inner\r\n\r\n\r\ncmd_description = description
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/simplycli/decorators.py b/src/simplycli/decorators.py
+--- a/src/simplycli/decorators.py	(revision d2915b04a51d55a53ac00991a655be1f979a2b83)
++++ b/src/simplycli/decorators.py	(date 1712290987149)
+@@ -1,6 +1,50 @@
+ _type = type
+ 
+ 
++def __annotated__(decorator):
++    def annotated_inner(lazy_def=None, *args, **kwargs):
++        if lazy_def:
++            return decorator(lazy_def, *args, **kwargs)
++
++        def wrapper(real_def):
++            return decorator(real_def, *args, **kwargs)
++
++        return wrapper
++
++    return annotated_inner
++
++
++def __complex_decorator__(**decorator_flags):
++    def inner(outer, *_, **__):
++        def real_decorator(cli, *args, **kwargs):
++            executed = None
++            args = list(args)
++
++            if len(args) != 0:
++                executed = args[0]
++                args = args[1:]
++
++            args.insert(0, cli)
++
++            def wrapper(f, *_, **__):
++                run_args = list(args)
++
++                run_args.insert(1, f)
++                if decorator_flags.get("no_wrap") and executed:
++                    run_args.insert(2, executed)
++
++                res = outer(*run_args, **kwargs)
++                return res
++
++            if executed and decorator_flags.get("no_wrap") is False:
++                return wrapper(executed)
++            return wrapper
++
++        return real_decorator
++
++    return inner
++
++
+ def description(content: str):
+     """
+     A decorator for giving a command-like object a description
+@@ -19,4 +63,4 @@
+     return description_inner
+ 
+ 
+-cmd_description = description
+\ No newline at end of file
++cmd_description = description
+Index: src/simplycli/cli.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import inspect\r\nimport re\r\nimport abc\r\nfrom typing import Union, Callable, TypeAlias, Any\r\n\r\nfrom . import decorators\r\nfrom .arg import ArgMatcher, Arg\r\n\r\n\r\nclass AbstractFunctionCommandWrapper(abc.ABC):\r\n    \"\"\"\r\n    A niche class that must be used on function wrapper classes, or more specifically, classes that can be invoked\r\n    via teh __call__ method.\r\n    \"\"\"\r\n\r\n    @abc.abstractmethod\r\n    def signature(self) -> Callable:\r\n        \"\"\"\r\n        Returns the base callable associated with this class.\r\n        :return: The base callable\r\n        \"\"\"\r\n        raise NotImplementedError\r\n\r\n    @abc.abstractmethod\r\n    def invoke(self, *args, **kwargs):\r\n        \"\"\"\r\n        Invokes this wrapper with the given arguments.\r\n        :param args: Invocation arguments.\r\n        :param kwargs: Invocation keyword arguments.\r\n        :return: The result of the function invocation.\r\n        \"\"\"\r\n        raise NotImplementedError\r\n\r\n    def __getattribute__(self, item):\r\n        if item == \"__name__\":\r\n            return self.signature().__name__\r\n        return super().__getattribute__(item)\r\n\r\n    def __call__(self, *args, **kwargs):\r\n        return self.invoke(*args, **kwargs)\r\n\r\n\r\nclass AbstractCommandClass(abc.ABC):\r\n    \"\"\"\r\n    Provides a template class for use with :func:`@CLI.command <CLI.command>`, however, classes do not need to inherit\r\n    this class to be an eligible command-class. They simply just need to implement the __execute__ method.\r\n    \"\"\"\r\n\r\n    __description__ = None\r\n    \"\"\"\r\n    An optional description for the command. You can change this description by modifying the value of this variable.\r\n    \"\"\"\r\n\r\n    @staticmethod\r\n    @abc.abstractmethod\r\n    def __execute__():\r\n        \"\"\"\r\n        This method is called whenever `this` command is successfully matched. Implementations of this method can\r\n        choose any function signature.\r\n        \"\"\"\r\n        raise NotImplementedError\r\n\r\n\r\nCommandLike: TypeAlias = Union[Callable, AbstractCommandClass]\r\n\r\n\r\nclass Command:\r\n    def __init__(self, name: str, command_like: CommandLike,\r\n                 /, aliases: list[str] = None, lowercase: bool = True, case_sensitive: bool = False,\r\n                 args: list[\"Arg\"] = None):\r\n        self.command_like = command_like\r\n        if isinstance(command_like, AbstractFunctionCommandWrapper):\r\n            self.is_class = False\r\n            self.__wrapped_command__ = True\r\n        else:\r\n            self.is_class = inspect.isclass(command_like)\r\n            self.__wrapped_command__ = False\r\n\r\n        self.name: str = name\r\n        self.description: str = getattr(command_like, \"__description__\", None)\r\n        self.args = args\r\n        self.aliases = aliases\r\n        self._aliases = list(aliases)\r\n        self._aliases.insert(0, self.name)\r\n\r\n        self.lowercase = lowercase\r\n        self.case_sensitive = case_sensitive\r\n\r\n        self.__subcommands__: set[Command] = set()\r\n        self._parent = None\r\n\r\n        self._command_like_instance = None\r\n\r\n        self._arg_matcher = ArgMatcher(self)\r\n\r\n    def execute(self, raw_input: str):\r\n        \"\"\"\r\n        Executes the command (and therefore the execution function) with the provided raw input\r\n        :param raw_input: The input string containing arguments for execution\r\n        \"\"\"\r\n        space = re.search(r\"\\s+\", raw_input)\r\n        if space:\r\n            subcommand_name = raw_input[:space.start()]\r\n            sub_raw_input = raw_input[space.end():]\r\n\r\n            for subcommand in self.__subcommands__:\r\n                if subcommand.matches(subcommand_name):\r\n                    return subcommand.execute(sub_raw_input)\r\n\r\n        args = self._arg_matcher.match_arguments(raw_input)\r\n        if self.is_class:\r\n            return self.command_like.__execute__(*args)\r\n        else:\r\n            return self.command_like(*args)\r\n\r\n    def add_subcommand(self, subcommand: \"Command\"):\r\n        \"\"\"\r\n        Adds a subcommand to this command\r\n        :param subcommand: The command to add\r\n        \"\"\"\r\n        self.__subcommands__.add(subcommand)\r\n        subcommand.__parent__ = self\r\n\r\n    def find_subcommand(self, parent: Union[str, CommandLike]) -> \"Command\":\r\n        \"\"\"\r\n        Finds a subcommand given a command name or command-like\r\n        :param parent:\r\n        :return:\r\n        \"\"\"\r\n        for subcommand in self.__subcommands__:\r\n            if isinstance(parent, str) and subcommand.matches(parent):\r\n                return subcommand\r\n            elif subcommand.command_like is parent:\r\n                return subcommand\r\n            return subcommand.find_subcommand(parent)\r\n        return None\r\n\r\n    def get_instance(self):\r\n        \"\"\"\r\n        Returns the single instance of the wrapped command-like object or creates it if it doesn't exist.\r\n        :return: The singleton command-like object instance,\r\n        \"\"\"\r\n        if self._command_like_instance is None:\r\n            self._command_like_instance = self.command_like()\r\n        return self._command_like_instance\r\n\r\n    def get_parent(self) -> \"Command\":\r\n        \"\"\"\r\n        Returns the :class:`Command` parent of this command or `None` if one doesn't exist..\r\n        :return: The :class:`Command` parent instance.\r\n        \"\"\"\r\n        return self._parent\r\n\r\n    def matches(self, cmd_name: str) -> bool:\r\n        \"\"\"\r\n        Checks if this command matches the given name.\r\n        :param cmd_name: The name to check for matches\r\n        :return: `True` if this command matches the given name otherwise `False`.\r\n        \"\"\"\r\n        for alias in self._aliases:\r\n            if self.lowercase:\r\n                alias = alias.lower()\r\n            if self.case_sensitive and cmd_name == alias:\r\n                return True\r\n            if cmd_name.lower() == alias:\r\n                return True\r\n        return False\r\n\r\n\r\ndef complex_decorator(**decorator_flags):\r\n    def inner(outer, *_, **__):\r\n        def real_decorator(cli, *args, **kwargs):\r\n            executed = None\r\n            args = list(args)\r\n\r\n            if len(args) != 0:\r\n                executed = args[0]\r\n                args = args[1:]\r\n\r\n            args.insert(0, cli)\r\n\r\n            def wrapper(f, *_, **__):\r\n                run_args = list(args)\r\n\r\n                run_args.insert(1, f)\r\n                if decorator_flags.get(\"no_wrap\") and executed:\r\n                    run_args.insert(2, executed)\r\n\r\n                res = outer(*run_args, **kwargs)\r\n                return res\r\n\r\n            if executed and decorator_flags.get(\"no_wrap\") is False:\r\n                return wrapper(executed)\r\n            return wrapper\r\n\r\n        return real_decorator\r\n\r\n    return inner\r\n\r\n\r\nclass CLI:\r\n    def __init__(self, console_input: Callable[[], str] = input):\r\n        self._commands: set[Command] = set()\r\n        self._command_table: dict[CommandLike, Command] = dict()\r\n        self.console_input = console_input\r\n        self.result = None\r\n\r\n    @complex_decorator(no_wrap=False)\r\n    def command(self, command_like,\r\n                aliases: list[str] = None, name: str = None, lowercase: bool = True, case_sensitive: bool = True,\r\n                args: list[\"Arg\"] = None):\r\n        \"\"\"\r\n        A decorator that registers a command-like object as a command, allowing it to be executed when matched in\r\n        an input string.\r\n\r\n        If no aliases are specified the name of the command will match the name of the annotated class or method.\r\n\r\n        If this decorator is used on a class, the class must contain a method named **__execute__**, this method CAN\r\n        be static and will be executed if a command is successfully matched. Additionally, the containing class will\r\n        operate as a singleton whenever received as a \"self\" parameter to __execute__, meaning updates to the class\r\n        will persist between calls.\r\n\r\n        Usage::\r\n\r\n            cli = CLI()\r\n\r\n            @cli.command\r\n            def ping():\r\n                print(\"pong\")\r\n\r\n            @cli.command(aliases=[\"howdy\"])\r\n            class Hello:\r\n                @staticmethod  # this does not need to be static\r\n                def __execute__():\r\n                    print(\"Hi!\")\r\n\r\n            cli.process_input(\"pong\")   # ping will be called\r\n            cli.process_input(\"Hello\")  # Hello.__execute__() will be called\r\n            cli.process_input(\"howdy\")  # Hello.__execute__() will be called again\r\n\r\n        **Advanced Usage:**\r\n        Parameters declared in the target execution method must follow special rules to correspond with a given input.\r\n        The most simple rule is if a parameter is named \"self\" it will contain the singleton instance of its parent\r\n        class.\r\n\r\n        Additionally, each argument of a command must have a matching parameter defined in the target execution method\r\n        which also constructs an instance of :class:`Arg` as its default value.\r\n\r\n        The final caveat is that any matching argument supplied to the method will automatically have its type matched\r\n        to its parameter's annotated type. When no type annotation is specified the value will either be a string or\r\n        will match the type of the default value provided by the Arg() constructor.\r\n\r\n        Lastly, if any parameter has the annotated type :class:`Command` then its corresponding :class:`Command`\r\n        instance will be passed into the function upon execution.\r\n\r\n        Advanced Usage Examples::\r\n\r\n            cli = CLI()\r\n\r\n            # registers a command that receives the first argument of the 'greeting' command\r\n            @cli.command\r\n            def greet(name: str = Arg(0)):\r\n                print(f\"Hello {name}!\")\r\n\r\n            # registers a command that takes two optional arguments (--value and --hide)\r\n            @cli.command\r\n            def echo(value: str = Arg(\"--value\", default=\"nothing...\"), hide: bool = Arg(\"--hide\"))\r\n                if not hide: print(\"Echoed \" + value)\r\n\r\n            cli.process_input(\"greet Alice\")                # prints \"Hello Alice!\"\r\n            cli.process_input(\"echo\")                       # prints \"Echoed nothing...\"\r\n            cli.process_input(\"echo --value text\")          # prints \"Echoed text\"\r\n            cli.process_input(\"echo --value text --hide)    # prints nothing!\r\n\r\n        :param command_like: The command-like object to register\r\n        :param aliases: The aliases the command can also be invoked under\r\n        :param name: The primary name of the command.\r\n        :param lowercase: If the command name should be lowercase (defaults to True)\r\n        :param case_sensitive: If the command name is case-sensitive (defaults to True)\r\n        :param args: A list of :class:`Arg` to be used as an alternative to signature-based declarations\r\n        :return: The wrapped function\r\n        \"\"\"\r\n        return self._register_command(command_like, None, aliases, name, lowercase, case_sensitive, args)\r\n\r\n    @complex_decorator(no_wrap=True)\r\n    def subcommand(self, command_like, parent: type = None,\r\n                   aliases: list[str] = None, name: str = None, lowercase: bool = True, case_sensitive: bool = True,\r\n                   args: list[Arg] = None):\r\n        \"\"\"\r\n        A decorator that registers a command-like object as a command, allowing it to be executed when matched in\r\n        an input string.\r\n\r\n        This decorator is nearly identical to the :func:`command` decorator except it takes an additional argument,\r\n        `parent` which is the class of the desired parent command.\r\n\r\n        Usage::\r\n\r\n            cli = CLI()\r\n\r\n            @cli.command\r\n            class Math:\r\n                def __execute__():\r\n                    print(\"use either math add or math subtract!\")\r\n\r\n            @cli.subcommand(Math)\r\n            def add(o1: int = Arg(0), o2: int = Arg(1)):\r\n                print(f\"{o1} + {o2} = {o1 + o2}\")\r\n\r\n            @cli.command(Math)\r\n            def sub(o1: int = Arg(0), o2: int = Arg(1)):\r\n                print(f\"{o1} - {o2} = {o1 - o2}\")\r\n\r\n            cli.process_input(\"math\")           # prints \"use either math add or math subtract!\"\r\n            cli.process_input(\"math add 5 4)    # prints \"5 + 4 = 9\"\r\n            cli.process_input(\"math sub 8 3)    # prints \"8 - 3 = 5\"\r\n\r\n\r\n        :param command_like: The command-like object to register.\r\n        :param parent: The class of the parent command.\r\n        :param aliases: The aliases the command can also be invoked under.\r\n        :param name: The primary name of the command.\r\n        :param lowercase: If the command name should be lowercase (defaults to True).\r\n        :param case_sensitive: If the command name is case-sensitive (defaults to True).\r\n        :param args: A list of :class:`Arg` to be used as an alternative to signature-based declarations.\r\n        :return: The wrapped function\r\n        \"\"\"\r\n        if parent is None:\r\n            raise ValueError(\"parent cannot be None\")\r\n        return self._register_command(command_like, parent, aliases, name, lowercase, case_sensitive, args)\r\n\r\n    def identity(self, func):\r\n        \"\"\"\r\n        A decorator that **modifies a method** to return an instance to its correspond :class:`Command` class.\r\n        :param func: The function to modify\r\n        :return: A modified function that returns a :class:`Command` instance.\r\n        \"\"\"\r\n        parent_class = func.__qualname__.split(\".\")[-2]\r\n\r\n        def wrapper(*_):\r\n            return self.find_command(parent_class)\r\n\r\n        return wrapper\r\n\r\n    def find_command(self, identifier: Union[str, CommandLike]) -> Command:\r\n        \"\"\"\r\n        Finds a command based on a given name or the command-like object used to register the command.\r\n        :param identifier: The name/alias of a command or a command-like object.\r\n        :return: The first matching command or `None` if no suitable command is found.\r\n        \"\"\"\r\n        for command in self._commands:\r\n            if isinstance(identifier, str) and command.matches(identifier):\r\n                return command\r\n            elif command.command_like is identifier:\r\n                return command\r\n\r\n            subcommand = command.find_subcommand(identifier)\r\n            if subcommand:\r\n                return subcommand\r\n\r\n    def process(self) -> str:\r\n        \"\"\"\r\n        A function that immediately prompts for user input then processes the input,\r\n        invoking any matching registered commands.\r\n\r\n        This function returns the input received from self.console_input(). If instead the result of the\r\n        matched command is desired use either :func:`process_input` or read value of `cli.result`.\r\n\r\n        :return: The user input\r\n        \"\"\"\r\n        raw_input = self.console_input()\r\n        self.process_input(raw_input)\r\n        return raw_input\r\n\r\n    def process_input(self, raw_input: str) -> Any:\r\n        \"\"\"\r\n        A function that processes an input string, invoking any matching registered commands.\r\n\r\n        :param raw_input: The string to process.\r\n        :return: The result of the first command matched\r\n        \"\"\"\r\n        space = re.search(r\"\\s+\", raw_input)\r\n        if not space:\r\n            command_name = raw_input\r\n            raw_input = \"\"\r\n        else:\r\n            command_name = raw_input[:space.start()]\r\n            raw_input = raw_input[space.end():]\r\n\r\n        commands = list(self._commands)\r\n        for cmd in commands:\r\n            if cmd.matches(command_name):\r\n                self.result = cmd.execute(raw_input)\r\n                return self.result\r\n\r\n    def unregister(self, command_like: CommandLike):\r\n        \"\"\"\r\n        Unregisters a command or subcommand via its registered command-like object.\r\n\r\n        :param command_like: The command-like object to unregister.\r\n        \"\"\"\r\n        matched = [cmd for cmd in self._commands if cmd.command_like == command_like]\r\n        for match in matched:\r\n            self._commands.remove(match)\r\n        table_entry = self._command_table.get(command_like)\r\n        if table_entry:\r\n            parent = table_entry.get_parent()\r\n            if parent:\r\n                parent.__subcommands__.remove(table_entry)\r\n\r\n    def __iter__(self):\r\n        return self._commands.__iter__()\r\n\r\n    def _register_command(self, command_like, parent: type = None,\r\n                          aliases: list[str] = None, name: str = None, lowercase: bool = False, case_sensitive: bool = True,\r\n                          args: list[\"Arg\"] = None):\r\n\r\n        cmd_name: str = name if name else command_like.__name__\r\n\r\n        aliases = [] if aliases is None else list(aliases)\r\n\r\n        cmd = Command(cmd_name, command_like, aliases=aliases, lowercase=lowercase,\r\n                      case_sensitive=case_sensitive, args=args)\r\n\r\n        self._command_table[command_like] = cmd\r\n        command_like.__boundcommand__ = cmd\r\n\r\n        if parent is not None:\r\n            command_parent = self.find_command(parent)\r\n            if command_parent:\r\n                command_parent.add_subcommand(cmd)\r\n                return command_like\r\n            else:\r\n                raise ValueError(f\"Parent not found {parent}\")\r\n\r\n        self._commands.add(cmd)\r\n        return command_like\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/simplycli/cli.py b/src/simplycli/cli.py
+--- a/src/simplycli/cli.py	(revision d2915b04a51d55a53ac00991a655be1f979a2b83)
++++ b/src/simplycli/cli.py	(date 1712290216598)
+@@ -1,67 +1,10 @@
+ import inspect
+ import re
+-import abc
+-from typing import Union, Callable, TypeAlias, Any
+-
+-from . import decorators
++from typing import Union, Callable, Any
+ from .arg import ArgMatcher, Arg
+-
+-
+-class AbstractFunctionCommandWrapper(abc.ABC):
+-    """
+-    A niche class that must be used on function wrapper classes, or more specifically, classes that can be invoked
+-    via teh __call__ method.
+-    """
+-
+-    @abc.abstractmethod
+-    def signature(self) -> Callable:
+-        """
+-        Returns the base callable associated with this class.
+-        :return: The base callable
+-        """
+-        raise NotImplementedError
+-
+-    @abc.abstractmethod
+-    def invoke(self, *args, **kwargs):
+-        """
+-        Invokes this wrapper with the given arguments.
+-        :param args: Invocation arguments.
+-        :param kwargs: Invocation keyword arguments.
+-        :return: The result of the function invocation.
+-        """
+-        raise NotImplementedError
+-
+-    def __getattribute__(self, item):
+-        if item == "__name__":
+-            return self.signature().__name__
+-        return super().__getattribute__(item)
+-
+-    def __call__(self, *args, **kwargs):
+-        return self.invoke(*args, **kwargs)
+-
+-
+-class AbstractCommandClass(abc.ABC):
+-    """
+-    Provides a template class for use with :func:`@CLI.command <CLI.command>`, however, classes do not need to inherit
+-    this class to be an eligible command-class. They simply just need to implement the __execute__ method.
+-    """
+-
+-    __description__ = None
+-    """
+-    An optional description for the command. You can change this description by modifying the value of this variable.
+-    """
+-
+-    @staticmethod
+-    @abc.abstractmethod
+-    def __execute__():
+-        """
+-        This method is called whenever `this` command is successfully matched. Implementations of this method can
+-        choose any function signature.
+-        """
+-        raise NotImplementedError
+-
+-
+-CommandLike: TypeAlias = Union[Callable, AbstractCommandClass]
++from .bundle import BundleManager
++from .decorators import __complex_decorator__
++from .meta import CommandLike, AbstractFunctionCommandWrapper
+ 
+ 
+ class Command:
+@@ -167,45 +110,16 @@
+         return False
+ 
+ 
+-def complex_decorator(**decorator_flags):
+-    def inner(outer, *_, **__):
+-        def real_decorator(cli, *args, **kwargs):
+-            executed = None
+-            args = list(args)
+-
+-            if len(args) != 0:
+-                executed = args[0]
+-                args = args[1:]
+-
+-            args.insert(0, cli)
+-
+-            def wrapper(f, *_, **__):
+-                run_args = list(args)
+-
+-                run_args.insert(1, f)
+-                if decorator_flags.get("no_wrap") and executed:
+-                    run_args.insert(2, executed)
+-
+-                res = outer(*run_args, **kwargs)
+-                return res
+-
+-            if executed and decorator_flags.get("no_wrap") is False:
+-                return wrapper(executed)
+-            return wrapper
+-
+-        return real_decorator
+-
+-    return inner
+-
+ 
+ class CLI:
+-    def __init__(self, console_input: Callable[[], str] = input):
++    def __init__(self, console_input: Callable[[], str] = input, bundle_manager: BundleManager = None):
+         self._commands: set[Command] = set()
+         self._command_table: dict[CommandLike, Command] = dict()
+         self.console_input = console_input
+         self.result = None
++        self.bundles = bundle_manager if bundle_manager else BundleManager(self)
+ 
+-    @complex_decorator(no_wrap=False)
++    @__complex_decorator__(no_wrap=False)
+     def command(self, command_like,
+                 aliases: list[str] = None, name: str = None, lowercase: bool = True, case_sensitive: bool = True,
+                 args: list["Arg"] = None):
+@@ -282,7 +196,7 @@
+         """
+         return self._register_command(command_like, None, aliases, name, lowercase, case_sensitive, args)
+ 
+-    @complex_decorator(no_wrap=True)
++    @__complex_decorator__(no_wrap=True)
+     def subcommand(self, command_like, parent: type = None,
+                    aliases: list[str] = None, name: str = None, lowercase: bool = True, case_sensitive: bool = True,
+                    args: list[Arg] = None):
+Index: tests/test_full.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import unittest\r\n\r\nfrom simplycli import CLI, Arg, ArgumentError, AbstractCommandClass, CommandSignatureError\r\nfrom simplycli.decorators import description\r\n\r\n\r\ndef create_commands(cli: CLI):\r\n    @cli.command\r\n    def one():\r\n        return 1\r\n\r\n    @cli.command(aliases=[\"_two_\"])\r\n    def two():\r\n        return 2\r\n\r\n    @cli.command(args=[Arg(0), Arg(1)])\r\n    def add(o1: int, o2: int):\r\n        return o1 + o2\r\n\r\n    @cli.command\r\n    def sub(o1: int = Arg(0), o2: int = Arg(1)):\r\n        return o1 - o2\r\n\r\n    @cli.command\r\n    def mul(o1: int = Arg(0, required=True), o2: int = Arg(1, default=2)):\r\n        return o1 * o2\r\n\r\n    @cli.command\r\n    @description(\"Divides two numbers v1\")\r\n    def div(o1: int = Arg(\"--numerator\"), o2: int = Arg(\"--denominator\"), remainder: bool = Arg(\"--remainder\")):\r\n        if remainder:\r\n            return o1 % o2\r\n        return o1 / o2\r\n\r\n    @description(\"Divides two numbers v2\")\r\n    @cli.command(args=[\r\n        Arg(\"--numerator\", type=int),\r\n        Arg(\"--denominator\", type=int),\r\n        Arg(\"--remainder\", type=bool)\r\n    ])\r\n    def div2(o1, o2, remainder):\r\n        return div(o1, o2, remainder)\r\n\r\n\r\n    @cli.command\r\n    class Basic:\r\n        def __execute__(self):\r\n            return 30\r\n\r\n    @cli.command\r\n    class Basic2(AbstractCommandClass):\r\n        __description__ = \"Returns the provided message\"\r\n\r\n        @staticmethod\r\n        def __execute__(message: str = Arg(0)):\r\n            return message\r\n\r\n    @cli.command\r\n    def vargs(*args):\r\n        return \"-\".join(args)\r\n\r\n    @cli.command\r\n    def channel(id: int = Arg(0), command: str = Arg(\"--command\"), *args):\r\n        return f\"Channel={id}, Command={command}, Args={\" \".join(args)}\"\r\n\r\n    @cli.command(name=\"named\")\r\n    def something():\r\n        return \"named\"\r\n\r\ndef create_invalid_command_vargs(cli: CLI):\r\n    @cli.command\r\n    def invalid_command(*args, id: str):\r\n        raise NotImplementedError\r\n\r\ndef create_invalid_command_kwargs(cli: CLI):\r\n    @cli.command\r\n    def invalid_command(**kwargs):\r\n        raise NotImplementedError\r\n\r\n\r\nclass CommandTestCase(unittest.TestCase):\r\n    def __init__(self, *args, **kwargs):\r\n        super().__init__(*args, **kwargs)\r\n        self.cli = CLI()\r\n        create_commands(self.cli)\r\n\r\n    def test_commands(self):\r\n        self.assertEqual(1, self.cli.process_input(\"one\"))\r\n        self.assertEqual(2, self.cli.process_input(\"_two_\"))\r\n\r\n        self.assertEqual(14, self.cli.process_input(\"add 5 9\"))\r\n        self.assertEqual(6, self.cli.process_input(\"sub 10 4\"))\r\n\r\n        self.assertEqual(4, self.cli.process_input(\"mul 2\"))\r\n        self.assertEqual(12, self.cli.process_input(\"mul 2 6\"))\r\n        self.assertRaises(ArgumentError, self.cli.process_input, \"mul\")\r\n\r\n        self.assertEqual(3, self.cli.process_input(\"div --numerator 6 --denominator 2\"))\r\n        self.assertEqual(0, self.cli.process_input(\"div --numerator 6 --denominator 2 --remainder\"))\r\n        self.assertEqual(\"Divides two numbers v1\", self.cli.find_command(\"div\").description)\r\n\r\n        self.assertEqual(3, self.cli.process_input(\"div2 --numerator 6 --denominator 2\"))\r\n        self.assertEqual(0, self.cli.process_input(\"div2 --numerator 6 --denominator 2 --remainder\"))\r\n        self.assertEqual(\"Divides two numbers v2\", self.cli.find_command(\"div2\").description)\r\n\r\n        self.assertEqual(30, self.cli.process_input(\"basic\"))\r\n        self.assertEqual(\"message\", self.cli.process_input(\"basic2 message\"))\r\n        self.assertEqual(\"Returns the provided message\", self.cli.find_command(\"basic2\").description)\r\n\r\n        self.assertEqual(\"hello-world\", self.cli.process_input(\"vargs hello world\"))\r\n\r\n        self.assertEqual(\"Channel=4, Command=send, Args=Hello World\", self.cli.process_input(\"channel 4 --command send Hello World\"))\r\n\r\n        self.assertRaises(CommandSignatureError, create_invalid_command_vargs, self.cli)\r\n        self.assertRaises(CommandSignatureError, create_invalid_command_kwargs, self.cli)\r\n\r\n        self.assertEqual(\"named\", self.cli.process_input(\"named\"))\r\n        self.assertEqual(\"named\", self.cli.find_command(\"named\").name)\r\n\r\n\r\n\r\nif __name__ == '__main__':\r\n    unittest.main()\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/tests/test_full.py b/tests/test_full.py
+--- a/tests/test_full.py	(revision d2915b04a51d55a53ac00991a655be1f979a2b83)
++++ b/tests/test_full.py	(date 1712292302554)
+@@ -1,6 +1,7 @@
+ import unittest
+ 
+-from simplycli import CLI, Arg, ArgumentError, AbstractCommandClass, CommandSignatureError
++from simplycli import CLI, Arg, AbstractCommandClass
++from simplycli.arg import ArgumentError, CommandSignatureError
+ from simplycli.decorators import description
+ 
+ 
+Index: src/simplycli/arg.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import inspect\r\nimport re\r\nfrom typing import Union, Any, Callable\r\nfrom simplycli import cli\r\n\r\n\r\nclass ArgumentError(Exception):\r\n    \"\"\"\r\n    Exception raised when an argument is not properly provided.\r\n    \"\"\"\r\n\r\n    def __init__(self, message=None):\r\n        \"\"\"\r\n        Initialize the ArgumentError.\r\n\r\n        :param message: A message describing the error (optional).\r\n        \"\"\"\r\n        super().__init__(message)\r\n\r\n\r\nclass CommandSignatureError(Exception):\r\n    \"\"\"\r\n    Exception raised when a command has an invalid or incompatible signature.\r\n    \"\"\"\r\n\r\n    def __init__(self, message=None):\r\n        \"\"\"\r\n        Initialize the ArgumentError.\r\n\r\n        :param message: A message describing the error (optional).\r\n        \"\"\"\r\n        super().__init__(message)\r\n\r\nclass SegmentString:\r\n    def __init__(self, raw_input: str):\r\n        self.segments = SegmentString._parse_segments(raw_input)\r\n        self.matched: set[str] = set()\r\n        self.raw = raw_input\r\n\r\n\r\n    @staticmethod\r\n    def _parse_segments(raw_input: str):\r\n        segments = []\r\n        delimiters = []\r\n        segment = \"\"\r\n        # split raw string into space separated terms\r\n        for character in raw_input:\r\n            if len(delimiters) == 0 and character.isspace():\r\n                segments.append(segment)\r\n                segment = \"\"\r\n            elif character == \"'\" or character == '\"':\r\n                if character in delimiters:\r\n                    delimiters.pop()\r\n                else:\r\n                    if len(delimiters) == 0:\r\n                        delimiters.append(character)\r\n                    else:\r\n                        segment += character\r\n            else:\r\n                segment += character\r\n\r\n        if segment != \"\":\r\n            segments.append(segment)\r\n\r\n        return segments\r\n\r\n    def match(self, details: \"ArgParser\") -> int:\r\n        if details.aliases:\r\n            aliases = list(details.aliases)\r\n        else:\r\n            aliases = []\r\n        aliases.append(details.name)\r\n\r\n        for alias in aliases:\r\n            try:\r\n                index = self.segments.index(alias)\r\n                self.matched.add(self.segments[index])\r\n                return index\r\n            except ValueError:\r\n                pass\r\n        return None\r\n\r\n    def unmatched(self):\r\n        return [segment for segment in self.segments if segment not in self.matched]\r\n\r\n    def __contains__(self, item: \"ArgParser\"):\r\n        return item in self.matched\r\n\r\n    def __len__(self):\r\n        return len(self.segments)\r\n\r\n    def __getitem__(self, item):\r\n        return self.segments[item]\r\n\r\nclass ArgParser:\r\n    \"\"\"\r\n    A class used by :class:`Arg` for parsing a raw string into a value\r\n    \"\"\"\r\n\r\n    def __init__(self, name: Union[str, int], aliases: list[str], position: int, required: bool, default: Any, expected_type: type):\r\n        self.name = name\r\n        self.aliases = aliases\r\n        self.position = position\r\n        self.required = required\r\n        self.default = default\r\n        self.expected_type = expected_type\r\n\r\n    def parse(self, segments: SegmentString, expected_type: type) -> Any:\r\n        \"\"\"\r\n        Parses a `full` input string, extracting and returning the value of `this` argument in relation to the input.\r\n\r\n        :param segments: The :class:`SegmentString` to parse\r\n        :param expected_type: The expected type of the return value, which **must contain a `from-string constructor`**\r\n            **OR** a function that takes the extracted string value as an input and returns a value output.\r\n        :return: The parsed value of this argument.\r\n        \"\"\"\r\n        return __ARG_PARSING_IMPLEMENTATION__(self, segments, expected_type)\r\n\r\n    @staticmethod\r\n    def default_parse(details: \"ArgParser\", segments: SegmentString, expected_type: Union[type, Callable[[str], Any]]) -> Any:\r\n        named_segment_index = segments.match(details)\r\n\r\n        # if argument is positional\r\n        if details.position is not None:\r\n            if details.position >= len(segments):\r\n                if details.required and not details.name:\r\n                    raise ArgumentError(f\"expected positional argument at {details.position}\")\r\n            else:\r\n                # return segment at position\r\n                value_segment = segments[details.position]\r\n                segments.matched.add(value_segment)\r\n                return expected_type(value_segment)\r\n\r\n        if details.name:\r\n            # found segment that matches details.name\r\n            if named_segment_index is not None:\r\n                if len(segments) > named_segment_index + 1:\r\n                    value_segment = segments[named_segment_index + 1]\r\n                    segments.matched.add(value_segment)\r\n                    return expected_type(value_segment)\r\n                elif expected_type is bool:  # if the expected type is a boolean then the presence alone should ret true\r\n                    return True\r\n                else:\r\n                    raise ArgumentError(f\"no value provided for argument \\\"{details.name}\\\"\")\r\n            # no such segment\r\n            if details.required:\r\n                raise ArgumentError(f\"expected named argument \\\"{details.name}\\\"\")\r\n\r\n        return details.default\r\n\r\n\r\n__ARG_PARSING_IMPLEMENTATION__ = ArgParser.default_parse\r\n\"\"\"\r\nThe parsing method used by :func:`ArgParser.parse`. This defaults to :func:`ArgParser.default_parse`\r\n\"\"\"\r\n\r\n\r\nclass ArgMatcher:\r\n    _empty_type_ = inspect._empty\r\n\r\n    def __init__(self, command: \"cli.Command\") -> list[Any]:\r\n        self.func: Callable = None\r\n\r\n        if command.is_class:\r\n            self.func = command.command_like.__execute__\r\n        elif command.__wrapped_command__:\r\n            self.func = command.command_like.signature()\r\n        else:\r\n            self.func = command.command_like\r\n\r\n        self.parameters = list(inspect.signature(self.func).parameters.values())\r\n        self.command = command\r\n\r\n        self.__vargs__ = False\r\n        self.__validate_arguments__()\r\n\r\n    def match_arguments(self, raw_input: str) -> list[Any]:\r\n        \"\"\"\r\n        Parses an input string into a list of values by matching the string to respective arguments.\r\n\r\n        :param raw_input: The input string to parse.\r\n        :return: A list of parsed values.\r\n        \"\"\"\r\n\r\n        segments = SegmentString(raw_input)\r\n\r\n        ignore = 0\r\n        arguments = []\r\n        for i in range(len(self.parameters)):\r\n            parameter = self.parameters[i]\r\n            default = parameter.default\r\n\r\n            if self.command.args is not None and i - ignore < len(self.command.args):\r\n                default = self.command.args[i - ignore]\r\n\r\n            expected_type = parameter.annotation\r\n            if expected_type is ArgMatcher._empty_type_:\r\n                expected_type = str\r\n\r\n            # handle case where `Arg` class is used instead of `Arg` instance\r\n            if default is Arg:\r\n                default = Arg.dynamic()\r\n\r\n            if parameter.name == \"self\":\r\n                ignore += 1\r\n                if self.command.is_class:\r\n                    arguments.append(self.command.get_instance())\r\n            elif expected_type is cli.Command:\r\n                ignore += 1\r\n                arguments.append(self.command)\r\n            elif isinstance(default, Arg):  # special syntax where default value is Arg() class used as an 'annotation'\r\n                default.__fill_info__(parameter.name)\r\n\r\n                if default.expected_type:   # transform the input value into the arg's expected type\r\n                    value = default.parse(segments, default.expected_type)\r\n                else:                       # otherwise transform it into the parameter's annotated type\r\n                    value = default.parse(segments, expected_type)\r\n\r\n                arguments.append(value)\r\n            elif default is not ArgMatcher._empty_type_:\r\n                arguments.append(default)\r\n\r\n        if self.__vargs__:\r\n            arguments.extend(segments.unmatched())\r\n\r\n        return arguments\r\n\r\n    def __validate_arguments__(self):\r\n        for i in range(len(self.parameters)):\r\n            parameter = self.parameters[i]\r\n\r\n            if parameter.name == \"self\" and (not self.command.is_class and not self.command.__wrapped_command__):\r\n                raise CommandSignatureError(f\"command function cannot contain argument named \\\"self\\\" unless part of a class (function={self.command.name})\")\r\n            if str(parameter).startswith(\"**\"):\r\n                raise CommandSignatureError(f\"kwargs not supported in command function signature\")\r\n            elif str(parameter).startswith(\"*\"):\r\n                if i + 1 < len(self.parameters):\r\n                    raise CommandSignatureError(f\"function requires vargs as last parameter in function signature\")\r\n                self.__vargs__ = True\r\n\r\nclass Arg:\r\n    \"\"\"\r\n    Represents an argument in a function signature, which can be identified by either its name or position.\r\n    \"\"\"\r\n\r\n    def __init__(self, name_or_position: Union[str, list[str], int],\r\n                 /, name: str = None, position: int = None, aliases: list[str] = None, required: bool = False,\r\n                 default: Any = None, type: \"type\" = None):\r\n        \"\"\"\r\n        Represents an argument in a function signature, which can be identified by either its name or position.\r\n\r\n        :param name_or_position: Either the name (str) or position (int) of the argument.\r\n        :param name: The name of the argument (optional).\r\n        :param position: The position of the argument (optional).\r\n        :param aliases: Additional aliases for the argument (optional).\r\n        :param required: Whether the argument is required (default is False).\r\n        :param default: Default value for the argument (default is None).\r\n        :param type: The expected type of the argument (if None uses the parameter's annotated type, or str if not present).\r\n        \"\"\"\r\n\r\n        self.name = None\r\n        self.aliases = aliases\r\n        self.position = None\r\n\r\n        if isinstance(name_or_position, str):\r\n            self.name = name_or_position\r\n        elif isinstance(name_or_position, int):\r\n            self.position = name_or_position\r\n        else:\r\n            raise ValueError(\r\n                f\"name_or_position argument must be either str, int, or list[str], instead got {type(name_or_position)}\")\r\n\r\n        # if name and/or position have been declared via kwargs, override the above declarations\r\n        if name:\r\n            self.name = name\r\n        if position is not None:\r\n            if position < 0:\r\n                raise ValueError(f\"position cannot be less than 0 ({position} < 0)\")\r\n            self.position = position\r\n\r\n        self.required = required\r\n        self.default = default\r\n        self.expected_type = type\r\n\r\n        # initialize arg parser\r\n        self._parser = ArgParser(self.name, self.aliases, self.position, self.required, self.default, self.expected_type)\r\n        self.__prefix__ = None\r\n        self.__dynamic__ = False\r\n\r\n    @staticmethod\r\n    def named(name: str, required: bool = False, default: Any = None):\r\n        \"\"\"\r\n        Creates an instance of `Arg` representing an argument identified by name.\r\n\r\n        :param name: The name of the argument.\r\n        :param required: Whether the argument is required (default is False).\r\n        :param default: Default value for the argument (default is None).\r\n        :return: An instance of `Arg`.\r\n        \"\"\"\r\n        return Arg(name, required=required, default=default)\r\n\r\n    @staticmethod\r\n    def position(position: int, required: bool = False, default: Any = None):\r\n        \"\"\"\r\n        Creates an instance of :class:`Arg` representing an argument identified by position.\r\n\r\n        :param position: The position of the argument.\r\n        :param required: Whether the argument is required (default is False).\r\n        :param default: Default value for the argument (default is None).\r\n        :return: An instance of :class:`Arg`.\r\n        \"\"\"\r\n        return Arg(position, required=required, default=default)\r\n\r\n    @staticmethod\r\n    def dynamic(prefix=\"--\"):\r\n        \"\"\"\r\n        Creates an argument that automatically sets its name to prefix + the name of the parameters it's annotated on.\r\n        :return: An instance of :class:`Arg`.\r\n        \"\"\"\r\n        arg = Arg(\"__DYNAMIC__\")\r\n        arg.name = None  # reset name back to None so that argument will dynamically acquire name\r\n        arg.__prefix__ = prefix\r\n        return arg\r\n\r\n    def parse(self, segments: SegmentString, expected_type: Union[type, Callable[[str], Any]]) -> Any:\r\n        \"\"\"\r\n        Parses a `full` input string, extracting and returning the value of `this` argument in relation to the input.\r\n\r\n        :param segments: The :class:`SegmentString` to parse.\r\n        :param expected_type: The expected type of the return value, which **must contain a `from-string constructor`**\r\n            **OR** a function that takes the extracted string value as an input and returns a value output.\r\n        :return: The parsed value of this argument.\r\n        \"\"\"\r\n        return self._parser.parse(segments, expected_type)\r\n\r\n    def __fill_info__(self, parameter: inspect.Parameter):\r\n        if self.name is None and self.position is None:\r\n            prefix = \"\" if self.__prefix__ is None else self.__prefix__\r\n            self.name = prefix + parameter\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/simplycli/arg.py b/src/simplycli/arg.py
+--- a/src/simplycli/arg.py	(revision d2915b04a51d55a53ac00991a655be1f979a2b83)
++++ b/src/simplycli/arg.py	(date 1712290891092)
+@@ -1,5 +1,4 @@
+ import inspect
+-import re
+ from typing import Union, Any, Callable
+ from simplycli import cli
+ 
+Index: src/simplycli/__init__.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from simplycli.cli import AbstractFunctionCommandWrapper, AbstractCommandClass, Command, CLI\r\nfrom simplycli.arg import ArgumentError, CommandSignatureError, ArgParser, ArgMatcher, Arg, __ARG_PARSING_IMPLEMENTATION__\r\n\r\n__all__ = [\r\n    \"AbstractFunctionCommandWrapper\",\r\n    \"AbstractCommandClass\",\r\n    \"Command\",\r\n    \"CLI\",\r\n    \"ArgumentError\",\r\n    \"CommandSignatureError\",\r\n    \"ArgParser\",\r\n    \"ArgMatcher\",\r\n    \"Arg\",\r\n    \"__ARG_PARSING_IMPLEMENTATION__\"\r\n]
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/simplycli/__init__.py b/src/simplycli/__init__.py
+--- a/src/simplycli/__init__.py	(revision d2915b04a51d55a53ac00991a655be1f979a2b83)
++++ b/src/simplycli/__init__.py	(date 1712292273536)
+@@ -1,15 +1,18 @@
+-from simplycli.cli import AbstractFunctionCommandWrapper, AbstractCommandClass, Command, CLI
+-from simplycli.arg import ArgumentError, CommandSignatureError, ArgParser, ArgMatcher, Arg, __ARG_PARSING_IMPLEMENTATION__
++from simplycli.cli import Command, CLI
++from simplycli.meta import AbstractFunctionCommandWrapper, AbstractCommandClass
++from simplycli.arg import Arg
+ 
+ __all__ = [
+     "AbstractFunctionCommandWrapper",
+     "AbstractCommandClass",
+     "Command",
+     "CLI",
+-    "ArgumentError",
+-    "CommandSignatureError",
+-    "ArgParser",
+-    "ArgMatcher",
+     "Arg",
+-    "__ARG_PARSING_IMPLEMENTATION__"
+-]
+\ No newline at end of file
++
++    "arg",
++    "bundle",
++    "cli",
++    "decorators",
++    "meta"
++]
++
+Index: src/simplycli/meta.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/simplycli/meta.py b/src/simplycli/meta.py
+new file mode 100644
+--- /dev/null	(date 1712289771515)
++++ b/src/simplycli/meta.py	(date 1712289771515)
+@@ -0,0 +1,72 @@
++import abc
++from typing import Callable, TypeAlias, Union
++
++CommandLike: TypeAlias = Union[Callable, "AbstractCommandClass"]
++
++META_PROPERTIES = [
++    "__description__",
++    "__boundcommand__"
++    "__bundle_properties__",
++    "__bundle__"
++]
++
++
++def forward_meta(source, target):
++    for prop in META_PROPERTIES:
++        value = getattr(source, prop, None)
++        if value is not None:
++            setattr(target, prop, value)
++
++
++class AbstractFunctionCommandWrapper(abc.ABC):
++    """
++    A niche class that must be used on function wrapper classes, or more specifically, classes that can be invoked
++    via teh __call__ method.
++    """
++
++    @abc.abstractmethod
++    def signature(self) -> CommandLike:
++        """
++        Returns the base callable associated with this class.
++        :return: The base callable
++        """
++        raise NotImplementedError
++
++    @abc.abstractmethod
++    def invoke(self, *args, **kwargs):
++        """
++        Invokes this wrapper with the given arguments.
++        :param args: Invocation arguments.
++        :param kwargs: Invocation keyword arguments.
++        :return: The result of the function invocation.
++        """
++        raise NotImplementedError
++
++    def __getattribute__(self, item):
++        if item == "__name__":
++            return self.signature().__name__
++        return super().__getattribute__(item)
++
++    def __call__(self, *args, **kwargs):
++        return self.invoke(*args, **kwargs)
++
++
++class AbstractCommandClass(abc.ABC):
++    """
++    Provides a template class for use with :func:`@CLI.command <CLI.command>`, however, classes do not need to inherit
++    this class to be an eligible command-class. They simply just need to implement the __execute__ method.
++    """
++
++    __description__ = None
++    """
++    An optional description for the command. You can change this description by modifying the value of this variable.
++    """
++
++    @staticmethod
++    @abc.abstractmethod
++    def __execute__():
++        """
++        This method is called whenever `this` command is successfully matched. Implementations of this method can
++        choose any function signature.
++        """
++        raise NotImplementedError
+\ No newline at end of file
+Index: src/simplycli/bundle.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/simplycli/bundle.py b/src/simplycli/bundle.py
+new file mode 100644
+--- /dev/null	(date 1712292198411)
++++ b/src/simplycli/bundle.py	(date 1712292198411)
+@@ -0,0 +1,67 @@
++import simplycli
++from simplycli.decorators import __annotated__
++from simplycli.meta import CommandLike, AbstractFunctionCommandWrapper, forward_meta
++
++
++class __BundleCommand__(AbstractFunctionCommandWrapper):
++    def __init__(self, command_like: CommandLike, properties):
++        self.command_like = command_like
++
++        self.__bundle_properties__ = properties
++        self.__bundle__ = None
++
++        forward_meta(self.command_like, self)
++
++    def signature(self) -> CommandLike:
++        return self.command_like
++
++    def invoke(self, *args, **kwargs):
++        args = list(args)
++        args.insert(0, self.__bundle__)
++        return self.command_like(*args, **kwargs)
++
++
++class Bundle:
++    @staticmethod
++    @__annotated__
++    def command(f, **properties):
++        return __BundleCommand__(f, properties)
++
++    def __commands__(self) -> list[__BundleCommand__]:
++        cmds = []
++        for attr in dir(self):
++            val = getattr(self, attr)
++            if getattr(val, "__bundle_properties__", None) is not None:
++                val.__bundle__ = self
++                cmds.append(val)
++        return cmds
++
++
++class BundleManager:
++    def __init__(self, cli: "simplycli.CLI"):
++        self._bundle_map: dict[Bundle, list[__BundleCommand__]] = {}
++
++        self.cli = cli
++
++    def active(self) -> set[Bundle]:
++        return self._bundle_map.keys()
++
++    def apply(self, bundle: Bundle):
++        if bundle in self._bundle_map:
++            cmds = self._bundle_map[bundle]
++            new_cmds = [c for c in bundle.__commands__() if c not in cmds]
++            for cmd in new_cmds:
++                self.cli.command(cmd, **cmd.__bundle_properties__)
++                cmds.append(cmd)
++            return
++
++        cmds = bundle.__commands__()
++        self._bundle_map[bundle] = cmds
++        for command in cmds:
++            self.cli.command(command, **command.__bundle_properties__)
++
++    def remove(self, bundle: Bundle):
++        if bundle in self._bundle_map:
++            cmds = self._bundle_map.pop(bundle)
++            for command in cmds:
++                self.cli.unregister(command)
+Index: tests/test_bundle.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/tests/test_bundle.py b/tests/test_bundle.py
+new file mode 100644
+--- /dev/null	(date 1712292218981)
++++ b/tests/test_bundle.py	(date 1712292218981)
+@@ -0,0 +1,37 @@
++import unittest
++from simplycli import CLI, Arg
++from simplycli.bundle import Bundle
++
++
++class TestBundle(Bundle):
++    @Bundle.command
++    def one(self):
++        return 1
++
++    @Bundle.command
++    def add(self, n1: int = Arg(0), n2: int = Arg(1)):
++        return n1 + n2
++
++    @Bundle.command(aliases=["subtract"], args=[Arg(0), Arg(1)])
++    def sub(self, n1: int, n2: int):
++        return n1 - n2
++
++
++class MyTestCase(unittest.TestCase):
++    def __init__(self, *args, **kwargs):
++        super().__init__(*args, **kwargs)
++        self.cli = CLI()
++
++    def test_register_and_unregister_bundle(self):
++        result = self.cli.process_input("one")
++        self.assertIsNone(result)
++
++        bundle = TestBundle()
++        self.cli.bundles.apply(bundle)
++
++        result = self.cli.process_input("one")
++        self.assertEqual(1, result)
++
++
++if __name__ == '__main__':
++    unittest.main()
