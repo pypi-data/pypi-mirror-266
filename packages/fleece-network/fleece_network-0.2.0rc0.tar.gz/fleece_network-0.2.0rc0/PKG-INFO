@@ -1,0 +1,61 @@
+Metadata-Version: 2.1
+Name: fleece-network
+Version: 0.2.0rc0
+Summary: P2P socket built on aiortc.
+Author: Linyu Wu
+Author-email: celve03@gmail.com
+Requires-Python: >=3.11,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: aioconsole (>=0.7.0,<0.8.0)
+Requires-Dist: anyio (>=4.3.0,<5.0.0)
+Requires-Dist: fastapi (>=0.110.1,<0.111.0)
+Requires-Dist: pydantic (>=2.6.4,<3.0.0)
+Requires-Dist: toml (>=0.10.2,<0.11.0)
+Requires-Dist: uvicorn (>=0.29.0,<0.30.0)
+Requires-Dist: websockets (>=12.0,<13.0)
+Description-Content-Type: text/markdown
+
+# Nameless
+
+## Installation
+
+Install necessary packages using pip.
+
+## Usage
+
+Firstly, run `signaling.py` on a server with public IP.
+
+Secondly, run TURN server on a server with public IP.
+
+Thirdly, run `peer.py` on any machine. The configuration has to be set beforehand in `config.toml` as follows:
+
+```toml
+[worker]
+id = "worker-id"
+
+[signaling]
+ip = "signaling-server-ip"
+port = 8765
+
+[[turn]]
+ip = "turn-server-ip"
+port = 3478
+username = "turn-server-username"
+credential = "turn-server-credential"
+
+
+[stun]
+ip = "stun-server-ip"
+port = 19302
+```
+
+Fill the blank with your own configuration.
+
+Then, `conn.py` is used to check connectivity. Use `connect <worker-id>` to connect to a peer in the console. After the connection is established, you can send messages to the peer using `send <message>`.
+
+`rtt.py` is used to measure the round trip time. Use `send` to measure the round trip time to a peer after establishing the connnection by `connect <worker-id>`.
+
+`bw.py` is used to measure the bandwidth. It's used the same way as `rtt.py`.
+
