@@ -1,0 +1,67 @@
+[project]
+name = "Rabbit-in-a-Blender"
+version = "0.0.46"
+authors = [
+  { name="Lammertyn Pieter-Jan", email="pieter-jan.lammertyn@azdelta.be" },
+  { name="Dupulthys Stijn", email="stijn.dupulthys@azdelta.be" },
+  { name="De Jaeger Peter", email="peter.dejaeger@azdelta.be" }
+]
+description = "An ETL pipeline to transform your EMP data to OMOP."
+readme = "README.md"
+license = { file="LICENSE" }
+keywords= ["OMOP", "CDM", "common data model", "OHDSI"]
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    'backoff >= 2.2.1',
+    'polars >= 0.20.13',
+    'jinja2 >= 3.1.2',
+    'pyarrow >= 15.0.0',
+    'google-cloud-bigquery >= 3.18.0',
+    'google-cloud-storage >= 2.15.0',
+    'google-auth >= 2.28.1',
+    'pandas >= 2.2.1',
+    'humanfriendly >= 10.0',
+    'jpype1 >= 1.5.0',
+    'dash >= 2.16.0',
+    'dash-table >= 5.0.0',
+    'dash-bootstrap-components >= 1.5.0',
+    'pymssql >= 2.2.11',
+    'python-dotenv >= 1.0.1',
+    'sqlalchemy >= 2.0.28',
+    'pywin32 >= 306; platform_system == "Windows"',
+    'sqlparse >= 0.4.4',
+]
+
+[project.urls]
+"Homepage" = "https://radar-azdelta.github.io/Rabbit-in-a-Blender/"
+"Source Code" = "https://github.com/RADar-AZDelta/Rabbit-in-a-Blender"
+"Bug Tracker" = "https://github.com/RADar-AZDelta/Rabbit-in-a-Blender/issues"
+
+[project.scripts]
+riab = "riab:cli"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"riab.etl" = ["**/*.json", "**/*.sql", "**/*.jinja"]
+"riab.libs.CommonDataModel.inst.csv" = ["*.csv"]
+"riab.libs.SqlRender.inst.csv" = ["*.csv"]
+"riab.libs.SqlRender.inst.java" = ["*.jar"]
+"riab.libs.DataQualityDashboard.inst.csv" = ["*.csv"]
+"riab.libs.DataQualityDashboard.inst.sql.sql_server" = ["*.sql"]
+"riab.libs.Achilles.inst.csv" = ["**/*.csv"]
+"riab.libs.Achilles.inst.sql.sql_server" = ["**/*.sql"]
+"riab.assets" = ["*.css"]
+
+[tool.ruff]
+line-length = 120

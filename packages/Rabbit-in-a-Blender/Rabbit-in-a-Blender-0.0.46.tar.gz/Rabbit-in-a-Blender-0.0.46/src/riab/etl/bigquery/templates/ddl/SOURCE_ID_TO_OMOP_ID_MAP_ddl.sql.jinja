@@ -1,0 +1,13 @@
+{#- Copyright 2024 RADar-AZDelta -#}
+{#- SPDX-License-Identifier: gpl3+ -#}
+DROP TABLE IF EXISTS `{{dataset_omop}}.source_id_to_omop_id_map`; 
+create table `{{dataset_omop}}.source_id_to_omop_id_map` (
+    omop_table STRING not null,
+    omop_id INT64 not null,
+    source STRING,
+    source_id STRING not null,
+    valid_start_date DATE not null,
+    valid_end_date DATE not null,
+    invalid_reason STRING
+)
+CLUSTER BY omop_table, omop_id;
