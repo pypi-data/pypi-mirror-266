@@ -1,0 +1,70 @@
+fragment supervisionFields on SupervisionType {
+  id
+  rooms {
+    id
+    shortName
+    name
+  }
+  teachers {
+    id
+    fullName
+  }
+  subject {
+    id
+    name
+    colourFg
+    colourBg
+  }
+  breakSlot {
+    id
+    name
+    timeGrid {
+      id
+      group {
+        id
+        name
+      }
+      validityRange {
+        id
+        name
+        dateStart
+        dateEnd
+      }
+    }
+    weekday
+    timeStart
+    timeEnd
+    canEdit
+    canDelete
+  }
+  canEdit
+  canDelete
+}
+
+query supervisions($orderBy: [String], $filters: JSONString) {
+  items: supervisions(orderBy: $orderBy, filters: $filters) {
+    ...supervisionFields
+  }
+}
+
+mutation createSupervisions($input: [BatchCreateSupervisionInput]!) {
+  createSupervisions(input: $input) {
+    items: supervisions {
+      ...supervisionFields
+    }
+  }
+}
+
+mutation deleteSupervisions($ids: [ID]!) {
+  deleteSupervisions(ids: $ids) {
+    deletionCount
+  }
+}
+
+mutation updateSupervisions($input: [BatchPatchSupervisionInput]!) {
+  updateSupervisions(input: $input) {
+    items: supervisions {
+      ...supervisionFields
+    }
+  }
+}

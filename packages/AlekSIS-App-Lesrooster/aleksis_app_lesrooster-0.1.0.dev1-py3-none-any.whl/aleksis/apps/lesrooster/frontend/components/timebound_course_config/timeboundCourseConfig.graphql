@@ -1,0 +1,110 @@
+fragment subjectFields on LesroosterExtendedSubjectType {
+  id
+  shortName
+  name
+  colourFg
+  colourBg
+  teachers {
+    id
+    fullName
+    shortName
+  }
+}
+
+fragment courseFields on LesroosterExtendedCourseType {
+  id
+  name
+  teachers {
+    id
+    fullName
+    shortName
+  }
+  groups {
+    id
+    name
+    shortName
+  }
+  lessonQuota
+}
+
+fragment timeboundCourseConfigFields on TimeboundCourseConfigType {
+  id
+  validityRange {
+    id
+    name
+  }
+  lessonQuota
+  teachers {
+    id
+    fullName
+    shortName
+  }
+  canEdit
+  canDelete
+}
+
+query timeboundCourseConfigs($orderBy: [String], $filters: JSONString) {
+  items: timeboundCourseConfigs(orderBy: $orderBy, filters: $filters) {
+    ...timeboundCourseConfigFields
+    course {
+      ...courseFields
+      subject {
+        ...subjectFields
+      }
+    }
+  }
+}
+
+mutation createTimeboundCourseConfigs(
+  $input: [BatchCreateTimeboundCourseConfigInput]!
+) {
+  createTimeboundCourseConfigs(input: $input) {
+    item: timeboundCourseConfigs {
+      ...timeboundCourseConfigFields
+      course {
+        ...courseFields
+        subject {
+          ...subjectFields
+        }
+      }
+    }
+  }
+}
+
+mutation deleteTimeboundCourseConfigs($ids: [ID]!) {
+  deleteTimeboundCourseConfigs(ids: $ids) {
+    deletionCount
+  }
+}
+
+mutation updateTimeboundCourseConfigs(
+  $input: [BatchPatchTimeboundCourseConfigInput]!
+) {
+  updateTimeboundCourseConfigs(input: $input) {
+    items: timeboundCourseConfigs {
+      ...timeboundCourseConfigFields
+      course {
+        ...courseFields
+        subject {
+          ...subjectFields
+        }
+      }
+    }
+  }
+}
+
+query subjects($orderBy: [String], $filters: JSONString, $groups: [ID]) {
+  subjects: lesroosterExtendedSubjects(
+    orderBy: $orderBy
+    filters: $filters
+    groups: $groups
+  ) {
+    ...subjectFields
+    courses {
+      ...courseFields
+      lrTimeboundCourseConfigs {
+        ...timeboundCourseConfigFields
+      }
+    }
+  }
+}

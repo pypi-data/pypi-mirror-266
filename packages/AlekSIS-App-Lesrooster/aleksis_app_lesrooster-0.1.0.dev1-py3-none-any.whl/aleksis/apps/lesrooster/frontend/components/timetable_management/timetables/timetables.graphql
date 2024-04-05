@@ -1,0 +1,112 @@
+query lessonsTeacher($teacher: ID!, $timeGrid: ID!) {
+  lessonsTeacher: lessonObjectsForTeacher(
+    teacher: $teacher
+    timeGrid: $timeGrid
+  ) {
+    id
+    slotStart {
+      id
+      period
+      weekday
+    }
+    slotEnd {
+      id
+      period
+      weekday
+    }
+    subject {
+      id
+      name
+      colourFg
+      colourBg
+    }
+    teachers {
+      id
+      fullName
+      shortName
+    }
+    rooms {
+      id
+      name
+      shortName
+    }
+    course {
+      id
+      name
+      subject {
+        id
+        name
+        colourFg
+        colourBg
+      }
+      teachers {
+        id
+        fullName
+        shortName
+      }
+      groups {
+        id
+        name
+        shortName
+      }
+    }
+    recurrence
+    canEdit
+    canDelete
+  }
+}
+
+query lessonsRoom($room: ID!, $timeGrid: ID!) {
+  lessonsRoom: lessonObjectsForRoom(room: $room, timeGrid: $timeGrid) {
+    id
+    slotStart {
+      id
+      period
+      weekday
+    }
+    slotEnd {
+      id
+      period
+      weekday
+    }
+    subject {
+      id
+      name
+      colourFg
+      colourBg
+    }
+    teachers {
+      id
+      fullName
+      shortName
+    }
+    rooms {
+      id
+      name
+      shortName
+    }
+    course {
+      id
+      name
+      subject {
+        id
+        name
+        colourFg
+        colourBg
+      }
+      teachers {
+        id
+        fullName
+        shortName
+      }
+      groups {
+        id
+        name
+        shortName
+      }
+    }
+    recurrence
+    canEdit
+    canDelete
+  }
+}
