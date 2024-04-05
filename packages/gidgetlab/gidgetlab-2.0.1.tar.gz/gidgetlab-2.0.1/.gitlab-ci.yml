@@ -1,0 +1,53 @@
+stages:
+  - check
+  - test
+  - build
+  - release
+
+default:
+  image: python:3.11
+
+check:
+  stage: check
+  image: python:3.11
+  before_script:
+    - pip install pre-commit
+  script:
+    - pre-commit run --all-files
+
+run-pytest:
+  stage: test
+  parallel:
+    matrix:
+      - PYTHON_VERSION: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+  image: python:${PYTHON_VERSION}
+  before_script:
+    - pip install .[dev]
+  script:
+    - pytest -v --junitxml=report.xml --cov=gidgetlab tests
+  artifacts:
+    when: always
+    reports:
+      junit: report.xml
+
+build-pypi-package:
+  stage: build
+  before_script:
+    - pip install build
+  script:
+    - python -m build
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - dist/
+
+release-pypi:
+  stage: release
+  variables:
+    GIT_STRATEGY: none
+  before_script:
+    - pip install twine
+  script:
+    - twine upload dist/*
+  only:
+    - tags
