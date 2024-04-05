@@ -1,0 +1,49 @@
+base_model: "HuggingFaceH4/tiny-random-LlamaForCausalLM"
+reinit: false
+
+steps: 3
+warmup_steps: 2
+resume: false
+
+optimizer: "adamw_torch"
+lr: 5e-4
+scheduler: "constant"
+weight_decay: 0
+
+batch_size: 1
+accumulation: 2
+eval_batch_size: 2
+eval_accumulation: 1
+
+fp16: false
+bf16: true
+
+eval: true
+eval_every: 2
+save_every: 2
+save_limit: 1
+log_every: 1
+
+use_sft: true
+
+lora:
+  enabled: false
+  r: 8
+  alpha: 32
+  dropout: 0.1
+  target_modules: ["c_attn", "c_proj"]
+
+data:
+  datasets: ["uonlp/CulturaX:da", "DDSC/dagw_reddit_filtered_v1.0.0"]
+  seed: 1887
+  text_col: "text"
+  test_examples: 1239
+  validation_examples: 2
+  context_tokens: 16
+  workers: 0
+  buffer_size: 1000
+  save_splits: false
+  splits_path: "local-computations/pretraining-splits"
+  debug_data: "local-computations/debug-data"
+
+debug: true
