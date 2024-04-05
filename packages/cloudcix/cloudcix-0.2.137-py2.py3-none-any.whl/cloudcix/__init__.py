@@ -1,0 +1,5 @@
+__title__ = 'cloudcix'
+__version__ = '0.2.137'
+__author__ = 'CloudCIX'
+__license__ = 'Apache Licwnse 2.0'
+__copyright__ = 'Copyright 2024 CloudCIX'
