@@ -1,0 +1,21 @@
+<div class="form-group row">
+    <label class="col-{{ label_rows|default:3 }} col-form-label">{{ label|default:input.label }}:</label>
+    <div class="col-{{ label_rows|default:9 }}">
+        <div class="kt-checkbox-inline">
+            {% for choice in input %}
+            <label class="kt-checkbox">
+                {{ choice.tag }} {{ choice.choice_label }}
+                <span></span>
+            </label>
+            {% endfor %}
+        </div>
+        {% for error in input.errors %}
+            <div class="invalid-feedback" style="display: block;">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+        {% if help_text %}
+        <span class="form-text text-muted">{{ help_text }}</span>
+        {% endif %}
+    </div>
+</div>

@@ -1,0 +1,17 @@
+<div class="kt-portlet__foot">
+    <div class="kt-form__actions">
+        <div class="row">
+            <div class="col-12 text-right">
+                {% if cancel_url_reverse %}
+                <button type="button" onclick="document.location.href='{% if not pk %}{% url cancel_url_reverse %}{% else %}{% url cancel_url_reverse pk %}{% endif %}'" class="btn btn-secondary rounded mr-1">Cancelar</button>
+                {% endif %}
+                {% if show_preview %}
+                <button type="submit" name="preview" class="btn btn-success rounded"><i class="fas fa-eye"></i> Pré-visualizar</button>
+                {% endif %}
+                {% if not hide_submit %}
+                <button type="submit" class="btn btn-brand rounded"><i class="fas fa-save mr-2"></i>Guardar</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

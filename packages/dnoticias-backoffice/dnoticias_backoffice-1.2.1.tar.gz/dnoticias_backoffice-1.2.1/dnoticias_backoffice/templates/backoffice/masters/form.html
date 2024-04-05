@@ -1,0 +1,67 @@
+{% extends 'backoffice/masters/main.html' %}
+{% load i18n debug static widget_tweaks base %}
+{% block title %}dnoticias | Assinaturas | Backoffice{% endblock %}
+{% block description %}Latest updates and statistic charts{% endblock %}
+
+{% block style_template %}
+{% endblock %}
+
+{% block style_develop %}
+{% endblock %}
+
+{% block content %}
+<!-- begin:: Content -->
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+    <!--Begin::App-->
+    <div class="kt-grid kt-grid--desktop kt-grid--ver kt-grid--ver-desktop kt-app">
+        <!--Begin:: App Content-->
+        <div class="kt-grid__item kt-grid__item--fluid kt-app__content">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="kt-portlet">
+                        {% block form_header %}
+                        <div class="kt-portlet__head">
+                            <div class="kt-portlet__head-label">
+                                <h3 class="kt-portlet__head-title">
+                                    <!-- Form title -->
+                                    {% block form_title %}{% endblock %}
+                                    <!-- End form title -->
+                                </h3>
+                            </div>
+                        </div>
+                        {% endblock %}
+                        <form method="POST" class="kt-form kt-form--label-right" {% block form_attrs %}{% endblock %}>
+                            {% csrf_token %}
+                            <div class="kt-portlet__body">
+                                <div class="kt-section kt-section--first">
+                                    <div class="kt-section__body">
+                                        <!-- Form body -->
+                                        {% block form_body %}{% endblock %}
+                                        <!-- End form body -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Form footer -->
+                            {% block form_footer %}{% endblock %}
+                            <!-- End form footer -->
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--End:: App Content-->
+    </div>
+
+    <!--End::App-->
+</div>
+
+{% block pos_content %}
+{% endblock %}
+<!-- end:: Content -->
+{% endblock %}
+
+{% block script_template %}
+{% endblock %}

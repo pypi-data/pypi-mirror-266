@@ -1,0 +1,10 @@
+{% if has_permissions %}
+<li class="kt-menu__item {{ active|yesno:'kt-menu__item--active, ' }}">
+    <a id="{{ id }}" href="{% url url_name %}" class="kt-menu__link">
+        <i class="kt-menu__link-icon {{ icon }}">
+            <span></span>
+        </i>
+        <span class="kt-menu__link-text">{{ name }}</span>
+    </a>
+</li>
+{% endif %}

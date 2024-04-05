@@ -1,0 +1,15 @@
+{% load base widget_tweaks %}
+{{ input }}
+<div class="form-group row">
+    <label class="col-xl-{{ label_rows|default:3 }} col-form-label">{{ input.label }}</label>
+    <div class="col-xl-{{ input_rows|default:6 }}">
+        <div class="quill-editor"
+             id="{{ input.auto_id }}-editor"
+             style="height: 200px">{{ input.value|default:""|safe }}</div>
+        {% for error in input.errors %}
+            <div class="invalid-feedback" style="display: block;">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    </div>
+</div>
