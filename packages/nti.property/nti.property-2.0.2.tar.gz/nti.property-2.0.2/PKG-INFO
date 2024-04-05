@@ -1,0 +1,109 @@
+Metadata-Version: 2.1
+Name: nti.property
+Version: 2.0.2
+Summary: NTI Property
+Home-page: https://github.com/OpenNTI/nti.property
+Author: Jason Madden
+Author-email: jason@nextthought.com
+License: Apache
+Keywords: Property
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.10
+License-File: LICENSE
+License-File: AUTHORS
+Requires-Dist: zope.annotation
+Requires-Dist: zope.cachedescriptors>=4.2
+Requires-Dist: zope.component
+Requires-Dist: zope.contenttype
+Requires-Dist: zope.file>=1.0
+Requires-Dist: zope.schema>=4.7.0
+Requires-Dist: ZConfig
+Provides-Extra: test
+Requires-Dist: nti.testing; extra == "test"
+Requires-Dist: pyhamcrest; extra == "test"
+Requires-Dist: zope.testrunner; extra == "test"
+Provides-Extra: docs
+Requires-Dist: Sphinx; extra == "docs"
+Requires-Dist: repoze.sphinx.autointerface; extra == "docs"
+Requires-Dist: furo; extra == "docs"
+
+=============
+ nti.property
+=============
+
+.. image:: https://img.shields.io/pypi/v/nti.property.svg
+        :target: https://pypi.python.org/pypi/nti.property/
+        :alt: Latest Version
+
+.. image:: https://github.com/OpenNTI/nti.property/actions/workflows/tests.yml/badge.svg
+        :target: https://github.com/OpenNTI/nti.property/actions/workflows/tests.yml
+
+.. image:: https://readthedocs.org/projects/ntiproperty/badge/?version=latest
+        :target: http://ntiproperty.readthedocs.org/en/latest/
+        :alt: Documentation Status
+
+nti.property offers a set of classes and utility functions to set
+properties on objects or classes.
+
+Complete documentation can be found at http://ntiproperty.readthedocs.io
+
+
+=========
+ Changes
+=========
+
+
+2.0.2 (2024-04-04)
+==================
+
+- Make ``Tunable`` search harder (farther up the call chain)
+  to find a logger. This should make finding a logger in a
+  class definition better.
+
+
+2.0.1 (2024-02-16)
+==================
+
+- Updates to documentation and logging for tunables.
+
+
+2.0.0 (2024-01-29)
+==================
+
+- Add support for Python 3.12.
+- Drop runtime dependency on setuptools in favor of "native namespace
+  packages".
+- Drop support for legacy Python versions: 2.7, 3.6. 3.7, 3.8 and 3.9.
+- Add new module ``nti.property.tunables`` for customizing parameters
+  (usually represented as class variables) from the environment.
+
+
+1.2.0 (2023-05-05)
+==================
+
+- Add support for Python 3.8, 3.9, 3.10 and 3.11.
+
+
+1.1.0 (2018-09-13)
+==================
+
+- Add support for Python 3.7.
+
+- Add support for zope.schema 4.7.
+
+
+1.0.0 (2017-04-26)
+==================
+
+- First PyPI release.
+- Add support for Python 3.6.
+- Remove backward compatibility exports.
