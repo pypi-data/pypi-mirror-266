@@ -1,0 +1,26 @@
+# SPDX-FileCopyrightText: 2024 Alec Delaney
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+repos:
+  - repo: https://github.com/fsfe/reuse-tool
+    rev: v3.0.1
+    hooks:
+      - id: reuse
+        name: Check REUSE compatibility
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: check-yaml
+        name: Check YAML
+      - id: end-of-file-fixer
+        name: Fix end of files
+      - id: trailing-whitespace
+        name: Trim trailing whitespace
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.3.5
+    hooks:
+      - id: ruff
+        name: Lint via ruff
+        args: [--fix]
+      - id: ruff-format
+        name: Format via ruff
