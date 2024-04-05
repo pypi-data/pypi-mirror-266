@@ -1,0 +1,47 @@
+#!/usr/bin/env python
+from pwn import *
+
+GDB_OFF = 0x555555554000
+IP = '{ip}'
+PORT = {port}
+BINARY = '{binary}'
+ARGS = []
+ENV = {env}
+GDB = f"""
+set follow-fork-mode parent
+
+c"""
+
+context.binary = exe = ELF(BINARY, checksec=False)
+# libc = ELF('{libc}', checksec=False)
+context.aslr = {aslr}
+
+{aliases}
+
+vm = None
+def get_target(**kw):
+  global vm
+
+  if args.REMOTE:
+    # context.log_level = 'debug'
+    return remote(IP, PORT)
+
+  if args.LOCAL:
+    if args.GDB:
+      return gdb.debug([exe.path] + ARGS, env=ENV, gdbscript=GDB, **kw)
+    return process([exe.path] + ARGS, env=ENV, **kw)
+
+  try:
+    from vagd import {dependencies}, Box # only load vagd if needed
+  except:
+    log.error("Failed to import vagd, either run locally using LOCAL or install it")
+  if not vm:
+    {vms}
+  if vm.is_new:
+    log.info("new vagd instance") # additional setup here
+  return vm.start(argv=ARGS, env=ENV, gdbscript=GDB, **kw)
+
+
+t = get_target()
+
+it() # or t.interactive()
