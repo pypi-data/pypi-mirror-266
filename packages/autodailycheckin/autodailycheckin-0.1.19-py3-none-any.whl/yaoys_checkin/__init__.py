@@ -1,0 +1,1 @@
+from .AutoCheckIn import main

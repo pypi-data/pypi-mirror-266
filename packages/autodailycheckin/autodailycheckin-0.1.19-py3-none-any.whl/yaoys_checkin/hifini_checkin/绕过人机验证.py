@@ -1,0 +1,2 @@
+# js请求 :https://www.hifini.com/huadong_296d626f_2dc874bb56e851b7cf4df05c59c57472.js?id=1702968699
+# 滑动人机验证：https://www.hifini.com/a20be899_96a6_40b2_88ba_32f1f75f1552_yanzheng_huadong.php?type=ad82060c2e67cc7e2cc47552a4fc1242&key=2dc874bb56e851b7cf4df05c59c57472&value=2f778b053da89c6a1b2ef6536085a6de
