@@ -1,0 +1,44 @@
+from setuptools import setup, find_packages
+
+with open("README.md","r") as ofile:
+    long_description_file = ofile.read()
+    
+setup(
+    name='signapse',
+    version='1.0.5',
+    description='Signapse_synthetic_signer',
+    long_description=long_description_file,
+    long_description_content_type="text/markdown",
+    author='Basheer Alwaely',
+    author_email='basheer@signapse.ai',
+    url='https://github.com/signapse/signapse',
+    packages=find_packages(),
+    classifiers=[
+        'Development Status :: 1 - Planning',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: MIT License',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+    ],
+    install_requires=[
+        'essentials',
+        'setuptools',
+        'wheel',
+        'mediapipe==0.8.11',
+        'opencv-python==4.6.0.66',
+        'opencv-python-headless==4.5.5.62',
+        'pandas',
+        'pickle5',
+        'protobuf==3.20.*',
+        'boto3 == 1.24.47',
+        'ffmpeg-python == 0.2.0',
+        'scipy == 1.7.3,',
+        'pycpd',
+        'torch',
+        'torchvision',
+        'imageio',
+        'PyYAML',
+    ]
+)
