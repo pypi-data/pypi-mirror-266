@@ -1,0 +1,80 @@
+Metadata-Version: 2.1
+Name: mojo-config
+Version: 1.3.14
+Summary: Automation Mojo Configuration Package
+License: LICENSE.txt
+Keywords: python
+Requires-Python: >=3.8,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: License :: Other/Proprietary License
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3
+Provides-Extra: couchdb
+Provides-Extra: mongodb
+Requires-Dist: couchdb (>=1.2,<2.0) ; extra == "couchdb"
+Requires-Dist: cryptography (>=41.0.3,<42.0.0)
+Requires-Dist: mojo-collections (>=1.3.0,<1.4.0)
+Requires-Dist: mojo-credentials (>=1.3.1,<1.4.0)
+Requires-Dist: mojo-errors (>=1.3.0,<1.4.0)
+Requires-Dist: mojo-extension (>=1.3.12,<1.4.0)
+Requires-Dist: mojo-startup (>=1.3.5,<1.4.0)
+Requires-Dist: pymongo[srv] (>=4.0.0,<5.0.0) ; extra == "mongodb"
+Description-Content-Type: text/x-rst
+
+=======================
+python-package-template
+=======================
+This is a template repository that can be used to quickly create a python package project.
+
+=========================
+Features of this Template
+=========================
+* Machine Setup
+* Virtual Environment Setup (Poetry)
+* PyPi Publishing
+* Sphinx Documentation
+
+========================
+How to Use This Template
+========================
+- Click the 'Use this template' button
+- Fill in the information to create your repository
+- Checkout your new repository
+- Change the following in 'repository-config.ini'
+
+  #. 'PROJECT NAME'
+  #. 'REPOSITORY_NAME'
+
+- If you have machine dependencies to add, put them in 'setup-ubuntu-machine'
+- Modify the pyproject.toml file with the correct package-name, author, publishing information, etc.
+- Rename the VSCODE workspace file 'mv workspaces/default-workspace.template workspaces/(project name).template'
+- Replace the README.rst file with your own README
+- Add your dependencies with python poetry 'poetry add (dependency name)'
+- Drop your package code in 'source/packages'
+- Modify the name of your package root in 'pyproject.toml'
+
+  #. 'packages = [{include="(root folder name)", from="source/packages"}]'
+
+=================
+Code Organization
+=================
+* .vscode - Common tasks
+* development - This is where the runtime environment scripts are located
+* repository-setup - Scripts for homing your repository and to your checkout and machine setup
+* userguide - Where you put your user guide
+* source/packages - Put your root folder here 'source/packages/(root-module-folder)'
+* source/sphinx - This is the Sphinx documentation folder
+* workspaces - This is where you add VSCode workspaces templates and where workspaces show up when homed.
+
+==========
+References
+==========
+
+- `User Guide <userguide/userguide.rst>`
+- `Coding Standards <userguide/10-00-coding-standards.rst>`
+
