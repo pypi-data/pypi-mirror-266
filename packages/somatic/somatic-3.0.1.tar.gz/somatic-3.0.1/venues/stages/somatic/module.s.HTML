@@ -1,0 +1,191 @@
+
+
+<style>
+h1, p {
+	padding: 0;
+	margin: 0;
+}
+
+</style>
+
+
+<body
+	style="
+		position: relative;
+	"
+>
+	<div
+		style="
+			position: absolute;
+			height: 200px;
+			width: 200px;
+			top: 0;
+			left: 0;
+			
+			opacity: 1;
+			opacity: .4;
+			
+			border-radius: 8px;
+		"
+	>
+		<img src="./_book/neem--art-1163780_1920.png" 
+			style="
+				max-height: 100%;
+				max-width: 100%;
+			"
+		/>
+	</div>
+
+	<div
+		style="
+			position: relative;
+			opacity: 1;
+			padding: 50px;
+		"
+	>
+		<h1
+			style="
+				text-align: center;
+				font-size: 5em;
+				padding-bottom: 12px;
+			"
+		>somatic</h1>
+
+		<a href="./_license/license.s.HTML">license</a>
+
+
+		<div
+			style="
+				background: #ddd;
+				padding: 8px;
+				border-radius: 8px;
+			"
+		>
+		<h2
+			style="
+				text-align: center;
+				background: #eee;
+				padding: 8px;
+				margin: 0;
+				border-radius: 8px;
+			"
+		>xonsh code</h2>
+		<code 
+			style="
+				font-size: 1.3em;
+				white-space: pre-wrap;
+			"
+		>
+			pip install somatic	
+		</code>
+		</div>
+
+
+		<div style="height: 12px"></div>
+
+
+		<div
+			style="
+				background: #ddd;
+				padding: 8px;
+				border-radius: 8px;
+			"
+		>
+		<h2
+			style="
+				text-align: center;
+				background: #eee;
+				padding: 8px;
+				margin: 0;
+				border-radius: 8px;
+			"
+		>xonsh code</h2>
+		<div style="height: 6px"></div>
+		<p
+			style="
+				text-align: center;
+				background: #eee;
+				padding: 8px;
+				border-radius: 8px;
+			"
+		>Started from the shell, "somatic" presents files in the current working directory (cwd) that have extension "s.HTML".</p>
+		<code 
+			style="
+				font-size: 1.3em;
+				white-space: pre-wrap;
+			"
+		>
+			somatic
+			
+		</code>
+		</div>
+
+		<div style="height: 12px"></div>
+
+		<div
+			style="
+				background: #ddd;
+				padding: 8px;
+				border-radius: 8px;
+			"
+		>
+		<h2
+			style="
+				text-align: center;
+				background: #eee;
+				padding: 8px;
+				margin: 0;
+				border-radius: 8px;
+			"
+		>python3 code</h2>
+		<code 
+			style="
+				font-size: 1.3em;
+				white-space: pre-wrap;
+			"
+		>
+			import pathlib
+			from os.path import dirname, join, normpath
+			this_folder = pathlib.Path (__file__).parent.resolve ()
+
+			import somatic
+			somatic.start ({
+				"extensions": [ 
+					'.6.HTML',
+					'.$.HTML',
+					'.S.HTML',
+					'.s.HTML', 
+					'.jpg', 
+					'.png' 
+				],
+				
+				#
+				#	This is the node from which the traversal occur.
+				#
+				"directory": str (this_folder) + "/structures/somatic",
+				
+				#
+				#	This path is removed from the absolute path of share files found.
+				#
+				"relative path": str (this_folder) + "/structures/somatic",
+				
+				
+				#
+				#	The first port to check
+				#
+				"port": 20000,
+				
+				#
+				#	Whether to check more ports if port is unavailable
+				#
+				"static port": False,
+				
+				#
+				#	0, 1, 2
+				#
+				"verbose": 1,
+			})
+			
+		</code>
+	</div>
+</body>
