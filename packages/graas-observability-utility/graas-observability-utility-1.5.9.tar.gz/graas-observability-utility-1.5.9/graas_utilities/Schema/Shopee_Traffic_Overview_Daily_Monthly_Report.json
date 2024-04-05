@@ -1,0 +1,48 @@
+{
+  "type": "object",
+  "title": "Shopee Traffic Overview Daily Monthly Report",
+  "description": "Overview of daily and monthly traffic metrics on Shopee platform",
+  "properties": {
+    "Date": {
+      "type": "string",
+      "description": "Date of the report in the format 'DD-MM-YYYY'",
+      "format": "dd-MM-yyyy",
+      "pattern": "[0-9]{2}-[0-9]{2}-[1-2][0-9]{3}"
+    },
+    "Page_Views": {
+      "type": "integer",
+      "description": "Total number of page views on Shopee"
+    },
+    "Avg_Page_Views": {
+      "type": "number",
+      "description": "Average number of page views per visit"
+    },
+    "Avg_Time_Spent": {
+      "type": "string",
+      "description": "Average time spent on the platform per visit in the format 'HH:mm:ss'"
+    },
+    "Bounce_Rate": {
+      "type": "number",
+      "description": "Bounce rate, representing the percentage of visitors who navigate away from the site after viewing only one page"
+    },
+    "Visitors": {
+      "type": "integer",
+      "description": "Total number of visitors on Shopee"
+    },
+    "New_Visitors": {
+      "type": "integer",
+      "description": "Number of new visitors on Shopee"
+    },
+    "Existing_Visitors": {
+      "type": "integer",
+      "description": "Number of existing visitors on Shopee"
+    },
+    "New_Followers": {
+      "type": "integer",
+      "description": "Number of new followers gained"
+    }
+  },
+  "required": [
+    "Date"
+  ]
+}

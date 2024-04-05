@@ -1,0 +1,55 @@
+{
+  "type": "object",
+  "title": "Lazada Product Sponsored Affiliate Report",
+  "description": "Daily and monthly performance report for a Lazada Product Sponsored Affiliate",
+  "properties": {
+    "Date": {
+      "type": "string",
+      "description": "Date of the report in the format 'DD-MM-YYYY', e.g., '11-10-2023'",
+      "format": "dd-MM-yyyy",
+      "pattern": "[0-9]{2}-[0-9]{2}-[1-2][0-9]{3}"
+    },
+    "Item_Id": {
+      "type": "number",
+      "description": "Unique identifier for the product item, e.g., 167487482"
+    },
+    "Product_Name": {
+      "type": "string",
+      "description": "Name of the product, e.g., 'Joie Juva Infant Car Seat Group 0+ (for Newborn Babies up to 13kgs) - Black Ink infant car seat carrier'"
+    },
+    "Brand_Id": {
+      "type": "number",
+      "description": "Unique identifier for the brand, e.g., 58293"
+    },
+    "Category_Id": {
+      "type": "number",
+      "description": "Unique identifier for the category, e.g., 18444"
+    },
+    "Orders": {
+      "type": "number",
+      "description": "Total number of orders for the product"
+    },
+    "Revenue": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Revenue details"
+    },
+    "Units_Sold": {
+      "type": "number",
+      "description": "Total number of units sold for the product"
+    },
+    "Est_Spend": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Estimated spending details"
+    },
+    "Est_ROAS": {
+      "type": "number",
+      "description": "Estimated Return on Ad Spend (ROAS) for the product"
+    }
+  },
+  "required": [
+    "Date",
+    "Item_Id"
+  ]
+}

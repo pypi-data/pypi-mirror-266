@@ -1,0 +1,69 @@
+{
+  "type": "object",
+  "title": "Shopee Marketing Voucher Performance Daily Report",
+  "description": "Daily report on the performance of a marketing voucher on Shopee",
+  "properties": {
+    "Voucher_Name": {
+      "type": "string",
+      "description": "Name of the marketing voucher"
+    },
+    "Voucher_Code": {
+      "type": "string",
+      "description": "Unique code associated with the marketing voucher"
+    },
+    "Status": {
+      "type": "string",
+      "description": "Current status of the voucher (e.g., Ongoing)"
+    },
+    "Period": {
+      "type": "string",
+      "description": "Duration of the voucher validity period (start - end)"
+    },
+    "Claims": {
+      "type": "integer",
+      "description": "Number of claims made for the voucher"
+    },
+    "Orders": {
+      "type": "integer",
+      "description": "Number of orders placed using the voucher"
+    },
+    "Usage_Rate": {
+      "type": "number",
+      "description": "Percentage of claimed vouchers used (0.0 - 100.0)"
+    },
+    "Sales": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Total Sales for the voucher Name"
+    },
+    "Cost": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Total Cost for the voucher Name"
+    },
+    "Units_Sold": {
+      "type": "integer",
+      "description": "Total units sold using the voucher"
+    },
+    "Buyers": {
+      "type": "integer",
+      "description": "Number of unique buyers who used the voucher"
+    },
+    "Sales_Per_Buyer": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Total Sales per Buyer for the voucher Name"
+    },
+    "Date": {
+      "type": "string",
+      "description": "Date of the report (e.g., 09-11-2023)",
+      "format": "dd-MM-yyyy",
+      "pattern": "[0-9]{2}-[0-9]{2}-[1-2][0-9]{3}"
+    }
+  },
+  "required": [
+    "Voucher_Name",
+    "Voucher_Code",
+    "Date"
+  ]
+}

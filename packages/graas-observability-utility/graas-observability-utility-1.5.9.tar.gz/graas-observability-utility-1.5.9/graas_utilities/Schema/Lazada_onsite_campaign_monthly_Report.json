@@ -1,0 +1,131 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Lazada Onsite Campaign Report",
+    "description": "A JSON object representing a Lazada onsite campaign report for a specific campaign.",
+    "type": "object",
+    "properties": {
+        "Date": {
+            "type": "string",
+            "description": "The date of the campaign report in 'dd-MM-yyyy' format.",
+            "format": "dd-MM-yyyy",
+            "pattern": "[0-9]{2}-[0-9]{2}-[1-2][0-9]{3}"
+        },
+        "Campaign_Name": {
+            "type": ["number","string"],
+            "description": "The name of the campaign."
+        },
+        "Campaign_ID": {
+            "type": "number",
+            "description": "The unique identifier for the campaign."
+        },
+        "Campaign_Objective": {
+            "type": "string",
+            "description": "The objective of the campaign, such as 'Traffic' or 'Sales'."
+        },
+        "Campaign_Type": {
+            "type": "string",
+            "description": "The type of campaign, e.g., 'Automated' or 'Manual'."
+        },
+        "Placement": {
+            "type": "string",
+            "description": "The placement and targeting for the campaign, e.g., 'All - Sponsored Products'."
+        },
+        "Budget": {
+            "type": "object",
+            "$ref": "../Schema/amount_currency_code_object.json",
+            "description": "The campaign budget with currency information."
+        },
+        "Spend": {
+            "type": "object",
+            "$ref": "../Schema/amount_currency_code_object.json",
+            "description": "The campaign spend with currency information."
+        },
+        "Impression": {
+            "type": "integer",
+            "description": "The number of times the campaign's ads were displayed."
+        },
+        "Clicks": {
+            "type": "integer",
+            "description": "The total number of clicks on the campaign's ads."
+        },
+        "CTR": {
+            "type": "number",
+            "description": "The Click-Through Rate (CTR) for the campaign, expressed as a percentage."
+        },
+        "CPC": {
+            "type": "object",
+            "$ref": "../Schema/amount_currency_code_object.json",
+            "description": "The cost per click (CPC) with currency information."
+        },
+        "Add_To_Cart_Units": {
+            "type": "number",
+            "description": "The number of units added to the cart during the campaign."
+        },
+        "Orders": {
+            "type": "number",
+            "description": "The total number of orders generated as a result of the campaign."
+        },
+        "CVR": {
+            "type": "string",
+            "description": "The Conversion Rate (CVR) for the campaign, expressed as a percentage."
+        },
+        "Units_Sold": {
+            "type": "number",
+            "description": "The total number of units sold during the campaign."
+        },
+        "Revenue": {
+            "type": "number",
+            "description": "The revenue generated from the campaign."
+        },
+        "ROAS": {
+            "type": "number",
+            "description": "The Return on Ad Spend (ROAS) for the campaign, indicating the revenue generated per unit of ad spend."
+        },
+        "Direct_Add_To_Cart_Units": {
+            "type": "number",
+            "description": "The number of units directly added to the cart due to the campaign."
+        },
+        "Direct_Orders": {
+            "type": "integer",
+            "description": "The number of direct orders generated as a result of the campaign."
+        },
+        "Direct_CVR": {
+            "type": "number",
+            "description": "The Conversion Rate (CVR) for direct conversions, expressed as a percentage."
+        },
+        "Direct_Units_Sold": {
+            "type": "integer",
+            "description": "The total number of units directly sold during the campaign."
+        },
+        "Direct_Revenue": {
+            "type": "object",
+            "$ref": "../Schema/amount_currency_code_object.json",
+            "description": "The direct revenue with currency information."
+        }
+    },
+    "required": [
+        "Date",
+        "Campaign_Name",
+        "Campaign_ID",
+        "Campaign_Type",
+        "Placement",
+        "Direct_Add_To_Cart_Units",
+        "Direct_Revenue",
+        "Impression",
+        "Campaign_Objective",
+        "Budget",
+        "Spend",
+        "Clicks",
+        "CTR",
+        "CPC",
+        "Add_To_Cart_Units",
+        "Orders",
+        "CVR",
+        "Units_Sold",
+        "Revenue",
+        "ROAS",
+        "Direct_Orders",
+        "Direct_CVR",
+        "Direct_Units_Sold"
+    ]
+}

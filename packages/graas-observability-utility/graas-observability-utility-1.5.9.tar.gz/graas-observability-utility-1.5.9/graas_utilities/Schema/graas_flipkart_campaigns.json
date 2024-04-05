@@ -1,0 +1,42 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Flipkart Campaign Report",
+    "description": "A JSON object representing a Flipkart Campaign Report",
+    "type": "object",
+    "properties": {
+        "merchantID": {
+            "type": "string",
+            "description": "A unique merchant code for GRAAS clients"
+        },
+        "siteNickNameId": {
+            "type": "string",
+            "description": "A unique merchant's store code for GRAAS clients"
+        },
+        "countryCode": {
+            "type": "string",
+            "description": "The country code, e.g., 'SG', 'MY'."
+        },
+        "currencyCode": {
+            "type": "string",
+            "description": "The currency code, e.g., 'SGD', 'USD'."
+        },
+        "result": {
+            "type": "array",
+            "items": {
+                "anyOf": [
+                    {
+                        "$ref": "../graas_utilities/Schema/Flipkart_PLA_Campaign_Seller_Portal_Daily_Report.json",
+                        "description": "Flipkart PLA Campaign Seller Portal Daily Report"
+                    }
+                ]
+            }
+        }
+    },
+    "required": [
+        "merchantID",
+        "siteNickNameId",
+        "countryCode",
+        "currencyCode",
+        "result"
+    ]
+}

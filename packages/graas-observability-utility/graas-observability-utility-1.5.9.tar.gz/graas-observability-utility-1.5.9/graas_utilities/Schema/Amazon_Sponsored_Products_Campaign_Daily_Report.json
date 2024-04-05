@@ -1,0 +1,102 @@
+{
+    "type": "object",
+    "title": "Amazon Sponsored Products Campaign Daily Report",
+    "description": "Daily performance report for an Amazon Sponsored Products Campaign",
+    "properties": {
+      "Date": {
+        "type": "string",
+        "description": "Date of the report in the format 'Month Day, Year'",
+        "format": "MMM-dd-yyyy"
+      },
+      "Portfolio_name": {
+        "type": "string",
+        "description": "Name of the portfolio associated with the campaign"
+      },
+      "Campaign_Type": {
+        "type": "string",
+        "description": "Type of campaign, e.g., 'Sponsored Products'"
+      },
+      "Campaign_Name": {
+        "type": "string",
+        "description": "Name of the Sponsored Products Campaign"
+      },
+      "Country": {
+        "type": "string",
+        "description": "Country where the campaign is running"
+      },
+      "Status": {
+        "type": "string",
+        "description": "Current status of the campaign, e.g., 'ENABLED'"
+      },
+      "Currency": {
+        "type": "string",
+        "description": "Currency code for the financial values in the report"
+      },
+      "Budget": {
+        "type": "number",
+        "description": "Total budget for the campaign"
+      },
+      "Targeting_Type": {
+        "type": "string",
+        "description": "Type of targeting used, e.g., 'Manual targeting'"
+      },
+      "Bidding_strategy": {
+        "type": "string",
+        "description": "Bidding strategy used, e.g., 'Dynamic bids - down only'"
+      },
+      "Impressions": {
+        "type": "number",
+        "description": "Total number of impressions"
+      },
+      "Last_Year_Impressions": {
+        "type": ["number", "null"],
+        "description": "Total number of impressions in the same period last year, or null if not applicable"
+      },
+      "Clicks": {
+        "type": "number",
+        "description": "Total number of clicks"
+      },
+      "Last_Year_Clicks": {
+        "type": ["number", "null"],
+        "description": "Total number of clicks in the same period last year, or null if not applicable"
+      },
+      "Click-Thru_Rate__CTR": {
+        "type": "string",
+        "description": "Click-through rate as a percentage"
+      },
+      "Spend": {
+        "type": "number",
+        "description": "Total spending on the campaign in the specified currency"
+      },
+      "Last_Year_Spend": {
+        "type": ["number", "null"],
+        "description": "Total spending on the campaign in the same period last year, or null if not applicable"
+      },
+      "Cost_Per_Click__CPC": {
+        "type": "number",
+        "description": "Cost per click in the specified currency"
+      },
+      "Last_Year_Cost_Per_Click__CPC": {
+        "type": ["number", "null"],
+        "description": "Cost per click in the same period last year, or null if not applicable"
+      },
+      "14_Day_Total_Orders__#": {
+        "type": "number",
+        "description": "Total number of orders in the last 14 days"
+      },
+      "Total_Advertising_Cost_of_Sales__ACOS": {
+        "type": "string",
+        "description": "Advertising Cost of Sales (ACOS) as a percentage"
+      },
+      "Total_Return_on_Advertising_Spend__ROAS": {
+        "type": "number",
+        "description": "Return on Advertising Spend (ROAS)"
+      },
+      "14_Day_Total_Sales_": {
+        "type": "number",
+        "description": "Total sales in the last 14 days"
+      }
+    },
+    "required": ["Date", "Campaign_Type", "Campaign_Name"]
+  }
+  
