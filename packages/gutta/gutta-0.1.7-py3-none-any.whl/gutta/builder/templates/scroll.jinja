@@ -1,0 +1,21 @@
+<div class="gutta-scroll-subpage">
+    {%if previous is defined %}
+    <div class="gutta-previous d-flex flex-column align-items-center justify-content-center">
+            <span><a href="{{sroot}}{{previous.url}}">{{labels.goto_back}}</a></span>
+    </div>
+    {% endif %}
+    <div class="gutta-scroll-content-container">
+       {{innerbody}}
+    </div>
+    <div class="gutta-next d-flex flex-column align-items-center justify-content-center">
+        {%-if next is defined -%}
+            <h3><a href="{{sroot}}{{next.url}}">{{labels.goto_next}}</a></h3>
+        {%else%}
+            <h3>{{labels.end}}</h3>
+        {% endif %}
+    </div>
+
+    
+
+
+</div>
