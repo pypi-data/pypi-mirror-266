@@ -1,0 +1,55 @@
+<!-- Template that creates an A4 page with a space for notes on top and the seating card at the bottom -->
+
+<style>
+    .half-container {
+        border: .2mm solid #ccc;
+        width: 100%;
+        height: 148.3mm; /* half of A4 height */
+        box-sizing: border-box;
+        padding: 20mm; /* adjust this for your desired margins */
+        padding-top: 15mm;
+    }
+    .cut-line {
+      border-top: 3px dashed #000;
+      position: absolute;
+      top: 148.5mm;
+      width: 200mm;
+      margin-left: 7mm;
+    }
+
+    .cut-line:before {
+      content: "\2702"; /* This is the HTML entity for scissors */
+      position: absolute;
+      top: -23px;
+      left: -20px;
+      font-size: 30px;
+    }
+    
+    .line {
+        display: block;
+        padding-top: 5mm;
+        text-align: center;
+        overflow-wrap: break-word;
+    }
+
+</style>
+
+<div class="half-container">
+    <!-- Space for notes -->
+    <h4>
+        {% if language == 'de' %}
+            Platz für Notizen:
+        {% else %}
+            Space for notes
+        {% endif %}
+    </h4>
+</div>
+<div class="cut-line"></div>
+<div class="half-container">
+    <!-- Seating card --> 
+    <span class="line" style="font-weight:bold;font-size:12mm">{{ student.last_name }}</span>
+    <span class="line" style="font-size:10mm">{{ student.first_name }}</span>
+    <span class="line" style="font-size:5mm;white-space: no-wrap">{{ exam_info.exam_name }}</span>
+    <span class="line" style="font-weight:bold;font-size:12mm">{{ student.room }}</span>
+    <span class="line" style="font-weight:bold;font-size:12mm">{{ student.seat }}</span>
+</div>
