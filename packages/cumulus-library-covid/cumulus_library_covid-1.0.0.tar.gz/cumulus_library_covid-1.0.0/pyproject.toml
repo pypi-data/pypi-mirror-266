@@ -1,0 +1,36 @@
+[project]
+name = "cumulus-library-covid"
+requires-python = ">= 3.9"
+version = "1.0.0"
+dependencies = [
+    "cumulus-library >= 2.0, <3",
+    "sqlfluff >= 3"
+]
+description = "SQL generation for cumulus covid symptom analysis"
+readme = "README.md"
+license = { text="Apache License 2.0" }
+classifiers = [
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[project.urls]
+Home = "https://smarthealthit.org/cumulus-a-universal-sidecar-for-a-smart-learning-healthcare-system/"
+Documentation = "https://docs.smarthealthit.org/cumulus/"
+Source = "https://github.com/smart-on-fhir/cumulus-library-covid"
+
+
+[build-system]
+requires = ["flit_core >=3.4,<4"]
+build-backend = "flit_core.buildapi"
+
+[project.optional-dependencies]
+dev = [
+    "black >= 24.3, <25",
+    "pylint",    
+]
+
+[tool.flit.sdist]
+include = ["covid_symptom/"]
