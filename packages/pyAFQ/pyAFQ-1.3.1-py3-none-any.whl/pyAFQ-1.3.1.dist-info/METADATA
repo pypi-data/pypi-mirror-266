@@ -1,0 +1,139 @@
+Metadata-Version: 2.1
+Name: pyAFQ
+Version: 1.3.1
+Summary: pyAFQ: Automated Fiber Quantification ... in Python
+Home-page: https://yeatmanlab.github.io/pyAFQ
+Download-URL: https://github.com/yeatmanlab/pyAFQ
+Author: pyAFQ developers
+Author-email: arokem@gmail.com
+Maintainer: Ariel Rokem
+Maintainer-email: arokem@gmail.com
+License: BSD License
+Platform: OS Independent
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Topic :: Scientific/Engineering
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: scikit-image >=0.14.2
+Requires-Dist: dipy <1.9.0,>=1.8.0
+Requires-Dist: pandas
+Requires-Dist: pybids >=0.16.2
+Requires-Dist: templateflow >=0.8
+Requires-Dist: pimms
+Requires-Dist: joblib >=1.3.2
+Requires-Dist: dask >=1.1
+Requires-Dist: s3bids >=0.1.7
+Requires-Dist: boto3 >=1.14.0
+Requires-Dist: s3fs ~=0.4.2
+Requires-Dist: toml >=0.10.0
+Requires-Dist: setuptools-scm[toml] <5.1.0,>=3.4.0
+Requires-Dist: funcargparse >=0.2.0
+Requires-Dist: popylar ==0.2.*
+Requires-Dist: plotly ==5.3.0
+Requires-Dist: kaleido ==0.2.1
+Requires-Dist: imageio >=2.0.0
+Requires-Dist: Pillow
+Requires-Dist: matplotlib
+Requires-Dist: numpy ==1.23.5
+Provides-Extra: afqbrowser
+Requires-Dist: AFQ-Browser >=0.3 ; extra == 'afqbrowser'
+Provides-Extra: all
+Requires-Dist: docutils ==0.15.2 ; extra == 'all'
+Requires-Dist: astroid <=2.15.8 ; extra == 'all'
+Requires-Dist: sphinx ; extra == 'all'
+Requires-Dist: memory-profiler ; extra == 'all'
+Requires-Dist: pytest ==7.2.0 ; extra == 'all'
+Requires-Dist: pytest-cov ==2.10.0 ; extra == 'all'
+Requires-Dist: flake8 ; extra == 'all'
+Requires-Dist: sphinx-gallery ; extra == 'all'
+Requires-Dist: sphinx-rtd-theme ; extra == 'all'
+Requires-Dist: numpydoc ==1.2 ; extra == 'all'
+Requires-Dist: sphinx-autoapi ; extra == 'all'
+Requires-Dist: rapidfuzz ; extra == 'all'
+Requires-Dist: xvfbwrapper ==0.2.9 ; extra == 'all'
+Requires-Dist: moto <5.0.0,>=3.0.0 ; extra == 'all'
+Requires-Dist: pip-conflict-checker >=0.6.0 ; extra == 'all'
+Requires-Dist: pydata-sphinx-theme ; extra == 'all'
+Requires-Dist: sphinx-design ; extra == 'all'
+Requires-Dist: myst-nb ; extra == 'all'
+Requires-Dist: wget ; extra == 'all'
+Requires-Dist: fury ==0.9.0 ; extra == 'all'
+Requires-Dist: ipython <=7.20.0,>=7.13.0 ; extra == 'all'
+Requires-Dist: fslpy ; extra == 'all'
+Requires-Dist: AFQ-Browser >=0.3 ; extra == 'all'
+Requires-Dist: pingouin >=0.3 ; extra == 'all'
+Requires-Dist: seaborn >=0.11.0 ; extra == 'all'
+Requires-Dist: altair ; extra == 'all'
+Requires-Dist: trx-python ; extra == 'all'
+Provides-Extra: dev
+Requires-Dist: docutils ==0.15.2 ; extra == 'dev'
+Requires-Dist: astroid <=2.15.8 ; extra == 'dev'
+Requires-Dist: sphinx ; extra == 'dev'
+Requires-Dist: memory-profiler ; extra == 'dev'
+Requires-Dist: pytest ==7.2.0 ; extra == 'dev'
+Requires-Dist: pytest-cov ==2.10.0 ; extra == 'dev'
+Requires-Dist: flake8 ; extra == 'dev'
+Requires-Dist: sphinx-gallery ; extra == 'dev'
+Requires-Dist: sphinx-rtd-theme ; extra == 'dev'
+Requires-Dist: numpydoc ==1.2 ; extra == 'dev'
+Requires-Dist: sphinx-autoapi ; extra == 'dev'
+Requires-Dist: rapidfuzz ; extra == 'dev'
+Requires-Dist: xvfbwrapper ==0.2.9 ; extra == 'dev'
+Requires-Dist: moto <5.0.0,>=3.0.0 ; extra == 'dev'
+Requires-Dist: pip-conflict-checker >=0.6.0 ; extra == 'dev'
+Requires-Dist: pydata-sphinx-theme ; extra == 'dev'
+Requires-Dist: sphinx-design ; extra == 'dev'
+Requires-Dist: myst-nb ; extra == 'dev'
+Requires-Dist: wget ; extra == 'dev'
+Provides-Extra: fsl
+Requires-Dist: fslpy ; extra == 'fsl'
+Provides-Extra: fury
+Requires-Dist: fury ==0.9.0 ; extra == 'fury'
+Requires-Dist: xvfbwrapper ==0.2.9 ; extra == 'fury'
+Requires-Dist: ipython <=7.20.0,>=7.13.0 ; extra == 'fury'
+Provides-Extra: plot
+Requires-Dist: pingouin >=0.3 ; extra == 'plot'
+Requires-Dist: seaborn >=0.11.0 ; extra == 'plot'
+Requires-Dist: ipython <=7.20.0,>=7.13.0 ; extra == 'plot'
+Requires-Dist: altair ; extra == 'plot'
+Provides-Extra: trx
+Requires-Dist: trx-python ; extra == 'trx'
+
+# pyAFQ
+Automated Fiber Quantification ... in Python.
+
+For details, see [Documentation](https://yeatmanlab.github.io/pyAFQ)
+
+For further analysis of results, see [AFQ-Insight](https://github.com/richford/AFQ-Insight)
+
+## Citing _pyAFQ_
+
+If you use _pyAFQ_ in a scientific publication, please cite our paper:
+
+Kruper, J., Yeatman, J. D., Richie-Halford, A., Bloom, D., Grotheer, M., Caffarra, S., Kiar, G., Karipidis, I. I., Roy, E., Chandio, B. Q., Garyfallidis, E., & Rokem, A.
+[Evaluating the Reliability of Human Brain White Matter Tractometry](https://doi.org/10.52294/e6198273-b8e3-4b63-babb-6e6b0da10669).
+DOI:10.52294/e6198273-b8e3-4b63-babb-6e6b0da10669
+
+```
+@article {Kruper2021-xb,
+  title     = "Evaluating the reliability of human brain white matter
+               tractometry",
+  author    = "Kruper, John and Yeatman, Jason D and Richie-Halford, Adam and
+               Bloom, David and Grotheer, Mareike and Caffarra, Sendy and Kiar,
+               Gregory and Karipidis, Iliana I and Roy, Ethan and Chandio,
+               Bramsh Q and Garyfallidis, Eleftherios and Rokem, Ariel",
+  journal   = "Apert Neuro",
+  publisher = "Organization for Human Brain Mapping",
+  volume    =  1,
+  number    =  1,
+  month     =  nov,
+  year      =  2021,
+  doi       =  10.52294/e6198273-b8e3-4b63-babb-6e6b0da10669,
+}
+```
