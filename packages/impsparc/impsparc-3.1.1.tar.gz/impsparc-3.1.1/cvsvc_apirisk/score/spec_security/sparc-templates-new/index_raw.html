@@ -1,0 +1,1781 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="./styles/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="./styles/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="./styles/layouts.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="print"
+      href="./styles/print.css"
+    />
+    <title>Imperva - Open API Spec Evaluation Report</title>
+  </head>
+
+  <body onload="onDOMLoad()">
+    <!-- NEW SLIDE -->
+    <!-- TITLE -->
+    <div class="slide intro-slide">
+      <img class="branding" src="./assets/images/logo.png" />
+
+      <div class="intro-title">
+        <h1>Open API Spec Evaluation</h1>
+        <h3>API spec assessment for risks and compliance</h3>
+        <div class="intro-divider"></div>
+        <h6>20 June 2021</h6>
+      </div>
+
+      <div class="intro-footer">
+        <div class="row">
+          <div class="col-6">
+            <p class="customer">Prepared for: Name of the company</p>
+            <p>Prepared by: Imperva API Security Team</p>
+          </div>
+          <div class="col-6">
+            <p>Uploaded file name: Name of the file</p>
+            <p class="date">Creation Time: Jan 22, 2022, 14:56</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NEW SLIDE -->
+    <!-- TABLE OF CONTENTS -->
+    <div class="slide table-slide">
+      <div class="title">
+        <div class="block"></div>
+        <h1>Table of Contents</h1>
+      </div>
+
+      <a class="table-link" href="#input-file-details">Input File Details</a>
+      <a class="table-link" href="#overall-design-issues"
+        >Overall Design Issues</a
+      >
+      <a class="table-link" href="#issue-categories-details"
+        >Issue categories details</a
+      >
+      <a class="table-link" href="#violation-details">Violation Details</a>
+
+      <div class="slide-footer d-flex align-items-center bd-highlight mb-3">
+        <img class="branding" src="./assets/images/footer-logo.png" />
+        <p class="copyrights">@ Imperva Ltd. All rights reserved</p>
+        <p class="report-name">Imperva API Report</p>
+        <p class="date">Creation date: Jun 21, 2021, 16:23</p>
+        <p class="separator">|</p>
+        <p class="customer">For: Name of the Customer</p>
+        <p class="page-number ms-auto text-muted">Page 1</p>
+      </div>
+    </div>
+
+    <!-- NEW SLIDE -->
+    <!-- OPENING SLIDE FOR REPORT ANALYSIS -->
+    <div class="slide title-slide">
+      <div></div>
+      <div class="opening-title">
+        <h1>Report Analysis</h1>
+        <h3>
+          Executive summary of the overall design issues and their categories
+        </h3>
+      </div>
+
+      <div class="title-footer">
+        <p>In this section you will learn about:</p>
+        <ul>
+          <li>Input File Details</li>
+          <li>Overall Design Issues</li>
+          <li>Issue categories Details</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- NEW SLIDE -->
+    <!-- INPUT FILE DETAILS -->
+    <div id="input-file-details" class="slide content-slide input-file-details">
+      <div class="custom-breadcrumbs">
+        <p class="active-breadcrumb">Input File Details</p>
+        <span class="breadcrumb-separator">
+          <i class="fa-solid fa-chevron-right"></i>
+        </span>
+        <p>Overall Design Issues</p>
+        <span class="breadcrumb-separator">
+          <i class="fa-solid fa-chevron-right"></i>
+        </span>
+        <p>Issue categories details</p>
+        <span class="breadcrumb-separator">
+          <i class="fa-solid fa-chevron-right"></i>
+        </span>
+        <p>Violation Details</p>
+      </div>
+
+      <div class="slide-content">
+        <h1>Input File Details</h1>
+        <h3>Information about data found inside the zip file</h3>
+
+        <div class="statistics">
+          <p class="widget-title">
+            What did we find inside the uploaded zip file?
+          </p>
+          <div class="row">
+            <div class="col-3">
+              <div class="statistic-col">
+                <div class="icon-container">
+                  <i class="fa-solid fa-file"></i>
+                </div>
+                <div>
+                  <p class="stat-label">Issues</p>
+                  <p class="stat-metric">7</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="statistic-col">
+                <div class="icon-container">
+                  <i class="fa-solid fa-file-code"></i>
+                </div>
+                <div>
+                  <p class="stat-label">APIs</p>
+                  <p class="stat-metric">83</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="statistic-col">
+                <div class="icon-container">
+                  <i class="fa-solid fa-folder-tree"></i>
+                </div>
+                <div>
+                  <p class="stat-label">Parameters</p>
+                  <p class="stat-metric">188</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="statistic-col">
+                <div class="icon-container">
+                  <i class="fa-solid fa-database"></i>
+                </div>
+                <div>
+                  <p class="stat-label">Data Types</p>
+                  <p class="stat-metric">21</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-distribution">
+          <p class="widget-title">
+            How is content distributed inside your files?
+          </p>
+          <div class="row">
+            <div class="col-4">
+              <div id="distributionByMethodContainer" class="distribution-col">
+                <p class="distribution-category">By API Method</p>
+                <canvas id="distributionByMethod"></canvas>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="distribution-col">
+                <p class="distribution-category">By Parameter Type</p>
+                <canvas id="distributionByParamType"></canvas>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="distribution-col">
+                <p class="distribution-category">By API Response Code</p>
+                <canvas id="distributionByResponseCode"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer d-flex align-items-center bd-highlight mb-3">
+        <img class="branding" src="./assets/images/footer-logo.png" />
+        <p class="copyrights">@ Imperva Ltd. All rights reserved</p>
+        <p class="report-name">Imperva API Report</p>
+        <p class="date">Creation date: Jun 21, 2021, 16:23</p>
+        <p class="separator">|</p>
+        <p class="customer">For: Name of the Customer</p>
+        <p class="page-number ms-auto text-muted">Page 2</p>
+      </div>
+    </div>
+
+    <!-- NEW SLIDE -->
+    <!-- OVERALL DESIGN ISSUES -->
+    <div
+      id="overall-design-issues"
+      class="slide content-slide overall-design-issues"
+    >
+      <div class="custom-breadcrumbs">
+        <p>Input File Details</p>
+        <span class="breadcrumb-separator">
+          <i class="fa-solid fa-chevron-right"></i>
+        </span>
+        <p class="active-breadcrumb">Overall Design Issues</p>
+        <span class="breadcrumb-separator">
+          <i class="fa-solid fa-chevron-right"></i>
+        </span>
+        <p>Issue categories details</p>
+        <span class="breadcrumb-separator">
+          <i class="fa-solid fa-chevron-right"></i>
+        </span>
+        <p>Violation Details</p>
+      </div>
+
+      <div class="slide-content">
+        <h1>Overall Design Issues</h1>
+        <h3>Information about design issues found in the uploaded file</h3>
+
+        <div class="row">
+          <div class="col-5">
+            <p class="widget-title">
+              What did we find inside the uploaded zip file?
+            </p>
+
+            <!-- CHECKS / ISSUES FOUND -->
+            <div class="issues-overview-col">
+              <div class="row">
+                <div class="col-6">
+                  <p class="issues-label">Total checkups performed</p>
+                  <p class="issues-metric">7,199</p>
+                </div>
+                <div class="col-6">
+                  <p class="issues-label">Issues found</p>
+                  <p class="issues-metric">
+                    334 <span class="percentage">(20%)</span>
+                  </p>
+                </div>
+              </div>
+
+              <!-- ISSUE DISTRIBUTION BY SEVERITY -->
+              <p class="issues-label">Issues distribution by severity</p>
+
+              <div class="distribution-by-severity">
+                <div class="row critical-severity-row">
+                  <div class="col-2">
+                    <p class="severity-tag critical-shade">Critical</p>
+                  </div>
+                  <div class="col-8">
+                    <div class="progress-container">
+                      <div class="progress">
+                        <div
+                          class="progress-bar critical-bg"
+                          role="progressbar"
+                          style="width: 75%"
+                          aria-valuenow="75"
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-2">
+                    <p class="severity-value">200</p>
+                  </div>
+                </div>
+                <div class="row major-severity-row">
+                  <div class="col-2">
+                    <p class="severity-tag major-shade">Major</p>
+                  </div>
+                  <div class="col-8">
+                    <div class="progress-container">
+                      <div class="progress">
+                        <div
+                          class="progress-bar major-bg"
+                          role="progressbar"
+                          style="width: 50%"
+                          aria-valuenow="50"
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-2">
+                    <p class="severity-value">100</p>
+                  </div>
+                </div>
+                <div class="row minor-severity-row">
+                  <div class="col-2">
+                    <p class="severity-tag minor-shade">Minor</p>
+                  </div>
+                  <div class="col-8">
+                    <div class="progress-container">
+                      <div class="progress">
+                        <div
+                          class="progress-bar minor-bg"
+                          role="progressbar"
+                          style="width: 25%"
+                          aria-valuenow="25"
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-2">
+                    <p class="severity-value">34</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- FREQUENTLY OCCURING VIOLATIONS -->
+              <p class="issues-label">Most frequently occuring violation</p>
+
+              <div class="frequent-violations">
+                <div class="violation">
+                  <div>
+                    <p>
+                      Properties of type “array” should have “maxItems” defined.
+                    </p>
+                    <p class="violation-metric">439 Violations</p>
+                  </div>
+                  <div class="violation-donut-container">
+                    <canvas
+                      id="violationMetric1"
+                      width="75"
+                      height="75"
+                    ></canvas>
+                    <p class="violation-donut-percentage">20%</p>
+                  </div>
+                </div>
+                <div class="violation">
+                  <div>
+                    <p>
+                      Properties of type “array” should have “maxItems” defined.
+                    </p>
+                    <p class="violation-metric">439 Violations</p>
+                  </div>
+                  <div class="violation-donut-container">
+                    <canvas
+                      id="violationMetric2"
+                      width="75"
+                      height="75"
+                    ></canvas>
+                    <p class="violation-donut-percentage">20%</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-7 d-flex flex-column">
+            <p class="widget-title">What are the issue categories?</p>
+            <div class="issues-categories-col flex-fill">
+              <!-- API DESIGN SCORECARD TABLE -->
+
+              <p class="issues-label">API Design Scorecard</p>
+
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Issue Category</th>
+                    <th scope="col">Issues Found</th>
+                    <th scope="col">Severity</th>
+                    <th scope="col">Highest Severity</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Data Type Definition</td>
+                    <td>32</td>
+                    <td>
+                      <div class="progress">
+                        <div
+                          class="progress-bar critical-bg"
+                          role="progressbar"
+                          style="width: 60%"
+                          aria-valuenow="60"
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                        ></div>
+                        <div
+                          class="progress-bar major-bg"
+                          role="progressbar"
+                          style="width: 20%"
+                          aria-valuenow="20"
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                        ></div>
+                        <div
+                          class="progress-bar minor-bg"
+                          role="progressbar"
+                          style="width: 20%"
+                          aria-valuenow="20"
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                        ></div>
+                      </div>
+                    </td>
+                    <td>
+                      <p class="severity-tag critical-shade">32 Critical</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Data Type Definition</td>
+                    <td>32</td>
+                    <td>
+                      <div class="progress">
+                        <div
+                          class="progress-bar critical-bg"
+                          role="progressbar"
+                          style="width: 60%"
+                          aria-valuenow="60"
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                        ></div>
+                        <div
+                          class="progress-bar major-bg"
+                          role="progressbar"
+                          style="width: 20%"
+                          aria-valuenow="20"
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                        ></div>
+                        <div
+                          class="progress-bar minor-bg"
+                          role="progressbar"
+                          style="width: 20%"
+                          aria-valuenow="20"
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                        ></div>
+                      </div>
+                    </td>
+                    <td>
+                      <p class="severity-tag critical-shade">32 Critical</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Data Type Definition</td>
+                    <td>32</td>
+                    <td>
+                      <div class="progress">
+                        <div
+                          class="progress-bar critical-bg"
+                          role="progressbar"
+                          style="width: 60%"
+                          aria-valuenow="60"
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                        ></div>
+                        <div
+                          class="progress-bar major-bg"
+                          role="progressbar"
+                          style="width: 20%"
+                          aria-valuenow="20"
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                        ></div>
+                        <div
+                          class="progress-bar minor-bg"
+                          role="progressbar"
+                          style="width: 20%"
+                          aria-valuenow="20"
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                        ></div>
+                      </div>
+                    </td>
+                    <td>
+                      <p class="severity-tag critical-shade">32 Critical</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Data Type Definition</td>
+                    <td>32</td>
+                    <td>
+                      <div class="progress">
+                        <div
+                          class="progress-bar critical-bg"
+                          role="progressbar"
+                          style="width: 60%"
+                          aria-valuenow="60"
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                        ></div>
+                        <div
+                          class="progress-bar major-bg"
+                          role="progressbar"
+                          style="width: 20%"
+                          aria-valuenow="20"
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                        ></div>
+                        <div
+                          class="progress-bar minor-bg"
+                          role="progressbar"
+                          style="width: 20%"
+                          aria-valuenow="20"
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                        ></div>
+                      </div>
+                    </td>
+                    <td>
+                      <p class="severity-tag critical-shade">32 Critical</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Data Type Definition</td>
+                    <td>60</td>
+                    <td>
+                      <div class="progress">
+                        <div
+                          class="progress-bar major-bg"
+                          role="progressbar"
+                          style="width: 75%"
+                          aria-valuenow="75"
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                        ></div>
+                        <div
+                          class="progress-bar minor-bg"
+                          role="progressbar"
+                          style="width: 25%"
+                          aria-valuenow="25"
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                        ></div>
+                      </div>
+                    </td>
+                    <td>
+                      <p class="severity-tag major-shade">60 Major</p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="d-flex">
+                <div class="legend-container d-flex align-items-center">
+                  <div class="legend-square critical-bg"></div>
+                  <p>Critical</p>
+                </div>
+                <div class="legend-container d-flex align-items-center">
+                  <div class="legend-square major-bg"></div>
+                  <p>Major</p>
+                </div>
+                <div class="legend-container d-flex align-items-center">
+                  <div class="legend-square minor-bg"></div>
+                  <p>Minor</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer d-flex align-items-center bd-highlight mb-3">
+        <img class="branding" src="./assets/images/footer-logo.png" />
+        <p class="copyrights">@ Imperva Ltd. All rights reserved</p>
+        <p class="report-name">Imperva API Report</p>
+        <p class="date">Creation date: Jun 21, 2021, 16:23</p>
+        <p class="separator">|</p>
+        <p class="customer">For: Name of the Customer</p>
+        <p class="page-number ms-auto text-muted">Page 3</p>
+      </div>
+    </div>
+
+    <!-- NEW SLIDE -->
+    <!-- ISSUE CATEGORIES DETAILS- API Transport Issues -->
+    <div
+      id="issue-categories-details"
+      class="slide content-slide issue-categories-details"
+    >
+      <div class="custom-breadcrumbs">
+        <p>Input File Details</p>
+        <span class="breadcrumb-separator">
+          <i class="fa-solid fa-chevron-right"></i>
+        </span>
+        <p>Overall Design Issues</p>
+        <span class="breadcrumb-separator">
+          <i class="fa-solid fa-chevron-right"></i>
+        </span>
+        <p class="active-breadcrumb">Issue categories details</p>
+        <span class="breadcrumb-separator">
+          <i class="fa-solid fa-chevron-right"></i>
+        </span>
+        <p>Violation Details</p>
+      </div>
+
+      <div class="slide-content">
+        <h1>Issue Categories Details</h1>
+        <h3>Information about issue categories found inside the zip file</h3>
+
+        <p class="widget-title">What are the issue categories?</p>
+
+        <div class="table-tile">
+          <p class="table-heading">API Transport Issues</p>
+
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Issue Category</th>
+                  <th scope="col">APIs with Issue</th>
+                  <th scope="col">Severity Distribution</th>
+                  <th scope="col">Files</th>
+                  <th scope="col">Data Tags</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div>
+                      <p>Transport Method Not Defined</p>
+                      <p class="issue-category-desc">
+                        The APIs that did not define the transport method at
+                        local or global level
+                      </p>
+                    </div>
+                  </td>
+                  <td>2</td>
+                  <td>
+                    <div class="tags-list d-flex flex-wrap">
+                      <p class="severity-tag critical-shade">32 Critical</p>
+                      <p class="severity-tag major-shade">22 Major</p>
+                      <p class="severity-tag minor-shade">22 Minor</p>
+                    </div>
+                  </td>
+                  <td>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                  </td>
+                  <td>
+                    <div class="tags-list d-flex flex-wrap">
+                      <p class="severity-tag">text_array-cms</p>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div>
+                      <p>Clear Text HTTP</p>
+                      <p class="issue-category-desc">
+                        The APIs that are defined to be using clear text HTTP 
+                      </p>
+                    </div>
+                  </td>
+                  <td>2</td>
+                  <td>
+                    <div class="tags-list d-flex flex-wrap">
+                      <p class="severity-tag critical-shade">32 Critical</p>
+                      <p class="severity-tag major-shade">22 Major</p>
+                      <p class="severity-tag minor-shade">22 Minor</p>
+                    </div>
+                  </td>
+                  <td>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                  </td>
+                  <td>
+                    <div class="tags-list d-flex flex-wrap">
+                      <p class="severity-tag">text_array-cms</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer d-flex align-items-center bd-highlight mb-3">
+        <img class="branding" src="./assets/images/footer-logo.png" />
+        <p class="copyrights">@ Imperva Ltd. All rights reserved</p>
+        <p class="report-name">Imperva API Report</p>
+        <p class="date">Creation date: Jun 21, 2021, 16:23</p>
+        <p class="separator">|</p>
+        <p class="customer">For: Name of the Customer</p>
+        <p class="page-number ms-auto text-muted">Page 4</p>
+      </div>
+    </div>
+
+    <!-- NEW SLIDE -->
+    <!-- ISSUE CATEGORIES DETAILS - Data Type Issues -->
+    <div
+      id="issue-categories-details"
+      class="slide content-slide issue-categories-details"
+    >
+      <div class="custom-breadcrumbs">
+        <p>Input File Details</p>
+        <span class="breadcrumb-separator">
+          <i class="fa-solid fa-chevron-right"></i>
+        </span>
+        <p>Overall Design Issues</p>
+        <span class="breadcrumb-separator">
+          <i class="fa-solid fa-chevron-right"></i>
+        </span>
+        <p class="active-breadcrumb">Issue categories details</p>
+        <span class="breadcrumb-separator">
+          <i class="fa-solid fa-chevron-right"></i>
+        </span>
+        <p>Violation Details</p>
+      </div>
+
+      <div class="slide-content">
+        <h1>Issue Categories Details</h1>
+        <h3>Information about issue categories found inside the zip file</h3>
+
+        <div class="table-tile">
+          <p class="table-heading">Data Type Issues</p>
+
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Issue Category</th>
+                  <th scope="col">APIs with Issue</th>
+                  <th scope="col">Severity Distribution</th>
+                  <th scope="col">Files</th>
+                  <th scope="col">Data Tags</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div>
+                      <p>Data Bounds Not Defined</p>
+                      <p class="issue-category-desc">
+                        The bounds for the data are not defined for various entities. E.g. Maximum string length or Maximum number of elements in an Array may not be defined
+                      </p>
+                    </div>
+                  </td>
+                  <td>2</td>
+                  <td>
+                    <div class="tags-list d-flex flex-wrap">
+                      <p class="severity-tag critical-shade">32 Critical</p>
+                      <p class="severity-tag major-shade">22 Major</p>
+                      <p class="severity-tag minor-shade">22 Minor</p>
+                    </div>
+                  </td>
+                  <td>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                  </td>
+                  <td>
+                    <div class="tags-list d-flex flex-wrap">
+                      <p class="severity-tag">text_array-cms</p>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div>
+                      <p>Non-restrictive Data Bounds</p>
+                      <p class="issue-category-desc">
+                        The bounds for data are not restrictive for various entities. E.g. a string might have been defined to be any pattern (*) rather than being restricted to alpha-numeric
+                      </p>
+                    </div>
+                  </td>
+                  <td>2</td>
+                  <td>
+                    <div class="tags-list d-flex flex-wrap">
+                      <p class="severity-tag critical-shade">32 Critical</p>
+                      <p class="severity-tag major-shade">22 Major</p>
+                      <p class="severity-tag minor-shade">22 Minor</p>
+                    </div>
+                  </td>
+                  <td>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                  </td>
+                  <td>
+                    <div class="tags-list d-flex flex-wrap">
+                      <p class="severity-tag">text_array-cms</p>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div>
+                      <p>Type & Attribute Mismatch</p>
+                      <p class="issue-category-desc">
+                        Certain entities are of a particular type but mandarory attributes are missing. E.g. an entity of type Array does not have items defined
+                      </p>
+                    </div>
+                  </td>
+                  <td>0</td>
+                  <td colspan="3">
+                    <p class="kudos-banner"><b>No Issues found!</b> Kudos to you and your team!</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer d-flex align-items-center bd-highlight mb-3">
+        <img class="branding" src="./assets/images/footer-logo.png" />
+        <p class="copyrights">@ Imperva Ltd. All rights reserved</p>
+        <p class="report-name">Imperva API Report</p>
+        <p class="date">Creation date: Jun 21, 2021, 16:23</p>
+        <p class="separator">|</p>
+        <p class="customer">For: Name of the Customer</p>
+        <p class="page-number ms-auto text-muted">Page 5</p>
+      </div>
+    </div>
+
+    <!-- NEW SLIDE -->
+    <!-- ISSUE CATEGORIES DETAILS - API Authentication & Authorization Issues -->
+    <div
+      id="issue-categories-details"
+      class="slide content-slide issue-categories-details"
+    >
+      <div class="custom-breadcrumbs">
+        <p>Input File Details</p>
+        <span class="breadcrumb-separator">
+          <i class="fa-solid fa-chevron-right"></i>
+        </span>
+        <p>Overall Design Issues</p>
+        <span class="breadcrumb-separator">
+          <i class="fa-solid fa-chevron-right"></i>
+        </span>
+        <p class="active-breadcrumb">Issue categories details</p>
+        <span class="breadcrumb-separator">
+          <i class="fa-solid fa-chevron-right"></i>
+        </span>
+        <p>Violation Details</p>
+      </div>
+
+      <div class="slide-content">
+        <h1>Issue Categories Details</h1>
+        <h3>Information about issue categories found inside the zip file</h3>
+
+        <div class="table-tile">
+          <p class="table-heading">API Authentication & Authorization Issues</p>
+
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Issue Category</th>
+                  <th scope="col">APIs with Issue</th>
+                  <th scope="col">Severity Distribution</th>
+                  <th scope="col">Files</th>
+                  <th scope="col">Data Tags</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div>
+                      <p>No Auth Information Defined</p>
+                      <p class="issue-category-desc">
+                        The APIs that did not define any authorization information
+                      </p>
+                    </div>
+                  </td>
+                  <td>2</td>
+                  <td>
+                    <div class="tags-list d-flex flex-wrap">
+                      <p class="severity-tag critical-shade">32 Critical</p>
+                      <p class="severity-tag major-shade">22 Major</p>
+                      <p class="severity-tag minor-shade">22 Minor</p>
+                    </div>
+                  </td>
+                  <td>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                  </td>
+                  <td>
+                    <div class="tags-list d-flex flex-wrap">
+                      <p class="severity-tag">text_array-cms</p>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div>
+                      <p>Invalid or Insecure Auth URL</p>
+                      <p class="issue-category-desc">
+                        The APIs that are defined to be using an invalid or insecure auth URL
+                      </p>
+                    </div>
+                  </td>
+                  <td>2</td>
+                  <td>
+                    <div class="tags-list d-flex flex-wrap">
+                      <p class="severity-tag critical-shade">32 Critical</p>
+                      <p class="severity-tag major-shade">22 Major</p>
+                      <p class="severity-tag minor-shade">22 Minor</p>
+                    </div>
+                  </td>
+                  <td>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                  </td>
+                  <td>
+                    <div class="tags-list d-flex flex-wrap">
+                      <p class="severity-tag">text_array-cms</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer d-flex align-items-center bd-highlight mb-3">
+        <img class="branding" src="./assets/images/footer-logo.png" />
+        <p class="copyrights">@ Imperva Ltd. All rights reserved</p>
+        <p class="report-name">Imperva API Report</p>
+        <p class="date">Creation date: Jun 21, 2021, 16:23</p>
+        <p class="separator">|</p>
+        <p class="customer">For: Name of the Customer</p>
+        <p class="page-number ms-auto text-muted">Page 6</p>
+      </div>
+    </div>
+
+    <!-- NEW SLIDE -->
+    <!-- ISSUE CATEGORIES DETAILS - API Lifecycle and Management Issues -->
+    <div
+      id="issue-categories-details"
+      class="slide content-slide issue-categories-details"
+    >
+      <div class="custom-breadcrumbs">
+        <p>Input File Details</p>
+        <span class="breadcrumb-separator">
+          <i class="fa-solid fa-chevron-right"></i>
+        </span>
+        <p>Overall Design Issues</p>
+        <span class="breadcrumb-separator">
+          <i class="fa-solid fa-chevron-right"></i>
+        </span>
+        <p class="active-breadcrumb">Issue categories details</p>
+        <span class="breadcrumb-separator">
+          <i class="fa-solid fa-chevron-right"></i>
+        </span>
+        <p>Violation Details</p>
+      </div>
+
+      <div class="slide-content">
+        <h1>Issue Categories Details</h1>
+        <h3>Information about issue categories found inside the zip file</h3>
+
+        <div class="table-tile">
+          <p class="table-heading">API Lifecycle and Management Issues</p>
+
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Issue Category</th>
+                  <th scope="col">APIs with Issue</th>
+                  <th scope="col">Severity Distribution</th>
+                  <th scope="col">Files</th>
+                  <th scope="col">Data Tags</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div>
+                      <p>No API Versioning</p>
+                      <p class="issue-category-desc">
+                        The APIs defined do not accomodate versioning. E.g. an API defined as /api/v1/employeeInfo allows for versioning. Absence of such API is not ideal for API lifecycle management
+                      </p>
+                    </div>
+                  </td>
+                  <td>2</td>
+                  <td>
+                    <div class="tags-list d-flex flex-wrap">
+                      <p class="severity-tag critical-shade">32 Critical</p>
+                      <p class="severity-tag major-shade">22 Major</p>
+                      <p class="severity-tag minor-shade">22 Minor</p>
+                    </div>
+                  </td>
+                  <td>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                  </td>
+                  <td>
+                    <div class="tags-list d-flex flex-wrap">
+                      <p class="severity-tag">text_array-cms</p>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div>
+                      <p>API Error Responses Not Defined</p>
+                      <p class="issue-category-desc">
+                        Certain entities are of a particular type but mandatory attributes are missing. E.g. an entity of type array does not have items defined
+                      </p>
+                    </div>
+                  </td>
+                  <td>2</td>
+                  <td>
+                    <div class="tags-list d-flex flex-wrap">
+                      <p class="severity-tag critical-shade">32 Critical</p>
+                      <p class="severity-tag major-shade">22 Major</p>
+                      <p class="severity-tag minor-shade">22 Minor</p>
+                    </div>
+                  </td>
+                  <td>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                    <p class="filename-text">
+                      /tmp/cvapispecrisk_auvk/orangebank_stores.json
+                    </p>
+                  </td>
+                  <td>
+                    <div class="tags-list d-flex flex-wrap">
+                      <p class="severity-tag">text_array-cms</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer d-flex align-items-center bd-highlight mb-3">
+        <img class="branding" src="./assets/images/footer-logo.png" />
+        <p class="copyrights">@ Imperva Ltd. All rights reserved</p>
+        <p class="report-name">Imperva API Report</p>
+        <p class="date">Creation date: Jun 21, 2021, 16:23</p>
+        <p class="separator">|</p>
+        <p class="customer">For: Name of the Customer</p>
+        <p class="page-number ms-auto text-muted">Page 7</p>
+      </div>
+    </div>
+
+    <!-- NEW SLIDE -->
+    <!-- ISSUE CATEGORIES DETAILS - API Spec-file Management -->
+    <div
+      id="issue-categories-details"
+      class="slide content-slide issue-categories-details"
+    >
+      <div class="custom-breadcrumbs">
+        <p>Input File Details</p>
+        <span class="breadcrumb-separator">
+          <i class="fa-solid fa-chevron-right"></i>
+        </span>
+        <p>Overall Design Issues</p>
+        <span class="breadcrumb-separator">
+          <i class="fa-solid fa-chevron-right"></i>
+        </span>
+        <p class="active-breadcrumb">Issue categories details</p>
+        <span class="breadcrumb-separator">
+          <i class="fa-solid fa-chevron-right"></i>
+        </span>
+        <p>Violation Details</p>
+      </div>
+
+      <div class="slide-content">
+        <h1>Issue Categories Details</h1>
+        <h3>Information about issue categories found inside the zip file</h3>
+
+        <div class="table-tile">
+          <p class="table-heading">API Spec-file Management Issues</p>
+
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Issue Category</th>
+                  <th scope="col">APIs with Issue</th>
+                  <th scope="col">Severity Distribution</th>
+                  <th scope="col">Files</th>
+                  <th scope="col">Data Tags</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div>
+                      <p>Contact Information Missing</p>
+                      <p class="issue-category-desc">
+                        The contact information is missing from the API Specification files
+                      </p>
+                    </div>
+                  </td>
+                  <td>0</td>
+                  <td colspan="3">
+                    <p class="kudos-banner"><b>No Issues found!</b> Kudos to you and your team!</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer d-flex align-items-center bd-highlight mb-3">
+        <img class="branding" src="./assets/images/footer-logo.png" />
+        <p class="copyrights">@ Imperva Ltd. All rights reserved</p>
+        <p class="report-name">Imperva API Report</p>
+        <p class="date">Creation date: Jun 21, 2021, 16:23</p>
+        <p class="separator">|</p>
+        <p class="customer">For: Name of the Customer</p>
+        <p class="page-number ms-auto text-muted">Page 8</p>
+      </div>
+    </div>
+
+    <!-- NEW SLIDE -->
+    <!-- OPENING SLIDE FOR APPENDIX -->
+    <div class="slide title-slide">
+      <div></div>
+      <div class="opening-title">
+        <h1>Appendix</h1>
+        <h3>All details about violations</h3>
+      </div>
+
+      <div class="title-footer">
+        <p>In this section you will learn about:</p>
+        <ul>
+          <li>Violation types by severity</li>
+          <li>Locations of the issues</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- NEW SLIDE -->
+    <!-- VIOLATION DETAILS -->
+    <div id="violation-details" class="slide content-slide violation-details">
+      <div class="custom-breadcrumbs">
+        <p>Input File Details</p>
+        <span class="breadcrumb-separator">
+          <i class="fa-solid fa-chevron-right"></i>
+        </span>
+        <p>Overall Design Issues</p>
+        <span class="breadcrumb-separator">
+          <i class="fa-solid fa-chevron-right"></i>
+        </span>
+        <p>Issue categories details</p>
+        <span class="breadcrumb-separator">
+          <i class="fa-solid fa-chevron-right"></i>
+        </span>
+        <p class="active-breadcrumb">Violation Details</p>
+      </div>
+
+      <div class="slide-content">
+        <h1>Violation Details</h1>
+        <h3>Information about violations and locations in the spec.</h3>
+
+        <div class="issues-container">
+          <h2 class="critical-shade">Critical Issues (68)</h2>
+
+          <div class="issues-list critical-issues-list">
+            <div class="row">
+              <div class="col-6">
+                <div class="violation-label-metric-container">
+                  <p class="violation-label">Type</p>
+                  <p class="violation-metric">
+                    Local security field is missing
+                  </p>
+                </div>
+
+                <div class="violation-label-metric-container">
+                  <p class="violation-label">Issues</p>
+                  <p class="violation-metric">7</p>
+                </div>
+
+                <div class="violation-label-metric-container">
+                  <p class="violation-label">Details</p>
+                  <p class="violation-desc">
+                    The global security field is missing, is empty, or contains
+                    an empty security requirement.
+                  </p>
+                </div>
+
+                <div class="violation-label-metric-container">
+                  <p class="violation-label">Impact</p>
+                  <p class="violation-desc">
+                    Lack of the security field implies that no security schemes
+                    will be applied for the affected operations. Security
+                    schemes ensure authenticated and authorized access to APIs,
+                    lack of which may make the API vulnerable.
+                  </p>
+                </div>
+              </div>
+              <div class="col-6">
+                <ol class="list-group list-group-numbered list-group-flush">
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-start"
+                  >
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">/store/order/{orderId}</div>
+                      (#->paths->/store/order/{orderId}->delete->security
+                      is-missing True)[1] and ((#->security is-missing True)[1]
+                      == True)
+                    </div>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-start"
+                  >
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">/store/order/{orderId}</div>
+                      (#->paths->/store/order/{orderId}->delete->security
+                      is-missing True)[1] and ((#->security is-missing True)[1]
+                      == True)
+                    </div>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-start"
+                  >
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">/store/order/{orderId}</div>
+                      (#->paths->/store/order/{orderId}->delete->security
+                      is-missing True)[1] and ((#->security is-missing True)[1]
+                      == True)
+                    </div>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-start"
+                  >
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">/store/order/{orderId}</div>
+                      (#->paths->/store/order/{orderId}->delete->security
+                      is-missing True)[1] and ((#->security is-missing True)[1]
+                      == True)
+                    </div>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-start"
+                  >
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">/store/order/{orderId}</div>
+                      (#->paths->/store/order/{orderId}->delete->security
+                      is-missing True)[1] and ((#->security is-missing True)[1]
+                      == True)
+                    </div>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-start"
+                  >
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">/store/order/{orderId}</div>
+                      (#->paths->/store/order/{orderId}->delete->security
+                      is-missing True)[1] and ((#->security is-missing True)[1]
+                      == True)
+                    </div>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-start"
+                  >
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">/store/order/{orderId}</div>
+                      (#->paths->/store/order/{orderId}->delete->security
+                      is-missing True)[1] and ((#->security is-missing True)[1]
+                      == True)
+                    </div>
+                  </li>
+                </ol>
+              </div>
+            </div>
+
+            <div class="issue-divider"></div>
+
+            <div class="row">
+              <div class="col-6">
+                <div class="violation-label-metric-container">
+                  <p class="violation-label">Type</p>
+                  <p class="violation-metric">
+                    Security Definitions field is not defined or is empty.
+                  </p>
+                </div>
+
+                <div class="violation-label-metric-container">
+                  <p class="violation-label">Issues</p>
+                  <p class="violation-metric">6</p>
+                </div>
+
+                <div class="violation-label-metric-container">
+                  <p class="violation-label">Details</p>
+                  <p class="violation-desc">
+                    Absence of the security definitions implies that even if the
+                    security schemes have been specified, they cannot be applied
+                    without the scheme definition as captured in the
+                    securityDefintions field.
+                  </p>
+                </div>
+
+                <div class="violation-label-metric-container">
+                  <p class="violation-label">Impact</p>
+                  <p class="violation-desc">
+                    Lack of the security field implies that no security schemes
+                    will be applied for the affected operations. Security
+                    schemes ensure authenticated and authorized access to APIs,
+                    lack of which may make the API vulnerable.
+                  </p>
+                </div>
+              </div>
+              <div class="col-6">
+                <ol class="list-group list-group-numbered list-group-flush">
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-start"
+                  >
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">/store/order/{orderId}</div>
+                      (#->paths->/store/order/{orderId}->delete->security
+                      is-missing True)[1] and ((#->security is-missing True)[1]
+                      == True)
+                    </div>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-start"
+                  >
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">/store/order/{orderId}</div>
+                      (#->paths->/store/order/{orderId}->delete->security
+                      is-missing True)[1] and ((#->security is-missing True)[1]
+                      == True)
+                    </div>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-start"
+                  >
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">/store/order/{orderId}</div>
+                      (#->paths->/store/order/{orderId}->delete->security
+                      is-missing True)[1] and ((#->security is-missing True)[1]
+                      == True)
+                    </div>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-start"
+                  >
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">/store/order/{orderId}</div>
+                      (#->paths->/store/order/{orderId}->delete->security
+                      is-missing True)[1] and ((#->security is-missing True)[1]
+                      == True)
+                    </div>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-start"
+                  >
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">/store/order/{orderId}</div>
+                      (#->paths->/store/order/{orderId}->delete->security
+                      is-missing True)[1] and ((#->security is-missing True)[1]
+                      == True)
+                    </div>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-start"
+                  >
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">/store/order/{orderId}</div>
+                      (#->paths->/store/order/{orderId}->delete->security
+                      is-missing True)[1] and ((#->security is-missing True)[1]
+                      == True)
+                    </div>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-start"
+                  >
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">/store/order/{orderId}</div>
+                      (#->paths->/store/order/{orderId}->delete->security
+                      is-missing True)[1] and ((#->security is-missing True)[1]
+                      == True)
+                    </div>
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="issues-container">
+          <h2 class="major-shade">Major Issues (100)</h2>
+
+          <div class="issues-list major-issues-list">
+            <div class="row">
+              <div class="col-6">
+                <div class="violation-label-metric-container">
+                  <p class="violation-label">Type</p>
+                  <p class="violation-metric">
+                    Local security field is missing
+                  </p>
+                </div>
+
+                <div class="violation-label-metric-container">
+                  <p class="violation-label">Issues</p>
+                  <p class="violation-metric">7</p>
+                </div>
+
+                <div class="violation-label-metric-container">
+                  <p class="violation-label">Details</p>
+                  <p class="violation-desc">
+                    The global security field is missing, is empty, or contains
+                    an empty security requirement.
+                  </p>
+                </div>
+
+                <div class="violation-label-metric-container">
+                  <p class="violation-label">Impact</p>
+                  <p class="violation-desc">
+                    Lack of the security field implies that no security schemes
+                    will be applied for the affected operations. Security
+                    schemes ensure authenticated and authorized access to APIs,
+                    lack of which may make the API vulnerable.
+                  </p>
+                </div>
+              </div>
+              <div class="col-6">
+                <ol class="list-group list-group-numbered list-group-flush">
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-start"
+                  >
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">/store/order/{orderId}</div>
+                      (#->paths->/store/order/{orderId}->delete->security
+                      is-missing True)[1] and ((#->security is-missing True)[1]
+                      == True)
+                    </div>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-start"
+                  >
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">/store/order/{orderId}</div>
+                      (#->paths->/store/order/{orderId}->delete->security
+                      is-missing True)[1] and ((#->security is-missing True)[1]
+                      == True)
+                    </div>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-start"
+                  >
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">/store/order/{orderId}</div>
+                      (#->paths->/store/order/{orderId}->delete->security
+                      is-missing True)[1] and ((#->security is-missing True)[1]
+                      == True)
+                    </div>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-start"
+                  >
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">/store/order/{orderId}</div>
+                      (#->paths->/store/order/{orderId}->delete->security
+                      is-missing True)[1] and ((#->security is-missing True)[1]
+                      == True)
+                    </div>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-start"
+                  >
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">/store/order/{orderId}</div>
+                      (#->paths->/store/order/{orderId}->delete->security
+                      is-missing True)[1] and ((#->security is-missing True)[1]
+                      == True)
+                    </div>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-start"
+                  >
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">/store/order/{orderId}</div>
+                      (#->paths->/store/order/{orderId}->delete->security
+                      is-missing True)[1] and ((#->security is-missing True)[1]
+                      == True)
+                    </div>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-start"
+                  >
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">/store/order/{orderId}</div>
+                      (#->paths->/store/order/{orderId}->delete->security
+                      is-missing True)[1] and ((#->security is-missing True)[1]
+                      == True)
+                    </div>
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="issues-container">
+          <h2 class="minor-shade">Minor Issues (100)</h2>
+
+          <div class="issues-list minor-issues-list">
+            <div class="row">
+              <div class="col-6">
+                <div class="violation-label-metric-container">
+                  <p class="violation-label">Type</p>
+                  <p class="violation-metric">
+                    Local security field is missing
+                  </p>
+                </div>
+
+                <div class="violation-label-metric-container">
+                  <p class="violation-label">Issues</p>
+                  <p class="violation-metric">7</p>
+                </div>
+
+                <div class="violation-label-metric-container">
+                  <p class="violation-label">Details</p>
+                  <p class="violation-desc">
+                    The global security field is missing, is empty, or contains
+                    an empty security requirement.
+                  </p>
+                </div>
+
+                <div class="violation-label-metric-container">
+                  <p class="violation-label">Impact</p>
+                  <p class="violation-desc">
+                    Lack of the security field implies that no security schemes
+                    will be applied for the affected operations. Security
+                    schemes ensure authenticated and authorized access to APIs,
+                    lack of which may make the API vulnerable.
+                  </p>
+                </div>
+              </div>
+              <div class="col-6">
+                <ol class="list-group list-group-numbered list-group-flush">
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-start"
+                  >
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">/store/order/{orderId}</div>
+                      (#->paths->/store/order/{orderId}->delete->security
+                      is-missing True)[1] and ((#->security is-missing True)[1]
+                      == True)
+                    </div>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-start"
+                  >
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">/store/order/{orderId}</div>
+                      (#->paths->/store/order/{orderId}->delete->security
+                      is-missing True)[1] and ((#->security is-missing True)[1]
+                      == True)
+                    </div>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-start"
+                  >
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">/store/order/{orderId}</div>
+                      (#->paths->/store/order/{orderId}->delete->security
+                      is-missing True)[1] and ((#->security is-missing True)[1]
+                      == True)
+                    </div>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-start"
+                  >
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">/store/order/{orderId}</div>
+                      (#->paths->/store/order/{orderId}->delete->security
+                      is-missing True)[1] and ((#->security is-missing True)[1]
+                      == True)
+                    </div>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-start"
+                  >
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">/store/order/{orderId}</div>
+                      (#->paths->/store/order/{orderId}->delete->security
+                      is-missing True)[1] and ((#->security is-missing True)[1]
+                      == True)
+                    </div>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-start"
+                  >
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">/store/order/{orderId}</div>
+                      (#->paths->/store/order/{orderId}->delete->security
+                      is-missing True)[1] and ((#->security is-missing True)[1]
+                      == True)
+                    </div>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-start"
+                  >
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">/store/order/{orderId}</div>
+                      (#->paths->/store/order/{orderId}->delete->security
+                      is-missing True)[1] and ((#->security is-missing True)[1]
+                      == True)
+                    </div>
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer d-flex align-items-center bd-highlight mb-3">
+        <img class="branding" src="./assets/images/footer-logo.png" />
+        <p class="copyrights">@ Imperva Ltd. All rights reserved</p>
+        <p class="report-name">Imperva API Report</p>
+        <p class="date">Creation date: Jun 21, 2021, 16:23</p>
+        <p class="separator">|</p>
+        <p class="customer">For: Name of the Customer</p>
+        <p class="page-number ms-auto text-muted">Page 9</p>
+      </div>
+    </div>
+
+    <!-- NEW SLIDE -->
+    <!-- OUTRO SLIDE -->
+    <div class="slide outro-slide">
+      <div></div>
+
+      <div class="text-center">
+        <img class="outro-branding" src="./assets/images/logo.png" />
+        <p class="tagline">Protecting data and all paths to it</p>
+      </div>
+
+      <p>
+        <i class="fa-solid fa-bullhorn"></i>
+        Have ideas on how we can make this report better?
+        <a href="https://www.surveymonkey.com/r/B9YTNHJ"
+          >Give us feedback <i class="fa-solid fa-up-right-from-square"></i>
+        </a>
+      </p>
+
+      <div class="slide-footer d-flex align-items-center justify-content-between bd-highlight mb-3">
+        <div class="d-flex align-items-center">
+          <img class="branding" src="./assets/images/logo.png" />
+          <p> &nbsp; &nbsp;</p>
+          <p class="copyrights">@ Imperva Ltd. All rights reserved</p>
+          <p> &nbsp; &nbsp;</p>
+          <p class="report-name">Imperva API Report</p>
+        </div>
+        <div class="d-flex align-items-center">
+          <p class="date">Creation date: Jun 21, 2021, 16:23</p>
+          <p> &nbsp; &nbsp;</p>
+          <p class="separator">|</p>
+          <p> &nbsp; &nbsp;</p>
+          <p class="customer">For: Name of the Customer</p>
+        </div>
+      </div>
+    </div>
+
+    <script
+      language="javascript"
+      type="text/javascript"
+      src="./assets/scripts/bootstrap.min.js"
+    ></script>
+    <script
+      language="javascript"
+      type="text/javascript"
+      src="./assets/scripts/chart.min.js"
+    ></script>
+    <script
+      language="javascript"
+      type="text/javascript"
+      src="./assets/scripts/index.js"
+    ></script>
+  </body>
+</html>
