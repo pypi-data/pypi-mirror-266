@@ -1,0 +1,62 @@
+# Что это
+
+mweather - бесплатное и быстрое погодное api, не требующее ключей.
+
+## Установка
+
+```sh
+pip install -U mweather
+```
+
+## Описание функций
+
+Функция weather - узнаёт текущую погоду в определенном городе.  
+Параметры функции:  
+city - укажите город, погоду которого вы хотите узнать.  
+output - всего существует несколько значений (string; json; temp; weather).  
+lang - язык, всего пока что доступных 2 языка (en; ru). [ВАЖНО! Если вы находитесь в Республике Молдове или Румынии то вместо Английского языка у вас будет Румынский]  
+
+```python
+weather(city="Нью Йорк", output="json", lang="ru")
+# Вывод: {'weather': 'Облачно', 'temp': '9°C', 'response-time': 0.42}
+```
+
+## Примеры использования
+
+```python
+import mweather
+
+output = mweather.weather(city="Нью Йорк", output="string", lang="ru")
+print(output)
+
+# Вывод: Облачно, 10°C
+```
+
+Напишем **простое** приложение:
+
+```python
+import mweather
+from tkinter import messagebox
+
+city = input('Введите город: ')
+output = mweather.weather(city=city, output='string', lang='ru')
+messagebox.showinfo(title='Погода', message=f'{city}: {output}')
+```
+На выводе получаем **это**:
+![Вывод](https://i.ibb.co/sbmk2KC/output-easy-app.png)
+
+Напишем приложение чуть по **сложнее**, в котором будем использовать уже JSON:
+```python
+import mweather
+from tkinter import messagebox
+
+city = input('Введите город: ')
+output = mweather.weather(city=city, output='json', lang='ru')
+messagebox.showinfo(title='Погода', message=f'Погода в {city}\nТемпература: {output['temp']}.\nПогода: {output['weather']}.\nСкорость ответа: {output['response-time']}с.')
+```
+А уже здесь получаем это:
+![Вывод](https://i.ibb.co/Hpz3TYd/output-hard-app.png)
+В этом приложении мы также можем узнать скорость ответа, введя ключ **'response-time'**.
+
+### Автор
+**Telegram: [t.me/mc_c0rp](http://t.me/mc_c0rp "t.me/mc_c0rp")**
