@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<object name="portal_catalog">
+
+  <index name="category" meta_type="KeywordIndex">
+    <indexed_attr value="category"/>
+  </index>
+  <index name="category_title" meta_type="FieldIndex">
+    <indexed_attr value="category_title"/>
+  </index>
+  <index name="category_and_topics" meta_type="KeywordIndex">
+    <indexed_attr value="category_and_topics"/>
+  </index>
+  <index name="container_uid" meta_type="FieldIndex">
+    <indexed_attr value="container_uid"/>
+  </index>
+  <index name="selected_news_folders" meta_type="KeywordIndex">
+    <indexed_attr value="selected_news_folders"/>
+  </index>
+  <index name="translated_in_nl" meta_type="BooleanIndex">
+    <indexed_attr value="translated_in_nl"/>
+  </index>
+  <index name="translated_in_de" meta_type="BooleanIndex">
+    <indexed_attr value="translated_in_de"/>
+  </index>
+  <index name="translated_in_en" meta_type="BooleanIndex">
+    <indexed_attr value="translated_in_en"/>
+  </index>
+  <index name="SearchableText_nl" meta_type="ZCTextIndex">
+   <indexed_attr value="SearchableText_nl"/>
+   <extra name="index_type" value="Okapi BM25 Rank"/>
+   <extra name="lexicon_id" value="plone_lexicon"/>
+  </index>
+  <index name="SearchableText_de" meta_type="ZCTextIndex">
+   <indexed_attr value="SearchableText_de"/>
+   <extra name="index_type" value="Okapi BM25 Rank"/>
+   <extra name="lexicon_id" value="plone_lexicon"/>
+  </index>
+  <index name="SearchableText_en" meta_type="ZCTextIndex">
+   <indexed_attr value="SearchableText_en"/>
+   <extra name="index_type" value="Okapi BM25 Rank"/>
+   <extra name="lexicon_id" value="plone_lexicon"/>
+  </index>
+
+  <column value="category"/>
+  <column value="category_title"/>
+  <column value="category_and_topics"/>
+  <column value="container_uid"/>
+  <column value="selected_news_folders"/>
+  <column value="title_nl"/>
+  <column value="title_de"/>
+  <column value="title_en"/>
+  <column value="description_nl"/>
+  <column value="description_de"/>
+  <column value="description_en"/>
+
+</object>
