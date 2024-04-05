@@ -1,0 +1,178 @@
+{
+  "type": "record",
+  "Aspect": {
+    "name": "batchTestRunEvent",
+    "type": "timeseries"
+  },
+  "name": "BatchTestRunEvent",
+  "namespace": "com.linkedin.pegasus2avro.test",
+  "fields": [
+    {
+      "Searchable": {
+        "fieldName": "lastCompletedTime",
+        "fieldType": "DATETIME"
+      },
+      "type": "long",
+      "name": "timestampMillis",
+      "doc": "The event timestamp field as epoch at UTC in milli seconds."
+    },
+    {
+      "TimeseriesField": {},
+      "type": {
+        "type": "enum",
+        "symbolDocs": {
+          "COMPLETE": "The Test Run has completed"
+        },
+        "name": "BatchTestRunStatus",
+        "namespace": "com.linkedin.pegasus2avro.test",
+        "symbols": [
+          "COMPLETE"
+        ]
+      },
+      "name": "status",
+      "doc": "The status of the Test run as per this timeseries event."
+    },
+    {
+      "type": [
+        "null",
+        {
+          "type": "record",
+          "name": "BatchTestRunResult",
+          "namespace": "com.linkedin.pegasus2avro.test",
+          "fields": [
+            {
+              "type": "long",
+              "name": "passingCount",
+              "doc": "Number of assets that were passing the test."
+            },
+            {
+              "type": "long",
+              "name": "failingCount",
+              "doc": "Number of assets that were failing the test."
+            }
+          ],
+          "doc": "The result of running a batch metadata test"
+        }
+      ],
+      "name": "result",
+      "default": null,
+      "doc": "Results of test, present if the status is COMPLETE"
+    },
+    {
+      "type": [
+        "null",
+        {
+          "type": "record",
+          "name": "TimeWindowSize",
+          "namespace": "com.linkedin.pegasus2avro.timeseries",
+          "fields": [
+            {
+              "type": {
+                "type": "enum",
+                "name": "CalendarInterval",
+                "namespace": "com.linkedin.pegasus2avro.timeseries",
+                "symbols": [
+                  "SECOND",
+                  "MINUTE",
+                  "HOUR",
+                  "DAY",
+                  "WEEK",
+                  "MONTH",
+                  "QUARTER",
+                  "YEAR"
+                ]
+              },
+              "name": "unit",
+              "doc": "Interval unit such as minute/hour/day etc."
+            },
+            {
+              "type": "int",
+              "name": "multiple",
+              "default": 1,
+              "doc": "How many units. Defaults to 1."
+            }
+          ],
+          "doc": "Defines the size of a time window."
+        }
+      ],
+      "name": "eventGranularity",
+      "default": null,
+      "doc": "Granularity of the event if applicable"
+    },
+    {
+      "type": [
+        {
+          "type": "record",
+          "name": "PartitionSpec",
+          "namespace": "com.linkedin.pegasus2avro.timeseries",
+          "fields": [
+            {
+              "type": {
+                "type": "enum",
+                "name": "PartitionType",
+                "namespace": "com.linkedin.pegasus2avro.timeseries",
+                "symbols": [
+                  "FULL_TABLE",
+                  "QUERY",
+                  "PARTITION"
+                ]
+              },
+              "name": "type",
+              "default": "PARTITION"
+            },
+            {
+              "TimeseriesField": {},
+              "type": "string",
+              "name": "partition",
+              "doc": "String representation of the partition"
+            },
+            {
+              "type": [
+                "null",
+                {
+                  "type": "record",
+                  "name": "TimeWindow",
+                  "namespace": "com.linkedin.pegasus2avro.timeseries",
+                  "fields": [
+                    {
+                      "type": "long",
+                      "name": "startTimeMillis",
+                      "doc": "Start time as epoch at UTC."
+                    },
+                    {
+                      "type": "com.linkedin.pegasus2avro.timeseries.TimeWindowSize",
+                      "name": "length",
+                      "doc": "The length of the window."
+                    }
+                  ]
+                }
+              ],
+              "name": "timePartition",
+              "default": null,
+              "doc": "Time window of the partition if applicable"
+            }
+          ],
+          "doc": "Defines how the data is partitioned"
+        },
+        "null"
+      ],
+      "name": "partitionSpec",
+      "default": {
+        "partition": "FULL_TABLE_SNAPSHOT",
+        "type": "FULL_TABLE",
+        "timePartition": null
+      },
+      "doc": "The optional partition specification."
+    },
+    {
+      "type": [
+        "null",
+        "string"
+      ],
+      "name": "messageId",
+      "default": null,
+      "doc": "The optional messageId, if provided serves as a custom user-defined unique identifier for an aspect value."
+    }
+  ],
+  "doc": "An event representing the current status of evaluating a batch metadata test (run offline)"
+}

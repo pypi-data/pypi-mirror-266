@@ -1,0 +1,40 @@
+{
+  "type": "record",
+  "Aspect": {
+    "name": "dataHubActionInfo"
+  },
+  "name": "DataHubActionInfo",
+  "namespace": "com.linkedin.pegasus2avro.action",
+  "fields": [
+    {
+      "Searchable": {
+        "fieldType": "TEXT_PARTIAL"
+      },
+      "type": "string",
+      "name": "name",
+      "doc": "The display name of the action"
+    },
+    {
+      "type": "string",
+      "name": "type",
+      "doc": "The type of the action itself, e.g. tag_propagation. Should match the recipe."
+    },
+    {
+      "type": {
+        "type": "record",
+        "name": "DataHubActionConfig",
+        "namespace": "com.linkedin.pegasus2avro.action",
+        "fields": [
+          {
+            "type": "string",
+            "name": "recipe",
+            "doc": "The JSON recipe to use for ingestion"
+          }
+        ]
+      },
+      "name": "config",
+      "doc": "Parameters associated with the Action"
+    }
+  ],
+  "doc": "Info about a DataHub Action Pipeline"
+}
