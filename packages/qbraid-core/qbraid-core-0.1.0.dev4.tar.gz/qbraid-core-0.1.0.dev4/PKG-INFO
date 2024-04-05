@@ -1,0 +1,129 @@
+Metadata-Version: 2.1
+Name: qbraid-core
+Version: 0.1.0.dev4
+Summary: Python library with core abstractions for software development in the qBraid ecosystem.
+Author-email: qBraid Development Team <contact@qbraid.com>
+License: Proprietary
+Project-URL: Homepage, https://www.qbraid.com/
+Project-URL: Documentation, https://docs.qbraid.com/projects/core/en/latest/
+Project-URL: Bug Tracker, https://github.com/qBraid/qBraid-Lab/issues
+Project-URL: Discord, https://discord.gg/KugF6Cnncm
+Project-URL: Launch on Lab, https://account.qbraid.com/?gitHubUrl=https://github.com/qBraid/qBraid-Lab.git
+Keywords: qbraid,quantum,cloud
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: System Administrators
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests
+Requires-Dist: urllib3
+Provides-Extra: dev
+Requires-Dist: black; extra == "dev"
+Requires-Dist: isort; extra == "dev"
+Requires-Dist: pylint; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: sphinx~=7.2.6; extra == "docs"
+Requires-Dist: sphinx-rtd-theme<2.1,>=1.3; extra == "docs"
+Requires-Dist: sphinx-autodoc-typehints<2.1,>=1.24; extra == "docs"
+Requires-Dist: docutils<0.21; extra == "docs"
+
+# qbraid-core
+
+[![Documentation](https://img.shields.io/badge/Documentation-DF0982)](https://docs.qbraid.com/projects/core/en/latest/)
+[![PyPI version](https://img.shields.io/pypi/v/qbraid-core.svg?color=blue)](https://pypi.org/project/qbraid-core/)
+[![Python verions](https://img.shields.io/pypi/pyversions/qbraid-core.svg?color=blue)](https://pypi.org/project/qbraid-core/)
+[![GitHub](https://img.shields.io/badge/issue_tracking-github-blue?logo=github)](https://github.com/qBraid/qBraid-Lab/issues)
+[![Discord](https://img.shields.io/discord/771898982564626445.svg?color=pink)](https://discord.gg/KugF6Cnncm)
+
+Python library providing core abstractions for software development within the qBraid ecosystem, and a low-level interface to a growing array of qBraid cloud services. The qbraid-core package forms the foundational base for the [qBraid CLI](https://pypi.org/project/qbraid-cli/), the [qBraid SDK](https://pypi.org/project/qbraid/), and the
+[jupyter-environment-manager](https://pypi.org/project/jupyter-environment-manager/).
+
+You can find the latest, most up to date, documentation [here](https://docs.qbraid.com/projects/core/en/latest/), including a list of services that are supported.
+
+## Getting Started
+
+You can install qbraid-core from PyPI with:
+
+```shell
+python -m pip install qbraid-core
+```
+
+### Local configuration
+
+After installing qbraid-core, you must configure your account credentials:
+
+1. Create a qBraid account or log in to your existing account by visiting
+   [account.qbraid.com](https://account.qbraid.com/)
+2. Copy your API Key token from the left side of
+    your [account page](https://account.qbraid.com/):
+3. Save your API key from step 2 in local configuration file `~/.qbraid/qbraidrc`, where `~` corresponds to your home (`$HOME`) directory:
+
+```shell
+[default]
+api-key = YOUR_KEY
+url = https://api.qbraid.com/api
+```
+
+Or generate your `~/.qbraid/qbraidrc` file via the qbraid-core Python interface:
+
+```python
+>>> from qbraid_core import QbraidSession
+>>> session = QbraidSession(api_key='API_KEY')
+>>> session.save_config()
+>>> session.get_available_services()
+['environments', 'quantum']
+```
+
+Other credential configuration methods can be found [here](https://docs.qbraid.com/projects/cli/en/latest/tree/qbraid_configure.html).
+
+### Verify setup
+
+After configuring your qBraid credentials, verify your setup by running the following from a Python interpreter:
+
+```python
+>>> import qbraid_core
+>>> quantum_client = qbraid_core.client('quantum')
+>>> device_data = quantum_client.search_devices()
+>>> for item in device_data:
+...     print(item['qbraid_id'])
+```
+
+## Community
+
+- For feature requests and bug reports: [Submit an issue](https://github.com/qBraid/qBraid-Lab/issues)
+- For discussions and/or specific questions about qBraid services, [join our discord community](https://discord.gg/KugF6Cnncm)
+- For questions that are more suited for a forum, post to [Stack Overflow](https://stackoverflow.com/) with the [`qbraid`](https://stackoverflow.com/questions/tagged/qbraid) tag.
+
+## Launch on qBraid
+
+The "Launch on qBraid" button (below) can be added to any public GitHub
+repository. Clicking on it automaically opens qBraid Lab, and performs a
+`git clone` of the project repo into your account's home directory. Copy the
+code below, and replace `YOUR-USERNAME` and `YOUR-REPOSITORY` with your GitHub
+info.
+
+[<img src="https://qbraid-static.s3.amazonaws.com/logos/Launch_on_qBraid_white.png" width="150">](https://account.qbraid.com?gitHubUrl=https://github.com/qBraid/qBraid.git)
+
+Use the badge in your project's `README.md`:
+
+```markdown
+[<img src="https://qbraid-static.s3.amazonaws.com/logos/Launch_on_qBraid_white.png" width="150">](https://account.qbraid.com?gitHubUrl=https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git)
+```
+
+Use the badge in your project's `README.rst`:
+
+```rst
+.. image:: https://qbraid-static.s3.amazonaws.com/logos/Launch_on_qBraid_white.png
+    :target: https://account.qbraid.com?gitHubUrl=https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git
+    :width: 150px
+```

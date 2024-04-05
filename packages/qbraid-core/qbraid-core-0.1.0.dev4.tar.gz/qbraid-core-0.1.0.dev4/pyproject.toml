@@ -1,0 +1,67 @@
+[build-system]
+requires = ["setuptools >= 61.0", "setuptools_scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qbraid-core"
+version = "0.1.0.dev4"
+authors = [
+    {name = "qBraid Development Team", email = "contact@qbraid.com"},
+]
+description = "Python library with core abstractions for software development in the qBraid ecosystem."
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = ["qbraid", "quantum", "cloud"]
+license = {text = "Proprietary"}
+classifiers = [
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "Natural Language :: English",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = ["requests", "urllib3"]
+
+[project.urls]
+Homepage = "https://www.qbraid.com/"
+Documentation = "https://docs.qbraid.com/projects/core/en/latest/"
+"Bug Tracker" = "https://github.com/qBraid/qBraid-Lab/issues"
+Discord = "https://discord.gg/KugF6Cnncm"
+"Launch on Lab" = "https://account.qbraid.com/?gitHubUrl=https://github.com/qBraid/qBraid-Lab.git"
+
+[project.optional-dependencies]
+dev = ["black", "isort", "pylint", "pytest"]
+docs = ["sphinx~=7.2.6", "sphinx-rtd-theme>=1.3,<2.1", "sphinx-autodoc-typehints>=1.24,<2.1", "docutils<0.21"]
+
+[tool.setuptools_scm]
+write_to = "qbraid_core/_version.py"
+
+[tool.black]
+line-length = 100
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+line_length = 100
+
+[tool.pylint.'MESSAGES CONTROL']
+max-line-length = 100
+disable = "C0415, R0914, W0511"
+
+[tool.pylint.MASTER]
+ignore-paths = [
+  "^.*\\_version.py$",
+]
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+testpaths = ["tests"]
