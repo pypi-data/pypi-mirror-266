@@ -1,0 +1,105 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "marimo_labs"
+description = "Cutting-edge experimental features for marimo"
+dynamic = ["version"]
+dependencies = [
+    "marimo>=0.3.8",
+    "huggingface_hub>=0.19.3",
+    "requests>=2.0",
+    "pyyaml>=5.0",
+    "Pillow>=7.0",
+    "numpy>=1.21.0",
+]
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.8"
+classifiers = [
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: Apache Software License",
+    "Environment :: Console",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Education",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3 :: Only",
+]
+
+[project.urls]
+homepage = "https://github.com/marimo-team/marimo_labs"
+
+[project.optional-dependencies]
+dev = [
+    "black~=23.3.0",
+    "build~=0.10.0",
+    "mypy~=1.9.0",
+    "ruff~=0.3.5",
+    "typos~=1.20.4",
+    "pytest~=8.1.1",
+]
+
+[tool.setuptools.dynamic]
+version = { attr = "marimo_labs.__version__" }
+
+[tool.setuptools.packages.find]
+# project source is entirely contained in the `marimo` package
+include = ["marimo_labs*"]
+
+[tool.ruff]
+line-length=79
+exclude = [
+    "docs",
+    "build",
+]
+lint.ignore = []
+lint.select = [
+    # pyflakes
+    "F",
+    # pycodestyle
+    "E",
+    # warning
+    "W",
+    # flake8 builtin-variable-shadowing
+    "A001",
+    # flake8 builtin-argument-shadowing
+    "A002",
+    # flake8-unused-arguments
+    "ARG",
+    # flake8-bugbear
+    "B",
+    # future annotations
+    "FA102",
+    # isort
+    "I001",
+]
+
+# Never try to fix `F401` (unused imports).
+lint.unfixable = ["F401"]
+
+[tool.ruff.lint.isort]
+required-imports = ["from __future__ import annotations"]
+
+[tool.black]
+line-length = 79
+
+[tool.mypy]
+strict = false
+exclude = []
+warn_unused_ignores=false
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = [
+    "tests",
+]
+
+[tool.typos.default.extend-words]
+wheres = "wheres"
