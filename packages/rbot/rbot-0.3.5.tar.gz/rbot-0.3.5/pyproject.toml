@@ -1,0 +1,31 @@
+[build-system]
+requires = ["maturin>=0.13,<0.14"]
+build-backend = "maturin"
+
+[project]
+name = "rbot"
+authors = [{name="@yasstake"}]
+description = "crypt trading framework, support back_test, dry_run and real_run"
+readme="README.md"
+license = { file = "LICENSE.txt" }
+
+
+requires-python = ">=3.8"
+classifiers = [
+    "Intended Audience :: Developers",    
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)",
+    ]
+
+[project.urls]
+Documentation = "https://github.com/yasstake/rusty-bot"
+Repository = "https://github.com/yasstake/rbot"
+
+
+[tool.maturin]
+python-source = "python"
+
+[tool.setuptools.packages.find]
+exclude = ["build", "tests"]
