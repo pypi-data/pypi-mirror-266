@@ -1,0 +1,89 @@
+[build-system]
+requires = [
+    "setuptools >= 67",
+    "setuptools_scm >= 8",
+    "wheel",
+]
+build-backend = "setuptools.build_meta"
+
+# https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
+[project]
+name = "ThermalNetwork"
+dynamic = [
+    "readme",
+    "version",
+    ]
+authors = [
+  { name="Matt Mitchell", email="mitchute@gmail.com" },
+  { name="Nathan Moore", email="nathan.moore@nrel.gov" },
+]
+description = "A thermal network solver for GHE sizing."
+requires-python = ">=3.9,<3.13"
+classifiers = [
+        "Development Status :: 4 - Beta",
+        "Topic :: Scientific/Engineering",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+    ]
+dependencies = [
+  'click ~= 8.1',
+  'ghedesigner ~= 1.5',
+  'pandas ~= 2.0',
+  "rich ~= 13.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest >= 6.0",
+    "pytest-cov ~= 4.1",
+    "pre-commit ~= 3.5",
+    "ruff ~= 0.3",
+    "jupyterlab ~= 4.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/NREL/ThermalNetwork"
+"Bug Tracker" = "https://github.com/NREL/ThermalNetwork/issues"
+
+# https://setuptools.pypa.io/en/latest/userguide/package_discovery.html
+[tool.setuptools.packages.find]
+# Must include a MANIFEST.in file in our repo: https://setuptools.pypa.io/en/latest/userguide/datafiles.html
+
+# https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html#dynamic-metadata
+[tool.setuptools.dynamic]
+readme = {file = "README.md", content-type = "text/markdown"}
+
+# https://setuptools-scm.readthedocs.io/
+# Presence of this command tells it to find the version from GitHub
+[tool.setuptools_scm]
+
+# https://docs.pytest.org/en/6.2.x/customize.html#pyproject-toml
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = "tests"
+# Manually add these flags to `pytest` when running locally for coverage details.
+addopts = ["--cov=thermalnetwork", "--cov-report=html"]
+
+# https://docs.astral.sh/ruff/tutorial/#configuration
+[tool.ruff]
+fix = true # automatically fix problems if possible
+line-length = 120
+
+# https://docs.astral.sh/ruff/linter/#rule-selection
+[tool.ruff.lint]
+extend-select = ["RUF", "E", "F", "I", "UP", "N", "S", "BLE", "A", "C4", "T10", "ISC", "ICN", "PT",
+"Q", "SIM", "TID", "ARG", "DTZ", "PD", "PGH", "PLC", "PLE", "PLR", "PLW", "PIE", "COM"] # Enable these rules
+ignore = ["PLR0913", "PLR2004", "PLR0402", "COM812", "COM819", "SIM108", "ARG002", "ISC001"] # except for these specific errors
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101", "S607", "S603"] # assert statements are allowed in tests, and paths are safe
+
+# https://docs.astral.sh/ruff/formatter/#configuration
+[tool.ruff.format]
+# quote-style = "double"
+
+[project.scripts]
+thermalnetwork = "thermalnetwork.network:run_sizer_from_cli"

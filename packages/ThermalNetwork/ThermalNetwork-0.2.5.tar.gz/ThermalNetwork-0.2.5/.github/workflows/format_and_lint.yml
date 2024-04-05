@@ -1,0 +1,24 @@
+name: Format & Lint
+
+on: [ push ]
+
+jobs:
+  ruff:
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.12']
+        os: ['ubuntu-latest', 'windows-latest']
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Run pre-commit
+        uses: pre-commit/action@v3.0.0
+        with:
+          extra_args: --all-files
