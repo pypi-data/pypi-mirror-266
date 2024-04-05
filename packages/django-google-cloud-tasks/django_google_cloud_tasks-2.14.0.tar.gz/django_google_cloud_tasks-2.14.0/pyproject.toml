@@ -1,0 +1,52 @@
+[tool.poetry]
+name = "django-google-cloud-tasks"
+version = "2.14.0"
+description = "Async Tasks with HTTP endpoints"
+authors = ["Joao Daher <joao@daher.dev>"]
+packages = [
+    { include = "django_cloud_tasks" },
+]
+
+[tool.poetry.dependencies]
+python = "~3.11||~3.12"
+Django = "~4||~5"
+gcp-pilot = { version = ">=1.23.0", extras = ["tasks", "pubsub"]}
+drf-kit = { version = ">=1.29.1" }
+
+
+[tool.poetry.dev-dependencies]
+ruff = "*"
+coverage = "*"
+factory-boy = "*"
+freezegun = "*"
+safety = "*"
+pytest-cov = "*"
+pytest-django = "*"
+pytest-rerunfailures = "*"
+pytest-xdist = "*"
+pytest-sugar = "*"
+pytest-random-order = "*"
+pytest-timeout = "*"
+
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+
+[tool.pytest.ini_options]
+addopts = "-n auto --reruns 2 --random-order --timeout 100 --cov"
+python_files = ["tests_*.py"]
+DJANGO_SETTINGS_MODULE = "sample_project.settings"
+pythonpath = [".", "sample_project", "django_cloud_tasks"]
+
+
+[tool.coverage.run]
+branch = true
+source = ["django_cloud_tasks"]
+omit = ["*/manage.py", "*/settings.py", "*/wsgi.py"]
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
