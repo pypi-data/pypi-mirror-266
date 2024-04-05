@@ -1,0 +1,25 @@
+PUT https://api.recurly.com/v2/accounts/testmock HTTP/1.1
+X-Api-Version: {api-version}
+Accept: application/xml
+Authorization: Basic YXBpa2V5Og==
+User-Agent: {user-agent}
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<account>
+  <accept_language>en-US</accept_language>
+  <company_name>Home Box Office</company_name>
+  <email>larry.david</email>
+  <first_name>Larry</first_name>
+  <last_name>David</last_name>
+  <username>shmohawk58</username>
+  <account_code>testmock</account_code>
+</account>
+
+HTTP/1.1 422 Unprocessable Entity
+Content-Type: application/xml; charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8"?>
+<errors>
+  <error field="account.email" symbol="invalid_email">is not a valid email address</error>
+</errors>
