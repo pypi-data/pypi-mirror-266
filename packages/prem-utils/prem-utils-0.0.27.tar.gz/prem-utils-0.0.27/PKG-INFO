@@ -1,0 +1,48 @@
+Metadata-Version: 2.1
+Name: prem-utils
+Version: 0.0.27
+Summary: Prem generic utils to use across Prem Components.
+Author-email: Filippo Pedrazzini <filippo@premai.io>
+License: Apache-2.0
+Project-URL: Homepage, https://github.com/premAI-io/prem-utils
+Project-URL: Releases, https://github.com/premAI-io/prem-utils/tags
+Classifier: Development Status :: 1 - Planning
+Classifier: Programming Language :: Python :: 3 :: Only
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: openai==1.3.7
+Requires-Dist: tiktoken==0.5.1
+Requires-Dist: cohere==4.39
+Requires-Dist: anthropic==0.7.7
+Requires-Dist: replicate==0.22.0
+Requires-Dist: octoai-sdk==0.7.4
+Requires-Dist: monsterapi==1.0.5.post1
+Requires-Dist: together==0.2.9
+Requires-Dist: fireworks-ai==0.9.0
+Requires-Dist: mistralai==0.0.8
+Requires-Dist: python-dotenv==1.0.0
+Requires-Dist: pre-commit==3.6.0
+Requires-Dist: lamini==2.0.4
+
+# 🛠️ Prem Utils
+
+Utilities, and Connectors in order to interact with all Model Serving and Fine-tuning Providers.
+
+## 🤙 Usage
+
+```bash
+pip install prem-utils
+```
+
+```python
+from prem_utils.connectors import openai
+
+connector = openai.OpenAIConnector(api_key="")
+
+prompt = "Hello, how are you?"
+response = connector.chat_completion(model="gpt-3.5-turbo", messages=[{"role": "user", "content": prompt}])
+
+message = response["choices"][0]["message"]["content"]
+print(message)
+```
