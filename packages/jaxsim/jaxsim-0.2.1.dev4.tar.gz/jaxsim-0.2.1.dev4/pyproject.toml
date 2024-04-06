@@ -1,0 +1,118 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = [
+  "wheel",
+  "setuptools>=64",
+  "setuptools_scm[toml]>=8",
+]
+
+[tool.setuptools_scm]
+local_scheme = "dirty-tag"
+version_file = "src/jaxsim/_version.py"
+
+[tool.black]
+line-length = 88
+
+[tool.isort]
+multi_line_output = 3
+profile = "black"
+
+[tool.pytest.ini_options]
+addopts = "-rsxX -v --strict-markers"
+minversion = "6.0"
+preview = true
+testpaths = [
+  "tests",
+]
+
+target-version = "py311"
+
+[tool.ruff]
+exclude = [
+  ".git",
+  ".pytest_cache",
+  ".ruff_cache",
+  ".vscode",
+  ".devcontainer",
+  "__pycache__",
+]
+preview = true
+
+[tool.ruff.lint]
+# https://docs.astral.sh/ruff/rules/
+ignore = [
+  "B008", # Function call in default argument
+  "B024", # Abstract base class without abstract methods
+  "B904", # Raise without from inside exception
+  "B905", # Zip without explicit strict
+  "E402", # Module level import not at top of file
+  "E501", # Line too long
+  "E731", # Do not assign a `lambda` expression, use a `def`
+  "E741", # Ambiguous variable name
+  "F841", # Local variable is assigned to but never used
+  "I001", # Import block is unsorted or unformatted
+]
+select = [
+  "B",
+  "E",
+  "F",
+  "I",
+  "W",
+  "YTT",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Ignore `E402` (import violations) in all `__init__.py` files
+"**/{tests,docs,tools}/*" = ["E402"]
+"**/{tests}/*" = ["B007"]
+"__init__.py" = ["F401"]
+"docs/conf.py" = ["F401"]
+
+[tool.pixi.project]
+name = "jaxsim"
+channels = ["conda-forge"]
+platforms = ["linux-64"]
+
+[tool.pixi.dependencies]
+coloredlogs = "*"
+jax = "*"
+jaxlib = "*"
+jaxlie = "*"
+jax-dataclasses = "*"
+pptree = "*"
+rod = "*"
+typing_extensions = "*"
+lxml = "*"
+mediapy = "*"
+mujoco = "*"
+sdformat14 = "*"
+
+[tool.pixi.feature.test.tasks]
+pipcheck = "pip check"
+test =  { cmd = "pytest",  depends_on = ["pipcheck"]}
+
+[tool.pixi.feature.test.dependencies]
+black = "24.*"
+isort = "*"
+pre-commit = "*"
+idyntree = "*"
+pytest = "*"
+pytest-icdiff = "*"
+robot_descriptions = "*"
+pip = "*"
+
+[tool.pixi.feature.gpu]
+platforms = ["linux-64"]
+system-requirements = {cuda = "12.1"}
+# cuda-nvcc and cuda-cupti are just a workaround for
+# https://github.com/conda-forge/jaxlib-feedstock/pull/241
+dependencies = {cuda-version = "12.*", cuda-nvcc  = "*", cuda-cupti = "*", jaxlib = "* *cuda*"}
+
+[tool.pixi.pypi-dependencies]
+jaxsim = { path = "./", editable = true}
+
+[tool.pixi.environments]
+default = { solve-group = "cpugroup" }
+gpu = { features = ["gpu"], solve-group = "gpugroup" }
+test-cpu = { features = ["test"], solve-group = "cpugroup" }
+test-gpu = { features = ["test", "gpu"], solve-group = "gpugroup" }
