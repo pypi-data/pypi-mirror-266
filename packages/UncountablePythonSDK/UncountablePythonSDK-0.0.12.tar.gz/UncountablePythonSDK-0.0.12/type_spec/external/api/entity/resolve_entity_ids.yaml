@@ -1,0 +1,29 @@
+$endpoint:
+    is_sdk: true
+    method: get
+    path: ${external}/entity/external_resolve_entity_ids
+    function: main.site.app.external.entity.resolve_entity_ids.resolve_entity_ids
+    desc: "Gets the names for passed in ids"
+Arguments:
+    type: Object
+    properties:
+        entity_ids:
+            type: List<Union<String, ObjectId>>
+            desc: "Ids of the entity to retrieve"
+        entity_type:
+            type: entity.EntityType
+            desc: "The type of the entities requested"
+
+EntityNames:
+    type: Object
+    properties:
+        id:
+            type: Union<String, Integer>
+        name:
+            type: String
+
+Data:
+    type: Object
+    properties:
+        items:
+            type: List<EntityNames>
