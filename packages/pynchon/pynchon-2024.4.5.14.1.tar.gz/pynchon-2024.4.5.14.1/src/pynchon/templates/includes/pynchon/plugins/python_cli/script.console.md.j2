@@ -1,0 +1,24 @@
+{##}
+[tooltip-package-entrypoints]: ## "Console Script Entrypoint"
+[tooltip-module-entrypoints]: ## "Module Entrypoint"
+
+[Docs](../) *↔* [CLI](README.md) *↔* Console Scripts *↔* [Module Entrypoints](README.md#module-entrypoints)
+
+---------------------------------------------------
+
+{%for emd in entrypoints %}
+{% set bin_name=emd.bin_name|default('unknown `bin_name`')%}
+{% set dotpath=emd.dotpath|default('unknown `dotpath`')%}
+{% set src_url=emd.src_url|default('#undefined')%}
+{% set help_output=emd.help_output|default('# error with `help_output`')%}
+
+## [**℮**][tooltip-package-entrypoints] {{bin_name}}
+
+Module [*{{dotpath}}*]({{src_url}}) publishes a CLI named `{{bin_name}}` via a [console script](https://python-packaging.readthedocs.io/en/latest/command-line-scripts.html#the-console-scripts-entry-point). (*[source]({{src_url}})*)
+
+**Example usage:**
+
+```bash
+{{help_output}}
+```
+{%endfor%}

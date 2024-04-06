@@ -1,0 +1,23 @@
+
+
+-------------------------------------------------------------------------------
+
+{% set base_url = module._metadata.base_url|default('?') %}
+{% set entrypoint='(entrypoint) |' if module_name.endswith('__main__') else '' %}
+{% set utest_root = utest_root|default('/tests/units')%}
+{% set itest_root = itest_root|default('/tests/integrations')%}
+
+### {{module_name}}
+
+* **Overview:** {{entrypoint}} [source code](/{{base_url}}), [unit tests]({{utest_root}}/), [integration tests]({{itest_root}}/)
+{% if not (classes or functions) %}
+{% include "pynchon/plugins/python/api/names.md.j2" %}
+{% endif %}
+
+{% if classes %}
+{% include "pynchon/plugins/python/api/classes.md.j2" %}
+{% endif %}
+
+{% if functions %}
+{% include "pynchon/plugins/python/api/functions.md.j2" %}
+{% endif %}

@@ -1,0 +1,76 @@
+
+
+{% set base_url = module._metadata.base_url|default('?') %}
+{% set entrypoint='(entrypoint) |' if module_name.endswith('__main__') else '' %}
+{% set utest_root = utest_root|default('/tests/units')%}
+{% set itest_root = itest_root|default('/tests/integrations')%}
+
+### {{module_name}}
+
+* Overview: {{entrypoint}} [source code](/{{base_url}}), [unit tests]({{utest_root}}/), [integration tests]({{itest_root}}/)
+{% if modules %}
+* Modules: ({{modules|length}} total)
+  {% for name,mod in modules.items() %}
+  {% set src_url = '/' + mod._metadata.base_url|default('?') %}
+  {% set toc_link = module_name.replace('.', '')+name %}
+  * [`{{module_name}}.{{name}}`]({{src_url}}): [index](#{{toc_link}}), [source]({{src_url}}), [tests](#FIXME)
+  {%endfor%}
+{% endif %}
+
+{% if classes %}
+* Classes: ({{classes|length}} total)
+  {% for name,obj in classes.items() %}
+  {% set qname = module_name+'.'+name %}
+  {% set start, end = obj._metadata.start, obj._metadata.end %}
+  {% set rel_url = '/' + base_url + '#L' + start %}
+  {% set rel_url = rel_url+'-L' + end if end else rel_url %}
+  {% set extras = obj._metadata.bases | default([]) %}
+  {% set admonitions=[]%}
+  {%if obj._metadata.mccabe %}
+  {% set admonitions = obj._metadata.mccabe + admonitions %}
+  {% endif %}
+  {% if obj._metadata.fixme %}{{rel_url}} "")
+  {% set admonitions = obj._metadata.fixme + admonitions %}
+  {% endif %}
+  * [`{{qname}}`]({{rel_url}})
+    * with bases ({%for e in extras%}{{e}},{%endfor%})
+    {% if admonitions %}
+    * with admonitions: {% for a in admonitions %} [{{a.glyph}}]({{a.link}} "{{a.hover}}") {% endfor %}
+    {% endif %}
+    {%if obj._metadata.properties|default([]) %}
+    * with properties: ({{obj._properties|length}} total)
+      {%for e in obj._metadata.properties%}
+      {% set e_url = "/"+base_url+"#L" + e.start %}
+      * {%if e.fixme %}[🚩]({{e_url}} "has FIXMEs"){%endif%} [`{{e.name}}`]({{e_url}}) -> {{e.annotation}}
+      {%endfor%}
+    {%endif%}
+  {%endfor%}
+{% endif %}
+
+{% if functions %}
+* Functions: ({{functions|length}} total)
+  {% for name,obj in functions.items() %}
+  {% set qname = module_name+'.'+name %}
+  {% set start, end = obj.lineno | string, obj.endlineno | string %}
+  {% set rel_url = '/' + base_url + '#L' + start + '-L' + end %}
+  {% set extras = obj._metadata.signature|string %}
+  {% set admonitions=[]%}
+  {%if obj._metadata.mccabe %}
+  {% set admonitions = obj._metadata.mccabe + admonitions %}
+  {% endif %}
+  {% if obj._metadata.fixme %}{{rel_url}} "")
+  {% set admonitions = obj._metadata.fixme + admonitions %}
+  {% endif %}
+  {% if extras|length > 65 %}
+  * [`{{qname}}`]({{rel_url}})
+    * with signature `{{extras}}`
+  {%else%}
+  * [`{{qname}}`]({{rel_url}}) with signature `{{extras}}`
+  {%endif%}
+  {%if admonitions %}
+    * with admonitions: {% for a in admonitions %} [{{a.glyph}}]({{a.link}} "{{a.hover}}") {% endfor %}
+  {%endif%}
+  {%endfor%}
+{% endif %}
+
+-------------------------------------------------------------------------------

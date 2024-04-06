@@ -1,0 +1,8 @@
+
+
+* Modules: ({{modules|length}} total)
+  {% for name,mod in modules.items() %}
+  {% set src_url = '/' + mod._metadata.base_url|default('?') %}
+  {% set toc_link = module_name.replace('.', '')+name %}
+  * [`{{module_name}}.{{name}}`]({{src_url}}): [index](#{{toc_link}}), [source]({{src_url}}), [tests](#FIXME)
+  {%endfor%}

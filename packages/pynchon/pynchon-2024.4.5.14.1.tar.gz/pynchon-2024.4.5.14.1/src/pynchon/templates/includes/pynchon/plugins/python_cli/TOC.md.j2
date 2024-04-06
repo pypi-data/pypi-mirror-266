@@ -1,0 +1,42 @@
+{# 
+  TOC for `python-cli docs-gen` 
+#}
+[tooltip-package-entrypoints]: ## "Console Script Entrypoints"
+[tooltip-module-entrypoints]: ## "Module Entrypoints"
+
+[Docs](../) *↔* [CLI](README.md) *↔* Console Scripts *↔* [Module Entrypoints](README.md#module-entrypoints)
+
+---------------------------------------------------
+
+## **[ℙ][tooltip-package-entrypoints]** `{{project.name}}`
+
+Package-entrypoint overview for `{{python.package.name}}`
+
+-------------------------------------------------------------------------------
+
+
+### Package Entrypoints
+
+[Console scripts](https://python-packaging.readthedocs.io/en/latest/command-line-scripts.html#the-console-scripts-entry-point) published by package `{{python.package.name}}`:
+
+{% if package_entrypoints %}
+{% for metadata in package_entrypoints %}
+* [{{metadata.bin_name}}](/docs/cli/script-{{metadata.bin_name}}.md) via `{{metadata.dotpath}}` *[source]({{metadata.src_url}})*
+{%-endfor%}
+{%else%}
+No console scripts found
+{%endif%}
+
+-------------------------------------------------------------------------------
+
+### Module Entrypoints
+
+[**ℳ**][tooltip-module-entrypoints] Modules inside `{{python.package.name}}` providing __main__.py:
+
+{% if main_entrypoints %}
+{% for metadata in main_entrypoints %}
+* [`python -m{{metadata.dotpath}}`](/docs/cli/{{metadata.dotpath}}.md)  *[source]({{metadata.src_url}})*
+{%-endfor%}
+{% else %}
+No module entrypoints (**__main__.py**) were found
+{%endif%}
