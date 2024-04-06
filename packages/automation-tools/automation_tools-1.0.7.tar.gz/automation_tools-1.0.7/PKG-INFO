@@ -1,0 +1,73 @@
+Metadata-Version: 2.1
+Name: automation_tools
+Version: 1.0.7
+Summary: A suite of automation tools for various tasks.
+Home-page: https://github.com/sportyomar/automation_tools
+Author: Omar Lydale Morrison
+Author-email: omar.morrison@sportyventures.com
+License: MIT
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: openpyxl
+
+# Excel to CSV Converter
+The Excel to CSV Converter is a Python script that allows you to convert Excel files (.xlsx) into CSV (Comma-Separated Values) format. It provides a graphical user interface (GUI) built with Tkinter for easy file selection and conversion.
+
+### Features
+* Convert multiple Excel files into CSV format simultaneously. 
+* Graphical user interface (GUI) for intuitive operation.
+* Displays sheet names of loaded Excel files.
+* Handles error cases gracefully with informative error messages.
+### Dependencies
+* Python 3.x
+* openpyxl (Python library for reading and writing Excel files)
+
+### Installation
+* Make sure you have Python 3.x installed on your system. (If not, download and install it from python.org).
+* Install the required Python library using pip:
+  * pip install openpyxl
+  
+
+### Usage
+  1. Clone the repository or download the source code.
+  2. Navigate to the project directory in your terminal.
+  3. Run the script using Python:
+     * python excel_to_csv_converter.py
+     * Click on "Load XLSX Files" to select one or more Excel files (.xlsx) you want to convert.
+     * Click on "Select Output Directory" to choose the directory where you want to save the converted CSV files.
+     * Click on "Convert to CSV" to start the conversion process.
+       * Once the conversion is complete, the script will display the number of CSV files generated.
+       
+### Quickstart
+
+```python
+import tkinter as tk
+from automation_tools.excel_to_csv_converter import ExcelToCsvConverter
+
+
+def main():
+    root = tk.Tk()
+    root.title("Excel to CSV Converter")
+
+    app = ExcelToCsvConverter(root)
+
+    root.mainloop()
+
+
+if __name__ == "__main__":
+    main()
+```
+
+The code produces the following graphical user interface for converting Excel files to csv files.
+
+![](https://github.com/sportyomar/automation_tools/blob/main/image.png?raw=true)
+
+### How to Contribute
+Contributions to improve Excel to CSV Converter are welcome! Here's how you can contribute:
+
+Fork the repository.
+Make your changes and enhancements.
+Submit a pull request with a clear description of your changes.
+
+### License
+This project is licensed under the MIT License.
