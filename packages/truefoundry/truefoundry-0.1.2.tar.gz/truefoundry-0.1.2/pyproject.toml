@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "truefoundry"
+version = "0.1.2"
+description = "Truefoundry CLI"
+authors = ["Abhishek Choudhary <abhichoudhary06@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8,<3.13"
+servicefoundry = "0.10.6"
+mlfoundry = { version = "0.10.9", optional = true }
+
+[tool.poetry.extras]
+ml = ["mlfoundry"]
+
+[tool.poetry-dynamic-versioning]
+enable = false
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
+build-backend = "poetry_dynamic_versioning.backend"
+
+[tool.poetry.plugins."console_scripts"]
+tfy = "truefoundry.cli.__main__:main"
+truefoundry = "truefoundry.cli.__main__:main"
