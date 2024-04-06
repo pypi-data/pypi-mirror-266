@@ -1,0 +1,179 @@
+Metadata-Version: 2.1
+Name: usgs-libcomcat
+Version: 2.0.24
+Summary: Python wrapper around ComCat web API
+Author-email: Mike Hearne <mhearne@usgs.gov>, Heather Hunsinger <hhunsinger@usgs.gov>
+License: License
+        =======
+        
+        Unless otherwise noted, This project is in the public domain in the United
+        States because it contains materials that originally came from the United
+        States Geological Survey, an agency of the United States Department of
+        Interior. For more information, see the official USGS copyright policy at
+        https://www2.usgs.gov/visual-id/credit_usgs.html#copyright
+        
+        Additionally, we waive copyright and related rights in the work
+        worldwide through the CC0 1.0 Universal public domain dedication.
+        
+        
+        CC0 1.0 Universal Summary
+        -------------------------
+        
+        This is a human-readable summary of the
+        [Legal Code (read the full text)][1].
+        
+        
+        ### No Copyright
+        
+        The person who associated a work with this deed has dedicated the work to
+        the public domain by waiving all of his or her rights to the work worldwide
+        under copyright law, including all related and neighboring rights, to the
+        extent allowed by law.
+        
+        You can copy, modify, distribute and perform the work, even for commercial
+        purposes, all without asking permission.
+        
+        
+        ### Other Information
+        
+        In no way are the patent or trademark rights of any person affected by CC0,
+        nor are the rights that other persons may have in the work or in how the
+        work is used, such as publicity or privacy rights.
+        
+        Unless expressly stated otherwise, the person who associated a work with
+        this deed makes no warranties about the work, and disclaims liability for
+        all uses of the work, to the fullest extent permitted by applicable law.
+        When using or citing the work, you should not imply endorsement by the
+        author or the affirmer.
+        
+        ## Contributed Data
+        
+        libcomcat makes use of a publicly available data set from Natural Earth
+        (country boundaries), which we have included in this repository with great
+        appreciation for the original authors. The usage terms of that data set is
+        included below:
+        
+        "All versions of Natural Earth raster + vector map data found on this website
+        are in the public domain. You may use the maps in any manner, including
+        modifying the content and design, electronic dissemination, and offset
+        printing. The primary authors, Tom Patterson and Nathaniel Vaughn Kelso, and
+        all other contributors renounce all financial claim to the maps and invites you
+        to use them for personal, educational, and commercial purposes."
+        
+Keywords: comcat,earthquake
+Requires-Python: <3.11,>=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE.md
+Requires-Dist: esi-utils-geo
+Requires-Dist: esi-utils-time
+Requires-Dist: esi-utils-io
+Requires-Dist: fiona >=1.8.20
+Requires-Dist: h5py
+Requires-Dist: numpy >=1.21
+Requires-Dist: obspy >=1.2.1
+Requires-Dist: pandas >=1.3.3
+Requires-Dist: openpyxl >=3.0.6
+Requires-Dist: numpy >=1.21.0
+Requires-Dist: pandas >=1.4.1
+Requires-Dist: geopy >=2.1.0
+Requires-Dist: urllib3 >=2.0.0
+Requires-Dist: xlsxwriter >=3.0.1
+Provides-Extra: build
+Requires-Dist: build ; extra == 'build'
+Requires-Dist: twine ; extra == 'build'
+Requires-Dist: check-wheel-contents ; extra == 'build'
+Provides-Extra: dev
+Requires-Dist: build >=0.7.0 ; extra == 'dev'
+Requires-Dist: black >=21 ; extra == 'dev'
+Requires-Dist: flake8 >=3.9 ; extra == 'dev'
+Requires-Dist: ipython >=7.26 ; extra == 'dev'
+Requires-Dist: notebook >=6.4.0 ; extra == 'dev'
+Requires-Dist: geopy >=2.2.0 ; extra == 'dev'
+Requires-Dist: twine >=3.5.0 ; extra == 'dev'
+Provides-Extra: test
+Requires-Dist: pytest >=6.2 ; extra == 'test'
+Requires-Dist: pytest-cov >=2.12.0 ; extra == 'test'
+Requires-Dist: vcrpy >=4.1 ; extra == 'test'
+
+# Table of Contents
+- [Table of Contents](#table-of-contents)
+- [Introduction](#introduction)
+- [Installation](#installation)
+    - [Uninstalling and Updating](#uninstalling-and-updating)
+- [Motivation](#motivation)
+- [Documentation](#documentation)
+- [Getting Help](#getting-help)
+- [Citation](#citation)
+
+# Introduction
+
+
+libcomcat is a project designed to provide a Python equivalent to the ANSS ComCat search
+<a href="https://earthquake.usgs.gov/fdsnws/event/1/">API</a>.  This includes a Python library
+that provides various classes and functions wrapping around the ComCat API, and a number of command
+line programs that use those:
+
+* `findid` Find the ID of an event closest to input parameters (time, latitude, longitude). Also can provide the authoritative ID if an event id is provided.
+*  `getcsv` Generate csv or Excel files with basic earthquake information.
+*  `geteventhist` Generate csv or Excel files with a history of product submission for an event.
+ * `getmags` Download all available magnitudes from all sources.
+  * `getpager` Download information that represents the PAGER exposure and loss results.
+  * `getphases` Generate csv or Excel files with phase information.
+ * `getproduct` Download ComCat product contents (shakemap grids, origin quakeml, etc.)
+
+
+# Installation
+`libcomcat` is now installable via pip:
+
+`pip install usgs-libcomcat`
+
+### Uninstalling and Updating
+
+To uninstall:
+
+`pip uninstall usgs-libcomcat`
+
+To update:
+
+`pip install --upgrade usgs-libcomcat`
+
+# Motivation
+
+libcomcat is a python wrapper for the Comprehensive Catalog (ComCat), which has a [web page interface](https://earthquake.usgs.gov/earthquakes/map/) and [API](https://earthquake.usgs.gov/fdsnws/event/1/). ComCat contains information in **Events** which contain **Products**. Products contain **Contents** in the form of files, maps, etc.
+
+The ComCat interface is very user friendly, but does not support automation. The API supports automation, but limits the number of events that can be returned to 20,000. libcomcat uses the API in a way that allows for:
+- Searches returning more than 20,000 eventsource
+- Automation of product file downloads
+- Extraction of information in product content files
+
+# Documentation
+
+Documentation can be found in the docs folder:
+- [API Documentation](https://code.usgs.gov/ghsc/esi/libcomcat-python/-/blob/master/docs/api.md)
+- [Command Line Interface Documentation](https://code.usgs.gov/ghsc/esi/libcomcat-python/-/blob/master/docs/cli.md)
+
+Example Jupyter notebooks show how the API can be used to get and manipulate information from ComCat:
+
+*Note: The ShakeMap/DYFI Station Pairs Notebook requires a geodetic distance calculation function*
+*, which can be installed via: `pip install geopy`*
+
+- [Classes Notebook](https://code.usgs.gov/ghsc/esi/libcomcat-python/-/blob/master/notebooks/Classes.ipynb)
+- [Dataframes Notebook](https://code.usgs.gov/ghsc/esi/libcomcat-python/-/blob/master/notebooks/Dataframes.ipynb)
+- [Detailed Event Notebook](https://code.usgs.gov/ghsc/esi/libcomcat-python/-/blob/master/notebooks/DetailEvent.ipynb)
+- [Event History Notebook](https://code.usgs.gov/ghsc/esi/libcomcat-python/-/blob/master/notebooks/EventHistory.ipynb)
+- [Magnitude Comparison Notebook](https://code.usgs.gov/ghsc/esi/libcomcat-python/-/blob/master/notebooks/ComparingMagnitudes.ipynb)
+- [Phase and Magnitude Notebook](https://code.usgs.gov/ghsc/esi/libcomcat-python/-/blob/master/notebooks/PhasesAndMagnitudes.ipynb)
+- [Search Notebook](https://code.usgs.gov/ghsc/esi/libcomcat-python/-/blob/master/notebooks/Search.ipynb)
+- [Get ShakeMap/DYFI Station Pairs Notebook](https://code.usgs.gov/ghsc/esi/libcomcat-python/-/blob/master/notebooks/GetSMDYFIPairs.ipynb)
+
+# Getting Help
+
+Any questions about libcomcat can be directed to the primary author:
+
+Mike Hearne
+mhearne@usgs.gov
+# Citation
+
+If you wish to cite this work in your own publication, you may use this DOI:
+https://doi.org/10.5066/P91WN1UQ
+
