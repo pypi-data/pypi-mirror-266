@@ -1,0 +1,99 @@
+Metadata-Version: 2.1
+Name: qgis-deployment-toolbelt
+Version: 0.33.0
+Summary: QGIS deployment toolbelt is a CLI (Command Line Interface) to perform redundant operations after a QGIS deployment.
+Home-page: https://github.com/Guts/qgis-deployment-cli/
+Author: Julien Moura (Oslandia), Vincent Bré (Oslandia)
+Author-email: qgis@oslandia.com
+Keywords: cli,deployment,profiles,qdt,QGIS
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Information Technology
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: Microsoft :: Windows :: Windows 10
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Scientific/Engineering :: GIS
+Classifier: Topic :: System :: Installation/Setup
+Requires-Python: >=3.10,<4
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: dulwich <0.21.8,>=0.21.7
+Requires-Dist: giturlparse <0.13,>=0.12
+Requires-Dist: imagesize <1.5,>=1.4
+Requires-Dist: packaging <24,>=20
+Requires-Dist: pyyaml <7,>=5.4
+Requires-Dist: requests <3,>=2.31
+Requires-Dist: truststore <1,>=0.8
+Requires-Dist: distro ==1.9.* ; sys_platform == "linux"
+Requires-Dist: pywin32 ==306 ; sys_platform == "win32"
+Provides-Extra: dev
+Requires-Dist: black ; extra == 'dev'
+Requires-Dist: flake8 <7.1,>=5 ; extra == 'dev'
+Requires-Dist: flake8-bugbear <24.3,>=23.1 ; extra == 'dev'
+Requires-Dist: flake8-builtins <3,>=2.1 ; extra == 'dev'
+Requires-Dist: flake8-eradicate <2,>=1.0 ; extra == 'dev'
+Requires-Dist: flake8-isort <6.2,>=5 ; extra == 'dev'
+Requires-Dist: pre-commit <3.8,>=3 ; extra == 'dev'
+Provides-Extra: doc
+Requires-Dist: furo ==2024.* ; extra == 'doc'
+Requires-Dist: matplotlib <4,>=3.8.2 ; extra == 'doc'
+Requires-Dist: myst-parser[linkify] <3,>=2 ; extra == 'doc'
+Requires-Dist: sphinx-argparse-cli <2,>=1 ; extra == 'doc'
+Requires-Dist: sphinx-autobuild ==2024.* ; extra == 'doc'
+Requires-Dist: sphinx-copybutton <1 ; extra == 'doc'
+Requires-Dist: sphinx-design <1,>=0.5 ; extra == 'doc'
+Requires-Dist: sphinxcontrib-mermaid <1,>=0.9 ; extra == 'doc'
+Requires-Dist: sphinxext-opengraph <1,>=0.4 ; extra == 'doc'
+Requires-Dist: sphinx-sitemap <3,>=2.4 ; extra == 'doc'
+Provides-Extra: test
+Requires-Dist: GitPython <3.2,>=3.1 ; extra == 'test'
+Requires-Dist: Pillow <10.4,>=10.2 ; extra == 'test'
+Requires-Dist: pytest-cov <5.1,>=4 ; extra == 'test'
+Requires-Dist: validators <0.23,>=0.20 ; extra == 'test'
+
+# QGIS Deployment CLI
+
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![flake8](https://img.shields.io/badge/linter-flake8-green)](https://flake8.pycqa.org/)
+[![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/Guts/qgis-deployment-cli/main.svg)](https://results.pre-commit.ci/latest/github/Guts/qgis-deployment-cli/main)
+[![security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Guts_qgis-deployment-cli&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Guts_qgis-deployment-cli)
+
+[![🎳 Tester](https://github.com/Guts/qgis-deployment-cli/actions/workflows/tests.yml/badge.svg)](https://github.com/Guts/qgis-deployment-cli/actions/workflows/tests.yml)
+[![codecov](https://codecov.io/gh/Guts/qgis-deployment-cli/branch/main/graph/badge.svg?token=ZHGRNMA7TV)](https://codecov.io/gh/Guts/qgis-deployment-cli)
+[![📦 Build & 🚀 Release](https://github.com/Guts/qgis-deployment-cli/actions/workflows/build_release.yml/badge.svg?branch=main)](https://github.com/Guts/qgis-deployment-cli/actions/workflows/build_release.yml)
+
+[![PyPi version badge](https://badgen.net/pypi/v/qgis-deployment-toolbelt)](https://pypi.org/project/qgis-deployment-toolbelt/)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/qgis-deployment-toolbelt)](https://pypi.org/project/qgis-deployment-toolbelt/)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/qgis-deployment-toolbelt)](https://pypi.org/project/qgis-deployment-toolbelt/)
+
+Cross-platform (but Windows focused) CLI to perform deployment operations related to QGIS: profiles, plugins, etc.
+
+## Try it quickly
+
+Using Python and the officiel package installer `pip`:
+
+```sh
+pip install qgis-deployment-toolbelt
+qdt -s https://github.com/Guts/qgis-deployment-cli/raw/main/examples/scenarios/demo-scenario.qdt.yml
+```
+
+Or using a pre-built executable (downloadable [through releases assets](https://github.com/Guts/qgis-deployment-cli/releases/latest)), for example on Windows:
+
+```powershell
+QGISDeploymentToolbelt_0-27-0_Windows.exe -s https://github.com/Guts/qgis-deployment-cli/raw/main/examples/scenarios/demo-scenario.qdt.yml
+```
+
+Look for new icons in start menu or desktop!
+
+**Interested**? For further details, [read the documentation](https://guts.github.io/qgis-deployment-cli/) :books:.
+
+## Contribute
+
+Read the [contribution guidelines](CONTRIBUTING.md) and the documentation.
