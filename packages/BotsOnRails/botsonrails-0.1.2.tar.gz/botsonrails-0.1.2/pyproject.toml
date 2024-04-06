@@ -1,0 +1,96 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "BotsOnRails"
+dynamic = ["version"]
+description = 'BotsOnRails makes it easy to write LLM-controlled programs without outsourcing all of the logic and decisions to stochastic models. It facilitates the seamless integration of function-based nodes into an execution tree, enabling conditional and sequential task execution tailored to complex, resumable processing flows.'
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "JSv4", email = "scrudato@umich.edu" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+  "pydantic==2.6.*",
+  "graphviz==0.20.*",
+  "networkx==3.2.*",
+  "matplotlib==3.8.*",
+  "pydot>=2",
+  "tk"
+]
+
+[project.urls]
+Documentation = "https://github.com/JSv4/BotsOnRails#readme"
+Issues = "https://github.com/JSv4/BotsOnRails/issues"
+Source = "https://github.com/JSv4/BotsOnRails"
+
+[tool.hatch.version]
+path = "BotsOnRails/__about__.py"
+
+[tool.hatch.envs.default]
+dependencies = [
+  "coverage[toml]>=6.5",
+  "pytest",
+  "pytest-cov>=4"
+]
+[tool.hatch.envs.default.scripts]
+test = "pytest {args:tests}"
+test-cov = "pytest --cov-report xml:coverage.xml --cov=BotsOnRails tests/ {args:tests}"
+cov-report = [
+  "- coverage combine",
+  "coverage report",
+]
+cov = [
+  "test-cov",
+  "cov-report",
+]
+
+[[tool.hatch.envs.all.matrix]]
+python = ["3.9", "3.10", "3.11", "3.12"]
+
+[tool.hatch.envs.types]
+dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:BotsOnRails tests}"
+
+[tool.hatch.envs.docs]
+dependencies=[
+  "mkdocs"
+]
+[tool.hatch.envs.docs.scripts]
+serve = "mkdocs serve"
+deploy = "mkdocs gh-deploy"
+
+[tool.coverage.run]
+source_pkgs = ["BotsOnRails", "tests"]
+branch = true
+parallel = true
+omit = [
+  "BotsOnRails/__about__.py",
+]
+
+[tool.coverage.paths]
+BotsOnRails = ["BotsOnRails", "*/BotsOnRails/BotsOnRails"]
+tests = ["tests", "*/BotsOnRails/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
