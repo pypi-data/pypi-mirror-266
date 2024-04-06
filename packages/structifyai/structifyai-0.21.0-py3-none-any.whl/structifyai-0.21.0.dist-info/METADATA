@@ -1,0 +1,51 @@
+Metadata-Version: 2.1
+Name: structifyai
+Version: 0.21.0
+Summary: Microsoft Structify Client Library for Python
+Home-page: UNKNOWN
+Author: Microsoft Corporation
+License: MIT License
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: corehttp[requests]
+Requires-Dist: isodate (<1.0.0,>=0.6.1)
+
+# Structify
+[Screenshot](assets/logo.png)
+
+## Getting started
+
+### Installating the package
+
+```bash
+pip install structify.ai
+```
+
+```python
+# First, define the schema of your dataset as a pydantic model
+class Person(BaseModel):
+    name: str
+    job_title: str
+    company: str
+
+# Next, create a dataset with that schema
+structify.dataset.create(name = "my_network", tables = [Person.schema()])
+
+# Then, create an agent to index information from defined sources for your dataset
+structify.agents.create(name = "my_network", source = [Source.Internet(websites = ["linkedin.com"]), Source.Document(path = "contact_cards/*")])
+
+# Finally, let our agents structify those sources into a dataset for you
+structify.it("my_network")
+```
+
