@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "kite_connect_lite"
+version = "0.0.2"
+description = "A user-friendly wrapper for the Kite Connect library"
+authors = ["AST-LW <walkthroughfrom2020@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+kiteconnect = "^5.0.1"
+pydantic = "^2.6.4"
+pandas = "^2.2.1"
+python-dotenv = "^1.0.1"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.3.0"
+pytest = "^8.1.1"
+
+# [[tool.poetry.source]]
+# name = "pypi-test"
+# url = "https://test.pypi.org/legacy/"
+# priority = "primary"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
