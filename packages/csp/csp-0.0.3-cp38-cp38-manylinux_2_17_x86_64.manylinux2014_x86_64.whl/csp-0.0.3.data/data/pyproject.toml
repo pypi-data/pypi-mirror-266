@@ -1,0 +1,137 @@
+[build-system]
+requires = [
+    "cmake",
+    "oldest-supported-numpy",
+    "pyarrow>=7.0.0",
+    "ruamel.yaml",
+    "scikit-build",
+    "setuptools>=69",
+]
+build-backend="setuptools.build_meta"
+
+[project]
+name = "csp"
+authors = [{name = "the csp authors", email = "CSPOpenSource@point72.com"}]
+description="csp is a high performance reactive stream processing library, written in C++ and Python"
+readme = "README.md"
+version = "0.0.3"
+requires-python = ">=3.8"
+
+dependencies = [
+    "backports.zoneinfo; python_version<'3.9'",
+    "numpy",
+    "packaging",
+    "pandas",
+    "psutil",
+    "pyarrow>=7.0.0",
+    "pytz",
+    "ruamel.yaml",
+    "sqlalchemy",
+]
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+
+
+[project.license]
+file = "LICENSE"
+
+[project.urls]
+Repository = "https://github.com/point72/csp"
+Homepage = "https://github.com/Point72/csp"
+Documentation = "https://github.com/Point72/csp/wiki"
+Tracker = "https://github.com/point72/csp/issues"
+
+[project.optional-dependencies]
+develop = [
+    "bump2version>=1.0.0",
+    "build",
+    "graphviz",
+    "httpx>=0.20,<1",
+    "isort>=5,<6",
+    "ruamel.yaml",
+    "ruff>=0.3,<0.4",
+    "mdformat",
+    "codespell",
+    "scikit-build",
+    "twine",
+    "wheel",
+    # Test dependencies
+    "polars",
+    "psutil",
+    "pytest",
+    "pytest-asyncio",
+    "pytest-cov",
+    "pytest-sugar",
+    "sqlalchemy",
+    "threadpoolctl",
+    "tornado",
+    # Extras
+    "requests",
+    "slack-sdk>=3",
+]
+symphony = [
+    "requests",
+]
+slack = [
+    "slack-sdk>=3",
+]
+
+[tool.check-manifest]
+ignore = []
+
+[tool.cibuildwheel]
+build = "cp38-* cp39-* cp310-* cp311-*"
+test-command = "echo 'TODO'"
+test-requires = [
+    "pytest",
+    "pytest-cov",
+    "pytest-sugar",
+    "pytest-xdist",
+]
+
+[tool.cibuildwheel.linux]
+before-all ="make dependencies-fedora"
+environment = {CSP_MANYLINUX="ON"}
+repair-wheel-command = "auditwheel -v show {wheel} && LD_LIBRARY_PATH=/project/csp/lib auditwheel -v repair -w {dest_dir} {wheel}"
+skip = "*i686 musllinux*"
+
+[tool.cibuildwheel.macos]
+before-all ="make dependencies-mac"
+archs = "x86_64"  # NOTE: we use gcc and we cannot cross compile for now
+environment = {}
+
+[tool.cibuildwheel.windows]
+archs = "AMD64"
+skip = "*win32 *arm_64"
+
+[tool.isort]
+combine_as_imports = true
+include_trailing_comma = true
+line_length = 120
+profile = "black"
+
+default_section = "THIRDPARTY"
+sections = "FUTURE,THIRDPARTY,FIRSTPARTY,LOCALFOLDER"
+
+known_first_party = "csp"
+
+[tool.pytest.ini_options]
+asyncio_mode = "strict"
+testpaths = "csp/tests"
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401", "F403"]
+"csp/impl/__*.py" = ["F401"]
+"csp/tests/*.py" = ["F401", "F403", "F811", "F821", "F841", "F842", "E731", "E741"]
