@@ -1,0 +1,4 @@
+Locals
+=======
+
+.. tableofcontents::

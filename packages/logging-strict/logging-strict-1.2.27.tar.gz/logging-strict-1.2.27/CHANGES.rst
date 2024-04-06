@@ -1,0 +1,372 @@
+.. this will be appended to README.rst
+
+Changelog
+=========
+
+..
+
+   Feature request
+   .................
+
+   - Run coverage, upload results, and display badge
+
+     https://github.com/pytest-dev/pytest/blob/main/.github/workflows/test.yml
+
+   - Close stale issues after 14 days
+
+   https://github.com/pytest-dev/pytest/blob/main/.github/workflows/stale.yml
+
+   - Gracefully handle sigpipe error around validate entrypoint
+
+     https://github.com/pytest-dev/pytest/blob/main/src/_pytest/config/__init__.py#L190
+
+   Known regressions
+   ..................
+
+   - strictyaml.scalar.Time does not exist. So field asTime can't be supported
+   - strictyaml has no automated tests
+   - strictyaml has no typing hint stubs. ignore_missing_imports
+
+   - ci/kit.yml in sdist Set output tag will be branch name, not tag name see ci/release.yml
+
+   Commit items for NEXT VERSION
+   ..............................
+
+.. scriv-start-here
+
+.. _changes_1-2-27:
+
+Version 1.2.27 — 2024-04-05
+---------------------------
+
+- feat: table of contents (toc) seperated from Sphinx rst files
+- docs: migrate sphinxcontrib-fulltoc --> sphinx_external_toc
+- docs: in toc, link to license. Shows complete license
+- docs: in toc, link to github and pypi.org
+
+.. _changes_1-2-26:
+
+Version 1.2.26 — 2024-04-04
+---------------------------
+
+- style: minimize usage of typing.Optional and typing.Union
+- docs: favor intersphinx_mapping over extlinks. Minimize usage of extlinks
+- docs: automodule in use, so module directive create a duplicate. Remove it
+- docs: minimize/remove usage of external:[package]+ref:
+
+.. _changes_1-2-25:
+
+Version 1.2.25 — 2024-03-31
+---------------------------
+
+- docs(conf.py): intersphinx_mapping set a base url. In inv, paths become relative
+- style: black decides add empty line between module header and imports
+- chore(pre-commit): update dependency versions
+- test: one unittest class name not CamelCase
+
+.. _changes_1-2-24:
+
+Version 1.2.24 — 2024-03-09
+---------------------------
+
+- docs: replace references to logging.config.handlers with logging.handlers
+
+.. _changes_1-2-23:
+
+Version 1.2.23 — 2024-03-09
+---------------------------
+
+- fix(setup.py): setuptools-scm configuration use setuptools-scm builtin handlers
+- docs(setup.py): setuptools-scm docs are sparse. Explain as if to a six year old
+
+.. _changes_1-2-22:
+
+Version 1.2.22 — 2024-03-09
+---------------------------
+
+- docs(README.rst): Use raw.githubusercontent.com rather than github.com urls
+- fix(README.rst): on rst to epub convert, github.com url showed page, not image
+
+.. _changes_1-2-21:
+
+Version 1.2.21 — 2024-03-02
+---------------------------
+
+- docs: resize and clean up validation animation gif
+
+.. _changes_1-2-20:
+
+Version 1.2.20 — 2024-03-02
+---------------------------
+
+- docs: add VHS tape. Demonstrate validation animated gif
+
+.. _changes_1-2-19:
+
+Version 1.2.19 — 2024-03-01
+---------------------------
+
+- docs: license badge not resolving. Change to github badge
+
+.. _changes_1-2-18:
+
+Version 1.2.18 — 2024-03-01
+---------------------------
+
+- docs(README.rst): a badge image url invalid tox -e docs fail
+
+.. _changes_1-2-17:
+
+Version 1.2.17 — 2024-03-01
+---------------------------
+
+- docs(README.rst): add badges
+
+.. _changes_1-2-16:
+
+Version 1.2.16 — 2024-03-01
+---------------------------
+
+- chore(setup.py): in clean_scheme stop prepending +clean causes readthedocs to fail
+- chore(readthedocs): build html and pdf
+
+.. _changes_1-2-15:
+
+Version 1.2.15 — 2024-03-01
+---------------------------
+
+- chore(release.yml): jobs can be rerun, protect against publish duplicates
+- chore(PyPi): server not configured with environment name
+
+.. _changes_1-2-14:
+
+Version 1.2.14 — 2024-03-01
+---------------------------
+
+- chore(TestPyPi): require tagged version, cannot use PEP 440 local versions
+- chore(TestPyPi): server not configured with environment name
+
+.. _changes_1-2-14:
+
+Version 1.2.14 — 2024-02-29
+---------------------------
+
+- chore(release.yml): separate build from publish and release
+- chore(release.yml): run on push, not create
+- chore(release.yml): on push publish to test.pypi
+- chore(release.yml): on tagged publish to pypi and github releases
+- chore(release.yml): use node20 not node16
+
+.. _changes_1-2-13:
+
+Version 1.2.13 — 2024-02-29
+---------------------------
+
+- chore(release.yml): configure permissions id-token write
+- chore(release.yml): configure environment for pypi
+- chore(release.yml): if condition to only run tagged version
+
+.. _changes_1-2-12:
+
+Version 1.2.12 — 2024-02-29
+---------------------------
+
+- chore: actions/checkout with fetch-depth 0 gets branches and tags
+- chore(release.yml): Publish package using pypa/gh-action-pypi-publish@release/v1
+
+.. _changes_1-2-11:
+
+Version 1.2.11 — 2024-02-28
+---------------------------
+
+- chore(ci): in release from on push --> on create tag
+- chore(ci): in release fetch tags then get latest commit tag
+- chore(ci): in codeql Initialize CodeQL with -> config -> paths and paths-ignore
+- chore(ci): in codeql Initialize CodeQL with -> config -> paths folder ok file not ok
+
+.. _changes_1-2-10:
+
+Version 1.2.10 — 2024-02-28
+---------------------------
+
+- chore(ci): in testsuite do not download artifacts
+- chore(ci): in release get tag name, not branch name. Prevent build create dev wheel
+- chore(ci): in codeql limit to src folder tree. Include igor.py and ci/session.py
+- chore(ci): in codeql remove from matrix javascript
+
+.. _changes_1-2-9:
+
+Version 1.2.9 — 2024-02-28
+--------------------------
+
+- test: tests maybe compiled before run. Cached and non-cached paths' differ
+- chore(tox.ini): In lint, remove call, twine check dist/*
+- chore: In testsuite and quality, remove prepare which uploaded dist/
+- style: fix github repo url in requirements/*.in and docs/*.in
+
+.. _changes_1-2-8:
+
+Version 1.2.8 — 2024-02-27
+--------------------------
+
+- fix: build not occurring try to remove igor.py quietly call
+
+.. _changes_1-2-7:
+
+Version 1.2.7 — 2024-02-27
+--------------------------
+
+- chore: actions/download-artifact@v3 and actions/upload-artifact@v3 depreciated
+- chore: be verbose listing tarballs and wheels
+
+
+.. _changes_1-2-6:
+
+Version 1.2.6 — 2024-02-27
+--------------------------
+
+- chore: move pre-commit to a tox.ini testenv
+
+.. _changes_1-2-5:
+
+Version 1.2.5 — 2024-02-27
+--------------------------
+
+- chore: gh workflow prepare dist/*
+
+.. _changes_1-2-4:
+
+Version 1.2.4 — 2024-02-27
+--------------------------
+
+- chore(tox.ini): try usedevelop off
+- build(pyproject.toml): build as build environment dependency
+
+.. _changes_1-2-3:
+
+Version 1.2.3 — 2024-02-27
+--------------------------
+
+- chore(tox.ini): try building tagged version
+- fix(release.yml): indention issue
+
+.. _changes_1-2-2:
+
+Version 1.2.2 — 2024-02-27
+--------------------------
+
+- fix(tox.ini): lint failing. In testenv build and install package
+- chore(ci): release and kit were building develop wheels. Specify tag
+
+.. _changes_1-2-1:
+
+Version 1.2.1 — 2024-02-27
+--------------------------
+
+- chore(tox.ini): lint uses twine. Include dependency in dev.in
+- chore(tox.ini): mypy needs requirements/mypy.pip
+- chore(tox.ini): docs Sphinx warnings removed
+- docs: sphinx warnings remove all
+- fix(Makefile): REPO_OWNER repository name contains a hyphen
+- chore(ci): trigger build kits and download release artifacts
+- chore(gh workflows): remove attempt to support macos and windows
+- chore(gh workflows): remove python-version pypy-3.8
+
+.. _changes_1-2-0:
+
+Version 1.2.0 — 2024-02-26
+--------------------------
+
+- feat: util.pep518_read for reading pyproject.toml sections
+- docs(fix): util.pep518_read missing dependency of docs/conf.py
+- fix: remove, as much as possible, mentions of package asz beside pyproject.toml sections
+- chore(tox.ini): add test target
+- chore(tox.ini): suppress noisy package build output
+- chore(igor.py): add function do_quietly. suppress a commands noisy output
+- docs: add scriv as a dependency
+- docs: add logo logging-strict-logo.svg Cleaning svg breaks it. Remove systray-udisk2 logo
+- docs: create sphinx object inventories to minimize sphinx build warnings
+- docs: query sphinx object inventory using sphobjinv rather than sphinx.ext.intersphinx
+- chore(ci): add .readthedocs.yml config file
+- chore: add tox/ and cheats.txt to .gitignore
+- chore(ci): add many .github/workflows
+- chore(ci): add Makefile ci targets. add clean and sterile targets
+
+.. _changes_1-1-0:
+
+Version 1.1.0 — 2024-02-23
+--------------------------
+
+- docs: sphinx docs. user and code manual
+- docs: Versioning explanation and howto
+- feat: add tech_niques.stream_capture.CaptureOutput
+- refactor: remove constants.RICH_OVERFLOW_OPTION_DEFAULT
+- chore(igor.py): kind can now be a version str
+
+.. _changes_1-0-1:
+
+Version 1.0.1 — 2024-02-20
+------------------------------------------------
+
+- fix: retire public API function, setup_ui
+- docs: Example code reflect correct API function calls
+
+.. _changes_1-0-0:
+
+Version 1.0.0 — 2024-02-20
+------------------------------------------------
+
+- style: isort and whitespace removal
+- docs: correct module header dotted path
+- docs: module exports update
+- feat!: API contains public methods, enum, and exceptions
+- docs: public API
+- docs: example code for both UI and worker
+- fix!: retire public API function, setup_worker
+- fix: split setup_worker into two seperate steps. extract+validate and setup
+
+.. _changes_0-1-1:
+
+Version 0.1.1 — 2024-02-19
+------------------------------------------------
+
+In unittests, track down export of `*.worker.logging.config.yaml` to xdg user data dir,
+rather than to a temp folder. To test, monitor ~/.local/share/[prog name] unlink
+anything in that folder. Run, make coverage. The folder should remain empty
+
+- test: prevent/redirect export of *.worker.logging.config.yaml to temp folder
+
+.. _changes_0-1-0:
+
+Version 0.1.0 — 2024-02-19
+------------------------------------------------
+
+- chore(setuptools-scm): semantic versioning. See constants.py, _version.py, and igor.py
+
+- chore(isort): support extensions py and pyi
+
+- chore(pre-commit): local repo bypasses hook. Once published local repo config unnecessary
+
+- feat(pre-commit): hook validate-logging-strict-yaml
+
+- feat: within a folder tree, use a pattern to extract package data files
+
+- feat: validate logging.config yaml. Entrypoint logging_strict_validate_yaml
+
+- feat(tech_niques): add context_locals
+
+- feat(tech_niques): add logging_capture
+
+- feat(tech_niques): add logging_redirect
+
+- feat(tech_niques): add coverage_misbehaves. Detect if runner is coverage
+
+- feat(tech_niques): add inspect a class interface
+
+- feat: add two logging.config yaml files. One for app. One for worker
+
+- test: add two dummy logging.config yaml files. One for app. One for worker
+
+- feat(appdirs): package appdirs support. Chooses correct xdg folder
+
+.. scriv-end-here
