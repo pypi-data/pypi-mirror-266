@@ -1,0 +1,115 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Run every Monday at 6am UTC
+    - cron: '0 6 * * 1'
+  push:
+    branches:
+      - main
+      - '*.x'
+    tags:
+      - "*"
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      requirements-hash: ${{ steps.requirements-hash.outputs.hash }}
+    steps:
+      - uses: actions/checkout@v3
+      - id: requirements-hash
+        run: echo "::set-output name=hash::${{ hashFiles('**/pyproject.toml', '**/setup.*', 'tox.ini') }}"
+
+  core:
+    needs: [setup]
+    uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@v1
+    with:
+      cache-path: ~/.cache/pip
+      cache-key: pip-${{ needs.setup.outputs.requirements-hash }}
+      cache-restore-keys: |
+        pip-
+      # Any env name which does not start with `pyXY` will use this Python version.
+      default_python: '3.9'
+      envs: |
+        - linux: py39-parallel-cov
+        - linux: py311-test-devdeps-parallel-cov
+        - linux: py312-test-predeps-parallel-cov
+      coverage: codecov
+
+  asdf-schemas:
+    needs: [setup]
+    uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@v1
+    with:
+      cache-path: ~/.cache/pip
+      cache-key: pip-${{ needs.setup.outputs.requirements-hash }}
+      cache-restore-keys: |
+        pip-
+      default_python: '3.10'
+      envs: |
+        - linux: asdf
+        - linux: asdf-standard
+        - linux: asdf-transform-schemas
+        - linux: asdf-coordinates-schemas
+
+  test:
+    needs: [core, asdf-schemas]
+    uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@v1
+    with:
+      cache-path: ~/.cache/pip
+      cache-key: pip-${{ needs.setup.outputs.requirements-hash }}
+      cache-restore-keys: |
+        pip-
+      # Any env name which does not start with `pyXY` will use this Python version.
+      default_python: '3.10'
+      envs: |
+        - linux: py310-test-parallel
+        - linux: py311-test-parallel
+        - linux: py312-test-parallel
+        - macos: py311-test-parallel
+        - windows: py311-test-parallel
+
+  dev:
+    needs: [core, asdf-schemas]
+    uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@v1
+    with:
+      cache-path: ~/.cache/pip
+      cache-key: pip-${{ needs.setup.outputs.requirements-hash }}
+      cache-restore-keys: |
+        pip-
+      # Any env name which does not start with `pyXY` will use this Python version.
+      default_python: '3.9'
+      envs: |
+        - linux: py310-test-devdeps-parallel
+        - linux: py311-test-devdeps-parallel
+        - linux: py311-test-devdeps-numpydev-parallel
+
+  oldest:
+    needs: [core, asdf-schemas]
+    uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@v1
+    with:
+      cache-path: ~/.cache/pip
+      cache-key: pip-${{ needs.setup.outputs.requirements-hash }}
+      cache-restore-keys: |
+        pip-
+      # Any env name which does not start with `pyXY` will use this Python version.
+      default_python: '3.9'
+      envs: |
+        - linux: py39-test-oldestdep-parallels-cov
+      coverage: codecov
+
+  wheel_building:
+    permissions:
+      contents: none
+    uses: OpenAstronomy/github-actions-workflows/.github/workflows/publish_pure_python.yml@v1
+    if: (github.event_name == 'push' || github.event_name == 'pull_request')
+    with:
+      upload_to_pypi: false
+      upload_to_anaconda: false
+      test_extras: test
+      test_command: pytest --pyargs asdf_astropy
