@@ -1,0 +1,59 @@
+[build-system]
+requires = ["flit_core >=2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "aiosqlite-black"
+readme = "README.rst"
+license = {file="LICENSE"}
+dynamic = ["version", "description"]
+authors = [
+    {name="bsxcs + Amethyst Reese", email="amy@n7.gg"},
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Framework :: AsyncIO",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Software Development :: Libraries",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "typing_extensions >= 4.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "attribution==1.7.0",
+    "black==24.2.0",
+    "coverage[toml]==7.4.1",
+    "flake8==7.0.0",
+    "flake8-bugbear==24.2.6",
+    "flit==3.9.0",
+    "mypy==1.8.0",
+    "ufmt==2.3.0",
+    "usort==1.0.8.post1",
+]
+docs = [
+    "sphinx==7.2.6",
+    "sphinx-mdinclude==0.5.3",
+]
+
+[project.urls]
+Documentation = "https://aiosqlite.omnilib.dev"
+Github = "https://github.com/eyMarv/aiosqlite-black"
+
+[tool.flit.sdist]
+exclude = [
+    ".github/",
+]
+
+[tool.mypy]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "aiosqlite.tests.perf"
+follow_imports = "silent"
+
+[tool.flit.module]
+name = "aiosqlite"
