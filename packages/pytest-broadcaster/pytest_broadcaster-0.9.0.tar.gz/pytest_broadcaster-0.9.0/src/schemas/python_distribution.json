@@ -1,0 +1,68 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$id": "python_distribution.json",
+    "title": "Python Distribution",
+    "description": "Metadata about the python interpreter being used to run the tests.",
+    "required": [
+        "version",
+        "processor",
+        "packages",
+        "platform"
+    ],
+    "properties": {
+        "version": {
+            "type": "object",
+            "description": "The version of the python interpreter being used to run the tests.",
+            "required": [
+                "major",
+                "minor",
+                "micro",
+                "releaselevel"
+            ],
+            "properties": {
+                "major": {
+                    "type": "integer",
+                    "description": "The major version of the python interpreter."
+                },
+                "minor": {
+                    "type": "integer",
+                    "description": "The minor version of the python interpreter."
+                },
+                "micro": {
+                    "type": "integer",
+                    "description": "The micro version of the python interpreter."
+                },
+                "releaselevel": {
+                    "type": "string",
+                    "description": "The release level of the python interpreter.",
+                    "enum": ["alpha", "beta", "candidate", "final"]
+                }
+            }
+        },
+        "processor": {
+            "type": "string",
+            "description": "The processor architecture of the python interpreter."
+        },
+        "platform": {
+            "enum": ["linux", "darwin", "java", "windows", "unknown"],
+            "description": "The platform of the python interpreter."
+        },
+        "packages": {
+            "type": "array",
+            "description": "The packages installed in the python interpreter.",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "The name of the package."
+                    },
+                    "version": {
+                        "type": "string",
+                        "description": "The version of the package."
+                    }
+                }
+            }
+        }
+    }
+}

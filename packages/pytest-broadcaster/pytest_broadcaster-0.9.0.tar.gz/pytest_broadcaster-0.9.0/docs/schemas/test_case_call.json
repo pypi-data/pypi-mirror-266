@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://charbonnierg.github.io/pytest-broadcaster/latest/schemas/test_case_call.json",
+  "title": "Test Case Call",
+  "description": "Event emitted when a call step has been executed in a test case.",
+  "type": "object",
+  "required": [
+    "event",
+    "node_id",
+    "session_id",
+    "start_timestamp",
+    "stop_timestamp",
+    "duration",
+    "outcome"
+  ],
+  "properties": {
+    "event": {
+      "const": "case_call",
+      "description": "The event type. Always set to 'case_call'."
+    },
+    "node_id": {
+      "type": "string",
+      "description": "The node ID of the test case."
+    },
+    "session_id": {
+      "type": "string",
+      "description": "The unique if of this test session used to aggregate events together."
+    },
+    "start_timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Start time of the call step in ISO 8601 format."
+    },
+    "stop_timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Stop time of the call step in ISO 8601 format."
+    },
+    "duration": {
+      "type": "number",
+      "description": "Duration of the call step in seconds."
+    },
+    "outcome": {
+      "$ref": "https://charbonnierg.github.io/pytest-broadcaster/latest/schemas/outcome.json",
+      "description": "Outcome of the call step."
+    },
+    "error": {
+      "$ref": "https://charbonnierg.github.io/pytest-broadcaster/latest/schemas/test_case_error.json",
+      "description": "Error details if the call step failed."
+    }
+  }
+}

@@ -1,0 +1,7 @@
+* [Home](index.md)
+* [Usage](./usage/)
+* [Why ?](./why.md)
+* [JSON Schemas](./schemas/)
+* [Reference](./reference/)
+* [Recipes](./recipes/)
+* [License](./LICENSE.md)

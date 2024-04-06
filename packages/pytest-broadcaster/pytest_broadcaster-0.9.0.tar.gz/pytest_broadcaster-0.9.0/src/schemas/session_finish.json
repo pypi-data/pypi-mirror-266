@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "session_finish.json",
+  "title": "Session Finish",
+  "description": "Event emitted when the session is finished.",
+  "type": "object",
+  "required": [
+    "event",
+    "session_id",
+    "timestamp",
+    "exit_status"
+  ],
+  "properties": {
+    "event": {
+      "const": "session_finish",
+      "description": "The event type. Always set to 'session_finish'."
+    },
+    "session_id": {
+      "type": "string",
+      "description": "The unique if of this test session used to aggregate events together."
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The time when the session finished in ISO 8601 format."
+    },
+    "exit_status": {
+      "type": "integer",
+      "description": "The status which pytest will return to the system. 0 means success, 1 means test failure, anything else is an error."
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$id": "project.json",
+    "title": "Project",
+    "description": "Metadata about the project for which tests are run.",
+    "required": [
+        "name"
+    ],
+    "properties": {
+        "name": {
+            "type": "string",
+            "description": "The name of the project. Project name is detected from pyproject.toml file if the file exits."
+        },
+        "version": {
+            "type": "string",
+            "description": "The version of the project. Project version is detected using importlib.metadata if pyproject.toml file if the file exits."
+        },
+        "repository_url": {
+            "type": "string",
+            "description": "The URL of the project's repository.  Repositor URL is detected from pyproject.toml file if the file exits. The fields 'repository' and 'source' are looked for (case-insensitive) in respective order, and the first one found is used."
+        }
+    }
+}

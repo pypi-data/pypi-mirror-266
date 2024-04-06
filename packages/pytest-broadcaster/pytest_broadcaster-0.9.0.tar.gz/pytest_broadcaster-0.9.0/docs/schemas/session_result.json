@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://charbonnierg.github.io/pytest-broadcaster/latest/schemas/session_result.json",
+  "title": "Session Result",
+  "description": "Result of a pytest session, including collect reports and test reports.",
+  "type": "object",
+  "required": [
+    "session_id",
+    "start_timestamp",
+    "stop_timestamp",
+    "python",
+    "pytest_version",
+    "plugin_version",
+    "exit_status",
+    "warnings",
+    "errors",
+    "collect_reports",
+    "test_reports"
+  ],
+  "properties": {
+    "session_id": {
+      "type": "string",
+      "description": "The unique if of this test session."
+    },
+    "start_timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The start time of the pytest session in ISO 8601 format."
+    },
+    "stop_timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The stop time of the pytest session in ISO 8601 format."
+    },
+    "python": {
+      "$ref": "https://charbonnierg.github.io/pytest-broadcaster/latest/schemas/python_distribution.json",
+      "description": "The Python distribution that ran the tests."
+    },
+    "pytest_version": {
+      "type": "string",
+      "description": "The version of pytest that generated the report."
+    },
+    "plugin_version": {
+      "type": "string",
+      "description": "The version of the plugin that generated the report."
+    },
+    "exit_status": {
+      "type": "integer",
+      "description": "The exit status of the pytest run. 0 indicates success, non-zero indicates failure."
+    },
+    "errors": {
+      "type": "array",
+      "description": "Errors generated during the session.",
+      "items": {
+        "$ref": "https://charbonnierg.github.io/pytest-broadcaster/latest/schemas/error_message.json"
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "description": "Warnings generated during the session.",
+      "items": {
+        "$ref": "https://charbonnierg.github.io/pytest-broadcaster/latest/schemas/warning_message.json"
+      }
+    },
+    "collect_reports": {
+      "type": "array",
+      "description": "Collect reports generated during the session.",
+      "items": {
+        "$ref": "https://charbonnierg.github.io/pytest-broadcaster/latest/schemas/collect_report.json"
+      }
+    },
+    "test_reports": {
+      "type": "array",
+      "description": "Test reports generated during the session.",
+      "items": {
+        "$ref": "https://charbonnierg.github.io/pytest-broadcaster/latest/schemas/test_case_report.json"
+      }
+    },
+    "project": {
+      "$ref": "https://charbonnierg.github.io/pytest-broadcaster/latest/schemas/project.json",
+      "description": "The project that is being tested."
+    }
+  }
+}
