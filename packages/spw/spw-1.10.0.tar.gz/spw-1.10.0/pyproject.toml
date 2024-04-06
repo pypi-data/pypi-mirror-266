@@ -1,0 +1,29 @@
+[internal]
+created = 2015-09-15
+modified = 2024-04-05
+
+[tool.poetry]
+name = "spw"
+version = "1.10.0"
+description = "store and retrieve passwords securely all while being scriptable!"
+authors = ["drad <sa@adercon.com>"]
+maintainers = ["drad <sa@adercon.com>"]
+license = "GPL-3.0-only"
+readme = "README.md"
+homepage = "https://gitlab.com/drad/spw"
+repository = "https://gitlab.com/drad/spw"
+keywords = ["cli", "encryption", "password", "openbox", "scriptable"]
+
+[tool.poetry.scripts]
+spw = "spw.main:app"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+lmdb = "^1.4.1"
+cryptography = "^42.0.5"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
