@@ -1,0 +1,6 @@
+
+
+WEBRESOURCE = 1
+
+SIDEBAR = 1
+PLAYER = 2
