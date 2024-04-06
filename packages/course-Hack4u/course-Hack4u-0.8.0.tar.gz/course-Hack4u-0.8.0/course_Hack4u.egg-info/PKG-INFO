@@ -1,0 +1,51 @@
+Metadata-Version: 2.1
+Name: course-Hack4u
+Version: 0.8.0
+Summary: Bibliotecas de los cursos actuales de hack4u
+Home-page: https://hack4u.io
+Author: Arc4he
+Description-Content-Type: text/markdown
+
+
+# Courses hack4u Academy Library
+Biblioteca de Python para poder consultar los cursos acutales que existen en la Academia.
+
+# Cursos Disponibles
+- Introducción a Linux [15]
+- Introducción al Hacking [53]
+- Personalisación de Linux [3]
+
+# Instalación:
+Instala el paquete usando 'pip3':
+
+```python3
+pip3 install hack4u
+```
+
+# Uso básico:
+
+## Listar todos los cursos:
+
+```python3
+from hack4u import list_courses
+
+for course in list_courses():
+    print(course)
+```
+
+# Obtener un curso segun su nombre
+
+```python3
+from hack4u import search_name
+
+course = search_name("Introducción a Linux")
+print(course)
+```
+
+# Obtener la suma total de horas entre todos los curos
+
+```python3
+from hack4u import total_time
+
+print(f"[+] La duración total de los curos es de {total_time()} horas.)
+```
