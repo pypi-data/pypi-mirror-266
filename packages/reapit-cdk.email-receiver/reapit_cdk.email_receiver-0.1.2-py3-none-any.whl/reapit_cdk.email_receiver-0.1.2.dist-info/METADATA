@@ -1,0 +1,84 @@
+Metadata-Version: 2.1
+Name: reapit-cdk.email-receiver
+Version: 0.1.2
+Summary: This construct sets up everything necessary to receive email. The emails get stored in a dynamodb table, queryable by recipient. This is designed to be used in end-to-end tests, with the [@reapit-cdk/email-receiver-client](../../libs/email-receiver-client) helper library.
+Home-page: https://github.com/reapit/ts-cdk-constructs/blob/main/packages/constructs/email-receiver
+Author: Josh Balfour<jbalfour@reapit.com>
+License: MIT
+Project-URL: Source, https://github.com/reapit/ts-cdk-constructs.git
+Platform: UNKNOWN
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: JavaScript
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Typing :: Typed
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: OSI Approved
+Requires-Python: ~=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: aws-cdk-lib (<3.0.0,>=2.96.2)
+Requires-Dist: constructs (<11.0.0,>=10.2.70)
+Requires-Dist: jsii (<2.0.0,>=1.94.0)
+Requires-Dist: publication (>=0.0.3)
+Requires-Dist: reapit-cdk.active-ruleset (<0.2.0,>=0.1.2)
+Requires-Dist: typeguard (~=2.13.3)
+
+# @reapit-cdk/email-receiver
+
+![npm version](https://img.shields.io/npm/v/@reapit-cdk/email-receiver)
+![npm downloads](https://img.shields.io/npm/dm/@reapit-cdk/email-receiver)
+![coverage: 99.02%25](https://img.shields.io/badge/coverage-99.02%25-green)
+![Integ Tests: ✔](https://img.shields.io/badge/Integ%20Tests-%E2%9C%94-green)
+
+This construct sets up everything necessary to receive email. The emails get stored in a dynamodb table, queryable by recipient. This is designed to be used in end-to-end tests, with the [@reapit-cdk/email-receiver-client](../../libs/email-receiver-client) helper library.
+
+## Package Installation:
+
+```sh
+yarn add --dev @reapit-cdk/email-receiver
+# or
+npm install @reapit-cdk/email-receiver --save-dev
+```
+
+## Usage
+
+```python
+import { CfnOutput, Stack, App } from 'aws-cdk-lib'
+import { HostedZone } from 'aws-cdk-lib/aws-route53'
+import { EmailReceiver } from '@reapit-cdk/email-receiver'
+
+const app = new App()
+const stack = new Stack(app, 'stack-name', {
+  env: {
+    region: 'us-east-1', // region must be specified
+  },
+})
+
+const hostedZone = new HostedZone(stack, 'hostedZone', {
+  zoneName: 'example.org',
+})
+
+const emailReceiver = new EmailReceiver(stack, 'domain', {
+  hostedZone,
+  // you can optionally override the parent domain
+  // (e.g. your hosted zone is example.org but you want to use dev.example.org)
+  // parentDomain: '',
+  // you can optionally override the subdomain
+  // this defaults to 'email' so the resulting domain will be email.example.org
+  // subdomain: '',
+})
+
+new CfnOutput(stack, 'emailReceiverDomainName', {
+  value: emailReceiver.domainName,
+})
+new CfnOutput(stack, 'emailReceiverTableArn', {
+  value: emailReceiver.table.tableArn,
+})
+```
+
+
