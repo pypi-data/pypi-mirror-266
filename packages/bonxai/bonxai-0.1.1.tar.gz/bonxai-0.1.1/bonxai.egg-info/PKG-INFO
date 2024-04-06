@@ -1,0 +1,56 @@
+Metadata-Version: 2.1
+Name: bonxai
+Version: 0.1.1
+Summary: A Custom Jupyter Widget Library
+Home-page: https://github.com//bonxai
+Author: 
+Author-email: 
+License: BSD 3-Clause License
+Keywords: ipython,widgets,Jupyter,JupyterLab,JupyterLab3
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Development Status :: 4 - Beta
+Classifier: Framework :: IPython
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Framework :: Jupyter
+Classifier: Framework :: Jupyter :: JupyterLab
+Classifier: Framework :: Jupyter :: JupyterLab :: 3
+Classifier: Framework :: Jupyter :: JupyterLab :: Extensions
+Classifier: Framework :: Jupyter :: JupyterLab :: Extensions :: Prebuilt
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: ipywidgets<9,>=7.6.0
+
+# bonxai
+
+A Custom Jupyter Widget Library
+
+## Installation
+
+To install use pip:
+
+    $ pip install bonxai
+
+For a development installation (requires [Node.js](https://nodejs.org) and [Yarn version 1](https://classic.yarnpkg.com/)),
+
+    $ git clone https://github.com//bonxai.git
+    $ cd bonxai
+    $ pip install -e .
+    $ jupyter nbextension install --py --symlink --overwrite --sys-prefix bonxai
+    $ jupyter nbextension enable --py --sys-prefix bonxai
+
+When actively developing your extension for JupyterLab, run the command:
+
+    $ jupyter labextension develop --overwrite bonxai
+
+Then you need to rebuild the JS when you make a code change:
+
+    $ cd js
+    $ yarn run build
+
+You then need to refresh the JupyterLab page when your javascript changes.
