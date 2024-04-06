@@ -1,0 +1,44 @@
+[tool.poetry]
+name = "agentql"
+version = "0.4.1"
+description = "Tiny Fish AgentQL Python Client"
+authors = []
+license = "MIT"
+readme = "PACKAGE_README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+playwright = "^1"
+requests = "^2"
+pydantic = "^2"
+httpx = "^0.26"
+pytest-asyncio = "^0.23"
+aiofiles = "^23"
+tf-playwright-stealth = "*"
+
+[tool.poetry.group.dev.dependencies]
+black = "*"
+
+
+[tool.poetry.group.test.dependencies]
+pytest = "*"
+pytest-time = "*"
+pylint = "*"
+mockito = "*"
+pytest_env = "*"
+pytest-asyncio = "*"
+html-to-json = "*"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["test"]
+
+[tool.pytest_env]
+AGENTQL_API_KEY = "test"
+
+[tool.black]
+line-length = 100
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
