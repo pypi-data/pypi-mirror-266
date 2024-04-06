@@ -1,0 +1,64 @@
+[tool.poetry]
+name = "trabzonspor"
+version = "0.3.61"
+description = "trabzonspor cli!"
+authors = ["Omer Faruk GUL <ofaruk89@gmail.com>"]
+license = "MIT"
+repository = "https://github.com/ofaruk89/trabzonspor"
+homepage = "https://github.com/ofaruk89/trabzonspor"
+readme = "README.md"
+keywords = ["trabzonspor"]
+classifiers = [
+    "Environment :: Console",
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.4",
+    "Programming Language :: Python :: 3.5",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+include = ["LICENCE"]
+packages = [
+    { include = "trabzonspor" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+requests = "^2.31.0"
+rich = "^13.7.0"
+beautifulsoup4 = "^4.12.3"
+
+[tool.poetry.group.dev.dependencies]
+portray = "^1.8.0"
+
+[tool.poetry.scripts]
+trabzonspor = "trabzonspor.cli:main"
+
+[tool.poetry.plugins]
+
+[tool.poetry.plugins."trabzonspor.plugin"]
+"trabzonspor" = "trabzonspor.cli:main"
+
+[tool.portray.mkdocs]
+site_name = "Trabzonspor"
+
+[tool.portray.mkdocs.theme]
+name = "material"
+palette = { primary = "red", accent = "yellow" }
+
+[tool.portray.mkdocs.extra]
+social = [
+    { icon = "fontawesome/brands/github", link = "https://github.com/ofaruk89" },
+]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
