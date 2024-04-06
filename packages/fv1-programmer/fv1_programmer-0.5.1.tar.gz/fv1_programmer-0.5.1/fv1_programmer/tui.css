@@ -1,0 +1,123 @@
+*  {
+    transition: background 500ms in_out_cubic, color 500ms in_out_cubic;
+}
+
+Screen {
+    layers: base overlay top;
+    overflow: hidden;
+}
+
+Footer {
+    layer: top;
+}
+
+Sidebar {
+    width: 40;
+    background: $panel;
+    transition: offset 500ms in_out_cubic;
+    layer: overlay;
+
+}
+
+/* Sidebar:focus-within {
+    offset: 0 0 !important;
+} */
+
+Sidebar.-hidden {
+    offset-x: -100%;
+}
+
+Sidebar Title {
+    background: $boost;
+    color: $secondary;
+    padding: 2 4;
+    border-right: vkey $background;
+    dock: top;
+    text-align: center;
+    text-style: bold;
+}
+
+OptionSwitch {
+    background: $panel;
+    padding: 1;
+    /* dock: bottom; */
+    height: auto;
+    border-right: vkey $background;
+}
+
+OptionSwitch .label {
+    width: 1fr;
+    padding: 1 2;
+    color: $text-muted;
+}
+
+OptionSwitch Switch {
+    background: $boost;
+    dock: left;
+}
+
+Tooltip {
+    background: $primary;
+    color: auto 90%;
+}
+
+TabbedContent {
+    dock: top;
+    background: $surface;
+}
+
+ContentSwitcher {
+    background: $panel;
+    /* border: round $primary; */
+    width: 100%;
+    height: 1fr;
+    padding: 0;
+}
+
+TabPane {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+FV1ProgramPane {
+    height: 95%;
+    width: 100%;
+    /* border: solid; */
+}
+
+FV1ProgramPane > Markdown {
+    margin: 0 1;
+    padding: 0;
+    height: 100%;
+}
+
+MarkdownFence {
+    max-height: 100%;
+}
+
+#consolelog {
+    background: $panel;
+    color: $text;
+    height: 30vh;
+    dock: bottom;
+    layer: base;
+    border-top: hkey $primary;
+    offset-y: -1;
+    transition: offset 400ms in_out_cubic;
+    padding: 0 1 1 1;
+}
+
+#consolelog.-hidden {
+    offset-y: 100%;
+}
+
+
+#filetree {
+    column-span: 2;
+    content-align: center middle;
+    width: 100%;
+    height: 100%;
+    margin-top: 1;
+    margin-bottom: 1;
+}
