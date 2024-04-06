@@ -1,0 +1,15 @@
+from .resnet import RESNET_CONFIG, RESNET_ENTRYPOINT
+from .swin_transformer import SWIN_CONFIG, SWIN_ENTRYPOINT
+from .vit import VIT_CONFIG, VIT_ENTRYPOINT
+
+###### Registry ######
+MODEL_ENTRYPOINT = {}
+MODEL_ENTRYPOINT.update(RESNET_ENTRYPOINT)
+MODEL_ENTRYPOINT.update(VIT_ENTRYPOINT)  # type: ignore
+MODEL_ENTRYPOINT.update(SWIN_ENTRYPOINT)  # type: ignore
+
+###### Config ######
+MODEL_CONFIG = {}
+MODEL_CONFIG.update(RESNET_CONFIG)
+MODEL_CONFIG.update(VIT_CONFIG)
+MODEL_CONFIG.update(SWIN_CONFIG)
