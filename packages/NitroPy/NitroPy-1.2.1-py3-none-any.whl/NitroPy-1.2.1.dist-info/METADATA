@@ -1,0 +1,152 @@
+Metadata-Version: 2.1
+Name: NitroPy
+Version: 1.2.1
+Summary: A package for interacting with the website, Nitrotype and Nitromath
+Author: Malakai
+Author-email: Almightyslider2@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: cloudscraper
+Requires-Dist: beautifulsoup4
+Requires-Dist: twine
+
+
+
+# NitromathRacer
+
+NitromathRacer is a Python package that allows you to retrieve and display stats of Nitromath racers. It scrapes the Nitromath website to gather racer information.
+
+## Installation
+
+```bash
+pip install NitroPy
+```
+
+> ***Note:*** *All the attributes of NitroType and NitroMath are the same. The only difference being the couple of the datas. Races/Games, team tag, team id, profile views, friend requests, team requests, nitros used, and longest session.*
+## Nitrotype Usage
+
+```python
+from nitrotype import NitrotypeRacer
+nitrotype_racer = NitrotypeRacer("tranq_")
+print(nitrotype_racer.username)
+```
+
+## Nitromath Usage
+
+```python
+from nitromath import NitromathRacer
+nitromath_racer = NitromathRacer("tranq_")
+print(nitromath_racer.username)
+```
+
+This will print out the username for [tranq_](https://www.nitromath.com/racer/tranq_).
+
+You can view all the attributes of the Nitromath Racer class below.
+
+## Nitromath Racer Attributes
+
+Here are the attributes of the Nitromath Racer class:
+
+- `username`: The username of the racer
+- `membership`: Gold or regular membership
+- `display_name`: Current display name of the racer
+- `title`: Title of the racer
+- `experience`: Amount of experience achieved
+- `level`: Current level of the racer
+- `team_id`: Shows the team ID of the racer. If the racer is not in a team, it'll display `None`
+- `looking_for_team`: Returns **True** if racer is looking for a team, else it returns **False**
+- `car_id`: The id of the racer's current car equipped
+- `car_hue_angle`: Hue angle of the car
+- `total_cars`: Amount of cars owned
+- `nitros_total`: Amount of nitros owned by the racer
+- `nitros_used`: Amount of nitros used by the racer
+- `races`: Amount of races the racer has played
+- `longest_session`: Length of the longest session
+- `average_speed`: The racer's average speed
+- `highest_speed`: The racer's highest speed achieved
+- `friend_reqs_allowed`: Returns **True** if racer accepts friend requests, else it returns **False**
+- `current_car_name`: The name of the current car equipped
+- `car_image`: Link of the car's image
+- `profile_views`: Racer's profile views
+- `created`: Racer's account creation time
+- `tag`: Shows the tag of the racer. If the racer isn't in a team, it'll display `None`
+- `tag_color`: Color of the racer's tag. If the racer has no tag equipped, it'll display `None`
+- `nametag_name`: Name of the equipped nametag
+- `nametag_id`: ID of the equipped nametag
+- `nametag_rarity`: Rarity of the equipped nametag
+- `nametag_img`: Image URL of the equipped nametag
+- `trail_name`: Name of the equipped trail
+- `trail_id`: ID of the equipped trail
+- `trail_rarity`: Rarity of the equipped trail
+- `trail_img`: Image URL of the equipped trail
+
+## Nitromath Usage
+- `games`: Amount of games the racer has played
+- `tag`: Shows the team tag of the racer. If the racer isnâ€™t in a team, itâ€™ll display None
+- `team_id`: Shows the team ID of the racer. If the racer is not in a team, itâ€™ll display `None`
+- `profile_views`: Racer's profile views
+- `friend_reqs_allowed`: Returns True if racer accepts friend requests, else it returns False
+- `nitros_used`: Amount of nitros used by the racer
+- `longest_session`: Length of the user's longest session
+
+# Nitrotype News
+
+# Attributes
+- `news_blog_id`: The ID of the blog entry.
+- `news_slug`: The slug of the news post.
+- `news_title`: The title of the news post.
+- `news_created_stamp`: The timestamp when the news post was created.
+- `news_last_modified`: The timestamp when the news post was last modified.
+- `news_written_by`: The author of the news post.
+- `news_short_body`: A short summary or snippet of the news post.
+
+### Example Usage:
+```python
+from nitrotype_package import NitrotypeNews
+
+news_data = NitrotypeNews()
+print(news_data.blog_id)
+```
+
+# Team Data
+
+## Attributes
+> Below are the attributes for both NitroType team and NitroMath
+- `team_id`: The ID of the team.
+- `user_id`: The ID of the team's user.
+- `name`: The name of the team.
+- `min_level`: The minimum level requirement for the team.
+- `min_races`: The minimum number of races required for the team.
+- `min_speed`: The minimum speed required for the team.
+- `other_requirements`: Other requirements specified by the team.
+- `members`: The number of members in the team.
+- `captain_username`: The username of the team captain.
+- `enrollment`: The enrollment status of the team.
+- `profile_views`: The number of profile views for the team.
+- `last_modified`: The timestamp when the team information was last modified.
+- `created_stamp`: The timestamp when the team was created.
+- `username`: The username of the captain.
+- `display_name`: The display name of the captain.
+
+### Example Usage:
+> NitroType usage
+```python
+#Import here
+
+team_data = NitrotypeTeam("SSH")
+print(team_data.captain_username)
+```
+> NitroMath usage
+```python
+#Import here
+
+team_data = NitrotypeMath("SSH")
+print(team_data.captain_username)
+```
+
+Magmal Bot: 
+> **Invite:** [INVITE ME!](https://discord.com/api/oauth2/authorize?client_id=1162868251081060422&permissions=2483079168&scope=bot)
+> **Server Invite:** [JOIN!](https://discord.gg/u3dyNmCVfT)
