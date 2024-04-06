@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block main %}
+<section>
+    <h2>Deploying</h2>
+    <div>
+        Sketchingpy has different approaches for deployment depending on where you are going.
+    </div>
+
+    <section class="subsection" id="desktop">
+        <h3>Desktop</h3>
+        <div>
+            You have some options for deployment of Python stand-alone executables which offer users programs that can be used without a system-wide Python through file formats like exe, dmg, etc. Consider reviewing <a href="https://marcelotduarte.github.io/cx_Freeze/">cx_Freeze</a> and <a href="https://pyinstaller.org/en/stable/">PyInstaller</a>. Here is an example setup.py for cx_Freeze adapted from their documentation:
+
+<pre>
+import sys
+import cx_Freeze
+
+# Dependencies are automatically detected, but it might need fine tuning.
+build_exe_options = {
+    'zip_include_packages': ['sketchingpy', 'pygame-ce'],
+    'include_files': ['reference.png']
+}
+
+# base='Win32GUI' should be used only for Windows GUI app
+base = 'Win32GUI' if sys.platform == 'win32' else None
+
+cx_Freeze.setup(
+    name='sketch',
+    version='0.1',
+    description='Sketch export',
+    options={'build_exe': build_exe_options},
+    executables=[cx_Freeze.Executable('sketch.py', base=base)]
+)
+</pre>
+            This can be built with:
+
+            <pre>python setup.py build</pre>
+
+            Note that this example includes an image which is bundled with the executable. For more details, see <a href="https://cx-freeze.readthedocs.io/en/stable/index.html">cx_Freeze documentation</a>.
+        </div>
+    </section>
+
+    <section class="subsection" id="web">
+        <h3>Web</h3>
+        <div>
+            Sketchingpy can go anywhere your web development can take you. Unlike desktop Python, requirements are crafted directly in the web document itself. If you haven't written HTML before, we suggest the <a href="https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web">Mozilla Developer Network's introduction</a>. With that, here's a minimal example:
+
+<pre>
+&lt;!doctype html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;meta charset=&quot;UTF-8&quot;&gt;
+        &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1.0&quot;&gt;
+
+        &lt;!-- PyScript --&gt;
+        &lt;link rel=&quot;stylesheet&quot; href=&quot;https://pyscript.net/releases/2023.11.2/core.css&quot;&gt;
+        &lt;script type=&quot;module&quot; src=&quot;https://pyscript.net/releases/2023.11.2/core.js&quot;&gt;&lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;py-config&gt;
+        {
+            &quot;packages&quot;: [&quot;sketchingpy==0.1.8&quot;]
+        }
+        &lt;/py-config&gt;
+
+        &lt;!-- You may need to change this ID to match your code. --&gt;
+        &lt;div id=&quot;sketch-load-message&quot;&gt;Loading...&lt;/div&gt;
+        &lt;canvas id=&quot;sketch-canvas&quot;&gt;&lt;/canvas&gt;
+
+        &lt;!-- You can link the script as shown below or use py-script to inline --&gt;
+        &lt;script type=&quot;py&quot; src=&quot;main.py&quot;&gt;&lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+            This will work with the defaults:
+
+<pre>
+&lt;script type=&quot;py&quot;&gt;
+sketch = sketchingpy.Sketch2DWeb(width, height)
+&lt;/script&gt;
+</pre>
+
+            Note that the CDN above uses sources from other open source projects including those from the PyScript project subject to their permissive <a href="https://pyscript.github.io/docs/2023.11.2/license/">license</a>. Regardless, for more configuration details including self-hosting, multiple Python files, and web fonts see, <a href="/guides/web_detailed.html">detailed web instructions</a>.
+        </div>
+    </section>
+
+    <section class="subsection" id="server">
+        <h3>Server</h3>
+        <div>
+            The static renderer only requires Pillow and Sketchingpy where the later is a pure-Python distribution. For more details on how to install Pillow, see the <a href="https://pillow.readthedocs.io/en/stable/installation.html">Pillow installation documentation</a>.
+        </div>
+    </section>
+
+</section>
+{% endblock %}

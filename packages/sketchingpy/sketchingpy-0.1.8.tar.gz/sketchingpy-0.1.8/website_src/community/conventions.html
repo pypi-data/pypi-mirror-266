@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block main %}
+<section>
+    <h2>Conventions</h2>
+    <div>
+        Thank you for your interest in Sketchingpy! This page lays out some "conventions" which are general guidelines that the Sketchingpy codebase and API typically try to follow. This page is primarily for those interested in volunteering for Sketchingpy either in contributing <a href="/community/code.html">code</a> or <a href="/community/document.html">documentation</a>. Of course, we understand that rules will have exceptions and we invite contributions even if they don't follow these directions precisely. We respect that excellent developers and other community members may disagree with this guidance and invite dialogue to further refine this document's perspective. However, maintainers may ask contributors to conform to these goals before they can merge their work. Note that this does not apply to the showcase.
+    </div>
+    <section class="subsection" id="standards">
+        <h3>Coding standards</h3>
+        <div>
+            Note that this document describes approaches and norms above the requirements laid out in our <a href="/community/code.html">code contributrions page</a> and <a href="https://codeberg.org/sketchingpy/Sketchingpy/src/branch/main/CONTRIBUTING.md">CONTRIBUTING.md</a>.
+        </div>
+    </section>
+    <section class="subsection" id="values">
+        <h3>Values</h3>
+        <div>
+            Sketchingpy explicitly emphasizes certain values in its design and implementation:
+
+            <ul>
+                <li>Portable: User sketches should be able to move between supported platforms including desktop, web, and Jupyter with as little rewrite as possible.</li>
+
+                <li>Agnostic: The library should work across many environments including in self-hosted pyscript.</li>
+
+                <li>Embeddable: Sketchingpy should not assert control over the rest of the code's structure or licensing.</li>
+
+                <li>Pedagogical: Sketchingpy should be usable in educational settings as additive to cirricula.</li>
+
+                <li>Productionizable: Sketchingpy should follow general Pythonic practices and be able to work as a component within a larger sophisticated engineering effort. This also means that Sketchingpy itself must offer <a href="https://wiki.c2.com/?ConceptualIntegrity">conceptual integrity</a>.</li>
+            </ul>
+
+            We may not always achieve these goals and they may come in conflict with each other but we value them.
+        </div>
+    </section>
+    <section class="subsection" id="paradigm">
+        <h3>Paradigm</h3>
+        <div>
+            While Sketchingpy wants to be agnostic, it needs to provide <a href="https://wiki.c2.com/?ConceptualIntegrity">conceptual integrity</a> and, thus, requires an internal unifying paradigm. That in mind, we recognize that it may be used in object oriented settings including education where OOP is typical (see <a href="https://codeinplace.stanford.edu/cip3/textbook/objects">introductory instruction</a> and <a href="https://secure-media.collegeboard.org/apc/GridWorld_Case_Study_Student_Manual_with_Appendixes_Aug_2007_updated.pdf">standardized tests</a> as well as <a href="https://pythoninstitute.org/pcap">industry certificates</a>). Our current perspective:
+
+            <ul>
+                <li>We do not wish to force users into a strict object oriented setting like through forced subclassing.</li>
+                <li>We want to be a good participant and follow best practices in an educational setting to model techniques in line with class materials.</li>
+                <li>We want students with some experience to be empowered to both read the Sketchingpy codebase and to, when they desire, contribute to it.</li>
+                <li>The Python standard library itself frequently uses objects (csv, sqlite, etc) so we expect programmers to need to interact with "class-based" code even if they aren't writing it themselves as they have to encounter it in their broader Pythonic journey.</li>
+            </ul>
+
+            Therefore, this project reaches a compromise: its exported types should generally follow OOP but should not force use of classes in client code. For example, it should support functional code through callback registration instead of subclassing.
+        </div>
+    </section>
+    <section class="subsection" id="naming">
+        <h3>Naming</h3>
+        <div>
+            The following naming rules are recommended:
+
+            <ul>
+                <li>Class names should be nouns.</li>
+                <li>Method and function names should be verbs.</li>
+                <li>Event listener registers should use "on" notation as a preposition to a verb like sketch.on_step(draw).</li>
+            </ul>
+
+            Note that some of these further efforts in education (<a href="https://apstudents.collegeboard.org/sites/default/files/2019-05/ap-computer-science-a-course-and-exam-description.pdf">including standardized tests</a>) and attempt to follow <a href="http://www.cs.cornell.edu/courses/cs1110/2022fa/materials/style/">commonly taught standards</a>.
+        </div>
+    </section>
+    <section class="subsection" id="naming">
+        <h3>Teach module</h3>
+        <div>
+            The "sketchingpy.teaching" module serves an important role in education and may break some of these conventions. For example, it may export members outside OOP.
+        </div>
+    </section>
+    <section class="subsection" id="other">
+        <h3>Other</h3>
+        <div>
+            The following are also recommended:
+
+            <ul>
+                <li>Some functionality is is likely to be unavailable in some platforms such as keyboard input, joysticks, or sound. These functions should be behind a getter (like get_keyboard) which returns None if is not available or not permitted by the user. This allows developers to probe for functionality availability.</li>
+                <li>When supported by the renderer, multiple simultaneously running sketches should be supported.</li>
+                <li>Documentation speaking style should be clear, concise, and professional but, where possible, should strive to set an informal and encouraging tone.</li>
+                <li>Instance variables should be private. This is because methods are guaranteed to be consistent across platforms but variables are not.</li>
+            </ul>
+
+            This list may evolve during the lifetime of the project.
+        </div>
+    </section>
+</section>
+{% endblock %}

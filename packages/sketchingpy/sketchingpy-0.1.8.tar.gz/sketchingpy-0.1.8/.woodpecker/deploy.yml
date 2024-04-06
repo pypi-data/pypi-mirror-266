@@ -1,0 +1,36 @@
+steps:
+  pypi:
+    image: sampottingersketching/sketchingci
+    commands:
+      - apt update
+      - apt install -y python3.10-venv
+      - pip install build twine
+      - pip install .[dev]
+      - python3 -m build
+      - twine check dist/*
+      - python3 support/make_twine_config.py
+      - twine upload --skip-existing --config-file ./pypirc dist/*
+    secrets:
+      - pypi_token
+    when:
+      - branch: main
+  web:
+    image: sampottingersketching/sketchingci
+    commands:
+      - pip install .[dev]
+      - bash support/render_website.sh
+      - bash support/check_website.sh
+      - bash support/run_all_static.sh
+      - echo $SFTP_PASS > PASSWORD
+      - mv website_build sketchingpy.org
+      - sshpass -f "PASSWORD" scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -prq sketchingpy.org $SFTP_USER@$SFTP_HOST:/$SFTP_DIR
+    secrets:
+      - sftp_host
+      - sftp_user
+      - sftp_dir
+      - sftp_pass
+    when:
+      - branch: main
+
+depends_on:
+  - build

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block main %}
+<section>
+    <h2>Reference for {{ reference_item['name'] }}</h2>
+    <div>{{ reference_item['short'] }} This is part of the <a href="/reference.html">reference section</a>.</div>
+
+    <section class="reference-frame">
+        <section class="nav-bar">
+            {% for section in reference['sections'] %}
+            <section class="nav-bar-subsection">
+                <h3 class="nav-header">{{ section["name"] }}</h3>
+                {% for item in section['items'] %}
+                <div>
+                    {% if item['name'] == reference_item['name'] %}
+                    {{ item['name'] }}
+                    {% else %}
+                    <a href="/reference/{{ item['slug'] }}.html">{{ item['name'] }}</a>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </section>
+            {% endfor %}
+        </section>
+
+        <section class="reference-frame-body">
+            <section class="reference-item subsection">
+                <h3>Purpose</h3>
+                <div>{{ reference_item['long'] | safe }}</div>
+            </section>
+
+            {% if 'snippet' in reference_item %}
+            <section class="reference-item subsection">
+                <h3>Snippet</h3>
+                <div>{{ reference_item['snippet']['caption'] }}</div>
+                <pre>{{ snippet_code }}</pre>
+            </section>
+            {% endif %}
+
+            {% if 'arguments' in reference_item %}
+            <section class="reference-item subsection">
+                <h3>Arguments</h3>
+                <ul>
+                    {% for arg in reference_item['arguments'] %}
+                    <li>
+                        <span class="argument-name">{{ arg['name'] }}</span>:
+                        {{ arg['description'] }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </section>
+            {% endif %}
+
+            {% if 'examples' in reference_item %}
+            <section class="reference-item subsection">
+                <h3>Examples</h3>
+                <ul>
+                    {% for example in reference_item['examples'] %}
+                    <li><a href="/examples/web/example.html?sketch={{ example }}">{{ example }}</a></li>
+                    {% endfor %}
+                </ul>
+            </section>
+            {% endif %}
+
+            <section class="reference-item subsection">
+                <h3>Availability</h3>
+                <div>{{ reference_item['availability'] }}</div>
+            </section>
+
+            {% if 'also' in reference_item %}
+            <section class="reference-item subsection">
+                <h3>See also</h3>
+                <ul>
+                    {% for other in reference_item['also'] %}
+                    <li><a href="/reference/{{ other }}.html">{{ other }}</a></li>
+                    {% endfor %}
+                </ul>
+            </section>
+            {% endif %}
+        </section>
+    </section>
+
+</section>
+{% endblock %}

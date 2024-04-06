@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block main %}
+<section>
+    <h2>Getting started / installation</h2>
+    <div>
+        Sketchingpy offers multiple pathways depending on where you want to start coding first. Want to learn a little bit more about Sketchingpy before you start programming? Check out our <a href="/guides/why.html">why sketchingpy</a> page.
+    </div>
+
+    <section class="subsection" id="web">
+        <h3>Web</h3>
+        <div>
+            We have an <a href="/editor.html">online editor</a> where you can build your sketchbook without installing any software. All you need is a browser! Two examples to get you started: <a href="/examples/web/example.html?sketch=hello_static">Hello World: Static</a> and <a href="/examples/web/example.html?sketch=hello_interactive">Hello World: Interactive</a>. Looking for more inspiration? Check out the larger <a href="/examples.html">examples section</a>. We also have details on <a href="/guides/deploy.html#web">deploying your sketches to the web</a> outside the online editor and offer a <a href="/community.html">community page</a> with chat rooms, a bug tracker, and more.
+        </div>
+    </section>
+
+    <section class="subsection" id="local">
+        <h3>Desktop</h3>
+        <div>
+            You can use Sketchingpy locally on your own machine (like a laptop or desktop) in regular Python programs. The recommended install which enables all features (see also <a href="#static">minimum install</a>):
+
+            <pre>pip install sketchingpy[desktopall]</pre>
+
+            Start with a quick <a href="https://codeberg.org/sketchingpy/Sketchingpy/src/branch/main/examples/static/hello_static.py?ref_type=heads">hello world</a> before learning <a href="/guides/deploy.html#desktop">how to make stand-alone executables</a> or reviewing the larger <a href="/examples.html">examples section</a>. Finally, check out the <a href="/community.html">community page</a> for a Discord, issue tracker, and more.
+        </div>
+    </section>
+
+    <section class="subsection" id="notebook">
+        <h3>Notebook</h3>
+        <div>
+            Jupyter ecosystem integration pairs the power of scientific programming with the expressiveness and flexibility of creative coding. Want to try it first? Check out our <a href="https://mybinder.org/v2/git/https%3A%2F%2Fcodeberg.org%2Fsketchingpy%2Fexample-jupyter-notebook.git/HEAD?labpath=Sketchingpy+in+Jupyter.ipynb">Binder</a>! When you are ready to install the following recommended command enables all features (see also <a href="#static">minimum install</a>):
+
+            <pre>pip install sketchingpy[notebook]</pre>
+
+            Then, take a look at an example <a href="https://codeberg.org/sketchingpy/example-jupyter-notebook">Jupyter Notebook</a>, the larger <a href="/examples.html">examples section</a>, and the <a href="/community.html">community tab</a> (chat, issue tracker, and more).
+        </div>
+    </section>
+
+    <section class="subsection" id="mobile">
+        <h3>Mobile</h3>
+        <div>
+            More details on mobile coming soon. Until then, try taking a look at Sketchingpy's <a href="#web">web option</a> which is also intended to work for mobile browsers.
+        </div>
+    </section>
+
+    <section class="subsection" id="static">
+        <h3>Static (minimum install)</h3>
+        <div>
+            You can run Sketchingpy just about anywhere you can execute Python. This includes servers which don't have desktop environments. For web, the pure Python wheel can be used (no external dependencies needed). Outside the browser, the minimum install:
+
+            <pre>pip install sketchingpy[minimal]</pre>
+
+            This will enable use of the <a href="/reference/Sketch2DWeb.html">Sketch2DStatic renderer</a> built on top of <a href="https://pillow.readthedocs.io/en/stable/">Pillow</a>. It can be used in headless environments! Need more help getting started? See the <a href="/examples.html">examples</a>. Stuck? Visit the <a href="/community.html">community tab</a> to chat online with other friendly users, let developers know about problems, and more.
+        </div>
+    </section>
+    
+</section>
+{% endblock %}

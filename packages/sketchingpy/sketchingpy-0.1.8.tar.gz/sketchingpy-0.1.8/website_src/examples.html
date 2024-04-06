@@ -1,0 +1,389 @@
+{% extends "base.html" %}
+
+{% block main %}
+<section>
+    <h2>Examples</h2>
+    <div>
+        Each example offers links to the different renderers / platforms on which it is available. For instance, the hello static example is available for web, local, and static. The web examples will open in a browser-based editor where they can also be executed while others will link to code snippets.
+    </div>
+
+    <section class="gallery subsection">
+        <h3>Basics</h3>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=hello_static"><img src="/img/hello_static.png?v={{ version }}" alt="Picture of a circle in a sketch."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">Hello static:</span>A first hello world example available for all three renderers.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=hello_static" class="button" aria-label="Link to web renderer hello static example">Open in Web Editor</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=hello_interactive"><img src="/img/hello_interactive.png?v={{ version }}" alt="Picture of an interactive hello world sketch."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">Hello interactive:</span> A hello world example with minimumn interactivity.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=hello_interactive" class="button" aria-label="Link to web renderer hello interactive example">Open in Web Editor</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=start"><img src="/img/start.png?v={{ version }}" alt="Picture of the sketch on the webpage."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">Hello draw:</span> The hello world example from the homepage.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=hello_homepage" class="button" aria-label="Link to web renderer hello homepage example">Open in Web Editor</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=basics_styling"><img src="/img/basics_styling.png?v={{ version }}" alt="Picture of four circles with different styles."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">Hello basics:</span> Basics of styling and colors.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=basics_styling" class="button" aria-label="Link to web renderer styling example">Open in Web Editor</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=basics_state"><img src="/img/basics_state.png?v={{ version }}" alt="Picture of three circles."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">Hello stack:</span> Saving (pushing) and loading (popping) styles.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=basics_state" class="button" aria-label="Link to web renderer styling state example">Open in Web Editor</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="gallery subsection">
+        <h3>Buffers</h3>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=buffer_simple"><img src="/img/buffer_simple.png?v={{ version }}" alt="Picture of two circles repeated four times."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">Buffer simple:</span> Using simple buffers.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=buffer_simple" class="button" aria-label="Link to web renderer buffer example">Open in Web Editor</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=buffer_opaque"><img src="/img/buffer_opaque.png?v={{ version }}" alt="Picture of two circles repeated four times with background."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">Buffer opaque:</span> Using fast opaque buffers.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=buffer_opaque" class="button" aria-label="Link to web renderer buffer example">Open in Web Editor</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="gallery subsection">
+        <h3>Data</h3>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=data_read_csv"><img src="/img/data_read_csv.png?v={{ version }}" alt="Picture of a bar chart from a CSV file."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">Read CSV:</span> Rendering a simple bar chart from a CSV file.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=data_read_csv" class="button" aria-label="Link to web renderer CSV read example">Open in Web Editor</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=data_read_json"><img src="/img/data_read_json.png?v={{ version }}" alt="Picture of a bar chart from a JSON file."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">Read JSON:</span> Drawing a simple bar chart from a JSON file.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=data_read_json" class="button" aria-label="Link to web renderer JSON read example">Open in Web Editor</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=data_write_csv"><img src="/img/data_write_csv.png?v={{ version }}" alt="Picture of a CSV file."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">Write CSV:</span> Generating a CSV file from a sketch.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=data_write_csv" class="button" aria-label="Link to web renderer CSV write example">Open in Web Editor</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=data_write_json"><img src="/img/data_write_json.png?v={{ version }}" alt="Picture of a JSON file."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">Write JSON:</span> Generating a JSON file from a sketch.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=data_write_csv" class="button" aria-label="Link to web renderer JSON write example">Open in Web Editor</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="gallery subsection">
+        <h3>Dialog</h3>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=dialog_simple"><img src="/img/dialog_simple.png?v={{ version }}" alt="Picture of an alert dialog."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">Simple dialogs:</span> Simple dialogs like prompt and alert.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=dialog_simple" class="button" aria-label="Link to web renderer CSV read example">Open in Web Editor</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="gallery subsection">
+        <h3>Geo</h3>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=geo_scale_transform"><img src="/img/geo_scale_transform.png?v={{ version }}" alt="Picuture of of a map region."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">Geo transform:</span> Drawing with map panning and zooming.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=geo_scale_transform" class="button" aria-label="Link to web renderer geo scale transform example">Open in Web Editor</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=geo_polygon"><img src="/img/geo_polygon.png?v={{ version }}" alt="Picuture of of a point."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">Geo polygon:</span> Drawing a polygon defined by latitude and longitude points.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=geo_polygon" class="button" aria-label="Link to web renderer geo polygon example">Open in Web Editor</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=geo_geojson"><img src="/img/geo_geojson.png?v={{ version }}" alt="Map of the bay area."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">GeoJSON:</span> Displaying GeoJSON on a map.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=geo_geojson" class="button" aria-label="Link to web renderer geojson example">Open in Web Editor</a>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="gallery subsection">
+        <h3>Images</h3>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=image_draw"><img src="/img/image_draw.png?v={{ version }}" alt="Picture of a witch picture in a sketch."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">Read image:</span> Drawing an image into a sketch.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=image_draw" class="button" aria-label="Link to web renderer image draw example">Open in Web Editor</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=image_save"><img src="/img/image_save.png?v={{ version }}" alt="Picture of three circles saved from a sketch."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">Write image:</span> Writing a sketch to an image file.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=image_save" class="button" aria-label="Link to web renderer image save example">Open in Web Editor</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="gallery subsection">
+        <h3>Inputs</h3>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=inputs_keyboard"><img src="/img/inputs_keyboard.png?v={{ version }}" alt="Picture of a sketch taking keyboard input."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">Keyboard:</span> Example of taking keyboard input.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=inputs_keyboard" class="button" aria-label="Link to web renderer keyboard example">Open in Web Editor</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=inputs_mouse"><img src="/img/inputs_mouse.png?v={{ version }}" alt="Picture of a sketch taking mouse input."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">Mouse:</span> Example of taking mouse input.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=inputs_mouse" class="button" aria-label="Link to web renderer mouse example">Open in Web Editor</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="gallery subsection">
+        <h3>Shapes</h3>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=shapes_line"><img src="/img/shapes_line.png?v={{ version }}" alt="Picture of four lines."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">Lines:</span> Drawing lines.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=shapes_line" class="button" aria-label="Link to web renderer shape line example">Open in Web Editor</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=shapes_pixel"><img src="/img/shapes_pixel.png?v={{ version }}" alt="Picture of a dotted line."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">Pixels:</span> Drawing individual pixels.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=shapes_pixel" class="button" aria-label="Link to web renderer shape point example">Open in Web Editor</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=shapes_rect"><img src="/img/shapes_rect.png?v={{ version }}" alt="Picture of four squares."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">Rectangles:</span> Drawing rectangles and squares.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=shapes_rect" class="button" aria-label="Link to web renderer shape line example">Open in Web Editor</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=shapes_ellipse"><img src="/img/shapes_ellipse.png?v={{ version }}" alt="Picture of four circles."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">Ellipses:</span> Drawing ellipses and circles.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=shapes_ellipse" class="button" aria-label="Link to web renderer shape ellipse example">Open in Web Editor</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=shapes_arc"><img src="/img/shapes_arc.png?v={{ version }}" alt="Picture of arcs from a sketch."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">Arcs:</span> Drawing arcs.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=shapes_arc" class="button" aria-label="Link to web renderer shape arc example">Open in Web Editor</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=shapes_shape"><img src="/img/shapes_shape.png?v={{ version }}" alt="Picture of a complex shape with two triangles where one is missing a side."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">Shapes:</span> Drawing complex shapes with lines.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=shapes_shape" class="button" aria-label="Link to web renderer shape shape example">Open in Web Editor</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=shapes_bezier"><img src="/img/shapes_bezier.png?v={{ version }}" alt="Picture of bezier curves."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">Curves:</span> Drawing complex shapes with bezier curves.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=shapes_bezier" class="button" aria-label="Link to web renderer shape bezier example">Open in Web Editor</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="gallery subsection">
+        <h3>Transformations</h3>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=transform_translate"><img src="/img/transform_translate.png?v={{ version }}" alt="Picture of two circles."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">Translate:</span> Moving the origin by translating.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=transform_translate" class="button" aria-label="Link to web renderer translation example">Open in Web Editor</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=transform_scale"><img src="/img/transform_scale.png?v={{ version }}" alt="Picture of three squares with zooming."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">Scale:</span> Zooming in and out by scaling.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=transform_scale" class="button" aria-label="Link to web renderer scale example">Open in Web Editor</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=transform_rotate"><img src="/img/transform_rotate.png?v={{ version }}" alt="Picture of three squares with rotation."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">Rotate:</span> Rotating around the origin.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=transform_rotate" class="button" aria-label="Link to web renderer rotation example">Open in Web Editor</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=transform_combine"><img src="/img/transform_combine.png?v={{ version }}" alt="Picture of four arcs."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">Combine transforms:</span> Combining multiple transforms together.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=transform_combine" class="button" aria-label="Link to web renderer combined transformations example">Open in Web Editor</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="image-holder">
+                <a href="/examples/web/example.html?sketch=transform_state"><img src="/img/transform_state.png?v={{ version }}" alt="Picture of four arcs."></a>
+            </div>
+            <div class="description">
+                <span class="guide-title">Transform stack:</span> Saving (pushing) and loading (popping) transforms.
+            </div>
+            <div class="action">
+                <a href="/examples/web/example.html?sketch=transform_state" class="button" aria-label="Link to web renderer transformations state example">Open in Web Editor</a>
+            </div>
+        </div>
+    </section>
+
+</section>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block main %}
+<section>
+    <h2>Why Sketchingpy</h2>
+    <div>
+        This open source Python library enables anyone to start creative coding in minutes using Python across multiple platforms including desktop, web, and notebooks.
+    </div>
+
+    <section class="subsection">
+        <h3>What it does</h3>
+        <div>
+            Sketchingpy offers simple tools for multi-media capabilities like drawing and sound across different devices and form factors. It allows users to take the same Python code and put it in a stand alone application, embed it into a website, or use it in scientific environments like Jupyter notebooks. It gives beginners an easy starting point to grow as developers but also offers flexibility for experts.
+        </div>
+    </section>
+
+    <section class="subsection">
+        <h3>Where to get started</h3>
+        <div>
+            We have a <a href="/guides/start.html">getting started guide</a>. Also, Sketchingpy isn't just a piece of software, it's a community! If you need help, take a look at the <a href="/community.html">ways to engage</a> with both the developers and other users like yourself. We have a Discord, online issue tracker, user showcase, and more. We are friendly to folks of all levels of experience!
+        </div>
+    </section>
+
+    <section class="subsection">
+        <h3>How it does it</h3>
+        <div>
+            Fostering creative expression in computation through Python, this project performs strategy-based adapation to support Mac, Windows, Linux, the browser, Jupyter, and static image generation on servers (headless environments). Specifically, it adapts Pygame (CE), Pillow, and HTML5 Canvas by way of PyScript (WebAssembly) to a common simplified interface that thoughtfully includes small utilities to make development easier. Though this costs a little in performance, unifying these rendering strategies into a single API both simplifies use of these technologies and allows the same code to run across different platforms and environments, supporting users anywhere in their programming journey. This gives the community the immediacy of simply opening a URL to start sketchingpy but also offers a pathway to take that work into larger projects across different devices.
+        </div>
+    </section>
+
+    <section class="subsection">
+        <h3>Who it is for</h3>
+        <div>
+            We aim to support teachers, students, artists, designers, developers, and other makers as they make creative programs including visual art, games needing a bit more flexibility, and more. Specifically, this project hopes to embrace a wide group of people:
+
+            <ul>
+                <li>Interactive science</li>
+                <li>Data visualization</li>
+                <li>Visual art</li>
+                <li>Immersive experience</li>
+                <li>Simulation</li>
+                <li>Sound design</li>
+                <li>User experience (UX) prototyping</li>
+                <li>Game development</li>
+            </ul>
+
+            We would love to see what you do and invite contributions to <a href="/showcase.html">our showcase</a>.
+        </div>
+    </section>
+
+    <section class="subsection">
+        <h3>What it isn't</h3>
+        <div>
+            We believe that excellence requires focus. Currently we are only focused on 2D with no explicit console support though Steam Deck should work with the Linux builds.
+        </div>
+    </section>
+
+    <section class="subsection">
+        <h3>Why we are building it</h3>
+        <div>
+            We believe coding should be iterative, fun, and human-centered. Our mission is to build tools that unlock effortless creativity at every step of a developer's journey. Heavily inspired by <a href="https://processing.org/">Processing</a>, Sketchingpy seeks to bring the philosophy of sketchingpy in code to portable technologies that allow programmers to take their work anywhere. Central objectives guiding our work:
+
+            <ul>
+                <li>Serve programmers no matter where they are in their journey from beginner to expert.</li>
+                <li>Support portabilty across desktop (Mac, Windows, Linux), web (browser), notebooks (Jupyter), and static image generation.</li>
+                <li>Foster inclusive community across different disciplines within and outside computer science.</li>
+                <li>Assist in both formal and informal educational contexts.</li>
+            </ul>
+
+            If you are interested in this mission, we invite a diverse set of collaborators to <a href="/community.html">join us</a>.
+        </div>
+    </section>
+
+    <section class="subsection">
+        <h3>Comparison to other tools</h3>
+        <div>
+            The creative coding space is big and diverse so developers have multiple options to fit the specifics of their projects. There are exceptions to almost everything listed below and any comparison like this will be incomplete. There isn't a better technology only different trade-offs and objectives. Though imperfect, here are some general observations are here to help orient you to the space:
+
+            <ul>
+                <li><a href="https://pyga.me/">Pygame-ce, <a href="https://pyodide.org/en/stable/">Pyodide</a>, and <a href="https://pillow.readthedocs.io/en/stable/">Pillow</a>: Developers may see some performance gain by working directly with these Python libraries and each offer additional nuanced functionality not surfaced by Sketchingpy. Using all three under the hood, Sketchingpy does still offer some benefits: it simplifies their use and allows for the same code to run across browser, desktop, and server (headless). Of course, Sketchingpy allows you to reach into those underlying libraries to continue your journey even if you start here with us.</li>
+                <li><a href="https://processing.org/">Processing</a>: Processing is very performant and uses the JVM so may be better suited for some heavy lifting. It also supports 3D with powerful OpenGL integrations. Meanwhile, its extensions ("modes") like Processing.py and Py5 support Python though, in some cases, this introduces additional complexity due to Python / JVM communication. All that said, Sketchingpy may be a good option for you in terms of sharing your work with the ability to deploy to the browser. Additionally, as it is simply a library instead of a full language in its own environment, Sketchingpy offers benefits for bridging into other Python libraries, for growing your programs from a small sketch into full applications, and for participating as a component within a larger Python codebase.</li>
+                <li><a href="https://p5js.org/">P5.js</a>: This is a great option for users preferring to write in JavaScript as it exposes similar interfaces and supports 3D. Users wishing to dig deeper into web technologies or squeezing out additional performance gain should consider P5. That said, Sketchingpy allows code written for the web to also target the desktop, notebooks, and servers while also offering the option to write in Python directly.</li>
+                <li><a href="https://d3js.org/">D3.js</a>: Similar to P5 but exposing a more data oriented approach, D3 may be an easier to place to express certain ideas and access other types of drawing technologies like SVG. For users wanting to write in JavaScript and focused on data visualization, it may offer a good alternative. In contrast, Sketchingpy again offers the option to use Python directly as well as portability across web, desktop, notebooks, and servers.</li>
+                <li><a href="https://www.chartjs.org/">Chart.js</a>, <a href="https://docs.bokeh.org/en/latest/index.html">Bokeh</a>: Sketchingpy allows for highly bespoke drawing and interaction patterns whereas Chart.js and Bokeh, while offering ability for deep customization, may be a better option for using pre-built charts for common types of visualizations or data experiences.</li>
+                <li><a href="https://shiny.posit.co/">Shiny</a> and similar: These libraries can bridge into Python and offer pre-built charts so may be a better approach if using common types of visualizations and interaction patterns. That said, for more complex experiences, Sketchingpy may offer a more Python-oriented option that works both with and without a server.</li>
+            </ul>
+
+            To that end, we often use the above technologies in our own work. In the end, Sketchingpy foucses on code portability and the flexible drawing required for more bespoke pieces. Furthermore, it sacrifices some performance to improve ease of use and stays wholly within the Python ecosystem. Depending on your project, these may be advantages or drawbacks. We encourage developers to learn and even combine multiple technologies!
+        </div>
+    </section>
+    
+</section>
+{% endblock %}

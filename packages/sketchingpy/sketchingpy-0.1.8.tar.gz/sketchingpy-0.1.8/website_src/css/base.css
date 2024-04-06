@@ -1,0 +1,324 @@
+@font-face {
+    font-family: 'IBMPlexMono-Regular';
+    src: url('/third_party_site/IBMPlexMono-Regular.ttf')  format('truetype');
+}
+
+@font-face {
+    font-family: 'IBMPlexSans-Regular';
+    src: url('/third_party_site/IBMPlexSans-Regular.ttf')  format('truetype');
+}
+
+body {
+    margin: 0px;
+    font-size: 16px;
+}
+
+footer {
+    padding-top: 20px;
+    padding-bottom: 20px;    
+    border-top: 1px solid #E0E0E0;
+    text-align: center;
+}
+
+header {
+    padding: 10px;
+    background-color: #F0F0F0;
+}
+
+header h1 {
+    margin-bottom: 2px;
+    padding-bottom: 2px;
+}
+
+header .subtitle {
+    margin-bottom: 5px;
+}
+
+header #loaded-msg {
+    display: none;
+}
+
+html {
+    font-family: "IBMPlexSans-Regular", sans-serif;
+}
+
+h1 {
+    font-size: 32px;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+}
+
+h2 {
+    font-size: 28px;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+}
+
+h3 {
+    font-size: 24px;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+}
+
+main {
+    padding: 10px;
+}
+
+nav {
+    padding-top: 20px;
+    padding-bottom: 20px;    
+    border-bottom: 1px solid #E0E0E0;
+    border-top: 1px solid #E0E0E0;
+}
+
+nav .item a:link, nav .item a:visited, nav .item a:hover, nav .item a:active {
+    text-decoration: none;
+    color: #707070;
+    border: 1px #A0A0A0 solid;
+    padding: 3px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+nav .item a:hover, nav .item a:active {
+    color: white;
+    background-color: #808080;
+}
+
+nav .item a.selected:link, nav .item a.selected:visited {
+    color: white;
+    background-color: #707070;
+}
+
+nav .item a.selected:hover, nav .item a.selected:active {
+    background-color: #404040;
+    cursor: pointer;
+}
+
+pre {
+    font-family: "IBMPlexMono-Regular", sans-serif;
+    border: #E0E0E0 1px solid;
+    background-color: #F0F0F0;
+    font-size: 13px;
+    margin: 4px;
+    padding: 5px;
+    border-radius: 5px;
+    overflow: auto;
+}
+
+table {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+table th {
+    font-weight: bold;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+.argument-name {
+    font-weight: bold;
+}
+
+.elevator {
+    border-top: 1px solid #E0E0E0;
+    border-bottom: 1px solid #E0E0E0;
+    padding-bottom: 25px;
+}
+
+.gallery {
+    padding-top: 40px;
+}
+
+.gallery a.button:link, .gallery a.button:visited, .gallery a.button:hover, .gallery a.button:active {
+    -webkit-appearance: none;
+    background: none;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    background-color: #FFFFFF;
+    color: #6161CC;
+    font-size: 16px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #6161CC;
+    padding: 5px 10px;
+    text-decoration: none;
+}
+
+.gallery a.button:hover, .gallery a.button:active {
+    cursor: pointer;
+    background-color: #5050D0;
+    color: white;
+}
+
+.gallery .item {
+    margin: 10px;
+    border: 1px solid #D0D0D0;
+    border-radius: 5px;
+    width: 250px;
+    padding-bottom: 20px;
+    display: inline-block;
+}
+
+.gallery .item img {
+    width: 100%;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.gallery .action {
+    text-align: center;
+}
+
+.gallery .item .description {
+    padding: 5px;
+    padding-bottom: 20px;
+    height: 100px;
+    color: #303030;
+}
+
+.gallery .item .description .guide-title {
+    color: black;
+    font-weight: bold;
+}
+
+.in-dev-message {
+    background-color: #333333;
+    color: white;
+    text-align: center;
+    padding: 4px;
+}
+
+.in-dev-message a:link, .in-dev-message a:visited, .in-dev-message a:hover, .in-dev-message a:active {
+    color: white;
+}
+
+.in-dev-message a:hover, .in-dev-message a:active {
+    border: 1px solid white;
+    padding: 2px;
+}
+
+.loading {
+    height: 14px;
+}
+
+.skip-link {
+    background: rgba(255, 255, 255, 0.5);
+    height: 20px;
+    padding: 4px;
+    left: 0;
+    top: 0;
+    position: absolute;
+    transform: translateY(-100%);
+}
+  
+.skip-link:focus {
+    transform: translateY(0%);
+}
+
+.subsection {
+    margin-top: 40px;
+    padding-top: 10px;
+    border-top: 2px dotted #E0E0E0;
+    font-size: 14px;
+}
+
+.subsection .item-compact {
+    display: inline-block;
+}
+
+.subsection .item-compact a:link, .subsection .item-compact a:visited, .subsection .item-compact a:hover, .subsection .item-compact a:active {
+    color: black;
+    display: inline-block;
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid white;
+    min-width: 185px;
+    background-color: #F0F0F0;
+    border-radius: 5px;
+    border: 1px solid #F0F0F0;
+    text-align: center;
+}
+
+.subsection .item-compact a:hover, .subsection .item-compact a:active {
+    border: 1px solid #C0C0C0;
+}
+
+@media (max-width: 559px) {
+    nav {
+        background-color: #E0E0E0;
+        border-bottom: 1px solid #D0D0D0;
+        border-top: 1px solid #D0D0D0;
+    }
+
+    nav .item {
+        margin: 5px;
+        text-align: center;
+    }
+
+    nav .item a {
+        display: inline-block;
+        text-align: left !important;
+        width: 95%;
+        background-color: white;
+    }
+
+    .gallery {
+        text-align: center;
+    }
+
+    .gallery .item {
+        width: 50%;
+    }
+}
+
+@media (max-width: 560px) {
+    .reference-frame .nav-bar {
+        display: none;
+    }
+}
+
+@media (min-width: 560px) {
+    nav {
+        text-align: center;
+    }
+
+    nav .item {
+        padding-left: 5px;
+        padding-right: 5px;
+        display: inline-block;
+    }
+
+    .reference-frame {
+        display: grid;
+        grid-template-columns: 30% 69%;
+        grid-column-gap: 1%;
+    }
+
+    .reference-frame .nav-bar {
+        border-top: 2px dotted #E0E0E0;
+        margin-top: 40px;
+        padding-top: 10px;
+        border-right: 2px dotted #E0E0E0;
+        max-height: 1200px;
+        overflow-y: auto;
+    }
+
+    .reference-frame .nav-bar .nav-header {
+        font-size: 16px;
+        padding-bottom: 0px;
+    }
+}
+
+@media (min-width: 1000px) {
+    .reference-frame {
+        display: grid;
+        grid-template-columns: 19% 79%;
+        grid-column-gap: 1%;
+    }
+}

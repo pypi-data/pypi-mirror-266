@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block main %}
+<section>
+    <h2>Web deployment details</h2>
+    <div>
+        For more advanced users, this page provides additional details on how to deploy Sketchingpy to the web beyond the <a href="/guides/deploy.html#web">simple web deployment getting started example</a>.
+    </div>
+    <section class="subsection" id="altid">
+        <h3>Fonts</h3>
+        <div>
+            Sketches may refer to system fonts or to fonts registered by CSS. Consider this addition to an HTML file:
+
+<pre>
+&lt;head&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;./font.css&quot;&gt;
+&lt;/head&gt;
+</pre>
+
+            In this example, font.css contains the following:
+
+<pre>
+@font-face {
+    font-family: 'IBMPlexMono-Regular';
+    src: url('/third_party_site/IBMPlexMono-Regular.ttf')  format('truetype');
+}
+</pre>
+
+            With this snippet included, a sketch can refer to the newly created font:
+
+<pre>
+sketch.set_text_font('IBMPlexMono-Regular', 12)
+</pre>
+
+            Note that Sketchingpy will look for matching web fonts where possible even if a file path is offered so the above snippet is the same as:
+
+<pre>
+sketch.set_text_font('./IBMPlexMono-Regular.ttf', 12)
+</pre>
+
+            Fonts may take a moment to load at the start of the sketch execution.
+        </div>
+    </section>
+    <section class="subsection" id="altid">
+        <h3>Alternative element IDs</h3>
+        <div>
+            Users with different IDs of the canvas and loading div may need to change the initialization code:
+
+<pre>
+width = 400
+height = 500
+canvas_id = 'different-canvas'
+loading_id = 'different-loading-id'
+sketch = sketchingpy.Sketch2DWeb(width, height, canvas_id, loading_id)
+</pre>
+
+            Note that this examples uses the canvas_id and loading_id variables but the strings can be passed direclty if preferred.
+        </div>
+    </section>
+    <section class="subsection" id="altid">
+        <h3>Multiple Python Files</h3>
+        <div>
+            The py-config element can add additional resources to the environment of your scripts including adding other Python files which can be imported.
+<pre>
+&lt;py-config&gt;
+{
+    &quot;packages&quot;: [&quot;sketchingpy==0.1.8&quot;],
+    &quot;files&quot;: {
+        &quot;/a.py&quot;: &quot;a.py&quot;,
+        &quot;/b.py&quot;: &quot;b.py&quot;
+    }
+}
+&lt;/py-config&gt;
+
+&lt;script type=&quot;py&quot; src=&quot;main.py&quot;&gt;&lt;/script&gt;
+</pre>
+            In this example, a.py and b.py may be imported by main.py like so:
+
+<pre>
+# main.py contents
+
+import a
+import b
+
+result = b.func()
+a.func(result)
+</pre>
+
+            This same approach can be used for inline scripts as well.
+        </div>
+    </section>
+    <section class="subsection" id="selfhost">
+        <h3>Self Hosting</h3>
+        <div>
+            For privacy reasons or for those needing to use browser-based sketches without "full" internet access (like for offline Progressive Web Apps or behind firewalls), developers can also <a href="/dist/self_host.zip">download a copy of the required files for full self-hosting</a>. By default, these assume that they are located in a directory called "third_party" at the root of the server and can be included like so:
+
+<pre>
+&lt;!doctype html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;meta charset=&quot;UTF-8&quot;&gt;
+        &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1.0&quot;&gt;
+
+        &lt;!-- You may need to change these paths to pyscript files. --&gt;
+        &lt;link rel=&quot;stylesheet&quot; href=&quot;/third_party/core.css&quot;&gt;
+        &lt;script type=&quot;module&quot; src=&quot;/third_party/core.js&quot;&gt;&lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;py-config&gt;
+        {
+            &quot;packages&quot;: [&quot;/third_party/sketchingpy-0.1.8-py3-none-any.whl&quot;]
+        }
+        &lt;/py-config&gt;
+
+        &lt;!-- You may need to change this ID to match your code. --&gt;
+        &lt;div id=&quot;sketch-load-message&quot;&gt;Loading...&lt;/div&gt;
+        &lt;canvas id=&quot;sketch-canvas&quot;&gt;&lt;/canvas&gt;
+
+        &lt;!-- You can link the script as shown below or use py-script to inline --&gt;
+        &lt;script type=&quot;py&quot; src=&quot;main.py&quot;&gt;&lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+            If hosting these files elsewhere, change "third_party" above to the correct path and also update "core.js" using the a simple string replacement like in this Python script:
+
+<pre>
+with open('core.js') as f:
+    original_content = f.read()
+
+new_content = original_content.replace('/third_party/', 'YOUR_NEW_PATH')
+
+with open('core.js', 'w') as f:
+    f.write(new_content)
+</pre>
+
+            Note that zip file use sources from other open source projects including those from the PyScript project subject to their permissive <a href="https://pyscript.github.io/docs/2023.11.2/license/">license</a>. For more information, see the <a href="https://pyscript.github.io/docs/2023.11.2/user-guide/first-steps/">PyScript user guide</a>. Also, please see the underlying sources as, under certain configurations like use of pypi packages, this "self-hosted" version may still caues external network traffic. Finally, for privacy-sensitive use cases, consider using a browser's web inspector to look for traffic to confirm other servers beyond those intended one are not contacted.
+        </div>
+    </section>
+    <section class="subsection" id="altid">
+        <h3>Additional details</h3>
+        <div>
+           See the <a href="https://pyscript.github.io/docs/2023.11.2/user-guide/first-steps/">PyScript user guide</a> for further information.
+        </div>
+    </section>
+</section>
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block main %}
+<section>
+    <h2>Contribute code</h2>
+    <div>
+        Thank you so much for volunteering! Code contributions are the lifeblood of projects like Sketchingpy. This page looks at how to get started in providing code to Sketchingpy itself that is included in the library distribution or in supporting code like CI / CD and testing.
+    </div>
+    <section class="subsection" id="background">
+        <h3>Background knowledge</h3>
+        <div>
+            There are some basic skills that most code contributors will need to know:
+
+            <ul>
+                <li><a href="https://python.swaroopch.com/">Python</a></li>
+                <li><a href="https://www.baeldung.com/git-guide">Git</a></li>
+                <li><a href="https://google.github.io/styleguide/pyguide.html">Google Style Guide</a></li>
+                <li><a href="https://www.freecodecamp.org/news/an-introduction-to-testing-in-python/">Unit Testing</a></li>
+                <li><a href="https://www.pythonstacks.com/blog/post/type-hints-python/">Python Type Hints</a></li>
+                <li><a href="https://docs.python-guide.org/shipping/packaging/">Python Packaging</a></li>
+            </ul>
+
+            Some contributions may also require knowledge of:
+
+            <ul>
+                <li><a href="https://www.freecodecamp.org/news/shell-scripting-crash-course-how-to-write-bash-scripts-in-linux/">Basic bash scripting</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Learn">HTML and JavaScript</a></li>
+                <li><a href="https://www.tutorialspoint.com/yaml/index.htm">YAML</a></li>
+                <li><a href="https://www.docker.com/101-tutorial/">Docker</a></li>
+            </ul>
+
+            If you need help getting started, please <a href="mailto:hello@sketchingpy.org">email us</a>. A maintainer may be available to work with you!
+        </div>
+    </section>
+    <section class="subsection" id="fork">
+        <h3>Open a fork</h3>
+        <div>
+            Please fork the project and make pull requests from your fork to <a href="https://codeberg.org/sketchingpy/Sketchingpy">sketchingpy/Sketchingpy</a>. In general, we recommend opening forks on <a href="https://codeberg.org/">CodeBerg</a>.
+        </div>
+    </section>
+    <section class="subsection" id="get-ready">
+        <h3>Getting ready to contribute</h3>
+        <div>
+            We recommend checking out your newly made fork and doing the following first:
+
+            <ul>
+                <li>Install a dev build. <pre>pip install .[dev]</pre></li>
+                <li>Run unit tests. <pre>nose2</pre></li>
+                <li>Execute code checks like mypy. <pre>mypy sketchingpy/*.py</pre></li>
+            </ul>
+
+            All of these actions are described in the <a href="https://codeberg.org/sketchingpy/Sketchingpy/src/branch/main/README.md">README.md</a>. If you are interested in mentorship, please also reach out to <a href="mailto:hello@sketchingpy.org">hello@sketchingpy.org</a> to see if there are maintainers avialable to help you get started.
+        </div>
+    </section>
+    <section class="subsection" id="issue">
+        <h3>Finding issues</h3>
+        <div>
+            Except for maintainers, contributors are generally only allowed to suggest changes to code (open pull requests) to resolve open issues. You have two options:
+
+            <ul>
+                <li><a href="https://codeberg.org/sketchingpy/Sketchingpy/issues">Find an already open issue in need of help</a>: We recommend staying away from things which still have the "Proposal" tag. You may also want to look for issues with the "Beginner Friendly" tag!</li>
+                <li><a href="/community/issue.html">Open an issue</a>: If there isn't an issue open for what you want to do, make an issue first (see above) to describe what you want to do.</li>
+            </ul>
+
+            When you have some code ready, see below for opening a pull request.
+        </div>
+    </section>
+    <section class="subsection" id="issue">
+        <h3>Pull request</h3>
+        <div>
+            Whenever you have something ready to share, open a [pull request](https://codeberg.org/sketchingpy/Sketchingpy/pulls) with the "draft" tag included. Removing draft lets the maintainers know that you have code ready to merge. Before removing the "draft" tag please ensure the following:
+
+            <ul>
+                <li>Unit tests pass</li>
+                <li>Pyflakes passes</li>
+                <li>Pycodestyle passes</li>
+                <li>Mypy passes</li>
+                <li>The contribution adheres as best as possible to the development standards listed in the <a href="https://codeberg.org/sketchingpy/Sketchingpy/src/branch/main/README.md">README.md</a></li>
+            </ul>
+
+            Note that CI / CD may run automated checks for your contribution.
+        </div>
+    </section>
+    <section class="subsection" id="links">
+        <h3>Related materials</h3>
+        <ul>
+            <li><a href="https://codeberg.org/sketchingpy/Sketchingpy/src/branch/main/CONDUCT.md">Code of Conduct</a></li>
+            <li><a href="https://codeberg.org/sketchingpy/Sketchingpy/src/branch/main/CONTRIBUTING.md">Contribution Guidelines and Agreement</a></li>
+            <li><a href="https://codeberg.org/sketchingpy/Sketchingpy/src/branch/main/GOVERNANCE.md">Governance</a></li>
+            <li><a href="https://codeberg.org/sketchingpy/Sketchingpy/src/branch/main/README.md">README</a></li>
+        </ul>
+    </section>
+</section>
+{% endblock %}

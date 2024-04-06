@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+    <head lang="en_US">
+        <meta charset="UTF-8">
+        <title>Sketchingpy Test Harness</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/third_party/core.css">
+        <script type="module" src="/third_party/core.js"></script>
+    </head>
+    <body>
+        <py-config>
+        {
+            "packages": ["/dist/sketchingpy-0.1.8-py3-none-any.whl"]
+        }
+        </py-config>
+
+        <main id="#main">
+            <div class="sketch-load-message" id="sketch-load-message">Waiting...</div>
+            <canvas id="sketch-canvas" style="display: none"></canvas>
+        </main>
+
+<py-script>
+import sketchingpy
+
+
+sketch = sketchingpy.Sketch2D(500, 500)
+
+sketch.clear('#505050')
+sketch.set_stroke_weight(3)
+
+sketch.set_fill('#B2DF8A50')
+sketch.set_stroke('#F0F0F0')
+sketch.draw_ellipse(150, 250, 20, 20)
+
+sketch.push_style()
+sketch.clear_fill()
+sketch.draw_ellipse(250, 250, 20, 20)
+sketch.pop_style()
+
+sketch.draw_ellipse(350, 250, 20, 20)
+
+sketch.show()
+</py-script>
+    </body>
+</html>

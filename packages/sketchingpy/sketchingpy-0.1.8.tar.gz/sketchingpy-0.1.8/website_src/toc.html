@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block main %}
+<section>
+    <h2>Table of Contents</h2>
+    <ul>
+        {% for item in toc_items %}
+        <li><a href="{{ item.url }}">{{ item.name }}</a></li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}

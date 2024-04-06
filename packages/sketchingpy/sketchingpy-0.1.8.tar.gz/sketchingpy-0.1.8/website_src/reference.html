@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block main %}
+<section>
+    <h2>Reference</h2>
+    <div>
+        <p>
+            This page contains information on everything that Sketchingpy offers. For more information on how to use this library, see the <a href="/guides.html">guides</a> and <a href="/examples.html">examples</a>.
+        </p>
+        <p>
+            For those trying to extend Sketchingpy or working on changing its underlying code, see <a href="/devdocs/sketchingpy.html">devdocs</a> for Python docstring.
+        </p>
+    </div>
+
+    {% for section in reference['sections'] %}
+    <section class="reference subsection">
+        <h3>{{ section["name"] }}</h3>
+        <div>{{ section["description"] }}</div>
+
+        {% for item in section['items'] %}
+        <div class="item-compact">
+            <a href="/reference/{{ item['slug'] }}.html">{{ item['name'] }}</a>
+        </div>
+        {% endfor %}
+    </section>
+    {% endfor %}
+
+</section>
+{% endblock %}

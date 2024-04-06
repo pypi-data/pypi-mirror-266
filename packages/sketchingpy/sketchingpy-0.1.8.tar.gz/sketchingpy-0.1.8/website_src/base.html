@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>Sketchingpy: {{ title }}</title>
+        <link rel="stylesheet" href="/css/base.css?v={{ version }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        {% if enable_pyscript %}
+        <link rel="stylesheet" href="/third_party/core.css?v={{ version }}">
+        <link rel="stylesheet" href="/css/editor.css?v={{ version }}">
+        <script type="module" src="/third_party/core.js?v={{ version }}"></script>
+        {% endif %}
+
+        {% block metatags %}{% endblock %}
+
+        {% block style %}{% endblock %}
+    </head>
+    <body>
+        {% if enable_pyscript %}
+        <py-config>
+        {
+            "packages": ["/dist/sketchingpy-0.1.8-py3-none-any.whl"]
+        }
+        </py-config>
+        {% endif %}
+        <div class="in-dev-message">🧪 Version 0.1.8 is our alpha release candidate. Please <a href="/community/issue.html">send us bug reports and suggestions</a>!</div>
+        <header>
+            <a href="#main" class="skip-link">Skip to content</a>
+            <h1>Sketchingpy</h1>
+            <div class="subtitle">Creative coding and interactive science everywhere for everyone: <a href="/guides/start.html#web">web</a>, <a href="/guides/start.html#local">desktop</a>, <a href="/guides/start.html#mobile">mobile</a>, <a href="/guides/start.html#notebook">Jupyter</a>, and <a href="/guides/start.html#static">more</a>. <a href="https://codeberg.org/sketchingpy/Sketchingpy">Open source</a>!</div>
+        </header>
+        <nav>
+            {% for section in sections %}
+            <div class="item"><a href="{{ section['url'] }}" {% if current_section == section['section'] %}class="selected" aria-selected="true"{% else %}aria-selected="false"{% endif %}>{{ section['label'] }}</a></div>
+            {% endfor %}
+        </nav>
+        <main id="#main">
+            {% block main %}{% endblock %}
+        </main>
+        <footer>
+            <a href="https://codeberg.org/sketchingpy/Sketchingpy">Open Source</a> /
+            <a href="https://codeberg.org/sketchingpy/Sketchingpy/src/branch/main/LICENSE.md">License</a> /
+            <a href="/privacy.html">Privacy</a> /
+            <a href="/toc.html">Contents</a> /
+            <a href="mailto:hello@sketchingpy.org">Contact</a>
+        </footer>
+
+        {% block script %}{% endblock %}
+        {% if enable_pyscript %}
+        <script type="module" src="/js/editor.js?v={{ version }}"></script>
+        {% endif %}
+    </body>
+</html>

@@ -1,0 +1,26 @@
+steps:
+  build:
+    image: sampottingersketching/sketchingci:v1.0
+    commands:
+      - pip install .[dev]
+      - nose2
+      - pyflakes sketchingpy/*.py
+      - pycodestyle sketchingpy/*.py
+      - mypy sketchingpy/*.py
+      - bash support/render_website.sh
+      - bash support/check_website.sh
+  testStatic:
+    image: sampottingersketching/sketchingci:v1.0
+    commands:
+      - pip install .[dev]
+      - bash support/run_all_static.sh
+  testLocal:
+    image: sampottingersketching/sketchingci:v1.0
+    commands:
+      - pip install .[dev]
+      - bash support/run_all_local.sh
+  testWeb:
+    image: sampottingersketching/sketchingci:v1.0
+    commands:
+      - pip install .[dev]
+      - bash support/run_all_web.sh

@@ -1,0 +1,2989 @@
+sections:
+  - name: "Arc"
+    description: "Functionality for drawing partial circles / ellipses."
+    items:
+      - slug: "draw_arc"
+        name: "draw_arc"
+        short: Draw a partial ellipse using starting and ending angles.
+        long: >
+          Using starting and ending angles, draw a partial ellipse which is either drawn outside
+          line only (stroke) and / or filled from the center of that ellipse.
+        snippet:
+          caption: >
+            Draw an arc from 90 to 360 degrees centered at x coordinate 100 and y coordinate 200
+            with width of 50 pixels and height of 60 pixels.
+          code: >
+            sketch.set_angle_mode('degrees')\n
+            sketch.set_arc_mode('center')\n
+            sketch.draw_arc(100, 200, 50, 60, 90, 360)
+        arguments:
+          - name: "x1"
+            description: The x location at which to draw the arc.
+          - name: "y1"
+            description: The y location at which to draw the arc.
+          - name: "x2"
+            description: Horizontal size.
+          - name: "y2"
+            description: Vertical size.
+          - name: "a1"
+            description: Starting angle.
+          - name: "a2"
+            description: Ending angle.
+        examples:
+          - shapes_arc
+        availability: Available for all platforms.
+        also:
+          - set_angle_mode
+          - set_arc_mode
+      - slug: "set_arc_mode"
+        name: "set_arc_mode"
+        short: Specify how Sketchingpy should interpret the position and size arguments for arcs.
+        long: >
+          Determine how arcs should be placed within the sketch and how they should be sized.
+          Available options:
+
+          <ul>
+            <li>
+              <span class="const">center</span>:
+              Provide x and y coordinates followed by width and height.
+            </li>
+            <li>
+              <span class="const">radius</span>:
+              Provide x and y coordinates followed by half width and half height.
+            </li>
+            <li>
+              <span class="const">corner</span>:
+              Left and top coordinates followed by width and height.
+            </li>
+            <li>
+              <span class="const">corners</span>:
+              Left and top coordinates followed by right and bottom coordinates.
+            </li>
+          </ul>
+
+          This modifies the interpretation of x1, y1, x2, and y2 but only for drawing arcs.
+        snippet:
+          caption: >
+            Indiciate that the arc parameters will be center X, center Y, width, and height.
+          code: >
+            sketch.set_arc_mode('center')
+        arguments:
+          - name: "mode"
+            description: String describing the mode to use.
+        examples:
+          - shapes_arc
+        availability: Available for all platforms.
+        also:
+          - draw_arc
+          - push_style
+          - pop_style
+          - set_angle_mode
+  - name: "Buffer"
+    description: "Functionality for putting complex drawing into fast buffers."
+    items:
+      - slug: "create_buffer"
+        name: "create_buffer"
+        short: Create an off-screen buffer.
+        long: >
+          Create an "offscreen buffer" which can be used to save the results of drawing operations
+          to memory, making them much faster to draw again later or in repetition. Note that buffers
+          with opaque backgrounds may be more efficient in some renderers than buffers with
+          transparent backgrounds.
+        snippet:
+          caption: >
+            Create a buffer with transparent background called "example-buffer" which is 100 pixels
+            wide and 50 pixels tall.
+          code: >
+            sketch.create_buffer('example-buffer', 100, 50)
+        arguments:
+          - name: "name"
+            description: The name of the buffer to create within the sketch.
+          - name: "width"
+            description: Width of the buffer in pixels.
+          - name: "height"
+            description: Height of the buffer in pixels.
+          - name: "background"
+            description: >
+              Optional color to use for the background of the buffer or None if fully transparent
+              background. Defaults to None if not given.
+        examples:
+          - buffer_opaque
+          - buffer_simple
+        availability: Available for all platforms.
+        also:
+          - draw_buffer
+          - enter_buffer
+          - exit_buffer
+      - slug: "draw_buffer"
+        name: "draw_buffer"
+        short: Create an off-screen buffer.
+        long: >
+          Create an "offscreen buffer" which can be used to save the results of drawing operations
+          to memory, making them much faster to draw again later or in repetition. Note that buffers
+          with opaque backgrounds may be more efficient in some renderers than buffers with
+          transparent backgrounds.
+        snippet:
+          caption: >
+            Draw a buffer called "example-buffer" at x position of 100 and y position of 50.
+          code: >
+            sketch.draw_buffer(100, 50, 'example-buffer')
+        arguments:
+          - name: "x"
+            description: The horizontal coordinate at which to draw the buffer contents.
+          - name: "y"
+            description: The vertical coordinate at which to draw the buffer contents.
+          - name: "name"
+            description: The name of the buffer to draw.
+        examples:
+          - buffer_opaque
+          - buffer_simple
+        availability: Available for all platforms.
+        also:
+          - create_buffer
+          - enter_buffer
+          - exit_buffer
+      - slug: "enter_buffer"
+        name: "enter_buffer"
+        short: Switch to drawing in a buffer.
+        long: >
+          Switch drawing targets such that transformations are still active but commands are
+          recorded in an offscreen buffer instead. This will switch from the main drawing surface or
+          canvas or from another buffer currently active to the buffer named.
+        snippet:
+          caption: >
+            Create a buffer with transparent background called "example-buffer" which is 100 pixels
+            wide and 50 pixels tall before starting to drawing in that buffer.
+          code: >
+            sketch.create_buffer('example-buffer', 100, 50)\n
+            sketch.enter_buffer('example-buffer')
+        arguments:
+          - name: "name"
+            description: The name of the buffer to switch to.
+        examples:
+          - buffer_opaque
+          - buffer_simple
+        availability: Available for all platforms.
+        also:
+          - create_buffer
+          - draw_buffer
+          - exit_buffer
+      - slug: "exit_buffer"
+        name: "exit_buffer"
+        short: Switch from a buffer back to the main canvas.
+        long: >
+          Switch drawing targets such that transformations are still active but commands are sent to
+          the canvas or drawing surface visible to the user, "leaving" the offscreen buffer.
+        snippet:
+          caption: >
+            Create a buffer with transparent background called "example-buffer" which is 100 pixels
+            wide and 50 pixels tall. Then, draw an ellipse in that buffer.
+          code: >
+            sketch.create_buffer('example-buffer', 100, 50)\n
+            sketch.enter_buffer('example-buffer')\n
+            sketch.draw_ellipse(50, 25, 10, 10)\n
+            sketch.exit_buffer()
+        examples:
+          - buffer_opaque
+          - buffer_simple
+        availability: Available for all platforms.
+        also:
+          - create_buffer
+          - draw_buffer
+          - enter_buffer
+  - name: "Data"
+    description: "Logic for reading and writing data files across different platforms."
+    items:
+      - slug: "get_csv"
+        name: "get_csv"
+        short: Load a CSV file as a list of dictionaries.
+        long: >
+          Load a CSV file and parse it as a list where each row after the "header row" becomes a
+          dictionary.
+        snippet:
+          caption: >
+            Load the CSV file called example.csv.
+          code: >
+            records = sketch.get_data_layer().get_csv('example.csv')
+        arguments:
+          - name: "path"
+            description: The location at which the CSV file can be found.
+        examples:
+          - data_read_csv
+        availability: >
+          Available for all platforms. On static and app renderers, will interpret path as a local
+          file path using the operating system's conventions by default. For web, it will interpret
+          path as a URL by default. Filenames like "example.csv" will assume the same directory. All
+          platforms support remote files if prefixed by "http:// or https://".
+        also:
+          - get_data_layer
+          - write_csv
+      - slug: "get_data_layer"
+        name: "get_data_layer"
+        short: Get access to reading and writing data.
+        long: >
+          Open access to the file system, network, or browser to read or write data. Returns None if
+          not supported or no permissions.
+        snippet:
+          caption: >
+            Load the CSV file called example.csv.
+          code: >
+            records = sketch.get_data_layer().get_csv('example.csv')
+        examples:
+          - data_read_csv
+          - data_read_json
+          - data_write_csv
+          - data_write_json
+        availability: >
+          Available for all platforms. On static and app renderers, will interface with local file
+          system using operating system's conventions. For web, it will use network and browser.
+        also:
+          - get_csv
+          - get_json
+          - get_text
+          - write_csv
+          - write_json
+          - write_text
+      - slug: "get_json"
+        name: "get_json"
+        short: Read a JSON file.
+        long: >
+          Read a JSON file either from local file system or the network.
+        snippet:
+          caption: >
+            Load the CSV file called example.json.
+          code: >
+            records = sketch.get_data_layer().get_json('example.json')
+        arguments:
+          - name: "path"
+            description: The location at which the JSON file can be found.
+        examples:
+          - get_data_layer
+          - write_json
+        availability: >
+          Available for all platforms. On static and app renderers, will interpret path as a local
+          file path using the operating system's conventions. For web, it will interpret path as a
+          URL. Filenames like "example.json" will assume the same directory. All platforms support
+          remote files if prefixed by "http:// or https://".
+        also:
+          - get_data_layer
+          - write_json
+      - slug: "get_text"
+        name: "get_text"
+        short: Read a text file.
+        long: >
+          Read a text file either from local file system or the network.
+        snippet:
+          caption: >
+            Load the text file called example.txt.
+          code: >
+            records = sketch.get_data_layer().get_text('example.txt')
+        arguments:
+          - name: "path"
+            description: The location at which the file can be found.
+        examples:
+          - get_data_layer
+          - write_text
+        availability: >
+          Available for all platforms. On static and app renderers, will interpret path as a local
+          file path using the operating system's conventions. For web, it will interpret path as a
+          URL. Filenames like "example.txt" will assume the same directory. All platforms support
+          remote files if prefixed by "http:// or https://".
+        also:
+          - get_data_layer
+          - write_json
+      - slug: "write_csv"
+        name: "write_csv"
+        short: Write a list of dictionaries as a CSV file.
+        long: >
+          Write a CSV file with header row, saving it to local file system or offering it as a
+          download in the browser.
+        snippet:
+          caption: >
+            Write a two row CSV file called example.csv.
+          code: >
+            records = [\n
+                {'group': 'a', 'value': 1},\n
+                {'group': 'b', 'value': 2}\n
+            ]\n
+            sketch.get_data_layer().write_csv(records, ['group', 'value'], 'example.csv')
+        arguments:
+          - name: "records"
+            description: List of dictionaries to be written.
+          - name: "columns"
+            description: Ordered list of columns to include in the CSV file.
+          - name: "path"
+            description: The location at which the file should be written.
+        examples:
+          - data_write_csv
+        availability: >
+          Available for all platforms. On static and app renderers, will interpret path as a local
+          file path using the operating system's conventions. For web, it will interpret path as a
+          filename to use when dowloading the result.
+        also:
+          - get_csv
+          - get_data_layer
+      - slug: "write_json"
+        name: "write_json"
+        short: Write a JSON file.
+        long: >
+          Write a JSON file, saving it to local file system or offering it as a download in the
+          browser.
+        snippet:
+          caption: >
+            Write a simple dictionary to example.json.
+          code: >
+            record = {'group': 'a', 'value': 1}\n
+            sketch.get_data_layer().write_json(records, 'example.json')
+        arguments:
+          - name: "record"
+            description: The value to write as JSON.
+          - name: "path"
+            description: The location at which the file should be written.
+        examples:
+          - data_write_json
+        availability: >
+          Available for all platforms. On static and app renderers, will interpret path as a local
+          file path using the operating system's conventions. For web, it will interpret path as a
+          filename to use when dowloading the result.
+        also:
+          - get_json
+          - get_data_layer
+      - slug: "write_text"
+        name: "write_text"
+        short: Write a text file.
+        long: >
+          Write a text file, saving it to local file system or offering it as a download in the
+          browser.
+        snippet:
+          caption: >
+            Write a simple string to example.txt.
+          code: >
+            sketch.get_data_layer().write_text('test', 'example.json')
+        arguments:
+          - name: "value"
+            description: The string to writen.
+          - name: "path"
+            description: The location at which the file should be written.
+        availability: >
+          Available for all platforms. On static and app renderers, will interpret path as a local
+          file path using the operating system's conventions. For web, it will interpret path as a
+          filename to use when dowloading the result.
+        also:
+          - get_text
+          - get_data_layer
+  - name: "Dialog"
+    description: "Tools for showing simple dialog boxes."
+    items:
+      - slug: "get_dialog_layer"
+        name: "get_dialog_layer"
+        short: Get access to dialogs.
+        long: >
+          Get access to the interactive dialog layer. Returns None if not available or permitted.
+        snippet:
+          caption: >
+            Access the dialog layer.
+          code: >
+            sketch.get_dialog_layer()
+        examples:
+          - dialog_simple
+        availability: >
+          Available for Sketch2DWeb and Sketch2DApp.
+        also:
+          - get_file_load_location
+          - get_file_save_location
+          - show_alert
+          - show_prompt
+      - slug: "get_file_load_location"
+        name: "get_file_load_location"
+        short: Get the location or filename to load.
+        long: >
+          Get a file load location with a callback. Note that some platforms require an active draw
+          loop with a call to clear.
+        snippet:
+          caption: >
+            Ask for a file load location with a callback that prints the selected filename.
+          code: >
+            sketch.get_dialog_layer().get_file_load_location(lambda filename: print(filename))
+        arguments:
+          - name: "callback"
+            description: >
+              Callback invoked if the user selects a file location, passing a single string with the
+              filename.
+        availability: >
+          Available for Sketch2DWeb and Sketch2DApp. For Web, uses a simple prompt.
+        also:
+          - get_dialog_layer
+          - get_file_save_location
+          - show_alert
+          - show_prompt
+      - slug: "get_file_save_location"
+        name: "get_file_save_location"
+        short: Get the location or filename to save.
+        long: >
+          Get a file save location with a callback. Note that some platforms require an active draw
+          loop with a call to clear.
+        snippet:
+          caption: >
+            Ask for a file save location with a callback that prints the selected filename.
+          code: >
+            sketch.get_dialog_layer().get_file_save_location(lambda filename: print(filename))
+        arguments:
+          - name: "callback"
+            description: >
+              Callback invoked if the user selects a file location, passing a single string with the
+              filename.
+        availability: >
+          Available for Sketch2DWeb and Sketch2DApp. For Web, uses a simple prompt.
+        also:
+          - get_dialog_layer
+          - get_file_load_location
+          - show_alert
+          - show_prompt
+      - slug: "show_alert"
+        name: "show_alert"
+        short: Show a message in a dialog box to the user.
+        long: >
+          Show a message in a dialog box to the user without any controls except to dismiss.
+        snippet:
+          caption: >
+            Say hello in a dialog box.
+          code: >
+            sketch.get_dialog_layer().show_alert('Hello!')
+        arguments:
+          - name: "message"
+            description: >
+              The message to display in the box. May be interpreted as HTML on some platforms.
+        examples:
+          - dialog_simple
+        availability: >
+          Available for Sketch2DWeb and Sketch2DApp. For app, will try to interpret as HTML.
+        also:
+          - get_dialog_layer
+          - get_file_load_location
+          - get_file_save_location
+          - show_prompt
+      - slug: "show_prompt"
+        name: "show_prompt"
+        short: Ask the user to enter a string in a dialog box.
+        long: >
+          Show a message in a dialog box to the user with the option for the user to provide an
+          input string via keyboard input.
+        snippet:
+          caption: >
+            Request a string from the user and print the result.
+          code: >
+            sketch.get_dialog_layer().show_prompt('Enter text:', lambda x: print(x))
+        arguments:
+          - name: "message"
+            description: >
+              The message to display in the box. May be interpreted as HTML on some platforms.
+          - name: "callback"
+            description: >
+              Function to invoke if the user provides a string or clicks OK, calling a single string
+              parameter.
+        examples:
+          - dialog_simple
+        availability: >
+          Available for Sketch2DWeb and Sketch2DApp. For app, will try to interpret as HTML.
+        also:
+          - get_dialog_layer
+          - get_file_load_location
+          - get_file_save_location
+          - show_alert
+  - name: "Ellipse"
+    description: "Functions for drawing ellipses and circles."
+    items:
+      - slug: "draw_ellipse"
+        name: "draw_ellipse"
+        short: Draw a circle or ellipse.
+        long: >
+          Draw an ellipse or, in the case of equal width and height, a circle.
+        snippet:
+          caption: >
+            Draw an ellipse centered at x coordinate 100 and y coordinate 200 with width of 50
+            pixels and height of 60 pixels.
+          code: >
+            sketch.set_ellipse_mode('center')\n
+            sketch.draw_ellipse(100, 200, 50, 60)
+        arguments:
+          - name: "x1"
+            description: The x location at which to draw the ellipse.
+          - name: "y1"
+            description: The y location at which to draw the ellipse.
+          - name: "x2"
+            description: Horizontal size.
+          - name: "y2"
+            description: Vertical size.
+        examples:
+          - shapes_ellipse
+        availability: Available for all platforms.
+        also:
+          - set_ellipse_mode
+      - slug: "set_ellipse_mode"
+        name: "set_ellipse_mode"
+        short: Specify how Sketchingpy should interpret the position and size arguments.
+        long: >
+          Determine how arcs should be placed within the sketch and how they should be sized for
+          ellipses. Available options:
+
+          <ul>
+            <li>
+              <span class="const">center</span>:
+              Provide x and y coordinates followed by width and height.
+            </li>
+            <li>
+              <span class="const">radius</span>:
+              Provide x and y coordinates followed by half width and half height.
+            </li>
+            <li>
+              <span class="const">corner</span>:
+              Left and top coordinates followed by width and height.
+            </li>
+            <li>
+              <span class="const">corners</span>:
+              Left and top coordinates followed by right and bottom coordinates.
+            </li>
+          </ul>
+
+          This modifies the interpretation of x1, y1, x2, and y2 but only for drawing ellipses.
+        snippet:
+          caption: >
+            Indiciate that the ellipse parameters will be center X, center Y, width, and height.
+          code: >
+            sketch.set_ellipse_mode('center')
+        arguments:
+          - name: "mode"
+            description: String describing the mode to use.
+        examples:
+          - shapes_ellipse
+        availability: Available for all platforms.
+        also:
+          - draw_ellipse
+          - push_style
+          - pop_style
+  - name: "Geo Utils"
+    description: >
+      Utility functions to assist geospatial visualization and maps.
+    items:
+      - slug: "add_coordinate"
+        name: "add_coordinate"
+        short: Add a coordinate to a GeoPolygon.
+        long: >
+          Draw a line inside a GeoPolygon from the last point to a new position where this new point
+          is defined geographically in degrees.
+        snippet:
+          caption: >
+            Add a new line going from longitude / latitude coordinate of 1, 2 to 3, 4.
+          code: >
+            geo_polygon = sketch.start_geo_polygon(1, 2)\n
+            geo_polygon.add_coordinate(3, 4)
+        arguments:
+          - name: "longitude"
+            description: The longitude of the next point in degrees.
+          - name: "latitude"
+            description: The latitude of the next point in degrees.
+        examples:
+          - geo_polygon
+        availability: Available for all platforms.
+        also:
+          - start_geo_polygon
+          - to_shape
+      - slug: "convert_geo_to_pixel"
+        name: "convert_geo_to_pixel"
+        short: Convert a geographic location to a pixel coordinate.
+        long: >
+          Convert a longitude / latitude coordinate pair in degrees to sketch coordinates in pixels
+          using the current map view parameters.
+        snippet:
+          caption: >
+            Convert coordinate a longitude of 1 degrees and latitude of 2 degrees to pixel
+            coordinates using current map view.
+          code: >
+            x, y = sketch.convert_geo_to_pixel(1, 2)
+        arguments:
+          - name: "longitude"
+            description: The longitude to convert in degrees.
+          - name: "latitude"
+            description: The latitude to convert in degrees.
+        examples:
+          - geo_scale_transform
+        availability: Available for all platforms.
+        also:
+          - set_map_pan
+          - set_map_placement
+          - set_map_zoom
+          - start_geo_polygon
+      - slug: "parse_geojson"
+        name: "parse_geojson"
+        short: Utility to parse GeoJSON into a series of GeoPolygons.
+        long: >
+          Utility to parse GeoJSON into a series of GeoPolygons which currently only supports
+          MultiPolygon and Polygon.
+        snippet:
+          caption: >
+            Load a GeoJSON file at example.geojson and make a closed shape.
+          code: >
+            source = sketch.get_data_layer().get_json('example.geojson')\n
+            geo_polygons = sketch.parse_geojson(source)\n
+            geo_polygon = geo_polygons[0]\n
+            shape = geo_polygon.to_shape()
+        arguments:
+          - name: "source"
+            description: The loaded GeoJSON source to parse.
+        examples:
+          - geo_geojson
+        availability: Available for all platforms.
+        also:
+          - add_coordinate
+          - start_geo_polygon
+          - to_shape
+      - slug: "pop_map"
+        name: "pop_map"
+        short: Restore a previously saved map view configuration.
+        long: >
+          Restore the most recently saved map view configuration saved in style history, removing
+          that config from the history. This works as a stack (like a stack of plates) where the top
+          of the pile is taken off and restored, removing it from that stack. This will overwrite
+          the current map view configuration in the sketch.
+        snippet:
+          caption: >
+            Load a previous map view configuration.
+          code: >
+            sketch.pop_map()
+        availability: Available for all platforms.
+        also:
+          - push_map
+          - set_map_pan
+          - set_map_placement
+          - set_map_zoom
+      - slug: "push_map"
+        name: "push_map"
+        short: Save current map view configuration.
+        long: >
+          Save current map pan, zoom, and pixel placement to the map history. This works as a stack
+          (like a stack of plates) where this puts a new plate on the top of the pile. This will
+          leave the current map configuration in the sketch unchanged.
+        snippet:
+          caption: >
+            Save the map view configuration.
+          code: >
+            sketch.push_map()
+        availability: Available for all platforms.
+        also:
+          - pop_map
+          - set_map_pan
+          - set_map_placement
+          - set_map_zoom
+      - slug: "set_map_pan"
+        name: "set_map_pan"
+        short: Indicate where point should be at the center of the map geographically.
+        long: >
+          Indicate a latitude and longitude point which is where the map projection should be
+          centerered geographically.
+        snippet:
+          caption: >
+            Center the map on coordinate longitude of 1 degrees and latitude of 2 degrees.
+          code: >
+            sketch.set_map_pan(1, 2)
+        arguments:
+          - name: "longitude"
+            description: The center longitude in degrees.
+          - name: "latitude"
+            description: The center latitude in degrees.
+        examples:
+          - geo_scale_transform
+        availability: Available for all platforms.
+        also:
+          - pop_map
+          - push_map
+          - set_map_placement
+          - set_map_zoom
+      - slug: "set_map_placement"
+        name: "set_map_placement"
+        short: Indicate where in the sketch the map view should be drawn.
+        long: >
+          Indicate where in the sketch in terms of pixel coordinates the map view should be centered
+          such that the map pan latitude and longitude map to this coordinate position in pixel
+          space.
+        snippet:
+          caption: >
+            Place the center of the map projection at x coordinate of 100 and y coordinate of 200
+            pixels.
+          code: >
+            sketch.set_map_placement(100, 200)
+        arguments:
+          - name: "x"
+            description: The horizontal coordinate in pixels.
+          - name: "y"
+            description: The vertical coordinate in pixels.
+        examples:
+          - geo_scale_transform
+        availability: Available for all platforms.
+        also:
+          - pop_map
+          - push_map
+          - set_map_pan
+          - set_map_zoom
+      - slug: "set_map_zoom"
+        name: "set_map_zoom"
+        short: Indicate the map zoom level.
+        long: >
+          Specify the map scaling factor or map "zoom" level.
+        snippet:
+          caption: >
+            Set the map zoom to level 10.
+          code: >
+            sketch.set_map_zoom(10)
+        arguments:
+          - name: "zoom"
+            description: Specify the map scaling factor or map "zoom" level.
+        examples:
+          - geo_scale_transform
+        availability: Available for all platforms.
+        also:
+          - pop_map
+          - push_map
+          - set_map_pan
+          - set_map_placement
+      - slug: "start_geo_polygon"
+        name: "start_geo_polygon"
+        short: Create a new GeoPolygon.
+        long: >
+          Start building a closed shape using geographic coordinates (longitude and latitude
+          provided in degrees) instead of pixel coordinates.
+        snippet:
+          caption: >
+            Start a geopolygon at longitude of 1 degrees and latitude 2 degrees.
+          code: >
+            geo_polygon = sketch.start_geo_polygon(1, 2)
+        arguments:
+          - name: "longitude"
+            description: >
+              The starting geographic point longitude coordinate or the E/W component of the first
+              point of the polygon.
+          - name: "latitude"
+            description: >
+              The starting geographic point longitude coordinate or the N/S component of the first
+              point of the polygon.
+        examples:
+          - geo_polygon
+        availability: Available for all platforms.
+        also:
+          - add_coordinate
+          - to_shape
+      - slug: "to_shape"
+        name: "to_shape"
+        short: Convert a GeoPolygon to a closed shape in pixel-space.
+        long: >
+          Convert this GeoPolygon to a closed shape in pixel-space using the current map view /
+          geospatial transformation configuration.
+        snippet:
+          caption: >
+            Make a geospatial region in the shape of a triangle into a closed shape
+          code: >
+            geo_polygon = sketch.start_geo_polygon(1, 2)\n
+            geo_polygon.add_coordinate(0, 2)\n
+            geo_polygon.add_coordinate(1, 0)\n
+            shape = geo_polygon.to_shape()
+        examples:
+          - geo_polygon
+        availability: Available for all platforms.
+        also:
+          - add_coordinate
+          - start_geo_polygon
+  - name: "Image"
+    description: "Tools to load, display, and save image files of various formats."
+    items:
+      - slug: "draw_image"
+        name: "draw_image"
+        short: Draw an image at a location.
+        long: >
+          Draw a previously loaded image at a specific coordinate using its current size.
+        snippet:
+          caption: >
+            Draw reference.png at x coordinate of 100 and y coordinate of 200.
+          code: >
+            image = sketch.get_image('reference.png')\n
+            sketch.draw_image(100, 200, image)
+        arguments:
+          - name: "x"
+            description: Horizontal coordinate at which to draw the image.
+          - name: "y"
+            description: Vertical coordinate at which to draw the image.
+          - name: "image"
+            description: The image to draw.
+        examples:
+          - image_draw
+        availability: Available for all platforms.
+        also:
+          - get_image
+          - resize
+          - set_image_mode
+      - slug: "get_image"
+        name: "get_image"
+        short: Load an image file.
+        long: >
+          Load an image from the local file system or URL.
+        snippet:
+          caption: >
+            Load an image from the file reference.png.
+          code: >
+            image = sketch.get_image('reference.png')
+        arguments:
+          - name: "path"
+            description: The location from which the file should be read.
+        examples:
+          - image_draw
+        availability: >
+          Available for all platforms. On static and app renderers, will interpret path as a local
+          file path using the operating system's conventions. For web, it will interpret path as a
+          URL. Filenames like "example.png" will assume the same directory.
+        also:
+          - draw_image
+          - resize
+      - slug: "resize"
+        name: "resize"
+        short: Scale an image.
+        long: >
+          Resize an image by scaling its contents.
+        snippet:
+          caption: >
+            Load an image from the file reference.png and scale it to a width of 100 pixels and
+            height of 200 pixels.
+          code: >
+            image = sketch.get_image('reference.png')\n
+            image.resize(100, 200)
+        arguments:
+          - name: "width"
+            description: New desired width of the image in pixels.
+          - name: "height"
+            description: New desired height of the image in pixels.
+        examples:
+          - image_draw
+        availability: Available for all platforms.
+        also:
+          - draw_image
+          - get_image
+          - save_image
+      - slug: "save_image"
+        name: "save_image"
+        short: Save an image file.
+        long: >
+          Save the sketch as an image file, either directly to the file system or as a download.
+        snippet:
+          caption: >
+            Save the sketch to test.png.
+          code: >
+            sketch.save_image('test.png')
+        arguments:
+          - name: "path"
+            description: The location at which the file should be written.
+        examples:
+          - image_save
+        availability: >
+          Available for all platforms. On static and app renderers, will interpret path as a local
+          file path using the operating system's conventions. For web, it will interpret path as a
+          filename to use when dowloading the result.
+        also:
+          - get_image
+          - show
+      - slug: "set_image_mode"
+        name: "set_image_mode"
+        short: Specify how Sketchingpy should place images.
+        long: >
+          Determine how images' coordinates should be interpreted when drawing. Available options:
+
+          <ul>
+            <li>
+              <span class="const">center</span>:
+              Provide x and y coordinates of the center of the image.
+            </li>
+            <li>
+              <span class="const">corner</span>:
+              Left and top coordinates of the image.
+            </li>
+          </ul>
+
+          This modifies the interpretation of x, y but only for drawing images.
+        snippet:
+          caption: >
+            Indiciate that the image parameters will be center X and center Y.
+          code: >
+            sketch.set_image_mode('center')
+        arguments:
+          - name: "mode"
+            description: String describing the mode to use.
+        examples:
+          - image_draw
+        availability: Available for all platforms.
+        also:
+          - draw_ellipse
+          - push_style
+          - pop_style
+  - name: "Joystick (future)"
+    description: "Methods to work with alternative joystick-like inputs."
+    items:
+      - slug: "get_input_axes_available"
+        name: "get_input_axes_available"
+        short: Get the number of input axes on a joystick-like device.
+        long: >
+          Get the available input axes supported on a joystick-like device where 'ball0.x' would,
+          for example, refer to the x axis of the first trackball found.
+        snippet:
+          caption: >
+            Get the number of axes on the first joystick found.
+          code: >
+            joysticks = sketch.get_joysticks()\n
+            first_joystick = joysticks[0]\n
+            num_axes = first_joystick.get_input_axes_available()
+        availability: Not yet available. Planned for future release.
+        also:
+          - get_input_axis
+          - joystick
+      - slug: "get_input_axis"
+        name: "get_input_axis"
+        short: Get the input on a single axis for a joystick-like device.
+        long: >
+          Get the current input as a number describing input on a single axis on a joy-stick like
+          device. For trackballs, this is change since last call to get_axis for that input. For
+          displacement input, this is the current level of displacement.
+        snippet:
+          caption: >
+            Get the change in x input on the first ball of the first joystick found.
+          code: >
+            joysticks = sketch.get_joysticks()()\n
+            first_joystick = joysticks[0]\n
+            x_input = first_joystick.get_input_axis('ball0.x')
+        arguments:
+          - name: "axis_name"
+            description: The name of the axis to look up and for which a value should be returned.
+        availability: Not yet available. Planned for future release.
+        also:
+          - get_input_axes_available
+          - joystick
+      - slug: "get_joysticks"
+        name: "get_joysticks"
+        short: Get available joysticks.
+        long: >
+          Get all available joysticks on the system or None if joysticks are not supported on the
+          platform.
+        snippet:
+          caption: >
+            Get the current position on the first axis of the first joystick.
+          code: >
+            joysticks = sketch.get_joysticks()\n
+            first_joystick = joysticks[0]\n
+            first_joystick.get_axis(0)
+        availability: Not yet available. Planned for future release.
+        also:
+          - joystick
+      - slug: "get_joystick_id"
+        name: "get_joystick_id"
+        short: Get the unique identifier for a joystick-like device.
+        long: >
+          Get a unique identifier for a joystick as provided by the underlying platform.
+        snippet:
+          caption: >
+            Get the unique identifier for the first joystick found.
+          code: >
+            joysticks = sketch.get_joysticks()\n
+            first_joystick = joysticks[0]\n
+            first_id = first_joystick.get_joystick_id()
+        availability: Not yet available. Planned for future release.
+        also:
+          - joystick
+      - slug: "get_name_trigger"
+        name: "get_name (Trigger)"
+        short: Get the identifier for a discrete input on a joystick-like device.
+        long: >
+          Get the name of a "discrete input" on a joystick-like device. Sketchingpy refers to these as
+          triggers. For example, "push0" refers to the first push button on the device.
+        snippet:
+          caption: >
+            Register a callback for when the state of a trigger changes on the first joystick.
+          code: >
+            def print_trigger(trigger):\n
+              print(trigger.get_name())\n
+            \n
+            joysticks = sketch.get_joysticks()\n
+            first_joystick = joysticks[0]\n
+            first_joystick.on_state_change(print_trigger)
+        availability: Not yet available. Planned for future release.
+        also:
+          - get_triggers_available
+          - get_trigger
+          - joystick
+          - on_state_change
+          - trigger_joystick
+      - slug: "get_rumble_supported"
+        name: "get_rumble_supported"
+        short: Determine if the joystick supports rumble.
+        long: >
+          Query the joystick to see if it supports rumble.
+        snippet:
+          caption: >
+            Query the joystick within the underlying system to see if it supports accepting rumble
+            commands.
+        snippet:
+          caption: >
+            Determine if the first joystick found supports rumble.
+          code: >
+            joysticks = sketch.get_joysticks()\n
+            first_joystick = joysticks[0]\n
+            supports_rumble = first_joystick.get_rumble_supported()
+        availability: Not yet available. Planned for future release.
+        also:
+          - joystick
+          - start_rumble
+      - slug: "get_state_trigger"
+        name: "get_state (Trigger)"
+        short: Get the state for a discrete input on a joystick-like device.
+        long: >
+          Get the state of a "discrete input" on a joystick-like device. Sketchingpy refers to these
+          as triggers. For example, "push0" refers to the first push button on the device.
+        snippet:
+          caption: >
+            Register a callback for when the state of a trigger changes on the first joystick.
+          code: >
+            def print_trigger(trigger):\n
+              print(trigger.get_name())\n
+            \n
+            joysticks = sketch.get_joysticks()\n
+            first_joystick = joysticks[0]\n
+            button = first_joystick.get_trigger('button0')\n
+            button.on_state_change(print_trigger)
+        availability: Not yet available. Planned for future release.
+        also:
+          - get_name_trigger
+          - get_triggers_available
+          - joystick
+          - on_state_change
+          - trigger_joystick
+      - slug: "get_triggers_available"
+        name: "get_triggers_available"
+        short: Get available discrete inputs for a joystick-like device.
+        long: >
+          Get available "dicrete inputs" for a joystick-like device which includes push buttons and
+          hats. Sketchingpy refers to these as "triggers" on the device. For example, "push0" refers
+          to the first push button on the device.
+        snippet:
+          caption: >
+            Get the available triggers on the first joystick found.
+          code: >
+            joysticks = sketch.get_joysticks()\n
+            first_joystick = joysticks[0]\n
+            triggers = first_joystick.get_triggers_available()
+        availability: Not yet available. Planned for future release.
+        also:
+          - trigger_joystick
+          - get_trigger
+          - joystick
+          - on_state_change
+      - slug: "get_trigger"
+        name: "get_trigger"
+        short: Get a discrete input for a joystick-like device.
+        long: >
+          Get a "discrete input" for a joystick-like device which includes push buttons and hats.
+          Sketchingpy refers to these as "triggers" on the device. For example, "push0" refers to the
+          first push button on the device.
+        snippet:
+          caption: >
+            Get the state of a push button.
+          code: >
+            joysticks = sketch.get_joysticks()()\n
+            first_joystick = joysticks[0]\n
+            push_button = first_joystick.get_trigger('push0')
+        arguments:
+          - name: "name"
+            description: The name of the input like "push0" for first push button.
+        availability: Not yet available. Planned for future release.
+        also:
+          - get_triggers_available
+          - joystick
+          - on_state_change
+          - trigger_joystick
+      - slug: "joystick"
+        name: "Joystick"
+        short: Information about a joystick-like device.
+        long: >
+          Object representing a joystick-like device.
+        snippet:
+          caption: >
+            Get the number of axes for the first joystick.
+          code: >
+            joysticks = sketch.get_joysticks()\n
+            first_joystick = joysticks[0]\n
+            num_axes = first_joystick.get_num_axes()
+        availability: Not yet available. Planned for future release.
+        also:
+          - get_input_axes_available
+          - get_input_axis
+          - get_joystick_id
+          - get_rumble_supported
+          - get_triggers_available
+          - get_trigger
+          - on_state_change
+          - start_rumble
+          - stop_rumble
+      - slug: "on_state_change"
+        name: "on_state_change"
+        short: Set callback for when the state of a joystick trigger changes.
+        long: >
+          Register a callback for when the state of a "discrete input" on a joystick-like device
+          changes. These "triggers" include hats and push buttons.
+        snippet:
+          caption: >
+            Register a callback for when the state of a trigger changes on the first joystick.
+          code: >
+            def print_trigger(trigger):\n
+              print(trigger.get_name())\n
+            \n
+            joysticks = sketch.get_joysticks()\n
+            first_joystick = joysticks[0]\n
+            button = first_joystick.get_trigger('button0')\n
+            button.on_state_change(print_trigger)
+        arguments:
+          - name: "callback"
+            description: Function to call with the trigger when the state changes.
+        availability: Not yet available. Planned for future release.
+        also:
+          - get_name_trigger
+          - get_triggers_available
+          - get_trigger
+          - joystick
+          - trigger_joystick
+      - slug: "start_rumble"
+        name: "start_rumble"
+        short: Start the rumble feature on a joystick-like device.
+        long: >
+          If available, start the joystick rumble. Does nothing if no rumble feature available.
+        snippet:
+          caption: >
+            Start rumbling the first joystick.
+          code: >
+            joysticks = sketch.get_input_axis()\n
+            first_joystick = joysticks[0]\n
+            first_joystick.start_rumble()
+      - slug: "stop_rumble"
+        name: "stop_rumble"
+        short: Stop the rumble feature on a joystick-like device.
+        long: >
+          Stop any rumble currently active on a joystick-like device. Does nothing if no rumble
+          feature available.
+        snippet:
+          caption: >
+            Start rumbling the first joystick.
+          code: >
+            joysticks = sketch.get_input_axis()\n
+            first_joystick = joysticks[0]\n
+            first_joystick.start_rumble()
+      - slug: "trigger_joystick"
+        name: "Trigger (Joystick)"
+        short: Discrete state element on a joystick-like device.
+        long: >
+          Structure describing a trigger on a joytstick including push buttons and hats.
+        snippet:
+          caption: >
+            Get the state of a push button.
+          code: >
+            joysticks = sketch.get_joysticks()()\n
+            first_joystick = joysticks[0]\n
+            push_button = first_joystick.get_trigger('push0')\n
+            button_state = push_button.get_state()
+        availability: Not yet available. Planned for future release.
+        also:
+          - on_state_change
+          - get_triggers_available
+          - get_trigger
+          - joystick
+  - name: "Keyboard"
+    description: "Methods to work with keyboard input and state."
+    items:
+      - slug: "button_keyboard"
+        name: "Button (Keyboard)"
+        short: Information about key in the keyboard.
+        long: >
+          Information about a keyboard key like a standardized name if available.
+        snippet:
+          caption: >
+            Get a key currently pressed.
+          code: >
+            buttons = sketch.get_keyboard().get_keys_pressed()\n
+            if len(buttons) > 0:\n
+              print(buttons[0].get_name())
+        examples:
+          - inputs_keyboard
+        availability: >
+          Available for Sketch2DApp and Sketch2DWeb. Note that, on web, some keys may be intercepted
+          by the operating system like the ctrl key and may not be available to the sketch.
+        also:
+          - get_keyboard
+          - get_keys_pressed
+          - get_name
+          - on_key_press
+          - on_key_release
+      - slug: "get_keyboard"
+        name: "get_keyboard"
+        short: Get access to the keyboard.
+        long: >
+          Get access to the keyboard currently registered with the operating system for the sketch.
+          Different sketches running at the same time may have different keyboards depending on
+          focus or OS configuration. Returns None if not supported on the platform or a mouse or
+          equivalent is not connected.
+        snippet:
+          caption: >
+            Get the current keyboard.
+          code: >
+            sketch.get_keyboard()
+        examples:
+          - inputs_keyboard
+        availability: >
+          Available for Sketch2DApp and Sketch2DWeb. Note that, on web, some keys may be intercepted
+          by the operating system like the ctrl key and may not be available to the sketch.
+        also:
+          - button_keyboard
+          - get_keys_pressed
+          - get_name
+          - on_key_press
+          - on_key_release
+      - slug: "get_keys_pressed"
+        name: "get_keys_pressed"
+        short: Get a list of keys currently pressed.
+        long: >
+          Get a list of keys as Buttons.
+        snippet:
+          caption: >
+            Get a key currently pressed.
+          code: >
+            buttons = sketch.get_keyboard().get_keys_pressed()\n
+            if len(buttons) > 0:\n
+              print(buttons[0].get_name())
+        examples:
+          - inputs_keyboard
+        availability: >
+          Available for Sketch2DApp and Sketch2DWeb. Note that, on web, some keys may be intercepted
+          by the operating system like the ctrl key and may not be available to the sketch.
+        also:
+          - button_keyboard
+          - get_keyboard
+          - get_name
+          - on_key_press
+          - on_key_release
+      - slug: "get_name"
+        name: "get_name (Keyboard)"
+        short: Get the name of a key.
+        long: >
+          Get a string describing a key. Note the following values for special keys are maintained
+          formally:
+
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Value</th>
+                <th>Constant</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Alt</td>
+                <td>'alt'</td>
+                <td>sketchingpy.const.KEYBOARD_ALT_BUTTON</td>
+              </tr>
+              <tr>
+                <td>Arrow: Left Key</td>
+                <td>'left'</td>
+                <td>sketchingpy.const.KEYBOARD_LEFT_BUTTON</td>
+              </tr>
+              <tr>
+                <td>Arrow: Up Key</td>
+                <td>'up'</td>
+                <td>sketchingpy.const.KEYBOARD_UP_BUTTON</td>
+              </tr>
+              <tr>
+                <td>Arrow: Right Key</td>
+                <td>'right'</td>
+                <td>sketchingpy.const.KEYBOARD_RIGHT_BUTTON</td>
+              </tr>
+              <tr>
+                <td>Arrow: Down Key</td>
+                <td>'down'</td>
+                <td>sketchingpy.const.KEYBOARD_DOWN_BUTTON</td>
+              </tr>
+              <tr>
+                <td>Ctrl</td>
+                <td>'ctrl'</td>
+                <td>sketchingpy.const.KEYBOARD_CTRL_BUTTON</td>
+              </tr>
+              <tr>
+                <td>Shift</td>
+                <td>'shift'</td>
+                <td>sketchingpy.const.KEYBOARD_SHIFT_BUTTON</td>
+              </tr>
+              <tr>
+                <td>Space</td>
+                <td>'space'</td>
+                <td>sketchingpy.const.KEYBOARD_SPACE_BUTTON</td>
+              </tr>
+              <tr>
+                <td>Super</td>
+                <td>'super'</td>
+                <td>sketchingpy.const.KEYBOARD_SUPER_BUTTON</td>
+              </tr>
+              <tr>
+                <td>Tab</td>
+                <td>'tab'</td>
+                <td>sketchingpy.const.KEYBOARD_TAB_BUTTON</td>
+              </tr>
+            </tbody>
+          </table>
+
+          Alphanumeric keys will have their literal value like the a key will be 'a' in get_name.
+          Other keys will have a best effort value like the minus key ('-') will be reported as
+          'minus' in get_name.
+        snippet:
+          caption: >
+            Get a key currently pressed.
+          code: >
+            buttons = sketch.get_keyboard().get_keys_pressed()\n
+            if len(buttons) > 0:\n
+              print(buttons[0].get_name())
+        examples:
+          - inputs_keyboard
+        availability: >
+          Available for Sketch2DApp and Sketch2DWeb. Note that, on web, some keys may be intercepted
+          by the operating system like the ctrl key and may not be available to the sketch.
+        also:
+          - button_keyboard
+          - get_keyboard
+          - get_keys_pressed
+          - on_key_press
+          - on_key_release
+      - slug: "on_key_press"
+        name: "on_key_press"
+        short: Specify callback for when a key is pressed.
+        long: >
+          Register a callback for when a key is pressed, calling a function with the key and
+          keyboard. Will pass a <a href="/reference/button_keyboard.html">Button</a> as argument.
+          Will unregister prior callbacks for on_key_press.
+        snippet:
+          caption: >
+            Register a simple keyboard key callback.
+          code: >
+            callback = lambda button: print(button.get_name())\n
+            sketch.get_keyboard().on_key_press(callback)
+        arguments:
+          - name: "callback"
+            description: The function to invoke when a key is pressed.
+        examples:
+          - inputs_keyboard
+        availability: >
+          Available for Sketch2DApp and Sketch2DWeb. Note that, on web, some keys may be intercepted
+          by the operating system like the ctrl key and may not be available to the sketch.
+        also:
+          - button_keyboard
+          - get_keyboard
+          - get_name
+          - get_keys_pressed
+          - on_key_release
+      - slug: "on_key_release"
+        name: "on_key_release"
+        short: Specify callback for when a key is released.
+        long: >
+          Register a callback for when a key is unpressed, calling a function with the key and
+          keyboard. Will pass <a href="/reference/button_keyboard.html">Button</a> as argument.
+          Will unregister prior callbacks for on_key_release.
+        snippet:
+          caption: >
+            Register a simple keyboard key callback.
+          code: >
+            callback = lambda button: print(button.get_name())\n
+            sketch.get_keyboard().on_key_release(callback)
+        arguments:
+          - name: "callback"
+            description: The function to invoke when a key is released.
+        examples:
+          - inputs_keyboard
+        availability: >
+          Available for Sketch2DApp and Sketch2DWeb. Note that, on web, some keys may be intercepted
+          by the operating system like the ctrl key and may not be available to the sketch.
+        also:
+          - button_keyboard
+          - get_keyboard
+          - get_name
+          - get_keys_pressed
+          - on_key_press
+  - name: "Line"
+    description: "Simple tools to draw straight lines."
+    items:
+      - slug: "draw_line"
+        name: "draw_line"
+        short: Draw a simple line.
+        long: >
+          Draw a line between two points.
+        snippet:
+          caption: >
+            Draw a line starting at x coordinate of 50 and y coordinate of 100 going to x coordinate
+            of 150 and y coordinate of 200.
+          code: >
+            sketch.draw_line(50, 100, 150, 200)
+        arguments:
+          - name: "x1"
+            description: The x coordinate from which the line should be drawn.
+          - name: "y1"
+            description: The y coordinate from which the line should be drawn.
+          - name: "x2"
+            description: The x coordinate to which the line should be drawn.
+          - name: "y2"
+            description: The y coordinate to which the line should be drawn.
+        examples:
+          - shapes_line
+        availability: Available for all platforms.
+        also:
+          - set_stroke_weight
+          - stroke
+  - name: "Mouse / Touchscreen"
+    description: "Options for working with mouse state and buttons with touchscreen compatibilty."
+    items:
+      - slug: "button_mouse"
+        name: "Button (Mouse)"
+        short: Information about a mouse button.
+        long: >
+          Information about a mouse button or equivalent gesture on touchscreen.
+        snippet:
+          caption: >
+            Get a button currently pressed.
+          code: >
+            buttons = sketch.get_mouse().get_buttons_pressed()\n
+            if len(buttons) > 0:\n
+              print(buttons[0].get_name())
+        examples:
+          - inputs_mouse
+        availability: >
+          Available for Sketch2DApp and Sketch2DWeb. Note that, on web, right click may be
+          intercepted by the operating system and may not be available to the sketch or may be
+          delayed.
+        also:
+          - get_buttons_pressed
+          - get_mouse
+          - get_name_mouse
+          - get_pointer_x
+          - get_pointer_y
+          - on_button_press
+          - on_button_release
+      - slug: "get_buttons_pressed"
+        name: "get_buttons_pressed"
+        short: Information about the mouse buttons currently pressed.
+        long: >
+          Get information about mouse buttons currently pressed.
+        snippet:
+          caption: >
+            Get a button currently pressed.
+          code: >
+            buttons = sketch.get_mouse().get_buttons_pressed()\n
+            if len(buttons) > 0:\n
+              print(buttons[0].get_name())
+        examples:
+          - inputs_mouse
+        availability: >
+          Available for Sketch2DApp and Sketch2DWeb. Note that, on web, right click may be
+          intercepted by the operating system and may not be available to the sketch or may be
+          delayed.
+        also:
+          - button_mouse
+          - get_mouse
+          - get_name_mouse
+          - get_pointer_x
+          - get_pointer_y
+          - on_button_press
+          - on_button_release
+      - slug: "get_mouse"
+        name: "get_mouse"
+        short: Get access to the mouse.
+        long: >
+          Get access to the mouse currently registered with the operating system for the sketch.
+          Different sketches running at the same time may have different mouse objects depending on
+          focus or OS configuration. Returns None if not supported on the platform or a mouse or
+          equivalent is not connected. May also be emulated if the device uses a touch screen. 
+        snippet:
+          caption: >
+            Get a button currently pressed.
+          code: >
+            buttons = sketch.get_mouse().get_buttons_pressed()\n
+            if len(buttons) > 0:\n
+              print(buttons[0].get_name())
+        examples:
+          - inputs_mouse
+        availability: >
+          Available for Sketch2DApp and Sketch2DWeb.
+        also:
+          - button_mouse
+          - get_buttons_pressed
+          - get_name_mouse
+          - get_pointer_x
+          - get_pointer_y
+          - on_button_press
+          - on_button_release
+      - slug: "get_name_mouse"
+        name: "get_name (Mouse)"
+        short: Information about a mouse button.
+        long: >
+          Get information about mouse button or an emulated button in the case of a touch screen.
+          Uses the following names:
+
+          <table>
+            <thead>
+              <tr>
+                <th>Mouse</th>
+                <th>Touchscreen</th>
+                <th>Value</th>
+                <th>Constant</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Left Button</td>
+                <td>Single Finger Tap</td>
+                <td>'leftMouse'</td>
+                <td>sketchingpy.const.MOUSE_LEFT_BUTTON</td>
+              </tr>
+              <tr>
+                <td>Right Button</td>
+                <td>Two Finger Tap</td>
+                <td>'rightMouse'</td>
+                <td>sketchingpy.const.MOUSE_RIGHT_BUTTON</td>
+              </tr>
+            </tbody>
+          </table>
+
+          Note that scrollwheel events are not currently supported due to complications with web.
+        snippet:
+          caption: >
+            Get a button currently pressed.
+          code: >
+            buttons = sketch.get_mouse().get_buttons_pressed()\n
+            if len(buttons) > 0:\n
+              print(buttons[0].get_name())
+        examples:
+          - inputs_mouse
+        availability: >
+          Available for Sketch2DApp and Sketch2DWeb. Note that, on web, right click may be
+          intercepted by the operating system and may not be available to the sketch or may be
+          delayed.
+        also:
+          - button_mouse
+          - get_buttons_pressed
+          - get_mouse
+          - get_pointer_x
+          - get_pointer_y
+          - on_button_press
+          - on_button_release
+      - slug: "get_pointer_x"
+        name: "get_pointer_x"
+        short: Get the x coordinate of the mouse pointer.
+        long: >
+          Get the current horizontal coordinate of the mouse pointer or, in the case of a
+          touchscreen, the point of last touch input if available. Defaults to 0 if no mouse events
+          have been seen.
+        snippet:
+          caption: >
+            Get the current cursor x coordinate.
+          code: >
+            sketch.get_mouse().get_x()
+        examples:
+          - inputs_mouse
+        availability: >
+          Available for Sketch2DApp and Sketch2DWeb.
+        also:
+          - button_mouse
+          - get_buttons_pressed
+          - get_mouse
+          - get_name_mouse
+          - get_pointer_y
+          - on_button_press
+          - on_button_release
+      - slug: "get_pointer_y"
+        name: "get_pointer_y"
+        short: Get the y coordinate of the mouse pointer.
+        long: >
+          Get the current vertical coordinate of the mouse pointer or, in the case of a touchscreen,
+          the point of last touch input if available. Defaults to 0 if no mouse events have been
+          seen.
+        snippet:
+          caption: >
+            Get the current cursor y coordinate.
+          code: >
+            sketch.get_mouse().get_y()
+        examples:
+          - inputs_mouse
+        availability: >
+          Available for Sketch2DApp and Sketch2DWeb.
+        also:
+          - button_mouse
+          - get_buttons_pressed
+          - get_mouse
+          - get_name_mouse
+          - get_pointer_x
+          - on_button_press
+          - on_button_release
+      - slug: "on_button_press"
+        name: "on_button_press"
+        short: Specify callback for when a mouse button is pressed.
+        long: >
+          Register a callback for when a button is pressed, calling a function with the button and
+          mouse. Will pass the <a href="/reference/button_mouse.html">Button</a> as argument. Will
+          unregister prior callbacks for on_button_press.
+        snippet:
+          caption: >
+            Register a simple click callback.
+          code: >
+            callback = lambda button: print(button.get_name())\n
+            sketch.get_mouse().on_button_press(callback)
+        arguments:
+          - name: "callback"
+            description: The function to invoke when a mouse button or equivalent is pressed.
+        examples:
+          - inputs_mouse
+        availability: >
+          Available for Sketch2DApp and Sketch2DWeb. Note that, on web, right click may be
+          intercepted by the operating system and may not be available to the sketch or may be
+          delayed.
+        also:
+          - button_mouse
+          - get_buttons_pressed
+          - get_mouse
+          - get_name_mouse
+          - get_pointer_x
+          - get_pointer_y
+          - on_button_release
+      - slug: "on_button_release"
+        name: "on_button_release"
+        short: Specify callback for when a mouse button is released.
+        long: >
+          Register a callback for when a button is unpressed, calling a function with the button and
+          mouse. Will pass <a href="/reference/button_mouse.html">Button</a> as argument. Will
+          unregister prior callbacks for on_button_release.
+        snippet:
+          caption: >
+            Register a simple click callback.
+          code: >
+            callback = lambda button: print(button.get_name())\n
+            sketch.get_mouse().on_button_release(callback)
+        arguments:
+          - name: "callback"
+            description: The function to invoke when a mouse button or equivalent is released.
+        examples:
+          - inputs_mouse
+        availability: >
+          Available for Sketch2DApp and Sketch2DWeb. Note that, on web, right click may be
+          intercepted by the operating system and may not be available to the sketch or may be
+          delayed.
+        also:
+          - button_mouse
+          - get_buttons_pressed
+          - get_mouse
+          - get_name_mouse
+          - get_pointer_x
+          - get_pointer_y
+          - on_button_press
+  - name: "Pixel"
+    description: "Set single pixel values."
+    items:
+      - slug: "draw_pixel"
+        name: "draw_pixel"
+        short: Draw a single pixel
+        long: >
+          Draw a rectangle with a width of zero and height of zero, changing a single pixel. Uses
+          the fill color.
+        snippet:
+          caption: >
+            Draw a single black pixel at x coordinate of 100 and y coordinate of 150.
+          code: >
+            sketch.set_fill('#000000')\n
+            sketch.draw_pixel(100, 150)
+        arguments:
+          - name: "x"
+            description: The x location at which to draw the rectangle.
+          - name: "y"
+            description: The y location at which to draw the rectangle.
+        availability: Available for all platforms.
+        also:
+          - draw_rect
+  - name: "Rectangle"
+    description: "Flexible rectangle and square drawing capabilities."
+    items:
+      - slug: "draw_rect"
+        name: "draw_rect"
+        short: Draw a rectangle.
+        long: >
+          Draw a rectangle or, if width and height are the same, a square.
+        snippet:
+          caption: >
+            Draw a rectangle at x coordinate of 100 and y coordinate of 150 using a width of 20
+            pixels and height of 40 pixels. Note that a width and height of zero in corner mode
+            is the same as draw_pixel.
+          code: >
+            sketch.set_rect_mode('center')\n
+            sketch.draw_rect(100, 150, 20, 40)
+        arguments:
+          - name: "x1"
+            description: The x location at which to draw the rectangle.
+          - name: "y1"
+            description: The y location at which to draw the rectangle.
+          - name: "x2"
+            description: >
+              Horizontal size. Note that a width of zero in corner mode sets a single pixel row.
+          - name: "y2"
+            description: >
+              Vertical size. Note that a widtdh of zero in corner mode sets a single pixel column.
+        examples:
+          - shapes_rect
+        availability: Available for all platforms.
+        also:
+          - set_rect_mode
+          - draw_pixel
+      - slug: "set_rect_mode"
+        name: "set_rect_mode"
+        short: Specify how Sketchingpy should interpret the position and size arguments.
+        long: >
+          Determine how arcs should be placed within the sketch and how they should be sized for
+          rectangles. Available options:
+
+          <ul>
+            <li>
+              <span class="const">center</span>:
+              Provide x and y coordinates followed by width and height.
+            </li>
+            <li>
+              <span class="const">radius</span>:
+              Provide x and y coordinates followed by half width and half height.
+            </li>
+            <li>
+              <span class="const">corner</span>:
+              Left and top coordinates followed by width and height.
+            </li>
+            <li>
+              <span class="const">corners</span>:
+              Left and top coordinates followed by right and bottom coordinates.
+            </li>
+          </ul>
+
+          This modifies the interpretation of x1, y1, x2, and y2 but only for drawing rectangles.
+        snippet:
+          caption: >
+            Indiciate that the rect parameters will be center X, center Y, width, and height.
+          code: >
+            sketch.set_rect_mode('center')
+        arguments:
+          - name: "mode"
+            description: String describing the mode to use.
+        examples:
+          - shapes_rect
+        availability: Available for all platforms.
+        also:
+          - draw_rect
+          - push_style
+          - pop_style
+  - name: "Renderers"
+    description: "Support for different platforms and rendering modes."
+    items:
+      - slug: "sketch2d"
+        name: "Sketch2D"
+        short: Automatic backend selection renderer.
+        long: >
+          Renderer which tries to determine the right "backend" based on the environment.
+        snippet:
+          caption: >
+            Create a new sketch three different ways.
+          code: >
+            sketch_minimum = sketchingpy.Sketch2D(500, 500)\n
+            sketch_with_target = sketchingpy.Sketch2D(500, 500, 'example')\n
+            sketch_with_load = sketchingpy.Sketch2D(500, 500, 'example', 'loading')
+        arguments:
+          - name: "width"
+            description: The horizontal size of the sketch in pixels.
+          - name: "height"
+            description: The vertical size of the sketch in pixels.
+          - name: "target"
+            description: >
+              Interpreted as a title for app (desktop / pygame) and interpreted as the canvas ID for
+              web. Ignored for static renderer.
+          - name: "loading"
+            description: >
+              Interpreted as the element ID of the loading indicator or message for web. Ignored on
+              others.
+        availability: Available for all platforms.
+        also:
+          - sketch2dapp
+          - sketch2dstatic
+          - sketch2dweb
+      - slug: "sketch2dapp"
+        name: "Sketch2DApp"
+        short: Renderer for desktop.
+        long: >
+          Renderer for desktop like Linux, Apple's macOS, and Microsoft's Windows.
+        snippet:
+          caption: >
+            Create a new Pygame-based sketch two different ways.
+          code: >
+            sketch_minimum = sketchingpy.Sketch2DApp(500, 500)\n
+            sketch = sketchingpy.Sketch2DApp(500, 500, 'Window Title')
+        arguments:
+          - name: "width"
+            description: The horizontal size of the sketch in pixels.
+          - name: "height"
+            description: The vertical size of the sketch in pixels.
+          - name: "target"
+            description: >
+              Optional title for the window. If excluded, will use a default.
+          - name: "loading"
+            description: >
+              Ignored, reserved for future use. Can be excluded.
+        availability: Requires installation of Pygame.
+        also:
+          - sketch2d
+          - sketch2dstatic
+          - sketch2dweb
+      - slug: "sketch2dstatic"
+        name: "Sketch2DStatic"
+        short: Renderer which writes to image.
+        long: >
+          Renderer which can run without displaying the sketch to the user, instead writing directly
+          to a file.
+        snippet:
+          caption: >
+            Create a new static renderer sketch.
+          code: >
+            sketch = sketchingpy.Sketch2DStatic(500, 500)
+        arguments:
+          - name: "width"
+            description: The horizontal size of the sketch in pixels.
+          - name: "height"
+            description: The vertical size of the sketch in pixels.
+          - name: "target"
+            description: Optional and ignored (reserved for future use).
+          - name: "loading"
+            description: Optional and ignored (reserved for future use).
+        availability: Requires installation of Pillow.
+        also:
+          - sketch2d
+          - sketch2dstatic
+          - sketch2dweb
+      - slug: "sketch2dweb"
+        name: "Sketch2DWeb"
+        short: Renderer for browsers.
+        long: >
+          Renderer which can run inside an HTML document display like a browser.
+        snippet:
+          caption: >
+            Create a new web sketch three different ways.
+          code: >
+            sketch_minimum = sketchingpy.Sketch2DWeb(500, 500)\n
+            sketch_custom_canvas = sketchingpy.Sketch2DWeb(500, 500, 'canvas-id')\n
+            sketch_custom_loading = sketchingpy.Sketch2DWeb(500, 500, 'canvas-id', 'loading-id')
+        arguments:
+          - name: "width"
+            description: The horizontal size of the sketch in pixels.
+          - name: "height"
+            description: The vertical size of the sketch in pixels.
+          - name: "target"
+            description: Canvas element ID. Defaults to "sketch-canvas" if not given.
+          - name: "loading"
+            description: Loading message element ID. Defaults to "sketch-load-message" if not given.
+        availability: Only available in browser.
+        also:
+          - sketch2d
+          - sketch2dapp
+          - sketch2dstatic
+  - name: "Shape"
+    description: "Tools for creating and drawing complex shapes with straight lines and edges."
+    items:
+      - slug: "add_bezier_to"
+        name: "add_bezier_to"
+        short: Add a bezier curve to a shape.
+        long: >
+          Draw a bezier curve from the current position to a new destination which is used as the
+          next "current" position.
+        snippet:
+          caption: >
+            Draw a shape which consists of a bezier curve from x of 50 and y of 100 to x of 150
+            and y of 200 using control points of (60, 110) and (140, 190).
+          code: >
+            shape = sketch.start_shape(50, 100)\n
+            shape.add_bezier_to(60, 110, 140, 190, 150, 200)\n
+            shape.end()\n
+            sketch.draw_shape(shape)
+        arguments:
+            - name: "control_x1"
+              description: The horizontal location of the first control point.
+            - name: "control_y1"
+              description: The vertical location of the first control point.
+            - name: "control_x2"
+              description: The horizontal location of the second control point.
+            - name: "control_y2"
+              description: The vertical location of the second control point.
+            - name: "destination_x"
+              description: The vertical location of the end coordinate.
+            - name: "destination_y"
+              description: The horizontal location of the end coordinate.
+        examples:
+          - shapes_bezier
+        availability: Available for all platforms.
+        also:
+          - add_line_to
+          - close
+          - end
+          - start_shape
+      - slug: "add_line_to"
+        name: "add_line_to"
+        short: Add a straight line to a shape.
+        long: >
+          Draw a straight line from the current position to a new destination which is used as the
+          next "current" position.
+        snippet:
+          caption: >
+            Draw a shape which consists of a single line from x of 50 and y of 100 to x of 150
+            and y of 200.
+          code: >
+            shape = sketch.start_shape(50, 100)\n
+            shape.add_line_to(150, 200)\n
+            shape.end()\n
+            sketch.draw_shape(shape)
+        arguments:
+          - name: "x"
+            description: The x coordinate to which the line should be drawn.
+          - name: "y"
+            description: The y coordinate to which the line should be drawn.
+        examples:
+          - shapes_shape
+        availability: Available for all platforms.
+        also:
+          - add_bezier_to
+          - close
+          - end
+          - start_shape
+      - slug: "close"
+        name: "close"
+        short: Add a straight line to the starting coordinate.
+        long: >
+          Add a line in the shape from the current position to the start position, marking the shape
+          as finished and closed which allows it to be filled.
+        snippet:
+          caption: >
+            Draw a closed shape.
+          code: >
+            shape = sketch.start_shape(50, 100)\n
+            shape.add_line_to(150, 200)\n
+            shape.add_line_to(150, 250)\n
+            shape.close()\n
+            sketch.draw_shape(shape)
+        examples:
+          - shapes_shape
+        availability: Available for all platforms.
+        also:
+          - end
+          - get_is_closed
+          - get_is_finished
+          - start_shape
+      - slug: "draw_shape"
+        name: "draw_shape"
+        short: Draw a shape.
+        long: >
+          Draw a shape which consists of multiple line or curve segments and which can be either
+          open (stroke only) or closed (can be filled).
+        snippet:
+          caption: >
+            Draw a shape which consists of a single line from x of 50 and y of 100 to x of 150
+            and y of 200.
+          code: >
+            shape = sketch.start_shape(50, 100)\n
+            shape.add_line_to(150, 200)\n
+            shape.end()\n
+            sketch.draw_shape(shape)
+        arguments:
+          - name: "shape"
+            description: The shape to draw.
+        examples:
+          - shapes_shape
+        availability: Available for all platforms.
+        also:
+          - close
+          - get_is_closed
+          - get_is_finished
+          - start_shape
+      - slug: "end"
+        name: "end"
+        short: Finish the shape without closing it.
+        long: >
+          Finish the shape without closing it, meaning it cannot hold a fill.
+        snippet:
+          caption: >
+            Draw an open shape.
+          code: >
+            shape = sketch.start_shape(50, 100)\n
+            shape.add_line_to(150, 200)\n
+            shape.add_line_to(150, 250)\n
+            shape.end()\n
+            sketch.draw_shape(shape)
+        examples:
+          - shapes_shape
+        availability: Available for all platforms.
+        also:
+          - close
+          - get_is_closed
+          - get_is_finished
+          - start_shape
+      - slug: "get_is_closed"
+        name: "get_is_closed"
+        short: Determine if a shape can be filled.
+        long: >
+          Determine if the shape is closed so can be filled. Returns true if closed (can be filled)
+          and false otherwise.
+        snippet:
+          caption: >
+            Inspect a closed shape.
+          code: >
+            shape = sketch.start_shape(50, 100)\n
+            shape.add_line_to(150, 200)\n
+            shape.add_line_to(150, 250)\n
+            shape.close()\n
+            print(shape.get_is_closed())
+        availability: Available for all platforms.
+        also:
+          - end
+          - close
+          - get_is_finished
+          - start_shape
+      - slug: "get_is_finished"
+        name: "get_is_finished"
+        short: Determine if a shape is finished.
+        long: >
+          Determine if the shape is finished so can be drawn. Returns true if finished (can be
+          drawn) and false otherwise (still building). A shape cannot be drawn until it is finished
+          which can be accomplished by either calling end or close.
+        snippet:
+          caption: >
+            Inspect a closed shape.
+          code: >
+            shape = sketch.start_shape(50, 100)\n
+            shape.add_line_to(150, 200)\n
+            shape.add_line_to(150, 250)\n
+            shape.close()\n
+            print(shape.get_is_finished())
+        availability: Available for all platforms.
+        also:
+          - end
+          - close
+          - get_is_closed
+          - start_shape
+      - slug: "get_max_x"
+        name: "get_max_x"
+        short: Determine the maximum x coordinate of a shape.
+        long: >
+          Determine the maximum x coordinate (relative to start position) that this shape may reach
+          to. This includes bezier control points but does not try to include stroke weight in its
+          calculation.
+        snippet:
+          caption: >
+            Inspect a closed shape.
+          code: >
+            shape = sketch.start_shape(50, 100)\n
+            shape.add_line_to(150, 200)\n
+            shape.add_line_to(150, 250)\n
+            shape.close()\n
+            print(shape.get_max_x())
+        availability: Available for all platforms.
+        also:
+          - get_max_y
+          - get_min_x
+      - slug: "get_max_y"
+        name: "get_max_y"
+        short: Determine the maximum y coordinate of a shape.
+        long: >
+          Determine the maximum y coordinate (relative to start position) that this shape may reach
+          to. This includes bezier control points but does not try to include stroke weight in its
+          calculation.
+        snippet:
+          caption: >
+            Inspect a closed shape.
+          code: >
+            shape = sketch.start_shape(50, 100)\n
+            shape.add_line_to(150, 200)\n
+            shape.add_line_to(150, 250)\n
+            shape.close()\n
+            print(shape.get_max_y())
+        availability: Available for all platforms.
+        also:
+          - get_max_x
+          - get_min_y
+      - slug: "get_min_x"
+        name: "get_min_x"
+        short: Determine the minimum x coordinate of a shape.
+        long: >
+          Determine the minimum x coordinate (relative to start position) that this shape may reach
+          to. This includes bezier control points but does not try to include stroke weight in its
+          calculation.
+        snippet:
+          caption: >
+            Inspect a closed shape.
+          code: >
+            shape = sketch.start_shape(50, 100)\n
+            shape.add_line_to(150, 200)\n
+            shape.add_line_to(150, 250)\n
+            shape.close()\n
+            print(shape.get_min_x())
+        availability: Available for all platforms.
+        also:
+          - get_max_x
+          - get_min_y
+      - slug: "get_min_y"
+        name: "get_min_y"
+        short: Determine the minimum y coordinate of a shape.
+        long: >
+          Determine the minimum y coordinate (relative to start position) that this shape may reach
+          to. This includes bezier control points but does not try to include stroke weight in its
+          calculation.
+        snippet:
+          caption: >
+            Inspect a closed shape.
+          code: >
+            shape = sketch.start_shape(50, 100)\n
+            shape.add_line_to(150, 200)\n
+            shape.add_line_to(150, 250)\n
+            shape.close()\n
+            print(shape.get_min_y())
+        availability: Available for all platforms.
+        also:
+          - get_max_y
+          - get_min_x
+      - slug: "get_segments"
+        name: "get_segments"
+        short: Retrieve shape segments.
+        long: >
+          Retrieve objects describing each of the segments in a shape.
+        snippet:
+          caption: >
+            Inspect a closed shape.
+          code: >
+            shape = sketch.start_shape(50, 100)\n
+            shape.add_line_to(150, 200)\n
+            shape.add_line_to(150, 250)\n
+            shape.close()\n
+            print(len(shape.get_segments()))
+        availability: Available for all platforms.
+        also:
+          - get_start_x
+          - get_start_y
+      - slug: "get_start_x"
+        name: "get_start_x"
+        short: Retrieve the first x coordinate of this shape.
+        long: >
+          Get the horizontal coordinate from which the first segment draws.
+        snippet:
+          caption: >
+            Inspect a closed shape.
+          code: >
+            shape = sketch.start_shape(50, 100)\n
+            shape.add_line_to(150, 200)\n
+            shape.add_line_to(150, 250)\n
+            shape.close()\n
+            print(len(shape.get_start_x()))
+        availability: Available for all platforms.
+        also:
+          - get_segments
+          - get_start_y
+      - slug: "get_start_y"
+        name: "get_start_y"
+        short: Retrieve the first y coordinate of this shape.
+        long: >
+          Get the vertical coordinate from which the first segment draws.
+        snippet:
+          caption: >
+            Inspect a closed shape.
+          code: >
+            shape = sketch.start_shape(50, 100)\n
+            shape.add_line_to(150, 200)\n
+            shape.add_line_to(150, 250)\n
+            shape.close()\n
+            print(len(shape.get_start_y()))
+        availability: Available for all platforms.
+        also:
+          - get_segments
+          - get_start_x
+      - slug: "start_shape"
+        name: "start_shape"
+        short: Create a new shape.
+        long: >
+          Create a new shape which consists of multiple line or curve segments and which can be
+          either open (stroke only) or closed (can be filled).
+        snippet:
+          caption: >
+            Draw a shape which consists of a single line from x of 50 and y of 100 to x of 150
+            and y of 200.
+          code: >
+            shape = sketch.start_shape(50, 100)\n
+            shape.add_line_to(150, 200)\n
+            shape.end()\n
+            sketch.draw_shape(shape)
+        arguments:
+          - name: "x"
+            description: The starting x position of the shape.
+          - name: "y"
+            description: The starting y position of the shape.
+        examples:
+          - shapes_shape
+        availability: Available for all platforms.
+        also:
+          - close
+          - draw_shape
+          - get_is_closed
+          - get_is_finished
+  - name: "Sound (future)"
+    description: "Functions for playing and managing sounds."
+    items:
+      - slug: "get_sound_layer"
+        name: "get_sound_layer"
+        short: Get access to soundcard and speakers.
+        long: >
+          Open access to the soundcard / speakers. If it is not available, not found, or not
+          permitted, this will return None.
+        snippet:
+          caption: >
+            Get access to the seound layer.
+          code: >
+            records = sketch.get_sound_layer()
+        examples:
+          - data_read_csv
+          - data_read_json
+          - data_write_csv
+          - data_write_json
+        availability: Not yet available. Planned for future release.
+        also:
+          - get_sound
+          - play_in_loop
+          - play_once
+          - sound
+          - stop_playing
+      - slug: "get_sound"
+        name: "get_sound"
+        short: Load a sound file.
+        long: >
+          Load a sound file from network or disk.
+        snippet:
+          caption: >
+            Load sample.wav.
+          code: >
+            sound = sketch.get_sound_layer().get_sound('sample.wav')
+        arguments:
+          - name: "loc"
+            description: The location from which the file should be read.
+        availability: Not yet available. Planned for future release.
+        also:
+          - get_sound_layer
+          - play_in_loop
+          - play_once
+          - sound
+          - stop_playing
+      - slug: "play_in_loop"
+        name: "play_in_loop"
+        short: Play a sound on a loop.
+        long: >
+          Play a sound on a loop which will continue until stopped or the sketch ends.
+        snippet:
+          caption: >
+            Load sample.wav and play it on loop.
+          code: >
+            sound = sketch.get_sound_layer().get_sound('sample.wav')\n
+            sound.play_in_loop()
+        availability: Not yet available. Planned for future release.
+        also:
+          - get_sound_layer
+          - get_sound
+          - play_once
+          - sound
+          - stop_playing
+      - slug: "play_once"
+        name: "play_once"
+        short: Play a sound once.
+        long: >
+          Play a sound once before stopping.
+        snippet:
+          caption: >
+            Load sample.wav and play it once.
+          code: >
+            sound = sketch.get_sound_layer()get_sound('sample.wav')\n
+            sound.play_once()
+        availability: Not yet available. Planned for future release.
+        also:
+          - get_sound_layer
+          - get_sound
+          - play_in_loop
+          - sound
+          - stop_playing
+      - slug: "sound"
+        name: "Sound"
+        short: Load a sound file.
+        long: >
+          An object representing a loaded sound.
+        snippet:
+          caption: >
+            Load sample.wav.
+          code: >
+            sound = sketch.get_sound_layer().get_sound('sample.wav')
+        availability: Not yet available. Planned for future release.
+        also:
+          - get_sound_layer
+          - get_sound
+          - play_in_loop
+          - play_once
+          - stop_playing
+      - slug: "stop_playing"
+        name: "stop_playing"
+        short: Cease playing a sound.
+        long: >
+          Stop playing a sound, ending its loop and current execution.
+        snippet:
+          caption: >
+            Stop playing a sound.
+          code: >
+            sound.stop_playing()
+        availability: Not yet available. Planned for future release.
+        also:
+          - get_sound_layer
+          - get_sound
+          - play_in_loop
+          - play_once
+          - sound
+  - name: "Style"
+    description: "Methods for managing drawing colors and styles."
+    items:
+      - slug: "clear_fill"
+        name: "clear_fill"
+        short: Clear the fill color.
+        long: >
+          Set the fill color to fully transparent so that only outlines of shapes and figures are
+          drawn.
+        snippet:
+          caption: >
+            Clear the fill color.
+          code: >
+            sketch.clear_fill()
+        examples:
+          - basics_styling
+        availability: Available on all platforms.
+        also:
+          - pop_style
+          - push_style
+          - set_fill
+          - set_stroke
+      - slug: "clear_stroke"
+        name: "clear_stroke"
+        short: Clear the stroke color.
+        long: >
+          Disable the drawing of outlines for shapes and figures as well as lines. Note that this
+          has the effect of setting stroke weight to zero in terms of sizing and memory.
+        snippet:
+          caption: >
+            Clear the stroke width.
+          code: >
+            sketch.clear_stroke()
+        examples:
+          - basics_styling
+        availability: Available on all platforms.
+        also:
+          - pop_style
+          - push_style
+          - set_stroke
+          - set_stroke_weight
+      - slug: "pop_style"
+        name: "pop_style"
+        short: Restore a previously saved styling.
+        long: >
+          Restore the most recently saved styling configuration saved in style history, removing
+          that styling from the history. This works as a stack (like a stack of plates) where the
+          top of the pile is taken off and restored, removing it from that stack. This will
+          overwrite the current style configuration in the sketch.
+        snippet:
+          caption: >
+            Save a green fill and restore it later to draw a green rectangle.
+          code: >
+            sketch.set_fill('#00C000')  # Set fill to green\n
+            sketch.push_style()  # Save the current styling\n
+            sketch.set_fill('#C00000')  # Set it to red\n
+            sketch.pop_style()  # Restore saved styling so fill is green again\n
+            sketch.rect(50, 100, 150, 200)
+        examples:
+          - basics_state
+        availability: Available on all platforms.
+        also:
+          - pop_transform
+          - push_style
+      - slug: "push_style"
+        name: "push_style"
+        short: Save current styling.
+        long: >
+          Save current sketch styling to the style history. This works as a stack (like a stack of
+          plates) where this puts a new plate on the top of the pile. This will leave the current
+          style configuration in the sketch unchanged.
+        snippet:
+          caption: >
+            Save a green fill and restore it later to draw a green rectangle.
+          code: >
+            sketch.set_fill('#00C000')  # Set fill to green\n
+            sketch.push_style()  # Save the current styling\n
+            sketch.set_fill('#C00000')  # Set it to red\n
+            sketch.pop_style()  # Restore saved styling so fill is green again\n
+            sketch.rect(50, 100, 150, 200)
+        examples:
+          - basics_state
+        availability: Available on all platforms.
+        also:
+          - pop_style
+          - push_transform
+      - slug: "set_stroke_weight"
+        name: "set_stroke_weight"
+        short: Set the stroke size.
+        long: >
+          Set the width of stroke for drawing outlines for shapes and figures as well as lines.
+        snippet:
+          caption: >
+            Set stroke to 3 pixels.
+          code: >
+            sketch.set_stroke_weight(3)
+        arguments:
+          - name: "size"
+            description: Number of pixels for the stroke weight.
+        examples:
+          - basics_styling
+        availability: Available on all platforms.
+        also:
+          - clear_stroke
+          - pop_style
+          - push_style
+          - set_stroke
+      - slug: "set_fill"
+        name: "set_fill"
+        short: Set the fill color.
+        long: >
+          Set the color to use for filling shapes and figures.
+        snippet:
+          caption: >
+            Set fill to a red color.
+          code: >
+            sketch.set_fill('#C00000')
+        arguments:
+          - name: "color"
+            description: Name of the color or a hex code.
+        examples:
+          - basics_styling
+        availability: Available on all platforms. Currently only hex codes are officially supported.
+        also:
+          - clear_fill
+          - pop_style
+          - push_style
+          - set_stroke
+      - slug: "set_stroke"
+        name: "set_stroke"
+        short: Set the stroke color.
+        long: >
+          Set the color to use for drawing outlines for shapes and figures as well as lines.
+        snippet:
+          caption: >
+            Set stroke to a blue color.
+          code: >
+            sketch.set_stroke('#0000C0')
+        arguments:
+          - name: "color"
+            description: Name of the color or a hex code.
+        examples:
+          - basics_styling
+        availability: Available on all platforms. Currently only hex codes are officially supported.
+        also:
+          - clear_stroke
+          - pop_style
+          - push_style
+          - set_fill
+          - set_stroke_weight
+  - name: "System"
+    description: "Functions for working with system state."
+    items:
+      - slug: "clear"
+        name: "clear"
+        short: Clear the sketch to a color.
+        long: >
+          Peform the equivalent of drawing a rectangle the size of the sketch without stroke and
+          with the given fill color.
+        snippet:
+          caption: >
+            Clear the sketch and set the background to a grey color.
+          code: >
+            sketch.clear('#C0C0C0')
+        arguments:
+          - name: "color"
+            description: The color to use in clearing.
+        availability: >
+          Available for all platforms.
+        also:
+          - draw_rect
+      - slug: "get_native"
+        name: "get_native"
+        short: Get the underlying native renderer object.
+        long: >
+          Get access to a renderer specific object where actions can be performed against the
+          underlying API outside of Sketchingpy. Use with caution!
+        snippet:
+          caption: >
+            Get a Pygame surface for a Sketch2DApp.
+          code: >
+            sketch = sketchingpy.Sketch2DApp(500, 500, 'Sample Title')\n
+            pygame_surface = sketch.get_native()
+        availability: >
+          Available for all platforms. For Sketch2DApp, returns the Pygame surface. For
+          Sketch2DStatic, returns a Pillow ImageDraw. For Sketch2DWeb, returns the HTML element for
+          the canvas.
+      - slug: "on_quit"
+        name: "on_quit"
+        short: Specify callback for when the sketch ends execution.
+        long: >
+          Register a callback for when the sketch terminates.
+        snippet:
+          caption: >
+            Register a callback for end of sketch execution. This function should expect a single
+            parameter which is the sketch quitting.
+          code: >
+            def callback(sketch_quitting):\n
+              print('Quiting')\n
+            sketch.on_quit(callback)
+        arguments:
+          - name: "callback"
+            description: The function to invoke when the sketch stops execution.
+        availability: >
+          Available for Sketch2DApp and Sketch2DWeb. Note that, on web, only called if quit is
+          explicitly invoked.
+        also:
+          - quit
+      - slug: "on_step"
+        name: "on_step"
+        short: Specify callback for when the sketch ends execution.
+        long: >
+          Register a callback for when the sketch redraws. This function should expect a single
+          parameter which is the sketch redrawing.
+        snippet:
+          caption: >
+            Register a callback for when the sketch takes a "step" and has an opportunity to redraw.
+          code: >
+            def callback(sketch_drawing):\n
+              print('Drawing')\n
+            sketch.on_step(callback)
+        arguments:
+          - name: "callback"
+            description: The function to invoke when the sketch stops execution.
+        examples:
+          - hello_interactive
+        availability: >
+          Available for Sketch2DApp and Sketch2DWeb.
+        also:
+          - set_fps
+      - slug: "quit"
+        name: "quit"
+        short: Finish execution of the sketch.
+        long: >
+          Cause the sketch to stop execution.
+        snippet:
+          caption: >
+            End a sketch.
+          code: >
+            sketch.quit()
+        availability: >
+          Available for Sketch2DApp and Sketch2DWeb.
+        also:
+          - on_quit
+      - slug: "set_fps"
+        name: "set_fps"
+        short: Indicate how fast the sketch should redraw.
+        long: >
+          Indicate a target frames per second that the sketch will take a "step" or redraw. Note
+          that this is a goal and, if the system fall behind, it will drop frames and cause the
+          on_step callback to be executed fewer times than the target.
+        snippet:
+          caption: >
+            Ask the sketch to redraw 10 times per second.
+          code: >
+            sketch.set_fps(10)
+        arguments:
+          - name: "rate"
+            description: The number of frames to try to draw per second.
+        examples:
+          - hello_interactive
+        availability: >
+          Available for Sketch2DApp and Sketch2DWeb.
+        also:
+          - on_step
+      - slug: "set_title"
+        name: "set_title"
+        short: Indicate the title to assign the window in the operating system.
+        long: >
+          Indicate the human-readable string title to assign to the sketch window.
+        snippet:
+          caption: >
+            Set the sketch title to "Sample Title" for the window managed by the operating system.
+          code: >
+            sketch.set_title('Sample Title')
+        arguments:
+          - name: "title"
+            description: The text of the title.
+        availability: >
+          Available for Sketch2DApp only.
+        also:
+          - on_step
+      - slug: "show"
+        name: "show"
+        short: Show the sketch.
+        long: >
+          Show the sketch to the user and, if applicable, start the draw loop specified by set_fps.
+          For Sketch2DApp, will execute any waiting drawing instructions provided to the sketch
+          prior to showing. This is conceptually the same as "starting" the sketch.
+        snippet:
+          caption: >
+            Show a sketch.
+          code: >
+            sketch.show()
+        arguments:
+          - name: "ax"
+            description: >
+              The container into which the sketch should be shown. Currently only supported for
+              Sketch2DStatic. Optional and ignored on most renderers.
+        examples:
+          - hello_static
+        availability: >
+          Available for all platforms. For static, will try showing the image to the user through
+          matplotlib.
+        also:
+          - save_image
+          - show_and_quit
+      - slug: "show_and_quit"
+        name: "show_and_quit"
+        short: Show the sketch and quit immediatley afterwards.
+        long: >
+          Show the sketch to the user and quit immediately afterwards, a routine potentially useful
+          for testing.
+        snippet:
+          caption: >
+            Show a sketch briefly
+          code: >
+            sketch.show_and_quit()
+        arguments:
+          - name: "ax"
+            description: >
+              The container into which the sketch should be shown. Currently only supported for
+              Sketch2DStatic. Optional and ignored on most renderers.
+        availability: >
+          Available for all platforms. For static renderer, this does nothing. For web, will leave
+          the sketch visible but will stop the event loop. For app, will close the window.
+        also:
+          - save_image
+          - show
+  - name: "Text"
+    description: "Tools for loading fonts and drawing text."
+    items:
+      - slug: "draw_text"
+        name: "draw_text"
+        short: Draw text using the current font.
+        long: >
+          Draw text using the current font and alignment.
+        snippet:
+          caption: >
+            Draw "Hello World" in 12 point IBM Plex Mono at x coordinate 50 and y coordinate 100.
+          code: >
+            sketch.set_text_font('./IBMPlexMono-Regular.ttf', 12)\n
+            sketch.draw_text(50, 100, 'Hello World')
+        arguments:
+          - name: "x"
+            description: The x coordinate at which to draw the text.
+          - name: "y"
+            description: The y coordinate at which to draw the text.
+          - name: "text"
+            description: The string to draw.
+        examples:
+          - text_fill_stroke
+          - text_horiz_align
+          - text_vert_align
+        availability: Available for all platforms.
+        also:
+          - set_text_align
+          - set_text_font
+      - slug: "set_text_align"
+        name: "set_text_align"
+        short: Indicate the alignment of text to be drawn.
+        long: >
+          Indicate how the text should be aligned horizontally and vertically.
+
+          <table>
+            <thead>
+              <tr>
+                <th>Value</th>
+                <th>Type</th>
+                <th>Meaning</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>'left'</td>
+                <td>Horizontal</td>
+                <td>Use the x coordinate as the left-most point of the text.</td>
+              </tr>
+              <tr>
+                <td>'center'</td>
+                <td>Horizontal</td>
+                <td>Use the x coordinate as location on which to center the text horizontally.</td>
+              </tr>
+              <tr>
+                <td>'right'</td>
+                <td>Horizontal</td>
+                <td>Use the x coordinate as right-most point of the text.</td>
+              </tr>
+              <tr>
+                <td>'top'</td>
+                <td>Vertical</td>
+                <td>Use the y coordinate as top-most point of the text.</td>
+              </tr>
+              <tr>
+                <td>'center'</td>
+                <td>Vertical</td>
+                <td>
+                  Use the y coordinate as the location on which to center the text vertically.
+                </td>
+              </tr>
+              <tr>
+                <td>'baseline'</td>
+                <td>Vertical</td>
+                <td>
+                  Use the y coordinate where the bottom of the text should be placed ignoring
+                  decenders.
+                </td>
+              </tr>
+              <tr>
+                <td>'bottom'</td>
+                <td>Vertical</td>
+                <td>
+                  Use the y coordinate where the bottom of the text should be placed including
+                  decenders.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          Other options may be added in the future.
+        snippet:
+          caption: >
+            Draw "Hello World" in 12 point IBM Plex Mono at x coordinate 50 and y coordinate 100
+            using left horizontal alignment and baseline vertical alignment.
+          code: >
+            sketch.set_text_font('./IBMPlexMono-Regular.ttf', 12)\n
+            sketch.set_text_align('left', 'baseline')\n
+            sketch.draw_text(50, 100, 'Hello World')
+        arguments:
+          - name: "horizontal"
+            description: Argument for horizontal alignment.
+          - name: "vertical"
+            description: >
+              Optional additional argument for vertical alignment. If not provided, will default to
+              baseline.
+        examples:
+          - text_horiz_align
+          - text_vert_align
+        availability: >
+          Available for all platforms. Additional right to left language support coming soon.
+        also:
+          - draw_text
+          - set_text_font
+      - slug: "set_text_font"
+        name: "set_text_font"
+        short: Set the type and size of text to draw.
+        long: >
+          Set the size and font to use for drawing text.
+        snippet:
+          caption: >
+            Draw "Hello World" in 12 point IBM Plex Mono at x coordinate 50 and y coordinate 100.
+          code: >
+            sketch.set_text_font('./IBMPlexMono-Regular.ttf', 12)\n
+            sketch.draw_text(50, 100, 'Hello World')
+        arguments:
+          - name: "font"
+            description: Path to the TTF or OTF font file. For web renderer, name of web font can be used.
+          - name: "size"
+            description: Size of the font (px).
+        examples:
+          - text_fill_stroke
+          - text_horiz_align
+          - text_vert_align
+        availability: >
+          Available for all platforms. On static and app renderers, will interpret path as a local
+          file path using the operating system's conventions. For web, it will interpret path as a
+          URL. Filenames like "example.ttf" will assume the same directory.
+        also:
+          - draw_text
+          - set_text_align
+  - name: "Transform"
+    description: "Transform matrix manipulation."
+    items:
+      - slug: "pop_transform"
+        name: "pop_transform"
+        short: Restore a previously saved transformation state.
+        long: >
+          Restore the most recently transformation configuration saved in matrix history, removing
+          that "transform matrix" from the history. This works as a stack (like a stack of plates)
+          where the top of the pile is taken off and restored, removing it from that stack. This
+          will overwrite the current transformation configuration in the sketch.
+        snippet:
+          caption: >
+            Push and pop the transformation matrix such that things are translated by 50 pixels to
+            the right.
+          code: >
+            sketch.translate(50, 0)  # Translate 50 pixels to the right\n
+            sketch.push_transform()  # Save the current transformation matrix\n
+            sketch.translate(50, 0)  # Translate so now 150 (50 + 100) pixels to the right\n
+            sketch.pop_transform()  # Restore saved matrix so we are 50 pixels to the right again\n
+            sketch.rect(0, 250, 150, 200)  # Draw the rectangle at an offset position of 50, 250.
+        examples:
+          - transform_state
+        availability: Available on all platforms.
+        also:
+          - pop_style
+          - push_transform
+          - rotate
+          - scale
+          - set_angle_mode
+          - translate
+      - slug: "push_transform"
+        name: "push_transform"
+        short: Save current transformation state.
+        long: >
+          Save current sketch transformation state to the matrix history. This works as a stack
+          (like a stack of plates) where this puts a new plate on the top of the pile. This will
+          leave the current transformation matrix in the sketch unchanged.
+        snippet:
+          caption: >
+            Push and pop the transformation matrix such that things are translated by 50 pixels to
+            the right.
+          code: >
+            sketch.translate(50, 0)  # Translate 50 pixels to the right\n
+            sketch.push_transform()  # Save the current transformation matrix\n
+            sketch.translate(50, 0)  # Translate so now 150 (50 + 100) pixels to the right\n
+            sketch.pop_transform()  # Restore saved matrix so we are 50 pixels to the right again\n
+            sketch.rect(0, 250, 150, 200)  # Draw the rectangle at an offset position of 50, 250.
+        examples:
+          - transform_state
+        availability: Available on all platforms.
+        also:
+          - push_style
+          - pop_transform
+          - rotate
+          - scale
+          - set_angle_mode
+          - translate
+      - slug: "rotate"
+        name: "rotate"
+        short: Rotate around the current origin.
+        long: >
+          Change the transform matrix such that any drawing afterwards is rotated around the current
+          origin clock-wise.
+        snippet:
+          caption: >
+            Rotate 90 degrees around the x coordinate of 50 and y coordinate of 100.
+          code: >
+            sketch.set_angle_mode('degrees')\n
+            sketch.translate(50, 100)\n
+            sketch.rotate(90)
+        arguments:
+          - name: "angle"
+            description: The angle by which to rotate.
+        examples:
+          - transform_rotate
+        availability: Available on all platforms.
+        also:
+          - push_transform
+          - pop_transform
+          - scale
+          - set_angle_mode
+          - translate
+      - slug: "scale"
+        name: "scale"
+        short: Scale outwards from the current origin.
+        long: >
+          Change the transform matrix such that any drawing afterwards is scaled from the current
+          origin.
+        snippet:
+          caption: >
+            Scale 2x from the x coordinate of 50 and y coordinate of 100.
+          code: >
+            sketch.set_angle_mode('degrees')\n
+            sketch.translate(50, 100)\n
+            sketch.scale(2)
+        arguments:
+          - name: "scale"
+            description: >
+              The factor by which to scale where values over 1 scale up and less than 1 scale down.
+              A value of 1 will have no effect.
+        examples:
+          - transform_scale
+        availability: Available on all platforms.
+        also:
+          - push_transform
+          - pop_transform
+          - rotate
+          - set_angle_mode
+          - translate
+      - slug: "set_angle_mode"
+        name: "set_angle_mode"
+        short: Indicate how angles should be provided to sketchingpy.
+        long: >
+          Change the units with which angles are expressed to Sketchingpy in transforms and shapes.
+        snippet:
+          caption: >
+            Draw an arc from 90 to 360 degrees centered at x coordinate 100 and y coordinate 200
+            with width of 50 pixels and height of 60 pixels.
+          code: >
+            sketch.set_angle_mode('degrees')\n
+            sketch.set_arc_mode('center')\n
+            sketch.draw_arc(100, 200, 50, 60, 90, 360)
+        arguments:
+          - name: "mode"
+            description: The units (either 'degrees' or 'radians') in which to supply angles.
+        examples:
+          - shapes_arc
+          - transform_rotate
+        availability: Available on all platforms.
+        also:
+          - draw_arc
+          - push_transform
+          - pop_transform
+          - rotate
+          - scale
+          - set_arc_mode
+          - translate
+      - slug: "translate"
+        name: "translate"
+        short: Change the location of the origin.
+        long: >
+          Change the transform matrix such that any drawing afterwards is moved by a set amount.
+        snippet:
+          caption: >
+            Draw an offset rectangle.
+          code: >
+            sketch.translate(50, 0)  # Translate 50 pixels to the right\n
+            sketch.rect(0, 250, 150, 200)  # Draw the rectangle at an offset position of 50, 250.
+        arguments:
+          - name: "x"
+            description: The number of pixels to offset horizontally.
+          - name: "y"
+            description: The number of pixels to offset vertically.
+        examples:
+          - transform_translate
+        availability: Available on all platforms.
+        also:
+          - push_transform
+          - pop_transform
+          - rotate
+          - set_angle_mode
+          - translate

@@ -1,0 +1,85 @@
+[project]
+name = "sketchingpy"
+version = "0.1.8"
+authors = [
+  { name="A Samuel Pottinger", email="hello@sketchingpy.org" }
+]
+description = "Tools for quick creative programmig."
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: BSD License",
+  "Operating System :: OS Independent",
+  "Topic :: Multimedia",
+  "Topic :: Multimedia :: Graphics",
+  "Topic :: Scientific/Engineering :: Visualization",
+  "Topic :: Games/Entertainment"
+]
+dependencies = []
+
+[tool.setuptools.package-data]
+sketchingpy = ["py.typed"]
+
+[project.urls]
+"Homepage" = "https://sketchingpy.org"
+"Documentation" = "https://sketchingpy.org/reference"
+"Source" = "https://codeberg.org/sketchingpy/Sketchingpy"
+"Issue Tracker" = "https://codeberg.org/sketchingpy/Sketchingpy/issues"
+"Changelog" = "https://codeberg.org/sketchingpy/Sketchingpy/commits/branch/main"
+
+[project.optional-dependencies]
+desktop = [
+  "bezier~=2023.7.28",
+  "matplotlib~=3.8.2",
+  "numpy~=1.26.2",
+  "Pillow~=10.1.0",
+  "pygame-ce~=2.4.0"
+]
+desktopall = [
+  "bezier~=2023.7.28",
+  "matplotlib~=3.8.2",
+  "numpy~=1.26.2",
+  "Pillow~=10.1.0",
+  "pygame~=2.4.0",
+  "pygame-gui~=0.6.9"
+]
+static = [
+  "bezier~=2023.7.28",
+  "matplotlib~=3.8.2",
+  "numpy~=1.26.2",
+  "Pillow~=10.1.0"
+]
+notebook = [
+  "bezier~=2023.7.28",
+  "matplotlib~=3.8.2",
+  "numpy~=1.26.2",
+  "Pillow~=10.1.0"
+]
+minimal = [
+  "Pillow~=10.1.0"
+]
+dev = [
+  "bezier~=2023.7.28",
+  "Jinja2~=3.1.2",
+  "mypy~=1.8.0",
+  "nose2~=0.14.0",
+  "types_Pillow~=10.1.0.2",
+  "pdoc~=14.3.0",
+  "pycodestyle~=2.11.1",
+  "pyflakes~=3.1.0",
+  "pygame~=2.4.0",
+  "pygame-gui~=0.6.9",
+  "pyyaml~=6.0.1",
+  "selenium~=4.16.0"
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+exclude = [
+  "examples"
+]

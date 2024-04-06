@@ -1,0 +1,109 @@
+#editor {
+    min-height: 500px;
+    border: 1px solid #E0E0E0;
+    border-radius: 3px;
+    margin-top: 10px;
+    font-family: "IBMPlexMono-Regular";
+}
+
+#runtime-error-display {
+    display: none;
+    color: white;
+    background-color: #C00000;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.split-view a:link, .split-view a:visited, .split-view a:hover, .split-view a:active {
+    -webkit-appearance: none;
+    background: none;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    background-color: #FFFFFF;
+    color: #6161CC;
+    font-size: 16px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #6161CC;
+    padding: 5px 10px;
+    text-decoration: none;
+}
+
+.split-view a:hover, .split-view a:active {
+    cursor: pointer;
+    background-color: #5050D0;
+    color: white;
+}
+
+.split-view button {
+    -webkit-appearance: none;
+    background: none;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    background-color: #7070D0;
+    color: white;
+    font-size: 16px;
+    margin-top: 5px;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-family: "IBMPlexSans-Regular";
+}
+
+.split-view button:hover, .split-view button:active {
+    cursor: pointer;
+    background-color: #5050D0;
+}
+
+.split-view section {
+    padding: 5px;
+    padding-bottom: 20px;
+    text-align: center;
+}
+
+.split-view section h2 {
+    padding-bottom: 5px;
+    padding-top: 5px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.split-view .canvas-holder {
+    overflow: auto;
+}
+
+.split-view .canvas-holder canvas {
+    border: 1px solid #E0E0E0;
+    border-radius: 3px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 500px;
+    height: 500px;
+    display: none;
+}
+
+@media (max-width: 700px) {
+    .split-view section {
+        margin-bottom: 20px;
+    }
+}
+
+@media (min-width: 900px) {
+    .split-view {
+        display: grid;
+        grid-template-columns: 40% 59%;
+        grid-column-gap: 1%;
+    }
+
+    .split-view .canvas-holder {
+        margin-top: 47px;
+    }
+}
+
+@media (min-width: 1100px) {
+    .split-view {
+        grid-template-columns: 50% 48%;
+        grid-column-gap: 2%;
+    }
+}
