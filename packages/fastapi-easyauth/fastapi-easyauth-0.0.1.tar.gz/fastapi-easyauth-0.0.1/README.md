@@ -1,0 +1,100 @@
+# FastAPI EasyAuth #
+
+## What is this? ##
+This library quickly and easily creates authentication using JWT and Cookies. You can also use easyauth to identify an active user
+
+----------
+
+
+### Using ###
+
+
+<!-- Using the library is as simple and convenient as possible:
+
+Let's import it first:
+First, import everything from the library (use the `from `...` import *` construct).
+
+Examples of all operations:
+
+Writing the contents of an entire file to a variable using the `read()` function:
+
+    temp = File(path='test.txt').read()
+
+
+Writing the contents of an entire file to a variable line by line using the `readlines()` function:
+
+    temp = File(path='test.txt').readlines()
+
+
+Write only the first line from a file using the `readline()` function:
+
+    temp = File(path='test.txt').readline()
+
+
+Writing data from a variable to a file using write() (overwriting or creating a file):
+
+    temp = "Test data"
+    File(path='test.txt', data=temp).write()
+    
+
+Adding data from a variable to a file using write() (or creating a file):
+
+    temp = "Test data"
+    File(path='test.txt', data=temp).add() -->
+
+First, we need to import the Auth and Jwt classes from easyauth
+
+    from fastapi_easyauth import Auth, Jwt, ALGORITHM
+
+After that, we create instances of classes
+
+    jwt = Jwt(
+        secret = "SECRET", # The secret key for generating tokens and decoding them. Keep the token secret
+        algorithm = ALGORITHM.HS256 # The encryption algorithm
+    )
+
+    auth = Auth(
+        cookie_name = "user" # The Name Of The Cookie File
+        jwt = jwt
+        expires = exp.EXPIRES_30_DAYS # Cookie lifetime
+    )
+
+Great, everything is ready. Now we can create tokens and decode them. Also check if the user is active. 
+
+    from fastapi import FastAPI, Request, Response, Depends
+    from fastapi_easyauth import Auth, Jwt, ALGORITHM, exp
+
+    from pydantic import BaseModel
+
+    class User(BaseModel):
+        name: str
+        password: str
+
+    app = FastAPI()
+
+    jwt = Jwt(
+        secret = "SECRET",
+        algorithm = ALGORITHM.HS256
+    )
+
+    auth = Auth(
+        cookie_name = "user"
+        jwt = jwt
+        expires = exp.EXPIRES_30_DAYS
+    )
+
+    @app.post('/log')
+    def log(user: User, response: Response):
+        token = jwt.create_token(user)
+        auth.save_token_in_cookie(response, token)
+        return {'status': 200}
+
+    
+    @app.get('/active')
+    def active(request: Request, response: Response, user: User = Depends(auth.active_user))
+        return user
+
+
+
+
+There are two auxiliary functions hash_password and not_authorized
