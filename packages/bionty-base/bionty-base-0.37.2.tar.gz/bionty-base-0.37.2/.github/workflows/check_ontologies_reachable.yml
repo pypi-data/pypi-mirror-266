@@ -1,0 +1,27 @@
+name: Check source URLs
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "0 0 * * *" #runs at 00:00 UTC every day
+  workflow_dispatch:
+
+jobs:
+  test-urls:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout repo content
+        uses: actions/checkout@v3
+
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install utility dependencies
+        run: pip install pandas pyyaml
+
+      - name: check URLs
+        run: python ./scripts/check_ontologies_reachable.py
