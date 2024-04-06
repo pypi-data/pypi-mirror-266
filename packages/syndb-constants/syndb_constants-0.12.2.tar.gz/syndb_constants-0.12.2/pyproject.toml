@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "syndb-constants"
+version = "0.12.2"
+description = "Constants used with SynDB in Python"
+authors = ["caniko <git@rotas.mozmail.com>"]
+readme = "README.md"
+packages = [{include = "syndb_constants"}]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+
+[tool.poetry.group.format.dependencies]
+black = "*"
+isort = "*"
+ruff = "*"
+
+[tool.isort]
+line_length = 120
+profile = "black"
+
+[tool.black]
+line-length = 120
+target-version = ["py312"]
+
+[tool.ruff]
+line-length = 120
+lint.ignore-init-module-imports = true
+
+[tool.poetry.group.type_checking.dependencies]
+pyright = "*"
+
+[tool.pyright]
+include = ["syndb_constants/**"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
