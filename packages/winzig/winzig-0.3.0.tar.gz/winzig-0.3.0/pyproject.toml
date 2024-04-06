@@ -1,0 +1,41 @@
+[tool.poetry]
+name = "winzig"
+version = "0.3.0"
+description = "A tiny search engine for personal use."
+authors = ["dnlzrgz <24715931+dnlzrgz@users.noreply.github.com>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/dnlzrgz/winzig"
+keywords = ["search", "crawl", "sqlite", "async", "feeds"]
+
+
+[tool.poetry.dependencies]
+python = "^3.12"
+feedparser = "^6.0.11"
+selectolax = "^0.3.20"
+rich = "^13.7.1"
+click = "^8.1.7"
+textual = "^0.52.1"
+aiosqlite = "^0.20.0"
+sqlalchemy = {extras = ["asyncio"], version = "^2.0.28"}
+emoji = "^2.10.1"
+aiohttp = {extras = ["speedups"], version = "^3.9.3"}
+tldextract = "^5.1.2"
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.3.2"
+pre-commit = "^3.6.2"
+commitizen = "^3.18.0"
+textual-dev = "^1.5.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+winzig = "winzig.main:cli"
+
+[tool.ruff.lint]
+ignore = ["F401"]
+
