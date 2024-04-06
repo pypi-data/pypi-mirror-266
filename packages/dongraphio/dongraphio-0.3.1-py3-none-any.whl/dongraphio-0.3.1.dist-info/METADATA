@@ -1,0 +1,67 @@
+Metadata-Version: 2.1
+Name: dongraphio
+Version: 0.3.1
+Summary: Small utility library containing graph algorighms used in other projects
+Author: Danila
+Author-email: 63115678+DDonnyy@users.noreply.github.com
+Requires-Python: >=3.9,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: geopandas (>=0.14.3,<0.15.0)
+Requires-Dist: jupyter (>=1.0.0,<2.0.0)
+Requires-Dist: loguru (>=0.7.2,<0.8.0)
+Requires-Dist: momepy (>=0.6.0,<0.7.0)
+Requires-Dist: networkit (>=11.0,<12.0)
+Requires-Dist: networkx (>=3.2.1,<4.0.0)
+Requires-Dist: numpy (>=1.23.5,<2.0.0)
+Requires-Dist: ortools (>=9.9.3963,<10.0.0)
+Requires-Dist: osm2geojson (>=0.2.4,<0.3.0)
+Requires-Dist: osmnx (>=1.9.1,<2.0.0)
+Requires-Dist: pandas (>=2.2.0,<3.0.0)
+Requires-Dist: pydantic (>=2.6.1,<3.0.0)
+Requires-Dist: tqdm (>=4.66.2,<5.0.0)
+Description-Content-Type: text/markdown
+
+# DonGraphio
+
+Small utility library containing graph algorighms used in other projects.
+
+## Base usage example
+```pip install dongraphio```
+```python
+import geopandas as gpd
+from dongraphio import DonGraphio
+from dongraphio import GraphType
+import networkx as nx
+
+dongrph = DonGraphio(city_crs=32638)
+    
+intermodal_graph = dongrph.get_intermodal_graph_from_osm(city_osm_id=3955288)
+nx.write_graphml(intermodal_graph,"city_intermodal.graphml")
+
+builds_from = gpd.read_file("test_data/buildings.geojson")
+services_to = gpd.read_file("test_data/services.geojson")
+adjacency_matrix = dongrph.get_adjacency_matrix(buildings_from=builds_from, services_to=services_to, weight="time_min")
+adjacency_matrix.to_csv("city_adjacency_matrix.csv")
+
+accessibility_isochrones, public_transport_routes, public_transport_stops = dongrph.get_accessibility_isochrones(
+    graph_type=[GraphType.PUBLIC_TRANSPORT, GraphType.WALK],
+    x_from=571747,
+    y_from=5709639,
+    weight_value=15,
+    weight_type="time_min",
+)
+accessibility_isochrones.to_file("city_accessibility_isochrones.geojson")
+public_transport_routes.to_file("city_public_transport.geojson")
+public_transport_stops.to_file("city_public_stops.geojson")
+```
+
+To get rid of GeoPandas warning message about Shapely one can use following construction in their code:
+```python
+import os
+os.environ["USE_PYGEOS"] = os.environ.get("USE_PYGEOS", "0")
+```
+
