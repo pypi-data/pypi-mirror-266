@@ -1,0 +1,46 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "spoonbill-framework"
+version = "0.1.0"
+license = "LICENSE"
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["dict", "key-value", "gcp", "azure", "aws", "s3", "lmdb", "pysos", "redis", "dynamodb", "mongodb", "cosmosdb", "safetensors", "unqlite"]
+description = "A lightweight, universal interface for Key-Values data stores"
+readme = "README.md"
+authors = ["xdssio <jonathan@xdss.io>"]
+packages = [{ include = "spoonbill" }]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+cloudpickle = "^2.2.0"
+fsspec = "^2022.11.0"
+
+[tool.poetry.extras]
+redis = ["redis"]
+lmdbm = ["lmdbm"]
+pysos = ["pysos"]
+safetensors = ["safetensors"]
+mongodb = ["pymongo"]
+aws = ["boto3", "s3fs", "cerealbox"]
+gcp = ["google-cloud-firestore"]
+azure = ["azure-cosmos"]
+dev = ["pytest", "sphinx", "sphinx-rtd-theme", "sphinx-autodoc-typehints", "sphinxcontrib-napoleon", "sphinxcontrib-apidoc"]
+modal = ["modal-client"]
+unqlite = ["unqlite"]
+rocksdb = ["rocksdict"]
+speedb = ["speedict"]
+json = ["filelock", "cloudpathlib"]
+
+[tool.setuptools]
+packages = ["spoonbill"]
+
+[project.urls]
+Homepage = "https://github.com/xdssio/spoonbill"
+
