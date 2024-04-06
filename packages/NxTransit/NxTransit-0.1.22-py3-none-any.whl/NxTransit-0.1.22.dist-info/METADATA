@@ -1,0 +1,68 @@
+Metadata-Version: 2.1
+Name: NxTransit
+Version: 0.1.22
+Summary: Construct and analyze time-dependent transit networks from GTFS data
+Author: Chingiz Zhanarbaev
+License: MIT License
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: MacOS
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: GIS
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Classifier: Topic :: Scientific/Engineering :: Visualization
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: geopandas >=0.14.0
+Requires-Dist: networkx >=3.2.0
+Requires-Dist: numpy >=1.26.4
+Requires-Dist: osmnx >=1.9.1
+Requires-Dist: pandas >=2.2.0
+Requires-Dist: pytest >=8.0.1
+Requires-Dist: scipy >=1.12.0
+Requires-Dist: Shapely >=2.0.3
+Requires-Dist: geocube >=0.5.0
+Provides-Extra: tests
+Requires-Dist: pytest >=8.0.1 ; extra == 'tests'
+
+# NxTransit
+
+[![tests](https://github.com/chingiztob/NxTransit/actions/workflows/basic_tests.yml/badge.svg?event=push)](https://github.com/chingiztob/NxTransit/actions/workflows/basic_tests.yml)
+[![Documentation Status](https://readthedocs.org/projects/nxtransit/badge/?version=latest)](https://nxtransit.readthedocs.io/en/latest/?badge=latest)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/NxTransit)
+
+**NxTransit** is a Python package designed for creating and analyzing a multimodal graph representation of a city's transit system. It uses General Transit Feed Specification (GTFS) data to construct the graph and perform various time-dependent calculations.
+
+See the [documentation](https://nxtransit.readthedocs.io/en/latest/) for more information.
+
+## Key Features
+
+### Multimodal Graph Creation
+NxTransit integrates transit data with OpenStreetMap (OSM) data to create a multimodal graph representing urban transit system.
+
+### Time-Dependent Calculations
+The package enables the detailed analysis of transit systems by incorporating time-dependent nature of public transportation. This includes:
+
+- GTFS feed validation.
+- Calculating shortest paths with specific departure times.
+- Generating travel time matrices to evaluate travel durations between multiple network points.
+- Calculation of service areas and "typical" service areas.
+- Frequency analysis.
+- More features are planned for future updates.
+
+### GTFS Data Support
+NxTransit utilizes GTFS data, a common format for public transportation schedules and geographic information.
+
+### Installation
+```bash
+pip install nxtransit
+```
+### License
+Package is open source and licensed under the MIT license. OpenStreetMap's open data [license](https://www.openstreetmap.org/copyright/) requires that derivative works provide proper attribution. This package heavily depends on [OSMnx](https://geoffboeing.com/publications/osmnx-complex-street-networks/) by Geoff Boeing, which is also licensed under the MIT license.
