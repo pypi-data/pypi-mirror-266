@@ -1,0 +1,4 @@
+{% extends 'ui/partials/table_field.html' %}
+{% load accrete_ui %}
+
+{% block td_content %}{{ obj|get_attr:field.name|default_if_none:0|floatformat:2 }}{% endblock %}

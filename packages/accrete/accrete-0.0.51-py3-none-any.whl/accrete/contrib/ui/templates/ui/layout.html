@@ -1,0 +1,267 @@
+<!doctype html>
+{% load static %}
+{% load i18n %}
+{% load accrete_ui %}
+
+<html lang="en" style="overflow: hidden" data-theme="light">
+
+<head>
+{% block head %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block favicon %}<link rel="icon" type="image/svg" href="{% static 'icons/accrete.svg' %}"/>{% endblock %}
+    {% block style %}
+        <link rel="stylesheet" type="text/css" href="{% static "css/accrete.css" %}">
+        <link rel="stylesheet" type="text/css" href="{% static "css/icons.css" %}">
+        <link rel="stylesheet" type="text/css" href="{% static "css/fa.css" %}">
+    {% endblock %}
+    {% block htmx %}
+        <script src="{% static "js/htmx.min.js" %}" defer type="text/javascript"></script>
+    {% endblock %}
+    {% block script %}{% endblock %}
+    {% block title_tag %}<title>{% block title %}{{ title }}{% endblock %}</title>{% endblock %}
+{% endblock %}
+</head>
+
+
+<body {% block body_attrs %}hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-boost="true" hx-history="false" {% endblock %}>
+    {% block body %}
+        {% block navbar %}
+            <nav id="navbar" class="navbar is-success is-fixed-top" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                    {% block navbar_brand %}
+                        <div class="navbar-item is-unselectable"
+                             onclick="document.getElementById('tenant-quick-switch').classList.toggle('is-invisible')"
+                        >
+                            {{ request.tenant.name }}
+                        </div>
+                    {% endblock %}
+                    <a id="navbar-burger" role="button" class="navbar-burger"
+                       aria-label="menu" aria-expanded="false"
+                       onclick="this.classList.toggle('is-active'); document.getElementById('navbar-menu').classList.toggle('is-active');"
+                    >
+                        {# Display hamburger menu on mobile #}
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+
+                <div id="navbar-menu" class="navbar-menu is-fixed-top">
+                    <div class="navbar-start">
+                        {% block navbar_start %}
+                            {% combine_templates 'accrete_menu.html' %}
+                        {% endblock %}
+                    </div>
+
+                    <div class="navbar-end">
+                        {% block navbar_end %}
+                            <div class="navbar-item has-dropdown is-hoverable" onclick="this.classList.toggle('is-active');">
+                                <a class="navbar-link is-arrowless {% if request.member.name %}is-size-7 has-text-centered-desktop{% endif %}">
+                                    {% if request.member.name %}
+                                        {{ request.member }}<br>{{ user }}
+                                    {% else %}
+                                        {{ user }}
+                                    {% endif %}
+                                </a>
+                                <div id="navbar-end-dropdown" class="navbar-dropdown is-right">
+                                    {% combine_templates 'accrete_navbar_end_dropdown.html' request=request %}
+                                </div>
+                            </div>
+                        {% endblock %}
+                    </div>
+                </div>
+            </nav>
+            <div id="tenant-quick-switch" class="navbar-brand-dropdown is-invisible box py-3 px-0 is-flex is-flex-direction-column" style="min-width: 200px">
+                {% for tenant in request.user.all_tenants %}
+                    <a class="navbar-brand-dropdown-item px-4 py-1 mb-1" href="?tenant_id={{ tenant.id }}">
+                        <span class=""
+                           onclick="document.getElementById('tenant-quick-switch').classList.toggle('is-invisible')"
+                        >
+                            {{ tenant }}
+                        </span>
+                    </a>
+                {% endfor %}
+            </div>
+        {% endblock %}
+
+        <div id="main" class="is-flex is-flex-direction-row" style="padding-top: var(--bulma-navbar-height); height: 100svh">
+            <div class="side-panel is-hidden-touch is-hidden-desktop-only is-hidden-widescreen-only p-0">
+                <nav class="pb-5" style="height: 100%; overflow-y: auto; position: sticky; top: 0">
+                    {% if list_page.paginator %}
+                        <div class="side-panel-action">
+                            {% include 'ui/partials/pagination_list.html' %}
+                        </div>
+                    {% endif %}
+                    {% if detail_page %}
+                        <div class="side-panel-action">
+                            {% include 'ui/partials/pagination_detail.html' %}
+                        </div>
+                    {% endif %}
+
+                    <div id="panel-actions">
+                        {% for action in actions %}
+                            {% if action.actions %}
+                                <div class="dropdown" style="width: 100%">
+                                    <div class="dropdown-trigger" style="width: 100%">
+                                        <div class="side-panel-action" style="width: 292px">
+                                            <button class="button side-panel-action-content" aria-haspopup="true" aria-controls="dropdown-menu4" style="width: 100%">
+                                                <span>{{ action.name }}</span>
+                                                <span class="icon is-small">
+                                                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-menu side-panel-action" role="menu">
+                                        <div class="dropdown-content">
+                                            {% for group_action in action.actions %}
+                                                {% if group_action.submit %}
+                                                    <div class="dropdown-item">
+                                                        <button class="button is-fullwidth {{ group_action.class_list|join:' ' }}"
+                                                               type="submit" form={{ group_action.form_id }} value="{{ group_action.name }}"
+                                                               {{ group_action.attrs_str }}
+                                                        >
+                                                            <div class="side-panel-action-content level"><span>{{ group_action.name }}</span>
+                                                                {% if group_action.icon %}<i class="{{ group_action.icon.value }}"></i>{% endif %}
+                                                            </div>
+                                                        </button>
+                                                    </div>
+                                                {% else %}
+                                                    <div class="dropdown-item">
+                                                        <a class="button is-fullwidth {{ group_action.class_list|join:' ' }}"
+                                                            {% if group_action.url %}
+                                                                {{ group_action.method.value }}="{{ group_action.url }}"
+                                                            {% endif %}
+                                                           {{ group_action.attrs_str }}
+                                                        >
+                                                            <div class="side-panel-action-content level">
+                                                                <span>{{ group_action.name }}</span>
+                                                                {% if group_action.icon %}<i class="{{ group_action.icon.value }}"></i>{% endif %}
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% elif action.submit %}
+                                <div class="side-panel-action">
+                                    <button class="button is-fullwidth {{ action.class_list|join:' ' }}"
+                                           type="submit" form={{ action.form_id }} value="{{ action.name }}"
+                                           {{ action.attrs_str }}
+                                    >
+                                        <div class="side-panel-action-content level"><span>{{ action.name }}</span>
+                                            {% if action.icon %}<i class="{{ action.icon.value }}"></i>{% endif %}
+                                        </div>
+                                    </button>
+                                </div>
+                            {% else %}
+                                <div class="side-panel-action">
+                                    <a class="button is-fullwidth {{ action.class_list|join:' ' }}"
+                                        {% if action.url %}
+                                            {{ action.method.value }}="{{ action.url }}"
+                                        {% endif %}
+                                       {{ action.attrs_str }}
+                                    >
+                                        <div class="side-panel-action-content level">
+                                            <span>{{ action.name }}</span>
+                                            {% if action.icon %}
+                                                <span class="icon is-small">
+                                                    <i class="{{ action.icon.value }}" aria-hidden="true"></i>
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                    </a>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    {% block filter %}
+                        {% if filter %}
+                            <div id="filter-panel" class="mt-2">
+                                <div class="panel-list mx-3 mb-1 has-text-centered" style="border-bottom: 1px #ccc solid">
+                                    <span>{% translate 'Filter' %}</span>
+                                </div>
+                                {% include 'ui/partials/filter.html' %}
+                            </div>
+                        {% endif %}
+                    {% endblock %}
+                </nav>
+            </div>
+
+            <div class="is-flex-grow-1" style="overflow-x: auto">
+                <div class="is-flex is-flex-direction-column" style="height: 100%; overflow: hidden">
+                    <div>
+                        {% include 'ui/partials/header.html' %}
+                    </div>
+                    <div id="content" class="px-3 pb-4" style="overflow: auto; flex-grow: 1">
+                        {% block messages %}{% endblock %}
+                        {% block content %}{% endblock %}
+                    </div>
+                    <div>
+                        {% if list_page.paginator %}
+                            <div class="level is-hidden-tablet is-align-self-flex-start m-3">
+                                <div class="level-item is-align-content-flex-start" style="width: 100%">
+                                    {% include 'ui/partials/pagination_list.html' %}
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if detail_page %}
+                            <div class="level is-hidden-tablet is-align-self-flex-start m-3">
+                                <div class="level-item is-align-content-flex-start" style="width: 100%">
+                                    {% include 'ui/partials/pagination_detail.html' %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if filter %}
+            <div id="filter-modal" class="modal">
+                <div class="modal-background filter-modal-close" onclick="hideFilterModal()"></div>
+                <div class="modal-card" style="height: 100%">
+                    <header class="modal-card-head">
+                        <p class="modal-card-title">
+                            {% block search_modal_title %}{% translate 'Filter' %}{% endblock %}</p>
+                        <button class="delete filter-modal-close" aria-label="close" onclick="hideFilterModal()"></button>
+                    </header>
+                    <section id="modal-content" class="modal-card-body px-0">
+                    </section>
+                    <footer class="modal-card-foot">
+                        <button id="applyFilterFromModalButton"
+                                class="button is-fullwidth is-success ml-1"
+                                onclick="hideFilterModal()"
+                        >{% translate 'Filter' %}</button>
+                    </footer>
+                </div>
+            </div>
+        {% endif %}
+
+        <div id="form-modal" class="modal"></div>
+    {% endblock %}
+    <script>
+        document.querySelectorAll('.dropdown').forEach(dropdown => {
+            dropdown.addEventListener('click', setDropDown);
+        })
+
+        function setDropDown(event) {
+            console.log(event.target, this)
+            const dropdownMenu = this.querySelector('.dropdown-menu');
+            document.querySelectorAll('.dropdown').forEach(dropdown => {
+                if (dropdown !== this) {
+                    dropdown.classList.remove('is-active');
+                }
+                else if (dropdownMenu.contains(event.target)) {}
+                else if (dropdown === this) {
+                    dropdown.classList.toggle('is-active');
+                }
+            })
+        }
+    </script>
+</body>

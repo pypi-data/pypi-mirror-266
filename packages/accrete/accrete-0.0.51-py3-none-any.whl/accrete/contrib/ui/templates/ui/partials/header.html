@@ -1,0 +1,82 @@
+{% load i18n %}
+
+<div id="header" class="pt-3">
+    <div class="level level-is-shrinkable is-flex mb-2 pl-3 {% if detail_page %}is-mobile {% endif %}" style="align-items: start">
+        <div class="level-left">
+            <div class="level-item has-text-weight-bold">
+                <nav id="breadcrumbs" class="breadcrumb" aria-label="breadcrumbs" style="white-space: unset; word-break: break-word">
+                    <ul>
+                        {% for crumb in breadcrumbs %}
+                            <li><a class="is-underlined" href="{{ crumb.url|default_if_none:'#' }}"
+                                   aria-current="page" hx-boost="true"
+                            >{{ crumb.name }}</a></li>
+                        {% endfor %}
+                        <li class="is-active"><a aria-current="page">{{ title }}</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        {% if list_page.paginator or detail_page %}
+            <div class="level-right is-mobile is-hidden-mobile is-hidden-fullhd is-align-self-flex-start px-3">
+                <div class="level-item">
+                    {% if list_page.paginator %}
+                        {% include 'ui/partials/pagination_list.html' %}
+                    {% elif detail_page %}
+                        {% include 'ui/partials/pagination_detail.html' %}
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="is-flex is-hidden-fullhd is-justify-content-space-between mb-2">
+        <div id="header-actions" class="is-flex py-1 px-1 ml-2" style="overflow-x: auto">
+            {% for action in actions %}
+{#                {% if action.submit %}#}
+{#                    <input class="button mr-2 {{ action.class_list|join:' ' }}"#}
+{#                           type="submit" form={{ action.form_id }} value="{{ action.name }}"#}
+{#                           {{ action.attrs_str }}#}
+{#                    >#}
+{#                {% else %}#}
+{#                    <a class="button mr-2 {{ action.class_list|join:' ' }}"#}
+{#                        {% if action.url %}#}
+{#                            {{ action.method.value }}="{{ action.url }}{% if action.add_url_params %}{{ url_params|default_if_none:'?' }}{% else %}?{% endif %}{% if list_page.paginator %}&page={{ list_page.number }}{% endif %}{{ action.query_params }}"#}
+{#                        {% endif %}#}
+{#                       {{ action.attrs_str }}#}
+{#                    >{{ action.name }}#}
+{#                    </a>#}
+{#                {% endif %}#}
+                {% if action.submit %}
+                    <button class="button is-fullwidth mr-2 {{ action.class_list|join:' ' }}"
+                           type="submit" form={{ action.form_id }} value="{{ action.name }}"
+                           {{ action.attrs_str }}
+                    >
+                        <div class="side-panel-action-content level">
+                            <span class="{% if action.icon_only %}is-hidden{% endif %}">{{ action.name }}</span>
+                            {% if action.icon %}<i class="{{ action.icon.value }} ml-2"></i>{% endif %}
+                        </div>
+                    </button>
+                {% else %}
+                    <a class="button is-fullwidth mr-2 {{ action.class_list|join:' ' }}"
+                        {% if action.url %}
+                            {{ action.method.value }}="{{ action.url }}"
+                        {% endif %}
+                       {{ action.attrs_str }}
+                    >
+                        <div class="side-panel-action-content level">
+                            <span class="{% if action.icon_only %}is-hidden{% endif %}">{{ action.name }}</span>
+                            {% if action.icon %}<i class="{{ action.icon.value }}"></i>{% endif %}
+                        </div>
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% if filter %}
+            <div class="is-flex ml-2 py-1 pr-3">
+                <button id="modal-filter-button" class="button has-icon" onclick="showFilterModal()">
+                    <i class="icon-filter"></i>
+                </button>
+            </div>
+        {% endif %}
+    </div>
+</div>
