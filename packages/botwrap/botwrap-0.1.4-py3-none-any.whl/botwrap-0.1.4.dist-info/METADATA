@@ -1,0 +1,67 @@
+Metadata-Version: 2.1
+Name: botwrap
+Version: 0.1.4
+Summary: A convenient wrapper for the OpenAI API.
+Home-page: https://github.com/BizPrincess/botwrap
+Author: BizPrincess
+Author-email: professionallyjami@gmail.com
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: aiohttp ==3.9.3
+Requires-Dist: attrs ==23.2.0
+Requires-Dist: beautifulsoup4 ==4.12.3
+Requires-Dist: certifi ==2023.11.17
+Requires-Dist: charset-normalizer ==3.3.2
+Requires-Dist: click ==8.1.7
+Requires-Dist: Flask ==3.0.1
+Requires-Dist: httpx ==0.26.0
+Requires-Dist: Jinja2 ==3.1.3
+Requires-Dist: openai ==1.10.0
+Requires-Dist: psycopg2-binary ==2.9.9
+Requires-Dist: requests ==2.31.0
+Requires-Dist: urllib3 ==2.1.0
+
+# botwrap
+
+Project Structure
+botwrap/
+â”‚
+â”œâ”€â”€ openaiwrapper/       # Main package directory
+â”‚   â”œâ”€â”€ __init__.py      # Initializes the openaiwrapper package
+â”‚   â”œâ”€â”€ api_client.py    # Base module for API interactions
+â”‚   â”œâ”€â”€ assistants.py    # Assistants module
+â”‚   â”œâ”€â”€ threads.py       # Threads module
+â”‚   â”œâ”€â”€ messages.py      # Messages module
+â”‚   â”œâ”€â”€ runs.py          # Runs module
+â”‚   â”œâ”€â”€ tools.py         # Tools module
+â”‚   â”œâ”€â”€ files.py         # Files module
+â”‚   â”œâ”€â”€ utils.py         # Utility functions and helpers
+â”‚   â””â”€â”€ config.py        # Configuration settings and constants
+â”‚
+â”œâ”€â”€ tests/               # Directory for test cases
+â”‚   â”œâ”€â”€ __init__.py      # Initializes the tests package
+â”‚   â”œâ”€â”€ test_api_client.py
+â”‚   â”œâ”€â”€ test_assistants.py
+â”‚   â”œâ”€â”€ test_threads.py
+â”‚   â”œâ”€â”€ test_messages.py
+â”‚   â”œâ”€â”€ test_runs.py
+â”‚   â”œâ”€â”€ test_tools.py
+â”‚   â”œâ”€â”€ test_files.py
+â”‚   â””â”€â”€ test_utils.py
+â”‚
+â”œâ”€â”€ .gitignore           # Specifies intentionally untracked files to ignore
+â”œâ”€â”€ Procfile             # Specifies commands that are executed by the app on startup
+â”œâ”€â”€ requirements.txt     # The list of project dependencies
+â”œâ”€â”€ runtime.txt          # Specifies the Python version to use on Heroku
+â””â”€â”€ app.json             # (Optional) Used to define app setup for Heroku CI/CD and review apps
