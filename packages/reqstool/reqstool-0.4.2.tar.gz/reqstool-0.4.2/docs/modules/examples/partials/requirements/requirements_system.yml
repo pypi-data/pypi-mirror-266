@@ -1,0 +1,53 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Luftfartsverket/reqstool-client/main/src/reqstool/resources/schemas/v1/requirements.schema.json
+
+metadata:
+  urn: sys-ed254 # unique resource name
+  variant: system # enum of system, microservice or external
+  title: title
+  url: optional
+
+imports:
+  git:
+    - env_token: e.g. GITLAB_TOKEN or empty
+      branch:
+      url:
+      path:
+  maven:
+    - path:
+      group_id: x
+      artifact_id: y
+      url: x.se
+      version: 1.0.0
+  local:
+    - path:
+
+filters:
+  requirement_ids: # list of requirement ids
+
+implementations: # only used with type = system
+  git:
+    - env_token: e.g. GITLAB_TOKEN or empty
+      branch:
+      url:
+      path:
+  maven:
+    - url: x.se
+      group_id: x
+      artifact_id: y
+      classifier: s
+      path: d
+      version: 1.0.0
+  local:
+    - path:
+
+requirements:
+  - id: # alphanumerical
+    title: # text
+    significance: # was level # shall, should, may # https://www.rfc-editor.org/rfc/rfc2119
+    description: # text
+    rationale: # text
+    categories: # [functional-suitability, User Interface, System Interface, performance-efficiency, IT Security, Information Security, Reliability, maintainability]
+    references: # links, source
+      requirement_ids:
+        - REQ123 # links to another requirement in this document
+    revision: # requirement added from revision number, e.g. 1.0.2

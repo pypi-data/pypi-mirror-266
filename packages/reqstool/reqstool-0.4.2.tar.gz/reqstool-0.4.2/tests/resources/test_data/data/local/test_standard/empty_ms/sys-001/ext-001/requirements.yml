@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Luftfartsverket/reqstool-client/main/src/reqstool/resources/schemas/v1/requirements.schema.json
+
+metadata:
+  urn: ext-001
+  variant: external
+  title: Some System Requirement Title
+  url: https://url.example.com
+
+requirements:
+  - id: REQ_ext001_100
+    title: Title REQ_ext001_100
+    significance: may
+    description: Imported and included requirement, should be included in the report. One passed MVR
+    rationale: Rationale REQ_100
+    categories: ["security", "reliability"]
+    revision: 0.0.1
+
+  - id: REQ_ext001_200
+    title: Title REQ_ext001_200
+    significance: shall
+    description: Should not be included and therefore not visible in the report
+    rationale: Rationale REQ_100
+    categories: ["security", "functional-suitability"]
+    revision: 0.0.1

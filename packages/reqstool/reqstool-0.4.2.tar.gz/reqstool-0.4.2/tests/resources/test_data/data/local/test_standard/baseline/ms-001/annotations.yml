@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Luftfartsverket/reqstool-client/main/src/reqstool/resources/schemas/v1/annotations.schema.json
+---
+requirement_annotations:
+  implementations:
+    REQ_010:
+      - elementKind: "CLASS"
+        fullyQualifiedName: "com.reqstool.example.demo.RequirementsExample"
+      - elementKind: "METHOD"
+        fullyQualifiedName: "com.reqstool.example.demo.RequirementsExample.firstMethod"
+    REQ_020:
+      - elementKind: "CLASS"
+        fullyQualifiedName: "com.reqstool.example.demo.RequirementsExample"
+      - elementKind: "METHOD"
+        fullyQualifiedName: "com.reqstool.example.demo.RequirementsExample.someMethod"
+    ext-001:REQ_ext001_100:
+      - elementKind: "CLASS"
+        fullyQualifiedName: "com.reqstool.example.demo.RequirementsExample"
+      - elementKind: "METHOD"
+        fullyQualifiedName: "com.reqstool.example.demo.RequirementsExample.firstMethod"
+    ext-002:REQ_ext002_300:
+      - elementKind: "CLASS"
+        fullyQualifiedName: "com.reqstool.example.demo.RequirementsExample"
+      - elementKind: "METHOD"
+        fullyQualifiedName: "com.reqstool.example.demo.RequirementsExample.anotherMethod"
+    ext-002:REQ_ext002_400:
+      - elementKind: "CLASS"
+        fullyQualifiedName: "com.reqstool.example.demo.RequirementsExample"
+      - elementKind: "METHOD"
+        fullyQualifiedName: "com.reqstool.example.demo.RequirementsExample.yetAnotherMethod"
+  tests:
+    SVC_010:
+      - elementKind: "METHOD"
+        fullyQualifiedName: "com.reqstool.example.demo.DemoApplicationTestsIT.contextLoads"
+      - elementKind: "METHOD"
+        fullyQualifiedName: "com.reqstool.example.demo.SVCsTest.testMethod1"
+      - elementKind: "METHOD"
+        fullyQualifiedName: "com.reqstool.example.demo.SVCsTest.testMethod1point5"
+    SVC_020:
+      - elementKind: "METHOD"
+        fullyQualifiedName: "com.reqstool.example.demo.SVCsTest.testMethod2"
+    sys-001:SVC_sys001_500:
+      - elementKind: "METHOD"
+        fullyQualifiedName: "com.reqstool.example.demo.SVCsTest.testMethod3"
