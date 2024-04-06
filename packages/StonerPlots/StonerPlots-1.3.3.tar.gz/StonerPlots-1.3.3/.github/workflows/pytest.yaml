@@ -1,0 +1,43 @@
+name: pytest
+
+on:
+  push:
+    branches: [main] # branch to trigger deployment
+
+# workflow_dispatch:        # Un comment line if you also want to trigger action manually
+defaults:
+  run:
+    shell: bash -l {0}
+jobs:
+  conda_deployment_with_new_tag:
+    name: Conda deployment of package for platform ${{ matrix.os }} with Python ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+        python-version: ["3.10"]
+
+    steps:
+      - name: Setup TeX Live
+        run: sudo apt-get install -y texlive-latex-extra texlive-latex-recommended texlive-fonts-recommended cm-super dvipng
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: mamba-org/setup-micromamba@v1
+        with:
+          environment-name: myenv
+          create-args: >-
+            python=3.10
+            pytest
+            numpy
+            pytest-md
+            pytest-emoji
+            matplotlib
+      - name: Run pytest
+        uses: pavelzw/pytest-action@v2
+        with:
+          verbose: true
+          emoji: true
+          job-summary: true
+          custom-arguments: '-q'
+          click-to-expand: true
+          report-title: 'Test Report'
