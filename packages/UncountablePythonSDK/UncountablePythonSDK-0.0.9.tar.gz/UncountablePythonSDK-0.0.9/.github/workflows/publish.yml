@@ -1,0 +1,53 @@
+# publish.yml template from just.sh (https://github.com/jstrieb/just.sh)
+name: Publish
+
+on:
+  push:
+    tags:
+      - '*.*.*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash -euxo pipefail {0}
+
+jobs:
+  build-packages:
+    name: Build distribution packages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install build dependencies
+        run: |
+          python3 -m pip install --upgrade build
+      - name: Build distributions and wheels
+        run: |
+          python3 -m build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: package-distributions
+          path: dist/
+  pypi-publish:
+    name: Upload release to PyPI
+    runs-on: ubuntu-latest
+    needs: build-packages
+    environment:
+      name: production
+      url: https://pypi.org/p/UncountablePythonSDK
+    permissions:
+      id-token: write
+    steps:
+    - uses: actions/download-artifact@v4
+      with:
+        name: package-distributions
+        path: dist/
+    - name: Publish package distributions to PyPI
+      uses: pypa/gh-action-pypi-publish@e53eb8b103ffcb59469888563dc324e3c8ba6f06
