@@ -1,0 +1,64 @@
+Metadata-Version: 2.1
+Name: replit-object-storage
+Version: 1.0.0
+Summary: A library for interacting with Object Storage on Replit
+Home-page: https://github.com/replit/replit-object-storage-python
+License: ISC
+Author: Repl.it
+Author-email: contact@repl.it
+Requires-Python: >=3.8.0,<3.13
+Classifier: License :: OSI Approved
+Classifier: License :: OSI Approved :: ISC License (ISCL)
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3
+Requires-Dist: google-cloud-storage (>=2.14.0,<3.0.0)
+Requires-Dist: requests (>=2.31.0,<3.0.0)
+Project-URL: Repository, https://github.com/replit/replit-object-storage-python
+Description-Content-Type: text/markdown
+
+# replit-object-storage-python
+The library for interacting with Replit's Object Storage service, on Replit.
+
+## Usage
+
+### Setup
+
+Start by importing the Object Storage Client:
+```python
+from replit.object_storage import Client
+```
+
+Then to use the Client:
+```python
+client = Client()
+```
+
+### Downloading an Object
+
+```python
+contents = client.download_as_text("file.json")
+```
+
+### Uploading an Object
+
+```python
+client.upload_from_text("file.json", data)
+```
+
+### List Objects
+
+```python
+client.list()
+```
+
+### Delete an Object
+
+```python
+contents = client.delete("file.json")
+```
+
