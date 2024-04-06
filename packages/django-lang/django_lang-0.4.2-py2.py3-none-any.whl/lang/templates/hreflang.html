@@ -1,0 +1,8 @@
+{% load i18n urls %}
+
+<!-- hreflang -->
+{% get_available_languages as LANGUAGES %}
+{% for language_code, language_name in LANGUAGES %}
+<link rel="alternate" hreflang="{{ language_code }}" href="{% translate_url language_code %}" />
+{% endfor %}
+<link rel="alternate" hreflang="x-default" href="{% translate_url DEFAULT_LANGUAGE_CODE %}" />
