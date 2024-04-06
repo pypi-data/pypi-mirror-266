@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+
+[project]
+name = "lm-debug-eval-ui"
+version = "0.0.2"
+authors = [
+  { name="LastMile AI" },
+]
+description = "LLM Application Debug/Eval UI on top of AIConfig"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+]
+dynamic = ["dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[project.urls]
+"Homepage" = "https://github.com/lastmile-ai/aiconfig"
+
+[project.scripts]
+aiconfig = "aiconfig.scripts.aiconfig_cli:main"
+
+# Black formatting
+[tool.black]
+line-length = 99
+include = '\.pyi?$'
+exclude = '''
+/(
+      .eggs         # exclude a few common directories in the
+    | .git          # root of the project
+    | .hg
+    | .mypy_cache
+    | .tox
+    | venv
+    | _build
+    | buck-out
+    | build
+    | dist
+  )/
+'''
