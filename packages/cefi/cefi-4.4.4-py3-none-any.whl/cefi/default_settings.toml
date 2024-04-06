@@ -1,0 +1,149 @@
+########################################
+###          DEFAULT SETTINGS        ###
+########################################
+
+# Any of those settings can be changed
+# by the user. To overwrite a setting, 
+# create a settings.toml or load the 
+# settings from .env file or vars.
+# As an example, to disable the 
+# cex object:
+# settings.toml
+# [default]
+# cex_enabled = false
+
+[default]
+# Dynaconf settings verification
+VALUE = "On default"
+
+# Module Enable/Disable
+cex_enabled = true
+
+
+# CCXT Parameters to connect
+# to 1 or more exchanges
+[default.cex.template]
+protocol = "ccxt"
+enabled = true
+user_id = ""
+api_key= ""
+host = ""
+port = 7497
+secret= ""
+password = ""
+testmode = true
+broker_client_id = ""
+broker_account_number = ""
+broker_gateway = true
+defaulttype = ""
+ordertype = ""
+leverage_type = ""
+leverage = 1
+trading_risk_percentage = true
+trading_risk_amount = 10
+trading_slippage = 2
+trading_amount_threshold = 0
+trading_asset = "USDT"
+trading_asset_separator = ""
+mapping = [
+    { id = "BTC", alt = "BTC/USDT" },
+    { id = "ETH", alt = "ETH/USDT" },
+]
+balance_limit = true
+balance_limit_value = 10
+
+# # CEFI example using ccxt binance
+# [default.cex.mybinance]
+# protocol = "ccxt"
+# enabled = true
+# api_key= ""
+# secret= ""
+# password = ""
+# testmode = true
+# defaulttype = "spot"
+# ordertype = "market"
+# leverage_type = "isolated"
+# leverage = 1
+# trading_risk_percentage = true
+# trading_risk_amount = 10
+# trading_slippage = 2
+# trading_amount_threshold = 0
+# trading_asset = "USDT"
+# trading_asset_separator = ""
+# mapping = [
+#     { id = "BTC", alt = "BTC/USDT" },
+# ]
+# balance_limit = true
+# balance_limit_value = 10
+
+
+# # Example using Capital.com
+# [default.cex.capital]
+# protocol = "capital"
+# enabled = false
+# user_id = "12345678"
+# api_key= "myapi_DEADBEEF"
+# password = "12345678"
+# testmode = false
+# defaulttype = ""
+# ordertype = ""
+# leverage_type = ""
+# leverage = 1
+# trading_risk_percentage = true
+# trading_risk_amount = 10
+# trading_slippage = 2
+# trading_amount_threshold = 0
+# trading_asset = "USD"
+# trading_asset_separator = ""
+# mapping = [
+#     { id = "EURUSD", alt = "EURUSD" },
+#     { id = "BTC", alt = "BTCUSD" },
+#     { id = "ETH", alt = "ETHUSD" },
+#     { id = "CRUDE", alt = "OIL_CRUDE" },
+#     { id = "BRENT", alt = "OIL_BRENT" },
+#     { id = "GOLD", alt = "GOLD" },
+#     { id = "SILVER", alt = "SILVER" },
+#     { id = "US500", alt = "US500" },
+    # { id = "J225", alt = "J225" },
+# ]
+# balance_limit = false
+# balance_limit_value = 10
+
+# # Example using IBKR
+# [default.cex.ibkr]
+# protocol = "ib"
+# enabled = true
+# user_id = ""
+# api_key= ""
+# host = ""
+# port = 7497
+# secret= ""
+# password = ""
+# testmode = true
+# broker_client_id = ""
+# broker_account_number = ""
+# broker_gateway = true
+# defaulttype = ""
+# ordertype = ""
+# leverage_type = ""
+# leverage = 1
+# trading_risk_percentage = true
+# trading_risk_amount = 10
+# trading_slippage = 2
+# trading_amount_threshold = 0
+# trading_asset = "USD"
+# trading_asset_separator = ""
+# mapping = [
+#     { id = "BTC", alt = "BTC/USDT", type="CRYPTO", exchange="SMART", currency="USD", multiplier="100000000", right="P", lastTradeDateOrContractMonth="202101" },
+#     { id = "ETH", alt = "ETH/USDT", type="CRYPTO", exchange="SMART", currency="USD" },
+#     { id = "EURUSD", alt = "EUR/USD", type="CASH", exchange="SMART", currency="USD" },
+#     { id = "TSLA", alt = "TESLA", type="STK", exchange="SMART", currency="USD" },
+# ]
+# balance_limit = false
+# balance_limit_value = 10
+
+
+
+########################################
+###     END OF DEFAULT SETTINGS      ###
+########################################
