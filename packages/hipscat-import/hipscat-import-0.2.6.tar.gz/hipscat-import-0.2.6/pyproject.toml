@@ -1,0 +1,88 @@
+[project]
+name = "hipscat-import"
+license = {file = "LICENSE"}
+readme = "README.md"
+authors = [
+    { name = "LINCC Frameworks", email = "lincc-frameworks-team@lists.lsst.org" }
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: BSD License",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+]
+dynamic = ["version"]
+dependencies = [
+    "dask<=2024.2.0",
+    "dask[distributed]",
+    "deprecated",
+    "healpy",
+    "hipscat >= 0.2.9",
+    "ipykernel", # Support for Jupyter notebooks
+    "pandas < 2.1.0",
+    "pyarrow",
+    "pyyaml",
+    "tqdm",
+    "numpy < 1.25",
+    "fsspec <= 2024.2.0", # Remove when pyarrow updates to reflect api changes
+]
+
+# On a mac, install optional dependencies with `pip install '.[dev]'` (include the single quotes)
+[project.optional-dependencies]
+dev = [
+    "black",
+    "jupyter", # Clear notebook output
+    "mypy", # Used for static type checking of files
+    "pre-commit", # Used to run checks before finalizing a git commit
+    "pylint", # Used for static linting of files
+    "pytest",
+    "pytest-cov",
+    "pytest-timeout",
+    "mypy", # Used for static type checking of files
+    "ray", # Used for dask-on-ray testing.
+    "types-PyYAML", # type stubs for pyyaml
+]
+
+[build-system]
+requires = [
+    "setuptools>=62", # Used to build and package the Python project
+    "setuptools_scm>=6.2", # Gets release version from git. Makes it available programmatically
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+write_to = "src/hipscat_import/_version.py"
+
+[tool.setuptools.package-data]
+hipscat_import = ["py.typed"]
+
+[tool.pytest.ini_options]
+timeout = 1
+markers = [
+    "dask: mark tests as having a dask client runtime dependency",
+]
+testpaths = [
+    "tests",
+]
+
+[tool.coverage.report]
+omit = [
+    "src/hipscat_import/_version.py", # auto-generated
+    "src/hipscat_import/pipeline.py", # too annoying to test
+]
+
+[tool.black]
+line-length = 110
+target-version = ["py38"]
+
+[tool.isort]
+profile = "black"
+line_length = 110
+
+[tool.coverage.run]
+omit = [
+    "src/hipscat_import/_version.py", # auto-generated
+    "src/hipscat_import/pipeline.py", # too annoying to test
+]
