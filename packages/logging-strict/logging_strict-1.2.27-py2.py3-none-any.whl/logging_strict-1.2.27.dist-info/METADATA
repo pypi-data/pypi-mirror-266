@@ -1,0 +1,979 @@
+Metadata-Version: 2.1
+Name: logging-strict
+Version: 1.2.27
+Summary: logging.config yaml strict typing and editable
+Author-email: Dave Faulkmore <faulkmore@telegram.org>
+License: 
+                                         Apache License
+                                   Version 2.0, January 2004
+                                http://www.apache.org/licenses/
+        
+           TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+        
+           1. Definitions.
+        
+              "License" shall mean the terms and conditions for use, reproduction,
+              and distribution as defined by Sections 1 through 9 of this document.
+        
+              "Licensor" shall mean the copyright owner or entity authorized by
+              the copyright owner that is granting the License.
+        
+              "Legal Entity" shall mean the union of the acting entity and all
+              other entities that control, are controlled by, or are under common
+              control with that entity. For the purposes of this definition,
+              "control" means (i) the power, direct or indirect, to cause the
+              direction or management of such entity, whether by contract or
+              otherwise, or (ii) ownership of fifty percent (50%) or more of the
+              outstanding shares, or (iii) beneficial ownership of such entity.
+        
+              "You" (or "Your") shall mean an individual or Legal Entity
+              exercising permissions granted by this License.
+        
+              "Source" form shall mean the preferred form for making modifications,
+              including but not limited to software source code, documentation
+              source, and configuration files.
+        
+              "Object" form shall mean any form resulting from mechanical
+              transformation or translation of a Source form, including but
+              not limited to compiled object code, generated documentation,
+              and conversions to other media types.
+        
+              "Work" shall mean the work of authorship, whether in Source or
+              Object form, made available under the License, as indicated by a
+              copyright notice that is included in or attached to the work
+              (an example is provided in the Appendix below).
+        
+              "Derivative Works" shall mean any work, whether in Source or Object
+              form, that is based on (or derived from) the Work and for which the
+              editorial revisions, annotations, elaborations, or other modifications
+              represent, as a whole, an original work of authorship. For the purposes
+              of this License, Derivative Works shall not include works that remain
+              separable from, or merely link (or bind by name) to the interfaces of,
+              the Work and Derivative Works thereof.
+        
+              "Contribution" shall mean any work of authorship, including
+              the original version of the Work and any modifications or additions
+              to that Work or Derivative Works thereof, that is intentionally
+              submitted to Licensor for inclusion in the Work by the copyright owner
+              or by an individual or Legal Entity authorized to submit on behalf of
+              the copyright owner. For the purposes of this definition, "submitted"
+              means any form of electronic, verbal, or written communication sent
+              to the Licensor or its representatives, including but not limited to
+              communication on electronic mailing lists, source code control systems,
+              and issue tracking systems that are managed by, or on behalf of, the
+              Licensor for the purpose of discussing and improving the Work, but
+              excluding communication that is conspicuously marked or otherwise
+              designated in writing by the copyright owner as "Not a Contribution."
+        
+              "Contributor" shall mean Licensor and any individual or Legal Entity
+              on behalf of whom a Contribution has been received by Licensor and
+              subsequently incorporated within the Work.
+        
+           2. Grant of Copyright License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              copyright license to reproduce, prepare Derivative Works of,
+              publicly display, publicly perform, sublicense, and distribute the
+              Work and such Derivative Works in Source or Object form.
+        
+           3. Grant of Patent License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              (except as stated in this section) patent license to make, have made,
+              use, offer to sell, sell, import, and otherwise transfer the Work,
+              where such license applies only to those patent claims licensable
+              by such Contributor that are necessarily infringed by their
+              Contribution(s) alone or by combination of their Contribution(s)
+              with the Work to which such Contribution(s) was submitted. If You
+              institute patent litigation against any entity (including a
+              cross-claim or counterclaim in a lawsuit) alleging that the Work
+              or a Contribution incorporated within the Work constitutes direct
+              or contributory patent infringement, then any patent licenses
+              granted to You under this License for that Work shall terminate
+              as of the date such litigation is filed.
+        
+           4. Redistribution. You may reproduce and distribute copies of the
+              Work or Derivative Works thereof in any medium, with or without
+              modifications, and in Source or Object form, provided that You
+              meet the following conditions:
+        
+              (a) You must give any other recipients of the Work or
+                  Derivative Works a copy of this License; and
+        
+              (b) You must cause any modified files to carry prominent notices
+                  stating that You changed the files; and
+        
+              (c) You must retain, in the Source form of any Derivative Works
+                  that You distribute, all copyright, patent, trademark, and
+                  attribution notices from the Source form of the Work,
+                  excluding those notices that do not pertain to any part of
+                  the Derivative Works; and
+        
+              (d) If the Work includes a "NOTICE" text file as part of its
+                  distribution, then any Derivative Works that You distribute must
+                  include a readable copy of the attribution notices contained
+                  within such NOTICE file, excluding those notices that do not
+                  pertain to any part of the Derivative Works, in at least one
+                  of the following places: within a NOTICE text file distributed
+                  as part of the Derivative Works; within the Source form or
+                  documentation, if provided along with the Derivative Works; or,
+                  within a display generated by the Derivative Works, if and
+                  wherever such third-party notices normally appear. The contents
+                  of the NOTICE file are for informational purposes only and
+                  do not modify the License. You may add Your own attribution
+                  notices within Derivative Works that You distribute, alongside
+                  or as an addendum to the NOTICE text from the Work, provided
+                  that such additional attribution notices cannot be construed
+                  as modifying the License.
+        
+              You may add Your own copyright statement to Your modifications and
+              may provide additional or different license terms and conditions
+              for use, reproduction, or distribution of Your modifications, or
+              for any such Derivative Works as a whole, provided Your use,
+              reproduction, and distribution of the Work otherwise complies with
+              the conditions stated in this License.
+        
+           5. Submission of Contributions. Unless You explicitly state otherwise,
+              any Contribution intentionally submitted for inclusion in the Work
+              by You to the Licensor shall be under the terms and conditions of
+              this License, without any additional terms or conditions.
+              Notwithstanding the above, nothing herein shall supersede or modify
+              the terms of any separate license agreement you may have executed
+              with Licensor regarding such Contributions.
+        
+           6. Trademarks. This License does not grant permission to use the trade
+              names, trademarks, service marks, or product names of the Licensor,
+              except as required for reasonable and customary use in describing the
+              origin of the Work and reproducing the content of the NOTICE file.
+        
+           7. Disclaimer of Warranty. Unless required by applicable law or
+              agreed to in writing, Licensor provides the Work (and each
+              Contributor provides its Contributions) on an "AS IS" BASIS,
+              WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+              implied, including, without limitation, any warranties or conditions
+              of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+              PARTICULAR PURPOSE. You are solely responsible for determining the
+              appropriateness of using or redistributing the Work and assume any
+              risks associated with Your exercise of permissions under this License.
+        
+           8. Limitation of Liability. In no event and under no legal theory,
+              whether in tort (including negligence), contract, or otherwise,
+              unless required by applicable law (such as deliberate and grossly
+              negligent acts) or agreed to in writing, shall any Contributor be
+              liable to You for damages, including any direct, indirect, special,
+              incidental, or consequential damages of any character arising as a
+              result of this License or out of the use or inability to use the
+              Work (including but not limited to damages for loss of goodwill,
+              work stoppage, computer failure or malfunction, or any and all
+              other commercial damages or losses), even if such Contributor
+              has been advised of the possibility of such damages.
+        
+           9. Accepting Warranty or Additional Liability. While redistributing
+              the Work or Derivative Works thereof, You may choose to offer,
+              and charge a fee for, acceptance of support, warranty, indemnity,
+              or other liability obligations and/or rights consistent with this
+              License. However, in accepting such obligations, You may act only
+              on Your own behalf and on Your sole responsibility, not on behalf
+              of any other Contributor, and only if You agree to indemnify,
+              defend, and hold each Contributor harmless for any liability
+              incurred by, or claims asserted against, such Contributor by reason
+              of your accepting any such warranty or additional liability.
+        
+           END OF TERMS AND CONDITIONS
+        
+Keywords: strictyaml,pre-commit,yaml,logging.config
+Platform: linux
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: System :: Logging
+Classifier: Topic :: Software Development :: Testing
+Classifier: Topic :: Software Development :: Quality Assurance
+Classifier: Natural Language :: English
+Classifier: Development Status :: 4 - Beta
+Classifier: Typing :: Typed
+Requires-Python: >=3.9
+Description-Content-Type: text/x-rst
+License-File: LICENSE.txt
+License-File: NOTICE.txt
+Requires-Dist: appdirs ==1.4.4
+Requires-Dist: attrs ==23.2.0
+Requires-Dist: python-dateutil ==2.8.2
+Requires-Dist: six ==1.16.0
+Requires-Dist: strictyaml ==1.7.3
+Requires-Dist: typing-extensions ==4.9.0
+Provides-Extra: dev
+Requires-Dist: black ==23.12.1 ; extra == 'dev'
+Requires-Dist: blackdoc ==0.3.9 ; extra == 'dev'
+Requires-Dist: certifi ==2024.2.2 ; extra == 'dev'
+Requires-Dist: cffi ==1.16.0 ; extra == 'dev'
+Requires-Dist: charset-normalizer ==3.3.2 ; extra == 'dev'
+Requires-Dist: click ==8.1.7 ; extra == 'dev'
+Requires-Dist: coverage ==7.4.1 ; extra == 'dev'
+Requires-Dist: cryptography ==42.0.5 ; extra == 'dev'
+Requires-Dist: docutils ==0.20.1 ; extra == 'dev'
+Requires-Dist: fastjsonschema ==2.19.1 ; extra == 'dev'
+Requires-Dist: flake8 ==7.0.0 ; extra == 'dev'
+Requires-Dist: flake8-pyproject ==1.2.3 ; extra == 'dev'
+Requires-Dist: idna ==3.6 ; extra == 'dev'
+Requires-Dist: importlib-metadata ==7.0.1 ; extra == 'dev'
+Requires-Dist: isort ==5.13.2 ; extra == 'dev'
+Requires-Dist: jaraco-classes ==3.3.1 ; extra == 'dev'
+Requires-Dist: jeepney ==0.8.0 ; extra == 'dev'
+Requires-Dist: keyring ==24.3.0 ; extra == 'dev'
+Requires-Dist: markdown-it-py ==3.0.0 ; extra == 'dev'
+Requires-Dist: mccabe ==0.7.0 ; extra == 'dev'
+Requires-Dist: mdurl ==0.1.2 ; extra == 'dev'
+Requires-Dist: more-itertools ==10.2.0 ; extra == 'dev'
+Requires-Dist: mypy ==1.8.0 ; extra == 'dev'
+Requires-Dist: mypy-extensions ==1.0.0 ; extra == 'dev'
+Requires-Dist: nh3 ==0.2.15 ; extra == 'dev'
+Requires-Dist: packaging ==23.2 ; extra == 'dev'
+Requires-Dist: pathspec ==0.12.1 ; extra == 'dev'
+Requires-Dist: pkginfo ==1.9.6 ; extra == 'dev'
+Requires-Dist: platformdirs ==4.1.0 ; extra == 'dev'
+Requires-Dist: pycodestyle ==2.11.1 ; extra == 'dev'
+Requires-Dist: pycparser ==2.21 ; extra == 'dev'
+Requires-Dist: pyflakes ==3.2.0 ; extra == 'dev'
+Requires-Dist: pygments ==2.17.2 ; extra == 'dev'
+Requires-Dist: readme-renderer ==43.0 ; extra == 'dev'
+Requires-Dist: requests ==2.31.0 ; extra == 'dev'
+Requires-Dist: requests-toolbelt ==1.0.0 ; extra == 'dev'
+Requires-Dist: rfc3986 ==2.0.0 ; extra == 'dev'
+Requires-Dist: rich ==13.7.0 ; extra == 'dev'
+Requires-Dist: secretstorage ==3.3.3 ; extra == 'dev'
+Requires-Dist: tomli ==2.0.1 ; extra == 'dev'
+Requires-Dist: twine ==5.0.0 ; extra == 'dev'
+Requires-Dist: typing-extensions ==4.9.0 ; extra == 'dev'
+Requires-Dist: urllib3 ==2.2.1 ; extra == 'dev'
+Requires-Dist: validate-pyproject ==0.16 ; extra == 'dev'
+Requires-Dist: zipp ==3.17.0 ; extra == 'dev'
+Provides-Extra: docs
+Requires-Dist: aiologger ==0.7.0 ; extra == 'docs'
+Requires-Dist: alabaster ==0.7.13 ; extra == 'docs'
+Requires-Dist: apeye ==1.4.1 ; extra == 'docs'
+Requires-Dist: apeye-core ==1.1.4 ; extra == 'docs'
+Requires-Dist: attrs ==23.2.0 ; extra == 'docs'
+Requires-Dist: autodocsumm ==0.2.11 ; extra == 'docs'
+Requires-Dist: babel ==2.13.1 ; extra == 'docs'
+Requires-Dist: beautifulsoup4 ==4.12.2 ; extra == 'docs'
+Requires-Dist: cachecontrol[filecache] ==0.13.1 ; extra == 'docs'
+Requires-Dist: certifi ==2023.11.17 ; extra == 'docs'
+Requires-Dist: charset-normalizer ==3.3.2 ; extra == 'docs'
+Requires-Dist: click ==8.1.7 ; extra == 'docs'
+Requires-Dist: click-log ==0.4.0 ; extra == 'docs'
+Requires-Dist: colorama ==0.4.6 ; extra == 'docs'
+Requires-Dist: cssutils ==2.9.0 ; extra == 'docs'
+Requires-Dist: dict2css ==0.3.0.post1 ; extra == 'docs'
+Requires-Dist: dist-meta ==0.8.0 ; extra == 'docs'
+Requires-Dist: docutils ==0.18.1 ; extra == 'docs'
+Requires-Dist: dom-toml ==0.6.1 ; extra == 'docs'
+Requires-Dist: domdf-python-tools ==3.7.0 ; extra == 'docs'
+Requires-Dist: filelock ==3.13.1 ; extra == 'docs'
+Requires-Dist: handy-archives ==0.2.0 ; extra == 'docs'
+Requires-Dist: html5lib ==1.1 ; extra == 'docs'
+Requires-Dist: idna ==3.6 ; extra == 'docs'
+Requires-Dist: imagesize ==1.4.1 ; extra == 'docs'
+Requires-Dist: importlib-metadata ==7.0.0 ; extra == 'docs'
+Requires-Dist: jinja2 ==3.1.2 ; extra == 'docs'
+Requires-Dist: jsonschema ==4.21.1 ; extra == 'docs'
+Requires-Dist: jsonschema-specifications ==2023.12.1 ; extra == 'docs'
+Requires-Dist: livereload ==2.6.3 ; extra == 'docs'
+Requires-Dist: markdown-it-py ==3.0.0 ; extra == 'docs'
+Requires-Dist: markupsafe ==2.1.3 ; extra == 'docs'
+Requires-Dist: mdurl ==0.1.2 ; extra == 'docs'
+Requires-Dist: msgpack ==1.0.7 ; extra == 'docs'
+Requires-Dist: natsort ==8.4.0 ; extra == 'docs'
+Requires-Dist: packaging ==23.2 ; extra == 'docs'
+Requires-Dist: platformdirs ==4.1.0 ; extra == 'docs'
+Requires-Dist: pychoosealicense ==2023.11.20 ; extra == 'docs'
+Requires-Dist: pygments ==2.17.2 ; extra == 'docs'
+Requires-Dist: python-frontmatter ==1.0.1 ; extra == 'docs'
+Requires-Dist: pyyaml ==6.0.1 ; extra == 'docs'
+Requires-Dist: referencing ==0.33.0 ; extra == 'docs'
+Requires-Dist: requests ==2.31.0 ; extra == 'docs'
+Requires-Dist: rpds-py ==0.18.0 ; extra == 'docs'
+Requires-Dist: ruamel-yaml ==0.18.5 ; extra == 'docs'
+Requires-Dist: ruamel-yaml-clib ==0.2.8 ; extra == 'docs'
+Requires-Dist: scriv ==1.5.1 ; extra == 'docs'
+Requires-Dist: six ==1.16.0 ; extra == 'docs'
+Requires-Dist: snowballstemmer ==2.2.0 ; extra == 'docs'
+Requires-Dist: soupsieve ==2.5 ; extra == 'docs'
+Requires-Dist: sphinx ==5.3.0 ; extra == 'docs'
+Requires-Dist: sphinx-autobuild ==2021.3.14 ; extra == 'docs'
+Requires-Dist: sphinx-autodoc-typehints ==1.23.0 ; extra == 'docs'
+Requires-Dist: sphinx-external-toc ==1.0.1 ; extra == 'docs'
+Requires-Dist: sphinx-jinja2-compat ==0.2.0.post1 ; extra == 'docs'
+Requires-Dist: sphinx-licenseinfo ==0.4.0 ; extra == 'docs'
+Requires-Dist: sphinx-paramlinks ==0.6.0 ; extra == 'docs'
+Requires-Dist: sphinx-prompt ==1.5.0 ; extra == 'docs'
+Requires-Dist: sphinx-pyproject ==0.3.0 ; extra == 'docs'
+Requires-Dist: sphinx-tabs ==3.4.4 ; extra == 'docs'
+Requires-Dist: sphinx-toolbox ==3.5.0 ; extra == 'docs'
+Requires-Dist: sphinxcontrib-applehelp ==1.0.7 ; extra == 'docs'
+Requires-Dist: sphinxcontrib-devhelp ==1.0.5 ; extra == 'docs'
+Requires-Dist: sphinxcontrib-htmlhelp ==2.0.4 ; extra == 'docs'
+Requires-Dist: sphinxcontrib-jsmath ==1.0.1 ; extra == 'docs'
+Requires-Dist: sphinxcontrib-qthelp ==1.0.6 ; extra == 'docs'
+Requires-Dist: sphinxcontrib-serializinghtml ==1.1.9 ; extra == 'docs'
+Requires-Dist: sphobjinv ==2.3.1 ; extra == 'docs'
+Requires-Dist: tabulate ==0.9.0 ; extra == 'docs'
+Requires-Dist: toml ==0.10.2 ; extra == 'docs'
+Requires-Dist: tornado ==6.4 ; extra == 'docs'
+Requires-Dist: typing-extensions ==4.9.0 ; extra == 'docs'
+Requires-Dist: urllib3 ==2.1.0 ; extra == 'docs'
+Requires-Dist: webencodings ==0.5.1 ; extra == 'docs'
+Requires-Dist: zipp ==3.17.0 ; extra == 'docs'
+Provides-Extra: manage
+Requires-Dist: certifi ==2023.7.22 ; extra == 'manage'
+Requires-Dist: cffi ==1.15.1 ; extra == 'manage'
+Requires-Dist: cfgv ==3.4.0 ; extra == 'manage'
+Requires-Dist: charset-normalizer ==3.2.0 ; extra == 'manage'
+Requires-Dist: cryptography ==41.0.4 ; extra == 'manage'
+Requires-Dist: distlib ==0.3.8 ; extra == 'manage'
+Requires-Dist: docutils ==0.20.1 ; extra == 'manage'
+Requires-Dist: filelock ==3.13.1 ; extra == 'manage'
+Requires-Dist: identify ==2.5.33 ; extra == 'manage'
+Requires-Dist: idna ==3.4 ; extra == 'manage'
+Requires-Dist: importlib-metadata ==7.0.0 ; extra == 'manage'
+Requires-Dist: jaraco-classes ==3.3.0 ; extra == 'manage'
+Requires-Dist: jeepney ==0.8.0 ; extra == 'manage'
+Requires-Dist: keyring ==24.2.0 ; extra == 'manage'
+Requires-Dist: markdown-it-py ==3.0.0 ; extra == 'manage'
+Requires-Dist: mdurl ==0.1.2 ; extra == 'manage'
+Requires-Dist: more-itertools ==10.1.0 ; extra == 'manage'
+Requires-Dist: nh3 ==0.2.14 ; extra == 'manage'
+Requires-Dist: nodeenv ==1.8.0 ; extra == 'manage'
+Requires-Dist: pkginfo ==1.9.6 ; extra == 'manage'
+Requires-Dist: platformdirs ==4.1.0 ; extra == 'manage'
+Requires-Dist: pre-commit ==3.6.0 ; extra == 'manage'
+Requires-Dist: pycparser ==2.21 ; extra == 'manage'
+Requires-Dist: pygments ==2.17.2 ; extra == 'manage'
+Requires-Dist: pyyaml ==6.0.1 ; extra == 'manage'
+Requires-Dist: readme-renderer ==42.0 ; extra == 'manage'
+Requires-Dist: requests ==2.31.0 ; extra == 'manage'
+Requires-Dist: requests-toolbelt ==1.0.0 ; extra == 'manage'
+Requires-Dist: restview ==3.0.0 ; extra == 'manage'
+Requires-Dist: rfc3986 ==2.0.0 ; extra == 'manage'
+Requires-Dist: rich ==13.7.0 ; extra == 'manage'
+Requires-Dist: secretstorage ==3.3.3 ; extra == 'manage'
+Requires-Dist: twine ==4.0.2 ; extra == 'manage'
+Requires-Dist: urllib3 ==2.0.5 ; extra == 'manage'
+Requires-Dist: virtualenv ==20.25.0 ; extra == 'manage'
+Requires-Dist: zipp ==3.17.0 ; extra == 'manage'
+Requires-Dist: setuptools ==69.0.3 ; extra == 'manage'
+Provides-Extra: pip
+Requires-Dist: packaging ==23.2 ; extra == 'pip'
+Requires-Dist: setuptools-scm ==8.0.4 ; extra == 'pip'
+Requires-Dist: tomli ==2.0.1 ; extra == 'pip'
+Requires-Dist: typing-extensions ==4.9.0 ; extra == 'pip'
+Requires-Dist: pip ==23.3.2 ; extra == 'pip'
+Requires-Dist: setuptools ==69.0.3 ; extra == 'pip'
+Provides-Extra: pip_tools
+Requires-Dist: build ==1.0.3 ; extra == 'pip_tools'
+Requires-Dist: click ==8.1.7 ; extra == 'pip_tools'
+Requires-Dist: importlib-metadata ==7.0.1 ; extra == 'pip_tools'
+Requires-Dist: packaging ==23.2 ; extra == 'pip_tools'
+Requires-Dist: pip-tools ==7.3.0 ; extra == 'pip_tools'
+Requires-Dist: pyproject-hooks ==1.0.0 ; extra == 'pip_tools'
+Requires-Dist: tomli ==2.0.1 ; extra == 'pip_tools'
+Requires-Dist: wheel ==0.42.0 ; extra == 'pip_tools'
+Requires-Dist: zipp ==3.17.0 ; extra == 'pip_tools'
+Requires-Dist: pip ==23.3.2 ; extra == 'pip_tools'
+Requires-Dist: setuptools ==69.0.3 ; extra == 'pip_tools'
+
+.. Licensed under the Apache License: http://www.apache.org/licenses/LICENSE-2.0
+.. For details: https://github.com/msftcangoblowm/logging-strict/blob/master/NOTICE.txt
+
+logging-strict
+===============
+
+logging.config yaml Strict typing and editable
+
+|  |kit| |license| |versions|
+|  |test-status| |quality-status| |docs|
+|  |stars| |mastodon-msftcangoblowm|
+
+For logging.config yaml files, logging-strict does the following:
+
+- Editable logging configuration
+
+  While running a Python app, some arbritary package, out of no
+  where, decides to log an informational warning. Within a multiprocessing
+  worker (aka heavy background processing), these logging warnings go
+  from annoying --> disruptive.
+
+  The best can do is *adapt to survive*. Make this situation quickly
+  solvable by adjusting the app's logging configuration.
+
+  asyncio is an example package which bleeds informational logging warnings
+
+- curates
+
+  Intention is to have all the valid logging.config yaml in one place
+
+- validator
+
+  logging_strict comes with a logging.config yaml validator. So can
+  check the editted yaml file. Supports pre-commit
+
+- validates against a strictyaml schema
+
+  The schema is specifically tailored for the logging.handlers
+
+  As long as the yaml is valid, will have the data types
+  logging.handlers expect
+
+- exports package data
+
+  Alternative to pkgutil.get_data
+
+  Export data files using a pattern rather than one file at a time
+
+.. PYVERSIONS
+
+* Python 3.9 through 3.12, and 3.13.0a3 and up.
+
+**New in 1.2.x:**
+
+sphinx object inventories; eliminate sphinx warnings; package logo; tox.ini;
+many .github/workflows; Tagged version on testpypi, pypi, and readthedocs; badges; VHS tapes;
+
+**New in 1.1.x:**
+
+Sphinx documentation;
+Public API changed. retired functions setup_worker and setup_ui. Split each into 2 or 3;
+
+Why?
+------
+
+logging.config is more often than not hardcoded within a package's
+source code. Removing logging.config from the source code and into
+an exported yaml config file, a package becomes adaptable to
+unforeseen unexpected bleeding of logging messages.
+
+When a bleed occurs, open the exported logging.config yaml file. Add
+the offending package to the ``loggers`` section or if already there, increase
+the logging level.
+
+For example, for asyncio, adjust logging level from
+logging.WARNING --> logging.ERROR
+
+Bye bye disruptive informational logging warning messages.
+
+logging_strict comes with a logging.config yaml validator. So can
+check the editted yaml file.
+
+On app|worker restart, the logging configuration changes take effect.
+
+Exporting -- when
+------------------
+
+Exports occur before the logging.config yaml files are needed. There
+are two process types: worker and app
+
+When an app is run, it exports the app logging configuration.
+
+Right before a ProcessPool runs, it exports the worker logging configuration.
+
+Right before a thread or ThreadPool runs, G'd and Darwin sit down to decide
+which calamity will befall you. Best to avoid that cuz Python logging module is
+thread-safe. Changes to the logging.config in one thread affects them all
+and those changes last as long as the app runs.
+
+Safe means safe to remove you from the gene pool. Would be a great name for a
+horror movie. Don't be in that movie.
+
+Exporting -- where/what
+------------------------
+
+Export location (on linux): ``$HOME/.local/share/[package name]/``
+
+This is xdg user data dir and the configuration is per package.
+Python logging configurations' cascade!
+
+Whats exported?
+
+- one for the app
+
+- At least one, for the multiprocessing workers
+
+If a user|coder edits and makes a change, undo'ing those changes would be
+considered quite rude, minimally, poor ettiquette.
+
+So that gauntlets stay on and package authors live long fulfilling peaceful
+uneventful lives, overwrite existing logging config yaml files never
+happens. Although fully capable, just absolutely refuses to do so!
+
+If confident no changes have been made, can manually delete (unlink).
+
+There will be no need for gauntlets, can safely put those away.
+
+Upgrade path
+--------------
+
+*How to upgrade a particular logging.config yaml file?*
+
+Best to increment the version and switch the code base to use the latest version
+
+Custom changes should be upstreamed.
+
+*Preferred the previous version*
+
+There currently isn't a means to change which logging.config yaml file
+a package uses.
+
+This sounds like a job for user preference database, gschema. Not yet
+implemented
+
+Validation
+-----------
+
+logging.handlers, each, expects parameters to have the correct data type.
+
+yaml package strictyaml, default data type is str, for other types, the function
+variable name and type must be known (and supported) beforehand.
+
+For custom (handlers, filters, and formatters) functions, there is no
+way to know beforehand the parameter name **and therefore** the data type,
+parameter type will become str
+
+(Assuming the virtual environment is activated)
+
+Within source code (tree)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. image:: https://raw.githubusercontent.com/msftcangoblowm/logging-strict/master/docs/_static/validate_flavor_asz.gif
+   :alt: validation of package logging.config yaml files
+   :width: 1000px
+   :height: 500px
+
+.. code:: console
+
+   logging_strict_validate_yaml
+
+.. code:: text
+
+   Processed: 4 / 4
+   Success / fail: 4 / 0
+   last (3): ~/Downloads/logging_strict/src/logging_strict/configs/mp_1_asz.worker.logging.config.yaml
+
+.. code:: console
+
+   logging_strict_validate_yaml --category worker
+
+.. code:: text
+
+   Processed: 3 / 3
+   Success / fail: 3 / 0
+   last (2): ~/Downloads/logging_strict/src/logging_strict/configs/mp_1_asz.worker.logging.config.yaml
+
+.. code:: console
+
+   logging_strict_validate_yaml --category app
+
+.. code:: text
+
+   Processed: 1 / 1
+   Success / fail: 1 / 0
+   last (0): ~/Downloads/logging_strict/src/logging_strict/configs/textual_1_asz.app.logging.config.yaml
+
+.. note:: Two workers are just ordinary yaml files
+
+   Withinin logging_strict source tree, `bad_idea/folder*/*` are two folders,
+   each contains one file.
+
+   Although valid yaml, these are not actual logging.config yaml files.
+   Just there for testing purposes
+
+   The total `*.logging.config.yaml` file count and total
+   `*.worker.logging.config.yaml` are both thrown off by `+2`
+
+Within xdg user data dir
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: console
+
+   logging_strict_validate_yaml $HOME/.local/share/logging_strict/ worker
+
+Processed: 1 / 1
+Success / fail: 1 / 0
+last (0): ~/.local/share/logging_strict/mp_1_asz.worker.logging.config.yaml
+
+.. code:: console
+
+   logging_strict_validate_yaml $HOME/.local/share/logging_strict/ app
+
+Processed: 1 / 1
+Success / fail: 1 / 0
+last (0): ~/.local/share/logging_strict/textual_1_asz.app.logging.config.yaml
+
+pre-commit
+------------
+
+Locally
+
+.. code:: text
+
+   repos:
+     - repo: local
+       hooks:
+         - id: validate-logging-config-yaml
+           name: validate-logging-config-yaml
+           entry: logging_strict_validate_yaml
+           language: python
+           require_serial: true
+           pass_filenames: false
+
+Normal usage
+
+.. code:: text
+
+   repos:
+     - repo: https://github.com/msftcangoblowm/logging-strict
+       rev: 0.1.0
+       hooks:
+         - id: validate-logging-config-yaml
+           name: validate-logging-config-yaml
+           entry: logging_strict_validate_yaml
+           language: python
+           require_serial: true
+          pass_filenames: false
+
+install
+--------
+
+You know how to use pip. This is not that.
+
+Lets discuss integrating logging-strict into your app and history
+dust binning hardcoded logging configuration.
+
+UI
+~~~
+
+An entrypoint boilerplate should be structured like, or slightly
+differently for an async app
+
+.. code:: text
+
+   def _process_args(): ...
+
+   def main():
+       d_out = _process_args()
+       ...
+       # app logging config stuff <--- here!
+       app = MyApp()  # <-- not within here
+       ...
+
+   if __name__ = "__main__":
+       main()
+
+This entrypoint is testable. If the argparsing is done within main,
+it's time to refactor and rework the entrypoint.
+
+An Entrypoint have defined and **documented** exit codes. Besides for
+``--help|-h``, never prints a message
+
+logging.config yaml -- within logging_strict
+"""""""""""""""""""""""""""""""""""""""""""""
+
+.. code:: text
+
+   from logging_strict.constants import
+   from logging_strict import ui_yaml_curated, LoggingState
+
+   genre = "textual"
+   version_no = "1"
+   flavor = "asz"  # < -- Yet unpublished testing UI package
+   package_start_relative_folder = ""
+
+   LoggingState().is_state_app = True
+   ui_yaml_curated(
+       genre,
+       flavor,
+       version_no=version_no,
+       package_start_relative_folder=package_start_relative_folder,  # <-- narrows the search
+   )
+
+logging.config yaml -- within another package
+""""""""""""""""""""""""""""""""""""""""""""""
+
+.. code:: text
+
+   from mypackage.constants import urpackagename, package_data_folder_start
+   from logging_strict import setup_ui_other, LoggingState
+
+   genre = "textual"
+   flavor = "asz"  # < -- Yet unpublished testing UI package
+   version_no = "1"
+   package_start_relative_folder = ""
+
+   LoggingState().is_state_app = True
+   setup_ui_other(
+       urpackagename,  # <-- Would have been better to curate within logging_strict
+       package_data_folder_start,
+       genre,
+       flavor,
+       version_no=version_no,
+       package_start_relative_folder=package_start_relative_folder,
+   )
+
+- package
+
+  Package within which the `*.[app|worker].logging.config.yaml` files
+  reside.
+
+  Which is preferrably within logging_strict. So all the logging.config yaml
+  in the universe need not be duplicated to the point where it appears
+  to compete with fiat currency.
+
+- package_data_folder_start
+
+  Within that package, which is the package base folder somewhere
+  within the folder tree lies the `*.[app|worker].logging.config.yaml`
+  files. This is a str, not a relative path.
+
+  One folder name. Does not assume the folder is called ``data``. Does assume
+  data files are within at least one folder. And if not? G'd and Darwin. Or
+  panties are bound to get twisted.
+
+- category
+
+  The function name indicates the purpose. To setup ``logging.config`` for
+  a worker, call function, ``setup_worker``
+
+- genre
+
+  From a main app's POV, genre is the UI framework such as: pyside or textual
+
+  From a worker's POV, genre hints at the implementation:
+  mp (multiprocessing) or rabbitmq, ...
+
+- flavor
+
+  Like a one word brand name to a particular logging.config yaml file. For the
+  initially used the brand, ``asz``, a Python testing UI app
+
+- version_no
+
+  When changes have to be made either: Increment
+  the version by 1 or if purpose is different, fork a new flavor
+
+  If no flavor, version pertains to the genre
+
+- package_start_relative_folder
+
+  Relative to package_data_folder_start, narrows search.
+
+  For example,
+
+  ``bad_idea/folder0/`` and ``bad_idea/folder1`` both contains,
+  ``mp_1_shared.worker.logging.config.yaml``. Which one?
+
+  package_data_folder_start is ``bad_idea``, not ``configs`` or ``data``.
+  package_start_relative_folder could be ``folder0``. Which is enough
+  to identify the exact file.
+
+LoggingState
+"""""""""""""
+
+A Singleton holding logging state. To know whether or not, run by app
+or from cli
+
+(there is also the issue of run by: coverage, unittest, or pytest)
+
+If run from app, and testing app component, logging is redirected to
+`textual.logging.TextualHandler` and shouldn't be changed.
+
+If run from cli, and testing app component, logging is redirected to
+`logging.handlers.StreamHandler`, not TextualHandler
+
+During testing, the app and workers are run in all three scenerios.
+
+From coverage, from unittest, and from asz.
+
+While the logging handler is TextualHandler, changing to StreamHandler
+would be bad. LoggingState aim is to avoid that.
+
+Why would want to do testing from an UI?
+
+- **Speeeeeeeeeed!**
+
+Minimizing keypresses or actions required to run commands
+
+- Associating unittests to code modules
+
+Which unittest(s) must be run to get 100% coverage for a particular
+code module?
+
+Without organization, can only imagine that there must always be a 1:1
+ratio between unittest and code module. And if not, the unittests
+folder is just a jumbled mess. And which unittests matter for a
+particular code module is unknown.
+
+**Give a brother a clue!**
+
+A clear easily maintainable verifiable guide is necessary.
+
+worker
+-------
+
+This is a 2 step process.
+
+- Step 1 -- entrypoint
+
+  Extracts yaml from package, validates, then passes as str to the worker process
+
+- Step 2 -- worker
+
+  yaml str --> logging.config.dictConfig
+
+within entrypoint
+~~~~~~~~~~~~~~~~~~
+
+The ProcessPool (not ThreadPool) worker is isolated within it's own
+process. So the dirty nature of logging configuration has no effect
+on other processes.
+
+logging.config yaml file within package, logging_strict
+
+.. code:: text
+
+   from logging_strict import worker_yaml_curated
+
+   genre = "mp"
+   flavor = "asz"
+
+   str_yaml = worker_yaml_curated(genre, flavor)
+
+logging.config yaml file within another package
+
+.. code:: text
+
+   from logging_strict import worker_yaml_curated
+
+   package = "someotherpackage"
+   package_data_folder_start = "data"  # differs so need to check this folder name
+
+   genre = "mp"
+   flavor = "asz"
+
+   str_yaml = setup_worker_other(package, package_data_folder_start, genre, flavor)
+
+
+within worker
+~~~~~~~~~~~~~~
+
+entrypoint passes str_yaml to the (ProcessPool) worker. A worker calls
+`setup_logging_yaml` with the yaml str
+
+.. code:: text
+
+   from logging_strict import setup_logging_yaml
+
+   setup_logging_yaml(str_yaml)
+
+
+To learn more about building UI apps that have `multiprocessing.pool.ProcessPool`
+workers, check out the `asz` source code
+
+Public API
+-----------
+
+.. code:: text
+
+   from logging_strict import (
+      LoggingConfigCategory,
+      LoggingState,
+      LoggingYamlType,
+      setup_ui_other,
+      ui_yaml_curated,
+      setup_worker_other,
+      worker_yaml_curated,
+      setup_logging_yaml,
+      LoggingStrictError,
+      LoggingStrictPackageNameRequired,
+      LoggingStrictPackageStartFolderNameRequired,
+      LoggingStrictProcessCategoryRequired,
+      LoggingStrictGenreRequired,
+   )
+
+- LoggingConfigCategory
+
+  tl;dr; ^^ won't need this ^^
+
+  Process categories Enum. Iterate over the Enum values, using class
+  method, `categories`.
+
+  `strict_logging` public methods are convenience functions for class,
+  `strict_logging.logging_api.LoggingConfigYaml`. If LoggingConfigYaml
+  used directly, choose one of the LoggingConfigCategory values to
+  pass as param, category.
+
+- LoggingYamlType
+
+  tl;dr; ^^ won't need this ^^
+
+  Useful only during strict type checking. class LoggingConfigYaml
+  implements LoggingYamlType interface and is a direct subclass
+
+- LoggingStrictError
+
+  logging_strict catch all Exception. Base type of other exceptions.
+  Implements ValueError
+
+  The other exceptions are self explanatory. When creating worker
+  entrypoints, can set exit codes based on which exception occurred.
+
+Whats strictyaml?
+------------------
+
+Unfortunately yaml spec is too broad, allowing undesirable complexity, which
+are a frequent cause of security issues. Read more:
+
+- `[why] <https://hitchdev.com/strictyaml/why/>`_
+
+- `[why nots] <https://hitchdev.com/strictyaml/why-not/>`_
+
+strictyaml (`[docs] <https://hitchdev.com/strictyaml/>`_) mitigates
+yaml security issues:
+
+- by only supporting a subset of the yaml spec
+
+- type-safe YAML parsing and validation against a schema
+
+  In our case, specialized to support the built-in Python
+  logging.handlers and adaptable enough to support custom
+  handlers, filters, and formatters
+
+.. |test-status| image:: https://github.com/msftcangoblowm/logging-strict/actions/workflows/testsuite.yml/badge.svg?branch=master&event=push
+    :target: https://github.com/msftcangoblowm/logging-strict/actions/workflows/testsuite.yml
+    :alt: Test suite status
+.. |quality-status| image:: https://github.com/msftcangoblowm/logging-strict/actions/workflows/quality.yml/badge.svg?branch=master&event=push
+    :target: https://github.com/msftcangoblowm/logging-strict/actions/workflows/quality.yml
+    :alt: Quality check status
+.. |docs| image:: https://readthedocs.org/projects/logging-strict/badge/?version=latest&style=flat
+    :target: https://logging-strict.readthedocs.io/
+    :alt: Documentation
+.. |kit| image:: https://img.shields.io/pypi/v/logging-strict
+    :target: https://pypi.org/project/logging-strict/
+    :alt: PyPI status
+.. |versions| image:: https://img.shields.io/pypi/pyversions/logging-strict.svg?logo=python&logoColor=FBE072
+    :target: https://pypi.org/project/logging-strict/
+    :alt: Python versions supported
+.. |license| image:: https://img.shields.io/github/license/msftcangoblowm/logging-strict
+    :target: https://pypi.org/project/logging-strict/blob/master/LICENSE.txt
+    :alt: License
+.. |stars| image:: https://img.shields.io/github/stars/msftcangoblowm/logging-strict.svg?logo=github
+    :target: https://github.com/msftcangoblowm/logging-strict/stargazers
+    :alt: GitHub stars
+.. |mastodon-msftcangoblowm| image:: https://img.shields.io/mastodon/follow/112019041247183249
+    :target: https://mastodon.social/@msftcangoblowme
+    :alt: msftcangoblowme on Mastodon
