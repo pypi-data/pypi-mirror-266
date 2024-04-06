@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "django-webstats"
+version = "0.1.0"
+description = "Simple functionality to record django view visits (IP Address, URLs, User info)"
+authors = ["Harlin Seritt <harlin.seritt@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [
+    { include = "webstats" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.0.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
