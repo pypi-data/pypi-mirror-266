@@ -1,0 +1,50 @@
+package:
+  name: esssans
+
+  version: {{ GIT_DESCRIBE_TAG }}
+
+source:
+  path: ..
+
+
+{% set pyproject = load_file_data('pyproject.toml') %}
+{% set dependencies = pyproject.get('project', {}).get('dependencies', {}) %}
+
+
+requirements:
+  build:
+    - setuptools
+    - setuptools_scm
+  run:
+    - python>=3.10
+  {% for package in dependencies %}
+    - {% if package == "graphviz" %}python-graphviz{% else %}{{ package }}{% endif %}
+  {% endfor %}
+
+
+test:
+  imports:
+    - ess.sans
+    - ess.isissans
+    - ess.loki
+  requires:
+    - pytest
+  source_files:
+    - pyproject.toml
+    - tests/
+  commands:
+    # We ignore warnings during release package builds
+    - python -m pytest -Wignore tests
+
+build:
+  noarch: python
+  script:
+    - python -m pip install .
+
+about:
+  home: https://github.com/scipp/esssans
+  license: BSD-3-Clause
+  summary: SANS data reduction for the European Spallation Source
+  description: SANS data reduction for the European Spallation Source
+  dev_url: https://github.com/scipp/esssans
+  doc_url: https://scipp.github.io/esssans
