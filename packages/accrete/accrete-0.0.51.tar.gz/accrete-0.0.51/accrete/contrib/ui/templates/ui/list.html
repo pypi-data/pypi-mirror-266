@@ -1,0 +1,39 @@
+{% extends 'ui/layout.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+    <div class="columns is-multiline">
+        {% for obj in list_page %}
+            <div class="list-column column is-{{ column_width }}-fullhd is-12-touch is-12-desktop is-12-widescreen"
+                 style="height: {{ column_height }}rem"
+                 {% if endless_scroll and forloop.last and page.has_next %}
+                    hx-get="{{ url_params }}&page={{ page.next_page_number }}"
+                    hx-trigger="intersect once"
+                    hx-select=".list-column"
+                    hx-select-oob="#list-pagination-end-index,#list-pagination-next-button,#list-pagination-prev-button"
+                    hx-swap="afterend"
+                {% endif %}
+            >
+                <div class="box p-3" style="word-break: break-word; height: 100%; border: solid #ccc 1px; overflow-y: auto">
+                    {% block data %}
+                        {{ obj }}
+                    {% endblock %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% if endless_scroll %}
+        <div id="endless-scroller"
+            {% if list_page.has_next %}
+                hx-get="{{ url_params }}&page={{ page.next_page_number }}"
+                hx-trigger="intersect once"
+                hx-select=".list-column"
+                hx-select-oob="#list-pagination-end-index,#list-pagination-next-button,#list-pagination-prev-button,#endless-scroller"
+                hx-swap="afterend"
+            {% endif %}
+        >
+        </div>
+        <progress class="htmx-indicator progress is-small is-success" max="100">15%</progress>
+    {% endif %}
+{% endblock %}
