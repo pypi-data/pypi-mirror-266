@@ -1,0 +1,28 @@
+Metadata-Version: 2.1
+Name: kv-sqlite-sync
+Version: 0.1.1
+Summary: Key-Value interface over SQLite. Supports any datatype, including JSON and BLOB
+Author-email: Marcel Claramunt <marcel@moveread.com>
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: kv-api
+Requires-Dist: haskellian
+Requires-Dist: ramda
+
+# Sqlite Kv (Sync)
+
+> Synchronous Key-Value interface over SQLite. Supports any datatype, including JSON and BLOB
+
+## Usage
+
+```python
+import json
+from sqlite_kv import SQLiteKV
+
+api = await SQLiteKV.at(
+  db_path='mydb.sqlite', table='my-jsons',
+  dtype='JSON', parse=json.loads, dump=json.dumps
+)
+await api.upsert('my-image', dict(hello='world'))
+await api.read('my-image') # dict(hello='world')
+```
