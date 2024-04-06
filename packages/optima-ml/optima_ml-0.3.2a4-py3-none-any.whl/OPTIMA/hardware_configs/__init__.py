@@ -1,0 +1,1 @@
+"""A package that contains hardware specific functionality to allow the execution of OPTIMA on HPC clusters."""
