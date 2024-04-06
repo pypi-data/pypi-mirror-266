@@ -1,0 +1,123 @@
+{% load i18n %}
+
+<div id="header" class="pt-3">
+    <div class="level level-is-shrinkable is-flex mb-2 pl-3 {% if detail_page %}is-mobile {% endif %}" style="align-items: start">
+        <div class="level-left">
+            <div class="level-item has-text-weight-bold">
+                <nav id="breadcrumbs" class="breadcrumb" aria-label="breadcrumbs" style="white-space: unset; word-break: break-word">
+                    <ul>
+                        {% for crumb in breadcrumbs %}
+                            <li><a class="is-underlined" href="{{ crumb.url|default_if_none:'#' }}"
+                                   aria-current="page" hx-boost="true"
+                            >{{ crumb.name }}</a></li>
+                        {% endfor %}
+                        <li class="is-active"><a aria-current="page">{{ title }}</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        {% if list_page.paginator or detail_page %}
+            <div class="level-right is-mobile is-hidden-mobile is-hidden-fullhd is-align-self-flex-start px-3">
+                <div class="level-item">
+                    {% if list_page.paginator %}
+                        {% include 'ui/partials/pagination_list.html' %}
+                    {% elif detail_page %}
+                        {% include 'ui/partials/pagination_detail.html' %}
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="is-flex is-hidden-fullhd is-justify-content-space-between mb-2">
+        <div id="header-actions" class="is-flex py-1 px-1 ml-2" style="overflow-x: auto">
+            {% for action in actions %}
+                {% if action.actions %}
+                    <button id="action-group-{{ loop.index }}" class="button" data-target="action-group-{{ loop.index }}-modal" onclick="showActions(this)">
+                        <span>{{ action.name }}</span>
+                        <span class="icon is-small">
+                            <i class="fas fa-angle-down" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                    <div id="action-group-{{ loop.index }}-modal" class="modal">
+                        <div class="modal-background" onclick="closeActionsModal('action-group-{{ loop.index }}-modal')"></div>
+                        <div class="modal-card">
+                            <header class="modal-card-head">
+                                <p class="modal-card-title">{{ action.name }}</p>
+                                <button class="delete" aria-label="close"
+                                        onclick="closeActionsModal('action-group-{{ loop.index }}-modal')"
+                                ></button>
+                            </header>
+                            <section class="modal-card-body">
+                                {% for group_action in action.actions %}
+                                    {% if group_action.submit %}
+                                        <button class="button is-fullwidth {{ group_action.class_list|join:' ' }} mb-4"
+                                               type="submit" form={{ group_action.form_id }} value="{{ group_action.name }}"
+                                               {{ group_action.attrs_str }}
+                                        >
+                                            <div class="level side-panel-action-content"><span>{{ group_action.name }}</span>
+                                                {% if group_action.icon %}<i class="{{ group_action.icon.value }}"></i>{% endif %}
+                                            </div>
+                                        </button>
+                                    {% else %}
+                                            <a class="button is-fullwidth {{ group_action.class_list|join:' ' }} mb-4"
+                                                {% if group_action.url %}
+                                                    {{ group_action.method.value }}="{{ group_action.url }}"
+                                                {% endif %}
+                                               {{ group_action.attrs_str }}
+                                            >
+                                                <div class="level side-panel-action-content">
+                                                    <span>{{ group_action.name }}</span>
+                                                    {% if group_action.icon %}<i class="{{ group_action.icon.value }}"></i>{% endif %}
+                                                </div>
+                                            </a>
+                                    {% endif %}
+                                {% endfor %}
+                            </section>
+                        </div>
+                    </div>
+                {% elif action.submit %}
+                    <button class="button is-fullwidth mr-2 {{ action.class_list|join:' ' }}"
+                           type="submit" form={{ action.form_id }} value="{{ action.name }}"
+                           {{ action.attrs_str }}
+                    >
+                        <div class="side-panel-action-content level">
+                            <span class="{% if action.icon_only %}is-hidden{% endif %}">{{ action.name }}</span>
+                            {% if action.icon %}<i class="{{ action.icon.value }} ml-2"></i>{% endif %}
+                        </div>
+                    </button>
+                {% else %}
+                    <a class="button is-fullwidth mr-2 {{ action.class_list|join:' ' }}"
+                        {% if action.url %}
+                            {{ action.method.value }}="{{ action.url }}"
+                        {% endif %}
+                       {{ action.attrs_str }}
+                    >
+                        <div class="side-panel-action-content level">
+                            <span class="{% if action.icon_only %}is-hidden{% endif %}">{{ action.name }}</span>
+                            {% if action.icon %}<i class="{{ action.icon.value }}"></i>{% endif %}
+                        </div>
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% if filter %}
+            <div class="is-flex ml-2 py-1 pr-3">
+                <button id="modal-filter-button" class="button has-icon" onclick="showFilterModal()">
+                    <i class="icon-filter"></i>
+                </button>
+            </div>
+        {% endif %}
+    </div>
+    <script>
+        function showActions(el) {
+            console.log(el)
+            const modal = document.getElementById(el.getAttribute('data-target'));
+            modal.classList.add('is-active');
+        }
+
+        function closeActionsModal(modalId) {
+            document.getElementById(modalId).classList.remove('is-active');
+        }
+    </script>
+</div>

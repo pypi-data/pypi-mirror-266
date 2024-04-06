@@ -1,0 +1,29 @@
+{% extends 'ui/form.html' %}
+
+{% block form %}
+    <form id="form" method="post" action="">
+    {% csrf_token %}
+    <div class="columns">
+        <div class="column is-6">
+            <label class="label has-field is-required">
+                {{ form.email.label_tag }}
+                <span class="has-text-danger is-size-7">{{ form.email.errors }}</span>
+                <div class="field">
+                    <p class="control is-fullwidth">{{ form.email }}</p>
+                </div>
+            </label>
+        </div>
+    </div>
+    <div class="columns">
+        <div class="column is-6">
+            <label class="label has-field is-required">
+                {{ form.password.label_tag }}
+                <span class="has-text-danger is-size-7">{{ form.password.errors }}</span>
+                <div class="field">
+                    <p class="control is-fullwidth">{{ form.password }}</p>
+                </div>
+            </label>
+        </div>
+    </div>
+</form>
+{% endblock %}

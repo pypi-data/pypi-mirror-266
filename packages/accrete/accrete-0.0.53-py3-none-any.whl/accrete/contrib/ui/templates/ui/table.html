@@ -1,0 +1,76 @@
+{% extends 'ui/layout.html' %}
+{% load static %}
+{% load i18n %}
+{% load accrete_ui %}
+
+{% block content %}
+    <table id="content-table" class="table is-fullwidth is-hoverable has-box" hx-indicator=".htmx-indicator">
+        <thead style="position: sticky; top: 0; z-index: 10">
+            {% block table_header_row %}
+                <tr>
+                    {% block table_header %}
+                        <th>{{ object_label }}</th>
+                        {% for field in fields %}
+                            <th data-name="{{ field.name }}" style="text-align: {% firstof field.header_alignment.value field.alignment.value %}">{{ field.label }}</th>
+                        {% endfor %}
+                        {% if unselect_button %}
+                            <th></th>
+                        {% endif %}
+                    {% endblock %}
+                </tr>
+            {% endblock %}
+        </thead>
+        <tbody id="content-table-body" style="z-index: 9">
+            {% for obj in list_page %}
+                {% block table_data_row %}
+                    <tr>
+                        {% block table_data %}
+                            <td>
+                                <a class="is-underlined" href="{{ obj.get_absolute_url }}{{ object_param_str }}">{{ obj }}</a>
+                            </td>
+                            {% for field in fields %}
+                                {% if field.template %}
+                                    {% include field.template %}
+                                {% else %}
+                                    {% with val=obj|field_attr:field is_relation=field.is_relation %}
+                                        <td style="text-align: {{ field.alignment.value }}" {% if val|length > field.truncate_after %}title="{{ val }}"{% endif %}>
+                                            <span class="responsive-heading has-text-weight-light" style="margin-right: .2rem">{{ field.label }}:</span>
+                                            {% if is_relation and val.get_absolute_url %}<a href="{{ obj|related_obj_url:field.name }}" class="is-underlined">{% endif %}
+                                                {{ field.prefix }}
+                                                {% block td_content %}
+                                                    {% if field.truncate_after > 0 %}
+                                                        {{ val|default_if_none:'---'|truncatechars:field.truncate_after }}
+                                                    {% else %}
+                                                        {{ val|default_if_none:'---' }}
+                                                    {% endif %}
+                                                {% endblock %}
+                                                {{ field.suffix }}
+                                            {% if is_relation %}</a>{% endif %}
+                                        </td>
+                                    {% endwith %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if unselect_button %}
+                                <td><button class="button is-small has-icon p-0 is-pulled-right" onclick="unselectSingleObject({{ obj.pk }})"><i class="icon-delete-filter"></i></button></td>
+                            {% endif %}
+                        {% endblock %}
+                    </tr>
+                {% endblock %}
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if endless_scroll %}
+        <div id="endless-scroller"
+             {% if list_page.has_next %}
+                 hx-get="{{ pagination_param_str }}&page={{ list_page.next_page_number }}"
+                 hx-trigger="intersect once"
+                 hx-select="tbody > tr"
+                 hx-target="#content-table-body"
+                 hx-swap="beforeend"
+                 hx-select-oob="#list-pagination-end-index,#list-pagination-next-button,#list-pagination-prev-button,#endless-scroller"
+             {% endif %}
+        >
+        </div>
+        <progress class="htmx-indicator progress is-small is-success" max="100">15%</progress>
+    {% endif %}
+{% endblock %}
