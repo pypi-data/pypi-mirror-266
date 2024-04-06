@@ -1,0 +1,21 @@
+<h1>{{ object.title}}</h1>
+<h2>to {{ object.mailing_list.name }} on {{ object.submission.published }}</h2>
+
+{% for part in object.message_parts.all %}
+<h3>{{ part.heading }}</h3>
+<div class="message-part-text">
+    {{ part.html_text | safe }}
+</div>
+{% endfor %}
+
+
+{% for attachment in message.attachments.all %}
+    {% if forloop.first %}
+<strong>Attachments</strong>
+<ul>
+    {% endif %}
+    <li><a href="{{ attachment.file.url }}">{{ attachment.filename }}</a> ({{ attachment.file.size|filesizeformat }})</li>
+    {% if forloop.last %}
+</ul>
+    {% endif %}
+{% endfor %}
