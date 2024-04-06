@@ -1,0 +1,405 @@
+/*  ------------------------------------------------------------------------  */
+/* Comel Base CSS - https://github.com/hueyyeng/Comel
+/* By Huey Yeng
+/*  ------------------------------------------------------------------------  */
+
+* {
+  color: #555555;
+}
+
+QWidget {
+  background-color: rgb(240, 240, 240);
+  border-color: rgb(184, 184, 184);
+}
+
+QWidget:disabled {
+  color: rgb(211, 211, 211);
+  border-color: rgb(211, 211, 211);
+}
+
+QToolTip {
+  background-color: rgb(240, 240, 240);
+  color: #555555;
+}
+
+QToolButton::hover {
+  background-color: rgb(215, 230, 240);
+}
+
+QMenuBar {
+  border-bottom: 1px solid rgb(184, 184, 184);
+}
+
+QMenuBar::item {
+  padding: 7px;
+}
+
+QMenu::item {
+  background-color: rgb(240, 240, 240);
+}
+
+QMenu::item:selected, QMenuBar::item:selected {
+  color: white;
+  background-color: dodgerblue;
+}
+
+QMenu {
+  border: 1px solid rgb(184, 184, 184);
+}
+
+::section {
+  background-color: rgb(250, 250, 250);
+}
+
+QListView, QTableView, QTreeView {
+  background-color: white;
+  selection-color: #555555;
+  selection-background-color: rgb(230, 239, 253);
+}
+
+QListView:disabled, QTableView:disabled, QTreeView:disabled {
+  background-color: rgb(240, 240, 240);
+  selection-color: rgb(211, 211, 211);
+  selection-background-color: rgb(230, 239, 253);
+}
+
+QTreeView::branch:has-siblings:!adjoins-item {
+  border-image: url(cicons:vline.png) 0;
+}
+
+QTreeView::branch:has-siblings:adjoins-item {
+  border-image: url(cicons:branch-more.png) 0;
+}
+
+QTreeView::branch:!has-children:!has-siblings:adjoins-item {
+  border-image: url(cicons:branch-end.png) 0;
+}
+
+QTreeView::branch:has-children:!has-siblings:closed,
+QTreeView::branch:closed:has-children:has-siblings {
+  border-image: none;
+  image: url(cicons:branch-closed.png);
+}
+
+QTreeView::branch:open:has-children:!has-siblings,
+QTreeView::branch:open:has-children:has-siblings  {
+  border-image: none;
+  image: url(cicons:branch-open.png);
+}
+
+QTableView {
+  gridline-color: rgb(184, 184, 184);
+}
+
+QTableView:disabled {
+  gridline-color: rgb(211, 211, 211);
+}
+
+QHeaderView::section {
+  border: 1px solid rgb(184, 184, 184);
+  border-top: none;
+  border-left: none;
+  padding-left: 4px;
+  background-color: qlineargradient(
+    x1:0, y1:0, x2:0, y2:1,
+    stop:0 rgb(235, 235, 235),
+    stop:1.0 rgb(220, 220, 220)
+  );
+}
+
+QHeaderView::section:disabled {
+  border: 1px solid rgb(211, 211, 211);
+  border-top: none;
+  border-left: none;
+  padding-left: 4px;
+  background-color: qlineargradient(
+    x1:0, y1:0, x2:0, y2:1,
+    stop:0 rgb(240, 240, 240),
+    stop:1.0 rgb(220, 220, 220)
+  );
+}
+
+QHeaderView::section:hover {
+  background-color: rgb(230, 240, 255);
+}
+
+QHeaderView::section:pressed {
+  color: white;
+  background-color: rgb(96, 159, 250);
+}
+
+QPushButton {
+  border: 1px solid rgb(184, 184, 184);
+  padding: 4px;
+}
+
+QPushButton:default {
+  background-color: rgb(79, 139, 200);
+  color: white;
+  font-weight: bold;
+}
+
+QPushButton:default:disabled {
+  background-color: rgb(188, 200, 212);
+  color: rgb(240, 240, 240);
+  border: 1px solid rgb(211, 211, 211);
+}
+
+QPushButton:default:hover {
+  background-color: rgb(106, 170, 234);
+}
+
+QPushButton:hover {
+  background-color: rgb(215, 230, 240);
+}
+
+QPushButton:pressed {
+  background-color: rgb(190, 200, 205);
+}
+
+QProgressBar {
+  background-color: white;
+  border: 1px solid rgb(184, 184, 184);
+  text-align: center;
+}
+
+QProgressBar::chunk {
+  background-color: rgb(182, 227, 255);
+  width: 10px;
+}
+
+QRadioButton::indicator::checked {
+  image: url(cicons:radio-on.png);
+}
+
+QRadioButton::indicator::unchecked {
+  image: url(cicons:radio-off.png);
+}
+
+QRadioButton::indicator::checked:disabled {
+  image: url(cicons:dark-radio-on.png);
+}
+
+QRadioButton::indicator::unchecked:disabled {
+  image: url(cicons:dark-radio-off.png);
+}
+
+QCheckBox::indicator:disabled {
+  background-color: rgb(250, 250, 250);
+}
+
+QCheckBox::indicator::checked {
+  image: url(cicons:checked.png);
+  background-color: white;
+  border: 1px solid rgb(184, 184, 184);
+  padding: 2px;
+}
+
+QCheckBox::indicator::checked:disabled {
+  image: url(cicons:checked-disabled.png);
+  background-color: rgb(250, 250, 250);
+  border: 1px solid rgb(211, 211, 211);
+}
+
+QCheckBox::indicator::unchecked {
+  background-color: white;
+  border: 1px solid rgb(184, 184, 184);
+  padding: 2px;
+}
+
+QCheckBox::indicator::unchecked:disabled {
+  background-color: rgb(250, 250, 250);
+  border: 1px solid rgb(211, 211, 211);
+  padding: 2px;
+}  
+
+QComboBox {
+  background-color: white;
+  border: 1px solid rgb(184, 184, 184);
+  padding: 3px;
+  selection-background-color: lightskyblue;
+}
+
+QComboBox QAbstractItemView::item:alternate {
+  background-color: rgb(220, 220, 220);
+}
+
+QComboBox QAbstractItemView::item:alternate:hover {
+  background-color: rgb(204, 232, 255);
+}
+
+QComboBox:disabled {
+  background-color: rgb(240, 240, 240);
+  border: 1px solid rgb(211, 211, 211);
+}
+
+QGroupBox {
+  border: 1px solid rgb(184, 184, 184);
+  margin-top: 7px;
+  padding-top: 7px;
+}
+
+QGroupBox:disabled {
+  border: 1px solid rgb(211, 211, 211);
+}
+
+QGroupBox::title {
+  subcontrol-origin: margin;
+  left: 10px;
+  padding: 0 3px 0 3px;
+}
+
+QSplitter::handle:horizontal {
+  border: 1px outset rgb(211, 211, 211);
+}
+
+QSplitter::handle:vertical {
+  border: 1px outset rgb(211, 211, 211);
+}
+
+QSpinBox {
+  background-color: white;
+  border: 1px solid rgb(184, 184, 184);
+}
+
+QSpinBox:disabled {
+  border: 1px solid rgb(211, 211, 211);
+}
+
+QPlainTextEdit, QTextEdit, QLineEdit {
+  background-color: white;
+  border: 1px solid rgb(184, 184, 184);
+}
+
+QPlainTextEdit:disabled, QTextEdit:disabled, QLineEdit:disabled {
+  background-color: rgb(240, 240, 240);
+  border: 1px solid rgb(211, 211, 211);
+}
+
+QTabWidget::pane {
+  border: 1px solid rgb(184, 184, 184);
+}
+
+QTabBar::tab {
+  background-color: rgb(220, 220, 220);
+  border: 1px solid rgb(184, 184, 184);
+}
+
+QTabBar::tab:top, QTabBar::tab:bottom {
+  min-width: 20ex;
+  padding: 4px;
+}
+
+QTabBar::tab:left, QTabBar::tab:right {
+  min-height: 20ex;
+  padding: 4px;
+}
+
+QTabBar::tab:top {
+  border-bottom: 0;
+}
+
+QTabBar::tab:bottom {
+  border-top: 0;
+}
+
+QTabBar::tab:right {
+  border-left: 0;
+}
+
+QTabBar::tab:left {
+  border-right: 0;
+}
+
+QTabBar::tab:hover {
+  background-color: rgb(215, 230, 240);
+}
+
+QTabBar::tab:pressed {
+  background-color: rgb(190, 200, 205);
+}
+
+QTabBar::tab:selected {
+  background-color: qlineargradient(
+    x1:0, y1:0, x2:0, y2:1,
+    stop:0 rgb(255, 255, 255),
+    stop:1.0 rgb(224, 224, 224)
+  );
+}
+
+QTabBar::tab:!selected {
+  margin-top: 0px;
+}
+
+QStatusBar {
+  border-top: 1px solid rgb(184, 184, 184);
+  min-height: 24px;
+}
+
+QScrollArea {
+  border: none;
+}
+
+QScrollBar {
+  background: transparent;
+  border-radius: 5px;
+}
+
+QScrollBar:disabled {
+  background: transparent;
+  border-radius: 5px;
+}
+
+QScrollBar:horizontal {
+  height: 10px;
+}
+
+QScrollBar:vertical {
+  width: 10px;
+}
+
+QScrollBar::handle {
+  background: lightgray;
+  border-radius: 5px;
+}
+
+QScrollBar::handle:disabled {
+  background: lightgray;
+  border-radius: 5px;
+}
+
+QScrollBar::handle:horizontal {
+  height: 25px;
+  min-width: 10px;
+}
+
+QScrollBar::handle:vertical {
+  width: 25px;
+  min-height: 10px;
+}
+
+QScrollBar::add-line, QScrollBar::sub-line {
+  border: none;
+}
+
+QScrollBar::add-page, QScrollBar::sub-page {
+  background: transparent;
+}
+
+QAbstractScrollArea::corner {
+  background: transparent;
+}
+
+QDateEdit {
+  border-width: 1px;
+  border-style: solid;
+  background-color: white;
+}
+
+QCalendarWidget QWidget {
+  alternate-background-color: rgb(235, 235, 240);
+}
+
+QCalendarWidget QAbstractItemView:disabled {
+  color: rgb(184, 184, 184);
+}
