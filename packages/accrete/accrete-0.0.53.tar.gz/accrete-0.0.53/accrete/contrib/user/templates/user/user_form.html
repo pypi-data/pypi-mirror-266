@@ -1,0 +1,56 @@
+{% extends 'ui/form.html' %}
+{% load i18n %}
+
+{% block form %}
+<form id="form" method="post" action="">
+    {% csrf_token %}
+    <div class="columns">
+        <div class="column is-6">
+            <label class="label has-field">
+                {{ form.username.label }}
+                <span class="has-text-danger is-size-7">{{ form.username.errors }}</span>
+                <div class="field">
+                    <p class="control is-expanded">{{ form.username }}</p>
+                </div>
+            </label>
+        </div>
+    </div>
+
+    <div class="columns">
+        <div class="column is-6">
+            <label class="label has-field">
+                {{ form.first_name.label }}
+                <span class="has-text-danger is-size-7">{{ form.first_name.errors }}</span>
+                <div class="field">
+                    <p class="control is-fullwidth is-expanded">{{ form.first_name }}</p>
+                </div>
+
+            </label>
+        </div>
+    </div>
+
+    <div class="columns">
+        <div class="column is-6">
+            <label class="label has-field">
+                {{ form.last_name.label }}
+                <span class="has-text-danger is-size-7">{{ form.last_name.errors }}</span>
+                <div class="field">
+                    <p class="control is-fullwidth is-expanded">{{ form.last_name }}</p>
+                </div>
+            </label>
+        </div>
+    </div>
+
+    <div class="columns">
+        <div class="column is-6">
+            <label class="label has-field is-required">
+                {{ form.language_code.label }}
+                <span class="has-text-danger is-size-7">{{ form.language_code.errors }}</span>
+                <div class="field">
+                    <p class="control is-fullwidth is-expanded"><span class="select is-fullwidth">{{ form.language_code }}</span></p>
+                </div>
+            </label>
+        </div>
+    </div>
+</form>
+{% endblock %}

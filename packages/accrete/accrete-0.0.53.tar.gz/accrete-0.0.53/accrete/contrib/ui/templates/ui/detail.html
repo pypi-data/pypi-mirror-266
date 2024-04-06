@@ -1,0 +1,123 @@
+{% extends 'ui/layout.html' %}
+{% load i18n %}
+{% load accrete_ui %}
+
+{% block messages %}
+    {% if messages %}
+        <div class="columns is-desktop">
+            <div class="column is-8">
+                {% for message in messages %}
+                    <div class="columns py-0">
+                        <div class="column is-12">
+                            <div class="notification {{ message|message_class }} is-light">
+                                <p>{{ message }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+{#     <div class="tile is-ancestor">#}
+{#        <div class="tile is-vertical is-8">#}
+{#            <div class="tile is-vertical">#}
+{#                <div class="tile is-parent is-vertical">#}
+{#                    <article class="tile is-child notification">#}
+{#                        <p class="title is-4 mb-1">{{ title }}</p>#}
+{#                        {% block detail_content %}{% endblock %}#}
+{#                    </article>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="tile is-parent">#}
+{#                <article class="tile is-child notification is-danger">#}
+{#                    <p class="title is-4">Budgets</p>#}
+{#                    <p class="subtitle">Aligned with the right tile</p>#}
+{#                    <div class="content">#}
+{#                    </div>#}
+{#                </article>#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="tile is-vertical">#}
+{#            <div class="tile is-parent">#}
+{#                <article class="tile is-child notification">#}
+{#                    <div class="content">#}
+{#                        <p class="title is-4">Info</p>#}
+{#                        <p class="subtitle">With even more content</p>#}
+{#                        <div class="content">#}
+{#                            <!-- Content -->#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </article>#}
+{#            </div>#}
+{#            <div class="tile is-parent">#}
+{#                <article class="tile is-child notification">#}
+{#                    <div class="content">#}
+{#                        <p class="title is-4">Änderungsprotokoll</p>#}
+{#                        <p>Änderung</p>#}
+{#                    <p>Änderung</p>#}
+{#                    <p>Änderung</p>#}
+{#                    <p>Änderung</p>#}
+{#                    <p>Änderung</p>#}
+{#                    <p>Änderung</p>#}
+{#                    <p>Änderung</p>#}
+{#                    <p>Änderung</p>#}
+{#                    <p>Änderung</p>#}
+{#                    <p>Änderung</p>#}
+{#                    <p>Änderung</p>#}
+{#                    <p>Änderung</p>#}
+{#                    <p>Änderung</p>#}
+{#                    <p>Änderung</p>#}
+{#                    <p>Änderung</p>#}
+{#                    <p>Änderung</p>#}
+{#                    <p>Änderung</p>#}
+{#                    <p>Änderung</p>#}
+{#                    <p>Änderung</p>#}
+{#                        <div class="content">#}
+{#                            {% for expense in future_expenses %}#}
+{#                                <div class="list-column column is-12" style="min-height: 4rem">#}
+{#                                    <div class="box p-3 is-flex is-flex-direction-row is-justify-content-space-between is-flex-wrap-wrap" style="word-break: break-word; height: 100%; border: solid #ccc 1px; overflow-y: auto">#}
+{#                                        <a class="is-underlined is-flex-grow-5" href="{{ expense.get_absolute_url }}">{{ expense }}</a>#}
+{#                                        <div class="is-flex is-flex-wrap-nowrap is-justify-content-space-between is-flex-grow-1">#}
+{#                                            <span>{{ expense.amount }}</span>#}
+{#                                            <span>{{ expense.next_book_date }}</span>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            {% endfor %}#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </article>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+
+    <div class="columns is-desktop m-0">
+        <div class="column p-0 is-8-desktop">
+            <div class="box mt-2">
+                {% block detail_content %}{% endblock %}
+            </div>
+        </div>
+        <div class="column is-4">
+            <nav class="">
+                {% block info_panel %}
+                {% endblock %}
+            </nav>
+        </div>
+    </div>
+
+
+{#    <div class="columns is-desktop m-0">#}
+{#        <div class="column p-0 is-8-desktop">#}
+{#            {% block detail_content %}{% endblock %}#}
+{#        </div>#}
+{#        <div class="info-panel column is-4">#}
+{#            <nav class="panel">#}
+{#                {% block info_panel %}#}
+{#                {% endblock %}#}
+{#            </nav>#}
+{#        </div>#}
+{#    </div>#}
+{% endblock %}

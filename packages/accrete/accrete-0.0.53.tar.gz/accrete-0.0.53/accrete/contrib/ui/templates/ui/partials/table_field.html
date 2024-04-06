@@ -1,0 +1,16 @@
+{% load accrete_ui %}
+
+{% with val=obj|get_attr:field.name|default_if_none:'---'  %}
+    <td style="text-align: {{ field.alignment.value }}" {% if val|length > field.truncate_after %}title="{{ val }}"{% endif %}>
+        <span class="responsive-heading has-text-weight-light" style="margin-right: .2rem">{{ field.label }}:</span>
+        {{ field.prefix }}
+        {% block td_content %}
+            {% if field.truncate_after > 0 %}
+                {{ val|truncatechars:field.truncate_after }}
+            {% else %}
+                {{ val }}
+            {% endif %}
+        {% endblock %}
+        {{ field.suffix }}
+    </td>
+{% endwith %}
