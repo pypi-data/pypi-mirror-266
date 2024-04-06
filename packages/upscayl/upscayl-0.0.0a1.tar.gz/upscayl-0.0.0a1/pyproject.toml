@@ -1,0 +1,21 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+[project]
+
+name = "upscayl"
+version = "0.0.0-alpha.1"
+authors = [{ name = "HumXC", email = "Hum-XC@outlook.com" }]
+description = "A small example package"
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = ["Pillow"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+]
+[tool.hatch.build.targets.sdist]
+exclude = ["example"]
+[project.urls]
+"Homepage" = "https://github.com/HumXC/upscayl-python"
+"Bug Tracker" = "https://github.com/HumXC/upscayl-python/issues"
