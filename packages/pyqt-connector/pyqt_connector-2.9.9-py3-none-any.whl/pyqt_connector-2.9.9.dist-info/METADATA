@@ -1,0 +1,88 @@
+Metadata-Version: 2.1
+Name: pyqt-connector
+Version: 2.9.9
+Summary: A seamless integration bridge between PyQt and PostgreSQL, enabling rapid development of database-backed PyQt applications with robust data handling capabilities.
+Author: Weto-bi
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: psycopg2 >=2.9.9
+
+Чтобы добавить текст в файл `README.md` на английском языке, вы можете использовать следующий шаблон. Создайте или откройте файл `README.md` в корневой папке вашего проекта и вставьте в него следующее содержание:
+
+---
+
+# pyqt-connector
+
+**pyqt-connector** is a fundamental Python library designed to ensure reliable and efficient integration between PostgreSQL and PyQt. It serves as a critical component for developers looking to build powerful graphical applications with a relational database as the foundation for data storage and processing. Without **pyqt-connector**, synergy between the high-performance PostgreSQL database and the flexible PyQt GUI capabilities cannot be achieved.
+
+## Features
+
+- **Simplified Connection**: Automates the process of setting up connections with the PostgreSQL database in PyQt applications.
+- **Transaction Management**: Provides convenient tools for managing transactions, optimizing performance and security of your applications.
+- **Asynchronous Support**: Includes support for asynchronous database operations, allowing for the development of responsive GUI applications.
+
+## Installation
+
+Install **pyqt-connector** via pip:
+
+```sh
+pip install pyqt-connector
+```
+
+This command will automatically install all necessary dependencies, including `psycopg2` for PostgreSQL interaction and PyQt for GUI creation.
+
+## Example of Connecting to PostgreSQL
+
+To use **pyqt-connector** for connecting to PostgreSQL, ensure you have a connection set up with your database. Here's a basic example demonstrating how to do this using `psycopg2`:
+
+```python
+import sys
+from PyQt5.QtWidgets import QApplication, QMainWindow
+import psycopg2
+from pyqt_connector import create_connection  # Assuming this is part of your library
+
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+    
+    def initUI(self):
+        self.setWindowTitle('Example of Connecting to PostgreSQL via pyqt-connector')
+        self.setGeometry(100, 100, 600, 400)
+        self.show()
+
+        # Connect to the database
+        self.connectToDatabase()
+
+    def connectToDatabase(self):
+        conn = create_connection(dbname='your_dbname', user='your_user', 
+                                 password='your_password', host='your_host')
+        cur = conn.cursor()
+        # You can execute SQL queries here
+        cur.close()
+        conn.close()
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    ex = MainWindow()
+    sys.exit(app.exec_())
+```
+
+In the example above, `create_connection` is a function from your **pyqt-connector** library that facilitates establishing a connection with the PostgreSQL database. This is a fictional example, assuming you have such functionality in your library.
+
+## License
+
+**pyqt-connector** is distributed under the MIT License, allowing its use in both private and commercial projects with minimal restrictions.
+
+## Community and Support
+
+For support, discussion of new features, and communication with other developers, visit [our GitHub repository](#).
+
+---
+
+Simply save this as `README.md` in the root directory of your project. Adjust the content as necessary to match the specifics and functionalities of your library.
