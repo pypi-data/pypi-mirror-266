@@ -1,0 +1,180 @@
+{
+  "src/lib/components/drawer/drawer-collapsible-item/EADrawerCollapsibleItem.react.js": {
+    "description": "EADrawerCollapsibleItem is a component that renders a collapsible drawer item. It can be used\nwithin a navigation drawer to group related items that can be expanded or collapsed by the user.\nIt supports a disabled state, which can be used to indicate that the item is not currently\navailable for interaction. A lock icon is displayed when the item is disabled.",
+    "displayName": "EADrawerCollapsibleItem",
+    "methods": [],
+    "props": {
+      "children": {
+        "type": {
+          "name": "node"
+        },
+        "required": false,
+        "description": "The children nodes to be rendered inside the collapsible drawer item. This can include\nany valid React components or elements that you want to display when the item is expanded."
+      },
+      "disabled": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "A boolean that determines whether the drawer item is disabled. When set to true, the item\nwill typically be non-interactive and may be styled differently to indicate its disabled\nstate to the user.",
+        "defaultValue": {
+          "value": "false",
+          "computed": false
+        }
+      },
+      "label": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "The text label for the drawer item. This label will be displayed as the primary content\nof the item and is typically the name or title of the section that can be expanded or collapsed."
+      },
+      "className": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "An optional string that specifies custom CSS class names to be added to the drawer item's\nclass attribute. This allows for additional styling to be applied to the drawer item for\ncustomization or theming purposes. The class names provided here will be merged with any\nother existing classes on the drawer item."
+      }
+    }
+  },
+  "src/lib/components/drawer/drawer-item/EADrawerItem.react.js": {
+    "description": "EADrawerItem is a component that renders a non-collapsible drawer item. It is typically used\nwithin a navigation drawer to represent a single navigational link or action. It supports\na disabled state, which can be used to indicate that the item is not currently available\nfor interaction. A lock icon is displayed when the item is disabled.",
+    "displayName": "EADrawerItem",
+    "methods": [],
+    "props": {
+      "disabled": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "A boolean that determines whether the drawer item is disabled. When set to true, the item\nwill typically be non-interactive and may be styled differently to indicate its disabled\nstate to the user.",
+        "defaultValue": {
+          "value": "false",
+          "computed": false
+        }
+      },
+      "label": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "The text label for the drawer item. This label will be displayed as the primary content\nof the item and is typically the name or title of the section that can be expanded or collapsed."
+      },
+      "href": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "A string specifying the URL that the drawer item links to. When provided, the item will\nfunction as a hyperlink, navigating the user to the specified destination when clicked.\nThis is typically used to create navigational links in the drawer that take the user to\ndifferent parts of the application or website."
+      }
+    }
+  },
+  "src/lib/components/layout/main-layout/EALayout.react.js": {
+    "description": "EALayout is a layout component used by Energy Aspects apps. It provides a consistent layout structure\nincluding a header, sidebar, main content area, and an optional footer. It also supports theming and\ndrawer components for additional navigation.",
+    "displayName": "EALayout",
+    "methods": [],
+    "props": {
+      "setProps": {
+        "type": {
+          "name": "func"
+        },
+        "required": false,
+        "description": "A function provided by Dash that should be called to update component properties.\nThis callback is used to report property changes to Dash, enabling the use of these\nproperties in Dash callbacks."
+      },
+      "id": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "The unique identifier for the component, used by Dash to keep track of the component's state\nand to allow callbacks to target this component."
+      },
+      "children": {
+        "type": {
+          "name": "node"
+        },
+        "required": false,
+        "description": "The main content to be displayed in the layout. This can include any valid React\nnodes such as elements, strings, numbers, or fragments."
+      },
+      "leftDrawerOpen": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "A boolean that controls the visibility of the left drawer. When true, the left drawer\nis open; when false, it is closed."
+      },
+      "firstName": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "The first name of the user, which may be displayed in the layout for personalization\nor account-related features.",
+        "defaultValue": {
+          "value": "'Energy'",
+          "computed": false
+        }
+      },
+      "lastName": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "The last name of the user, which may be displayed alongside the first name for\npersonalization or account-related features.",
+        "defaultValue": {
+          "value": "'Aspects'",
+          "computed": false
+        }
+      },
+      "rightDrawerOpen": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "A boolean that controls the visibility of the right drawer. When true, the right drawer\nis open; when false, it is closed."
+      },
+      "defaultLeftDrawerOpen": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "A boolean that sets the initial state of the left drawer's visibility when the layout\nis first rendered. When true, the left drawer starts open; when false, it starts closed.",
+        "defaultValue": {
+          "value": "true",
+          "computed": false
+        }
+      },
+      "defaultFooterShow": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "A boolean that determines whether the footer should be displayed by default. When true,\nthe footer with slogans and social links is enabled; when false, it is disabled.",
+        "defaultValue": {
+          "value": "true",
+          "computed": false
+        }
+      },
+      "defaultRightDrawerOpen": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "A boolean that sets the initial state of the right drawer's visibility when the layout\nis first rendered. When true, the right drawer starts open; when false, it starts closed."
+      },
+      "logoLink": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "A string that specifies the URL to which the user will be redirected when clicking on the logo.\nThis prop sets the destination for the logo link, typically pointing to the home page or a landing page."
+      },
+      "leftDrawerContent": {
+        "type": {
+          "name": "node"
+        },
+        "required": false,
+        "description": "The navigation items displayed in the left drawer.\nThis can include any valid React nodes such as elements, strings, numbers, or fragments or it can be null."
+      }
+    }
+  }
+}
