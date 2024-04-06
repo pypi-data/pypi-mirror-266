@@ -1,0 +1,54 @@
+[build-system]
+requires = ['setuptools']
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "linktransformer"
+version = "0.1.14"
+dependencies = [
+        "scikit-learn",
+        "faiss-cpu",
+        "hdbscan",
+        "networkx",
+        "torch",
+        "sentence_transformers",
+        "transformers",
+        "wandb",
+        "numpy",
+        "pandas",
+        "openai",
+        "openpyxl",
+        "datasets",
+        "accelerate",
+        "evaluate"
+]
+authors = [
+  { name="Abhishek Arora and Melissa Dell", email="linktransformer23@gmail.com" },
+]
+description = "A friendly way to do link, aggregate, cluster and de-duplicate dataframes using large language models."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+license = {file = "LICENSE"}
+
+[project.urls]
+Homepage = "https://linktransformer.github.io/"
+
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "src"
+]
+
+[tool.setuptools]
+# ...
+# By default, include-package-data is true in pyproject.toml, so you do
+# NOT have to specify this line.
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
