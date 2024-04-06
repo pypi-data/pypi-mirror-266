@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools >= 68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "c2-4apr24"
+version = "0.1.2"
+authors = [
+  { name="Sumanth S Prabhu", email="sumanthprabhu.104@gmail.com" },
+]
+description = "Data Quality Check for Machine Learning"
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3.9"
+dependencies = [
+    "transformers>=4.39",
+    "datasets>=2.18",
+    "scikit-learn>=1.3.2",
+    "ruff>=0.3.4",
+]
+keywords = [
+  "nlp", 
+  "data curation", 
+  "machine learning"
+]
+classifiers = [
+	"Intended Audience :: Developers",
+  "Intended Audience :: Education",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: MacOS",
+  "Operating System :: POSIX",
+  "Operating System :: Unix",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence"
+]
+[project.optional-dependencies]
+test = [
+    "pytest>=8.1.1"
+]
+[project.urls]
+Homepage = "https://github.com/sumanthprabhu/C2"
+Source = "https://github.com/sumanthprabhu/C2"
+Tracker = "https://github.com/sumanthprabhu/C2/issues"
