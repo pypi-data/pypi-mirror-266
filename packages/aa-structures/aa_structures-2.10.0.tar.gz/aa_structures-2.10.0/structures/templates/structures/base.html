@@ -1,0 +1,13 @@
+{% extends 'allianceauth/base.html' %}
+{% load i18n %}
+
+{% block page_title %}{% translate "Structures" %}{% endblock %}
+
+{% block content %}
+    <br />
+    <div>
+        {% include 'structures/partials/menu.html' %}
+        <h2 class="text-left">{{ page_title }}</h2>
+        {% block details %}{% endblock %}
+    </div>
+{% endblock %}
