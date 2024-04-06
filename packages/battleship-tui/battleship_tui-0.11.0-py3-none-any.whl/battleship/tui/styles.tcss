@@ -1,0 +1,237 @@
+$option-border: tall $secondary;
+
+/* Reusable classes */
+
+.main {
+  layout: horizontal;
+  margin: 0 4;
+  align: center middle;
+}
+
+.screen-help {
+  width: 1fr;
+  margin: 0;
+  margin-right: 4;
+}
+
+.screen-content {
+  width: 1fr;
+  height: auto;
+  margin-top: 1;
+  margin-left: 4;
+}
+
+.options-panel {
+  padding: 1;
+  width: 100%;
+  border: $option-border;
+}
+
+
+/* Common */
+
+Tooltip {
+  padding: 0 1;
+}
+
+AppFooter {
+  layout: horizontal;
+  height: 1;
+  background: $accent;
+}
+
+Version {
+  dock: right;
+  width: auto;
+  padding: 0 1;
+}
+
+
+/* Main menu screen */
+
+MainMenu ListItem {
+  align-horizontal: center;
+  padding: 1;
+}
+
+
+/* Game screen */
+
+Game #content {
+  margin: 1 3 0 3;
+  grid-size: 3;
+  grid-columns: 22 1fr 22;
+  grid-gutter: 1 3;
+}
+
+Game BattleLog {
+  border: wide $secondary;
+  padding: 1;
+  scrollbar-size-vertical: 1;
+}
+
+Game Announcement {
+  border: wide $secondary;
+}
+
+Game Announcement #welcome {
+  margin: 1 0;
+  width: 100%;
+  text-align: center;
+  color: $text;
+}
+
+Game Announcement #rules {
+  width: auto;
+}
+
+Game Announcement #phase {
+  width: 1fr;
+}
+
+Fleet {
+  overflow-y: auto;
+  scrollbar-size-vertical: 1;
+  padding: 1 0;
+  border: wide $accent;
+}
+
+Fleet.player {
+  border: wide $success;
+}
+
+
+/* Multiplayer screen */
+
+Multiplayer Input {
+  margin-bottom: 1;
+}
+
+Multiplayer Button {
+  margin-left: 1;
+  margin-right: 1;
+  width: 100%;
+}
+
+Multiplayer Rule {
+  margin: 1;
+}
+
+/* Lobby screen */
+
+Lobby ListItem {
+  padding: 1;
+  align-horizontal: center;
+}
+
+Lobby LobbyHeader {
+  height: 1;
+  margin-bottom: 1;
+}
+
+
+/* NewGame widget */
+
+NewGame {
+  height: auto;
+}
+
+NewGame > * {
+  margin-bottom: 1;
+}
+
+NewGame #salvo_mode {
+  width: 100%;
+  border: $option-border;
+}
+
+NewGame Button {
+  margin-left: 1;
+}
+
+/* JoinGame screen */
+
+JoinGame .main {
+  layout: vertical;
+}
+
+JoinGame #title {
+  text-style: bold;
+  margin: 1 0;
+  text-align: center;
+  background: $primary;
+}
+
+JoinGame ListItem {
+  align-horizontal: center;
+  padding: 1;
+  margin-bottom: 1;
+}
+
+Settings Label, Settings Button {
+  margin-left: 1;
+}
+
+Settings Input, Settings Select {
+  margin-bottom: 1;
+}
+
+
+
+/* Modal screens */
+
+ModalScreen {
+  align: center middle;
+}
+
+ModalScreen #dialog #loading {
+  align: center middle;
+}
+
+ModalScreen #dialog LoadingIndicator {
+  height: auto;
+}
+
+ModalScreen #dialog {
+  width: 60;
+  padding: 1 3;
+  background: $panel;
+  border: thick $primary 80%;
+  height: 16;
+}
+
+ModalScreen #dialog > * {
+  margin-bottom: 1;
+}
+
+ModalScreen Label {
+  width: 1fr;
+  content-align: center middle;
+}
+
+ModalScreen #buttons {
+  layout: horizontal;
+  align: center bottom;
+}
+
+ModalScreen Button {
+  width: 1fr;
+  margin: 0 1;
+}
+
+ConnectionLostModal #dialog, SessionEndModal #dialog {
+  height: 13;
+}
+
+GameSummaryModal #dialog {
+  width: 50%;
+  height: 17;
+}
+
+GameSummaryModal Label {
+  margin-bottom: 1;
+}
+
+GameSummaryModal DataTable {
+  margin-bottom: 1;
+}
