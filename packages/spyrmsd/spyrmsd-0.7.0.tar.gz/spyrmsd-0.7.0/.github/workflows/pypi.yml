@@ -1,0 +1,30 @@
+name: pypi
+
+on:
+  release:
+    types: [created]
+    branches: [master]
+
+jobs:
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install setuptools wheel flit
+    - name: Build and publish
+      env:
+        FLIT_USERNAME: ${{ secrets.FLIT_USERNAME }}
+        FLIT_PASSWORD: ${{ secrets.FLIT_PASSWORD }}
+      run: |
+        python -m pip install . --no-deps
+        flit build
+        flit publish
