@@ -1,0 +1,120 @@
+Metadata-Version: 2.1
+Name: valjean
+Version: 0.11.0a0
+Summary: VALidation, Journal d'Évolution et ANalyse
+Home-page: https://github.com/valjean-framework/valjean
+License: CeCILL-C Free Software License Agreement (CECILL-C)
+Author: valjean developers
+Maintainer: valjean developers
+Maintainer-email: valjean-support@cea.fr
+Requires-Python: >=3.6.2,<4.0.0
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: License :: Other/Proprietary License
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Physics
+Provides-Extra: dev
+Provides-Extra: graphviz
+Requires-Dist: Sphinx (>=5.0,<5.1) ; extra == "dev"
+Requires-Dist: flake8 (<6) ; extra == "dev"
+Requires-Dist: h5py (>=3.1,<3.2) ; python_version >= "3.6" and python_version < "3.7"
+Requires-Dist: h5py (>=3.2,<4.0) ; python_version >= "3.7"
+Requires-Dist: hypothesis (>=6.31,<7.0) ; extra == "dev"
+Requires-Dist: ipykernel (>=5.5,<6.0) ; extra == "dev"
+Requires-Dist: ipython (!=8.7.0) ; extra == "dev"
+Requires-Dist: jupyter-client (>=7.1,<8.0) ; extra == "dev"
+Requires-Dist: matplotlib (>=3.3,<4.0)
+Requires-Dist: nbsphinx (>=0.8,<0.9) ; extra == "dev"
+Requires-Dist: numpy (>=1.19,<2.0) ; python_version >= "3.6" and python_version < "3.7"
+Requires-Dist: numpy (>=1.20,<2.0) ; python_version >= "3.7"
+Requires-Dist: pydot (>=1.4.2,<2.0.0) ; extra == "graphviz"
+Requires-Dist: pylint (>=2.13,<3.0) ; (python_version >= "3.6" and python_version < "3.8") and (extra == "dev")
+Requires-Dist: pylint (>=3.0,<4.0) ; (python_version >= "3.8") and (extra == "dev")
+Requires-Dist: pyparsing (>=3.0,<4.0)
+Requires-Dist: pytest (>=7.0,<8.0) ; extra == "dev"
+Requires-Dist: pytest-cov (>=4.0,<5.0) ; extra == "dev"
+Requires-Dist: pytest-mpl (>=0.16,<0.17) ; extra == "dev"
+Requires-Dist: pytest-timeout (>=2.0,<3.0) ; extra == "dev"
+Requires-Dist: rstcheck (>=3.3,<4.0) ; (python_version >= "3.6" and python_version < "3.7") and (extra == "dev")
+Requires-Dist: rstcheck (>=6.0,<7.0) ; (python_version >= "3.7") and (extra == "dev")
+Requires-Dist: scipy (>=1.5,<2.0) ; python_version >= "3.6" and python_version < "3.7"
+Requires-Dist: scipy (>=1.6,<2.0) ; python_version >= "3.7"
+Requires-Dist: sphinx-rtd-theme (>=1.0,<2.0) ; extra == "dev"
+Requires-Dist: toml (>=0.10,<0.11)
+Project-URL: Bug tracker, https://github.com/valjean-framework/valjean/issues
+Project-URL: Documentation, https://valjean.readthedocs.io/
+Project-URL: Repository, https://github.com/valjean-framework/valjean.git
+Description-Content-Type: text/markdown
+
+# Valjean #
+
+Quick installation guide:
+
+*valjean* needs at least python3.6 (deprecated on December 23, 2021).
+
+## Installation using *pip* ##
+
+### Setup a virtual environment ###
+
+```
+python3 -m venv MY_VIRTUAL_ENV
+source MY_VIRTUAL_ENV/bin/activate
+pip install -U pip
+```
+
+### Installation from git ###
+
+```
+git clone https://github.com/valjean-framework/valjean.git
+pip install ./valjean  # or pip install path/to/valjean
+```
+
+### Installation from archive ###
+
+The pip archive can be downloaded from the *Fichiers*/*Files* area of Tuleap.
+
+```
+pip install valjean-VERSION.tar.gz
+```
+
+
+## Installation using *conda* ##
+
+1. Download and install *conda*.
+2. Download the *valjean-conda* archive from the *Fichiers*/*Files* area of
+   Tuleap.
+3. Install *valjean*:
+
+```
+source MY_CONDA/bin/activate
+conda create -n MY_ENV python=PY_VERSION
+conda activate MY_ENV
+conda install -c file://PATH/TO/valjean-VERSION.tar.bz2 --use-local valjean
+```
+
+The python version of *conda* should be the same as the one used to build the
+*valjean* archive.
+
+This installation is not foreseen for development.
+
+
+## Documentation ##
+
+The documentation can be found online: https://valjean.readthedocs.io/en/latest/
+
+It can also be downloaded from the *Fichiers*/*Files* area of Tuleap.
+
+```
+tar xzf valjean-doc-*.tar.gz
+```
+
+You can also consult the source files for the documentation in the ``doc/src``
+directory.
+
