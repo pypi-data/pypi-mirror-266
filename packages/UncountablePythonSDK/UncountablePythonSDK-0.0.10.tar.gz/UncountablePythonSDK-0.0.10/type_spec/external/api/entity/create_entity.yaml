@@ -1,0 +1,39 @@
+$endpoint:
+    is_sdk: true
+    method: post
+    path: ${external}/entity/external_create_entity
+    function: main.site.app.external.entity.create_entity.create_entity
+    desc: "Creates a new Uncountable entity"
+    is_sdk: true
+
+EntityFieldInitialValue:
+    type: Object
+    properties:
+        field_ref_name:
+            type: String
+            desc: "A unique identifer string for the field"
+        row_index?:
+            type: Optional<Integer>
+            desc: "The index in the table for the field"
+        value:
+            type: JsonValue
+            desc: "The value for the field"
+
+Arguments:
+    type: Object
+    properties:
+        definition_id:
+            type: ObjectId
+            desc: "Definition id of the entity to create"
+        entity_type:
+            type: Union<Literal<entity.EntityType.lab_request>, Literal<entity.EntityType.approval>, Literal<entity.EntityType.custom_entity>, Literal<entity.EntityType.task>, Literal<entity.EntityType.project>>
+            desc: "The type of the entities requested"
+        field_values?:
+            type: Optional<List<field_values.FieldRefNameValue>>
+
+Data:
+    type: Object
+    properties:
+        entity:
+            type: entity.Entity
+            desc: The entity created
