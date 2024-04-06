@@ -1,0 +1,58 @@
+# This workflow will install Python dependencies, and run all relevant gammaLoop tests
+name: symbolicaForGammaLoopTests
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+    types: [ready_for_review]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        path: ./symbolica
+    - uses: actions/checkout@v3
+      with:
+        repository: alphal00p/gammaloop
+        path: ./gammaloop
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.11"
+    - name: Install dependencies
+      working-directory: ./gammaloop
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest pyright
+        if [ -f python/gammaloop/requirements.txt ]; then pip install -r python/gammaloop/requirements.txt; fi
+    - name: Compile dependencies
+      working-directory: ./gammaloop
+      run: |
+        CMD_TO_ACCESS_SYMBOLICA="ln -s ../../../../symbolica" ./bin/build_dependencies.sh    
+    - name: Compile binary
+      working-directory: ./gammaloop
+      run: |
+        ./bin/compile_bin.sh
+    - name: Compile library
+      working-directory: ./gammaloop
+      run: |
+        ./bin/compile_lib.sh
+    - name: Run python tests
+      working-directory: ./gammaloop
+      run: |
+        source `./bin/gammaloop -venv`
+        ./bin/run_tests.sh python -m "not drawing and not slow"
+    - name: Run native rust tests
+      working-directory: ./gammaloop
+      run: |
+        source `./bin/gammaloop -venv`
+        ./bin/run_tests.sh rust
