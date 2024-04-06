@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "modgeosys-graph-algorithms"
+version = "0.1.2"
+description = ""
+authors = ["Kevin Weller <klweller@icloud.com>"]
+readme = "README.md"
+packages = [
+    { include = "modgeosys", from = "src" },
+    { include = "tests", from = "." },
+]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+numpy = "^1.26.3"
+heapdict = "^1.0.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.4.4"
+ruff = "^0.1.13"
