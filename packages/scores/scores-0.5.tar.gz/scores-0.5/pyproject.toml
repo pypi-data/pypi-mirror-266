@@ -1,0 +1,128 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "scores"
+dynamic = ["version"]
+authors = [
+  { name="Tennessee Leeuwenburg", email="tennessee.leeuwenburg@bom.gov.au" },
+]
+description = """\
+Scores is a package containing mathematical functions \
+for the verification, evaluation and optimisation of model outputs and predictions.
+"""
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "xarray",
+    "pandas",
+    "scipy",
+    "bottleneck",
+    "scikit-learn",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-watch",
+    "pytest-cov",
+    "pre-commit",
+    "black == 23.3.0",
+    "mypy == 1.3.0",
+    "pylint == 3.0.1",
+    "dask",
+    "h5netcdf",
+    "pandas-stubs",
+    "nbmake"
+]
+tutorial = [
+    "jupyterlab",
+    "matplotlib",
+    "h5netcdf",
+    "rasterio",
+    "rioxarray",
+    "plotly"
+]
+maintainer = ["build",
+              "hatch",
+              "sphinx",
+              "myst-parser",
+              "sphinx-book-theme",
+              "twine"
+]
+all = ["scores[dev,tutorial]"]
+
+[project.urls]
+"Homepage" = "http://www.bom.gov.au"
+
+[tool.hatch.build]
+exclude = [
+    "/tutorials/",
+    "/docs/",
+    "/tests/"
+]
+
+[tool.hatch.version]
+path = "src/scores/__init__.py"
+
+[tool.isort]
+profile = "black"
+
+[tool.black]
+line-length = 120
+
+[tool.mypy]
+warn_return_any = true
+warn_unused_configs = true
+
+#ignore_missing_imports = true
+
+[tool.coverage.paths]
+source = ["/src/"]
+
+[tool.coverage.report]
+exclude_also = [
+    "@overload",
+    "raise NotImplementedError"
+]
+
+[tool.pyright]
+reportPrivateImportUsage = false
+
+[tool.pytest.ini_options]
+addopts = [
+    '--cov-fail-under=99',
+    '--cov-branch',
+    '--cov-report=html',
+    '--cov-report=term-missing',
+    '--junitxml=report.xml',
+    # Ignore notebooks which depend on external data for E2E tests
+    '--ignore=tutorials/First_Data_Fetching.ipynb',
+    '--ignore=tutorials/Mean_Squared_Error.ipynb',
+    '--ignore=tutorials/Root_Mean_Squared_Error.ipynb',
+    '--ignore=tutorials/Weighting_Results.ipynb',
+    '--ignore=tutorials/Mean_Absolute_Error.ipynb'
+]
+
+[tool.pylint.master]
+# https://github.com/PyCQA/pylint/issues/4081#issuecomment-778242554
+init-hook = 'import sys; sys.setrecursionlimit(3 * sys.getrecursionlimit())'
+fail-under=9.8
+ignore-paths = [
+    'docs/'
+]
+
+[tool.pylint.DESIGN]
+max-args=10
+
+[tool.pylint.FORMAT]
+max-line-length=150  # Deliberately "too long" to avoid disagreements with black formatter
+
+[tool.pylint.messages_control]
+good-names=['df','da','x','y','z','i','j','k','ae']  # pylint: disable=E0015
