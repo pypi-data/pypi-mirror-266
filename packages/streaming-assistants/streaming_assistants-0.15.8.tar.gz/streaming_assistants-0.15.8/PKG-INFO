@@ -1,0 +1,47 @@
+Metadata-Version: 2.1
+Name: streaming-assistants
+Version: 0.15.8
+Summary: Streaming enabled Assistants API
+Author: phact
+Author-email: estevezsebastian@gmail.com
+Requires-Python: >=3.10,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: boto3 (>=1.34.31,<2.0.0)
+Requires-Dist: google-generativeai (>=0.4.1,<0.5.0)
+Requires-Dist: httpx (>=0.26.0,<0.27.0)
+Requires-Dist: litellm (>=1.34.18,<2.0.0)
+Requires-Dist: openai (>=1.14.0,<2.0.0)
+Description-Content-Type: text/markdown
+
+# streaming_assistants
+
+~The official OpenAI Assistants API does not yet support streaming (although this functionality has been hinted at since launch back in November). Streaming is critical for a large subset of genai use cases and there has been significant feedback that it's the major blocker for addption of the Assistants API from many. We decided that we (and our users) couldn't wait so we implemented streaming support in Astra Assistants API.~
+
+OpenAI has now added streaming support with streaming runs. This libriary will now mainly be used to streamline support for third partry llm providers. We will continue to support our old streaming messages approach for existing users.
+
+# How to use    
+
+Install streaming_assistants using your python package manager of choice:
+
+```
+poetry add streaming_assistants
+```
+
+
+import and patch your client:
+
+```
+from openai import OpenAI
+from streaming_assistants import patch
+
+client = patch(OpenAI())
+
+```
+
+# Server
+
+The astra-assistants server code is now open source (Apache2)! Check it out here https://github.com/datastax/astra-assistants-api
+
