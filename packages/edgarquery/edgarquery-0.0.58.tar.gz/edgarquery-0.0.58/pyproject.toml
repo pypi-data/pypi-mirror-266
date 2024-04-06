@@ -1,0 +1,98 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "edgarquery"
+dynamic = ["version"]
+description = 'Downloads various SEC EDGAR files by CIK or ticker.  companyfactsshow displays company facts in your browser'
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "Don Caldwell", email = "dfwcnj@gmail.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = []
+
+[project.urls]
+Documentation = "https://github.com/dfwcnj/edgarquery#readme"
+Issues = "https://github.com/dfwcnj/edgarquery/issues"
+Source = "https://github.com/dfwcnj/edgarquery"
+
+[tool.hatch.version]
+path = "src/edgarquery/__about__.py"
+
+[project.scripts]
+edgarcompanyconcepttocsv = "edgarquery.edgarcompanyconcepttocsv:main"
+edgarcompanyfactstocsv = "edgarquery.edgarcompanyfactstocsv:main"
+edgarcompanyfactsshow = "edgarquery.edgarcompanyfactsshow:main"
+edgarcompanyfactsziptocsv = "edgarquery.edgarcompanyfactsziptocsv:main"
+edgarcikperson = "edgarquery.edgarcikperson:main"
+edgarquery = "edgarquery.edgarquery:main"
+edgarlatest10K = "edgarquery.edgarlatest10K:main"
+edgarlatestsubmissions = "edgarquery.edgarlatestsubmissions:main"
+edgarsubmissions = "edgarquery.edgarsubmissions:main"
+edgarsubmissionsziptocsv = "edgarquery.edgarsubmissionsziptocsv:main"
+edgartickerstocsv = "edgarquery.edgartickerstocsv:main"
+edgarxbrlframestocsv = "edgarquery.edgarxbrlframestocsv:main"
+
+#scripts/__pycache__:
+#edgarquery.cpython-311.pyc
+
+[tool.hatch.envs.default]
+dependencies = [
+  "coverage[toml]>=6.5",
+  "pytest",
+]
+[tool.hatch.envs.default.scripts]
+test = "pytest {args:tests}"
+test-cov = "coverage run -m pytest {args:tests}"
+cov-report = [
+  "- coverage combine",
+  "coverage report",
+]
+cov = [
+  "test-cov",
+  "cov-report",
+]
+
+[[tool.hatch.envs.all.matrix]]
+python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
+
+[tool.hatch.envs.types]
+dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/edgarquery tests}"
+
+[tool.coverage.run]
+source_pkgs = ["edgarquery", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/edgarquery/__about__.py",
+]
+
+[tool.coverage.paths]
+edgarquery = ["src/edgarquery", "*/edgarquery/src/edgarquery"]
+tests = ["tests", "*/edgarquery/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
