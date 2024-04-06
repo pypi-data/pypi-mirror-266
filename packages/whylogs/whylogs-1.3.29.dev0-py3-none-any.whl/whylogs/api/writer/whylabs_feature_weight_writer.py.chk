@@ -1,0 +1,85 @@
+import logging
+from typing import List, Optional, Tuple, Union
+
+from whylabs_client import ApiClient
+
+from whylogs.api.logger import log
+from whylogs.api.writer.whylabs_base import WhyLabsWriterBase
+from whylogs.api.writer.whylabs_client import WhyLabsClient
+from whylogs.api.writer.writer import Writable, Writer
+
+from whylogs.core.feature_weights import FeatureWeights
+from whylogs.core.utils import deprecated_alias
+
+logger = logging.getLogger(__name__)
+
+
+# TODO: FeatureWeights should not be a Writable, so this should not exist.
+# Just call WhyLabsClient::write_feature_weights()
+
+class WhyLabsFeatureWeightWriter(WhyLabsWriterBase):
+    f"""
+    A WhyLogs writer to upload FeatureWeights onto the WhyLabs platform.
+
+    >**IMPORTANT**: In order to correctly send your profiles over, make sure you have
+    the following environment variables set: `[WHYLABS_ORG_ID, WHYLABS_API_KEY, WHYLABS_DEFAULT_DATASET_ID]`. You
+    can also follow the authentication instructions for the why.init() method at {INIT_DOCS}.
+    It is highly recommended you don't persist credentials in code!
+
+    You shouldn't have to supply these parameters to the writer in practice. You should depend on why.init() to resolve
+    the credentials for you. These are here for one-offs and testing convenience.
+
+    Parameters
+    ----------
+    org_id: str, optional
+        Your organization ID on the WhyLabs platform. If not informed, will get the mentioned environment
+        variable instead.
+
+    api_key: str, optional
+        The API Key to authenticate with WhyLabs. If not informed, will get the mentioned environment
+        variable instead.
+
+    dataset_id: str, optional
+        The Dataset ID, often referred to as model ID, that will tie the profile to your tracked data.
+        If not informed, will get the mentioned environment variable instead.
+    Returns
+    -------
+        None
+
+    Examples
+    --------
+    An example usage of this method can be represented with the simple code above. Here we
+    are assuming the user has already assigned a pandas.DataFrame to the `df` variable.
+
+    ```python
+    ```
+
+    """
+
+    def __init__(
+        self,
+        org_id: Optional[str] = None,
+        api_key: Optional[str] = None,
+        dataset_id: Optional[str] = None,
+        api_client: Optional[ApiClient] = None,
+        ssl_ca_cert: Optional[str] = None,
+        _timeout_seconds: Optional[float] = None,
+        whylabs_client: Optional[WhyLabsClient] = None,
+    ):
+        super().__init__(org_id, api_key, dataset_id, api_client, ssl_ca_cert, _timeout_seconds, whylabs_client)
+
+    @deprecated_alias(profile="file")
+    def write(
+        self,
+        file: Writable,
+        dest: Optional[str] = None,
+        **kwargs: Any
+    ) -> Tuple[bool, Union[str, List[Tuple[bool, str]]]]:
+        """
+        kwargs:
+            dataset_id: str   Dataset id
+        """
+        if not isinstance(file, FeatureWeights):
+            raise ValueError("I can only write FeatureWeights")
+
+        return self._whylabs_client.write_feature_weights(file, **kwargs)
