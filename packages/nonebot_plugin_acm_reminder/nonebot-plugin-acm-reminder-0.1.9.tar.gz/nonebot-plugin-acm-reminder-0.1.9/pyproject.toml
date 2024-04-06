@@ -1,0 +1,32 @@
+[tool.pdm.dev-dependencies]
+dev = [
+    "keyring>=25.1.0",
+]
+
+[project]
+name = "nonebot_plugin_acm_reminder"
+version = "0.1.9"
+description = "A subscribe CodeForces/NowCoder/Atcoder contest info plugin for nonebot2"
+authors = [
+    { name = "BigOrangeQWQ", email = "2284086963@qq.com" },
+]
+dependencies = [
+    "BeautifulSoup4>=4.12.3",
+    "nonebot2>=2.2.1",
+    "pydantic>=2.6.4",
+    "httpx>=0.23.3",
+    "nonebot-plugin-apscheduler>=0.2.0",
+    "nonebot-plugin-htmlrender>=0.2.0.3",
+    "nonebot-plugin-alconna>=0.42.0",
+]
+requires-python = ">=3.9"
+readme = "README.md"
+
+[project.license]
+text = "MIT"
+
+[build-system]
+requires = [
+    "pdm-pep517>=1.0",
+]
+build-backend = "pdm.pep517.api"
