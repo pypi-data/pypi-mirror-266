@@ -1,0 +1,59 @@
+Metadata-Version: 2.1
+Name: nodestream-plugin-pedantic
+Version: 0.12.0
+Summary: A nodestream plugin that provides a series of audits to ensure high quality and consistent nodestream projects.
+Home-page: https://github.com/nodestream-proj/nodestream
+License: Apache-2.0
+Keywords: etl,neo4j,declarative,data,kafka,ingest,nodestream
+Author: Zach Probst
+Author-email: Zach_Probst@intuit.com
+Requires-Python: >=3.10,<4.0
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Database
+Requires-Dist: inflection (>=0.5.1,<0.6.0)
+Requires-Dist: nodestream (>=0.12.0,<0.13.0)
+Project-URL: Documentation, https://nodestream-proj.github.io/nodestream-plugin-pedantic
+Project-URL: Repository, https://github.com/nodestream-proj/nodestream-plugin-pedantic
+Description-Content-Type: text/markdown
+
+# Nodestream pedantic Plugin
+
+This plugin adds a pedantic mode to nodestream. It will check for the following:
+
+- All node types are defined using `CamelCase`.
+- All node types are singular (e.g. `User` not `Users`).
+- All relationship types are defined using `UPPER_SNAKE_CASE`
+- All property names are defined using `lower_snake_case`
+- All pipeline names are defined using `lower-case-with-dashes`
+
+## Installation
+
+```bash
+pip install nodestream-plugin-pedantic
+```
+
+## Usage
+
+```bash
+nodestream audit pedantic
+```
+
+Will produce output like:
+
+```
+Pipeline load_org_chart is not lower dash case. Suggestion: load-org-chart
+Node type People is not singular. Suggestion: Person
+Property lastName is not snake case. Suggestion: last_name
+Node type number is not camel case. Suggestion: Number
+Relationship type is_friends_with is not upper camel case. Suggestion: IS_FRIENDS_WITH
+```
+
