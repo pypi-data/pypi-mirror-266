@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "ddns-updater"
+version = "1.0.1"
+description = "Package for updating DynDNS services"
+authors = ["Markus Frings <coding@frings-mail.de>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+click = "^8.1.7"
+keyring = "^25.0.0"
+keyrings-alt = "^5.0.0"
+pydantic = "^2.6.4"
+requests = "^2.31.0"
+
+[tool.poetry.scripts]
+ddu = "ddns_updater.ddu:ddu"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.1"
+pre-commit = "^3.7.0"
+
+[tool.isort]
+profile="black"
+force_single_line=true
+line_length = 100
+
+[tool.black]
+line-length = 100
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
