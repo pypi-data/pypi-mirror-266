@@ -1,0 +1,18 @@
+[project]
+name = "spotify-web-downloader"
+description = "Download songs/albums/playlists directly from Spotify in AAC"
+requires-python = ">=3.7"
+authors = [{ name = "glomatico" }]
+dependencies = ["click", "pybase62", "pywidevine", "pyyaml", "yt-dlp"]
+readme = "README.md"
+dynamic = ["version"]
+
+[project.urls]
+repository = "https://github.com/glomatico/spotify-web-downloader"
+
+[build-system]
+requires = ["flit_core"]
+build-backend = "flit_core.buildapi"
+
+[project.scripts]
+spotify-web-downloader = "spotify_web_downloader.cli:main"
