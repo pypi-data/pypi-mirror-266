@@ -1,0 +1,42 @@
+$endpoint:
+    is_sdk: true
+    method: get
+    path: ${external}/project/external_get_projects
+    function: main.site.app.external.project.get_projects.get_projects
+    desc: "Gets either all projects created in the platform, or the projects associated with a material family ID. Projects are where experiments are placed in Uncountable, similar to folders in a directory structure"
+Arguments:
+    type: Object
+    properties:
+        all_material_families:
+            type: Boolean
+            desc: "Whether to get projects from all material families. Material families are high level groupings of data, usually separated by functional area"
+        material_family_id:
+            type: Optional<ObjectId>
+            desc: "The specific material family ID to get projects from. Only fill this in if all_material_families is set to false"
+
+Project:
+    type: Object
+    properties:
+        id:
+            type: ObjectId
+            desc: "A unique identifier for the project. Used as foreign key to reference elsewhere."
+        name:
+            type: String
+            desc: "The name of the project"
+        material_family_id:
+            type: ObjectId
+            desc: "A unique identifier for the material family. Used as foreign key to reference elsewhere."
+        project_owner_id:
+            type: Optional<ObjectId>
+            desc: "The projects owner, as a user ID within the platform"
+        phase_id:
+            type: Optional<ObjectId>
+            desc: "The phase id corresponding to a phase workflow"
+
+Data:
+    type: Object
+    properties:
+        projects:
+            type: List<Project>
+        phases:
+            type: List<phases.Phase>

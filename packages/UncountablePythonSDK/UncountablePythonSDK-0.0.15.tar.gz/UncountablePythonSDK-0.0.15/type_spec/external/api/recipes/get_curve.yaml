@@ -1,0 +1,18 @@
+$endpoint:
+    is_sdk: true
+    method: get
+    path: ${external}/recipes/external_get_curve
+    function: main.site.app.external.recipes.get_curve.get_curve
+    desc: "Returns an array of values for the specified curve id."
+Arguments:
+    type: Object
+    properties:
+        recipe_output_id:
+            type: ObjectId
+            desc: "The recipe output ID to fetch the curve for. This must be a curve recipe output. Recipe Outputs can be found from external_get_recipes_data"
+
+Data:
+    type: Object
+    properties:
+        curve:
+            type: curves.Curve
