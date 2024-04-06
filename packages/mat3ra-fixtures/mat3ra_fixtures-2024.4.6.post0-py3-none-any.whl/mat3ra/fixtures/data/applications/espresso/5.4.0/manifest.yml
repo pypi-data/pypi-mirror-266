@@ -1,0 +1,39 @@
+cases:
+  - name: case-001
+    path: ./case-001
+    description: |
+        Runs a single self-consistent-field (SCF) calculation for FCC Silicon.
+    executables:
+      - pw.x
+    tags:
+      - pw_scf
+    source: internal
+  #
+  - name: case-002
+    path: ./case-002
+    description: |
+        A variable-cell relaxation calculation (vc-relax) for a 257 atom cell containing C, H, and O.
+    executables:
+      - pw.x
+    tags:
+      - pw_vc-relax
+      - dimensionality:2D
+    source: internal
+  #
+  - name: case-003
+    path: ./case-003
+    description: |
+        Electronic band structure and density of states calculation for FCC Silicon. Has the following steps
+            1. SCF calculation on a grid
+            2. Non-self-consistent field (NSCF) calculation on a k-path for the electronic band structure
+            3. Creation of the data for the plot of the bandstructre with bands.x
+            4. NSCF calculation on a grid for the density of states
+            5. Creation of the data for the plot of the bandstructre with projwfc.x
+    executables:
+      - pw.x
+      - bands.x
+      - projwfc.x
+    tags:
+      - pw_vc-relax
+      - dimensionality:2D
+    source: internal
