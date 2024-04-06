@@ -1,0 +1,26 @@
+Metadata-Version: 2.1
+Name: openai_requests_utils
+Version: 0.0.8
+Summary: Useful utils to use with openai models
+Author-email: Example Author <author@example.com>
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# openai_requests_utils
+
+You need to create an environment variable called "OPENAI_API_KEY" which contains your OpenAI API key. You also need to create a config file called oai_config.json in the same folder as your script to choose the model and the API call parameters. Every parameter except "model" is optional and can be removed.
+
+Example of oai_config.json:
+{
+    "model": "gpt-3.5-turbo-1106",
+    "max_response_length": 400,
+    "timeout": 10,
+    "temperature": 1,
+    "top_p": 0.95,
+    "presence_penalty": 0.5,
+    "frequency_penalty": 0.5
+}
