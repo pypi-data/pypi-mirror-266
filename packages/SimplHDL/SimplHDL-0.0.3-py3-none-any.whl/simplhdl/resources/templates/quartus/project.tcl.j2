@@ -1,0 +1,53 @@
+project_new -overwrite -part "{{project.Part}}" "{{project.Name}}"
+set_global_assignment -name TOP_LEVEL_ENTITY "{{project.DefaultDesign.DefaultFileSet.TopLevel}}"
+set_global_assignment -name VERILOG_INPUT_VERSION SYSTEMVERILOG_2012
+set_global_assignment -name VHDL_INPUT_VERSION VHDL_2008
+{% for parameter, value in project.Parameters.items() %}
+set_parameter -name {{parameter}} {{value}}
+{% endfor %}
+{% for generic, value in project.Generics.items() %}
+set_parameter -name {{generic}} {{value}}
+{% endfor %}
+{% for define, value in project.Defines.items() %}
+set_global_assignment -name VERILOG_MACRO "{{define}}={{value}}"
+{% endfor %}
+{% for file in project.DefaultDesign.Files() if 'implementation' in file[UsedIn] %}
+{% if file.FileType == VerilogIncludeFile %}
+set_global_assignment -name VERILOG_INCLUDE_FILE "{{file.Path}}"
+{% endif %}
+{% if file.FileType == SystemVerilogSourceFile %}
+set_global_assignment -name SYSTEMVERILOG_FILE "{{file.Path}}"
+{% endif %}
+{% if file.FileType == VerilogSourceFile %}
+set_global_assignment -name VERILOG_FILE "{{file.Path}}"
+{% endif %}
+{% if file.FileType == VHDLSourceFile %}
+set_global_assignment -name VHDL_FILE "{{file.Path}}"
+{% endif %}
+{% if file.FileType == ConstraintFile %}
+set_global_assignment -name SDC_FILE "{{file.Path}}"
+{% endif %}
+{% if file.FileType == TCLSourceFile %}
+set_global_assignment -name TCL_FILE "{{file.Path}}"
+{% endif %}
+{% if file.FileType == QuartusIPSpecificationFile and file.Path.suffix == '.ip' %}
+set_global_assignment -name IP_FILE "{{file.Path}}"
+{% endif %}
+{% if file.FileType == QuartusIPSpecificationFile and file.Path.suffix == '.qip' %}
+set_global_assignment -name QIP_FILE "{{file.Path}}"
+{% endif %}
+{% if file.FileType == QuartusIPSpecificationFile and file.Path.suffix == '.qsys' %}
+set_global_assignment -name QSYS_FILE "{{file.Path}}"
+{% endif %}
+{% if file.FileType == SettingFile and file.Path.suffix == '.qsf' %}
+source "{{file.Path}}"
+{% endif %}
+{% endfor %}
+
+{% for file in project.DefaultDesign.Files(QuartusSignalTapFile) %}
+set_global_assignment -name SIGNALTAP_FILE "{{file.Path}}"
+{% if loop.last %}
+set_global_assignment -name ENABLE_SIGNALTAP ON
+set_global_assignment -name USE_SIGNALTAP_FILE "{{file.Path}}"
+{% endif %}
+{% endfor %}
