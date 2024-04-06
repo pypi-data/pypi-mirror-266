@@ -1,0 +1,48 @@
+$endpoint:
+    is_sdk: true
+    method: post
+    path: ${external}/inputs/external_create_inputs
+    function: main.site.app.external.inputs.create_inputs.external_create_inputs
+    desc: "Creates new inputs"
+    is_sdk: true
+
+Arguments:
+    type: Object
+    properties:
+        inputs_to_create:
+            type: List<InputToCreate>
+            desc: "A list of inputs to create"
+
+InputToCreate:
+    type: Object
+    properties:
+        name:
+            type: String
+        material_family_ids:
+            type: List<ObjectId>
+            desc: "The list of material families to add the ingredient to.  This must be non-empty"
+        quantity_type:
+            type: Union<Literal<inputs.IngredientQuantityType.numeric>, Literal<inputs.IngredientQuantityType.text>>
+            desc: "The quantity type of the input.  Always numeric for standard inputs"
+        type:
+            type: Union<Literal<inputs.IngredientType.ingredient>, Literal<inputs.IngredientType.process_parameter>>
+            desc: "The type of the input, E.g. ingredient, process parameter"
+        attributes?:
+            type: List<input_attributes.InputAttributeValue>
+            desc: "The attributes of the input"
+        category_id?:
+            type: ObjectId
+            desc: The unique identifier for the category to set for the input
+
+InputSimple:
+    type: Object
+    properties:
+        input_id:
+            type: ObjectId
+            desc: "A unique identifier for the id"
+
+Data:
+    type: Object
+    properties:
+        inputs:
+            type: List<InputSimple>

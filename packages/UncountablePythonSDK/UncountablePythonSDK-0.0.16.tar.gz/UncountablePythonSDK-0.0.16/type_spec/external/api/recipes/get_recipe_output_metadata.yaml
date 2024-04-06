@@ -1,0 +1,36 @@
+$endpoint:
+    is_sdk: true
+    method: get
+    path: ${external}/recipes/external_get_recipe_output_metadata
+    function: main.site.app.external.recipes.get_recipe_output_metadata.get_recipe_output_metadata
+    desc: "Gets the metadata values for the passed recipe outputs"
+Arguments:
+    type: Object
+    properties:
+        recipe_output_ids:
+            type: List<ObjectId>
+            desc: "Ids of the Recipe Outputs to retrieve metadata for"
+
+RecipeOutputMetadata:
+    type: Object
+    properties:
+        recipe_output_id:
+            type: ObjectId
+            desc: "Identifier for the recipe output"
+        recipe_output_metadata_field_id:
+            type: ObjectId
+            desc: "Identifier for the metadata field id"
+        quantity_dec:
+            type: Decimal
+            desc: "The value for the metadata, if it is of numeric type"
+        quantity_json:
+            type: JsonValue
+            desc: "The value for the metadata, if it is not of numeric type"
+
+Data:
+    type: Object
+    properties:
+        recipe_output_metadata:
+            type: List<RecipeOutputMetadata>
+        recipe_output_metadata_fields:
+            type: List<recipe_output_metadata.RecipeOutputMetadataField>

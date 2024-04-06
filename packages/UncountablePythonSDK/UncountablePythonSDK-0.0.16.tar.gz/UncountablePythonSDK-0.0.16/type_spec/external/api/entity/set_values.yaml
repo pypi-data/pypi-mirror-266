@@ -1,0 +1,18 @@
+$endpoint:
+    is_sdk: true
+    method: post
+    path: ${external}/entity/external_set_values
+    function: main.site.app.external.entity.set_values.set_values
+    desc: "Sets field values for an entity"
+
+Arguments:
+    type: Object
+    properties:
+        entity:
+            type: entity.Entity
+        values:
+            type: List<field_values.ArgumentValueRefName>
+
+Data:
+    type: response.Response
+    properties:
