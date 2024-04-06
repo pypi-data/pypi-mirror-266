@@ -1,0 +1,72 @@
+import ssl
+from random import SystemRandom
+
+import certifi
+
+CRYPTORAND = SystemRandom()
+SSL_CONTEXT = ssl.create_default_context(cafile=certifi.where())
+CHROME_CIPHERS = [
+    "AES128-GCM-SHA256",
+    "AES256-GCM-SHA384",
+    "CHACHA20-POLY1305-SHA256",
+    "ECDHE-ECDSA-AES128-GCM-SHA256",
+    "ECDHE-RSA-AES128-GCM-SHA256",
+    "ECDHE-ECDSA-AES256-GCM-SHA384",
+    "ECDHE-RSA-AES256-GCM-SHA384",
+    "ECDHE-ECDSA-CHACHA20-POLY1305-SHA256",
+    "ECDHE-RSA-CHACHA20-POLY1305-SHA256",
+    "ECDHE-RSA-AES128-CBC-SHA",
+    "ECDHE-RSA-AES256-CBC-SHA",
+    "RSA-AES128-GCM-SHA256",
+    "RSA-AES256-GCM-SHA384",
+    "RSA-AES128-CBC-SHA",
+    "RSA-AES256-CBC-SHA",
+]
+FIREFOX_CIPHERS = [
+    "AES128-GCM-SHA256",
+    "CHACHA20-POLY1305-SHA256",
+    "AES256-GCM-SHA384",
+    "ECDHE-ECDSA-AES128-GCM-SHA256",
+    "ECDHE-RSA-AES128-GCM-SHA256",
+    "ECDHE-ECDSA-CHACHA20-POLY1305-SHA256",
+    "ECDHE-RSA-CHACHA20-POLY1305-SHA256",
+    "ECDHE-ECDSA-AES256-GCM-SHA384",
+    "ECDHE-RSA-AES256-GCM-SHA384",
+    "ECDHE-ECDSA-AES256-CBC-SHA",
+    "ECDHE-ECDSA-AES128-CBC-SHA",
+    "ECDHE-RSA-AES128-CBC-SHA",
+    "ECDHE-RSA-AES256-CBC-SHA",
+    "RSA-AES128-GCM-SHA256",
+    "RSA-AES256-GCM-SHA384",
+    "RSA-AES128-CBC-SHA",
+    "RSA-AES256-CBC-SHA",
+]
+DEFAULT_CIPHERS = [
+    "ECDHE-ECDSA-AES128-GCM-SHA256",  # modern
+    "ECDHE-ECDSA-CHACHA20-POLY1305",  # modern
+    "ECDHE-RSA-AES128-GCM-SHA256",  # modern
+    "ECDHE-RSA-CHACHA20-POLY1305",  # modern
+    "ECDHE-ECDSA-AES256-GCM-SHA384",  # modern
+    "ECDHE-RSA-AES256-GCM-SHA384",  # modern
+    "ECDHE-ECDSA-AES128-SHA256",  # compatible
+    "ECDHE-RSA-AES128-SHA256",  # compatible
+    "ECDHE-ECDSA-AES256-SHA384",  # compatible
+    "ECDHE-RSA-AES256-SHA384",  # compatible
+    "ECDHE-ECDSA-AES128-SHA",  # legacy
+    "ECDHE-RSA-AES128-SHA",  # legacy
+    "AES128-GCM-SHA256",  # legacy
+    "AES128-SHA256",  # legacy
+    "AES128-SHA",  # legacy
+    "ECDHE-RSA-AES256-SHA",  # legacy
+    "AES256-GCM-SHA384",  # legacy
+    "AES256-SHA256",  # legacy
+    "AES256-SHA",  # legacy
+    "DES-CBC3-SHA",  # legacy
+]
+
+
+def get_random_ssl_context() -> ssl.SSLContext:
+    """Get SSL context with shuffled ciphers."""
+    shuffled_ciphers = CRYPTORAND.sample(DEFAULT_CIPHERS[6:], len(DEFAULT_CIPHERS) - 6)
+    SSL_CONTEXT.set_ciphers(":".join(DEFAULT_CIPHERS[:6] + shuffled_ciphers))
+    return SSL_CONTEXT
