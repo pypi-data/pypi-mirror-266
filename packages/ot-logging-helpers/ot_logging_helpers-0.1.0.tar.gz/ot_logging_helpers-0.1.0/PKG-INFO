@@ -1,0 +1,70 @@
+Metadata-Version: 2.1
+Name: ot_logging_helpers
+Version: 0.1.0
+Summary: Python Logging Helpers
+Home-page: https://github.com/orthanc-team/ot-logging-helpers
+Author: Orthanc Team
+Author-email: info@orthanc.team
+Project-URL: Bug Reports, https://github.com/orthanc-team/ot-logging-helpers/issues
+Project-URL: Funding, https://orthanc-team
+Project-URL: Source, https://github.com/orthanc-team/ot-logging-helpers/
+Keywords: logging
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3 :: Only
+Requires-Python: >=3.8, <4
+Description-Content-Type: text/markdown
+Provides-Extra: dev
+Requires-Dist: check-manifest; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Provides-Extra: test
+Requires-Dist: coverage; extra == "test"
+Requires-Dist: pytest; extra == "test"
+
+# ot-logging-helpers
+
+This python package provides logging helpers that are used in Orthanc Team projects.
+
+## Demo
+
+```python
+from ot_logging_helpers import LogContext, configure_logging
+import logging
+import threading
+
+configure_logging()
+
+with LogContext("1ST"):
+    logging.info("my first message")
+    with LogContext("2ND"):
+        logging.info("my second message")
+
+
+def worker(worker_id):
+    with LogContext(f"Worker {worker_id}"):
+        logging.info("my top level worker message")
+
+        with LogContext("next-context"):
+            logging.warning("my warning")
+
+for i in range(0, 2):
+    thread = threading.Thread(target=worker, args=(i+1, ))
+    thread.start()
+
+
+###### this shall output 
+# 2024-04-05 15:05:28,162 - root       - INFO     -  1ST | my first message
+# 2024-04-05 15:05:28,162 - root       - INFO     -  1ST | 2ND | my second message
+# 2024-04-05 15:05:28,163 - root       - INFO     -  Worker 1 | my top level worker message
+# 2024-04-05 15:05:28,163 - root       - WARNING  -  Worker 1 | next-context | my warning
+# 2024-04-05 15:05:28,163 - root       - INFO     -  Worker 2 | my top level worker message
+# 2024-04-05 15:05:28,163 - root       - WARNING  -  Worker 2 | next-context | my warning
+
+```
