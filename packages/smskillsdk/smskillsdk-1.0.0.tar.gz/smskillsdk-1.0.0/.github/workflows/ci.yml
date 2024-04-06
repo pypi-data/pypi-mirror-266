@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - release/**
+    paths-ignore:
+      - "README.md"
+
+  pull_request:
+    paths-ignore:
+      - "README.md"
+
+  # manual trigger from actions
+  workflow_dispatch:
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python: ["3.8", "3.9", "3.10"]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install wheel
+          pip install -r requirements-dev.txt
+          pip install -e .
+
+      - name: Test
+        run: python -m unittest
