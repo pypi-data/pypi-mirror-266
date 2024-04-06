@@ -1,0 +1,70 @@
+Metadata-Version: 2.1
+Name: feature_clock
+Version: 0.0.1
+Summary: Feature Clock, provides visualizations that eliminate the need for multiple plots to inspect the influence of original variables in the latent space. Feature Clock enhances the explainability and compactness of visualizations of embedded data.
+Author-email: Olga Ovcharenko <ovcharenko.folga@gmail.com>
+Project-URL: Homepage, https://github.com/OlgaOvcharenko/non_lin_visualization
+Project-URL: Issues, https://github.com/OlgaOvcharenko/non_lin_visualization/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: anndata==0.10.6
+Requires-Dist: array_api_compat==1.4.1
+Requires-Dist: contourpy==1.2.0
+Requires-Dist: cycler==0.12.1
+Requires-Dist: Cython==0.29.37
+Requires-Dist: decorator==5.1.1
+Requires-Dist: Deprecated==1.2.14
+Requires-Dist: fonttools==4.49.0
+Requires-Dist: future==1.0.0
+Requires-Dist: graphtools==1.5.3
+Requires-Dist: h5py==3.10.0
+Requires-Dist: hdbscan==0.8.33
+Requires-Dist: joblib==1.3.2
+Requires-Dist: kiwisolver==1.4.5
+Requires-Dist: llvmlite==0.42.0
+Requires-Dist: matplotlib==3.8.3
+Requires-Dist: natsort==8.4.0
+Requires-Dist: networkx==3.2.1
+Requires-Dist: numba==0.59.0
+Requires-Dist: numpy==1.26.4
+Requires-Dist: packaging==24.0
+Requires-Dist: pandas==2.0.3
+Requires-Dist: patsy==0.5.6
+Requires-Dist: phate==1.0.11
+Requires-Dist: pillow==10.2.0
+Requires-Dist: polars==0.20.15
+Requires-Dist: PyGSP==0.5.1
+Requires-Dist: pynndescent==0.5.11
+Requires-Dist: pyparsing==3.1.2
+Requires-Dist: python-dateutil==2.9.0.post0
+Requires-Dist: pytz==2024.1
+Requires-Dist: s-gd2==1.8.1
+Requires-Dist: scanpy==1.9.8
+Requires-Dist: scikit-learn==1.4.1.post1
+Requires-Dist: scikit-spatial==7.2.0
+Requires-Dist: scipy==1.12.0
+Requires-Dist: scprep==1.2.3
+Requires-Dist: seaborn==0.13.2
+Requires-Dist: session-info==1.0.0
+Requires-Dist: six==1.16.0
+Requires-Dist: statsmodels==0.14.1
+Requires-Dist: stdlib-list==0.10.0
+Requires-Dist: tasklogger==1.2.0
+Requires-Dist: threadpoolctl==3.3.0
+Requires-Dist: tqdm==4.66.2
+Requires-Dist: tzdata==2024.1
+Requires-Dist: umap-learn==0.5.5
+Requires-Dist: wrapt==1.16.0
+
+# Feature Clock
+
+It is difficult for humans to perceive high-dimensional data. Therefore, high-dimensional data is projected into lower dimensions to visualize it. 
+Many applications benefit from complex nonlinear dimensionality reduction techniques (e.g., UMAP, t-SNE, PHATE, and autoencoders), but the effects of individual high-dimensional features are hard to explain in the latent spaces. 
+
+Most solutions use multiple two-dimensional plots to analyze the effect of every variable in the embedded space, but this is not scalable, leading to k plots for k different variables. 
+
+Our solution, Feature Clock, provides novel visualizations that eliminate the need for multiple plots to inspect the influence of original variables in the latent space. Feature Clock enhances the explainability and compactness of visualizations of embedded data and is available in an open-source Python library.
