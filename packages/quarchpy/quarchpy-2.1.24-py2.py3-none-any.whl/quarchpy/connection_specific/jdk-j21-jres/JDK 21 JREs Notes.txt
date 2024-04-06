@@ -1,0 +1,93 @@
+*** JDK 21 JREs ***
+
+J21 JREs 21.0.1_12 as of the 17th of October 2023 release.
+
+J8 used to consist of a JDK and a JRE. Later versions of Java have dropped the JRE as it is now part of the JDK.
+The problem is that if we are to ship a JRE it can be a bit bloated at ~365MB.
+
+This article describes stripping jmods and src.zip from the jdk when shipping a JRE:
+
+https://dzone.com/articles/no-more-jre-packaging-no-big-deal-1
+
+I copied Java-21 jdk from /usr/lib/jvm/ into quarch/software/j21 and deleted /jmods and src.zip and then pointed to this Java and ran QPS, and worked fine.
+Size reduction: 365MB --> 223MB.
+
+The problem is, this is a bit of the seat of the pants hacking. A much better and proper way is to use jlink as described in this article:
+
+https://adoptium.net/en-GB/blog/2021/10/jlink-to-produce-own-runtime/
+
+Copied J21 jdk to temp folder /jres and ran:
+
+./amazon-corretto-21.0.0.35.1-linux-x64/bin/jlink --add-modules ALL-MODULE-PATH --output jdk-21-jre --strip-debug --no-man-pages --no-header-files --compress=zip-6
+
+which outputs "lin-amd64-jdk-21-jre" and of size 102MB, which is 365-102=263MB smaller or 28% the size.
+
+Again, pointing QPS to this JRE works fine.
+
+He then goes on to strip out extra modules such as jpackage, jshell that are not needed for running QPS.
+Note that incubator.foreign is no longer present and also had to add jdk.unsupported.desktop since used by javafx.swing.
+The following works fine for QPS:
+
+*** Windows ***
+
+./jdk21.0.1_12/bin/jlink --add-modules  java.base,java.compiler,java.datatransfer,java.desktop,java.instrument,java.logging,java.management,java.management.rmi,java.naming,java.net.http,java.prefs,java.rmi,java.scripting,java.se,java.security.jgss,java.security.sasl,java.smartcardio,java.sql,java.sql.rowset,java.transaction.xa,java.xml,java.xml.crypto,jdk.accessibility,jdk.charsets,jdk.crypto.cryptoki,jdk.crypto.ec,jdk.dynalink,jdk.httpserver,jdk.incubator.vector,jdk.internal.vm.ci,jdk.internal.vm.compiler,jdk.internal.vm.compiler.management,jdk.jdwp.agent,jdk.jfr,jdk.jsobject,jdk.localedata,jdk.management,jdk.management.agent,jdk.management.jfr,jdk.naming.dns,jdk.naming.rmi,jdk.net,jdk.nio.mapmode,jdk.sctp,jdk.security.auth,jdk.security.jgss,jdk.unsupported,jdk.unsupported.desktop,jdk.xml.dom,jdk.zipfs --output win-amd64-jdk-21-jre --strip-debug --no-man-pages --no-header-files --compress=zip-6
+
+*** Linux ***
+
+./amazon-corretto-jdk21.0.1_12.1-linux-x64/bin/jlink --add-modules  java.base,java.compiler,java.datatransfer,java.desktop,java.instrument,java.logging,java.management,java.management.rmi,java.naming,java.net.http,java.prefs,java.rmi,java.scripting,java.se,java.security.jgss,java.security.sasl,java.smartcardio,java.sql,java.sql.rowset,java.transaction.xa,java.xml,java.xml.crypto,jdk.accessibility,jdk.charsets,jdk.crypto.cryptoki,jdk.crypto.ec,jdk.dynalink,jdk.httpserver,jdk.incubator.vector,jdk.internal.vm.ci,jdk.internal.vm.compiler,jdk.internal.vm.compiler.management,jdk.jdwp.agent,jdk.jfr,jdk.jsobject,jdk.localedata,jdk.management,jdk.management.agent,jdk.management.jfr,jdk.naming.dns,jdk.naming.rmi,jdk.net,jdk.nio.mapmode,jdk.sctp,jdk.security.auth,jdk.security.jgss,jdk.unsupported,jdk.unsupported.desktop,jdk.xml.dom,jdk.zipfs --output lin-amd64-jdk-21-jre --strip-debug --no-man-pages --no-header-files --compress=zip-6
+
+*** Apple ***
+
+/Library/Java/JavaVirtualMachines/amazon-corretto-21.jdk/Contents/Home/bin/jlink --add-modules  java.base,java.compiler,java.datatransfer,java.desktop,java.instrument,java.logging,java.management,java.management.rmi,java.naming,java.net.http,java.prefs,java.rmi,java.scripting,java.se,java.security.jgss,java.security.sasl,java.smartcardio,java.sql,java.sql.rowset,java.transaction.xa,java.xml,java.xml.crypto,jdk.accessibility,jdk.charsets,jdk.crypto.cryptoki,jdk.crypto.ec,jdk.dynalink,jdk.httpserver,jdk.incubator.vector,jdk.internal.vm.ci,jdk.internal.vm.compiler,jdk.internal.vm.compiler.management,jdk.jdwp.agent,jdk.jfr,jdk.jsobject,jdk.localedata,jdk.management,jdk.management.agent,jdk.management.jfr,jdk.naming.dns,jdk.naming.rmi,jdk.net,jdk.nio.mapmode,jdk.sctp,jdk.security.auth,jdk.security.jgss,jdk.unsupported,jdk.unsupported.desktop,jdk.xml.dom,jdk.zipfs --output mac-amd64-jdk-21-jre --strip-debug --no-man-pages --no-header-files --compress=zip-6
+
+The above Apple command is generating the reduced JRE direct from the installed version, which works equally well.
+
+This reduces the sizes down to:
+
+Windows	326MB --> 66MB
+Linux	365MB --> 81MB, ~ 20-22% of original
+Mac     353MB --> 74MB
+
+Note that this has to be done for each machine. Worth noting that jlink generates a similar ../bin structure on all three OSs even though Mac starts off with /Contents/Home/...
+
+Also, these reduced JREs can be used as the J21 runtime when packaging with jpackage since we use --runtime-image. However, for Windows found that it reduces the 
+final packaged .msi down from 130MB to 109MB and so looks like jpackage may already be doing some stripping out of non-relevant JDK features.
+
+*** Copying ***
+
+Note that when copying the stripped down JDK on Linux/Apple, a simple copy will strip out legal licenses as they are symbolic links and so best to do the following,
+where L stands for de-reference and follow the symbol link, and R stands for recurse directory:
+
+Linux:
+cp -r -L lin-amd64-jdk-21-jre/ full_copy
+
+Mac:
+cp -LR mac-amd64-jdk-21-jre/ full_copy
+
+Also advisable to download the zipped up versions of the Corretto JDKs and work with these as opposed to copying folders from .deb/.dmg packagers.
+
+*** Permissions ***
+
+Noticed that when the Linux JRE was built and moved into the jres folder of QuarchPy that it wouldn't run and remained in the is-qis-running while loop due to a 
+permissions error. So, after running the above commands ensure to do a full rights chmod, where -R performs a recursive trace on all sub-folders and files:
+
+chmod -R 777 ./full_copy 
+
+Found that this isn't bullet proof and so added a subprocess() chmod call in the QuarchPy code specifically for Linux/Apple.
+
+*** SVN ***
+
+1) Found that if a blanket upload of the Linux JRE is committed to SVN that it doesn't like the .so lib files and excludes them from the commit.
+Ensure they are explicitly added.
+
+2) Apple is dumping its own hidden folder vieiwng attribute files .DS_Store into the directories. They shouldn't affect QuarchPy in any way but shouldn't be there
+and need to ensure they are removed.
+
+*** release File ***
+
+After the stripped down JREs have been built, a "release" file is deposited in the jre directory and is of the form:
+
+JAVA_VERSION="21.0.1"
+MODULES="java.base java.compiler ...
+
+showing the Java version and modules. This is useful as a double-check that things look correct.
