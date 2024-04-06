@@ -1,0 +1,84 @@
+########################################################################################
+# Template pyproject.toml from just.sh
+# https://github.com/jstrieb/just.sh/blob/master/pyproject.toml
+# Build system configuration                                                           #
+########################################################################################
+
+[build-system]
+# Latest versions that support Python 3.7
+requires = ["setuptools >= 61", "setuptools_scm >= 7"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.package-dir]
+uncountable = "uncountable"
+
+[tool.setuptools.packages]
+find = {}
+
+[tool.setuptools.package-data]
+"*" = ["py.typed"]
+
+[tool.setuptools_scm]
+
+
+########################################################################################
+# Package metadata                                                                     #
+########################################################################################
+
+[project]
+name = "UncountablePythonSDK"
+authors = []
+description = "Uncountable SDK"
+readme = "README.md"
+# license = { file = "LICENSE" } -- No license yet
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    # "License :: OSI Approved :: GNU General Public License v3 (GPLv3)", -- No
+    # license yet
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development",
+    "Topic :: Utilities",
+    "Typing :: Typed",
+]
+keywords = [ "uncountable", "sdk", "api", "uncountable-sdk" ]
+# Untested with lower versions but likely works
+requires-python = ">=3.11"
+# May be compatible with older versions
+dependencies = [
+    "requests == 2.31.0",
+    "SQLAlchemy == 2.0.29",
+    "APScheduler == 3.10.4",
+    "python-dateutil == 2.9.0",
+    "shelljob == 0.6.3"
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+# May be compatible with older versions. Many of the versions below are the
+# latest ones that support Python 3.7.
+test = [
+    # Linting
+    "mypy >= 1.8.1",
+    "ruff >= 0.2.1",
+    # Testing
+    "pytest >= 7.4.3",
+    "coverage[toml] >= 6.5.0",
+    "pytest-cov >= 4.1.0",
+    "pytest-xdist >= 3.5.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/uncountableinc/uncountable-python-sdk"
+Repository = "https://github.com/uncountableinc/uncountable-python-sdk.git"
+Issues = "https://github.com/uncountableinc/uncountable-python-sdk/issues"
+
+
+########################################################################################
+# Tool configuration                                                                   #
+########################################################################################
+
+[tool.mypy]
+strict = true

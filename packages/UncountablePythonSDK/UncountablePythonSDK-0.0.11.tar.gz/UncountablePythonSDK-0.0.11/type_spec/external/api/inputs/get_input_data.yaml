@@ -1,0 +1,95 @@
+$endpoint:
+    is_sdk: true
+    method: get
+    path: ${external}/inputs/external_get_input_data
+    function: main.site.app.external.inputs.get_input_data.get_input_data
+    desc: "Gets the attribute, categorization and other metadata associated with a set of inputs. An input is either an ingredient or process parameter, with metadata and calculations assigned separately"
+
+Arguments:
+    type: Object
+    properties:
+        material_family_id:
+            type: ObjectId
+            desc: "The material family ID to get the input values from."
+        input_ids:
+            type: Optional<List<ObjectId>>
+            desc: "The input IDs to get the data from. If this is not filled in, all inputs from a material family will be returned (in paginated form)."
+        offset?:
+            type: Optional<Integer>
+            desc: "Used for pagination, where the number of results returned exceeds the limit. Results are always ordered by the input ID"
+        is_parameter:
+            type: Optional<Boolean>
+            desc: "Whether to get parameters or ingredients. By default both are returned. When set to true, only parameters are returned, and when set to false, only ingredients are returned"
+        limit?:
+            type: Optional<Integer>
+            desc: "The maximum number of results to return. By default this is set to 1,000 and it cannot be set higher than 1,000"
+
+SimpleInputAttr:
+    type: Object
+    properties:
+        attribute_id:
+            type: ObjectId
+            desc: "The unique integer ID for the input attribute value. Used for joining and identification elsewhere."
+        name:
+            type: String
+            desc: "The name of the input attribute"
+        quantity_type:
+            type: String
+            desc: "The quantity type of the input attribute, such as numeric, categorical or text"
+
+SimpleInputGlobalCategory:
+    type: Object
+    properties:
+        category_id:
+            type: ObjectId
+            desc: "The unique integer ID for the global category. Used for joining and identification elsewhere."
+        name:
+            type: String
+            desc: "The name of the input global category"
+
+SimpleInputSubcategory:
+    type: Object
+    properties:
+        subcategory_id:
+            type: ObjectId
+            desc: "The unique integer ID for the subcategory. Used for joining and identification elsewhere."
+        name:
+            type: String
+            desc: "The name of the input subcategory"
+
+FullInput:
+    type: Object
+    properties:
+        input_id:
+            type: ObjectId
+            desc: "The unique integer ID of the input value. Used for joining and identification elsewhere"
+        name:
+            type: String
+            desc: "The name of the input"
+        quantity_type:
+            type: String
+            desc: "The quantity type of the input, such as numeric, categorical or text"
+        is_parameter:
+            type: Boolean
+            desc: "Whether the input is a process parameter (true) or an ingredient (false)"
+        attributes:
+            type: List<input_attributes.InputAttributeValue>
+            desc: "Attributes associated with an input, such as CAS number, density, etc."
+        global_category_id:
+            type: Optional<ObjectId>
+            desc: "The global category ID associated with the input"
+        subcategory_ids:
+            type: List<ObjectId>
+            desc: "The subcategory IDs associated with an input. Inputs can be placed into an unlimited number of subcategories"
+
+Data:
+    type: Object
+    properties:
+        inputs:
+            type: List<FullInput>
+        attrs:
+            type: List<SimpleInputAttr>
+        global_categories:
+            type: List<SimpleInputGlobalCategory>
+        subcategories:
+            type: List<SimpleInputSubcategory>

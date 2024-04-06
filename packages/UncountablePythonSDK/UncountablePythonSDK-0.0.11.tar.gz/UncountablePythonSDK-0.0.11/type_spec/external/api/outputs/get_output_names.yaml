@@ -1,0 +1,35 @@
+$endpoint:
+    is_sdk: true
+    method: get
+    path: ${external}/outputs/external_get_output_names
+    function: main.site.app.external.outputs.get_output_names.get_output_names
+    desc: "Gets the name of all outputs for a material family. An output represents a measurement value of any time (numeric, text, curve, etc). This includes calculations based off of other outputs, such as a calculated change over time"
+
+Arguments:
+    type: Object
+    properties:
+        material_family_id:
+            type: ObjectId
+            desc: "The material family ID to get the output values from"
+        offset?:
+            type: Integer
+            desc: "Used for pagination, where the number of results returned exceeds the limit. Results are always ordered by the output ID"
+        limit?:
+            type: Integer
+            desc: "The maximum number of results to return. By default this is set to 20,000 and it cannot be set higher than 20,000"
+
+OutputWithName:
+    type: Object
+    properties:
+        output_id:
+            type: ObjectId
+            desc: "The unique integer ID of the output value. Used for joining and identification elsewhere"
+        name:
+            type: String
+            desc: "The name of the output"
+
+Data:
+    type: Object
+    properties:
+        outputs:
+            type: List<OutputWithName>
