@@ -1,0 +1,246 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Xdcheckin"
+version = "2.0.1"
+authors = [
+	{name = "Pairman", email = "pairmanxlr@gmail.com"}
+]
+readme = "README.md"
+description = "Chaoxing Checkin Tool for XDU."
+license = {text = "GNU General Public License v3 (GPLv3)"}
+keywords = ["xdu", "xidian", "chaoxing", "livestream"]
+classifiers = [
+	"Framework :: Flask",
+	"Programming Language :: Python :: 3",
+	"Programming Language :: JavaScript",
+	"License :: OSI Approved :: GNU General Public License (GPL)",
+]
+requires-python = ">=3.8"
+dependencies = [
+	"flask >= 3.0.0",
+	"flask-session == 0.6.0",
+	"pillow >= 8.4.0",
+	"pycryptodome >= 3.9.4",
+	"pyjsbitwise >= 1.0.1",
+	"pyzbar >= 0.1.8",
+	"requests >= 2.31.0",
+	"requests-cache >= 1.2.0",
+	"waitress >= 3.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Pairman/Xdcheckin"
+Changelog = "https://github.com/Pairman/Xdcheckin/blob/main/CHANGELOG.md"
+
+[project.scripts]
+xdcheckin-server = "xdcheckin.server.server:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = [
+	"xdcheckin*",
+	"xdcheckin.core*",
+	"xdcheckin.server*",
+	"xdcheckin.util*",
+]
+exclude = [
+	"xdcheckin.app*",
+	"xdcheckin.__main__",
+ ]
+
+[tool.setuptools.package-data]
+"xdcheckin.server" = ["static/*", "templates/*"]
+
+[tool.briefcase]
+project_name = "Xdcheckin"
+bundle = "org.eu.pnxlr.git"
+
+[tool.briefcase.app.xdcheckin]
+formal_name = "Xdcheckin"
+long_description = """Chaoxing Checkin Tool for XDU.
+"""
+icon = "src/xdcheckin/app/resources/xdcheckin"
+sources = [
+	"src/xdcheckin",
+]
+# test_sources = []
+requires = [
+	"flask >= 3.0.0",
+	"flask-session == 0.6.0",
+	"pillow >= 8.4.0",
+	"pycryptodome >= 3.9.4",
+	"pyzbar >= 0.1.8",
+	"requests >= 2.31.0",
+	"requests-cache >= 1.2.0",
+	"waitress >= 3.0.0",
+]
+# test_requires = []
+
+[tool.briefcase.app.xdcheckin.macOS]
+universal_build = true
+requires = [
+	"toga-cocoa~=0.4.0",
+	"std-nslog~=1.0.0",
+]
+
+[tool.briefcase.app.xdcheckin.linux]
+requires = [
+	"toga-gtk~=0.4.0",
+]
+
+[tool.briefcase.app.xdcheckin.linux.system.debian]
+system_requires = [
+	# Needed to compile pycairo wheel
+	"libcairo2-dev",
+	# Needed to compile PyGObject wheel
+	"libgirepository1.0-dev",
+]
+
+system_runtime_requires = [
+	# Needed to provide GTK and its GI bindings
+	"gir1.2-gtk-3.0",
+	"libgirepository-1.0-1",
+	# Dependencies that GTK looks for at runtime
+	"libcanberra-gtk3-module",
+	# Needed to provide WebKit2 at runtime
+	# "gir1.2-webkit2-4.0",
+	# Needed for pyzbar at runtime
+	"libzbar0",
+]
+
+[tool.briefcase.app.xdcheckin.linux.system.rhel]
+system_requires = [
+	# Needed to compile pycairo wheel
+	"cairo-gobject-devel",
+	# Needed to compile PyGObject wheel
+	"gobject-introspection-devel",
+]
+
+system_runtime_requires = [
+	# Needed to support Python bindings to GTK
+	"gobject-introspection",
+	# Needed to provide GTK
+	"gtk3",
+	# Dependencies that GTK looks for at runtime
+	"libcanberra-gtk3",
+	# Needed to provide WebKit2 at runtime
+	# "webkit2gtk3",
+	# Needed for pyzbar at runtime
+	"zbar-libs",
+]
+
+[tool.briefcase.app.xdcheckin.linux.system.suse]
+system_requires = [
+	# Needed to compile pycairo wheel
+	"cairo-devel",
+	# Needed to compile PyGObject wheel
+	"gobject-introspection-devel",
+]
+
+system_runtime_requires = [
+	# Needed to provide GTK
+	"gtk3",
+	# Needed to support Python bindings to GTK
+	"gobject-introspection", "typelib(Gtk)=3.0",
+	# Dependencies that GTK looks for at runtime
+	"libcanberra-gtk3-0",
+	# Needed to provide WebKit2 at runtime
+	# "libwebkit2gtk3",
+	# "typelib(WebKit2)",
+	# Needed for pyzbar at runtime
+	"libzbar0",
+]
+
+[tool.briefcase.app.xdcheckin.linux.system.arch]
+system_requires = [
+	# Needed to compile pycairo wheel
+	"cairo",
+	# Needed to compile PyGObject wheel
+	"gobject-introspection",
+	# Runtime dependencies that need to exist so that the
+	# Arch package passes final validation.
+	# Needed to provide GTK
+	"gtk3",
+	# Dependencies that GTK looks for at runtime
+	"libcanberra",
+	# Needed to provide WebKit2
+	# "webkit2gtk",
+]
+
+system_runtime_requires = [
+	# Needed to provide GTK
+	"gtk3",
+	# Needed to provide PyGObject bindings
+	"gobject-introspection-runtime",
+	# Dependencies that GTK looks for at runtime
+	"libcanberra",
+	# Needed to provide WebKit2 at runtime
+	# "webkit2gtk",
+	# Needed for pyzbar at runtime
+	"zbar",
+]
+
+[tool.briefcase.app.xdcheckin.linux.appimage]
+manylinux = "manylinux_2_28"
+
+system_requires = [
+	# Needed to compile pycairo wheel
+	"cairo-gobject-devel",
+	# Needed to compile PyGObject wheel
+	"gobject-introspection-devel",
+	# Needed to provide GTK
+	"gtk3-devel",
+	# Dependencies that GTK looks for at runtime, that need to be
+	# in the build environment to be picked up by linuxdeploy
+	"libcanberra-gtk3",
+	"PackageKit-gtk3-module",
+	"gvfs-client",
+	# Needed for pyzbar at runtime
+	"zbar",
+]
+
+linuxdeploy_plugins = [
+	"DEPLOY_GTK_VERSION=3 gtk",
+]
+
+[tool.briefcase.app.xdcheckin.linux.flatpak]
+flatpak_runtime = "org.gnome.Platform"
+flatpak_runtime_version = "45"
+flatpak_sdk = "org.gnome.Sdk"
+
+[tool.briefcase.app.xdcheckin.windows]
+requires = [
+	"toga-winforms~=0.4.0",
+]
+
+# Mobile deployments
+[tool.briefcase.app.xdcheckin.iOS]
+requires = [
+	"toga-iOS~=0.4.0",
+	"std-nslog~=1.0.0",
+]
+
+[tool.briefcase.app.xdcheckin.android]
+requires = [
+	"toga-android~=0.4.0",
+]
+
+build_gradle_dependencies = [
+	"androidx.appcompat:appcompat:1.0.2",
+	"androidx.constraintlayout:constraintlayout:1.1.3",
+]
+
+build_gradle_extra_content = """
+android.defaultConfig.ndk.abiFilters = ['arm64-v8a']
+"""
+
+# Web deployments
+[tool.briefcase.app.xdcheckin.web]
+requires = [
+	"toga-web~=0.4.0",
+]
+
+style_framework = "Shoelace v2.3"
