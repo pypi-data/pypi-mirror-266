@@ -1,0 +1,744 @@
+
+propagate_pauli_x.cpp,64
+void Sharqit::QCirc::propagate_pauli_x(propagate_pauli_x9,198
+
+nb_sharqit.cpp,18
+NB_MODULE(20,419
+
+linear_map.h,687
+#define LINEAR_MAP_H7,94
+namespace Sharqit 16,214
+  class LinearMap 24,370
+    LinearMap(33,665
+    LinearMap(39,918
+    LinearMap(53,1337
+    uint32_t row_num(58,1526
+    uint32_t col_num(63,1690
+    LinearMap& operator=(operator=101,3119
+    LinearMap operator+(106,3270
+    LinearMap operator-(107,3320
+    friend LinearMap operator+(108,3379
+    friend LinearMap operator-(109,3503
+    friend LinearMap operator*(110,3627
+    friend LinearMap operator*(111,3751
+    friend LinearMap operator*(112,3871
+    friend LinearMap operator*(113,4005
+    friend LinearMap operator*(114,4125
+    friend LinearMap operator/(115,4259
+    friend LinearMap operator/(116,4379
+
+sandbox/gauss_reduce/main.cpp,17
+int main(40,582
+
+sandbox/gauss_reduce/binary_matrix.h,751
+#define GR_H2,13
+  class BinaryMatrix24,356
+    uint32_t row_num_;27,392
+    uint32_t col_num_;28,415
+    std::vector<std::vector<uint8_t>> elements_;29,438
+    std::vector<uint32_t> row_indexes_;30,487
+    BinaryMatrix(32,537
+    BinaryMatrix(37,819
+    BinaryMatrix(44,1071
+    uint32_t row_num(47,1241
+    uint32_t col_num(48,1291
+    std::vector<std::vector<uint8_t>> elements(49,1341
+    std::vector<uint32_t> row_indexes(50,1419
+    void row_num(52,1508
+    void col_num(53,1573
+    void elements(54,1638
+    void row_indexes(55,1733
+    void xor_rows(58,1890
+    void swap_rows(67,2192
+    void swap_cols(77,2515
+    bool feasible(86,2787
+    std::vector<std::vector102,3043
+    friend std::ostream& operator<<(103,3106
+
+sandbox/gauss_reduce/binary_matrix.cpp,157
+std::string Sharq::BinaryMatrix::to_string(to_string3,28
+std::vector<std::pair<uint32_t, uint32_t>> Sharq::BinaryMatrix::gauss_reduce(gauss_reduce23,403
+
+sandbox/gauss_reduce/old/main.cpp,15
+int main(3,28
+
+sandbox/gauss_reduce/old/binary_matrix.h,607
+#define GR_H2,13
+  class BinaryMatrix24,356
+    uint32_t row_num_;27,392
+    uint32_t col_num_;28,415
+    std::vector<std::vector<bool>> elements_;29,438
+    std::vector<uint32_t> row_indexes_;30,484
+    BinaryMatrix(32,534
+    BinaryMatrix(37,792
+    uint32_t row_num(45,1058
+    uint32_t col_num(46,1108
+    std::vector<std::vector<bool>> elements(47,1158
+    std::vector<uint32_t> row_indexes(48,1233
+    void row_num(50,1322
+    void col_num(51,1387
+    void elements(52,1452
+    void row_indexes(53,1544
+    std::vector<std::vector58,1812
+    friend std::ostream& operator<<(59,1875
+
+sandbox/gauss_reduce/old/binary_matrix_bk20231209.cpp,372
+std::string Sharq::BinaryMatrix::to_string(to_string3,28
+void Sharq::BinaryMatrix::xor_rows(xor_rows23,403
+void Sharq::BinaryMatrix::swap_rows(swap_rows33,705
+void Sharq::BinaryMatrix::swap_cols(swap_cols44,1024
+bool Sharq::BinaryMatrix::feasible(feasible54,1296
+std::vector<std::pair<uint32_t, uint32_t>> Sharq::BinaryMatrix::gauss_reduce(gauss_reduce71,1562
+
+sandbox/gauss_reduce/old/binary_matrix_bk20231209.h,639
+#define GR_H2,13
+  class BinaryMatrix24,356
+    uint32_t row_num_;27,392
+    uint32_t col_num_;28,415
+    std::vector<std::vector<uint8_t>> elements_;29,438
+    std::vector<uint32_t> row_indexes_;30,487
+    BinaryMatrix(32,537
+    BinaryMatrix(37,819
+    BinaryMatrix(44,1071
+    uint32_t row_num(47,1241
+    uint32_t col_num(48,1291
+    std::vector<std::vector<uint8_t>> elements(49,1341
+    std::vector<uint32_t> row_indexes(50,1419
+    void row_num(52,1508
+    void col_num(53,1573
+    void elements(54,1638
+    void row_indexes(55,1733
+    std::vector<std::vector62,2084
+    friend std::ostream& operator<<(63,2147
+
+sandbox/gauss_reduce/old/binary_matrix.cpp,264
+std::string Sharq::BinaryMatrix::to_string(to_string3,28
+void Sharq::BinaryMatrix::xor_rows(xor_rows23,387
+void Sharq::BinaryMatrix::swap_rows(swap_rows33,686
+std::vector<std::pair<uint32_t, uint32_t>> Sharq::BinaryMatrix::gauss_reduce(gauss_reduce44,1005
+
+sandbox/gauss_reduce/old/binary_matrix_bk20231021.cpp,372
+std::string Sharq::BinaryMatrix::to_string(to_string3,28
+void Sharq::BinaryMatrix::xor_rows(xor_rows23,387
+void Sharq::BinaryMatrix::swap_rows(swap_rows33,686
+void Sharq::BinaryMatrix::swap_cols(swap_cols44,1005
+bool Sharq::BinaryMatrix::feasible(feasible54,1277
+std::vector<std::pair<uint32_t, uint32_t>> Sharq::BinaryMatrix::gauss_reduce(gauss_reduce71,1543
+
+qcirc.cpp,1921
+void Sharqit::QCirc::save(save8,99
+void Sharqit::QCirc::load(load20,316
+std::map<std::string, uint32_t> Sharqit::QCirc::stats(stats67,1582
+void Sharqit::QCirc::print_stats(print_stats85,2078
+uint32_t Sharqit::QCirc::id_count(id_count101,2872
+uint32_t Sharqit::QCirc::x_count(x_count108,3012
+uint32_t Sharqit::QCirc::z_count(z_count115,3150
+uint32_t Sharqit::QCirc::h_count(h_count122,3288
+uint32_t Sharqit::QCirc::s_count(s_count129,3426
+uint32_t Sharqit::QCirc::t_count(t_count136,3564
+uint32_t Sharqit::QCirc::rz_count(rz_count143,3702
+uint32_t Sharqit::QCirc::cx_count(cx_count150,3842
+uint32_t Sharqit::QCirc::cz_count(cz_count157,3982
+uint32_t Sharqit::QCirc::depth(depth164,4122
+std::string Sharqit::QCirc::to_string(to_string188,4634
+Sharqit::QCirc& Sharqit::QCirc::add_qgate(add_qgate374,10516
+Sharqit::QCirc& Sharqit::QCirc::add_qgate(add_qgate384,10729
+Sharqit::QCirc& Sharqit::QCirc::add_qcirc(add_qcirc396,11038
+Sharqit::QCirc& Sharqit::QCirc::add_random(add_random404,11184
+Sharqit::QCirc& Sharqit::QCirc::add_random_str(add_random_str476,13619
+Sharqit::QCirc Sharqit::QCirc::reverse(reverse490,14161
+Sharqit::QCirc Sharqit::QCirc::inverse(inverse500,14381
+bool Sharqit::QCirc::is_identical(is_identical510,14611
+bool Sharqit::QCirc::is_equal(is_equal519,14854
+void Sharqit::QCirc::to_dot_file(to_dot_file562,16215
+void Sharqit::QCirc::to_svg_file(to_svg_file769,23239
+Sharqit::ZXDiagram Sharqit::QCirc::to_zxdiagram(to_zxdiagram781,23705
+Sharqit::LinearMap Sharqit::QCirc::to_linearmap(to_linearmap799,24185
+Sharqit::DAGCirc Sharqit::QCirc::to_dagcirc(to_dagcirc808,24382
+void Sharqit::QCirc::cz_to_cx(cz_to_cx815,24544
+void Sharqit::QCirc::decomp_tof(decomp_tof833,25119
+bool Sharqit::QCirc::include_tof(include_tof873,26018
+void Sharqit::QCirc::remove_id(remove_id882,26204
+void  Sharqit::QCirc::replace_with_rz(replace_with_rz896,26751
+
+phase.cpp,90
+Sharqit::Phase::Phase(Phase8,90
+std::string Sharqit::Phase::to_string(to_string31,744
+
+merge_rotation.cpp,209
+bool Sharqit::QCirc::is_termination_border(is_termination_border8,148
+void Sharqit::QCirc::merge_rotation_one_time(merge_rotation_one_time18,412
+void Sharqit::QCirc::merge_rotation(merge_rotation82,2601
+
+binary_matrix.h,837
+#define BINARY_MATRIX_H7,103
+  class BinaryMatrix20,287
+    uint32_t row_num_;23,323
+    uint32_t col_num_;24,376
+    std::vector<std::vector<uint8_t>> elements_;25,432
+    std::vector<uint32_t> row_indexes_;26,533
+    BinaryMatrix(34,861
+    BinaryMatrix(43,1256
+    BinaryMatrix(54,1615
+    uint32_t row_num(57,1799
+    uint32_t col_num(59,1880
+    std::vector<std::vector<uint8_t>> elements(61,1962
+    std::vector<uint32_t> row_indexes(63,2075
+    void row_num(65,2178
+    void col_num(67,2274
+    void elements(69,2371
+    void row_indexes(71,2501
+    void set_identity(82,2954
+    void reverse_element(96,3356
+    uint32_t xor_rows(108,3839
+    void swap_rows(125,4341
+    void swap_cols(140,4790
+    bool feasible(153,5183
+    std::vector<std::vector174,5740
+    friend std::ostream& operator<<(175,5833
+
+util.h,46
+#define UTIL_H7,84
+namespace Sharqit 13,156
+
+qgate.cpp,678
+Sharqit::QGate::QGate(QGate8,90
+Sharqit::QGate::QGate(QGate64,1615
+std::vector<std::vector<std::complex<double>>> Sharqit::QGate::kind_to_op(kind_to_op82,2145
+std::string Sharqit::QGate::name(name168,4618
+std::string Sharqit::QGate::to_string(to_string177,4934
+std::tuple<Sharqit::QGateKind, Sharqit::Phase> Sharqit::QGate::kind_phase(kind_phase196,5235
+Sharqit::QGate Sharqit::QGate::inverse(inverse273,7099
+bool Sharqit::QGate::is_identical(is_identical354,9634
+bool Sharqit::QGate::overlap(overlap369,10193
+bool Sharqit::QGate::mergeable(mergeable383,10444
+bool Sharqit::QGate::commutable(commutable400,11181
+void Sharqit::QGate::merge(merge444,13086
+
+extract_qcirc.cpp,465
+void Sharqit::ZXDiagram::permutation_as_swap(permutation_as_swap8,151
+std::vector<std::pair<uint32_t, uint32_t>> Sharqit::ZXDiagram::extract_2q_connects(extract_2q_connects28,627
+bool Sharqit::ZXDiagram::update_frontier(update_frontier86,2281
+bool Sharqit::ZXDiagram::update_frontier_pg(update_frontier_pg225,6408
+void Sharqit::ZXDiagram::process_frontier(process_frontier305,9008
+Sharqit::QCirc Sharqit::ZXDiagram::extract_qcirc(extract_qcirc353,10595
+
+dag.h,1893
+#define DAG_H7,137
+  enum DAGNodeKind 22,329
+		    OpNode,23,350
+		    InNode,24,401
+		    OutNode 25,431
+  enum DAGEdgeKind 28,493
+		    Forward,29,514
+		    Backward 30,552
+  class DAGNode39,713
+    DAGNodeKind kind_;42,744
+    QGate qgate_;43,789
+    DAGNode(50,1001
+    DAGNode(56,1226
+    DAGNodeKind kind(58,1331
+    QGate qgate(60,1407
+    void kind(62,1478
+    void qgate(64,1563
+    uint32_t qubit_num(74,1894
+    std::vector<uint32_t> qid(79,2108
+    bool is_innode(84,2302
+    bool is_outnode(89,2518
+    bool is_opnode(94,2772
+    bool is_identity(99,3008
+    bool is_hadamard(105,3282
+    bool is_rotation(110,3483
+    bool is_cnot(115,3677
+    bool is_included(121,3952
+    bool mergeable(131,4298
+    bool commutable(137,4606
+    void merge(142,4824
+  class DAGEdge150,4998
+    DAGEdgeKind kind_;153,5029
+    uint32_t q_;154,5102
+    uint32_t to_;155,5153
+    DAGEdge(163,5414
+    DAGEdge(169,5666
+    DAGEdgeKind kind(171,5778
+    uint32_t q(173,5850
+    uint32_t to(175,5914
+    void kind(177,5982
+    void q(179,6057
+    void to(181,6118
+    bool is_forward(191,6409
+    bool is_backward(196,6627
+  class DAGCirc205,6844
+    uint32_t qubit_num_;208,6875
+    std::vector<DAGNode> nodes_;209,6922
+    std::vector<uint32_t> inputs_;210,6990
+    std::vector<uint32_t> outputs_;211,7063
+    std::vector<std::vector<DAGEdge>> adj_mat_;212,7138
+    DAGCirc(266,9545
+    uint32_t qubit_num(270,9737
+    std::vector<DAGNode> nodes(272,9820
+    std::vector<uint32_t> inputs(274,9908
+    std::vector<uint32_t> outputs(276,10000
+    std::vector<std::vector<DAGEdge>> adj_mat(278,10094
+    void qubit_num(280,10202
+    void nodes(282,10304
+    void inputs(284,10404
+    void outputs(286,10510
+    void adj_mat(288,10620
+    void show(297,10919
+    uint32_t gate_count(301,11018
+    friend std::ostream& operator<<(393,14802
+
+qcirc.h,1803
+#define QCIRC_H7,80
+  class QCirc34,492
+    uint32_t qubit_num_;37,521
+    std::vector<QGate> qgates_;38,568
+    QCirc(59,1550
+    QCirc(64,1719
+    QCirc(69,1907
+    uint32_t qubit_num(71,2031
+    uint32_t get_qubit_num(73,2118
+    std::vector<QGate> qgates(75,2206
+    void qubit_num(77,2297
+    void qgates(79,2400
+    uint32_t qgate_num(84,2575
+    void clear(98,3028
+    std::map<std::map103,3190
+    uint32_t gate_count(108,3394
+    uint32_t twoq_count(158,4966
+    void show(173,5501
+    void print_qcirc(177,5657
+    QCirc& add_qgate(201,6763
+    Sharqit::QGate get_qgate(233,8531
+    std::vector<Sharqit::QGate> get_qgates(238,8708
+    QCirc& id(330,11980
+    QCirc& x(336,12238
+    QCirc& z(342,12494
+    QCirc& s(348,12744
+    QCirc& sdg(354,13022
+    QCirc& t(360,13276
+    QCirc& tdg(366,13554
+    QCirc& h(372,13820
+    QCirc& rz(379,14118
+    QCirc& id2(386,14477
+    QCirc& cx(393,14823
+    QCirc& cz(400,15160
+    QCirc& rx(407,15481
+    QCirc& ccx(415,15877
+    QCirc& ccz(423,16304
+    QCirc& y(429,16614
+    QCirc& sx(435,16882
+    QCirc& sxdg(441,17184
+    QCirc& ry(448,17479
+    QCirc& p(456,17845
+    QCirc& cy(463,18188
+    QCirc& csx(470,18555
+    QCirc& csxdg(477,18945
+    QCirc& ch(484,19324
+    QCirc& cs(492,19744
+    QCirc& csdg(500,20138
+    QCirc& ct(508,20513
+    QCirc& ctdg(516,20919
+    QCirc& crx(525,21348
+    QCirc& cry(534,21785
+    QCirc& crz(543,22247
+    QCirc& cp(552,22708
+    QCirc& rxx(561,23142
+    QCirc& ryy(575,23630
+    QCirc& rzz(589,24168
+    QCirc& sw(597,24526
+    QCirc& csw(606,24937
+    QCirc& ccx_decomp_A(615,25400
+    QCirc& ccz_decomp_A(627,25967
+    QCirc& operator+=(operator+=632,26216
+    friend QCirc operator+(633,26283
+    friend std::ostream& operator<<(634,26392
+
+dagcirc.cpp,1625
+Sharqit::DAGCirc::DAGCirc(DAGCirc8,92
+Sharqit::DAGCirc::DAGCirc(DAGCirc29,699
+std::string Sharqit::DAGCirc::to_string(to_string53,1393
+uint32_t Sharqit::DAGCirc::append_node(append_node72,1862
+uint32_t Sharqit::DAGCirc::prev_node(prev_node80,2055
+uint32_t Sharqit::DAGCirc::next_node(next_node99,2523
+void Sharqit::DAGCirc::connect_nodes(connect_nodes118,2988
+void Sharqit::DAGCirc::remove_node(remove_node129,3473
+void Sharqit::DAGCirc::remove_edge(remove_edge161,4123
+void Sharqit::DAGCirc::remove_edge(remove_edge179,4528
+void Sharqit::DAGCirc::remove_edges_of_node(remove_edges_of_node197,4983
+void Sharqit::DAGCirc::remove_isolated_nodes(remove_isolated_nodes211,5312
+Sharqit::DAGCirc& Sharqit::DAGCirc::add_qgate(add_qgate227,5631
+Sharqit::QCirc Sharqit::DAGCirc::to_qcirc(to_qcirc264,6717
+void Sharqit::DAGCirc::id_removal(id_removal306,7769
+void Sharqit::DAGCirc::cx_to_cz_gate(cx_to_cz_gate329,8484
+void Sharqit::DAGCirc::cz_to_cx_gate(cz_to_cx_gate359,9307
+void Sharqit::DAGCirc::hadamard_gate_reduction_1(hadamard_gate_reduction_1394,10546
+void Sharqit::DAGCirc::hadamard_gate_reduction_2(hadamard_gate_reduction_2434,11806
+void Sharqit::DAGCirc::hadamard_gate_reduction_3(hadamard_gate_reduction_3475,13087
+uint32_t Sharqit::DAGCirc::hadamard_gate_reduction(hadamard_gate_reduction533,15062
+uint32_t Sharqit::DAGCirc::single_qubit_gate_cancellation(single_qubit_gate_cancellation544,15275
+uint32_t Sharqit::DAGCirc::two_qubit_gate_cancellation(two_qubit_gate_cancellation642,17994
+void Sharqit::DAGCirc::rule_based_gate_reduction(rule_based_gate_reduction732,20725
+
+linear_map.cpp,441
+bool Sharqit::LinearMap::is_zero(is_zero8,104
+bool Sharqit::LinearMap::is_identity(is_identity21,444
+bool Sharqit::LinearMap::is_diagonal(is_diagonal33,742
+bool Sharqit::LinearMap::is_identity_multiple_constant(is_identity_multiple_constant45,1036
+bool Sharqit::LinearMap::is_unitary(is_unitary59,1429
+bool Sharqit::LinearMap::is_equal(is_equal70,1690
+Sharqit::LinearMap& Sharqit::LinearMap::operate_qgate(operate_qgate81,1943
+
+sharqit.h,49
+#define SHARQIT_H7,88
+namespace Sharqit 19,294
+
+sharqit.cpp,176
+void print_help(11,130
+void optimize(57,2632
+void verify_equality(77,3149
+void random_qcirc(98,3714
+void print_stats(126,4501
+void show_qcirc(142,4820
+int main(159,5157
+
+simplify.cpp,1156
+void Sharqit::ZXDiagram::fuse_spiders(fuse_spiders8,142
+void Sharqit::ZXDiagram::conv_x_to_z(conv_x_to_z68,1696
+void Sharqit::ZXDiagram::remove_parallel_selfloops_hadamard_edges(remove_parallel_selfloops_hadamard_edges87,2246
+void Sharqit::ZXDiagram::update_node_places(update_node_places118,3344
+void Sharqit::ZXDiagram::update_phase_gadget(update_phase_gadget142,4106
+void Sharqit::ZXDiagram::graph_like(graph_like165,4780
+void Sharqit::ZXDiagram::lcomp_one_time(lcomp_one_time228,6500
+uint32_t Sharqit::ZXDiagram::lcomp(lcomp243,6980
+void Sharqit::ZXDiagram::pivot1_one_time(pivot1_one_time295,8346
+uint32_t Sharqit::ZXDiagram::pivot1(pivot1351,10270
+void Sharqit::ZXDiagram::pivot2_one_time(pivot2_one_time431,12280
+uint32_t Sharqit::ZXDiagram::pivot2(pivot2511,14976
+void Sharqit::ZXDiagram::pivot3_one_time(pivot3_one_time592,17038
+uint32_t Sharqit::ZXDiagram::pivot3(pivot3692,20363
+void Sharqit::ZXDiagram::id_removal(id_removal783,22690
+void Sharqit::ZXDiagram::gfusion_one_time(gfusion_one_time838,24329
+uint32_t Sharqit::ZXDiagram::gfusion(gfusion846,24648
+void Sharqit::ZXDiagram::simplify(simplify979,28447
+
+phase.h,914
+#define PHASE_H7,80
+  class Phase23,296
+    Fraction frac_;26,325
+    Phase(33,628
+    Phase(38,847
+    Phase(43,1041
+    Phase(48,1167
+    Fraction frac(50,1249
+    void frac(52,1321
+    double value(62,1608
+    bool is_zero(67,1805
+    bool is_positive(72,1983
+    bool is_negative(77,2165
+    void reduce(81,2302
+    void mod_2pi(85,2391
+    Phase operator+(99,2892
+    Phase operator-(100,2938
+    Phase& operator+=(operator+=101,2992
+    Phase& operator-=(operator-=102,3071
+    Phase& operator*=(operator*=103,3150
+    Phase& operator/=(operator/=104,3223
+    friend bool operator==(operator==105,3296
+    friend bool operator!=(operator!=110,3506
+    friend Phase operator+(111,3595
+    friend Phase operator-(112,3701
+    friend Phase operator*(113,3807
+    friend Phase operator*(114,3907
+    friend Phase operator/(115,4007
+    friend std::ostream& operator<<(116,4107
+
+fraction.h,1712
+#define FRACTION_H7,89
+  class Fraction18,242
+    int32_t numerator_;21,274
+    int32_t denominator_;22,329
+    Fraction(27,456
+    Fraction(33,679
+    Fraction(39,919
+    int32_t numerator(41,1053
+    int32_t denominator(43,1141
+    void numerator(45,1231
+    void denominator(47,1348
+    Fraction add(58,1709
+    Fraction add(69,2130
+    Fraction sub(75,2349
+    Fraction sub(86,2772
+    Fraction mul(92,2991
+    Fraction mul(103,3377
+    Fraction div(109,3591
+    Fraction div(120,3976
+    bool is_zero(125,4172
+    bool is_positive(130,4352
+    bool is_negative(135,4550
+    void reduce(139,4671
+    static int32_t gcd(160,5279
+    Fraction operator+(172,5535
+    Fraction operator-(173,5584
+    Fraction& operator+=(operator+=174,5635
+    Fraction& operator+=(operator+=181,5823
+    Fraction& operator-=(operator-=182,5905
+    Fraction& operator-=(operator-=189,6093
+    Fraction& operator*=(operator*=190,6175
+    Fraction& operator*=(operator*=197,6363
+    Fraction& operator/=(operator/=198,6445
+    Fraction& operator/=(operator/=205,6633
+    friend bool operator==(operator==206,6715
+    friend bool operator!=(operator!=210,6887
+    friend Fraction operator+(211,6982
+    friend Fraction operator+(212,7079
+    friend Fraction operator+(213,7184
+    friend Fraction operator-(214,7289
+    friend Fraction operator-(215,7386
+    friend Fraction operator-(216,7491
+    friend Fraction operator*(217,7596
+    friend Fraction operator*(218,7693
+    friend Fraction operator*(219,7798
+    friend Fraction operator/(220,7903
+    friend Fraction operator/(221,8000
+    friend Fraction operator/(222,8105
+    friend std::ostream& operator<<(223,8210
+
+zxnode.cpp,45
+std::string Sharqit::ZXNode::name(name8,89
+
+zxdiagram.cpp,1206
+Sharqit::ZXDiagram::ZXDiagram(ZXDiagram8,95
+std::string Sharqit::ZXDiagram::to_string(to_string34,895
+std::map<std::string, uint32_t> Sharqit::ZXDiagram::stats(stats54,1404
+void Sharqit::ZXDiagram::to_dot_file(to_dot_file80,2378
+void Sharqit::ZXDiagram::to_svg_file(to_svg_file224,6909
+void Sharqit::ZXDiagram::add_qgate(add_qgate237,7384
+bool Sharqit::ZXDiagram::check_connect(check_connect378,12025
+void Sharqit::ZXDiagram::xor_hadamard_edge(xor_hadamard_edge401,12433
+void Sharqit::ZXDiagram::xor_hadamard_edges(xor_hadamard_edges434,13437
+Sharqit::ZXNodeKind Sharqit::ZXDiagram::remove_node(remove_node446,13807
+Sharqit::ZXEdgeKind Sharqit::ZXDiagram::remove_edge(remove_edge480,14506
+uint32_t Sharqit::ZXDiagram::append_node(append_node504,15047
+uint32_t Sharqit::ZXDiagram::append_node(append_node512,15241
+void Sharqit::ZXDiagram::connect_nodes(connect_nodes525,15583
+void Sharqit::ZXDiagram::swap_nodes(swap_nodes533,15839
+void Sharqit::ZXDiagram::remove_isolated_spiders(remove_isolated_spiders548,16225
+void Sharqit::ZXDiagram::row_operation(row_operation564,16548
+std::vector<uint32_t> Sharqit::ZXDiagram::adjacent_node_indexes(adjacent_node_indexes573,16766
+
+binary_matrix.cpp,162
+std::string Sharqit::BinaryMatrix::to_string(to_string8,113
+std::vector<std::pair<uint32_t, uint32_t>> Sharqit::BinaryMatrix::gauss_reduce(gauss_reduce28,490
+
+zx.h,3192
+#define ZX_H11,893
+  enum ZXNodeKind 25,1082
+		   XSpider,26,1102
+		   ZSpider,27,1130
+		   Input,28,1158
+		   Output 29,1186
+  enum ZXEdgeKind 32,1254
+		   None,33,1274
+		   Plain,34,1312
+		   Hadamard 35,1378
+  enum ZXDiagramKind 38,1461
+		      General,39,1484
+		      GraphLike 40,1525
+  enum ZXNodePlace 43,1600
+		    Terminal,44,1621
+		    Boundary,45,1666
+		    Internal 46,1746
+  class ZXNode59,2232
+    ZXNodeKind kind_;62,2262
+    Phase phase_;63,2320
+    uint32_t q_;64,2375
+    bool pg_phase_;65,2440
+    bool pg_root_;66,2525
+    bool pg_leaf_;67,2608
+    ZXNode(78,3127
+    ZXNode(85,3522
+    ZXNodeKind kind(88,3720
+    Phase phase(90,3795
+    uint32_t q(92,3863
+    bool pg_phase(94,3933
+    bool pg_root(96,4012
+    bool pg_leaf(98,4089
+    void kind(100,4163
+    void phase(102,4247
+    void q(104,4326
+    void pg_phase(106,4399
+    void pg_root(108,4495
+    void pg_leaf(110,4587
+    std::string kind_str(115,4757
+  class ZXEdge132,5140
+    ZXEdgeKind kind_;135,5170
+    uint32_t to_;136,5228
+    ZXEdge(143,5489
+    ZXEdge(148,5688
+    ZXEdgeKind kind(150,5785
+    uint32_t to(152,5857
+    void kind(154,5925
+    void to(156,6006
+    std::string kind_str(161,6160
+    std::string name(169,6387
+    void reverse_kind(181,6726
+  class ZXDiagram198,7714
+    ZXDiagramKind kind_;201,7747
+    uint32_t qubit_num_;202,7800
+    std::vector<ZXNode> nodes_;203,7847
+    std::vector<uint32_t> inputs_;204,7913
+    std::vector<uint32_t> outputs_;205,7986
+    std::vector<std::vector<ZXEdge>> adj_mat_;206,8061
+    std::vector<ZXNodePlace> node_places_;207,8147
+    uint32_t max_adj_num(211,8327
+    bool check_x_spider(224,8740
+    bool check_z_spider(230,9087
+    bool check_zero_phase_spider(236,9452
+    bool check_pauli_spider(247,9957
+    bool check_proper_clifford_spider(258,10519
+    bool check_clifford_spider(269,11081
+    bool check_non_clifford_spider(278,11490
+    bool check_internal_node(284,11835
+    bool check_boundary_node(290,12189
+    bool check_pg_phase_node(296,12573
+    bool check_pg_root_node(302,12935
+    bool check_pg_leaf_node(308,13295
+    bool check_phase_gadget_node(314,13677
+    bool check_input_node(321,14047
+    bool check_output_node(327,14402
+    bool check_connect_input_node(333,14769
+    bool check_connect_output_node(345,15222
+    bool check_connect_phase_gadget(357,15711
+    void remove_edges_of_node(392,17057
+    uint32_t degree_of_node(409,17561
+    ZXNodeKind kind_of_node(415,17805
+    std::vector<std::vector522,22409
+    ZXDiagram(533,22779
+    ZXDiagramKind kind(538,23023
+    uint32_t qubit_num(540,23105
+    std::vector<ZXNode> nodes(542,23188
+    std::vector<uint32_t> inputs(544,23275
+    std::vector<uint32_t> outputs(546,23367
+    std::vector<std::vector<ZXEdge>> adj_mat(548,23461
+    void kind(550,23563
+    void qubit_num(552,23654
+    void nodes(554,23756
+    void inputs(556,23855
+    void outputs(558,23961
+    void adj_mat(560,24071
+    void show(570,24374
+    std::map<std::map575,24536
+    uint32_t spider_count(589,24936
+    uint32_t non_clifford_count(593,25088
+    friend std::ostream& operator<<(683,27928
+
+optimizer.h,1224
+#define OPTIMIZER_H7,92
+  enum OptimizerKind 19,251
+		      ZXCalculus,20,274
+		      PhasePolynomial 21,317
+  class Optimizer28,445
+    OptimizerKind kind_;31,478
+    double proc_time_;32,536
+    std::map<std::map33,580
+    std::map<std::string, uint32_t> stats_in_;33,580
+    std::map<std::map34,673
+    std::map<std::string, uint32_t> stats_out_;34,673
+    std::map<std::map35,766
+    std::map<std::string, uint32_t> zx_stats_in_;35,766
+    std::map<std::map36,867
+    std::map<std::string, uint32_t> zx_stats_out_;36,867
+    OptimizerKind kind(39,1006
+    double proc_time(41,1088
+    double get_proc_time(43,1173
+    std::map<std::map45,1261
+    std::map<std::string, uint32_t> stats_in(45,1261
+    std::map<std::map47,1373
+    std::map<std::string, uint32_t> stats_out(47,1373
+    std::map<std::map49,1489
+    std::map<std::string, uint32_t> zx_stats_in(49,1489
+    std::map<std::map51,1610
+    std::map<std::string, uint32_t> zx_stats_out(51,1610
+    void kind(53,1725
+    void proc_time(55,1816
+    void stats_in(57,1919
+    void stats_out(59,2045
+    void zx_stats_in(61,2176
+    void zx_stats_out(63,2317
+    void show(77,2774
+    friend std::ostream& operator<<(105,4069
+
+dagedge.cpp,46
+std::string Sharqit::DAGEdge::name(name8,92
+
+dagnode.cpp,46
+std::string Sharqit::DAGNode::name(name8,92
+
+optimizer.cpp,357
+std::string Sharqit::Optimizer::to_string(to_string8,102
+std::string Sharqit::Optimizer::name(name51,2490
+Sharqit::QCirc Sharqit::Optimizer::reduce_gates_using_zx(reduce_gates_using_zx62,2825
+Sharqit::QCirc Sharqit::Optimizer::reduce_gates_using_pp(reduce_gates_using_pp90,3480
+Sharqit::QCirc Sharqit::Optimizer::reduce_gates(reduce_gates112,4025
+
+qgate.h,1510
+#define QGATE_H7,80
+  enum QGateKind 19,241
+		  X,20,260
+		  Z,21,285
+		  S,22,310
+		  Sdg,23,329
+		  T,24,384
+		  Tdg,25,403
+		  H,26,458
+		  RZ,27,488
+		  CX,28,509
+		  CZ,29,532
+		  CCX,30,553
+		  CCZ,31,576
+		  Id,32,599
+		  Id2,33,639
+  class QGate40,737
+    QGateKind kind_;43,766
+    std::vector<uint32_t> qid_;44,813
+    Phase phase_;45,874
+    std::vector<std::vector<std::complex<double>>> op_;46,920
+    QGate(72,2058
+    QGateKind kind(74,2196
+    std::vector<uint32_t> qid(76,2268
+    Phase phase(78,2352
+    Phase get_phase(80,2424
+    std::vector<std::vector<std::complex<double>>> op(82,2497
+    void kind(84,2603
+    void qid(86,2684
+    void phase(88,2776
+    void op(90,2857
+    uint32_t qubit_num(107,3486
+    bool is_Id_gate(112,3680
+    bool is_Id2_gate(117,3878
+    bool is_X_gate(122,4055
+    bool is_Z_gate(127,4255
+    bool is_H_gate(137,4543
+    bool is_S_gate(142,4750
+    bool is_S1_gate(155,5147
+    bool is_S3_gate(166,5480
+    bool is_T_gate(177,5828
+    bool is_T1_gate(190,6225
+    bool is_T7_gate(203,6575
+    bool is_CX_gate(216,6903
+    bool is_CZ_gate(221,7068
+    bool is_CCX_gate(226,7235
+    bool is_CCZ_gate(231,7404
+    bool is_RZ_gate(236,7571
+    bool is_pauli_gate(243,7917
+    bool is_proper_clifford_gate(248,8131
+    bool is_clifford_gate(253,8308
+    bool is_non_clifford_gate(258,8537
+    bool is_included(264,8762
+    static std::tuple<std::tuple308,10282
+    friend std::ostream& operator<<(309,10358
+
+fraction.cpp,57
+std::string Sharqit::Fraction::to_string(to_string8,99
