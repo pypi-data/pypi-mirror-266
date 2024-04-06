@@ -1,0 +1,89 @@
+Metadata-Version: 2.1
+Name: motion-lake-client
+Version: 0.0.2
+Summary: Motion Lake Client, a client for the Motion Lake API (a Mobility Data Lake)
+Author-email: Gaspard Merten <gaspard.mp.work@gmail.com>
+License: All Rights Reserved
+        
+        Copyright (c) 2024 Gaspard Merten
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+        THE SOFTWARE.
+Project-URL: Homepage, https://github.com/GaspardMerten/motion-lake-client
+Keywords: motion-lake,mobility,data,api,client
+Classifier: License :: Other/Proprietary License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests
+
+# MotionLake Client
+
+MotionLake Client is a Python client library for interacting with a storage server designed for a new mobility data lake solution. It provides functionalities to create collections, store data, query data, and retrieve collections.
+
+## Installation
+
+You can install the library via pip:
+
+```bash
+pip install motionlake-client
+```
+
+## Usage
+
+Here's a brief overview of how to use the library:
+
+```python
+from motion_lake_client import BaseClient
+
+# Initialize the client with the base URL of the storage server
+client = BaseClient(lake_url='http://localhost:8000')
+
+# Create a new collection
+client.create_collection('my_collection')
+
+# Store data in a collection
+data = b'example_data'
+timestamp = int(datetime.now().timestamp())
+client.store('my_collection', data, timestamp)
+
+# Query data from a collection
+results = client.query('my_collection', min_timestamp=0, max_timestamp=timestamp, ascending=True)
+
+# Retrieve last item from a collection
+last_item = client.get_last_item('my_collection')
+
+# Retrieve first item from a collection
+first_item = client.get_first_item('my_collection')
+
+# Get items between two timestamps
+items_between = client.get_items_between('my_collection', min_timestamp=0, max_timestamp=timestamp)
+
+# Get items before a timestamp
+items_before = client.get_items_before('my_collection', timestamp, limit=10)
+
+# Get items after a timestamp
+items_after = client.get_items_after('my_collection', timestamp, limit=10)
+
+# Get all collections
+collections = client.get_collections()
+```
+
+## Documentation
+
+For detailed documentation and examples, please refer to the [official documentation](https://your-documentation-url.com).
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a pull request or open an issue for any bugs or feature requests.
+
+## License
+
+All rights reserved.
