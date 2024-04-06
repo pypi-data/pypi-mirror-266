@@ -1,0 +1,194 @@
+[tool.ruff]
+select = [
+    "A",
+    "B",
+    "D",
+    "E",
+    "F",
+    "G",
+    "N",
+    "Q",
+    "S",
+    "C90",
+    "UP",
+    "ANN",
+    "ASYNC",
+    "FBT",
+    "COM",
+    "COM",
+    "DTZ",
+    "DJ",
+    "EM",
+    "ICN",
+    "PIE",
+    "T20",
+    "PYI",
+    "PT",
+    "SIM",
+    "TCH",
+    "INT",
+    "PTH",
+    "ERA",
+    "TRY",
+]
+line-length = 100
+show-source = true
+exclude = [
+    ".git",
+    "__pycache__",
+    ".venv",
+    ".eggs",
+    "*.egg",
+    "dist",
+    "tests/fixtures/**",
+    "tests/**/snapshots/**",
+    "alembic",
+    "airich",
+]
+ignore = [
+    "D100",
+    "B008",
+    "D104",
+    "Q000",
+    "S101",
+    "PT016",
+    "ANN101",
+    "ANN102",
+]
+
+[tool.ruff.pydocstyle]
+convention = "numpy"
+ignore-decorators = [
+    "typing.overload",
+]
+
+[tool.ruff.mccabe]
+max-complexity = 11
+
+[tool.ruff.flake8-bugbear]
+extend-immutable-calls = [
+    "fastapi.Depends",
+    "fastapi.Query",
+]
+
+[tool.ruff.extend-per-file-ignores]
+"__init__.py" = [
+    "F401",
+]
+"*/migrations/versions/*" = [
+    "D103",
+]
+"src/app/main.py" = [
+    "E402",
+]
+"src/cli/commands/*" = [
+    "E402",
+    "ANN201",
+]
+"src/cli/__init__.py" = [
+    "E402",
+    "ANN201",
+    "FBT001",
+    "FBT002",
+    "UP007",
+]
+"manage.py" = [
+    "E402",
+]
+"tests/*" = [
+    "D103",
+]
+
+[tool.black]
+line-length = 100
+skip-string-normalization = true
+include = "\\.pyi?$"
+exclude = "/(\n    \\.git\n  | \\.hg\n  | \\.mypy_cache\n  | \\.tox\n  | \\.venv\n  | _build\n  | buck-out\n  | build\n  | dist\n)/\n"
+
+[tool.isort]
+profile = "black"
+line_length = 100
+multi_line_output = 3
+
+[tool.coverage.run]
+source = [
+    "sqlrepo",
+]
+branch = true
+omit = [
+    "",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "enum.Enum",
+    "# noqa",
+    "# pragma: no cover",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+    "if typing.TYPE_CHECKING:",
+    "@overload",
+]
+
+[tool.pytest]
+testpath = "tests"
+
+[tool.bandit]
+exclude = [
+    "tests",
+]
+
+[tool.bandit.assert_used]
+skips = [
+    "*_test.py",
+    "*/test_*.py",
+]
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "ruff>=0.3.4",
+    "vulture>=2.11",
+    "pytest>=8.1.1",
+    "black>=24.3.0",
+    "bandit>=1.7.8",
+    "coverage>=7.4.4",
+    "pytest-cov>=4.1.0",
+    "isort>=5.13.2",
+    "pyright>=1.1.355",
+    "freezegun>=1.4.0",
+    "mimesis>=15.1.0",
+    "ipython>=8.22.2",
+    "sqlalchemy-utils>=0.41.2",
+    "psycopg2-binary>=2.9.9",
+    "asyncpg>=0.29.0",
+    "pytest-asyncio>=0.23.6",
+    "httpx>=0.27.0",
+    "pyment>=0.3.3",
+    "ipython>=8.19.0",
+]
+
+[project]
+name = "sqlrepo"
+version = "0.1.1"
+description = "sqlalchemy repositories with crud operations and other utils for it."
+authors = [
+    { name = "Dmitriy Lunev", email = "dima.lunev14@gmail.com" },
+]
+requires-python = ">=3.11"
+readme = "README.md"
+dependencies = [
+    "sqlalchemy>=2.0.29",
+    "python-dev-utils[filtering]>=0.1.1",
+]
+
+[project.license]
+text = "MIT"
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
