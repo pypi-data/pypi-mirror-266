@@ -1,0 +1,1350 @@
+Metadata-Version: 2.1
+Name: easy-encryption-tool
+Version: 1.1.7
+Home-page: https://cloud.tencent.com/developer/article/2155922
+Author: bowenerchen
+Author-email: bowener.chen@gmail.com
+License: MIT
+Keywords: encryption cli tool security aes hmac ecc rsa
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+Requires-Dist: click
+Requires-Dist: cryptography
+
+# 易加密（easy_encryption_tool）
+
+## 工具的安装
+
+`pip install easy-encryption-tool`
+
+项目地址：[easy-encryption-tool · PyPI](https://pypi.org/project/easy-encryption-tool/)
+
+## 工具支持的命令
+
+```python
+❯ easy_encryption_tool --help
+
+Usage: easy_encryption_tool [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  aes         aes加解密工具，默认支持 aes-cbc-256 和 aes-gcm-256
+  ecc         ecc签名验签和密钥交换验证工具
+  hmac        hmac消息验证码工具
+  random-str  随机字符串生成器
+  rsa         rsa加解密和签名验签工具
+  version     展示当前版本信息以及运行时信息
+```
+
+## 设置easy_encryption_tool 自动补全
+
+参考：https://click.palletsprojects.com/en/8.1.x/shell-completion/
+
+### 手动设置(以 zsh 举例)
+
+```python
+# ZSH
+# 1. 执行命令生成~/.easy_encryption_tool_complete.sh文件
+_EASY_ENCRYPTION_TOOL_COMPLETE=zsh_source easy_encryption_tool >~/.easy_encryption_tool_complete.sh
+
+# 2. 在.zshrc 文件中引用生成的文件
+#    使用 vim 或其他编辑器打开~.zshrc 文件，添加下面的语句到文件中，然后保存退出
+. ~/.easy_encryption_tool_complete.sh
+
+# 3. 使配置在当前shell session 中生效
+source ~/.zshrc
+```
+
+
+
+## 显示版本
+
+```python
+❯ easy_encryption_tool version
+
+------ 7906e795524f2b7c begin@2024-04-04_15:02:59.590 ------
+tool-version:v1.0.0
+python:3.11.4 (main, Jul  5 2023, 08:54:11) [Clang 14.0.6 ]
+os:darwin
+chip:macOS-14.3.1-arm64-arm-64bit
+byte-order:little
+------ 7906e795524f2b7c took 0.007 milli-seconds to execute ------
+
+```
+
+## 生成随机字符串
+
+### 支持的参数
+
+```python
+❯ easy_encryption_tool random-str --help
+Usage: main.py random-str [OPTIONS]
+
+Options:
+  -l, --length INTEGER RANGE  最小生成一个字节字符串，最大长度由系统最大整型值决定  [default: 32;
+                              1<=x<=9223372036854775807]
+  -o, --output-file TEXT      指定输出的文件，文件需要具有可写权限
+  --help                      Show this message and exit.
+```
+
+### 直接输出到 stdout
+
+```python
+# -l指定随机字符串的长度为32字节
+❯ easy_encryption_tool random-str -l 32
+
+------ 632aebf88dfe8f93 begin@2024-04-04_15:01:23.987 ------
+qBg@G%Tp((@2h81tg@9II7#0Su4`B06$
+------ 632aebf88dfe8f93 took 0.049 milli-seconds to execute ------
+```
+
+### 输出到文件
+
+```python
+❯ easy_encryption_tool random-str -l 37 -o test_random
+
+------ 71a2d32b0816349f begin@2024-04-04_15:24:22.476 ------
+write to test_random success
+------ 71a2d32b0816349f took 0.299 milli-seconds to execute ------
+
+❯ cat test_random
+_9@mL1`D2#NZz5m@!X7sdHKqQEowM6%o3E`bj
+```
+
+### 当指定的文件不可写时
+
+```python
+❯ easy_encryption_tool random-str -l 37 -o test_random
+
+------ 0e4094ce6a4fe22c begin@2024-04-04_15:25:49.125 ------
+try write to test_random failed
+------ 0e4094ce6a4fe22c took 0.030 milli-seconds to execute ------
+
+```
+
+## AES对称加密算法
+
+### 支持的命令参数
+
+```python
+❯ easy_encryption_tool aes --help
+Usage: main.py aes [OPTIONS]
+
+Options:
+  -m, --mode [cbc|gcm]            aes mode，默认为 cbc 模式，可选 cbc 或 gcm 模式
+                                  [default: cbc]
+  -k, --key TEXT                  key 默认 32 字节，即 256 位，只允许输入可见字符,
+                                  长度不够则自动补齐，长度超出则自动截取  [default:
+                                  kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk]
+  -v, --iv-nonce TEXT             cbc 模式下，iv 默认 16 字节即 128 位，gcm 模式下 nonce 默认
+                                  12 字节即 96 位，长度不够则自动补齐，长度超出则自动截取  [default:
+                                  vvvvvvvvvvvvvvvv]
+  -r, --random-key-iv             是否自动生成随机的密钥和 iv/nonce，如果随机生成，则密钥长度默认 32
+                                  字节，iv 默认为 16 字节， nonce 默认为 12 字节
+  -a, --action [encrypt|decrypt]  加密（encrypt）或 解密（decrypt），加密后输出 base64 编码的字符串
+                                  [default: encrypt]
+  -i, --input-data TEXT           输入数据，即被加密或解密的数据，加密时允许输入：字符串、 base64
+                                  编码数据、文件路径，解密时允许输入：base64 编码数据、文件路径
+                                  [required]
+  -e, --is-base64-encoded         如果 -i/--input-data 的值被 base64 编码过，则需要带上 -e
+                                  参数，-e 与 -f 互斥  [default: False]
+  -f, --is-a-file                 如果 -i/--input-data 的值是一个文件，则需要带上 -f
+                                  参数表示当前需要被处理的是一个文件，-e 与 -f 互斥
+  -l, --input-limit INTEGER       输入内容最大长度，单位为 MB，默认为 1MB，在 -i 为非文件时生效
+                                  [default: 1]
+  -o, --output-file TEXT          指定输出文件，当输入时指定了文件，则输出时必须指定
+  -t, --gcm-tag TEXT              gcm 模式解密时，则此参数必填
+  --help                          Show this message and exit.
+```
+
+### 关于密钥、IV和模式的预设
+
+-   加密模式：仅支持 CBC 模式和 GCM 模式，加密时强制按照 PKCS#7 规则进行数据填充（Padding）
+-   密钥：默认 32 字节，即 256 位，不足会自动补齐，超过会自动截取
+-   IV：CBC 模式下时 IV 长度默认 16 字节，GCM 模式下 Nonce 长度默认 12 字节（其中 4 字节预留作为计数器，由算法自行处理）
+
+### 关于输入数据的预设
+
+加密行为支持三种数据输入方式：
+
+-   字符串如：hello,world
+-   Base64 编码的字节流如：aGVsbG8sd29ybGQK（生成的 shell 命令：echo "hello,world"|base64）
+-   文件名路径：~/data/test_plain.txt
+
+解密行为支持两种数据输入方式：
+
+-   Base64 编码的字节流如：/hEP3J5KHZgNnCeBD/W5MQ==
+-   文件名路径：~/data/test_cipher.bin
+
+### 指定密钥和 IV
+
+#### 使用默认的密钥
+
+```shell
+# 加密hello,world，密钥和 iv 均为默认数据
+❯ easy_encryption_tool aes -m cbc -a encrypt -i hello,world
+
+------ 15ec713c1b8c0ef3 begin@2024-04-04_15:29:25.203 ------
+plain size:11
+key:kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+iv:vvvvvvvvvvvvvvvv
+cipher size:16
+cipher:PcgHm88aPtUjwVx+SDvMqw==
+auth_tag_size:0
+auth_tag:
+------ 15ec713c1b8c0ef3 took 26.874 milli-seconds to execute ------
+
+# 解密hello,world
+❯ easy_encryption_tool aes -m cbc -a decrypt -i PcgHm88aPtUjwVx+SDvMqw== -e
+
+------ fb11b7f46716698e begin@2024-04-04_15:29:40.648 ------
+cipher size:16
+plain size:11
+str plain:hello,world
+------ fb11b7f46716698e took 13.754 milli-seconds to execute ------
+```
+
+#### 使用随机生成的密钥
+
+```python
+# 加密 -r 表示随机生成密钥和 IV
+❯ easy_encryption_tool aes -m cbc -a encrypt -i hello,world -r
+
+------ d39dbe0c997a868b begin@2024-04-04_15:29:54.358 ------
+plain size:11
+key:Ta9M^p)+L1+_L^26!Xmcs6AR2^3p_5FY
+iv:9*H`JW(dzpi5HBd0
+cipher size:16
+cipher:h7lMpOimKxO0zr7AMVsI9w==
+auth_tag_size:0
+auth_tag:
+------ d39dbe0c997a868b took 14.258 milli-seconds to execute ------
+
+# 解密
+# -k 和 -v 的值使用引号是为了预防里面带有特殊 shell 命令的字符比如‘&’、‘!’等等
+❯ easy_encryption_tool aes -m cbc -a decrypt -i h7lMpOimKxO0zr7AMVsI9w== -e -k 'Ta9M^p)+L1+_L^26!Xmcs6AR2^3p_5FY' -v '9*H`JW(dzpi5HBd0'
+
+------ 1332e834884e2b0e begin@2024-04-04_15:31:06.666 ------
+cipher size:16
+plain size:11
+str plain:hello,world
+------ 1332e834884e2b0e took 15.691 milli-seconds to execute ------
+```
+
+#### 使用指定的密钥
+
+##### 密钥或 iv 长度不够时会自动填充
+
+```python
+# 加密，此时 key(1234) 和 iv(1234) 长度都不足
+❯ easy_encryption_tool aes -m cbc -a encrypt -i hello,world -k 1234 -v 4321
+
+------ c5abaa3af64a5f6c begin@2024-04-04_15:31:34.231 ------
+plain size:11
+key:1234g6Z0GE$Z@ybb^IIb3FN5Ux%BE=00
+iv:4321nJ4j*Nud(yH4
+cipher size:16
+cipher:dHJKRtSi8KsCe6ZFltF0kA==
+auth_tag_size:0
+auth_tag:
+------ c5abaa3af64a5f6c took 14.648 milli-seconds to execute ------
+                
+# 解密
+❯ easy_encryption_tool aes -m cbc -a decrypt -i dHJKRtSi8KsCe6ZFltF0kA== -e -k '1234g6Z0GE$Z@ybb^IIb3FN5Ux%BE=00' -v '4321nJ4j*Nud(yH4'
+
+------ 7c2018bd08e58a63 begin@2024-04-04_15:32:16.014 ------
+cipher size:16
+plain size:11
+str plain:hello,world
+------ 7c2018bd08e58a63 took 14.343 milli-seconds to execute ------
+```
+
+##### 密钥或iv超长时会自动截取
+
+```python
+# 加密，此时密钥和 iv 的长度都超长
+❯ easy_encryption_tool aes -m cbc -a encrypt -i hello,world -k 12345678901234567890123456789012abcde -v 1234567890123456abcde
+
+------ 8ff4bd52df0a0865 begin@2024-04-04_15:32:31.104 ------
+plain size:11
+key:12345678901234567890123456789012
+iv:1234567890123456
+cipher size:16
+cipher:wOXlD3Ie7xiQh81aR8N1tQ==
+auth_tag_size:0
+auth_tag:
+------ 8ff4bd52df0a0865 took 13.849 milli-seconds to execute ------
+
+# 解密
+❯ easy_encryption_tool aes -m cbc -a decrypt -i wOXlD3Ie7xiQh81aR8N1tQ== -e -k 12345678901234567890123456789012 -v 1234567890123456
+
+------ 50ea907cc74207ad begin@2024-04-04_15:32:46.937 ------
+cipher size:16
+plain size:11
+str plain:hello,world
+------ 50ea907cc74207ad took 13.690 milli-seconds to execute ------
+```
+
+### 指定明文
+
+#### 输入字符串作为明文
+
+```python
+# 加密
+❯ easy_encryption_tool aes -m cbc -a encrypt -i hello,world
+
+------ e6dc33dc9ca747d0 begin@2024-04-04_15:33:05.505 ------
+plain size:11
+key:kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+iv:vvvvvvvvvvvvvvvv
+cipher size:16
+cipher:PcgHm88aPtUjwVx+SDvMqw==
+auth_tag_size:0
+auth_tag:
+------ e6dc33dc9ca747d0 took 14.098 milli-seconds to execute ------
+```
+
+#### 输入base64编码的字节流作为明文
+
+```python
+# 加密 -e 表明输入的数据经过了 base64 编码，加密或解密时需要先将数据做 base64 解码
+❯ easy_encryption_tool aes -m cbc -a encrypt -i 9H8InkmnUjgVHC8elQxThUSmzkO0tuGlP0Si4X1kmoK7azOIDoFnt8dXjeWNGb+dc7qiEBPi+jymax4i+24KBQ== -e
+
+------ fc5b00c0a79ff88e begin@2024-04-04_15:33:17.585 ------
+plain size:64
+key:kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+iv:vvvvvvvvvvvvvvvv
+cipher size:80
+cipher:ZHq7uJQjkx/2Bm5ZmrcuS/5c/s/qayDVcuWZmvsTle1RAUKyv0dvGhOVYEINmL35eSMVoT3Bx/M6lU9NGCuiM5OxyJ2VcuB30dp8GVZg0oQ=
+auth_tag_size:0
+auth_tag:
+------ fc5b00c0a79ff88e took 14.382 milli-seconds to execute ------
+```
+
+#### 输入文件作为明文
+
+```python
+# 加密
+❯ easy_encryption_tool aes -m cbc -a encrypt -i ./test_data/test_plain.txt -f -o ./tmp_cipher.bin
+
+------ 1d5fb25a63f1ed4d begin@2024-04-04_15:33:57.461 ------
+input file size:64
+cipher size:80
+key:kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+iv:vvvvvvvvvvvvvvvv
+auth_tag_size:0
+auth_tag:
+------ 1d5fb25a63f1ed4d took 14.859 milli-seconds to execute ------
+
+# 查看文件大小，密文文件比明文文件多了16 字节，这是因为明文的最后一个 block 会做 PKCS#7 数据填充
+❯ cat ./test_data/test_plain.txt
+123456789012345612345678901234561234567890123456123456789012345
+❯ ll ./test_data/test_plain.txt
+-rw-r--r--  1 xxxx  staff  64 Apr  2 21:06 ./test_data/test_plain.txt
+❯ ll ./tmp_cipher.bin
+-rw-r--r--  1 xxxx  staff  80 Apr  4 15:33 ./tmp_cipher.bin
+```
+
+### 指定密文
+
+#### 输入base64编码的字节流作为密文
+
+##### 如果解密出来的明文直接可以以字符串方式打印
+
+```python
+# 明文本身为 hello,world
+❯ easy_encryption_tool aes -m cbc -a decrypt -i PcgHm88aPtUjwVx+SDvMqw== -e
+
+------ 2b6a86223a0ba102 begin@2024-04-04_15:35:26.995 ------
+cipher size:16
+plain size:11
+str plain:hello,world
+------ 2b6a86223a0ba102 took 13.676 milli-seconds to execute ------
+```
+
+##### 如果解密出来的密文不能以字符串方式打印
+
+```python
+# 明文本身是字节流
+❯ easy_encryption_tool aes -m cbc -a decrypt -i ZHq7uJQjkx/2Bm5ZmrcuS/5c/s/qayDVcuWZmvsTle1RAUKyv0dvGhOVYEINmL35eSMVoT3Bx/M6lU9NGCuiM5OxyJ2VcuB30dp8GVZg0oQ= -e
+
+------ d399aa241aa6b691 begin@2024-04-04_15:35:39.781 ------
+cipher size:80
+plain size:64
+b64 encoded plain:9H8InkmnUjgVHC8elQxThUSmzkO0tuGlP0Si4X1kmoK7azOIDoFnt8dXjeWNGb+dc7qiEBPi+jymax4i+24KBQ==
+------ d399aa241aa6b691 took 13.869 milli-seconds to execute ------
+```
+
+#### 输入文件作为密文
+
+```python
+❯ easy_encryption_tool aes -m cbc -a decrypt -i ./tmp_cipher.bin -f -o ./tmp_plain.txt
+
+------ 1f27fb444d1139b2 begin@2024-04-04_15:36:03.267 ------
+input file size:80
+decrypt ./tmp_cipher.bin success
+write to ./tmp_plain.txt
+plain size:64
+------ 1f27fb444d1139b2 took 14.259 milli-seconds to execute ------
+
+# 文件大小一致、内容一致
+❯ ll ./tmp_plain.txt ./test_data/test_plain.txt
+-rw-r--r--  1 xxxx  staff  64 Apr  2 21:06 ./test_data/test_plain.txt
+-rw-r--r--  1 xxxx  staff  64 Apr  3 10:58 ./tmp_plain.txt
+❯ cat tmp_plain.txt ./test_data/test_plain.txt
+123456789012345612345678901234561234567890123456123456789012345
+123456789012345612345678901234561234567890123456123456789012345
+```
+
+### 使用GCM模式
+
+#### 代码层面的预设
+
+代码中，对于加密的明文默认使用固定的上下文数据作为验证数据
+
+```python
+        if mode == aes_gcm_mode:
+            self.__auth_data = json.dumps({
+                'mode': mode, # 值为 gcm
+                'obj': 'aes_operator',
+            }).encode(encoding = 'utf-8')
+            if action == aes_encrypt_action:
+                self.__aes_gcm_obj = Cipher(algorithms.AES(self.__key), modes.GCM(self.__iv), backend = default_backend())
+                self.__aes_gcm_enc_op = self.__aes_gcm_obj.encryptor()
+                self.__aes_gcm_enc_op.authenticate_additional_data(self.__auth_data)
+```
+
+#### 对字符串做加解密
+
+```python
+# gcm模式加密
+❯ easy_encryption_tool aes -m gcm -a encrypt -i hello,world
+
+------ b8e914a4634acde7 begin@2024-04-04_15:36:39.558 ------
+plain size:11
+key:kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+iv:vvvvvvvvvvvv
+cipher size:16
+cipher:TajM7IwxIZIoqHkU87dY7w==
+auth_tag_size:16
+auth_tag:df8z3ccRyGOQTluw26dIlA==
+------ b8e914a4634acde7 took 14.280 milli-seconds to execute ------
+```
+
+#### 对 base64 编码的字节流做加解密
+
+```python
+# 加密
+❯ easy_encryption_tool aes -m gcm -a encrypt -i 9H8InkmnUjgVHC8elQxThUSmzkO0tuGlP0Si4X1kmoK7azOIDoFnt8dXjeWNGb+dc7qiEBPi+jymax4i+24KBQ== -e
+
+------ 7781b5bffdcef12b begin@2024-04-04_15:37:05.562 ------
+plain size:64
+key:kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+iv:vvvvvvvvvvvv
+cipher size:80
+cipher:0bKoHqq6BMVP2DIPY74Ob2tGi69gVzHSZREJT3DAeCsVU52ykLcfKZIq/GD2PEkCwLLE8o37nvPK9t/pr4LStVy5unAN/EVllIvvopq2pis=
+auth_tag_size:16
+auth_tag:B1Jp0FuxyNXAOVAvj9S+Ow==
+------ 7781b5bffdcef12b took 13.915 milli-seconds to execute ------
+
+
+# 解密
+❯ easy_encryption_tool aes -m gcm -a decrypt -i 0bKoHqq6BMVP2DIPY74Ob2tGi69gVzHSZREJT3DAeCsVU52ykLcfKZIq/GD2PEkCwLLE8o37nvPK9t/pr4LStVy5unAN/EVllIvvopq2pis= -e -t B1Jp0FuxyNXAOVAvj9S+Ow==
+
+------ 5bcc82c4235dcde4 begin@2024-04-04_15:37:17.397 ------
+cipher size:80
+plain size:64
+b64 encoded plain:9H8InkmnUjgVHC8elQxThUSmzkO0tuGlP0Si4X1kmoK7azOIDoFnt8dXjeWNGb+dc7qiEBPi+jymax4i+24KBQ==
+------ 5bcc82c4235dcde4 took 13.844 milli-seconds to execute ------
+```
+
+#### 对文件做加解密
+
+```python
+# 加密
+❯ easy_encryption_tool aes -m gcm -a encrypt -i ./test_data/test_plain.txt -f -o ./tmp_gcm_cipher.bin
+
+------ 0c4605fe37eb7e4b begin@2024-04-04_15:37:45.621 ------
+input file size:64
+cipher size:80
+key:kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+iv:vvvvvvvvvvvv
+auth_tag_size:16
+auth_tag:krJchuyaDRYHnu5tsy8UzA==
+------ 0c4605fe37eb7e4b took 14.347 milli-seconds to execute ------
+
+# 解密
+❯ easy_encryption_tool aes -m gcm -a decrypt -i ./tmp_gcm_cipher.bin -f -o tmp_gcm_plain.txt -t krJchuyaDRYHnu5tsy8UzA==
+
+------ d181cab086ebaeaa begin@2024-04-04_15:38:00.709 ------
+input file size:80
+decrypt ./tmp_gcm_cipher.bin success
+write to tmp_gcm_plain.txt
+plain size:64
+------ d181cab086ebaeaa took 14.397 milli-seconds to execute ------
+```
+
+#### tag值对解密很重要
+
+```python
+# gcm模式正常解密
+❯ easy_encryption_tool aes -m gcm -a decrypt -i TajM7IwxIZIoqHkU87dY7w== -e -t df8z3ccRyGOQTluw26dIlA==
+
+------ 86699527d1227e39 begin@2024-04-04_15:38:22.322 ------
+cipher size:16
+plain size:11
+str plain:hello,world
+------ 86699527d1227e39 took 13.987 milli-seconds to execute ------
+
+# 不传 gcm tag 会报错
+❯ easy_encryption_tool aes -m gcm -a decrypt -i TajM7IwxIZIoqHkU87dY7w== -e
+
+------ 11c1531f0fd5b7a8 begin@2024-04-04_15:38:32.957 ------
+expected a gcm tag(16 Bytes)
+------ 11c1531f0fd5b7a8 took 0.030 milli-seconds to execute ------
+
+# 传错误的 tag 会解密失败
+❯ easy_encryption_tool aes -m gcm -a decrypt -i TajM7IwxIZIoqHkU87dY7w== -e -t H7n7OzKgQyHL86zbnQ0r+g==
+
+------ 90580b5c3649a1ba begin@2024-04-04_15:38:46.823 ------
+decrypt TajM7IwxIZIoqHkU87dY7w== failed:
+------ 90580b5c3649a1ba took 14.030 milli-seconds to execute ------
+
+```
+
+### 常用的参数合法性检查
+
+#### -m 模式参数
+
+```python
+easy_encryption_tool aes -m abc -a encrypt -i 1234
+Usage: main.py aes [OPTIONS]
+Try 'main.py aes --help' for help.
+
+Error: Invalid value for '-m' / '--mode': 'abc' is not one of 'cbc', 'gcm'.
+```
+
+#### -a 动作参数
+
+```python
+easy_encryption_tool aes -m cbc -a abc -i 1234
+Usage: main.py aes [OPTIONS]
+Try 'main.py aes --help' for help.
+
+Error: Invalid value for '-a' / '--action': 'abc' is not one of 'encrypt', 'decrypt'.
+```
+
+#### -i 输入参数
+
+##### 字符串超限
+
+```python
+# 这里设置最大限制为0MBytes，也就是不允许加密，这里是故意预留的
+❯ easy_encryption_tool aes -m cbc -a encrypt -i 1234 -l 0
+
+------ 5ce766f36cc28968 begin@2024-04-04_15:39:42.675 ------
+the data exceeds the maximum bytes limit, limited to:0Bytes, now:4Bytes
+------ 5ce766f36cc28968 took 0.023 milli-seconds to execute ------
+```
+
+##### 非法的base64编码数据
+
+```python
+# 任意构造的字符串
+❯ easy_encryption_tool aes -m cbc -a encrypt -i qwert -e
+
+------ 4844fa0e0939482d begin@2024-04-04_15:39:53.597 ------
+invalid b64 encoded data:qwert
+------ 4844fa0e0939482d took 0.044 milli-seconds to execute ------
+
+# base64数据缺少字符（正确的是：ZUD3MJT3ohiimrryNW7jBw==）
+❯ easy_encryption_tool aes -m cbc -a encrypt -i ZUD3MJT3ohiimrryNW7jBw -e
+
+------ 22301b388db43f9d begin@2024-04-04_15:40:05.092 ------
+invalid b64 encoded data:ZUD3MJT3ohiimrryNW7jBw
+------ 22301b388db43f9d took 0.036 milli-seconds to execute ------
+```
+
+##### 文件不可读
+
+```python
+# 创建文件并设置为只可root读
+sudo touch test_plain
+sudo chmod 400 test_plain
+# 查看文件
+ll test_plain
+-r--------  1 root  staff  0 Apr  3 11:29 test_plain
+
+# 使用其他用户运行命令访问
+easy_encryption_tool aes -m cbc -a encrypt -i test_plain -f
+test_plain may not exist or may be unreadable
+------ aes_command took 0.076 milli-seconds to execute ------
+```
+
+##### 文件不可写
+
+```python
+# 文件写权限检查失败
+easy_encryption_tool aes -m cbc -a encrypt -i  tmp_gcm_plain.txt -f -o test_plain
+
+tmp_gcm_plain.txt opened in mode rb success
+test_plain may not exist or may not writable
+tmp_gcm_plain.txt closed success
+------ aes_command took 0.126 milli-seconds to execute ------
+```
+
+##### -e 与 -f 参数互斥
+
+```python
+❯ easy_encryption_tool aes -m cbc -a encrypt -i test_plain -f -e
+
+------ 75998f7a4a1364f6 begin@2024-04-04_15:40:30.038 ------
+the input data cannot be used as both a file and base64 encoded data
+------ 75998f7a4a1364f6 took 0.026 milli-seconds to execute ------
+```
+
+##### 对文件加密或解密时，必须指定输出的文件名
+
+```python
+# 加密不指定输出文件
+❯ easy_encryption_tool aes -m gcm -a encrypt -i ./test_data/test_plain.txt -f
+
+------ 3564874090cf12d5 begin@2024-04-04_15:40:55.522 ------
+need a output file specified and writable
+------ 3564874090cf12d5 took 0.074 milli-seconds to execute ------
+
+# 解密不指定输出文件
+❯ easy_encryption_tool aes -m gcm -a decrypt -i ./test_data/test_plain.txt -f -t df8z3ccRyGOQTluw26dIlA==
+
+------ c3dee26a5649a077 begin@2024-04-04_15:41:07.541 ------
+need a output file specified and writable
+------ c3dee26a5649a077 took 0.084 milli-seconds to execute ------
+```
+
+
+
+## HMAC验证码
+
+### 支持的命令参数
+
+```python
+❯ easy_encryption_tool hmac --help
+Usage: main.py hmac [OPTIONS]
+
+Options:
+  -i, --input-data TEXT           输入数据，允许输入：字符串、 base64 编码数据、文件路径  [required]
+  -e, --is-base64-encoded         如果 -i/--input-data 的值被 base64 编码过，则需要带上 -e
+                                  参数，-e 与 -f 互斥  [default: False]
+  -f, --is-a-file                 如果 -i/--input-data 的值是一个文件，则需要带上 -f
+                                  参数表示当前需要被处理的是一个文件，-e 与 -f 互斥
+  -h, --hash-alg [sha224|sha256|sha384|sha512|sha3_224|sha3_256|sha3_384|sha3_512]
+                                  哈希算法  [default: sha256]
+  -k, --key TEXT                  key 默认值为 32 字节，即 256 位，只允许输入可见字符  [default:
+                                  kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk]
+  -r, --random-key                是否自动生成随机的密钥，如果自动生成随机密钥则默认 32 字节长度
+  --help                          Show this message and exit.
+```
+
+### 关于输入数据和密钥的预设
+
+-   输入数据支持三种方式：字符串明文、base64 编码的字节流、文件
+-   密钥默认 32 字节，支持生成随机密钥（长度强制为 32 字节）
+
+### 指定密钥
+
+#### 使用默认密钥
+
+```python
+❯ easy_encryption_tool hmac -i hello,world
+
+------ 1daa56484b0a4733 begin@2024-04-04_15:41:52.566 ------
+data size:11Bytes
+key:kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+hmac:dcd5f3d53661434856c4fb1f76072a22c5fb2526bfd8713aa5041cc43aab7675
+------ 1daa56484b0a4733 took 0.029 milli-seconds to execute ------
+```
+
+#### 自己指定密钥
+
+```python
+❯ easy_encryption_tool hmac -i hello,world -k 1234
+
+------ 990d2a043f6fb90a begin@2024-04-04_15:42:03.420 ------
+data size:11Bytes
+key:1234
+hmac:96dd6f73018a6d1911d77a906bc41a6aaae760331eb367ca7134a6b85dbbfdcb
+------ 990d2a043f6fb90a took 0.025 milli-seconds to execute ------
+```
+
+#### 生成随机密钥
+
+```python
+❯ easy_encryption_tool hmac -i hello,world -r
+
+------ 8acd4791042aae7c begin@2024-04-04_15:42:14.518 ------
+data size:11Bytes
+key:6+98I^y4IsiGGj0p!(1^O+iuoH%CO!s5
+hmac:f8f9931c074fd30c9fe60c31beb87600bfd3b51960e91f34d765d339aa9981f8
+------ 8acd4791042aae7c took 0.057 milli-seconds to execute ------
+```
+
+### 指定输入
+
+#### 输入字符串
+
+```python
+❯ easy_encryption_tool hmac -i hello,world
+
+------ 7ad6f172e3498e2a begin@2024-04-04_15:42:33.801 ------
+data size:11Bytes
+key:kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+hmac:dcd5f3d53661434856c4fb1f76072a22c5fb2526bfd8713aa5041cc43aab7675
+------ 7ad6f172e3498e2a took 0.028 milli-seconds to execute ------
+```
+
+#### 输入 base64 编码的字节流
+
+```python
+❯ easy_encryption_tool hmac -i krJchuyaDRYHnu5tsy8UzA== -e
+
+------ 7f8694414df48f4e begin@2024-04-04_15:42:46.859 ------
+data size:16Bytes
+key:kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+hmac:276e565d1e8a65b38463e124c45c60b00e01a8a623995aae360d1035e0d58923
+------ 7f8694414df48f4e took 0.035 milli-seconds to execute ------
+```
+
+#### 输入文件
+
+```python
+❯ easy_encryption_tool hmac -i ./test_data/test_plain.txt -f
+
+------ d9f4d5072cc8d6ee begin@2024-04-04_15:42:57.326 ------
+file size:64Bytes
+key:kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+hmac:5b0ea206c45019e090246cea031ca3a267bab15d39bd53491272473aef75d8b0
+------ d9f4d5072cc8d6ee took 0.102 milli-seconds to execute ------
+
+```
+
+### 指定哈希算法
+
+```python
+# 支持的 hash 列表：
+# [sha224 | sha256 | sha384 | sha512 | sha3_224 | sha3_256 | sha3_384 | sha3_512]
+
+# 使用 sha512
+❯ easy_encryption_tool hmac -i ./test_data/test_plain.txt -f -h sha512
+
+------ 440b99b2f7479972 begin@2024-04-04_15:43:10.055 ------
+file size:64Bytes
+key:kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+hmac:3c41a94f15c6517e5774d0878268e33c12d9170136c8d9c972f9294324aca61ee2bc4e0f1c7b4a59525ba40f3ccf7b94ebb1de74881ae85023a187e8c1626e1b
+------ 440b99b2f7479972 took 0.107 milli-seconds to execute ------
+
+# 使用sha3_256
+❯ easy_encryption_tool hmac -i ./test_data/test_plain.txt -f -h sha3_256
+
+------ c48755f9b49e99b3 begin@2024-04-04_15:43:23.256 ------
+file size:64Bytes
+key:kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+hmac:25494b6effa8df3ad1bff777892e08ceccf3fbaa181608d006400b8da3fef853
+------ c48755f9b49e99b3 took 0.087 milli-seconds to execute ------
+```
+
+## RSA非对称密钥
+
+### 支持的命令
+
+```python
+❯ easy_encryption_tool rsa --help
+Usage: main.py rsa [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  decrypt
+  encrypt
+  generate
+  sign
+  verify
+```
+
+### 生成密钥对
+
+#### 支持的参数
+
+```python
+❯ easy_encryption_tool rsa generate --help
+Usage: main.py rsa generate [OPTIONS]
+
+Options:
+  -s, --size [2048|3072|4096]  密钥位数  [default: 2048]
+  -e, --encoding [pem|der]     密钥格式  [default: pem]
+  -f, --file-name TEXT         输出密钥对的文件名前缀，最终写入数据时会创建文件并加上文件名后缀  [default:
+                               demo; required]
+  -p, --password TEXT          私钥密码，使用私钥时需要输入正确的密码
+  -r, --random-password        是否生成私钥的随机密码，如果带上 -r 标识，则随机生成32字节的密码
+  --help                       Show this message and exit.
+```
+
+#### 默认生成
+
+``` python
+# 密钥长度2048位，私钥不带密码
+❯ easy_encryption_tool rsa generate -f test
+
+------ 6b89fd023be2d70e begin@2024-04-04_15:48:44.313 ------
+generate test_rsa_public.pem/test_rsa_private.pem success
+------ 6b89fd023be2d70e took 134.487 milli-seconds to execute ------
+```
+
+#### 指定长度且指定密码
+
+```python
+# pem格式密钥，私钥不带密码
+❯ easy_encryption_tool rsa generate -f test_no_pwd_pem -s 4096 -e pem
+
+------ 7d68ecefd4536a1c begin@2024-04-04_15:50:00.393 ------
+generate test_no_pwd_pem_rsa_public.pem/test_no_pwd_pem_rsa_private.pem success
+------ 7d68ecefd4536a1c took 560.056 milli-seconds to execute ------
+
+# pem格式密钥，私钥带密码
+❯ easy_encryption_tool rsa generate -f test_pwd_pem -s 4096 -e pem -p 1234567890
+
+------ f036eed08d4188e6 begin@2024-04-04_15:51:20.417 ------
+private key password:1234567890
+generate test_pwd_pem_rsa_public.pem/test_pwd_pem_rsa_private_cipher.pem success
+------ f036eed08d4188e6 took 341.474 milli-seconds to execute ------
+
+# der格式密钥，私钥不带密码
+❯ easy_encryption_tool rsa generate -f test_no_pwd_der -s 4096 -e der
+
+------ e152e62cc8ff4080 begin@2024-04-04_15:51:53.004 ------
+generate test_no_pwd_der_rsa_public.der/test_no_pwd_der_rsa_private.der success
+------ e152e62cc8ff4080 took 620.032 milli-seconds to execute ------
+
+# der格式密钥，私钥带密码
+❯ easy_encryption_tool rsa generate -f test_pwd_der -s 4096 -e der -p 1234567890
+
+------ 9b08b9054b7642cd begin@2024-04-04_15:52:04.209 ------
+private key password:1234567890
+generate test_pwd_der_rsa_public.der/test_pwd_der_rsa_private_cipher.der success
+------ 9b08b9054b7642cd took 1108.390 milli-seconds to execute ------
+
+```
+
+#### 指定长度且随机生成密码
+
+```python
+❯ easy_encryption_tool rsa generate -f test -s 4096 -r
+
+------ e3eba04fda53c701 begin@2024-04-04_15:53:14.570 ------
+private key password:4)H(iipM9=qnUV!!16LZ3)n&YGQE@v04
+generate test_rsa_public.pem/test_rsa_private_cipher.pem success
+------ e3eba04fda53c701 took 300.131 milli-seconds to execute ------ 
+```
+
+### 加密与解密
+
+#### 支持的参数
+
+```python
+# 加密
+❯ easy_encryption_tool rsa encrypt --help
+Usage: main.py rsa encrypt [OPTIONS]
+
+Options:
+  -f, --public-key TEXT           公钥文件路径  [required]
+  -i, --input-data TEXT           输入数据，可以直接为字符串，也可以为
+                                  base64编码的数据，base64编码的数据需要带上标识 -c  [required]
+  -e, --encoding [pem|der]        密钥格式  [default: pem]
+  -c, --b64-encoded               输入数据是否被 base64 编码过
+  -l, --input-limit INTEGER       输入内容最大长度，单位为 MB，默认为 1MB，非对称不适合直接加密过长的数据
+                                  [default: 1]
+  -m, --mode [oaep|pkcs1v15]      加密时的填充模式  [default: oaep; required]
+  -h, --hash-mode [sha256|sha384|sha512]
+                                  此参数仅在-m为 oaep 时生效  [default: sha256]
+  --help                          Show this message and exit.
+
+ # 解密
+ ❯ easy_encryption_tool rsa decrypt --help
+Usage: main.py rsa decrypt [OPTIONS]
+
+Options:
+  -f, --private-key TEXT          私钥文件路径  [required]
+  -i, --input-data TEXT           输入的密文数据， 必须为base64编码的数据  [required]
+  -e, --encoding [pem|der]        密钥格式  [default: pem]
+  -m, --mode [oaep|pkcs1v15]      加密时的填充模式  [default: oaep; required]
+  -h, --hash-mode [sha256|sha384|sha512]
+                                  此参数仅在-m为 oaep 时生效  [default: sha256]
+  -p, --password TEXT             私钥密码，使用私钥时需要输入正确的密码
+  --help                          Show this message and exit.
+
+```
+
+#### 使用 PEM 密钥加解密
+
+##### 私钥不需要密码
+
+```python
+# 加密
+❯ easy_encryption_tool rsa encrypt -e pem -f ./test_data/test_no_pwd_pem_public.pem -i hello,world
+
+------ 18869a5ba5f11a4f begin@2024-04-04_15:55:10.501 ------
+pub key size:4096
+padding mode:oaep-sha256
+cipher:pQlqgAyKEdrjcdRPe90uWHIJv781VD1X0+wrVyzmf6GE1hMdEwcukflGsgkysN3jbR2btNAEfYwxmvk+b1Om/AUdtGrZNAMuCygY3Y2U6ikVRcOCdd0ZCz3Gp7NTEblifVxMR/UsK2VQ+/4Tysmslv2QFOV7Mz+uE6j/o+hTBYhR42r+tkKsAEQGB8LLfo5GC+Wjk5mU1Yt3d8bz3/55S7Wv3DhAlrD9AuiEhqv4E8JL0MgSIN26rzHnOOlkP5vRlH5lLITzier7W9inoQxpYpKdk3xa7gsRXKXVBNcaNdCn9AH/SkrfEe+bHpZcAWG7It2OyTlaAzSwmia+wYx3CgyVtzMHNU9jQrz8xnMcP1ZntxVNvoVnhn9li0H8XTCAy3p+YfYGybEqiSNeFL7cEsONO8x8y0bkqNQE9KFTba0yZNsME1JfJmQVG9IrLaIn1RAsGmPeVYCuHmwcZQCxFUc14von867Z4HewLNqnN5EzalTnVzIY4whZcwMnmp53tZKeNhh0QemuoEqWmkf4cwJHGR/KZJKi+dhB5vo0+LffXf4LzsJRAwbE9ylwEPEsjFx1BYw7jbVIb7hgZ0AZB0J2OMdov25xMWk2nYBmR6L/QFBCtw/J8t7198ZuHmHI247gl8zJ3tFEAPFw1eFOQOkIAKnSDVfnPBlTZQ8smtM=
+------ 18869a5ba5f11a4f took 15.731 milli-seconds to execute ------
+
+# 解密
+❯ easy_encryption_tool rsa decrypt -e pem -f ./test_data/test_no_pwd_pem_private.pem -i pQlqgAyKEdrjcdRPe90uWHIJv781VD1X0+wrVyzmf6GE1hMdEwcukflGsgkysN3jbR2btNAEfYwxmvk+b1Om/AUdtGrZNAMuCygY3Y2U6ikVRcOCdd0ZCz3Gp7NTEblifVxMR/UsK2VQ+/4Tysmslv2QFOV7Mz+uE6j/o+hTBYhR42r+tkKsAEQGB8LLfo5GC+Wjk5mU1Yt3d8bz3/55S7Wv3DhAlrD9AuiEhqv4E8JL0MgSIN26rzHnOOlkP5vRlH5lLITzier7W9inoQxpYpKdk3xa7gsRXKXVBNcaNdCn9AH/SkrfEe+bHpZcAWG7It2OyTlaAzSwmia+wYx3CgyVtzMHNU9jQrz8xnMcP1ZntxVNvoVnhn9li0H8XTCAy3p+YfYGybEqiSNeFL7cEsONO8x8y0bkqNQE9KFTba0yZNsME1JfJmQVG9IrLaIn1RAsGmPeVYCuHmwcZQCxFUc14von867Z4HewLNqnN5EzalTnVzIY4whZcwMnmp53tZKeNhh0QemuoEqWmkf4cwJHGR/KZJKi+dhB5vo0+LffXf4LzsJRAwbE9ylwEPEsjFx1BYw7jbVIb7hgZ0AZB0J2OMdov25xMWk2nYBmR6L/QFBCtw/J8t7198ZuHmHI247gl8zJ3tFEAPFw1eFOQOkIAKnSDVfnPBlTZQ8smtM=
+
+------ 197c89cd0b631ce0 begin@2024-04-04_15:55:40.536 ------
+private key password:
+key size:4096
+padding mode:oaep-sha256
+origin plain:hello,world
+------ 197c89cd0b631ce0 took 338.602 milli-seconds to execute ------
+```
+
+##### 私钥需要密码
+
+```python
+# 加密
+❯ easy_encryption_tool rsa encrypt -e pem -f ./test_data/test_pwd_pem_public.pem -i hello,world
+
+------ e1cde686b573fb50 begin@2024-04-04_15:56:04.554 ------
+pub key size:4096
+padding mode:oaep-sha256
+cipher:pF06oJgMvzJ8WUphoYqaccLhClQjeSiSQXbQpORXtzkAFKeSqAQwGCKLQlDeJft6bc4wxUe1hS5IM/21hOpx1HZKZyXurfeqHkOXx4ekiakqS+8MgW6x4vozQfTKUZHoDStA8chwibtWlDCAGESYj1drr1UA8cNc5I+ij+hM3voFA3zh8o6JaKLKmxvNedRk5ugJQE6lL3RHMAya5oQS5AYQTtfuLQl52G0loQIPoWWB8KgZD6iZ///I2MI8B4kEHS1O2eg897DNyHGRdf8nRjTJdecWFR7wXY0VQeV8lR2BEsPb7L15qg4lZvonpew9qII6gW5J39yLK73vbAAkpdAmpOGxvOVtztE0Tn4UFkIkOZDkH8nlj1JwhCJ5K9R+TwlkoUinFMasOUZFEvNHzbha69mVErxBQHwv6N6P4kTLOBFVDrqF1Y00ZAQ0ZjIr/s7OdJAyoHlzZkroSfkbvV2eOho3nJD8aoIYdfa1kwttJ7p027VSVMflO1jULRZ0EkT2ncgzOMjqm4fB8Se42/QGjGtKYKOOPp4uBbFuxi8ra4LWY0l0h+FYJ6wXeIcODMLuxHWK4drfJrj5IpaTYNuysmeDEDfMQZQV1WYmyfFsJtIqXFiKrQatgFtGsfYXPCNBTrXa4HVW/Ohm7vE1PKGh+e2K7VpSZ6F4nW+YmQc=
+------ e1cde686b573fb50 took 15.492 milli-seconds to execute ------
+
+# 解密 -p 指定密码
+❯ easy_encryption_tool rsa decrypt -e pem -f ./test_data/test_pwd_pem_private_cipher.pem -i pF06oJgMvzJ8WUphoYqaccLhClQjeSiSQXbQpORXtzkAFKeSqAQwGCKLQlDeJft6bc4wxUe1hS5IM/21hOpx1HZKZyXurfeqHkOXx4ekiakqS+8MgW6x4vozQfTKUZHoDStA8chwibtWlDCAGESYj1drr1UA8cNc5I+ij+hM3voFA3zh8o6JaKLKmxvNedRk5ugJQE6lL3RHMAya5oQS5AYQTtfuLQl52G0loQIPoWWB8KgZD6iZ///I2MI8B4kEHS1O2eg897DNyHGRdf8nRjTJdecWFR7wXY0VQeV8lR2BEsPb7L15qg4lZvonpew9qII6gW5J39yLK73vbAAkpdAmpOGxvOVtztE0Tn4UFkIkOZDkH8nlj1JwhCJ5K9R+TwlkoUinFMasOUZFEvNHzbha69mVErxBQHwv6N6P4kTLOBFVDrqF1Y00ZAQ0ZjIr/s7OdJAyoHlzZkroSfkbvV2eOho3nJD8aoIYdfa1kwttJ7p027VSVMflO1jULRZ0EkT2ncgzOMjqm4fB8Se42/QGjGtKYKOOPp4uBbFuxi8ra4LWY0l0h+FYJ6wXeIcODMLuxHWK4drfJrj5IpaTYNuysmeDEDfMQZQV1WYmyfFsJtIqXFiKrQatgFtGsfYXPCNBTrXa4HVW/Ohm7vE1PKGh+e2K7VpSZ6F4nW+YmQc= -p 1234567890
+
+------ cb0ebbe7b572b665 begin@2024-04-04_15:56:25.496 ------
+private key password:1234567890
+key size:4096
+padding mode:oaep-sha256
+origin plain:hello,world
+------ cb0ebbe7b572b665 took 338.788 milli-seconds to execute ------
+```
+
+#### 使用 DER 密钥加解密
+
+##### 私钥不需要密码
+
+```python
+# 加密
+❯ easy_encryption_tool rsa encrypt -e der -f ./test_data/test_no_pwd_der_public.der -i hello,world
+
+------ 10e4568e22050ecc begin@2024-04-04_15:56:47.705 ------
+pub key size:4096
+padding mode:oaep-sha256
+cipher:V0g9TwUetAKZOl6xwe9SL7ra1P3K2JGwTZ2NMKdZiP4zNaPxxjPPv8Me3g9qMWLNBcfU6dd+7Ia7xGb0c5Ou1/uf7D3xSoV6hU0PV/0i8feJYATgkWFO1NOt1TpIHlcYHtA9NdHEaNXR9qbY8pHyAokVRf83hyQIZMTPgpGo2GH0lJkFAOjxWOiGyPKF7GgdHjz+8rfu4R9VBUg0Wy0O1zyvTKA+b4iE6MS4zJBbzPe0H43w9OLp+TQFykrhLWXsFX+AEhdhxa7N0ebaorlQNtPnY8KuXFx0cqIzWigBcfWNTYgcjbFGLm+mo0Btin0UqDFhbC8EwdpVGnVr6ZBLCvEmyqDAuJN5UCEBQ7Jrakgot/qZ4QHPL5HdU+tNXb8KULH75fyu0A11zzHjpw2E2KRKmg1Fg9aExaim4r15T2VU1eYjZKaPV/YiYMPlqZM9udUQFTmrLRIhCUUp+fc+MJu3zR6chz6d0eSx/RdV8ik8ilKILZl7dAfRS3hC5QG0pPh54Z+MqgAZbHfTxCbjnxqoPJzMOcC+JOPEpjC2PhS6MYE70+Ub8RS1cGZmZ2z32UnanqfT9kLbR626CWUzPzZWsnMheoX5bAABDfp7AkC9BXv+ca3REAyvR8HchVkVMiIRC4dTlY4p4+uFVtOnkhUG5mzSOVGebAWOJ+ftTFY=
+------ 10e4568e22050ecc took 14.792 milli-seconds to execute ------
+
+
+# 解密
+❯ easy_encryption_tool rsa decrypt -e der -f ./test_data/test_no_pwd_der_private.der -i V0g9TwUetAKZOl6xwe9SL7ra1P3K2JGwTZ2NMKdZiP4zNaPxxjPPv8Me3g9qMWLNBcfU6dd+7Ia7xGb0c5Ou1/uf7D3xSoV6hU0PV/0i8feJYATgkWFO1NOt1TpIHlcYHtA9NdHEaNXR9qbY8pHyAokVRf83hyQIZMTPgpGo2GH0lJkFAOjxWOiGyPKF7GgdHjz+8rfu4R9VBUg0Wy0O1zyvTKA+b4iE6MS4zJBbzPe0H43w9OLp+TQFykrhLWXsFX+AEhdhxa7N0ebaorlQNtPnY8KuXFx0cqIzWigBcfWNTYgcjbFGLm+mo0Btin0UqDFhbC8EwdpVGnVr6ZBLCvEmyqDAuJN5UCEBQ7Jrakgot/qZ4QHPL5HdU+tNXb8KULH75fyu0A11zzHjpw2E2KRKmg1Fg9aExaim4r15T2VU1eYjZKaPV/YiYMPlqZM9udUQFTmrLRIhCUUp+fc+MJu3zR6chz6d0eSx/RdV8ik8ilKILZl7dAfRS3hC5QG0pPh54Z+MqgAZbHfTxCbjnxqoPJzMOcC+JOPEpjC2PhS6MYE70+Ub8RS1cGZmZ2z32UnanqfT9kLbR626CWUzPzZWsnMheoX5bAABDfp7AkC9BXv+ca3REAyvR8HchVkVMiIRC4dTlY4p4+uFVtOnkhUG5mzSOVGebAWOJ+ftTFY=
+
+------ ff1efcc52f4fc05e begin@2024-04-04_15:57:10.634 ------
+private key password:
+key size:4096
+padding mode:oaep-sha256
+origin plain:hello,world
+------ ff1efcc52f4fc05e took 348.368 milli-seconds to execute ------
+```
+
+##### 私钥需要密码
+
+```python
+# 加密
+❯ easy_encryption_tool rsa encrypt -e der -f ./test_data/test_pwd_der_public.der -i hello,world
+
+------ d59dc4bec2be5592 begin@2024-04-04_15:57:28.114 ------
+pub key size:4096
+padding mode:oaep-sha256
+cipher:XNNpZfpu7ZjnI1HnH/KN9BdO+/rxrtt0K4z/KRQjsAZEYZV4uMtT0o45ZHrDfr6mHNrrIlTRrt6wghIeQUojEo0uQA7auwhqJXXl3ghwTqGhKH4Lkf6q+d0X/Pn1MgRoNb3dIvWsZcpTlnqmffphOe2DzWP4By9a3yZe9rb8S/ddml7/+4BIXVqxwWcAMsAg3lpLnNHBQ853XYeDZXxKjvx4J8f2RUbp7c/xsH6eUjxZfDehcoZL7te6OrY2N342UzYKBqTQV4zbqVTm0c6V1Q7XkjFK3esgcxicitIP2UsdQjpQf9xMtOTQzErdSQk/Pd6tLxLNyKQcxDaqXR9TXA84koIfGETx434im+zhOgsUuSwS6zBARI3AlpQi14LVAbr3/6ABIEJG5QvVVVG32aVzOMrPtViRqZzcDgkyIsBOXLAQv7c5UkP+nePtnjs31IXmcO87p5zW6rweW/6Y5z1emI6RIHgLjqGKFKkaWXua0N+ZqHTEuqks2y27mFFT/g2DJN3zp5corIcjgSEqyuQbQg/hFaurrqzu+djQ1Pevjzy8rUOM7k97UYUHwjv0ITeIB/m2Rknbwsu3WH3jW6TV8Ta+Bw05ZKYT6hoFPttfno+iDVRmzRlY2QuBxHzEALtdsANzxKnpUr/vr5mEmU8Wmi87QSjp1ULMJ5lTU64=
+------ d59dc4bec2be5592 took 14.696 milli-seconds to execute ------
+
+# 解密 -p 指定密码
+❯ easy_encryption_tool rsa decrypt -e der -f ./test_data/test_pwd_der_private_cipher.der -i XNNpZfpu7ZjnI1HnH/KN9BdO+/rxrtt0K4z/KRQjsAZEYZV4uMtT0o45ZHrDfr6mHNrrIlTRrt6wghIeQUojEo0uQA7auwhqJXXl3ghwTqGhKH4Lkf6q+d0X/Pn1MgRoNb3dIvWsZcpTlnqmffphOe2DzWP4By9a3yZe9rb8S/ddml7/+4BIXVqxwWcAMsAg3lpLnNHBQ853XYeDZXxKjvx4J8f2RUbp7c/xsH6eUjxZfDehcoZL7te6OrY2N342UzYKBqTQV4zbqVTm0c6V1Q7XkjFK3esgcxicitIP2UsdQjpQf9xMtOTQzErdSQk/Pd6tLxLNyKQcxDaqXR9TXA84koIfGETx434im+zhOgsUuSwS6zBARI3AlpQi14LVAbr3/6ABIEJG5QvVVVG32aVzOMrPtViRqZzcDgkyIsBOXLAQv7c5UkP+nePtnjs31IXmcO87p5zW6rweW/6Y5z1emI6RIHgLjqGKFKkaWXua0N+ZqHTEuqks2y27mFFT/g2DJN3zp5corIcjgSEqyuQbQg/hFaurrqzu+djQ1Pevjzy8rUOM7k97UYUHwjv0ITeIB/m2Rknbwsu3WH3jW6TV8Ta+Bw05ZKYT6hoFPttfno+iDVRmzRlY2QuBxHzEALtdsANzxKnpUr/vr5mEmU8Wmi87QSjp1ULMJ5lTU64= -p 1234567890
+
+------ 806b307f230908a4 begin@2024-04-04_15:57:47.873 ------
+private key password:1234567890
+key size:4096
+padding mode:oaep-sha256
+origin plain:hello,world
+------ 806b307f230908a4 took 343.988 milli-seconds to execute ------
+```
+
+#### 对明文为 base64 编码的字节流做加解密
+
+```python
+# 加密
+❯ easy_encryption_tool rsa encrypt -e pem -f ./test_data/test_pwd_pem_public.pem -i krJchuyaDRYHnu5tsy8UzA== -c
+
+------ 29fa5af7e9f84f15 begin@2024-04-04_15:58:07.029 ------
+pub key size:4096
+padding mode:oaep-sha256
+cipher:QiztiJ21bVsNf4DyPhzDAR/E24Xqe94P398JLDakFl3LDhOA3I/XHY3v3R0GBNRrrMPtUorGHxCVmJNqc06kLCtQ4ljd015rYFRgbAtNLsaNgjsdv1Q7kHQSVa7L1BHdhNDK47svEWMQTS4jKLiKVYbCnz4ARYqe3n+vf5UtVDlrpmMNjowbdfnhnEFibCICBwnGUpssFs9X546/BzCTlqgEGdy1SpFhfX2LaqXkTQwsd3YxU9ynHZ7oVe78z/xJlEDQbPGJSfGbUtoCgQAn975hzCceC+CeDK9E7N8vu6HTv9K3vMNRHTOweRWuGxJKKjzVLSXRcDjkXynJPPe6yuyJdFnsoSHWuOsyqPrjJJC+2RvrkW24RlIEMnVEqLReD8/OnZEEw4CZF9xqplS7yRN/khaYM4MxD9qcxAIYgpg2wq6QngtabU+nGtQSfjKIkXlXnbvqMcLI1pS0TtG5vUeNSzc3Ll8g9CxvMrA/T/vUjz9d60fsGpHbjZezpsQdI8Us60BMxUWgFZ6x/ME5HkMmtXYfvi0/aNKWXymgHtVxqeM9hJaQ6MX1zNZRPe4MMHu3xJgATAbVc7GldgV+d2gZm2cLzZaTTB4ARcAARSKPgbskmIQ2buNRs2/ogjvtG72jilOCmSPKZom0VPHkrLzL4csxgxSd2M5N4cu6+Po=
+------ 29fa5af7e9f84f15 took 15.584 milli-seconds to execute ------
+
+# 解密 -p 指定密码
+❯ easy_encryption_tool rsa decrypt -e pem -f ./test_data/test_pwd_pem_private_cipher.pem -i QiztiJ21bVsNf4DyPhzDAR/E24Xqe94P398JLDakFl3LDhOA3I/XHY3v3R0GBNRrrMPtUorGHxCVmJNqc06kLCtQ4ljd015rYFRgbAtNLsaNgjsdv1Q7kHQSVa7L1BHdhNDK47svEWMQTS4jKLiKVYbCnz4ARYqe3n+vf5UtVDlrpmMNjowbdfnhnEFibCICBwnGUpssFs9X546/BzCTlqgEGdy1SpFhfX2LaqXkTQwsd3YxU9ynHZ7oVe78z/xJlEDQbPGJSfGbUtoCgQAn975hzCceC+CeDK9E7N8vu6HTv9K3vMNRHTOweRWuGxJKKjzVLSXRcDjkXynJPPe6yuyJdFnsoSHWuOsyqPrjJJC+2RvrkW24RlIEMnVEqLReD8/OnZEEw4CZF9xqplS7yRN/khaYM4MxD9qcxAIYgpg2wq6QngtabU+nGtQSfjKIkXlXnbvqMcLI1pS0TtG5vUeNSzc3Ll8g9CxvMrA/T/vUjz9d60fsGpHbjZezpsQdI8Us60BMxUWgFZ6x/ME5HkMmtXYfvi0/aNKWXymgHtVxqeM9hJaQ6MX1zNZRPe4MMHu3xJgATAbVc7GldgV+d2gZm2cLzZaTTB4ARcAARSKPgbskmIQ2buNRs2/ogjvtG72jilOCmSPKZom0VPHkrLzL4csxgxSd2M5N4cu6+Po= -p 1234567890
+
+------ d1f6350d34acf14e begin@2024-04-04_15:58:25.431 ------
+private key password:1234567890
+key size:4096
+padding mode:oaep-sha256
+b64 encoded plain:krJchuyaDRYHnu5tsy8UzA==
+------ d1f6350d34acf14e took 344.681 milli-seconds to execute ------
+```
+
+#### 加密模式设置
+
+##### OAEP模式
+
+```python
+# 加密
+❯ easy_encryption_tool rsa encrypt -e pem -f ./test_data/test_no_pwd_pem_public.pem -i hello,world -m oaep
+
+------ 5d4c86b12cac7641 begin@2024-04-04_15:58:41.153 ------
+pub key size:4096
+padding mode:oaep-sha256
+cipher:LmYOuAO+zP1qCjivWUH7/EM81/2pDNK5t7JmRXW1GvhElRCa0uKTvEYa/Ncsoqv+zpbxo3O6j9K3YkGbO6rbi2DasYSKCX6DGvMNd348onbEiLZEpRMCGG03PpTpoargFZJhsnUQ6MvFPEpML9Om8EbjAwMG+xukuKV2Vak/6GmO8XQfsr6C+1hzhXqBggorJPyjpGZfypQO3Cx38puIpGC+TAewXZNMcBiVU3MTFvVfPk/vqlzYU68TXHGIIsKFKQG35iOSJA3bXr/FLwor3yAGdk7VS2e1kAYnuceUW9WN4FKb+ThRGRiDepJmFPM3TN9ZEEbdDH+wIZO7MkmKD4RBUgBO0RSDMIP8x8LxKN05xKqRxcrFbx5UKfurf1vAi4Hu+AP+e3kL/2UlvmHfLwmVYMT4Quzy414T/R43cNe9eH8KCypNjV5bFqdUyxJ4u7mC0f+S7PD1oTB6vhwsMOXH6tadhd7LpzpUrEyH6DLhukRIuo72IIdGnXNlB9d4yklxCPfvg9lj/irmdJKaq0MSbm1mZCp3J6R+sd0iKXakZnkPU7YLjwz92S7a1gSwfEpzBfsQZcuqs2BSN/iOEWMEB1XVGZrsbv5Tpp8APo/scGLBHmyk7Q/mDgsaNXrrGiQw0NfU4ZPzaFlvL2AC6HVE0YK4Nm4CIAXy+m2hItM=
+------ 5d4c86b12cac7641 took 14.201 milli-seconds to execute ------
+
+# 解密
+❯ easy_encryption_tool rsa decrypt -e pem -f test_data/test_no_pwd_pem_private.pem -m oaep -i LmYOuAO+zP1qCjivWUH7/EM81/2pDNK5t7JmRXW1GvhElRCa0uKTvEYa/Ncsoqv+zpbxo3O6j9K3YkGbO6rbi2DasYSKCX6DGvMNd348onbEiLZEpRMCGG03PpTpoargFZJhsnUQ6MvFPEpML9Om8EbjAwMG+xukuKV2Vak/6GmO8XQfsr6C+1hzhXqBggorJPyjpGZfypQO3Cx38puIpGC+TAewXZNMcBiVU3MTFvVfPk/vqlzYU68TXHGIIsKFKQG35iOSJA3bXr/FLwor3yAGdk7VS2e1kAYnuceUW9WN4FKb+ThRGRiDepJmFPM3TN9ZEEbdDH+wIZO7MkmKD4RBUgBO0RSDMIP8x8LxKN05xKqRxcrFbx5UKfurf1vAi4Hu+AP+e3kL/2UlvmHfLwmVYMT4Quzy414T/R43cNe9eH8KCypNjV5bFqdUyxJ4u7mC0f+S7PD1oTB6vhwsMOXH6tadhd7LpzpUrEyH6DLhukRIuo72IIdGnXNlB9d4yklxCPfvg9lj/irmdJKaq0MSbm1mZCp3J6R+sd0iKXakZnkPU7YLjwz92S7a1gSwfEpzBfsQZcuqs2BSN/iOEWMEB1XVGZrsbv5Tpp8APo/scGLBHmyk7Q/mDgsaNXrrGiQw0NfU4ZPzaFlvL2AC6HVE0YK4Nm4CIAXy+m2hItM=
+
+------ 9f151c4c9f56af86 begin@2024-04-04_15:59:05.700 ------
+private key password:
+key size:4096
+padding mode:oaep-sha256
+origin plain:hello,world
+------ 9f151c4c9f56af86 took 346.121 milli-seconds to execute ------
+```
+
+##### PKCS1v15 模式
+
+```python
+# 加密
+❯ easy_encryption_tool rsa encrypt -e pem -f ./test_data/test_no_pwd_pem_public.pem -i hello,world -m pkcs1v15
+
+------ 875086be5059242c begin@2024-04-04_15:59:19.282 ------
+pub key size:4096
+padding mode:pkcs1v15
+cipher:i1hVnoQsWAQK4sftuvg08Fq1dzm3o5BRNb78K6gBGVwsu1a/gSFGwIqSOa22ONlZ0cnPu7v/mZAVOi8/tXa1++JrmpnyoZTQ3vATkXK8WG6Q6Dw/dLKUFvsRv04hxMI2ttSMNqFsiRRnCy1qx2m4PFPPuZFniuT4i9hutGn4br+d5e1DtyLxsSmefKk4BJn0Rzgzv3ImeBmT0znTJ5VN2SI/WRHlvc6KmtnQ1xD2/2kkMycPzLguL+XXc+ie/sNg3Y0CelQcXOxonAnkQcXKpzQL7+pONVDHIJvRRXjv0nUWhTay+KWPApfB+BZ0MkI03oW0divZXohI5pWa7n4Gvw1qN+Kvt3BAmBK64LvlKFzZF553re5fMKodhrK/yhIsCtWYjsrgEz+5UAmavwH6dgTrIpssfSQDaUlWwVQRG/pG+jbxkKZ1Y7SX1SAznS4Jb3xKFeWN7ulPLJIe3Zro4VxihW0KgChDFrnVtpZLuXq98mVR+v/L2HaCzNRCY39soYZZywt3IhP2ZDVoCGpVQWQ8y69pbCKfCfiOheRf1j7VYtIOATT2kNGJrVnBwZvXBfQ2Mp3y9UPIud+WAkS2s6bha1QBF/YX72xtZoiICLZZmrmXN3DdGWy1y8SM3mI75s2GsqjF6JeN2iNoLtDy2tpREH78MujjnSjMSCP78wY=
+------ 875086be5059242c took 14.024 milli-seconds to execute ------
+
+# 解密
+❯ easy_encryption_tool rsa decrypt -e pem -f test_data/test_no_pwd_pem_private.pem -m pkcs1v15 -i i1hVnoQsWAQK4sftuvg08Fq1dzm3o5BRNb78K6gBGVwsu1a/gSFGwIqSOa22ONlZ0cnPu7v/mZAVOi8/tXa1++JrmpnyoZTQ3vATkXK8WG6Q6Dw/dLKUFvsRv04hxMI2ttSMNqFsiRRnCy1qx2m4PFPPuZFniuT4i9hutGn4br+d5e1DtyLxsSmefKk4BJn0Rzgzv3ImeBmT0znTJ5VN2SI/WRHlvc6KmtnQ1xD2/2kkMycPzLguL+XXc+ie/sNg3Y0CelQcXOxonAnkQcXKpzQL7+pONVDHIJvRRXjv0nUWhTay+KWPApfB+BZ0MkI03oW0divZXohI5pWa7n4Gvw1qN+Kvt3BAmBK64LvlKFzZF553re5fMKodhrK/yhIsCtWYjsrgEz+5UAmavwH6dgTrIpssfSQDaUlWwVQRG/pG+jbxkKZ1Y7SX1SAznS4Jb3xKFeWN7ulPLJIe3Zro4VxihW0KgChDFrnVtpZLuXq98mVR+v/L2HaCzNRCY39soYZZywt3IhP2ZDVoCGpVQWQ8y69pbCKfCfiOheRf1j7VYtIOATT2kNGJrVnBwZvXBfQ2Mp3y9UPIud+WAkS2s6bha1QBF/YX72xtZoiICLZZmrmXN3DdGWy1y8SM3mI75s2GsqjF6JeN2iNoLtDy2tpREH78MujjnSjMSCP78wY=
+
+------ d5096f43a1dd5d65 begin@2024-04-04_15:59:37.216 ------
+private key password:
+key size:4096
+padding mode:pkcs1v15
+origin plain:hello,world
+------ d5096f43a1dd5d65 took 348.221 milli-seconds to execute ------
+```
+
+
+
+### 签名与验签
+
+#### 支持的参数
+
+```python
+# 签名
+❯ easy_encryption_tool rsa sign --help
+Usage: main.py rsa sign [OPTIONS]
+
+Options:
+  -f, --private-key TEXT          私钥文件路径  [required]
+  -e, --encoding [pem|der]        密钥格式  [default: pem]
+  -m, --mode [pss|pkcs1v15]       签名时的填充模式  [default: pss; required]
+  -h, --hash-mode [sha256|sha384|sha512]
+                                  签名时的哈希算法  [default: sha256]
+  -p, --password TEXT             私钥密码，使用私钥时需要输入正确的密码
+  -i, --input-data TEXT           需要被签名的数据  [required]
+  -c, --b64-encoded               输入数据是否被 base64 编码过
+  --help                          Show this message and exit.
+
+# 验签
+❯ easy_encryption_tool rsa verify --help
+Usage: main.py rsa verify [OPTIONS]
+
+Options:
+  -f, --public-key TEXT           公钥文件路径  [required]
+  -e, --encoding [pem|der]        密钥格式  [default: pem]
+  -m, --mode [pss|pkcs1v15]       签名时的填充模式  [default: pss; required]
+  -h, --hash-mode [sha256|sha384|sha512]
+                                  签名时的哈希算法  [default: sha256]
+  -i, --input-data TEXT           需要被签名的数据  [required]
+  -c, --b64-encoded               输入数据是否被 base64 编码过
+  -s, --signature TEXT            base64 编码过的签名值
+  --help                          Show this message and exit.
+```
+
+#### PSS模式
+
+```python
+# 签名 -p 指定密码
+❯ easy_encryption_tool rsa sign -e der -f ./test_data/test_pwd_der_private_cipher.der -m pss -i hello,world -p 1234567890
+
+------ 9238d47e0e2636f1 begin@2024-04-04_16:01:35.674 ------
+key size:4096
+signature:74bd0807319b4b7c58dc40eaf58efee853eb5d506079ebe8aa3e76350d42ea88c4560c4e732911cca4cd101da6b5b712fae4005bd207d88fcc87761c5c0942f932b9f5773814b91c68c91b23fd623681a069fd29d86c1c89b080b35cf1f45024bf92fdfade2b9536603f5ae40ee0d1350eae686ba1b02954efd8f2b43226228247ce8d5d9c1bbebb97aa77eb52c5a62fbf8bd46e531abf3683487ce5f18cb48f2f175398861f579ea3f38281fc74c7d26942a890fbf3f7c089c553fb632058e7d553c9fc3f4126433cd126067df935008227eaa96b4b7fcb01621d1d553d58070b656aaf2e6d28eb062e5643c639261d908bfd57542ed06e18bfd1419f300582d571c8f461422f684ffd9a68584fd164667f94e9775024cfe635a207297c8a3f1e078652c45c92c7d5ac2a10b6541b2aaaa30e926496caae06effe280bc275ea6b34cf83f3f2ce141acfbce1e03d11071cd9e177be28855fe108ef25ae0ba42db67e9992e3fa0072f92dd8843c666707685f49a10fba0f5719b752025893b272f8171951e007f1527b0320c62e1e9d6814e8de43084e51f917d52047a856576e6cc608576f4d99f4a8e9b237be7c576cf30cb8f97b69e85be2a6e5911f1105555778d122351691d434d40e3742278c54e71c8eac4bbb59918e3ffd3c162d25f0d1dff36e17c3ced4af449f5d06195f9a3328f1c24bd7b52aa49d8727e1894ad2
+----------------
+base64 encoded:dL0IBzGbS3xY3EDq9Y7+6FPrXVBgeevoqj52NQ1C6ojEVgxOcykRzKTNEB2mtbcS+uQAW9IH2I/Mh3YcXAlC+TK59Xc4FLkcaMkbI/1iNoGgaf0p2GwcibCAs1zx9FAkv5L9+t4rlTZgP1rkDuDRNQ6uaGuhsClU79jytDImIoJHzo1dnBu+u5eqd+tSxaYvv4vUblMavzaDSHzl8Yy0jy8XU5iGH1eeo/OCgfx0x9JpQqiQ+/P3wInFU/tjIFjn1VPJ/D9BJkM80SYGffk1AIIn6qlrS3/LAWIdHVU9WAcLZWqvLm0o6wYuVkPGOSYdkIv9V1Qu0G4Yv9FBnzAFgtVxyPRhQi9oT/2aaFhP0WRmf5Tpd1Akz+Y1ogcpfIo/HgeGUsRcksfVrCoQtlQbKqqjDpJklsquBu/+KAvCdeprNM+D8/LOFBrPvOHgPREHHNnhd74ohV/hCO8lrgukLbZ+mZLj+gBy+S3YhDxmZwdoX0mhD7oPVxm3UgJYk7Jy+BcZUeAH8VJ7AyDGLh6daBTo3kMITlH5F9UgR6hWV25sxghXb02Z9Kjpsje+fFds8wy4+Xtp6FvipuWRHxEFVVd40SI1FpHUNNQON0InjFTnHI6sS7tZkY4//TwWLSXw0d/zbhfDztSvRJ9dBhlfmjMo8cJL17UqpJ2HJ+GJStI=
+mode:pss-sha256
+------ 9238d47e0e2636f1 took 348.185 milli-seconds to execute ------
+
+# 验签
+❯ easy_encryption_tool rsa verify -e der -f ./test_data/test_pwd_der_public.der -m pss -s dL0IBzGbS3xY3EDq9Y7+6FPrXVBgeevoqj52NQ1C6ojEVgxOcykRzKTNEB2mtbcS+uQAW9IH2I/Mh3YcXAlC+TK59Xc4FLkcaMkbI/1iNoGgaf0p2GwcibCAs1zx9FAkv5L9+t4rlTZgP1rkDuDRNQ6uaGuhsClU79jytDImIoJHzo1dnBu+u5eqd+tSxaYvv4vUblMavzaDSHzl8Yy0jy8XU5iGH1eeo/OCgfx0x9JpQqiQ+/P3wInFU/tjIFjn1VPJ/D9BJkM80SYGffk1AIIn6qlrS3/LAWIdHVU9WAcLZWqvLm0o6wYuVkPGOSYdkIv9V1Qu0G4Yv9FBnzAFgtVxyPRhQi9oT/2aaFhP0WRmf5Tpd1Akz+Y1ogcpfIo/HgeGUsRcksfVrCoQtlQbKqqjDpJklsquBu/+KAvCdeprNM+D8/LOFBrPvOHgPREHHNnhd74ohV/hCO8lrgukLbZ+mZLj+gBy+S3YhDxmZwdoX0mhD7oPVxm3UgJYk7Jy+BcZUeAH8VJ7AyDGLh6daBTo3kMITlH5F9UgR6hWV25sxghXb02Z9Kjpsje+fFds8wy4+Xtp6FvipuWRHxEFVVd40SI1FpHUNNQON0InjFTnHI6sS7tZkY4//TwWLSXw0d/zbhfDztSvRJ9dBhlfmjMo8cJL17UqpJ2HJ+GJStI= -i hello,world
+
+------ 8e8b995bbc527e67 begin@2024-04-04_16:02:01.136 ------
+verify success
+key size:4096
+mode:pss-sha256
+------ 8e8b995bbc527e67 took 14.193 milli-seconds to execute ------
+```
+
+#### PKCS1v15模式
+
+```python
+# 签名 -p 指定密码
+❯ easy_encryption_tool rsa sign -e pem -f ./test_data/test_pwd_pem_private_cipher.pem -i hello,world -p 1234567890
+
+------ c12c59d278e72bb6 begin@2024-04-04_16:02:15.070 ------
+key size:4096
+signature:8590c16fd7349f7da4b845ab56c0fd786cd0f5bd4c60b8508d571f9c1da8a6f647c6b283a593ce3a8d77bf052f8eef2752058cb653faf434b7e04e4b49248d2d55815616c0e9e4e4196186bc749831616ab66a815f82bc6414d9469790aabb987cdf76b2594e586c65512042aa70f04c6c5ddf9d2038cd01971d36829e3342710e3221eb83f0299baa876df8fa43f76b6bad7ec0a28e30d77f5bdbae132f880ee2234bd5de82ae1e7c00fcb20d04f5c65e5d79a9b64f3776868139581b1ba3cf8167ca2e893330b4a49f2a5c0cd9bd5f331d270dbd3aacc6fba492ab7cce3fe78ec2f7b82d339b9ab90b89bbed8fe5f123f26709a4777dee8df500bf6d4d7178c25889c90b4d0826a47a85556958041aeb5e3609abe315d286d2804eacda85af2bbdfab943206150bd651fd0cb5106ff9b03636dcd2b5ab4d2186fe48241802ad0c8a4313d8bc29ff5c36fa0cffad5e566f3b47b3564b2739685e5ca881c3729fc300911f62b95c36eced3ebb6260997ba16b614599d809df71010a94ada31fa1db0342b632826b57599a8227ce18a44565de61e23e96b5d413702648173ada70f7c3d46599357edb4b2926f5824eef4a5960eae06c236c7cf1a8890ff67365b1aaf778423b99e641ffd56553d8196b4ed40b11ae6e804f8623fc9e3842f248394b61d1886c550d5e20c4e9d3c8b071da6f55569740f3b633cfd99167442a9f5
+----------------
+base64 encoded:hZDBb9c0n32kuEWrVsD9eGzQ9b1MYLhQjVcfnB2opvZHxrKDpZPOOo13vwUvju8nUgWMtlP69DS34E5LSSSNLVWBVhbA6eTkGWGGvHSYMWFqtmqBX4K8ZBTZRpeQqruYfN92sllOWGxlUSBCqnDwTGxd350gOM0Blx02gp4zQnEOMiHrg/Apm6qHbfj6Q/dra61+wKKOMNd/W9uuEy+IDuIjS9Xegq4efAD8sg0E9cZeXXmptk83doaBOVgbG6PPgWfKLokzMLSknypcDNm9XzMdJw29OqzG+6SSq3zOP+eOwve4LTObmrkLibvtj+XxI/JnCaR3fe6N9QC/bU1xeMJYickLTQgmpHqFVWlYBBrrXjYJq+MV0obSgE6s2oWvK736uUMgYVC9ZR/Qy1EG/5sDY23NK1q00hhv5IJBgCrQyKQxPYvCn/XDb6DP+tXlZvO0ezVksnOWheXKiBw3KfwwCRH2K5XDbs7T67YmCZe6FrYUWZ2AnfcQEKlK2jH6HbA0K2MoJrV1magifOGKRFZd5h4j6WtdQTcCZIFzracPfD1GWZNX7bSykm9YJO70pZYOrgbCNsfPGoiQ/2c2Wxqvd4QjuZ5kH/1WVT2BlrTtQLEa5ugE+GI/yeOELySDlLYdGIbFUNXiDE6dPIsHHab1VWl0DztjPP2ZFnRCqfU=
+mode:pss-sha256
+------ c12c59d278e72bb6 took 343.034 milli-seconds to execute ------
+
+# 验签
+❯ easy_encryption_tool rsa verify -e pem -f ./test_data/test_pwd_pem_public.pem -i hello,world -s hZDBb9c0n32kuEWrVsD9eGzQ9b1MYLhQjVcfnB2opvZHxrKDpZPOOo13vwUvju8nUgWMtlP69DS34E5LSSSNLVWBVhbA6eTkGWGGvHSYMWFqtmqBX4K8ZBTZRpeQqruYfN92sllOWGxlUSBCqnDwTGxd350gOM0Blx02gp4zQnEOMiHrg/Apm6qHbfj6Q/dra61+wKKOMNd/W9uuEy+IDuIjS9Xegq4efAD8sg0E9cZeXXmptk83doaBOVgbG6PPgWfKLokzMLSknypcDNm9XzMdJw29OqzG+6SSq3zOP+eOwve4LTObmrkLibvtj+XxI/JnCaR3fe6N9QC/bU1xeMJYickLTQgmpHqFVWlYBBrrXjYJq+MV0obSgE6s2oWvK736uUMgYVC9ZR/Qy1EG/5sDY23NK1q00hhv5IJBgCrQyKQxPYvCn/XDb6DP+tXlZvO0ezVksnOWheXKiBw3KfwwCRH2K5XDbs7T67YmCZe6FrYUWZ2AnfcQEKlK2jH6HbA0K2MoJrV1magifOGKRFZd5h4j6WtdQTcCZIFzracPfD1GWZNX7bSykm9YJO70pZYOrgbCNsfPGoiQ/2c2Wxqvd4QjuZ5kH/1WVT2BlrTtQLEa5ugE+GI/yeOELySDlLYdGIbFUNXiDE6dPIsHHab1VWl0DztjPP2ZFnRCqfU=
+
+------ 8151e7568131a1c6 begin@2024-04-04_16:02:36.431 ------
+verify success
+key size:4096
+mode:pss-sha256
+------ 8151e7568131a1c6 took 13.708 milli-seconds to execute ------
+```
+
+## ECC椭圆曲线
+
+### 支持的命令
+
+```
+❯ easy_encryption_tool ecc --help
+Usage: main.py ecc [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  ecdh
+  generate
+  sign
+  verify
+```
+
+### 生成密钥对
+
+```python
+❯ easy_encryption_tool ecc generate --help
+Usage: main.py ecc generate [OPTIONS]
+
+Options:
+  -c, --curve [secp256r1|secp384r1|secp521r1|secp256k1]
+                                  ecc 椭圆曲线类型  [default: secp256k1]
+  -e, --encoding [pem|der]        密钥格式  [default: pem]
+  -f, --file-name TEXT            输出密钥对的文件名前缀，最终写入数据时会创建文件并加上文件名后缀  [default:
+                                  demo; required]
+  -p, --password TEXT             私钥密码，使用私钥时需要输入正确的密码
+  -r, --random-password           是否生成私钥的随机密码，如果带上 -r 标识，则随机生成32字节的密码
+  --help                          Show this message and exit.
+```
+
+#### 默认生成
+
+```python
+❯ easy_encryption_tool ecc generate
+
+------ d6b0cebd74d64b57 begin@2024-04-04_16:07:59.720 ------
+generate demo_ecc_public.pem/demo_ecc_private.pem success
+------ d6b0cebd74d64b57 took 17.039 milli-seconds to execute ------
+```
+
+#### 指定椭圆曲线且指定密码
+
+```python
+❯ easy_encryption_tool ecc generate -c secp384r1 -p 1234567890
+
+------ e852fd0a2d84d39f begin@2024-04-04_16:08:46.706 ------
+private key password:1234567890
+generate demo_ecc_public.pem/demo_ecc_private_cipher.pem success
+------ e852fd0a2d84d39f took 16.710 milli-seconds to execute ------
+```
+
+#### 指定椭圆曲线且随机生成密码
+
+```python
+❯ easy_encryption_tool ecc generate -c secp384r1 -r
+
+------ 073bd5585937e6fd begin@2024-04-04_16:09:28.102 ------
+private key password:)N)y&4dq=ODg`339uE`7*@A9Gl0eVs3Z
+generate demo_ecc_public.pem/demo_ecc_private_cipher.pem success
+------ 073bd5585937e6fd took 16.721 milli-seconds to execute ------
+```
+
+### ECDH密钥交换
+
+#### 支持的参数
+
+```python
+❯ easy_encryption_tool ecc ecdh --help
+Usage: main.py ecc ecdh [OPTIONS]
+
+Options:
+  -a, --alice-pub-key TEXT    你自己的公钥文件的路径如: ./alice_public.pem  [required]
+  -k, --alice-pri-key TEXT    你自己的私钥文件的路径如: ./alice_private.pem  [required]
+  -p, --password TEXT         你自己的私钥的密码，如果创建时设置了密码，那么在使用私钥时需要输入正确的密码
+  -b, --bob-pub-key TEXT      对方的公钥文件的路径如: ./bob_public.pem  [required]
+  -e, --encoding [pem|der]    密钥格式  [default: pem]
+  -l, --length INTEGER RANGE  派生密钥的长度，默认 32 字节，长度范围[16 -- 64]  [default: 32;
+                              16<=x<=64]
+  -s, --salt TEXT             用于增加派生密钥安全性的盐值，两边必须提供一样的盐值  [default:
+                              hello,world1234567890!@#$%^&*()_+{}:";<>?/;
+                              required]
+  -c, --context TEXT          用于增加派生密钥安全性的上下文信息，两边必须提供一样的上下文数据  [default: ecc
+                              handshake context data; required]
+  --help                      Show this message and exit.
+
+```
+
+#### 生成 alice 与 bob 的密钥对
+
+```python
+❯ easy_encryption_tool ecc generate -f alice -p 1234567890
+
+------ f4815ee66aa727b2 begin@2024-04-04_16:11:03.966 ------
+private key password:1234567890
+generate alice_ecc_public.pem/alice_ecc_private_cipher.pem success
+------ f4815ee66aa727b2 took 17.763 milli-seconds to execute ------
+
+❯ easy_encryption_tool ecc generate -f bob -p 1234567890
+
+------ 76e72cdd07cb5c32 begin@2024-04-04_16:11:26.201 ------
+private key password:1234567890
+generate bob_ecc_public.pem/bob_ecc_private_cipher.pem success
+------ 76e72cdd07cb5c32 took 16.373 milli-seconds to execute ------
+```
+
+#### alice派生和 bob 共享的对称密钥
+
+```python
+❯ easy_encryption_tool ecc ecdh -a ./alice_ecc_public.pem -k ./alice_ecc_private_cipher.pem -p 1234567890 -b ./bob_ecc_public.pem -l 64 -s alice-bob -c key-alice-bob
+
+------ 8235537a02e647d4 begin@2024-04-04_16:14:48.686 ------
+curve name:secp256k1
+derived key:u+UNGIzrPbLRVlTSixl8fgd3SgLuGeQrwSI4Irs1tpSVivmTxYLTOUm/o1pvqPLuOGVA8D3iLdUGLEE72Wo1QQ==
+length:64
+------ 8235537a02e647d4 took 18.166 milli-seconds to execute ------
+```
+
+#### bob派生和alice共享的对称密钥
+
+```python
+❯ easy_encryption_tool ecc ecdh -a ./bob_ecc_public.pem -k ./bob_ecc_private_cipher.pem -p 1234567890 -b ./alice_ecc_public.pem -l 64 -s alice-bob -c key-alice-bob
+
+------ d50d7d254d02104c begin@2024-04-04_16:15:39.570 ------
+curve name:secp256k1
+derived key:u+UNGIzrPbLRVlTSixl8fgd3SgLuGeQrwSI4Irs1tpSVivmTxYLTOUm/o1pvqPLuOGVA8D3iLdUGLEE72Wo1QQ==
+length:64
+------ d50d7d254d02104c took 16.998 milli-seconds to execute ------
+```
+
+### 签名与验签
+
+#### 支持的参数
+
+```python
+# 签名
+❯ easy_encryption_tool ecc sign --help
+Usage: main.py ecc sign [OPTIONS]
+
+Options:
+  -f, --private-key TEXT          私钥文件路径  [required]
+  -e, --encoding [pem|der]        密钥格式  [default: pem]
+  -h, --hash-mode [sha256|sha384|sha512|sha3-224|sha3-256|sha3-384|sha3-512]
+                                  签名时的哈希算法  [default: sha256]
+  -p, --password TEXT             私钥密码，如果生成时设置了密码那么在使用私钥时需要输入正确的密码
+  -i, --input-data TEXT           需要被签名的数据  [required]
+  -c, --b64-encoded               输入数据是否被 base64 编码过
+  --help                          Show this message and exit.
+
+# 验签
+❯ easy_encryption_tool ecc verify --help
+Usage: main.py ecc verify [OPTIONS]
+
+Options:
+  -f, --public-key TEXT           公钥文件路径  [required]
+  -e, --encoding [pem|der]        密钥格式  [default: pem]
+  -h, --hash-mode [sha256|sha384|sha512|sha3-224|sha3-256|sha3-384|sha3-512]
+                                  签名时的哈希算法  [default: sha256]
+  -i, --input-data TEXT           需要被签名的数据  [required]
+  -c, --b64-encoded               输入数据是否被 base64 编码过
+  -s, --signature TEXT            base64 编码过的签名值
+  --help                          Show this message and exit.
+```
+
+#### 生成密钥对
+
+```python
+❯ easy_encryption_tool ecc generate -c secp384r1 -p 1234567890 -e der
+
+------ 3a40beeed28cffa4 begin@2024-04-04_16:17:49.172 ------
+private key password:1234567890
+generate demo_ecc_public.der/demo_ecc_private_cipher.der success
+------ 3a40beeed28cffa4 took 16.821 milli-seconds to execute ------
+```
+
+#### 签名
+
+```python
+❯ easy_encryption_tool ecc sign -f ./demo_ecc_private_cipher.der -e der -h sha3-512 -p 1234567890 -i aGVsbG8sd29ybGQK -c
+
+------ dbc12fab8422ba0f begin@2024-04-04_16:18:57.578 ------
+curve name:secp384r1
+key size:384
+signature:30640230243bba7ec0a95f7aef4868673282b70217285a667ae52ce5e43c6af5b33e8adbda86bbe2a7d9f995b934d038eae5624c02306c47daed069e51bb12c274c13219c173ed4b59c6f76caab04f50b4359f3f25c0fa4dab4c17cb88888767f37e4c8cf993
+base64 encoded:MGQCMCQ7un7AqV9670hoZzKCtwIXKFpmeuUs5eQ8avWzPorb2oa74qfZ+ZW5NNA46uViTAIwbEfa7QaeUbsSwnTBMhnBc+1LWcb3bKqwT1C0NZ8/JcD6TatMF8uIiIdn835MjPmT
+mode:ECDSA
+------ dbc12fab8422ba0f took 17.265 milli-seconds to execute ------
+```
+
+#### 验签
+
+```python
+❯ easy_encryption_tool ecc verify -f ./demo_ecc_public.der -e der -h sha3-512 -i aGVsbG8sd29ybGQK -c -s MGQCMCQ7un7AqV9670hoZzKCtwIXKFpmeuUs5eQ8avWzPorb2oa74qfZ+ZW5NNA46uViTAIwbEfa7QaeUbsSwnTBMhnBc+1LWcb3bKqwT1C0NZ8/JcD6TatMF8uIiIdn835MjPmT
+
+------ d1c74d3acc46413b begin@2024-04-04_16:20:09.177 ------
+curve name:secp384r1
+verify success
+key size:384
+mode:ECDSA
+------ d1c74d3acc46413b took 15.220 milli-seconds to execute ------
+```
+
