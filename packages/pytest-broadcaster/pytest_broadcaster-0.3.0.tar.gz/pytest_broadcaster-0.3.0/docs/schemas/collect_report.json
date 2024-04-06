@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://charbonnierg.github.com/pytest-broadcaster/schemas/collect_report.json",
+  "title": "Collect Report",
+  "description": "A report of collected items.",
+  "type": "object",
+  "required": [
+    "event",
+    "node_id",
+    "items"
+  ],
+  "properties": {
+    "event": {
+      "const": "collect_report",
+      "description": "The event type. Always set to 'collect_report'."
+    },
+    "node_id": {
+      "type": "string",
+      "description": "The node id of the node for which items were collected (the top level root directory has an empty node id)."
+    },
+    "items": {
+      "type": "array",
+      "description": "An array of collected items. Each collected item is a test directory, test module, test suite, or test case. Top level directory is always first element in the array, followed by test cases, then test suites, then test modules, then test directories for each level of nesting.",
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "https://charbonnierg.github.com/pytest-broadcaster/schemas/test_directory.json",
+            "description": "A test directory."
+          },
+          {
+            "$ref": "https://charbonnierg.github.com/pytest-broadcaster/schemas/test_module.json",
+            "description": "A test module."
+          },
+          {
+            "$ref": "https://charbonnierg.github.com/pytest-broadcaster/schemas/test_suite.json",
+            "description": "A test suite."
+          },
+          {
+            "$ref": "https://charbonnierg.github.com/pytest-broadcaster/schemas/test_case.json",
+            "description": "A test case."
+          }
+        ]
+      }
+    }
+  }
+}

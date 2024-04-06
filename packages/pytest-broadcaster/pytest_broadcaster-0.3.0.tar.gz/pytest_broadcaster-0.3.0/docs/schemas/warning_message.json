@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://charbonnierg.github.com/pytest-broadcaster/schemas/warning_message.json",
+  "title": "Warning Message",
+  "description": "A warning message.",
+  "type": "object",
+  "required": [
+    "event",
+    "when",
+    "location",
+    "message",
+    "node_id"
+  ],
+  "properties": {
+    "event": {
+      "const": "warning_message",
+      "description": "The event type. Always 'warning_message'."
+    },
+    "when": {
+      "enum": [
+        "config",
+        "collect",
+        "runtest"
+      ],
+      "description": "When the warning message is emitted."
+    },
+    "node_id": {
+      "type": "string",
+      "description": "The node ID of the node where the warning message is emitted."
+    },
+    "location": {
+      "$ref": "https://charbonnierg.github.com/pytest-broadcaster/schemas/location.json#",
+      "description": "The location of the warning message."
+    },
+    "message": {
+      "type": "string",
+      "description": "The string content of the warning message."
+    },
+    "category": {
+      "type": "string",
+      "description": "The category of the warning message."
+    }
+  }
+}
