@@ -1,0 +1,46 @@
+[project]
+authors = [
+    { name = "SK-415", email = "2967923486@qq.com" },
+]
+requires-python = ">=3.8,<4.0"
+dependencies = [
+    "httpx",
+    "pycryptodome>=3.19.0",
+    "grpcio>=1.56.2",
+    "protobuf>=4.23.4",
+    "qrcode>=7.4.2",
+]
+name = "bilireq"
+version = "0.2.13"
+description = "又一个哔哩哔哩请求库"
+
+[project.license]
+text = "MIT"
+
+[project.optional-dependencies]
+web_qrcode = [
+    "lxml",
+]
+
+[project.urls]
+repository = "https://github.com/SK-415/bilireq"
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "grpcio-tools>=1.56.2",
+    "mypy-protobuf>=3.4.0",
+]
+
+[tool.pdm.build]
+includes = []
+
+[tool.pyright]
+ignore = [
+    "bilireq/grpc/protos",
+]
