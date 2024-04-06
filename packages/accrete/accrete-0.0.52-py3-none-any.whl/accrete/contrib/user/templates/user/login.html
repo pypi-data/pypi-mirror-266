@@ -1,0 +1,34 @@
+{% extends 'ui/layout.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}Login | Accrete{% endblock %}
+
+{% block body %}
+    <section class="hero is-primary is-medium is-bold is-fullheight">
+    <div class="hero-body">
+        <div class="container">
+            <div class="columns">
+                <div class="column box is-8-tablet is-offset-2-tablet is-6-desktop is-offset-3-desktop is-4-fullhd is-offset-4-fullhd p-3">
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        <span class="has-text-danger is-size-7">{{ form.non_field_errors }}</span>
+
+                        <label class="label">{{ form.username.label_tag }}
+                            {{ form.username }}
+                            <span class="has-text-danger is-size-7">{{ form.username.errors }}</span>
+                        </label>
+
+                        <label class="label">{{ form.password.label_tag }}
+                            {{form.password}}
+                            <span class="has-text-danger is-size-7">{{ form.password.errors }}</span>
+                        </label>
+
+                        <input type="submit" class="button is-fullwidth is-success is-medium" value="{% translate 'Login' %}">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
