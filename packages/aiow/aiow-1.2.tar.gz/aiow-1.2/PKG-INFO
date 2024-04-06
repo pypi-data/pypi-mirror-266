@@ -1,0 +1,47 @@
+Metadata-Version: 2.1
+Name: aiow
+Version: 1.2
+Summary: Aiohttp based wrapper.
+Home-page: https://t.me/execal
+Author: odi
+Author-email: ivuxey@gmail.com
+License: MIT
+Project-URL: Source, https://github.com/vauth
+Project-URL: Bug Tracker, https://t.me/feelded
+Keywords: sync,async,aiohttp,proxy
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.5
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: PySocks
+Requires-Dist: aiohttp
+Requires-Dist: aiohttp_socks
+
+<div align="center">
+<h1>Aiow</h1>
+<p>Aiohttp based wrapper</p>
+</div>
+
+
+<h2>Installation:</h2>
+
+```bash
+python3 -m pip install aiow
+```
+
+<h2>Examples:</h2>
+
+```python
+import asyncio
+from aiow import Aiow
+
+async def my_test():
+    # Post(url, args)
+    await Aiow.Post('https://google.com', asjson=False)
+    # Get(url, args)
+    await Aiow.Get('https://google.com', asjson=False)
+#Run
+asyncio.run(my_test())
+```
