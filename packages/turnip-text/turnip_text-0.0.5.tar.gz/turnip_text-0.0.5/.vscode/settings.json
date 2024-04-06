@@ -1,0 +1,39 @@
+{
+    "editor.wordWrap": "bounded",
+    "editor.wrappingIndent": "same",
+    "editor.wordWrapColumn": 120,
+    "[markdown]": {
+        "editor.wordWrap": "bounded",
+        "editor.wrappingIndent": "same",
+        "editor.wordWrapColumn": 120,
+    },
+    "rust-analyzer.cargo.noDefaultFeatures": true,
+    "isort.args": [
+        "--profile", "black"
+    ],
+    "[python]": {
+        "diffEditor.ignoreTrimWhitespace": false,
+        "editor.wordBasedSuggestions": "off",
+        "editor.formatOnSave": true,
+        "editor.formatOnSaveMode": "file",
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        },
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "[rust]": {
+        "editor.formatOnSave": true,
+        "editor.formatOnSaveMode": "file",
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        }
+    },
+    "rust-analyzer.server.extraEnv": {
+        "VIRTUAL_ENV": "${workspaceFolder}/venv_3_11"
+    },
+    "[python][rust]": {
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        }
+    }
+}
