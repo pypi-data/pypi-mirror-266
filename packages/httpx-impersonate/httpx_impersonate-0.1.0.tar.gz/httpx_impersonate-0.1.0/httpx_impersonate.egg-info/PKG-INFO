@@ -1,0 +1,74 @@
+Metadata-Version: 2.1
+Name: httpx_impersonate
+Version: 0.1.0
+Summary: HTTPX with custom Client and AsyncClient that include randomized headers and SSL context.
+Author: deedy5
+License: MIT License
+Project-URL: Homepage, https://github.com/deedy5/httpx_impersonate
+Keywords: python,httpx,impersonate
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE.md
+Requires-Dist: browserforge>=1.1.2
+Requires-Dist: certifi>=2024.2.2
+Requires-Dist: httpx[brotli,http2,zstd]>=0.27.0
+Provides-Extra: dev
+Requires-Dist: mypy>=1.9.0; extra == "dev"
+Requires-Dist: pytest>=8.1.1; extra == "dev"
+Requires-Dist: pytest_asyncio>=0.23.6; extra == "dev"
+Requires-Dist: ruff>=0.3.5; extra == "dev"
+
+![Python >= 3.8](https://img.shields.io/badge/python->=3.8-red.svg)
+# Httpx impersonate
+
+HTTPX with custom Client and AsyncClient that include randomized headers and SSL context.
+
+## Table of Contents
+* [Install](#install)
+* [Features](#features)
+* [Usage](#usage)
+
+## Install
+```python
+pip install -U httpx_impersonate
+```
+
+## Features
+- [x] Randomized Headers: headers that mimic popular web browsers and operating systems.
+- [x] Randomized SSL Context: randomized ciphers for SSL connections.
+
+
+## Usage
+
+```python3
+import httpx_impersonate
+
+with httpx_impersonate.Client() as client:
+    r = client.get("https://httpbin.org/anything")
+    print(r)
+```
+**async**
+```python3
+import asyncio
+import httpx_impersonate
+
+async def get_url():
+    async with httpx_impersonate.AsyncClient() as client:
+        r = await client.get("https://httpbin.org/anything")
+        print(r.json())
+
+asyncio.run(get_url())
+```

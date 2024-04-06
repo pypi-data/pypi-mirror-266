@@ -1,0 +1,68 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "httpx_impersonate"
+description = "HTTPX with custom Client and AsyncClient that include randomized headers and SSL context."
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT License"}
+keywords = ["python", "httpx", "impersonate"]
+authors = [
+  {name = "deedy5"}
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "browserforge>=1.1.2",
+    "certifi>=2024.2.2",
+    "httpx[http2,brotli,zstd]>=0.27.0",
+]
+dynamic = ["version"]
+
+[project.urls]  # Optional
+"Homepage" = "https://github.com/deedy5/httpx_impersonate"
+
+[tool.setuptools.dynamic]
+version = {attr = "httpx_impersonate.__version__"}
+
+[project.optional-dependencies]
+dev = [
+    "mypy>=1.9.0",
+    "pytest>=8.1.1",
+    "pytest_asyncio>=0.23.6",
+    "ruff>=0.3.5",
+]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle
+    "F",  # Pyflakes
+    "UP",  # pyupgrade
+    "B",  # flake8-bugbear
+    "SIM",  # flake8-simplify
+    "I",  # isort
+]
+
+[tool.mypy]
+python_version = "3.8"
+strict = true
+exclude = ["tests/", "build/"]
+
