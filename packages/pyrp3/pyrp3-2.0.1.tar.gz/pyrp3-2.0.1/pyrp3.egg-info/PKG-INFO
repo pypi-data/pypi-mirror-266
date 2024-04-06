@@ -1,0 +1,123 @@
+Metadata-Version: 2.1
+Name: pyrp3
+Version: 2.0.1
+Summary: Python utilities for RedPitaya
+Author-email: Pierre Cladé <pierre.clade@upmc.fr>, Benjamin Wiegand <benjamin.wiegand@physik.hu-berlin.de>, Bastian Leykauf <leykauf@physik.hu-berlin.de>, Doron Behar <doron.behar@gmail.com>
+Maintainer-email: Bastian Leykauf <leykauf@physik.hu-berlin.de>
+License: BSD 3-Clause License
+        
+        Copyright (c) 2016, Pierre Cladé  All rights reserved.
+        Copyright (c) 2018-2019, Benjamin Wiegand  All rights reserved.
+        Copyright (c) 2022, Bastian Leykauf  All rights reserved.
+        
+        
+        Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+        
+            Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+        
+            Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+        
+            Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+        
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+        
+Project-URL: homepage, https://github.com/linien-org/pyrp3/
+Project-URL: repository, https://github.com/linien-org/pyrp3/
+Keywords: RedPitaya,FPGA,zynq
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Education
+Classifier: Topic :: Scientific/Engineering
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: cached_property<2.0,>=1.5.2
+Requires-Dist: myhdl>=0.11
+Requires-Dist: numpy<2.0,>=1.21.5
+Requires-Dist: rpyc<7.0,>=6.0.0
+Provides-Extra: dev
+Requires-Dist: black>=22.8.0; extra == "dev"
+Requires-Dist: pre-commit>=2.20.0; extra == "dev"
+Requires-Dist: flake8>=5.0.4; extra == "dev"
+Requires-Dist: isort>=5.10.1; extra == "dev"
+Requires-Dist: flake8-pyproject>=1.2.3; extra == "dev"
+Requires-Dist: setuptools_scm>=6.2; extra == "dev"
+
+# pyrp3
+
+Python 3 port (using [`2to3`](https://docs.python.org/3/library/2to3.html)) of
+[PyRedPitaya](https://github.com/clade/PyRedPitaya>) library in the `pyrp3` namespace.
+
+Note: The following is a copy of the Readme from the original repo and might not work 
+with this version of the library.
+
+## Overview
+
+This package provides a library to access the [Red Pitaya](http://redpitaya.com/) registers.
+This library consist of a C library (`libmonitor.c`) and a `ctypes` interface on the Python side. 
+
+An object-oriented interface to the different application (scope, generator, PID, AMS, ...) is 
+provided. This interface is implemented using Python properties (see usage below) and can quickly be
+extended to your own application. 
+
+A `rpyc` server is used in order to communicate with your computer. The interface is the same on the
+computer as the one on the board.
+
+## Installation
+
+To install `pyrp3`` on any machine, run the command:
+
+```bash
+  pip3 install pyrp3
+```
+
+## Usage
+
+You need to have Python installed on you Red Pitaya. 
+
+### Interactive Python
+
+Logging onto the redpitaya using ssh, one can start the ipython shell and run :
+
+```python
+
+    from pyrp3.board import RedPitaya
+
+    redpitaya = RedPitaya()
+
+    print(redpitaya.ams.temp) # Read property
+    redpitaya.hk.led = 0b10101010 # Write property
+```
+
+### Remote access
+
+You need to install the `pyrp3` package on your PC as well as `rpyc`: 
+
+```bash
+    rpyc_server
+```
+
+On the computer (replace `REDPITAYA_IP` by the string containing the IP address) : 
+
+```python
+    from rpyc import connect
+    from pyrp3.pc import RedPitaya
+
+    conn = connect(REDPITAYA_IP, port=18861)
+    redpitaya = RedPitaya(conn)
+
+    print(redpitaya.read(0x40000000)) # Direct access
+
+    print(redpitaya.ams.temp) # Read property
+    redpitaya.hk.led = 0b10101010 # Write property
+
+    from time import sleep
+    from pylab import *
+
+    redpitaya.scope.setup(frequency = 100, trigger_source=1)
+    sleep(100E-3)
+    plot(redpitaya.scope.times, redpitaya.scope.data_ch1)
+    show()
+```
