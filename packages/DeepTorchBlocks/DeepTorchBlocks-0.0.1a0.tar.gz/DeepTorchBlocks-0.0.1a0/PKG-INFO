@@ -1,0 +1,264 @@
+Metadata-Version: 2.1
+Name: DeepTorchBlocks
+Version: 0.0.1a0
+Summary: Personal repository for SoA Deep Learning building blocks (in PyTorch)
+Author: Stefano Giacomelli (Ph.D. student UnivAQ)
+Author-email: <stefano.giacomelli@graduate.univaq.it>
+Keywords: python,pytorch,deep_learning,neural_networks
+Classifier: Development Status :: 1 - Planning
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: Unix
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+
+<!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
+<a name="readme-top"></a>
+<!--
+*** Thanks for checking out the Best-README-Template. If you have a suggestion
+*** that would make this better, please fork the repo and create a pull request
+*** or simply open an issue with the tag "enhancement".
+*** Don't forget to give the project a star!
+*** Thanks again! Now go create something AMAZING! :D
+-->
+
+
+
+<!-- PROJECT SHIELDS -->
+<!--
+*** I'm using markdown "reference style" links for readability.
+*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
+*** See the bottom of this document for the declaration of the reference variables
+*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
+*** https://www.markdownguide.org/basic-syntax/#reference-style-links
+-->
+[![Contributors][contributors-shield]][contributors-url]
+[![MIT License][license-shield]][license-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
+[![python](https://img.shields.io/badge/Python-3.10.0-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
+[![pytorch](https://img.shields.io/badge/PyTorch-2.0.2-EE4C2C.svg?style=flat&logo=pytorch)](https://pytorch.org)
+
+
+
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://pypi.org/project/DeepTorchBlocks/">
+    <img src="https://media.licdn.com/dms/image/D4D12AQFPOuaAtlfitQ/article-cover_image-shrink_600_2000/0/1708013352988?e=2147483647&v=beta&t=sFwmO0zKo4v4_ap4xVc7sqAhpA0qTg65dl2OzLmUVd8" alt="Logo" width="750" height="160">
+  </a>
+
+  <h3 align="center">DeepTorchBlocks</h3>
+https://github.com/StefanoGiacomelli/DeepTorchBlocks/tree/main/nn_modules
+
+  <p align="center">
+    ...a repository for SoA Neural Networks building blocks (written in pure Python & PyTorch)
+    <br />
+    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Read the API Documentation</strong></a>
+    <br />
+    <br />
+    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
+    ·
+    <a href="https://github.com/StefanoGiacomelli/DeepTorchBlocks/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    ·
+    <a href="https://github.com/StefanoGiacomelli/DeepTorchBlocks/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+  </p>
+</div>
+
+
+
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#deeptorchblocks">DeepTorchBlocks</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#cloning-repository">Cloning Repository</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#roadmap">To Do</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
+
+
+
+<!-- ABOUT THE PROJECT -->
+## DeepTorchBlocks
+
+<ins>This is a work-in-progress repository: please do not complain about code instability!</ins>
+
+This project was born with the aim to collect and develop a general-purpose set of building blocks, for Neural Network architectures programming and researches structuring. For various reasons, one will be faced with the impossibility of directly exploiting pre-trained architectures and/or modules and will be forced to re-implement from scratch each layer (and or component) of the desired algorithm. To facilitate this step, **DeepTorchBlocks** gives us a hand with a careful selection (under continuous revisioning and updating) of *state-of-the-art* modules coming from CV, NLP and other reearch fields, inheriting all standard [```nn.Module```](https://pytorch.org/docs/stable/generated/torch.nn.Module.html) (PyTorch) features and methods.
+
+You will not find any pre-trained NNs architecture here, only building (sub-)modules!
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+### Built With
+
+For end-users:
+* [```NumPy```](https://numpy.org/doc/stable/reference/index.html) & related dependecies (for math operations)
+* [```PyTorch```](https://pytorch.org/docs/stable/index.html) & related dependecies (for modules inheritance)
+
+For developers:
+* [torch-summary/torchinfo](https://github.com/tyleryep/torchinfo) (for modules parameters report)
+* [torchview](https://github.com/mert-kurttutan/torchview) & related dependecies (for architectural monitoring)
+* [```pytest```](https://docs.pytest.org/en/8.0.x/) & related dependecies (for modules testing)
+
+...
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+This is an example of how you may set up your project locally. To get a local copy up and running follow these simple steps.
+
+### Cloning repository
+
+* for Colab Notebooks
+  ```
+  !git clone https://github.com/StefanoGiacomelli/DeepTorchBlocks.git
+  %cd './DeepTorchBlocks/nn_modules'
+  ```
+call Class and/or Functions directly from related Python files.
+
+### Installation
+
+1. Install the package
+   ```py
+   !pip install DeepTorchBlocks
+   ```
+   this will also auto-install required dependecies
+
+
+2. Install auxiliary packages (for developers only)
+   ```py
+   !pip install torchview
+   from torchview import draw_graph
+
+   !pip install torchinfo
+   from torchinfo import summary
+   ```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- USAGE EXAMPLES -->
+## Usage
+
+  ```py
+  device = 'cuda' if torch.cuda.is_available() else 'cpu'
+  x = torch.rand([1, 3, 200, 200], device=device)              # An example RGB tensor of a single batch, with 200x200 pixels
+
+  model = ConvBlock(in_channels = 3,
+                    out_channels = 10,
+                    kernel_size = 3,
+                    stride = 2,
+                    padding = 1,
+                    activation = nn.ReLU(),
+                    device=device)
+
+  model(x)
+  >>> torch.Tensor(1, 10, 100, 100)
+  ```
+
+_For more examples, please refer to the [Documentation](https://example.com)_
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- ROADMAP -->
+## Roadmap
+
+- [ ] Add Bi-dir ConvRNN
+- [ ] Define Tests pipeline (shape, self.params correctness, forward etc.)
+- [ ] Compile documentation (SPhinx & ReadTheDocs template w. LaTeX extensions)
+- [ ] Metrics.py (classification) & Utils.py (dataset, pre-processing
+- [ ] CI/CD .github-workflow: for each admin push: Test-pipeline -> Package compilation & pubblication -> Documentation update
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- CONTRIBUTING -->
+## Contributing
+
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+Don't forget to give the project a star! Thanks again!
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/NewFeature`)
+3. Commit your Changes (`git commit -m 'Add some NewFeature'`)
+4. Push to the Branch (`git push origin feature/NewFeature`)
+5. Open a Pull Request
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- LICENSE -->
+## License
+
+Distributed under the MIT License. See `LICENSE.txt` for more information.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- CONTACT -->
+## Contact
+
+Stefano Giacomelli - https://www.linkedin.com/in/stefano-giacomelli-811654135/ - stefano.giacomelli@graduate.univaq.it
+
+Project Link: https://github.com/StefanoGiacomelli/DeepTorchBlocks
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- ACKNOWLEDGMENTS -->
+## Acknowledgments
+
+* [Choose an Open Source License](https://choosealicense.com)
+* [Img Shields](https://shields.io)
+* [GitHub Pages](https://pages.github.com)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
+[contributors-url]: https://github.com/StefanoGiacomelli/DeepTorchBlocks/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
+[forks-url]: https://github.com/StefanoGiacomelli/DeepTorchBlocks/forks
+[mantainer-url]: https://github.com/StefanoGiacomelli
+[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
+[issues-url]: https://github.com/StefanoGiacomelli/DeepTorchBlocks/issues
+[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
+[license-url]: https://github.com/StefanoGiacomelli/DeepTorchBlocks?tab=MIT-1-ov-file
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-url]: https://www.linkedin.com/in/stefano-giacomelli-811654135/
+[product-screenshot]: images/screenshot.png
