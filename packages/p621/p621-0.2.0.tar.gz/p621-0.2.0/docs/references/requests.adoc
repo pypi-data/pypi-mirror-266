@@ -1,0 +1,88 @@
+= requests
+
+== functions
+
+[cols='1,1,5']
+|===
+|`_list[Post]_`
+|`*search_posts*`
+|retrieves a list of posts, tags can be provided for specific searches
+
+|`_list[Post]_`
+|`*list_popular*`
+|lists the most popular posts of a time range
+
+|`_list[Post]_`
+|`*list_favorites*`
+|lists the favorite of a given user
+
+|`_Post_`
+|`*get_post*`
+|retrieves post of a given ID
+|===
+
+
+== `search_posts`
+
+`p621.*search_posts*(_limit_, _tags_, _page_)`
+
+retrieves a list of posts, tags can be provided for specific searches
+
+=== parameters
+
+* _int_ *limit* (optional) - number of posts to retrieve, capped at a maximum of 320 posts
+* _list[str]_ *tags* (optional) - a list of tags to search for
+* _int_ *page* (optional) - page of the posts to retrieve
+
+=== returns
+
+_list[Post]_ - list of retrieved posts
+
+
+== `list_favorites`
+
+`p621.*list_favorites*(_user_id_)`
+
+lists the favorite of a given user
+
+=== parameters
+
+* _int_ *user_id* (optional) - ID of the target user, authorized user will be used if unspecified
+
+=== returns
+
+_list[Post]_ - list of retrieved posts
+
+
+== `list_popular`
+
+`p621.*list_popular*(_date_, _scale_)`
+
+lists the most popular posts of a time range
+
+=== parameters
+
+* _str_ *date* (optional) - date in the format of yyyy-mm-dd
+* _str_ *scale* (optional) - scale of the time range: day, week or month
+
+=== returns
+
+_list[Post]_ - list of retrieved posts
+
+
+== `get_post`
+
+`p621.*get_post*(_post_id_)`
+
+retrieves post of a given ID
+
+=== parameters
+
+* _int_ *post_id* - ID of the post to retrieve
+
+=== returns
+
+_Post_ - retrieved post
+
+
+== link:../contents[contents]
