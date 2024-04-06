@@ -1,0 +1,41 @@
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core"]
+
+[tool.poe.env]
+DIRS = "netsome tests"
+
+[tool.poe.tasks.pretty]
+default_item_type = "cmd"
+sequence = [
+  "poetry run autoflake --in-place --verbose --recursive $DIRS",
+  "poetry run black $DIRS",
+  "poetry run isort $DIRS",
+  "poetry run toml-sort --in-place --all pyproject.toml"
+]
+
+[tool.poe.tasks.tests]
+cmd = "poetry run pytest -vvv"
+
+[tool.poetry]
+authors = ["kuderr <dakudryavcev@gmail.com>"]
+classifiers = [
+  "Development Status :: 1 - Planning",
+  "Topic :: Software Development :: Libraries",
+  "Topic :: System :: Networking"
+]
+description = "The one and only library to make your network business code handsome"
+keywords = ["library", "network"]
+license = "MIT License"
+name = "netsome"
+readme = "README.md"
+repository = "https://github.com/kuderr/netsome"
+version = "0.2.0"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+[tool.poetry.group.dev.dependencies]
+poethepoet = "^0.25.0"
+pytest = "^8.1.1"
+toml-sort = "^0.23.1"
