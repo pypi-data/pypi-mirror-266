@@ -1,0 +1,30 @@
+[project]
+name = "lockhart-serial"
+version = "1.0.8"
+authors = [
+  { name="NinjaBunny", email="xxninjabunnyxx@gmail.com" },
+]
+description = "Serial communication for Lockhart devices"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+long_description_content_type = "text/markdown"
+
+dependencies = [
+  "pyserial"
+]
+
+[project.urls]
+Homepage = "https://github.com/pypa/sampleproject"
+Issues = "https://github.com/pypa/sampleproject/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.sources]
+"src/lockhart-serial" = "lockhart_serial"
