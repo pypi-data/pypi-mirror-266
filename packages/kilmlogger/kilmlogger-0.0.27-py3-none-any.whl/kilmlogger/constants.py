@@ -1,0 +1,16 @@
+CORRELATION_KEY = "correlation_id"
+CORRELATION_HEADER = "X-Correlation-ID"
+
+REPLACE_KEY_FOR_TIMESTAMP = "time"
+REPLACE_KEY_FOR_EVENT = "msg"
+
+LEVEL_FIELD_NAME = "level"
+CORRELATION_FIELD_NAME = "correlation_id"
+TIME_FIELD_NAME = "time"
+MESSAGE_FIELD_NAME = "msg"
+EXTRA_DATA_FIELD_NAME = "extra_data"
+METRICS_FIELD_NAME = "metrics"
+
+DEFAULT_FILE_LOG = "logs/kilmlogger.log"
+
+ACCEPTED_LEVELS = ["DEBUG", "INFO", "ERROR", "CRITICAL"]
