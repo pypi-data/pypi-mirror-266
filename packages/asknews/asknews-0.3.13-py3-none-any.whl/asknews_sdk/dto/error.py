@@ -1,0 +1,18 @@
+from __future__ import annotations
+from typing import Annotated
+from pydantic import BaseModel, Field
+
+
+class APIErrorModel(BaseModel):
+    code: Annotated[int | None, Field(title='Error Code')] = 500000
+    detail: Annotated[str | None, Field(title='Detail')] = "Internal Server Error"
+
+
+class ValidationError(BaseModel):
+    loc: Annotated[list[str | int], Field(title='Location')]
+    msg: Annotated[str, Field(title='Message')]
+    type: Annotated[str, Field(title='Error Type')]
+
+
+class HTTPValidationError(BaseModel):
+    detail: Annotated[list[ValidationError] | None, Field(title='Detail')] = None
