@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "mdocker"
+version = "0.3.0"
+description = "An easy-to-use wrapper for multi-platform Docker image builds."
+keywords = ["docker", "docker-buildx", "multi-platform"]
+authors = ["seppzer0"]
+repository = "https://github.com/seppzer0/mdocker"
+readme = "README.md"
+license = "MIT"
+packages = [{include = "mdocker"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+argparse = "^1.4.0"
+pathlib = "^1.0"
+typing = "^3.7"
+pydantic = "^2.6"
+
+[tool.poetry.dev-dependencies]
+pytest = "^8.0"
+pytest-cov = "^4.0.0"
+pytest-mock = "^3.12.0"
+twine = "^4.0.2"
+pyright = "^1.1"
+
+[tool.coverage.run]
+source = ["mdocker/models"]
+
+[tool.coverage.report]
+show_missing = true
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
