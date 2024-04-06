@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "jupyrest"
+version = "0.2.0"
+description = "A tool to expose Jupyter notebooks as a REST API."
+authors = ["Koushik Krishnan <unequal09swims@icloud.com>"]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.12"
+jsonschema = "^4.21.1"
+nbformat = "^5.10.3"
+nbclient = "^0.10.0"
+entrypoints = "^0.4"
+scrapbook = "^0.5.0"
+pydantic = "^1.10.14"
+fastapi = "^0.110.0"
+uvicorn = "^0.29.0"
+ipykernel = "^6.29.3"
+nbconvert = "^7.16.3"
+anyio = "^4.3.0"
+aiohttp = "^3.9.3"
+papermill = "^2.5.0"
+aiofiles = "^23.2.1"
+ipython = [
+    { version = ">=8.18.1,<8.19.0", python = ">=3.9,<3.10" },
+    { version = ">=8.19.0", python = ">=3.10" }
+]
+azure-storage-blob = "^12.19.1"
+azure-storage-queue = "^12.9.0"
+notebook = "^7.1.2"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^6.0"
+pytest-xprocess = "^0.23.0"
+pre-commit = "^3.6.2"
+black = "^24.3.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
