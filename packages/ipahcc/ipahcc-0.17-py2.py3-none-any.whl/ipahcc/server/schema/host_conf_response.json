@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "Root Type for HostConfResponse",
+  "description": "The response for the action to retrieve the host vm information when it is being enrolled. This action is taken from the host vm.",
+  "type": "object",
+  "required": [
+    "auto_enrollment_enabled",
+    "domain_id",
+    "domain_name",
+    "domain_type",
+    "rhel-idm"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "auto_enrollment_enabled": {
+      "description": "Enable or disable host vm auto-enrollment for this domain",
+      "type": "boolean"
+    },
+    "domain_id": {
+      "$ref": "defs.json#/$defs/DomainId"
+    },
+    "domain_name": {
+      "$ref": "defs.json#/$defs/DomainName"
+    },
+    "domain_type": {
+      "$ref": "defs.json#/$defs/DomainType"
+    },
+    "rhel-idm": {
+      "$ref": "defs.json#/$defs/HostConfIpa"
+    },
+    "token": {
+      "$ref": "defs.json#/$defs/HostToken"
+    }
+  }
+}

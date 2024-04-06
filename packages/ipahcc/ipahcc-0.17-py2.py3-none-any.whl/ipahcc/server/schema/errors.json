@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "Root Type for ErrorResponse",
+  "description": "General error response returned by the idmsvc API",
+  "type": "object",
+  "required": [
+    "errors"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "errors": {
+      "description": "Error objects provide additional information about problems encountered while performing an operation.",
+      "type": "array",
+      "items": {
+        "$ref": "defs.json#/$defs/ErrorInfo"
+      },
+      "minItems": 1,
+      "readOnly": true
+    }
+  }
+}
