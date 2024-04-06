@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0", "uvicorn~=0.18.2", "fastapi~=0.78.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "translit_me"
+version = "1.1.0"
+authors = [
+  { name="Tomer Sagi", email="tsagi@cs.aau.dk" }, { name="Sinai Rusinek", email="sinai.rusinek@mail.huji.ac.il" },
+    { name="Moran Zaga", email="mzaga@Staff.haifa.ac.il" }
+]
+description = "A transliteration service for Middle-Eastern languages. \n The service was developed as part of the MEHDIE project- https://mehdie.org/. \n MEHDIE is funded by the Israel Ministry of Science and Technology (MOST)."
+
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://mehdie.org/"
+"Bug Tracker" = "https://gitlab.com/m8417/hebrew-transliteration-service/-/issues"
