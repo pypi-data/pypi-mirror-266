@@ -1,0 +1,40 @@
+name: Main Workflow
+
+on: [push]
+
+jobs:
+  basic_checks:
+    runs-on: ubuntu-latest
+    name: Basic Checks
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.8"
+
+      - name: Precommit checks
+        uses: pre-commit/action@v3.0.1
+
+  build:
+    runs-on: ubuntu-20.04
+    name: Build & Test
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.8"
+
+      - name: Install repository
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -e ".[engines]"
+
+      - name: Run tests with pytest
+        run: python3 -m pytest -v tests/
