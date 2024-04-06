@@ -1,0 +1,29 @@
+$endpoint:
+    is_sdk: true
+    method: get
+    path: ${external}/entity/external_get_entities_data
+    function: main.site.app.external.entity.get_entities_data.get_entities_data
+    desc: "Gets the details for a passed entity"
+Arguments:
+    type: Object
+    properties:
+        entity_ids:
+            type: List<ObjectId>
+            desc: "Ids of the entity to retrieve"
+        entity_type:
+            type: entity.EntityType
+            desc: "The type of the entities requested, e.g. lab_request or approval"
+
+EntityDetails:
+    type: Object
+    properties:
+        entity:
+            type: entity.Entity
+        field_values:
+            type: List<field_values.FieldRefIdNameValue>
+
+Data:
+    type: Object
+    properties:
+        entity_details:
+            type: List<EntityDetails>

@@ -1,0 +1,41 @@
+$endpoint:
+    is_sdk: true
+    method: get
+    path: ${external}/recipe_metadata/external_get_recipe_metadata_data
+    function: main.site.app.external.recipe_metadata.get_recipe_metadata_data.get_recipe_metadata_data
+    desc: "Gets the recipe metadata. Recipe metadata is data associated with experiments that is not an input, output or calculation, such as a sample ID."
+
+Arguments:
+    type: Object
+    properties:
+        material_family_id:
+            type: ObjectId
+            desc: "The material family ID to get the recipe metadata values from."
+        recipe_metadata_ids:
+            type: Optional<List<ObjectId>>
+            desc: "The recipe metadata IDs to get the data from. If this is not filled in, all metadata from a material family will be returned (in paginated form)."
+        offset?:
+            type: Optional<Integer>
+            desc: "Used for pagination, where the number of results returned exceeds the limit. Results are always ordered by the metadata ID"
+        limit?:
+            type: Optional<Integer>
+            desc: "The maximum number of results to return. By default this is set to 1,000 and it cannot be set higher than 1,000"
+
+FullRecipeMetadataField:
+    type: Object
+    properties:
+        recipe_metadata_id:
+            type: ObjectId
+            desc: "The unique integer ID of the recipe metadata value. Used for joining and identification elsewhere"
+        name:
+            type: String
+            desc: "The name of the recipe metadata"
+        quantity_type:
+            type: String
+            desc: "The quantity type of the recipe metadata, such as numeric, categorical or text"
+
+Data:
+    type: Object
+    properties:
+        recipe_metadata:
+            type: List<FullRecipeMetadataField>

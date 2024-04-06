@@ -1,0 +1,29 @@
+$endpoint:
+    is_sdk: true
+    method: get
+    path: ${external}/recipes/external_get_recipe_names
+    function: main.site.app.external.recipes.get_recipe_names.get_recipe_names
+    desc: "Gets the name of all recipes (or experiments, used as synonyms by Uncountable) for a project. The call external_get_projects can be used to find projects"
+
+Arguments:
+    type: Object
+    properties:
+        project_id:
+            type: ObjectId
+            desc: "Required: The project ID to get the recipes/experiments from."
+
+SimpleRecipe:
+    type: Object
+    properties:
+        id:
+            type: ObjectId
+            desc: "The unique integer ID of the recipe/experiment. Used for joining and identification elsewhere"
+        name:
+            type: String
+            desc: "The name of the recipe"
+
+Data:
+    type: Object
+    properties:
+        recipes:
+            type: List<SimpleRecipe>
