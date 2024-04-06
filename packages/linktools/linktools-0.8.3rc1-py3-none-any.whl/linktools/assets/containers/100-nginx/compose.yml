@@ -1,0 +1,13 @@
+services:
+  nginx:
+    volumes:
+      - '{{ container.get_app_path("conf.d") }}:/etc/nginx/conf.d'
+    ports:
+      - '{{ HTTP_PORT }}:{{ HTTP_PORT }}'
+      - '{{ HTTPS_PORT }}:{{ HTTPS_PORT }}'
+    networks:
+      - nginx
+
+networks:
+  nginx:
+    name: nginx
