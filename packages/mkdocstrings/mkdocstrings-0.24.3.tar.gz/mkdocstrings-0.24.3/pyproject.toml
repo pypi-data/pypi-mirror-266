@@ -1,0 +1,86 @@
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[project]
+name = "mkdocstrings"
+description = "Automatic documentation from sources, for MkDocs."
+authors = [
+    { name = "Timothée Mazzucotelli", email = "dev@pawamoy.fr" },
+]
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = [
+    "mkdocs",
+    "mkdocs-plugin",
+    "docstrings",
+    "autodoc",
+    "documentation",
+]
+dynamic = []
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Documentation",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Documentation",
+    "Topic :: Utilities",
+    "Typing :: Typed",
+]
+dependencies = [
+    "click>=7.0",
+    "Jinja2>=2.11.1",
+    "Markdown>=3.3",
+    "MarkupSafe>=1.1",
+    "mkdocs>=1.4",
+    "mkdocs-autorefs>=0.3.1",
+    "platformdirs>=2.2.0",
+    "pymdown-extensions>=6.3",
+    "importlib-metadata>=4.6; python_version < '3.10'",
+    "typing-extensions>=4.1; python_version < '3.10'",
+]
+version = "0.24.3"
+
+[project.license]
+text = "ISC"
+
+[project.optional-dependencies]
+crystal = [
+    "mkdocstrings-crystal>=0.3.4",
+]
+python-legacy = [
+    "mkdocstrings-python-legacy>=0.2.1",
+]
+python = [
+    "mkdocstrings-python>=0.5.2",
+]
+
+[project.urls]
+Homepage = "https://mkdocstrings.github.io"
+Documentation = "https://mkdocstrings.github.io"
+Changelog = "https://mkdocstrings.github.io/changelog"
+Repository = "https://github.com/mkdocstrings/mkdocstrings"
+Issues = "https://github.com/mkdocstrings/mkdocstrings/issues"
+Discussions = "https://github.com/mkdocstrings/mkdocstrings/discussions"
+Gitter = "https://gitter.im/mkdocstrings/community"
+Funding = "https://github.com/sponsors/pawamoy"
+
+[project.entry-points."mkdocs.plugins"]
+mkdocstrings = "mkdocstrings.plugin:MkdocstringsPlugin"
+
+[tool.pdm.version]
+source = "scm"
+
+[tool.pdm.build]
+package-dir = "src"
+editable-backend = "editables"
