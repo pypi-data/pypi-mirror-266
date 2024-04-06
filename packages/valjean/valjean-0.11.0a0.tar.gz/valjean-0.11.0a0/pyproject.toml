@@ -1,0 +1,222 @@
+# -*- coding: utf-8 -*-
+# Copyright French Alternative Energies and Atomic Energy Commission
+# Contributors: valjean developers
+# valjean-support@cea.fr
+#
+# This software is a computer program whose purpose is to analyze and
+# post-process numerical simulation results.
+#
+# This software is governed by the CeCILL license under French law and abiding
+# by the rules of distribution of free software. You can use, modify and/ or
+# redistribute the software under the terms of the CeCILL license as circulated
+# by CEA, CNRS and INRIA at the following URL: http://www.cecill.info.
+#
+# As a counterpart to the access to the source code and rights to copy, modify
+# and redistribute granted by the license, users are provided only with a
+# limited warranty and the software's author, the holder of the economic
+# rights, and the successive licensors have only limited liability.
+#
+# In this respect, the user's attention is drawn to the risks associated with
+# loading, using, modifying and/or developing or reproducing the software by
+# the user in light of its specific status of free software, that may mean that
+# it is complicated to manipulate, and that also therefore means that it is
+# reserved for developers and experienced professionals having in-depth
+# computer knowledge. Users are therefore encouraged to load and test the
+# software's suitability as regards their requirements in conditions enabling
+# the security of their systems and/or data to be ensured and, more generally,
+# to use and operate it in the same conditions as regards security.
+#
+# The fact that you are presently reading this means that you have had
+# knowledge of the CeCILL license and that you accept its terms.
+
+[build-system]
+requires = ["poetry-core >= 1.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "valjean"
+version = "0.11.0-alpha.0"
+description = "VALidation, Journal d'Évolution et ANalyse"
+authors = ["valjean developers"]
+maintainers = ["valjean developers <valjean-support@cea.fr>"]
+license = "CeCILL-C Free Software License Agreement (CECILL-C)"
+readme = "README.md"
+homepage = "https://github.com/valjean-framework/valjean"
+repository = "https://github.com/valjean-framework/valjean.git"
+documentation = "https://valjean.readthedocs.io/"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Development Status :: 4 - Beta",
+  "Environment :: Console",
+  "Operating System :: POSIX :: Linux",
+  "Topic :: Scientific/Engineering :: Physics"
+]
+packages = [{ include = "valjean" }]
+exclude = ["**/.gitignore", "doc", "tests"]
+
+[tool.poetry.urls]
+"Bug tracker" = "https://github.com/valjean-framework/valjean/issues"
+
+[tool.poetry.scripts]
+valjean = "valjean.cambronne.main:main"
+
+[tool.poetry.dependencies]
+python = "^3.6.2"
+pyparsing = "^3.0"
+toml = "^0.10"
+numpy = [{version = "^1.19", python = ">=3.6,<3.7"},
+         {version = "^1.20", python = ">=3.7"}]
+matplotlib = "^3.3"
+scipy = [{version = "^1.5", python = ">=3.6,<3.7"},
+         {version = "^1.6", python = ">=3.7"}]
+h5py = [{version = "~3.1", python = ">=3.6,<3.7"},
+        {version = "^3.2", python = ">=3.7"}]
+# dependencies for the [graphviz] extra
+pydot = {version = "^1.4.2", optional = true}
+
+# dependencies for the [dev] extra
+pytest = "^7.0"
+pytest-cov = "^4.0"
+pytest-mpl = "^0.16"
+pytest-timeout = "^2.0"
+rstcheck = [{version = "^3.3", python = ">=3.6,<3.7"},
+            {version = "^6.0", python = ">=3.7"}]
+Sphinx = "~5.0"
+sphinx-rtd-theme = "^1.0"
+pylint = [{version = "^2.13", python = ">=3.6,<3.8"},
+          {version = "^3.0", python = ">=3.8"}]
+flake8 = "<6"
+hypothesis = "^6.31"
+nbsphinx = "^0.8"
+jupyter-client = "^7.1"
+ipykernel = "^5.5"
+ipython = "!=8.7.0"
+
+[tool.poetry.extras]
+graphviz = ["pydot"]
+dev = [
+  "pytest",
+  "pytest-cov",
+  "pytest-mpl",
+  "pytest-timeout",
+  "rstcheck",
+  "Sphinx",
+  "sphinx-rtd-theme",
+  "pylint",
+  "flake8",
+  "hypothesis",
+  "nbsphinx",
+  "jupyter-client",
+  "ipykernel",
+  "ipython"
+]
+
+[tool.pytest.ini_options]
+addopts = "-v -s -ra --doctest-modules"
+norecursedirs = ["data", ".eggs", "doc", ".git", "build", "dist", "*.egg"]
+markers = [
+  "slow: marks tests as slow (using runslow argument)",
+  "mpl_image_compare: marks tests using plot comparison with mpl (using mpl argument)"
+]
+junit_family = "xunit2"
+
+[tool.pylint.basic]
+good-names=["i", "j", "k", "ex", "Run", "x", "y", "z", "on", "do"]
+
+[tool.pylint.message_control]
+disable = [
+  "bad-inline-option", "deprecated-pragma", "import-outside-toplevel",
+  "locally-disabled", "raw-checker-failed", "redefined-outer-name",
+  "suppressed-message", "useless-suppression",
+  ]
+
+[tool.pylint.typecheck]
+ignored-modules = "py"
+
+[tool.pylint.format]
+max-line-length = 79
+
+[tool.pylint.design]
+max-parents = 8
+max-public-methods = 25
+min-public-methods = 0
+max-args=6
+
+
+[tool.tox]
+legacy_tox_ini = """
+# See doc/src/devs/tox.rst if you have questions about the tox configuration
+[tox]
+minversion = 3.17.0
+requires = virtualenv<20.22.0
+           setuptools<59.0
+# isolated_build is required by poetry
+isolated_build = true
+envlist = py{36,37,38,39,310}
+
+[tox:jenkins]
+skip_missing_interpreters = true
+
+[testenv]
+setenv =
+        COVERAGE_FILE=.coverage.{envname}
+        PIP_CACHE_DIR={toxworkdir}/{envname}/pip-cache
+description = invoke pytest with coverage, XML output and mpl
+commands = pip install .[dev,graphviz]
+           pytest --basetemp="{toxworkdir}/tmp-{envname}" \
+                --durations=20 --cov-report term-missing \
+                --cov-config "{toxinidir}/.coveragerc" \
+                --cov-report=xml:"{toxworkdir}/coverage-{envname}.xml" \
+                --cov=valjean --junit-xml="{toxworkdir}/pytest-{envname}.xml" \
+                --junit-prefix="{envname}" --mpl \
+                --mpl-results-path="{toxworkdir}/{envname}/mpl_image_compare" \
+                --timeout=30 {posargs}
+
+[testenv:py310]
+passenv = PYTHONPATH
+
+[testenv:docs-py310]
+description = invoke sphinx-build to build the HTML docs
+# be nitpicky on the HTML documentation
+passenv = HOME
+commands = pip install .[dev]
+           sphinx-build -d "{toxworkdir}/docs_doctree" -n -E \
+                --keep-going -b html -w "{toxworkdir}/sphinx-html-notags.out" \
+                -t no_notebooks "{toxinidir}/doc/src" \
+                "{toxworkdir}/doc/html-notags"
+           sphinx-build -d "{toxworkdir}/docs_doctree" -n -E -W \
+                --keep-going -b html -w "{toxworkdir}/sphinx-html.out" \
+                -t tests "{toxinidir}/doc/src" \
+                "{toxworkdir}/doc/html"
+           sphinx-build -d "{toxworkdir}/docs_doctree" -W \
+                --keep-going -b linkcheck -t tests \
+                "{toxinidir}/doc/src" "{toxworkdir}/doc/linkcheck"
+
+[testenv:linting-py310]
+description = invoke pylint and flake8 on the source package
+commands = pip install .[dev]
+           pylint -f parseable --exit-zero \
+                --rcfile "{toxinidir}/pyproject.toml" {posargs}
+           flake8 --config "{toxinidir}/.flake8" \
+                --exit-zero {posargs}
+
+[testenv:parsing-py310]
+description = invoke pytest on the nightly parsing tests
+passenv =
+        PYTHONPATH
+        VALJEAN_NIGHTLY_JET4_MONO_PATH
+        VALJEAN_NIGHTLY_JET4_PARA_PATH
+        VALJEAN_NIGHTLY_JET4_EVOL_PATH
+        VALJEAN_NIGHTLY_V10_2_PATH
+        VALJEAN_NIGHTLY_V11_0_PATH
+        VALJEAN_NIGHTLY_V11_1_PATH
+        VALJEAN_NIGHTLY_V12_0_PATH
+        VALJEAN_NIGHTLY_V12_1_PATH
+        VALJEAN_NIGHTLY_AP3_RATES_PATH
+commands = pip install .[dev,graphviz]
+           pytest --runslow --cov-report term-missing \
+                --durations=20 --cov-config "{toxinidir}/.coveragerc" \
+                --cov=valjean --mpl \
+                --mpl-results-path="{toxworkdir}/{envname}/mpl_image_compare" \
+                {posargs}
+"""
