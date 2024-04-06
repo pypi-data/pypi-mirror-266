@@ -1,0 +1,38 @@
+$endpoint:
+    is_sdk: true
+    method: get
+    path: ${external}/inputs/external_get_input_names
+    function: main.site.app.external.inputs.get_input_names.get_input_names
+    desc: "Gets the name of all inputs for a material family. An input is either an ingredient or process parameter, with metadata and calculations assigned separately"
+
+Arguments:
+    type: Object
+    properties:
+        material_family_id:
+            type: ObjectId
+            desc: "The material family ID to get the input values from"
+        offset?:
+            type: Optional<Integer>
+            desc: "Used for pagination, where the number of results returned exceeds the limit. Results are always ordered by the input ID"
+        is_parameter:
+            type: Optional<Boolean>
+            desc: "Whether to get parameters or ingredients. By default both are returned. When set to true, only parameters are returned, and when set to false, only ingredients are returned"
+        limit?:
+            type: Optional<Integer>
+            desc: "The maximum number of results to return. By default this is set to 20,000 and it cannot be set higher than 20,000"
+
+InputWithName:
+    type: Object
+    properties:
+        input_id:
+            type: ObjectId
+            desc: "The unique integer ID of the input value. Used for joining and identification elsewhere"
+        name:
+            type: String
+            desc: "The name of the input"
+
+Data:
+    type: Object
+    properties:
+        inputs:
+            type: List<InputWithName>

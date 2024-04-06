@@ -1,0 +1,39 @@
+$endpoint:
+    is_sdk: true
+    method: get
+    path: ${external}/recipes/external_get_recipe_calculations
+    function: main.site.app.external.recipes.get_recipe_calculations.get_recipe_calculations
+    desc: "Gets the calculations for the passed recipes"
+Arguments:
+    type: Object
+    properties:
+        recipe_ids:
+            type: List<ObjectId>
+            desc: "Ids of the Recipes to retrieve calculations for"
+        calculation_ids?:
+            type: List<ObjectId>
+            desc: "Optionally a list of ids of calculations to retrieve"
+
+RecipeCalculation:
+    type: Object
+    properties:
+        recipe_id:
+            type: ObjectId
+            desc: "Identifier for the recipe"
+        calculation_id:
+            type: ObjectId
+            desc: "Identifier for the calculation"
+        quantity_dec?:
+            type: Decimal
+            desc: "The value for the calculation, if it is of numeric type"
+        quantity_json?:
+            type: JsonValue
+            desc: "The value for the calculation, if it is not of numeric type"
+
+Data:
+    type: Object
+    properties:
+        recipe_calculations:
+            type: List<RecipeCalculation>
+        calculations:
+            type: List<calculations.Calculation>
