@@ -1,0 +1,732 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>lezargus.library.atmosphere &#8212; Lezargus  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/lezargus/library/atmosphere';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Lezargus  documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">User Manual</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../user/index.html">User Manual</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Technical Manual</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../technical/index.html">Technical Manual</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../technical/convention.html">Conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../technical/uncertainty.html">Uncertainty Propagation</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Code Manual</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../code/modules.html">lezargus</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../code/lezargus.html">lezargus package</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../code/lezargus.container.html">lezargus.container package</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../code/lezargus.container.broadcast.html">lezargus.container.broadcast module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../code/lezargus.container.cube.html">lezargus.container.cube module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../code/lezargus.container.image.html">lezargus.container.image module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../code/lezargus.container.mosaic.html">lezargus.container.mosaic module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../code/lezargus.container.parent.html">lezargus.container.parent module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../code/lezargus.container.spectra.html">lezargus.container.spectra module</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../code/lezargus.library.html">lezargus.library package</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../code/lezargus.library.array.html">lezargus.library.array module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../code/lezargus.library.atmosphere.html">lezargus.library.atmosphere module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../code/lezargus.library.config.html">lezargus.library.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../code/lezargus.library.conversion.html">lezargus.library.conversion module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../code/lezargus.library.convolution.html">lezargus.library.convolution module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../code/lezargus.library.data.html">lezargus.library.data module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../code/lezargus.library.fits.html">lezargus.library.fits module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../code/lezargus.library.flags.html">lezargus.library.flags module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../code/lezargus.library.hint.html">lezargus.library.hint module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../code/lezargus.library.interpolate.html">lezargus.library.interpolate module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../code/lezargus.library.logging.html">lezargus.library.logging module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../code/lezargus.library.math.html">lezargus.library.math module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../code/lezargus.library.path.html">lezargus.library.path module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../code/lezargus.library.photometry.html">lezargus.library.photometry module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../code/lezargus.library.stitch.html">lezargus.library.stitch module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../code/lezargus.library.temporary.html">lezargus.library.temporary module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../code/lezargus.library.wrapper.html">lezargus.library.wrapper module</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../code/lezargus.simulation.html">lezargus.simulation package</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../code/lezargus.simulation.spectre.html">lezargus.simulation.spectre module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../code/lezargus.__main__.html">lezargus.__main__ module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../code/lezargus.__version__.html">lezargus.__version__ module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../code/lezargus.initialize.html">lezargus.initialize module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <h1>Source code for lezargus.library.atmosphere</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Atmospheric functions and other operations.</span>
+
+<span class="sd">This file keeps track of all of the functions and computations which deal</span>
+<span class="sd">with the atmosphere. Note that seeing convolution and spectral convolution</span>
+<span class="sd">is in the :py:mod:`lezargus.library.convolution` module.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">lezargus</span>
+<span class="kn">from</span> <span class="nn">lezargus.library</span> <span class="kn">import</span> <span class="n">hint</span>
+<span class="kn">from</span> <span class="nn">lezargus.library</span> <span class="kn">import</span> <span class="n">logging</span>
+
+
+<div class="viewcode-block" id="airmass">
+<a class="viewcode-back" href="../../../code/lezargus.library.atmosphere.html#lezargus.library.atmosphere.airmass">[docs]</a>
+<span class="k">def</span> <span class="nf">airmass</span><span class="p">(</span><span class="n">zenith_angle</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">hint</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">hint</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the airmass from the zenith angle.</span>
+
+<span class="sd">    This function calculates the airmass provided a zenith angle. For most</span>
+<span class="sd">    cases the plane-parallel atmosphere method works, and it is what this</span>
+<span class="sd">    function uses. However, we also use a more accurate formula for airmass at</span>
+<span class="sd">    higher zenith angles (&gt;80 degree), namely from DOI:10.1364/AO.28.004735.</span>
+<span class="sd">    We use a weighted average between 75 &lt; z &lt; 80 degrees to allow for a</span>
+<span class="sd">    smooth transition.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    zenith_angle : float or ndarray</span>
+<span class="sd">        The zenith angle, in radians.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    airmass_value : float or ndarray</span>
+<span class="sd">        The airmass. The variable name is to avoid name conflicts.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># The bounds of the spline region.</span>
+    <span class="n">low_spline_deg</span> <span class="o">=</span> <span class="mi">75</span>
+    <span class="n">high_spline_deg</span> <span class="o">=</span> <span class="mi">80</span>
+
+    <span class="c1"># For the Kasten Young 1989 equation, we need the zenith angle in degrees.</span>
+    <span class="n">zenith_angle_degree</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">zenith_angle</span><span class="p">)</span>
+
+    <span class="c1"># We either use the faster secant version for zenith angles.</span>
+    <span class="n">secant_airmass</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">zenith_angle</span><span class="p">)</span>
+    <span class="n">kasten_young_airmass</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">zenith_angle</span><span class="p">)</span>
+        <span class="o">+</span> <span class="mf">0.50572</span> <span class="o">*</span> <span class="p">(</span><span class="mf">6.07995</span> <span class="o">+</span> <span class="mi">90</span> <span class="o">-</span> <span class="n">zenith_angle_degree</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mf">1.6364</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="c1"># The two modes of calculation.</span>
+    <span class="n">airmass_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+        <span class="n">zenith_angle_degree</span> <span class="o">&lt;=</span> <span class="n">high_spline_deg</span><span class="p">,</span>
+        <span class="n">secant_airmass</span><span class="p">,</span>
+        <span class="n">kasten_young_airmass</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="c1"># Creating the average splice between the two regions.</span>
+    <span class="n">splice_index</span> <span class="o">=</span> <span class="p">(</span><span class="n">zenith_angle_degree</span> <span class="o">&gt;=</span> <span class="n">low_spline_deg</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span>
+        <span class="n">zenith_angle_degree</span> <span class="o">&lt;=</span> <span class="n">high_spline_deg</span>
+    <span class="p">)</span>
+    <span class="n">kasten_young_weights</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">zenith_angle_degree</span><span class="p">[</span><span class="n">splice_index</span><span class="p">]</span> <span class="o">-</span> <span class="n">low_spline_deg</span>
+    <span class="p">)</span> <span class="o">/</span> <span class="mf">5.0</span>
+    <span class="n">secant_weights</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">kasten_young_weights</span>
+    <span class="n">airmass_value</span><span class="p">[</span><span class="n">splice_index</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">secant_airmass</span><span class="p">[</span><span class="n">splice_index</span><span class="p">]</span> <span class="o">*</span> <span class="n">secant_weights</span>
+    <span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">kasten_young_airmass</span><span class="p">[</span><span class="n">splice_index</span><span class="p">]</span> <span class="o">*</span> <span class="n">kasten_young_weights</span><span class="p">)</span>
+    <span class="c1"># All done.</span>
+    <span class="k">return</span> <span class="n">airmass_value</span></div>
+
+
+
+<div class="viewcode-block" id="index_of_refraction_ideal_air">
+<a class="viewcode-back" href="../../../code/lezargus.library.atmosphere.html#lezargus.library.atmosphere.index_of_refraction_ideal_air">[docs]</a>
+<span class="k">def</span> <span class="nf">index_of_refraction_ideal_air</span><span class="p">(</span><span class="n">wavelength</span><span class="p">:</span> <span class="n">hint</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">hint</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the ideal refraction of air over wavelength.</span>
+
+<span class="sd">    The index of refraction of air depends slightly on wavelength, we use</span>
+<span class="sd">    the updated Edlen equations found in DOI: 10.1088/0026-1394/30/3/004.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    wavelength : ndarray</span>
+<span class="sd">        The wavelength that we are calculating the index of refraction over.</span>
+<span class="sd">        This must in meters.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ior_ideal_air : ndarray</span>
+<span class="sd">        The ideal air index of refraction.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># The formal equation accepts only inverse micrometers, so we need to</span>
+    <span class="c1"># convert. The wave number is actually used more in these equations.</span>
+    <span class="n">wavelength_um</span> <span class="o">=</span> <span class="n">lezargus</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">conversion</span><span class="o">.</span><span class="n">convert_units</span><span class="p">(</span>
+        <span class="n">value</span><span class="o">=</span><span class="n">wavelength</span><span class="p">,</span>
+        <span class="n">value_unit</span><span class="o">=</span><span class="s2">&quot;m&quot;</span><span class="p">,</span>
+        <span class="n">result_unit</span><span class="o">=</span><span class="s2">&quot;um&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">wavenumber</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">wavelength_um</span>
+    <span class="c1"># Calculating the index of refraction, left hand then right hand side of</span>
+    <span class="c1"># the equation.</span>
+    <span class="n">ior_ideal_air_num</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="mf">8342.54</span>
+        <span class="o">+</span> <span class="mi">2406147</span> <span class="o">/</span> <span class="p">(</span><span class="mi">130</span> <span class="o">-</span> <span class="n">wavenumber</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="o">+</span> <span class="mi">15998</span> <span class="o">/</span> <span class="p">(</span><span class="mf">38.9</span> <span class="o">-</span> <span class="n">wavenumber</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">ior_ideal_air</span> <span class="o">=</span> <span class="n">ior_ideal_air_num</span> <span class="o">/</span> <span class="mf">1e8</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">ior_ideal_air</span></div>
+
+
+
+<div class="viewcode-block" id="index_of_refraction_dry_air">
+<a class="viewcode-back" href="../../../code/lezargus.library.atmosphere.html#lezargus.library.atmosphere.index_of_refraction_dry_air">[docs]</a>
+<span class="k">def</span> <span class="nf">index_of_refraction_dry_air</span><span class="p">(</span>
+    <span class="n">wavelength</span><span class="p">:</span> <span class="n">hint</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">pressure</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">hint</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the refraction of air of pressured warm dry air.</span>
+
+<span class="sd">    The index of refraction depends on wavelength, pressure and temperature, we</span>
+<span class="sd">    use the updated Edlén equations found in DOI: 10.1088/0026-1394/30/3/004.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    wavelength : ndarray</span>
+<span class="sd">        The wavelength that we are calculating the index of refraction over.</span>
+<span class="sd">        This must in meters.</span>
+<span class="sd">    pressure : float</span>
+<span class="sd">        The pressure of the atmosphere, in Pascals.</span>
+<span class="sd">    temperature : float</span>
+<span class="sd">        The temperature of the atmosphere, in Kelvin.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ior_dry_air : ndarray</span>
+<span class="sd">        The dry air index of refraction.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># We need the ideal air case first.</span>
+    <span class="n">ior_ideal_air</span> <span class="o">=</span> <span class="n">index_of_refraction_ideal_air</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">wavelength</span><span class="p">)</span>
+
+    <span class="c1"># The Edlén equations use Celsius as the temperature unit, we need to</span>
+    <span class="c1"># convert from the standard Kelvin.</span>
+    <span class="n">temperature</span> <span class="o">=</span> <span class="n">temperature</span> <span class="o">-</span> <span class="mf">273.15</span>
+    <span class="k">if</span> <span class="n">temperature</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="n">warning_type</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">AlgorithmWarning</span><span class="p">,</span>
+            <span class="n">message</span><span class="o">=</span><span class="p">(</span>
+                <span class="s2">&quot;The temperature specified for the Edlén equation for the index&quot;</span>
+                <span class="s2">&quot; of refraction is lower than 0 C. The applicability is of this&quot;</span>
+                <span class="s2">&quot; temperature is unknown.&quot;</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Calculating the pressure and temperature term.</span>
+    <span class="n">pt_factor</span> <span class="o">=</span> <span class="p">(</span><span class="n">pressure</span> <span class="o">/</span> <span class="mf">96095.43</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span>
+        <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">pressure</span> <span class="o">*</span> <span class="p">(</span><span class="mf">0.601</span> <span class="o">-</span> <span class="mf">0.009723</span> <span class="o">*</span> <span class="n">temperature</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-8</span><span class="p">)</span>
+        <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.003661</span> <span class="o">*</span> <span class="n">temperature</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Calculating the index of refraction of dry air.</span>
+    <span class="n">ior_dry_air</span> <span class="o">=</span> <span class="p">(</span><span class="n">ior_ideal_air</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">pt_factor</span>
+    <span class="n">ior_dry_air</span> <span class="o">=</span> <span class="n">ior_dry_air</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">ior_dry_air</span></div>
+
+
+
+<div class="viewcode-block" id="index_of_refraction_moist_air">
+<a class="viewcode-back" href="../../../code/lezargus.library.atmosphere.html#lezargus.library.atmosphere.index_of_refraction_moist_air">[docs]</a>
+<span class="k">def</span> <span class="nf">index_of_refraction_moist_air</span><span class="p">(</span>
+    <span class="n">wavelength</span><span class="p">:</span> <span class="n">hint</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">pressure</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">water_pressure</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">hint</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the refraction of air of pressured warm moist air.</span>
+
+<span class="sd">    The index of refraction depends on wavelength, pressure, temperature, and</span>
+<span class="sd">    humidity, we use the updated Edlen equations found in</span>
+<span class="sd">    DOI: 10.1088/0026-1394/30/3/004. We use the partial pressure of water in</span>
+<span class="sd">    the atmosphere as opposed to actual humidity.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    wavelength : ndarray</span>
+<span class="sd">        The wavelength that we are calculating the index of refraction over.</span>
+<span class="sd">        This must in meters.</span>
+<span class="sd">    temperature : float</span>
+<span class="sd">        The temperature of the atmosphere, in Kelvin.</span>
+<span class="sd">    pressure : float</span>
+<span class="sd">        The pressure of the atmosphere, in Pascals.</span>
+<span class="sd">    water_pressure : float</span>
+<span class="sd">        The partial pressure of water in the atmosphere, Pascals.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ior_moist_air : ndarray</span>
+<span class="sd">        The moist air index of refraction.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># We need the dry air case first.</span>
+    <span class="n">ior_dry_air</span> <span class="o">=</span> <span class="n">index_of_refraction_dry_air</span><span class="p">(</span>
+        <span class="n">wavelength</span><span class="o">=</span><span class="n">wavelength</span><span class="p">,</span>
+        <span class="n">pressure</span><span class="o">=</span><span class="n">pressure</span><span class="p">,</span>
+        <span class="n">temperature</span><span class="o">=</span><span class="n">temperature</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># The wave number is actually used more in these equations. However, the</span>
+    <span class="c1"># wave number must be in inverse micrometers.</span>
+    <span class="n">wavelength_um</span> <span class="o">=</span> <span class="n">lezargus</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">conversion</span><span class="o">.</span><span class="n">convert_units</span><span class="p">(</span>
+        <span class="n">value</span><span class="o">=</span><span class="n">wavelength</span><span class="p">,</span>
+        <span class="n">value_unit</span><span class="o">=</span><span class="s2">&quot;m&quot;</span><span class="p">,</span>
+        <span class="n">result_unit</span><span class="o">=</span><span class="s2">&quot;um&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">wavenumber</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">wavelength_um</span>
+
+    <span class="c1"># Calculating the water vapor factor.</span>
+    <span class="n">wv_factor</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">water_pressure</span> <span class="o">*</span> <span class="p">(</span><span class="mf">3.7345</span> <span class="o">-</span> <span class="mf">0.0401</span> <span class="o">*</span> <span class="n">wavenumber</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-10</span>
+
+    <span class="c1"># Computing the moist air index of refraction.</span>
+    <span class="n">ior_moist_air</span> <span class="o">=</span> <span class="n">ior_dry_air</span> <span class="o">+</span> <span class="n">wv_factor</span>
+    <span class="k">return</span> <span class="n">ior_moist_air</span></div>
+
+
+
+<div class="viewcode-block" id="absolute_atmospheric_refraction_function">
+<a class="viewcode-back" href="../../../code/lezargus.library.atmosphere.html#lezargus.library.atmosphere.absolute_atmospheric_refraction_function">[docs]</a>
+<span class="k">def</span> <span class="nf">absolute_atmospheric_refraction_function</span><span class="p">(</span>
+    <span class="n">wavelength</span><span class="p">:</span> <span class="n">hint</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">zenith_angle</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">pressure</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">water_pressure</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">hint</span><span class="o">.</span><span class="n">Callable</span><span class="p">[[</span><span class="n">hint</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="n">hint</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the absolute atmospheric refraction function.</span>
+
+<span class="sd">    The absolute atmospheric refraction is not as useful as the relative</span>
+<span class="sd">    atmospheric refraction function. To calculate how the atmosphere refracts</span>
+<span class="sd">    one&#39;s object, use that function instead.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    wavelength : ndarray</span>
+<span class="sd">        The wavelength over which the absolute atmospheric refraction is</span>
+<span class="sd">        being computed over, in meters.</span>
+<span class="sd">    zenith_angle : float</span>
+<span class="sd">        The zenith angle of the sight line, in radians.</span>
+<span class="sd">    temperature : float</span>
+<span class="sd">        The temperature of the atmosphere, in Kelvin.</span>
+<span class="sd">    pressure : float</span>
+<span class="sd">        The pressure of the atmosphere, in Pascals.</span>
+<span class="sd">    water_pressure : float</span>
+<span class="sd">        The partial pressure of water in the atmosphere, Pascals.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    abs_atm_refr_func : Callable</span>
+<span class="sd">        The absolute atmospheric refraction function, as an actual callable</span>
+<span class="sd">        function. The input is wavelength in meters and output is refraction in</span>
+<span class="sd">        radians.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># We need to determine the index of refraction for moist air.</span>
+    <span class="n">ior_moist_air</span> <span class="o">=</span> <span class="n">index_of_refraction_moist_air</span><span class="p">(</span>
+        <span class="n">wavelength</span><span class="o">=</span><span class="n">wavelength</span><span class="p">,</span>
+        <span class="n">pressure</span><span class="o">=</span><span class="n">pressure</span><span class="p">,</span>
+        <span class="n">temperature</span><span class="o">=</span><span class="n">temperature</span><span class="p">,</span>
+        <span class="n">water_pressure</span><span class="o">=</span><span class="n">water_pressure</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># The constant of refraction.</span>
+    <span class="n">const_of_refr</span> <span class="o">=</span> <span class="p">(</span><span class="n">ior_moist_air</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">ior_moist_air</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="c1"># Incorporating the zenith angle.</span>
+    <span class="n">abs_atm_refr</span> <span class="o">=</span> <span class="n">const_of_refr</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">zenith_angle</span><span class="p">)</span>
+
+    <span class="c1"># Creating the function itself.</span>
+    <span class="n">abs_atm_refr_func</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">lezargus</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">interpolate</span><span class="o">.</span><span class="n">spline_1d_interpolate_factory</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">wavelength</span><span class="p">,</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">abs_atm_refr</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">abs_atm_refr_func</span></div>
+
+
+
+<div class="viewcode-block" id="relative_atmospheric_refraction_function">
+<a class="viewcode-back" href="../../../code/lezargus.library.atmosphere.html#lezargus.library.atmosphere.relative_atmospheric_refraction_function">[docs]</a>
+<span class="k">def</span> <span class="nf">relative_atmospheric_refraction_function</span><span class="p">(</span>
+    <span class="n">wavelength</span><span class="p">:</span> <span class="n">hint</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">reference_wavelength</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">zenith_angle</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">pressure</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">water_pressure</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">hint</span><span class="o">.</span><span class="n">Callable</span><span class="p">[[</span><span class="n">hint</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="n">hint</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the relative atmospheric refraction function.</span>
+
+<span class="sd">    The relative refraction function is the same as the absolute refraction</span>
+<span class="sd">    function, however, it is all relative to some specific wavelength.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    wavelength : ndarray</span>
+<span class="sd">        The wavelength over which the absolute atmospheric refraction is</span>
+<span class="sd">        being computed over, in meters.</span>
+<span class="sd">    reference_wavelength : float</span>
+<span class="sd">        The reference wavelength which the relative refraction is computed</span>
+<span class="sd">        against, in meters.</span>
+<span class="sd">    zenith_angle : float</span>
+<span class="sd">        The zenith angle of the sight line, in radians.</span>
+<span class="sd">    temperature : float</span>
+<span class="sd">        The temperature of the atmosphere, in Kelvin.</span>
+<span class="sd">    pressure : float</span>
+<span class="sd">        The pressure of the atmosphere, in Pascals.</span>
+<span class="sd">    water_pressure : float</span>
+<span class="sd">        The partial pressure of water in the atmosphere, Pascals.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    rel_atm_refr_func : Callable</span>
+<span class="sd">        The absolute atmospheric refraction function, as an actual callable</span>
+<span class="sd">        function. The input is wavelength in meters and output is refraction in</span>
+<span class="sd">        radians.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># We need the absolute refraction function first.</span>
+    <span class="n">abs_atm_refr_func</span> <span class="o">=</span> <span class="n">absolute_atmospheric_refraction_function</span><span class="p">(</span>
+        <span class="n">wavelength</span><span class="o">=</span><span class="n">wavelength</span><span class="p">,</span>
+        <span class="n">zenith_angle</span><span class="o">=</span><span class="n">zenith_angle</span><span class="p">,</span>
+        <span class="n">pressure</span><span class="o">=</span><span class="n">pressure</span><span class="p">,</span>
+        <span class="n">temperature</span><span class="o">=</span><span class="n">temperature</span><span class="p">,</span>
+        <span class="n">water_pressure</span><span class="o">=</span><span class="n">water_pressure</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># The refraction at the reference wavelength.</span>
+    <span class="n">ref_abs_refr</span> <span class="o">=</span> <span class="n">abs_atm_refr_func</span><span class="p">(</span><span class="n">reference_wavelength</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">rel_atm_refr_func</span><span class="p">(</span><span class="n">wave</span><span class="p">:</span> <span class="n">hint</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">hint</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Relative refraction function.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        wave : ndarray</span>
+<span class="sd">            The input wavelength for computation, in meters.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        rel_atm_refr : ndarray</span>
+<span class="sd">            The relative atmospheric refraction, in radians.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rel_atm_refr</span> <span class="o">=</span> <span class="n">abs_atm_refr_func</span><span class="p">(</span><span class="n">wave</span><span class="p">)</span> <span class="o">-</span> <span class="n">ref_abs_refr</span>
+        <span class="k">return</span> <span class="n">rel_atm_refr</span>
+
+    <span class="c1"># All done.</span>
+    <span class="k">return</span> <span class="n">rel_atm_refr_func</span></div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sparrow
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, Sparrow.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
