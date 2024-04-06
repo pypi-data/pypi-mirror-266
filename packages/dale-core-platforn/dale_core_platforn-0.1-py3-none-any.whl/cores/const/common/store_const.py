@@ -1,0 +1,2 @@
+class StoreConst:
+    LOCATORS = "locators"
