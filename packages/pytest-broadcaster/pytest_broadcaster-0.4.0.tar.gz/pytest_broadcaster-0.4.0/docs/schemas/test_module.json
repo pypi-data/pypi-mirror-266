@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://charbonnierg.github.com/pytest-broadcaster/schemas/test_module.json",
+  "title": "Test Module",
+  "description": "A collected test module (test file).",
+  "type": "object",
+  "required": [
+    "node_id",
+    "node_type",
+    "name",
+    "path",
+    "doc",
+    "markers"
+  ],
+  "properties": {
+    "node_id": {
+      "type": "string",
+      "description": "The node ID of the test module."
+    },
+    "node_type": {
+      "const": "module",
+      "description": "The node type. Always set to 'module'."
+    },
+    "name": {
+      "type": "string",
+      "description": "The module name."
+    },
+    "path": {
+      "type": "string",
+      "description": "The module file path."
+    },
+    "doc": {
+      "type": "string",
+      "description": "The module docstring."
+    },
+    "markers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Test markers. Each marker is a string."
+    }
+  }
+}

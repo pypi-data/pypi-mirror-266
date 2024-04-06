@@ -1,0 +1,4 @@
+# file generated with command: 'rye run version'
+# don't change, don't track in version control
+__version__ = version = '0.4.0'
+__version_tuple__ = version_tuple = (0, 4, 0)

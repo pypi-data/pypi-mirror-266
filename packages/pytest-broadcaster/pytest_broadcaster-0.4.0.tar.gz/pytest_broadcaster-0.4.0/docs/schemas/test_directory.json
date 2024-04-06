@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://charbonnierg.github.com/pytest-broadcaster/schemas/test_directory.json",
+  "title": "Test Directory",
+  "description": "A collected test directory.",
+  "type": "object",
+  "required": [
+    "node_id",
+    "node_type",
+    "name",
+    "path"
+  ],
+  "properties": {
+    "node_id": {
+      "type": "string",
+      "description": "The node ID of the directory."
+    },
+    "node_type": {
+      "const": "directory",
+      "description": "The node type. Always set to 'directory'."
+    },
+    "name": {
+      "type": "string",
+      "description": "The directory name."
+    },
+    "path": {
+      "type": "string",
+      "description": "The directory path."
+    }
+  }
+}
