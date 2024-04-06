@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://charbonnierg.github.com/pytest-broadcaster/schemas/error_message.json",
+  "title": "Error Message",
+  "description": "An error message.",
+  "type": "object",
+  "required": [
+    "event",
+    "when",
+    "location",
+    "exception_type",
+    "exception_value",
+    "traceback"
+  ],
+  "properties": {
+    "event": {
+      "const": "error_message",
+      "description": "The event type. Always 'error_message'."
+    },
+    "when": {
+      "enum": [
+        "config",
+        "collect",
+        "runtest"
+      ],
+      "description": "When the error message is emitted."
+    },
+    "location": {
+      "$ref": "https://charbonnierg.github.com/pytest-broadcaster/schemas/location.json",
+      "description": "The location of the error."
+    },
+    "exception_type": {
+      "type": "string",
+      "description": "The exception type as a string."
+    },
+    "exception_value": {
+      "type": "string",
+      "description": "The exception value as a string."
+    },
+    "traceback": {
+      "$ref": "https://charbonnierg.github.com/pytest-broadcaster/schemas/traceback.json",
+      "description": "The traceback of the error. A traceback contains entries for each frame of the call stack."
+    }
+  }
+}

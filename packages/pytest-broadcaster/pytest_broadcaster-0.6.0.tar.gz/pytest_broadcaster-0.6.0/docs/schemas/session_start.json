@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://charbonnierg.github.com/pytest-broadcaster/schemas/session_start.json",
+  "title": "Session Start",
+  "description": "Event emitted when the test session is started.",
+  "type": "object",
+  "required": [
+    "event",
+    "pytest_version",
+    "plugin_version"
+  ],
+  "properties": {
+    "event": {
+      "const": "session_start",
+      "description": "The event type. Always set to `session_start`."
+    },
+    "pytest_version": {
+      "type": "string",
+      "description": "The version of pytest that is running the tests."
+    },
+    "plugin_version": {
+      "type": "string",
+      "description": "The version of pytest-broadcaster plugin that is used to produce the report."
+    }
+  }
+}

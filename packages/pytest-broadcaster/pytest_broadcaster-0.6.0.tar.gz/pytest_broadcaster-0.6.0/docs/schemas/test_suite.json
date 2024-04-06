@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://charbonnierg.github.com/pytest-broadcaster/schemas/test_suite.json",
+  "title": "Test Suite",
+  "description": "A collected test suite (test class).",
+  "type": "object",
+  "required": [
+    "node_id",
+    "node_type",
+    "name",
+    "module",
+    "path",
+    "doc",
+    "markers"
+  ],
+  "properties": {
+    "node_id": {
+      "type": "string",
+      "description": "The node ID of the test suite."
+    },
+    "node_type": {
+      "const": "suite",
+      "description": "The node type. Always set to 'suite'."
+    },
+    "name": {
+      "type": "string",
+      "description": "The suite name, i.e., the name of the class."
+    },
+    "module": {
+      "type": "string",
+      "description": "The name of the module where the suite is defined."
+    },
+    "path": {
+      "type": "string",
+      "description": "The name of the file where the suite is defined."
+    },
+    "doc": {
+      "type": "string",
+      "description": "The suite docstring."
+    },
+    "markers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Test markers. Each marker is a string."
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://charbonnierg.github.com/pytest-broadcaster/schemas/session_finish.json",
+  "title": "Session Finish",
+  "description": "Event emitted when the session is finished.",
+  "type": "object",
+  "required": [
+    "event",
+    "exit_status"
+  ],
+  "properties": {
+    "event": {
+      "const": "session_finish",
+      "description": "The event type. Always set to 'session_finish'."
+    },
+    "exit_status": {
+      "type": "integer",
+      "description": "The status which pytest will return to the system. 0 means success, 1 means test failure, anything else is an error."
+    }
+  }
+}

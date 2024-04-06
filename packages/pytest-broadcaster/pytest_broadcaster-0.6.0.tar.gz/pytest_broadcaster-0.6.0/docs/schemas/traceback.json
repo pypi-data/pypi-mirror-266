@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://charbonnierg.github.com/pytest-broadcaster/schemas/traceback.json",
+  "title": "Traceback",
+  "description": "An error traceback.",
+  "type": "object",
+  "required": [
+    "entries"
+  ],
+  "properties": {
+    "entries": {
+      "type": "array",
+      "description": "Traceback frame entries.",
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "lineno",
+          "message"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "The file path of this frame entry."
+          },
+          "lineno": {
+            "type": "integer",
+            "description": "The line number of this frame entry."
+          },
+          "message": {
+            "type": "string",
+            "description": "The message of this frame entry."
+          }
+        }
+      }
+    }
+  }
+}

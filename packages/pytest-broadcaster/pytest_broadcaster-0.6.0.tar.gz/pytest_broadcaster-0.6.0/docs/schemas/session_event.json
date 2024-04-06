@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://charbonnierg.github.com/pytest-broadcaster/schemas/session_event.json",
+  "title": "Session Event",
+  "description": "An event within a pytest session.",
+  "type": "object",
+  "oneOf": [
+    {
+      "$ref": "https://charbonnierg.github.com/pytest-broadcaster/schemas/collect_report.json",
+      "description": "A node was collected (directory, module or suite)."
+    },
+    {
+      "$ref": "https://charbonnierg.github.com/pytest-broadcaster/schemas/test_case_finished.json",
+      "description": "A test case finished. Finished event is always emitted even if test is skipped or failed."
+    },
+    {
+      "$ref": "https://charbonnierg.github.com/pytest-broadcaster/schemas/test_case_setup.json",
+      "description": "A test case setup step finished. Setup step is always emitted even if test is skipped."
+    },
+    {
+      "$ref": "https://charbonnierg.github.com/pytest-broadcaster/schemas/test_case_teardown.json",
+      "description": "A test case teardown step finished. Teardown step is always emitted even if test is skipped or failed."
+    },
+    {
+      "$ref": "https://charbonnierg.github.com/pytest-broadcaster/schemas/test_case_call.json",
+      "description": "A test case call step finished. Call step may not be emitted for skipped tests or tests with setup errors."
+    },
+    {
+      "$ref": "https://charbonnierg.github.com/pytest-broadcaster/schemas/error_message.json",
+      "description": "An error occured."
+    },
+    {
+      "$ref": "https://charbonnierg.github.com/pytest-broadcaster/schemas/warning_message.json",
+      "description": "A warning was emitted."
+    },
+    {
+      "$ref": "https://charbonnierg.github.com/pytest-broadcaster/schemas/session_start.json",
+      "description": "The test session started. This is always the first event emitted."
+    },
+    {
+      "$ref": "https://charbonnierg.github.com/pytest-broadcaster/schemas/session_finish.json",
+      "description": "The test session finished. This is always the last event emitted."
+    }
+  ]
+}
