@@ -1,0 +1,101 @@
+source dir: /glade/u/home/fengzhu/Github/cesm4paleo/c4p/src/rof/runoff_map_src/src
+/glade/u/home/fengzhu/Github/cesm4paleo/c4p/src/rof/runoff_map_src/tools/makdep.c:54:1: error: type specifier missing, defaults to 'int'; ISO C99 and later do not support implicit int [-Wimplicit-int]
+main (int argc, char **argv)
+^
+int
+1 error generated.
+fpp -P -DLINUX -I. -I/glade/u/home/fengzhu/Github/cesm4paleo/c4p/src/rof/runoff_map_src/src -I. -I/glade/u/apps/derecho/23.06/spack/opt/spack/netcdf/4.9.2/oneapi/2023.0.0/iijr/include /glade/u/home/fengzhu/Github/cesm4paleo/c4p/src/rof/runoff_map_src/src/fixroff_mod.F90 > fixroff_mod.f90
+ifort  -c -O2 -assume byterecl -ftz -traceback -qopenmp  -FR  -I. -I/glade/u/home/fengzhu/Github/cesm4paleo/c4p/src/rof/runoff_map_src/src -I. -I/glade/u/apps/derecho/23.06/spack/opt/spack/netcdf/4.9.2/oneapi/2023.0.0/iijr/include fixroff_mod.f90  
+fixroff_mod.f90(8): error #7002: Error in opening the compiled module file.  Check INCLUDE paths.   [SHR_SYS_MOD]
+   use shr_sys_mod
+-------^
+fixroff_mod.f90(9): error #7002: Error in opening the compiled module file.  Check INCLUDE paths.   [KIND_MOD]
+   use kind_mod
+-------^
+fixroff_mod.f90(10): error #7002: Error in opening the compiled module file.  Check INCLUDE paths.   [MAP_MOD]
+   use map_mod
+-------^
+fixroff_mod.f90(30): error #6457: This derived type name has not been declared.   [SMATRIX]
+   type(sMatrix), intent(inout) :: map        ! map: original
+--------^
+fixroff_mod.f90(31): error #6457: This derived type name has not been declared.   [SMATRIX]
+   type(sMatrix), intent(inout) :: map2       ! map: modified wrt newpt
+--------^
+fixroff_mod.f90(34): error #6683: A kind type parameter must be a compile-time constant.   [IN]
+   integer(IN),allocatable :: newpt(:,:)          ! cell relocation info
+-----------^
+fixroff_mod.f90(36): error #6683: A kind type parameter must be a compile-time constant.   [IN]
+   integer(IN)             :: i,j,i2,j2           ! 2d row,col indecies
+-----------^
+fixroff_mod.f90(37): error #6683: A kind type parameter must be a compile-time constant.   [IN]
+   integer(IN)             :: n                   ! 2d vector index
+-----------^
+fixroff_mod.f90(38): error #6683: A kind type parameter must be a compile-time constant.   [IN]
+   integer(IN),allocatable :: badpts (:)          ! 0 <=> no relocation necessary
+-----------^
+fixroff_mod.f90(39): error #6683: A kind type parameter must be a compile-time constant.   [IN]
+   integer(IN),allocatable :: badptsf(:)          ! 0 <=> relocation necessary but not done
+-----------^
+fixroff_mod.f90(40): error #6683: A kind type parameter must be a compile-time constant.   [IN]
+   integer(IN)             :: newptr(map%n_b)     !
+-----------^
+fixroff_mod.f90(41): error #6683: A kind type parameter must be a compile-time constant.   [IN]
+   integer(IN)             :: cnt1,cnt2,cnt3,cnt4 ! counts various cases
+-----------^
+fixroff_mod.f90(42): error #6683: A kind type parameter must be a compile-time constant.   [R8]
+   real(R8)   ,allocatable :: wcol(:)             ! cnt2 weight corrections
+--------^
+fixroff_mod.f90(43): error #6683: A kind type parameter must be a compile-time constant.   [R8]
+   real(R8)                :: dist,distMin        ! distance, min distance
+--------^
+fixroff_mod.f90(44): error #6683: A kind type parameter must be a compile-time constant.   [R8]
+   real(R8)                :: element             ! a matrix element
+--------^
+fixroff_mod.f90(259): error #6457: This derived type name has not been declared.   [SMATRIX]
+   type(sMatrix),intent(in)    :: map        ! map in question
+--------^
+fixroff_mod.f90(260): error #6683: A kind type parameter must be a compile-time constant.   [IN]
+   integer(IN)  ,intent(inout) :: newpt(:,:) ! indicates where to relocate runoff
+-----------^
+fixroff_mod.f90(263): error #6683: A kind type parameter must be a compile-time constant.   [IN]
+   integer(IN),allocatable :: newpt_old(:,:) ! temporary work array
+-----------^
+fixroff_mod.f90(265): error #6683: A kind type parameter must be a compile-time constant.   [IN]
+   integer(IN) :: ni,nj       ! size of grid_b
+-----------^
+fixroff_mod.f90(266): error #6683: A kind type parameter must be a compile-time constant.   [IN]
+   integer(IN) :: i,j         ! loop index into 2D array
+-----------^
+fixroff_mod.f90(267): error #6683: A kind type parameter must be a compile-time constant.   [IN]
+   integer(IN) :: n           ! loop index into 1D vector
+-----------^
+fixroff_mod.f90(268): error #6683: A kind type parameter must be a compile-time constant.   [IN]
+   integer(IN) :: i2,j2       ! index of neighbor cells
+-----------^
+fixroff_mod.f90(270): error #6683: A kind type parameter must be a compile-time constant.   [IN]
+   integer(IN) :: nFound      ! # cells whose nearest active neighbor was found
+-----------^
+fixroff_mod.f90(271): error #6683: A kind type parameter must be a compile-time constant.   [IN]
+   integer(IN) :: nNotFound   ! # cells whose nearest active neighbor is unknown
+-----------^
+fixroff_mod.f90(25): error #6404: This name does not have a type, and must have an explicit type.   [MAP]
+SUBROUTINE fixroff_modifyMap(map, map2)
+-----------------------------^
+fixroff_mod.f90(96): error #6325: An integer data type is required in this context.   [MAP]
+   allocate(newpt(map%ni_b,map%nj_b))
+------------------^
+fixroff_mod.f90(96): error #6325: An integer data type is required in this context.   [MAP]
+   allocate(newpt(map%ni_b,map%nj_b))
+---------------------------^
+fixroff_mod.f90(254): error #6404: This name does not have a type, and must have an explicit type.   [MAP]
+SUBROUTINE fixroff_findActive(map, newpt)
+------------------------------^
+fixroff_mod.f90(107): error #6325: An integer data type is required in this context.   [MAP]
+   allocate(badpts (map%n_b))
+--------------------^
+fixroff_mod.f90(108): error #6325: An integer data type is required in this context.   [MAP]
+   allocate(badptsf(map%n_b))
+--------------------^
+fixroff_mod.f90(380): catastrophic error: Too many errors, exiting
+compilation aborted for fixroff_mod.f90 (code 1)
+gmake: *** [/glade/u/home/fengzhu/Github/cesm4paleo/c4p/src/rof/runoff_map_src/src/Makefile:127: fixroff_mod.o] Error 1
