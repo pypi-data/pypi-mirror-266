@@ -1,0 +1,33 @@
+$endpoint:
+    is_sdk: true
+    method: post
+    path: ${external}/entity/external_create_entities
+    function: main.site.app.external.entity.create_entities.create_entities
+    desc: "Creates new Uncountable entities"
+
+
+EntityToCreate:
+    type: Object
+    properties:
+        field_values?:
+            type: Optional<List<field_values.FieldRefNameValue>>
+
+Arguments:
+    type: Object
+    properties:
+        definition_id:
+            type: ObjectId
+            desc: "Definition id for the entities to create"
+        entity_type:
+            type: Union<Literal<entity.EntityType.lab_request>, Literal<entity.EntityType.approval>, Literal<entity.EntityType.custom_entity>, Literal<entity.EntityType.task>, Literal<entity.EntityType.project>>
+            desc: "The type of the entities to create"
+        entities_to_create:
+            type: List<EntityToCreate>
+            desc: "A list of the entities to create"
+
+Data:
+    type: Object
+    properties:
+        entities:
+            type: List<entity.Entity>
+            desc: The entities created
