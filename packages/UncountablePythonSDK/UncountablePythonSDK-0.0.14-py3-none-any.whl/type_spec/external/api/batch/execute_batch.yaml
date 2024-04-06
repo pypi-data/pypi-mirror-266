@@ -1,0 +1,56 @@
+$endpoint:
+    is_sdk: true
+    method: post
+    path: ${external}/batch/execute_batch
+    function: main.site.app.external.batch.execute_batch.execute_batch
+    desc: Run multiple API calls via one request
+
+RequestMethod:
+    type: StringEnum
+    values:
+        get: GET
+        head: HEAD
+        post: POST
+        put: PUT
+        delete: DELETE
+        connect: CONNECT
+        options: OPTIONS
+        trace: TRACE
+        patch: PATCH
+
+BatchRequest:
+    type: Object
+    properties:
+        path:
+            type: String
+        method:
+            type: RequestMethod
+        data:
+            convert_value: no_convert
+            type: JsonValue
+            desc: JSON payload for the api call
+
+Arguments:
+    type: Object
+    properties:
+        requests:
+            type: List<BatchRequest>
+
+BatchResponse:
+    type: Object
+    properties:
+        path:
+            type: String
+        method:
+            type: RequestMethod
+        status_code:
+            type: Integer
+        response:
+            convert_value: no_convert
+            type: JsonValue
+
+Data:
+    type: Object
+    properties:
+        responses:
+            type: List<BatchResponse>

@@ -1,0 +1,47 @@
+$endpoint:
+    is_sdk: true
+    method: post
+    path: ${external}/recipes/external_create_recipes
+    function: main.site.app.external.recipes.create_recipes.create_recipes
+    desc: "Sets inputs values for an experiment. Values set can be numeric, text or categorical types in the Uncountable system"
+
+CreateRecipeDefinition:
+    type: Object
+    properties:
+        name?:
+            type: String
+            desc: "The name for the recipe"
+        workflow_id:
+            type: ObjectId
+            desc: "The identifier of the workflow to create the recipe with"
+        workflow_variant_id?:
+            type: Optional<ObjectId>
+            desc: "The identifier of the workflow variant to create the recipe with"
+        recipe_metadata?:
+            type: List<recipe_metadata.MetadataValue>
+            desc: "Metadata values to populate the recipe with"
+
+Arguments:
+    type: Object
+    properties:
+        material_family_id:
+            type: ObjectId
+            desc: "The identifier of the material family to create the recipes in"
+        project_id?:
+            type: ObjectId
+            desc: "The identifier of the project to create the recipes in"
+        recipe_definitions:
+            type: List<CreateRecipeDefinition>
+
+CreateRecipeResult:
+    type: Object
+    properties:
+        recipe_id:
+            type: ObjectId
+            desc: The identifier for the created recipe
+
+Data:
+    type: Object
+    properties:
+        recipes:
+            type: List<CreateRecipeResult>
