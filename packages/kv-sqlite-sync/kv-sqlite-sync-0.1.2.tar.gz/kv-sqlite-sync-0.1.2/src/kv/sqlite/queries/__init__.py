@@ -1,0 +1,1 @@
+from .queries import Query, create, delete, insert, quote, read, keys, items, upsert, update
