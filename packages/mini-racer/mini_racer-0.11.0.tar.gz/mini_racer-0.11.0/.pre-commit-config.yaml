@@ -1,0 +1,67 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+- repo: local
+  hooks:
+  - id: hatch-fmt
+    name: Hatch format and lint
+    entry: hatch fmt  # runs Ruff, which includes both linting and formatting.
+    language: system
+    types: [python]
+    pass_filenames: false
+  - id: hatch-docs-format
+    name: Hatch format docs
+    entry: hatch run docs:fmt  # runs mdformat
+    language: system
+  - id: hatch-docs-build
+    name: Hatch build docs
+    entry: hatch run docs:build --strict  # checks for, e.g., bad links
+    language: system
+    pass_filenames: false
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.5.0
+  hooks:
+   - id: trailing-whitespace
+     exclude: \.(patch|md)$
+   - id: end-of-file-fixer
+     exclude: \.(patch|md)$
+   - id: check-yaml
+   - id: check-added-large-files
+- repo: https://github.com/pocc/pre-commit-hooks
+  rev: v1.3.5
+  hooks:
+    - id: clang-format
+      args:
+        - --style=Chromium
+        - -i
+    - id: clang-tidy
+      args:
+        # Things we're disabling:
+        # lvmlibc-* is intended for the llvm project itself
+        # llvm-header-guard is likewise hard-coded for the llvm project itself
+        # llvm-include-order fights clang-format --style=Chromium
+        # fuchsia-default-arguments-calls seems counter to code maintainability
+        # outside of a monorepo
+        # same for fuchsia-default-arguments-declarations
+        # fuchsia-trailing-return is counter to another cpp modernization rule
+        # fuchsia-overloaded-operator is incompatible with... making functors?
+        # altera-* is designed for FPGAs and gives weird performance advice.
+        # we aren't using Google's absl lib, so disable its suggestions.
+        - >-
+          -checks=*,
+          -llvmlibc-*,
+          -llvm-header-guard,
+          -llvm-include-order,
+          -fuchsia-default-arguments-calls,
+          -fuchsia-default-arguments-declarations,
+          -fuchsia-trailing-return,
+          -fuchsia-overloaded-operator,
+          -altera-*,
+          -abseil-*
+        - -warnings-as-errors=*
+        # Interpret .h as C++:
+        - -extra-arg-before=-xc++
+        - -extra-arg=-std=c++20
+        - -extra-arg=-stdlib=libstdc++
+        - -extra-arg=-isystem
+        - -extra-arg=v8_workspace/v8/include
