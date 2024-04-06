@@ -1,0 +1,41 @@
+package:
+  name: chexus
+
+  version: {{ GIT_DESCRIBE_TAG }}
+
+source:
+  path: ..
+
+requirements:
+  build:
+    - setuptools
+    - setuptools_scm
+  run:
+    - h5py
+    - python>=3.10
+
+test:
+  imports:
+    - chexus
+  requires:
+    - pytest
+    - scipp
+  source_files:
+    - pyproject.toml
+    - tests/
+  commands:
+    # We ignore warnings during release package builds
+    - python -m pytest -Wignore tests
+
+build:
+  noarch: python
+  script:
+    - python -m pip install .
+
+about:
+  home: https://github.com/scipp/chexus
+  license: BSD-3-Clause
+  summary: Validate and check NeXus files
+  description: Validate and check NeXus files
+  dev_url: https://github.com/scipp/chexus
+  doc_url: https://scipp.github.io/chexus
