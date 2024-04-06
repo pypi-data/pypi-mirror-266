@@ -1,0 +1,40 @@
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[project]
+name = "codedepot-git-ai"
+version = "0.0.11"
+description = "Dataset and model support for git"
+readme = "README.md"
+authors = [
+    { name = "CodeDepot", email = "contact@codedepot.ai" },
+]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "pygit2",
+    "tensorboard",
+    "torch",
+    "paramiko",
+    "prompt_toolkit",
+]
+
+[project.license]
+text = "MIT"
+
+[project.urls]
+Homepage = "https://github.com/codedepotai/git-ai"
+Issues = "https://github.com/codedepotai/git-ai/issues"
+
+[project.scripts]
+git-ai = "git_ai.main.main:main"
+
+[tool.pdm]
+distribution = true
