@@ -1,0 +1,39 @@
+name: GitHub Pages Documentation
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+-[a-zA-Z]*'
+      - 'v[0-9]+.[0-9]+.[0-9]'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      # Uses the same action as rye
+      # See: https://github.com/astral-sh/rye/blob/main/.github/workflows/python-lint.yml
+      - name: Install the latest version of rye
+        uses: eifinger/setup-rye@v2
+        with:
+          enable-cache: true
+          cache-prefix: 'docs'
+
+      - name: Configure git user
+        run: |
+          git config user.name mkdocs-bot
+          git config user.email mkdocs-bot@github.com
+          git fetch origin gh-pages --depth=1
+
+      - name: Build the docs
+        run: rye run ci-docs
+        env:
+          VERSION: "${{  github.ref_name }}"
+          ALIAS: latest

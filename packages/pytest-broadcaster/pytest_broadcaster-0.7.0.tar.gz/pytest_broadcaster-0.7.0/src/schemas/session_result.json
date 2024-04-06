@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "session_result.json",
+  "title": "Session Result",
+  "description": "Result of a pytest session, including collect reports and test reports.",
+  "type": "object",
+  "required": [
+    "pytest_version",
+    "plugin_version",
+    "exit_status",
+    "warnings",
+    "errors",
+    "collect_reports",
+    "test_reports"
+  ],
+  "properties": {
+    "pytest_version": {
+      "type": "string",
+      "description": "The version of pytest that generated the report."
+    },
+    "plugin_version": {
+      "type": "string",
+      "description": "The version of the plugin that generated the report."
+    },
+    "exit_status": {
+      "type": "integer",
+      "description": "The exit status of the pytest run. 0 indicates success, non-zero indicates failure."
+    },
+    "errors": {
+      "type": "array",
+      "description": "Errors generated during the session.",
+      "items": {
+        "$ref": "error_message.json/#"
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "description": "Warnings generated during the session.",
+      "items": {
+        "$ref": "warning_message.json/#"
+      }
+    },
+    "collect_reports": {
+      "type": "array",
+      "description": "Collect reports generated during the session.",
+      "items": {
+        "$ref": "collect_report.json/#"
+      }
+    },
+    "test_reports": {
+      "type": "array",
+      "description": "Test reports generated during the session.",
+      "items": {
+        "$ref": "test_case_report.json/#"
+      }
+    }
+  }
+}
