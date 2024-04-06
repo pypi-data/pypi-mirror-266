@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://charbonnierg.github.com/pytest-broadcaster/schemas/test_case_report.json",
+  "title": "Test Case Report",
+  "description": "Report for a single test case.",
+  "type": "object",
+  "required": [
+    "node_id",
+    "outcome",
+    "duration",
+    "setup",
+    "teardown",
+    "finished"
+  ],
+  "properties": {
+    "node_id": {
+      "type": "string",
+      "description": "The node ID of the test case."
+    },
+    "outcome": {
+      "$ref": "https://charbonnierg.github.com/pytest-broadcaster/schemas/outcome.json",
+      "description": "Outcome of the test case."
+    },
+    "duration": {
+      "type": "number",
+      "description": "Duration of the test case in seconds (including setup and teardown)."
+    },
+    "setup": {
+      "$ref": "https://charbonnierg.github.com/pytest-broadcaster/schemas/test_case_setup.json",
+      "description": "Setup step of the test case."
+    },
+    "call": {
+      "$ref": "https://charbonnierg.github.com/pytest-broadcaster/schemas/test_case_call.json",
+      "description": "Call step of the test case (optional)."
+    },
+    "teardown": {
+      "$ref": "https://charbonnierg.github.com/pytest-broadcaster/schemas/test_case_teardown.json",
+      "description": "Teardown step of the test case."
+    },
+    "finished": {
+      "$ref": "https://charbonnierg.github.com/pytest-broadcaster/schemas/test_case_finished.json",
+      "description": "View of the test case after it has finished."
+    }
+  }
+}

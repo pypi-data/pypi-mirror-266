@@ -1,0 +1,159 @@
+[project]
+name = "pytest-broadcaster"
+description = "Pytest plugin to broadcast pytest output to various destinations"
+authors = [{ name = "Guillaume Charbonnier", email = "gu.charbon@gmail.com" }]
+urls = { "Source" = "https://github.com/charbonnierg/pytest-broadcaster", "Tracker" = "https://github.com/charbonnierg/pytest-broadcaster/issues" }
+
+dependencies = ["pytest"]
+dynamic = ["version"]
+readme = "README.md"
+requires-python = ">= 3.8"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: Pytest",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Testing",
+]
+
+[project.entry-points.pytest11]
+pytest_broadcaster = "pytest_broadcaster.plugin"
+
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "vcs"
+fallback-version = "v0.0.0-dev"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/pytest_broadcaster/__about__.py"
+template = """# file generated with command: 'rye run version'
+# don't change, don't track in version control
+__version__ = version = {version!r}
+__version_tuple__ = version_tuple = {version_tuple!r}"""
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pytest_broadcaster"]
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "datamodel-code-generator>=0.25.5",
+    "pyright>=1.1.355",
+    "tomli>=2.0.1 ; python_version < '3.12'",
+    "coverage>=7.4.4",
+    "flask>=3.0.2",
+    "mkdocs-gen-files",
+    "mkdocs-literate-nav",
+    "mkdocs-material",
+    "mkdocs-section-index",
+    "mkdocstrings[python]",
+    "pymdown-extensions",
+    "termynal",
+    "mike>=2.0.0",
+]
+
+[tool.rye.scripts]
+# Serve documentation
+docs = "mkdocs serve"
+# Run test with coverage
+test = { chain = ["__test", "__coverage-html"] }
+# View coverage report
+htmlcov = "python -m http.server 8080 --directory coverage-report"
+# Automate pre-commit
+pre = { chain = ["generate", "__format", "__lint", "test", "__typecheck"] }
+# Automate CI
+ci-docs = { chain = ["bootstrap", "diff", "__deploy-docs"] }
+ci = { chain = [
+    "bootstrap",
+    "diff",
+    "__formatcheck",
+    "__lint",
+    "test",
+    "__typecheck",
+] }
+# Automate project install
+bootstrap = { chain = ["__install-project"] }
+# Run code generation
+generate = { chain = ["__generate-models", "__format-models"] }
+# Verify generated code is up-to-date
+diff = { chain = [
+    "__remove-previous-check",
+    "__generate-models-check",
+    "__format-models-check",
+    "__generate-models-diff",
+] }
+# Generate version file
+version = "hatch --quiet build --hooks-only"
+# Private tasks used for chaining
+__deploy-docs = { cmd = "bash ./scripts/deploy-docs.sh" }
+__test = "coverage run --rcfile=pyproject.toml -m pytest"
+__coverage-html = "coverage html"
+__typecheck = { cmd = "pyright", env = { PYRIGHT_PYTHON_FORCE_VERSION = "latest" } }
+__lint = "rye lint"
+__format = "rye fmt"
+__formatcheck = "rye fmt --check"
+__generate-models = "datamodel-codegen --input src/schemas/ --output src/pytest_broadcaster/models --input-file-type jsonschema --disable-timestamp --output-model-type=dataclasses.dataclass --use-field-description --use-schema-description"
+__generate-models-check = "datamodel-codegen --input src/schemas/ --output check --input-file-type jsonschema --disable-timestamp --output-model-type=dataclasses.dataclass --use-field-description --use-schema-description"
+__generate-models-diff = "diff --exclude __pycache__ -r src/pytest_broadcaster/models check"
+__format-models = "rye fmt src/pytest_broadcaster/models"
+__format-models-check = "rye fmt check"
+__remove-previous-check = "rm -rf check"
+__install-project = "rye sync --no-lock --force"
+
+[tool.pytest.ini_options]
+markers = [
+    "basic",
+    "filetree",
+    "suites",
+    "markers",
+    "parametrization",
+    "buildmeta",
+]
+testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["src/pytest_broadcaster"]
+branch = true
+[tool.coverage.report]
+# Regexes for lines to exclude from consideration
+exclude_also = [
+    # Don't complain about missing debug-only code:
+    "if TYPE_CHECKING:",
+    "if self\\.debug",
+
+    # Don't complain if tests don't hit defensive assertion code:
+    "raise AssertionError",
+    "raise NotImplementedError",
+
+    # Don't complain if non-runnable code isn't run:
+    "if 0:",
+    "if __name__ == .__main__.:",
+
+    # Don't complain about abstract methods, they aren't run:
+    "@(abc\\.)?abstractmethod",
+]
+[tool.coverage.html]
+directory = "coverage-report"
+
+[tool.pyright]
+pythonVersion = "3.8"
+include = ["tests", "src", "scripts"]
+strict = ["src"]
+exclude = ["**/.venv", "**/node_modules", "**/__pycache__", ".git", "**/build"]
+venv = ".venv"
+venvPath = "."
+typeCheckingMode = "basic"
+reportUnnecessaryTypeIgnoreComment = "warning"

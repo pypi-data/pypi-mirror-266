@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://charbonnierg.github.com/pytest-broadcaster/schemas/test_case.json",
+  "title": "Test Case",
+  "description": "A collected test case.",
+  "type": "object",
+  "required": [
+    "node_id",
+    "node_type",
+    "path",
+    "name",
+    "doc",
+    "markers",
+    "parameters"
+  ],
+  "properties": {
+    "node_id": {
+      "type": "string",
+      "description": "The node ID of the test case."
+    },
+    "node_type": {
+      "const": "case",
+      "description": "The node type. Always set to 'case'."
+    },
+    "path": {
+      "type": "string",
+      "description": "The file path where the test case is defined."
+    },
+    "name": {
+      "type": "string",
+      "description": "Test Name"
+    },
+    "module": {
+      "type": "string",
+      "description": "The module name where the test case is defined (optional)."
+    },
+    "suite": {
+      "type": "string",
+      "description": "The test suite name where the test case is defined (optional)."
+    },
+    "function": {
+      "type": "string",
+      "description": "The function name (optional)."
+    },
+    "doc": {
+      "type": "string",
+      "description": "The test docstring (optional)."
+    },
+    "markers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "The test markers. Each marker is a string."
+    },
+    "parameters": {
+      "type": "object",
+      "description": "Test parameters names and types. Each key is a parameter name and each value is a parameter type as a string.",
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  }
+}
