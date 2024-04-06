@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "nodestream-plugin-sbom"
+version = "0.12.0"
+description = "A plugin for nodestream that allows for importing Software Bill of Materials"
+authors = ["Dave Bechberger <dbechbe@amazon.com>"]
+license = "Apache 2.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4.0"
+nodestream = "^0.12.0"
+boto3 = "^1.34.40"
+flatdict =  ">=4.0.1"
+black = "^24.3.0"
+pre-commit = "^3.7.0"
+autoflake = "^2.3.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."nodestream.plugins"]
+projects = "nodestream_plugin_sbom.plugin"
