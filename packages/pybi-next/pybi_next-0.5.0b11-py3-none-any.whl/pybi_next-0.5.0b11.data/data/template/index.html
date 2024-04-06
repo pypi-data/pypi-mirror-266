@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet" type="text/css"> -->
+
+    {{resources.sysApp_css()}}
+    {{resources.element_cps_css()}}
+
+    {{resources.quasar_cps_css()}}
+    {{resources.quasar_core_css()}}
+    {{resources.material_icons_css()}}
+
+    {{resources.echarts_cps_css()}}
+    {{resources.mermaid_cps_css()}}
+</head>
+
+<body>
+    <div id="app">
+    </div>
+
+    {{resources.vue_js()}}
+    {{resources.echarts_core_js()}}
+    {{resources.echarts_cps_js()}}
+    {{resources.sysApp_js()}}
+    {{resources.element_cps_js()}}
+    {{resources.quasar_core_js()}}
+    {{resources.quasar_lang_zh_js()}}
+    {{resources.quasar_cps_js()}}
+    {{resources.mermaid_cps_js()}}
+    {{resources.experimental_cps_js()}}
+
+    <svg data-mark="pybi-svg-symbols" style="display: block;width:0;height:0;">
+        {% for info in svg_infos %}
+        <symbol id="{{info.id}}" viewBox="0 0 24 24">
+            {{info.svg}}
+        </symbol>
+        {% endfor %}
+    </svg>
+
+    <script>
+        const config = {{ app_config }}
+        const app = sysApp.initApp(config)
+
+        if (typeof (elementCps) !== "undefined") {
+            elementCps.forEach(({ tag, cp }) => {
+                app.component(tag, cp)
+            })
+        }
+
+        if (typeof (quasarCps) !== "undefined") {
+            quasarCps.forEach(({ tag, cp }) => {
+                app.component(tag, cp)
+            })
+            app.use(Quasar, {
+                config: {
+                    notify: {}
+                }
+            })
+
+            Quasar.lang.set(Quasar.lang.zhCN)
+        }
+
+        if (typeof (echartsCps) !== "undefined") {
+            echartsCps.forEach(({ tag, cp }) => {
+                app.component(tag, cp)
+            })
+        }
+
+        if (typeof (mermaidCps) !== "undefined") {
+            mermaidCps.forEach(({ tag, cp }) => {
+                app.component(tag, cp)
+            })
+        }
+
+
+        if (typeof (experimentalCps) !== "undefined") {
+            experimentalCps.forEach(({ tag, cp }) => {
+                app.component(tag, cp)
+            })
+        }
+
+
+        app.mount('#app')
+    </script>
+</body>
+
+</html>
