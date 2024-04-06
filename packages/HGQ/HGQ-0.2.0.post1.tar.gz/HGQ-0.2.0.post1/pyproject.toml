@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=61.0", "setuptools_scm>=8"]
+
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "HGQ"
+version = "0.2.0.post1"
+authors = [{ name = "Chang Sun", email = "chsun@cern.ch" }]
+description = "High Granularity Quantizarion"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: OS Independent",
+  "License :: OSI Approved :: Apache Software License",
+  "Development Status :: 4 - Beta",
+]
+
+dependencies = ['tensorflow>=2.13,<2.16', 'numpy>=1.23']
+
+[project.urls]
+repository = "https://github.com/calad0i/HGQ"
+
+[tool.setuptools_scm]
+write_to = "src/HGQ/_version.py"
+
+[project.optional-dependencies]
+docs = ["sphinx", "sphinx-rtd-theme", "myst-parser", "qkeras", "pyparsing"]
+
+test = [
+  # "git+https://github.com/calad0i/hls4ml@HGQ-integration",
+  "qkeras",
+  "pytest",
+  "pytest-xdist",
+  "pytest-env",
+  "pytest-cov",
+  "pytest-sugar",
+  "pyparsing",
+]
