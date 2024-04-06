@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "crm1"
+version = "0.0.10"
+description = "A CRM-1 repository exploration package"
+authors = ["JoJoJux <johannes@jojojux.de>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/J0J0HA/py-crm1"
+homepage = "https://github.com/J0J0HA/py-crm1"
+keywords = ["crm1", "repository", "exploration", "python"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+requests = "^2.31.0"
+hjson = "^3.1.0"
+dataclasses-hjson = "^0.0.3"
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
