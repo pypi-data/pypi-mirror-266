@@ -1,0 +1,40 @@
+{% macro createQuestionnaire(q) -%}
+
+
+        <input type="hidden" name="timeStarted" value="{{ timeStarted }}">
+
+        {% if config["LOG_GRID_CLICKS"] %}
+        <input type="hidden" id="gridItemClicks" name="gridItemClicks" value="">
+
+        <script type="text/javascript">
+            var grid_clicks = document.getElementById('gridItemClicks');
+
+            function log_click(id, value) {
+                grid_clicks.value += '{"id": "' + id + '", "time": "' + (Date.now() / 1000.0).toString() + '", "value": "' + value + '"};';
+            }
+        </script>
+        {% endif %}
+
+        <div id="instructions" style="font-style: italic;">{{ q.instructions | safe }}</div>
+
+        <div id="q_s">
+            {% for question in q.questions %}
+                <div class="question padding">
+                    {% if question.title %}
+                        <h3>{{ question.title | safe }}</h3>
+                    {% elif question.instructions %}
+                        <h3>{{ question.instructions | safe }}</h3>
+                    {% endif %}
+
+                    <div hx-swap="innerHTML"
+                         hx-trigger="load"
+                         hx-post="/questionnaire_question/{{ question.questiontype }}"
+                         hx-vals='{{ question | tojson }}'
+                         hx-ext="json-enc">
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        {{ q.code |safe if q.code }}
+{%- endmacro %}
