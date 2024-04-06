@@ -1,0 +1,5 @@
+from .SQLDataModel import SQLDataModel
+from .converters import register_adapters_and_converters
+
+register_adapters_and_converters()
+del(register_adapters_and_converters)
