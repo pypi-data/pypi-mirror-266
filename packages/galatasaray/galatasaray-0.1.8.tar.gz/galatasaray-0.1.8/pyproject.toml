@@ -1,0 +1,64 @@
+[tool.poetry]
+name = "galatasaray"
+version = "0.1.8"
+description = "Everything about the Galatasaray from cli!"
+authors = ["Ozcan Yarimdunya <ozcanyd@gmail.com>"]
+license = "MIT"
+repository = "https://github.com/ozcanyarimdunya/galatasaray"
+homepage = "https://github.com/ozcanyarimdunya/galatasaray"
+readme = "README.md"
+keywords = ["galatasaray"]
+classifiers = [
+    "Environment :: Console",
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.4",
+    "Programming Language :: Python :: 3.5",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+include = ["LICENCE"]
+packages = [
+    { include = "galatasaray" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+requests = "^2.31.0"
+rich = "^13.7.1"
+beautifulsoup4 = "^4.12.3"
+
+[tool.poetry.group.dev.dependencies]
+portray = "^1.8.0"
+
+[tool.poetry.scripts]
+galatasaray = "galatasaray.cli:main"
+
+[tool.poetry.plugins]
+
+[tool.poetry.plugins."galatasaray.plugin"]
+"galatasaray" = "galatasaray.cli:main"
+
+[tool.portray.mkdocs]
+site_name = "Galatasaray"
+
+[tool.portray.mkdocs.theme]
+name = "material"
+palette = { primary = "red", accent = "yellow" }
+
+[tool.portray.mkdocs.extra]
+social = [
+    { icon = "fontawesome/brands/github", link = "https://github.com/ozcanyarimdunya" },
+]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
