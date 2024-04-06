@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "SciDataContainer"
+version = "1.1.5"
+authors = [
+  { name="Reinhard Caspary", email="reinhard.caspary@phoenixd.uni-hannover.de" },
+]
+description = "A container class for the storage of scientific data together with meta data."
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
+]
+dependencies = [
+    "requests",
+    "jsonschema[format-nongpl]"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/SciDataContainer/SciDataContainer"
+Documentation = "https://scidatacontainer.readthedocs.io/en/latest"
+"Bug Tracker" = "https://github.com/SciDataContainer/SciDataContainer/issues"
