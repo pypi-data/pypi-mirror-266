@@ -1,0 +1,106 @@
+Metadata-Version: 2.1
+Name: lm-debug-eval-ui
+Version: 0.0.3
+Summary: LLM Application Debug/Eval UI on top of AIConfig
+Author: LastMile AI
+Project-URL: Homepage, https://github.com/lastmile-ai/aiconfig
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: anthropic_bedrock
+Requires-Dist: black
+Requires-Dist: flake8
+Requires-Dist: flask-cors
+Requires-Dist: flask[async]
+Requires-Dist: frozendict
+Requires-Dist: google-generativeai>=0.3.1
+Requires-Dist: huggingface-hub>=0.20.3
+Requires-Dist: hypothesis==6.91.0
+Requires-Dist: lastmile-utils==0.0.23
+Requires-Dist: mock
+Requires-Dist: nest_asyncio
+Requires-Dist: nltk
+Requires-Dist: openai>=1.13.3
+Requires-Dist: prompt_toolkit
+Requires-Dist: pybars3
+Requires-Dist: pydantic>=2.1
+Requires-Dist: pylint
+Requires-Dist: pytest
+Requires-Dist: pytest-asyncio
+Requires-Dist: python-dotenv
+Requires-Dist: pyyaml
+Requires-Dist: requests
+Requires-Dist: result
+Requires-Dist: ruamel.yaml
+
+LLM application debugger / evaluation UI built on top of [AIConfig](https://github.com/lastmile-ai/aiconfig)
+
+
+## Quickstart
+
+1. `pip3 install lm-debug-eval-ui`
+2. Create an `evaluation_module.py` file containing the necessary functions to run evaluation (see Evaluation Module section below)
+3. Create an `aiconfig_model_registry.py` parser module which registers the model parser to use for prompt iteration
+4. Create an aiconfig file (e.g. `eval_prompt_template.aiconfig.yaml`) containing the prompts
+to iterate on and to use within the application / eval code
+5. Set the following variables in bash:
+```
+evaluation_module_path=<path_to_evaluation_module>
+parsers_path=<path_to_model_parser_module>
+aiconfig_path=<path_to_aiconfig file>
+```
+6. Run the eval/debug UI with:
+```
+aiconfig eval --aiconfig-path=$aiconfig_path --parsers-module-path=$parsers_path --evaluation-module-path=$evaluation_module_path
+```
+
+NOTE: By default, the script will look for `./evaluation_module.py` and `./aiconfig_model_registry.py` for the evaluation module and parsers module, so no need to pass those args if those files exist already.
+
+
+# UI Overview
+The UI is a single page web application with two tabs: "Evaluation" and "Prompt Iteration".
+
+## Evaluation
+The evaluation tab is where evaluation sets (think batch runs) are created and analyzed. 
+
+### Evaluation Sets
+The first table shows the sets that have been created. Create a new evaluation set by clicking the 'Create Evaluation Set' button and stepping through the creation flow:
+- Give the set a name to explain what is being evaluated
+- Specify the path to the prompt config (aiconfig) to use for the evaluation set. The evaluation code should be hooked up (via python-aiconfig package) to resolve prompts from the config
+
+**Data Selection**
+Select the desired data (i.e. paper paths) from the 'Available Data' on the left and click the > to move to the 'Selected Data' section on the right. These will be the source data (papers) used by the evaluation (opgee_cli) runs for the evaluation set. Click 'Next Step' once desired data is selected.
+
+**Specific Data Configuration**
+For each of the selected data sources from the Data Selection step, optionally specify a ground truth file path to use for the evaluation. If no ground truth is specified, the raw evaluation results will be obtained without any comparison metrics to the ground truth.
+
+**General Data Configuration**
+Specify the general configuration to be used for every evaluation call (for all data sources). Each opgee run for the papers in the evaluation set will use the arguments specified in the general data configuration.
+
+### Evaluation Set Results
+Clicking a row in the Evaluation Sets table will load the table of results for that evaluation set. The results show all relevant metrics for each data source in the evaluation set. To start, these metrics are obtained from `eval_matrix.csv` and `eval_matrix_report.txt`.
+
+### Evaluation Result Details
+Clicking a row in the Evaluation Set Results table will load the table of details for the specific result. This will include the raw extracted values for the data source (paper), with cells colored based on TP/FP/TN/FN compared to the ground truth file.
+
+
+## Prompt Iteration
+The prompt iteration tab provides an editor for iterating on prompt templates to use in the application / evaluation. The editor opens the aiconfig file specified in `aiconfig eval` script call. 
+
+At the top of the page, select a data source (preprocessed paper) and specify the configuration of how it will be used for running each prompt. Other configuration settings (such as 'model') can be specified in the global model settings or the model settings section of each cell (cell-level overrides global).
+
+We have created an ask_llm model parser and associated model parser registry file to use so that running a prompt will run the ask_llm script with that prompt text and arguments associated with the prompt context data and model settings.
+
+Name a prompt cell and write the prompt in the input, then run it to see the ask_llm output. Iterate on the prompt text until it produces the desired output. The prompt can then be referenced in the application/evaluation code using AIConfig:
+```
+# TODO: Initialize AIConfig from the aiconfig somewhere in evaluation/application code:
+aiconfig = AIConfigRuntime.load(<path_to_aiconfig>)
+
+# ... In prompt template function in evaluation/application code
+await aiconfig.resolve(prompt_name=<prompt_name>, parameters)
+```
+
+# Evaluation Module
+The application runs on a flask server which is integrated with the evaluation module (default `evaluation_module.py`) for interfacing with the evaluation logic (`opgee` script). Each function in the evaluation module is associated with some aspect of the UI and determines how the data is retrieved (or created) with respect to the underlying system. The `evaluation_module.py` we have created will retrieve data from the existing `result` folder structure and create evaluation sets via async runs of the `opgee_cli` script
