@@ -1,0 +1,66 @@
+Metadata-Version: 2.1
+Name: reapit-cdk.service-quotas
+Version: 0.1.2
+Summary: This construct allows you to IaC your service quotas
+Home-page: https://github.com/reapit/ts-cdk-constructs/blob/main/packages/modules/service-quotas
+Author: Josh Balfour<jbalfour@reapit.com>
+License: MIT
+Project-URL: Source, https://github.com/reapit/ts-cdk-constructs.git
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: JavaScript
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Typing :: Typed
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: OSI Approved
+Requires-Python: ~=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# @reapit-cdk/service-quotas
+
+![npm version](https://img.shields.io/npm/v/@reapit-cdk/service-quotas)
+![npm downloads](https://img.shields.io/npm/dm/@reapit-cdk/service-quotas)
+![coverage: 0%25](https://img.shields.io/badge/coverage-0%25-red)
+![Integ Tests: X](https://img.shields.io/badge/Integ%20Tests-X-red)
+
+This construct allows you to IaC your service quotas
+
+## Package Installation:
+
+```sh
+yarn add --dev @reapit-cdk/service-quotas
+# or
+npm install @reapit-cdk/service-quotas --save-dev
+```
+
+## Usage
+
+```python
+import { Stack, App } from 'aws-cdk-lib'
+import { AWSService, AmazonCloudFrontQuota, ServiceQuotas } from '@reapit-cdk/service-quotas'
+
+const app = new App()
+const stack = new Stack(app, 'stack-name')
+const quotas = new ServiceQuotas(stack, 'service-quotas', {
+  // Fail the stack if your requests aren't granted yet
+  failIfNotGranted: true,
+  // Make another request if an existing one is denied
+  rerequestWhenDenied: true,
+})
+
+quotas.requestQuota(
+  // region
+  'us-east-1',
+  // service (use the AWSService.${Service} helper or specify the e.g. 'cloudfront' string as any)
+  AWSService.AMAZON_CLOUD_FRONT,
+  // quota (use the ${Service}Quota e.g. AmazonCloudFrontQuota helper or specify the 'LL-' string as any)
+  AmazonCloudFrontQuota.CACHE_BEHAVIORS_PER_DISTRIBUTION,
+  // desired value
+  100,
+)
+```
