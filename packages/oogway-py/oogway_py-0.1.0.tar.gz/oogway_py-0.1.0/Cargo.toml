@@ -1,0 +1,17 @@
+[package]
+name = "oogway_py"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "oogway_py"
+crate-type = ["cdylib"]
+
+[dependencies]
+async-openai = "0.20.0"
+async-std = { version = "1.12.0", features = ["attributes", "tokio1"] }
+futures = "0.3.30"
+oogway = { git = "https://github.com/cs50victor/oogway_ai", branch = "main" }
+pyo3 = "0.20.0"
+pyo3-asyncio = { version = "0.20.0", features = ["async-std-runtime", "attributes", "tokio-runtime", "tokio"] }
+tokio = { version = "1.37.0", features = ["full"] }
