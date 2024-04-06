@@ -1,0 +1,50 @@
+$endpoint:
+    is_sdk: true
+    method: get
+    path: ${external}/project/external_get_projects_data
+    function: main.site.app.external.project.get_projects_data.get_projects_data
+    desc: "Gets either all data associated with a set of projects created in the platform.  Because Uncountables recipe structure is complex, various data values are exploded out to increase efficiency in parsing, and this page is paginated to prevent too large of return values"
+Arguments:
+    type: Object
+    properties:
+        project_ids:
+            type: List<ObjectId>
+            desc: "The projects to get the data from"
+        offset?:
+            type: Optional<Integer>
+            desc: "Used for pagination. All pagination is done in order of Project ID"
+        limit?:
+            type: Optional<Integer>
+            desc: "The number of data points to return. If not filled in, it will be set to 100, and cannot be set higher than 100"
+
+ProjectDetailed:
+    type: Object
+    properties:
+        id:
+            type: ObjectId
+            desc: "A unique identifier for the project. Used as foreign key to reference elsewhere."
+        name:
+            type: String
+            desc: "The name of the project"
+        material_family_id:
+            type: ObjectId
+            desc: "A unique identifier for the material family. Used as foreign key to reference elsewhere."
+        project_owner_id:
+            type: Optional<ObjectId>
+            desc: "The projects owner, as a user ID within the platform"
+        phase_id:
+            type: Optional<ObjectId>
+            desc: "The phase id corresponding to a phase workflow"
+        values:
+            type: List<field_values.ArgumentValueId>
+            desc: "List of fields and values associated with the project"
+
+Data:
+    type: Object
+    properties:
+        projects:
+            type: List<ProjectDetailed>
+        phases:
+            type: List<phases.Phase>
+        fields:
+            type: List<fields.Field>

@@ -1,0 +1,29 @@
+$endpoint:
+    is_sdk: true
+    method: get
+    path: ${external}/input_groups/external_get_input_group_names
+    function: main.site.app.external.input_groups.get_input_group_names.get_input_group_names
+    desc: "Gets the name of all input groups in a material family that either the user created, or are shared to all users."
+
+Arguments:
+    type: Object
+    properties:
+        material_family_id:
+            type: ObjectId
+            desc: "Required: The Material Family ID to get the input groups from."
+
+SimpleInputGroup:
+    type: Object
+    properties:
+        input_group_id:
+            type: ObjectId
+            desc: "The unique integer ID of the input group. Used for joining and identification elsewhere"
+        name:
+            type: String
+            desc: "The name of the input group"
+
+Data:
+    type: Object
+    properties:
+        input_groups:
+            type: List<SimpleInputGroup>

@@ -1,0 +1,92 @@
+$endpoint:
+    is_sdk: true
+    method: get
+    path: ${external}/outputs/external_get_output_data
+    function: main.site.app.external.outputs.get_output_data.get_output_data
+    desc: "Gets the attribute, categorization and other metadata associated with a set of outputs"
+
+Arguments:
+    type: Object
+    properties:
+        material_family_id:
+            type: ObjectId
+            desc: "The material family ID to get the output values from."
+        output_ids?:
+            type: List<ObjectId>
+            desc: "The output IDs to get the data from. If this is not filled in, all outputs from a material family will be returned (in paginated form)."
+        offset?:
+            type: Integer
+            desc: "Used for pagination, where the number of results returned exceeds the limit. Results are always ordered by the output ID"
+        limit?:
+            type: Integer
+            desc: "The maximum number of results to return. By default this is set to 1,000 and it cannot be set higher than 1,000"
+
+OutputAttrVal:
+    type: Object
+    properties:
+        attribute_id:
+            type: ObjectId
+            desc: "The unique integer ID for the output attribute value. Used for joining and identification elsewhere."
+        quantity_dec:
+            type: Decimal
+            desc: "The value for the attribute, if it is of numeric type"
+        quantity_json:
+            type: JsonValue
+            desc: "The value for the attribute, if it is not of numeric type"
+
+SimpleOutputAttr:
+    type: Object
+    properties:
+        attribute_id:
+            type: ObjectId
+            desc: "The unique integer ID for the output attribute value. Used for joining and identification elsewhere."
+        name:
+            type: String
+            desc: "The name of the output attribute"
+        quantity_type:
+            type: String
+            desc: "The quantity type of the output attribute, such as numeric, categorical or text"
+
+SimpleOutputGlobalCategory:
+    type: Object
+    properties:
+        category_id:
+            type: ObjectId
+            desc: "The unique integer ID for the global category. Used for joining and identification elsewhere."
+        name:
+            type: String
+            desc: "The name of the output global category"
+
+FullOutput:
+    type: Object
+    properties:
+        output_id:
+            type: ObjectId
+            desc: "The unique integer ID of the output value. Used for joining and identification elsewhere"
+        name:
+            type: String
+            desc: "The name of the output"
+        quantity_type:
+            type: String
+            desc: "The quantity type of the output, such as numeric, categorical, text, curve, or calculation"
+        attributes:
+            type: List<OutputAttrVal>
+            desc: "Attributes associated with an output, such as a test documentation"
+        global_category_id:
+            type: Optional<ObjectId>
+            desc: "The global category ID associated with the output"
+        unit_id:
+            type: Optional<ObjectId>
+            desc: "The unit for the output, which all data is stored in. This may be different than the users default displayed information for the output"
+
+Data:
+    type: Object
+    properties:
+        outputs:
+            type: List<FullOutput>
+        attrs:
+            type: List<SimpleOutputAttr>
+        global_categories:
+            type: List<SimpleOutputGlobalCategory>
+        units:
+            type: List<units.SimpleUnit>
