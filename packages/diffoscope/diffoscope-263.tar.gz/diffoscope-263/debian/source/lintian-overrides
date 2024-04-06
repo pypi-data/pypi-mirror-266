@@ -1,0 +1,39 @@
+# This will mainly be used to double check that what we upload to Debian
+# is also in our "archive".
+debian-watch-file-in-native-package
+
+# We like to share our own keys for others to check the released signature.
+public-upstream-key-in-native-package
+
+# We are upstream but also quite integrated in Debian.
+upstream-metadata-in-native-source
+
+# tests are special
+binary-with-bad-dynamic-table [tests/data/test1.debug]
+binary-with-bad-dynamic-table [tests/data/test2.debug]
+very-long-line-length-in-source-file * > 512 [tests/data/*]
+
+# we are fully aware of this
+# https://salsa.debian.org/reproducible-builds/diffoscope/-/issues/66
+source-is-missing [tests/data/test1.o]
+source-is-missing [tests/data/test2.o]
+source-is-missing [tests/data/test1.debug]
+source-is-missing [tests/data/test2.debug]
+source-contains-prebuilt-binary [tests/data/test1.debug]
+source-contains-prebuilt-binary [tests/data/test2.debug]
+source-contains-prebuilt-windows-binary [tests/data/test1.exe]
+source-contains-prebuilt-windows-binary [tests/data/test2.exe]
+source-contains-prebuilt-wasm-binary [tests/data/hello1.wasm]
+source-contains-prebuilt-wasm-binary [tests/data/hello2.wasm]
+
+# not detected anymore by current lintian
+# left here for convinience when reenabling them again
+#source-is-missing [tests/data/test1.pyc-renamed]
+#source-is-missing [tests/data/test2.pyc-renamed]
+
+# override warning we can fix nicely with python-debian from bookworm or later.
+# (= so once we don't maintain diffoscope in bullseye-backports anymore)
+# we can fix this in debian/tests/control.sh by running
+# wrap-and-sort -n --experimental-rts-parser -f debian/tests/control.tmp
+very-long-line-length-in-source-file * > 512 [debian/tests/control:*]
+

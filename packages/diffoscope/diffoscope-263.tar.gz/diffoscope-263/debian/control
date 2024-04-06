@@ -1,0 +1,159 @@
+Source: diffoscope
+Section: devel
+Priority: optional
+Maintainer: Reproducible builds folks <reproducible-builds@lists.alioth.debian.org>
+Uploaders:
+ Chris Lamb <lamby@debian.org>,
+ Holger Levsen <holger@debian.org>,
+ Mattia Rizzolo <mattia@debian.org>,
+Build-Depends:
+ aapt <!nocheck>,
+ abootimg <!nocheck>,
+ androguard <!nocheck>,
+ apksigcopier <!nocheck>,
+ apksigner <!nocheck>,
+ apktool [!ppc64el !s390x] <!nocheck>,
+ bash-completion,
+ binutils-multiarch <!nocheck>,
+ black <!nocheck>,
+ caca-utils <!nocheck>,
+ colord <!nocheck>,
+ coreboot-utils <!nocheck>,
+ db-util <!nocheck>,
+ debhelper-compat (= 13),
+ default-jdk-headless <!nocheck> | default-jdk <!nocheck>,
+ device-tree-compiler (>= 1.4.2) <!nocheck>,
+ dexdump <!nocheck>,
+ dh-python (>= 2.20160818~),
+ docx2txt <!nocheck>,
+ dpkg-dev (>= 1.17.14),
+ e2fsprogs <!nocheck>,
+ enjarify <!nocheck>,
+ ffmpeg <!nocheck>,
+ flake8 <!nocheck>,
+ fontforge-extras <!nocheck>,
+ fonttools <!nocheck>,
+ fp-utils [!ppc64el !s390x] <!nocheck>,
+ ghc <!nocheck>,
+ ghostscript <!nocheck>,
+ giflib-tools <!nocheck>,
+ gnumeric <!nocheck>,
+ gnupg-utils <!nocheck>,
+ gpg <!nocheck>,
+ hdf5-tools <!nocheck>,
+ help2man,
+ html2text <!nocheck>,
+ imagemagick <!nocheck>,
+ jsbeautifier <!nocheck>,
+ libarchive-tools <!nocheck>,
+ libjs-jquery <!nocheck>,
+ libjs-jquery-hotkeys <!nocheck>,
+ libjs-jquery-isonscreen <!nocheck>,
+ libjs-jquery-tablesorter <!nocheck>,
+ libjs-jquery-throttle-debounce <!nocheck>,
+ linux-image-amd64 [amd64] <!nocheck> | linux-image-generic [amd64] <!nocheck>,
+ llvm <!nocheck>,
+ lz4 <!nocheck> | liblz4-tool <!nocheck>,
+ lzip <!nocheck>,
+ mono-utils <!nocheck>,
+ ocaml-nox <!nocheck>,
+ odt2txt <!nocheck>,
+ oggvideotools [!s390x] <!nocheck>,
+ openssh-client <!nocheck>,
+ openssl <!nocheck>,
+ pgpdump <!nocheck>,
+ poppler-utils <!nocheck>,
+ procyon-decompiler <!nocheck>,
+ python3-all,
+ python3-argcomplete,
+ python3-binwalk <!nocheck>,
+ python3-debian <!nocheck>,
+ python3-distro <!nocheck>,
+ python3-docutils,
+ python3-guestfs <!nocheck>,
+ python3-h5py <!nocheck>,
+ python3-jsondiff <!nocheck>,
+ python3-libarchive-c,
+ python3-magic,
+ python3-pdfminer <!nocheck>,
+ python3-progressbar <!nocheck>,
+ python3-pypdf <!nocheck>,
+ python3-pytest <!nocheck>,
+ python3-pytest-cov <!nocheck>,
+ python3-pyxattr <!nocheck>,
+ python3-rpm <!nocheck>,
+ python3-setuptools,
+ python3-tlsh (>= 3.4.1) <!nocheck>,
+ r-base-core <!nocheck>,
+ rpm2cpio <!nocheck>,
+ sng <!nocheck>,
+ sqlite3 <!nocheck>,
+ squashfs-tools <!nocheck>,
+ tcpdump <!nocheck>,
+ u-boot-tools <!nocheck>,
+ unzip <!nocheck>,
+ wabt <!nocheck>,
+ xmlbeans <!nocheck>,
+ xxd <!nocheck>,
+ zstd <!nocheck>,
+Build-Conflicts:
+ graphicsmagick-imagemagick-compat,
+Standards-Version: 4.6.2
+Rules-Requires-Root: no
+Homepage: https://diffoscope.org
+Vcs-Git: https://salsa.debian.org/reproducible-builds/diffoscope.git
+Vcs-Browser: https://salsa.debian.org/reproducible-builds/diffoscope
+
+Package: diffoscope-minimal
+Architecture: all
+Depends:
+ python3-pkg-resources,
+ ${misc:Depends},
+ ${python3:Depends},
+Recommends:
+ ${diffoscope-minimal:Recommends},
+ ${python3:Recommends},
+Description: in-depth visual diff tool for files, archives and directories (minimal package)
+ diffoscope is a visual diff tool that attempts try to get to the bottom of
+ what makes files or directories actually different.
+ .
+ It can recursively unpack archives of many kinds, transforming various binary
+ formats into more human-readable form to compare them in a human-readable way.
+ It can compare two tarballs, ISO images or PDFs just as easily. The
+ differences can be displayed on the console or in a HTML report.
+ .
+ ${diffoscope:Description}
+ .
+ This -minimal package only recommends a partial set of the supported 3rd party
+ tools needed to produce file-format-specific comparisons, excluding those that
+ are considered too large or niche for general use.
+ .
+ diffoscope is developed as part of the Reproducible Builds project.
+
+Package: diffoscope
+Architecture: all
+Suggests:
+ libjs-jquery,
+Depends:
+ diffoscope-minimal (= ${source:Version}),
+ ${misc:Depends},
+Recommends:
+ ${diffoscope:Recommends},
+ ${python3:Recommends},
+Enhances:
+ diffoscope-minimal,
+Description: in-depth visual diff tool for files, archives and directories
+ diffoscope is a visual diff tool that attempts try to get to the bottom of
+ what makes files or directories actually different.
+ .
+ It can recursively unpack archives of many kinds, transforming various binary
+ formats into more human-readable form to compare them in a human-readable way.
+ It can compare two tarballs, ISO images or PDFs just as easily. The
+ differences can be displayed on the console or in a HTML report.
+ .
+ This is a dependency package that recommends the full set of external tools,
+ to support as many type of files as possible.
+ .
+ ${diffoscope:Description}
+ .
+ diffoscope is developed as part of the Reproducible Builds project.
