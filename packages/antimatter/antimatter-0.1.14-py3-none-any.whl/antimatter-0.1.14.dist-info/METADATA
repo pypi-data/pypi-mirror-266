@@ -1,0 +1,43 @@
+Metadata-Version: 2.1
+Name: antimatter
+Version: 0.1.14
+Summary: library for interacting with capsules in various formats
+Author: Antimatter Team
+Author-email: support@antimatter.io
+Requires-Python: >=3.10
+Requires-Dist: annotated-types >=0.6
+Requires-Dist: packaging >=21.1
+Requires-Dist: pydantic >=2.0
+Requires-Dist: python-dateutil >=2.1
+Requires-Dist: cbor2 ~=5.5
+Requires-Dist: urllib3 >=2.0.2
+Requires-Dist: antimatter-engine ==0.1.14
+Provides-Extra: all
+Requires-Dist: langchain >=0.0.341 ; extra == 'all'
+Requires-Dist: faiss-cpu >=1.7.3 ; extra == 'all'
+Requires-Dist: transformers >=4.23 ; extra == 'all'
+Requires-Dist: torch >=2.0 ; extra == 'all'
+Requires-Dist: numpy >=1.23.3 ; extra == 'all'
+Requires-Dist: pandas[performance] >=2.0 ; extra == 'all'
+Requires-Dist: pyarrow >=2.0 ; extra == 'all'
+Provides-Extra: dev
+Requires-Dist: pytest >=7.0 ; extra == 'dev'
+Provides-Extra: langchain
+Requires-Dist: langchain >=0.0.341 ; extra == 'langchain'
+Requires-Dist: faiss-cpu >=1.7.3 ; extra == 'langchain'
+Provides-Extra: langchain-huggingface
+Requires-Dist: langchain >=0.0.341 ; extra == 'langchain-huggingface'
+Requires-Dist: faiss-cpu >=1.7.3 ; extra == 'langchain-huggingface'
+Requires-Dist: transformers >=4.23 ; extra == 'langchain-huggingface'
+Requires-Dist: torch >=2.0 ; extra == 'langchain-huggingface'
+Provides-Extra: numpy
+Requires-Dist: numpy >=1.23.3 ; extra == 'numpy'
+Provides-Extra: pandas
+Requires-Dist: pandas[performance] >=1.5 ; extra == 'pandas'
+Provides-Extra: pyarrow
+Requires-Dist: pandas[performance] >=2.0 ; extra == 'pyarrow'
+Requires-Dist: pyarrow >=2.0 ; extra == 'pyarrow'
+Provides-Extra: pytorch
+Requires-Dist: torch >=2.0 ; extra == 'pytorch'
+
+For more information, please visit the docs at <a href="https://antimatter.readthedocs.io/">Python docs</a>.
