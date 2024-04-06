@@ -1,0 +1,107 @@
+Metadata-Version: 2.1
+Name: cellfinder
+Version: 1.1.2
+Summary: Automated 3D cell detection in large microscopy images
+Author-email: "Adam Tyson, Christian Niedworok, Charly Rousseau" <code@adamltyson.com>
+License: BSD-3-Clause
+Project-URL: Homepage, https://brainglobe.info/documentation/cellfinder/index.html
+Project-URL: Source Code, https://github.com/brainglobe/cellfinder
+Project-URL: Bug Tracker, https://github.com/brainglobe/cellfinder/issues
+Project-URL: Documentation, https://brainglobe.info/documentation/cellfinder/index.html
+Project-URL: User Support, https://forum.image.sc/tag/brainglobe
+Classifier: Development Status :: 4 - Beta
+Classifier: Framework :: napari
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Scientific/Engineering :: Image Recognition
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: brainglobe-utils >=0.4.2
+Requires-Dist: brainglobe-napari-io >=0.3.4
+Requires-Dist: dask[array]
+Requires-Dist: fancylog >=0.0.7
+Requires-Dist: natsort
+Requires-Dist: numba
+Requires-Dist: numpy
+Requires-Dist: scikit-image
+Requires-Dist: scikit-learn
+Requires-Dist: tifffile
+Requires-Dist: tqdm
+Requires-Dist: tensorflow <2.12.0,>=2.5.0 ; platform_system != "Darwin" or platform_machine != "arm64"
+Requires-Dist: tensorflow-macos <2.12.0,>=2.5.0 ; platform_system == "Darwin" and platform_machine == "arm64"
+Provides-Extra: dev
+Requires-Dist: black ; extra == 'dev'
+Requires-Dist: pre-commit ; extra == 'dev'
+Requires-Dist: pyinstrument ; extra == 'dev'
+Requires-Dist: pytest-cov ; extra == 'dev'
+Requires-Dist: pytest-mock ; extra == 'dev'
+Requires-Dist: pytest-qt ; extra == 'dev'
+Requires-Dist: pytest-timeout ; extra == 'dev'
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: tox ; extra == 'dev'
+Provides-Extra: napari
+Requires-Dist: brainglobe-napari-io ; extra == 'napari'
+Requires-Dist: magicgui ; extra == 'napari'
+Requires-Dist: napari-ndtiffs ; extra == 'napari'
+Requires-Dist: napari-plugin-engine >=0.1.4 ; extra == 'napari'
+Requires-Dist: napari[pyqt5] ; extra == 'napari'
+Requires-Dist: pooch >=1 ; extra == 'napari'
+Requires-Dist: qtpy ; extra == 'napari'
+
+[![Python Version](https://img.shields.io/pypi/pyversions/cellfinder-core.svg)](https://pypi.org/project/cellfinder)
+[![PyPI](https://img.shields.io/pypi/v/cellfinder-core.svg)](https://pypi.org/project/cellfinder)
+[![Downloads](https://pepy.tech/badge/cellfinder-core)](https://pepy.tech/project/cellfinder)
+[![Wheel](https://img.shields.io/pypi/wheel/cellfinder-core.svg)](https://pypi.org/project/cellfinder)
+[![Development Status](https://img.shields.io/pypi/status/cellfinder-core.svg)](https://github.com/brainglobe/cellfinder)
+[![Tests](https://img.shields.io/github/actions/workflow/status/brainglobe/cellfinder/test_and_deploy.yml?branch=main)](https://github.com/brainglobe/cellfinder/actions)
+[![codecov](https://codecov.io/gh/brainglobe/cellfinder-core/branch/main/graph/badge.svg?token=nx1lhNI7ox)](https://codecov.io/gh/brainglobe/cellfinder)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
+[![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+[![Contributions](https://img.shields.io/badge/Contributions-Welcome-brightgreen.svg)](https://brainglobe.info/developers/index.html)
+[![Twitter](https://img.shields.io/twitter/follow/brain_globe?style=social)](https://twitter.com/brain_globe)
+
+# cellfinder
+
+cellfinder is software for automated 3D cell detection in very large 3D images (e.g., serial two-photon or lightsheet volumes of whole mouse brains).
+There are three different ways to interact and use it, each with different user interfaces and objectives in mind.
+For more details, head over to [the documentation website](https://brainglobe.info/documentation/cellfinder/index.html).
+
+At a glance:
+
+- There is a command-line interface called [brainmapper](https://brainglobe.info/documentation/brainglobe-workflows/brainmapper/index.html) that integrates [with `brainreg`](https://github.com/brainglobe/brainreg) for automated cell detection and classification. You can install it through [`brainglobe-workflows`](https://brainglobe.info/documentation/brainglobe-workflows/index.html).
+- There is a [napari plugin](https://brainglobe.info/documentation/cellfinder/user-guide/napari-plugin/index.html) for interacting graphically with the cellfinder tool.
+- There is a [Python API](https://brainglobe.info/documentation/cellfinder/user-guide/cellfinder-core.html) to allow users to integrate BrainGlobe tools into their custom workflows.
+
+## Installation
+
+You can find [the installation instructions](https://brainglobe.info/documentation/cellfinder/installation.html#installation) on the BrainGlobe website, which will go into more detail about the installation process if you want to minimise your installation to suit your needs.
+However, we recommend that users install `cellfinder` either through installing BrainGlobe version 1, or (if you also want the command-line interface) installing `brainglobe-workflows`.
+
+```bash
+# If you want to install all BrainGlobe tools, including cellfinder, in a consistent manner with one command:
+pip install brainglobe>=1.0.0
+# If you want to install the brainmapper CLI tool as well:
+pip install brainglobe-workflows>=1.0.0
+```
+
+If you only want the `cellfinder` package by itself, you can `pip install` it alone:
+
+```bash
+pip install cellfinder>=1.0.0
+```
+
+Be sure to specify a version greater than version `v1.0.0` - prior to this version the `cellfinder` package had a very different structure that is incompatible with BrainGlobe version 1 and the other tools in the BrainGlobe suite.
+See [our blog posts](https://brainglobe.info/blog/) for more information on the release of BrainGlobe version 1.
+
+## Contributing
+
+If you have encountered a bug whilst using cellfinder, please [open an issue on GitHub](https://github.com/brainglobe/cellfinder/issues).
+
+If you are interested in contributing to cellfinder (thank you!) - please head over to our [developer documentation](https://brainglobe.info/community/developers/index.html).
