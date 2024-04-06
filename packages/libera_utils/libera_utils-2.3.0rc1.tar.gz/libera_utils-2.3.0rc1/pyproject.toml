@@ -1,0 +1,60 @@
+[tool.poetry]
+name = "libera_utils"
+version = "2.3.0rc1"
+description = "Utility package for Libera Science Data Processing and the Libera Science Data Center. Copyright 2022 University of Colorado."
+authors = [  # Alphabetical
+    "Stephane Beland <stephane.beland@lasp.colorado.edu>",
+    "Gavin Medley <gavin.medley@lasp.colorado.edu>",
+    "Laura Sandoval <laura.sandoval@lasp.colorado.edu>",
+    "Matt Watwood <matt.watwood@lasp.colorado.edu>"
+]
+maintainers = ["Gavin Medley <gavin.medley@lasp.colorado.edu>"]
+license = "BSD-3-Clause"
+include = ["CHANGES.md", "LICENSE", "README.md"]
+
+# Reference for dependency specifications:
+# https://python-poetry.org/docs/dependency-specification/
+# Note on caret notation: ^1.2.3 is equivalent to >=1.2.3,<2.0.0 (prevents major version updates)
+
+[tool.poetry.dependencies]
+# Keep these "as loose as practical" to allow maximum compatibility with others' environments
+python = ">=3.9,<4"
+astropy = ">=5.0"
+cloudpathlib = {extras = ["s3"], version = ">=0.14.0,<1.0"}
+h5netcdf = ">=1.0.0"
+h5py = ">=3.3"
+numpy = ">=1.21"  # Numpy 2.0 is up for release very soon
+requests = ">=2.27.0,<3.0"
+setuptools = ">=67.0.0"
+space-packet-parser = "4.1.1"
+spiceypy = ">=5.0.0"
+urllib3 = "<2.0"  # This pin speeds up solving boto dependencies, which require urllib3<2.0
+watchtower = ">=3.0.0,<4.0"
+xarray = ">=2023.1.0"
+botocore = "*"
+docker = "^6.1.3"
+
+[tool.poetry.group.dev.dependencies]
+# These specs are totally open because they are only needed for developers
+bandit = "*"
+moto = {extras = ["s3"], version = "*"}
+pytest-cov = "*"
+pylint = "*"
+pytest-randomly = "*"
+responses = "*"
+pytest-subprocess = "*"
+
+[tool.poetry.group.docgen.dependencies]
+# These are listed as a group rather than an extra because no end user will need them
+# The specs are totally open because no user will need them
+myst-parser = "*"  # Parses markdown for sphinx
+numpydoc = "*"  # Parses Numpy style docstrings
+sphinx = "*"
+pydata-sphinx-theme = "*"
+
+[tool.poetry.scripts]
+libera-utils = 'libera_utils.cli:main'
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
