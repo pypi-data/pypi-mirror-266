@@ -1,0 +1,117 @@
+[tool.pytest.ini_options]
+minversion = "6.0"
+# opts:
+# `--strict-markers` - Raise error on unexpected pytest markers being used (add new markers to `markers` config)
+# `-n2` - parallelise over two threads (uses pytest-xdist)
+# `--nbmake --nbmake-kernel=pam` - test example notebooks using the "pam" notebook kernel (uses nbmake)
+# `--cov --cov-report=xml --cov-config=pyproject.toml` - generate coverage report for tests (uses pytest-cov; call `--no-cov` in CLI to switch off; `--cov-config` include to avoid bug)
+# `-m 'not high_mem'` - Do not run tests marked as consuming large amounts of memory (call `-m "high_mem"` in CLI to invert this; only `high_mem` marked tests will be run)
+# `-p no:memray` - Do not use the memray memory profiling plugin (call `-p memray` in CLI to switch on memory profiling)
+addopts = "-rav --strict-markers -n2 --nbmake --nbmake-kernel=pam --cov --cov-report=xml --cov-config=pyproject.toml -m 'not high_mem' -p no:memray"
+testpaths = ["tests", "examples"]
+# to mark a test, decorate it with `@pytest.mark.[marker-name]`
+markers = ["high_mem", "limit_memory"]
+filterwarnings = [
+    # https://github.com/pytest-dev/pytest-xdist/issues/825
+    "ignore:The --rsyncdir command line argument and rsyncdirs config variable are deprecated.:DeprecationWarning",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["src/"]
+
+[tool.coverage.report]
+fail_under = 89
+
+[tool.coverage.html]
+directory = "reports/coverage"
+
+[tool.coverage.xml]
+output = "reports/coverage/coverage.xml"
+
+[tool.black]
+line-length = 100
+skip-magic-trailing-comma = true
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "Q"]
+
+ignore = [
+    "E501", # line too long: Black will handle this.
+    "D1",   # Ignore missing docstrings in public functions/modules. There are just too many of them missing...
+]
+
+# Exclude a variety of commonly ignored directories.
+exclude = [".*", "__pypackages__", "build", "dist", "venv", "reports/"]
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.mccabe]
+# Unlike Flake8, default to a complexity level of 10.
+max-complexity = 10
+
+[tool.ruff.lint.per-file-ignores]
+# Ignore `E402` (import violations) and `F401` (unused imports) in all `__init__.py` files
+"__init__.py" = ["E402", "F401"]
+
+[tool.ruff.lint.flake8-quotes]
+docstring-quotes = "double"
+
+# Ignore `E402` for all notebooks
+[tool.nbqa.addopts]
+ruff = ["--extend-ignore=E402"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["pam*"]
+
+[tool.setuptools.package-data]
+# "py.typed" is added by default. It allows `mypy` to register the package as having type hints.
+pam = ["py.typed", "fixtures/**/*"]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cml-pam"
+authors = [{ name = "Fred Shone", email = "fred.shone@arup.com" }]
+maintainers = [
+    { name = "Michael Fitzmaurice", email = "michael.fitzmaurice@arup.com" },
+    { name = "Kasia Kozlowska", email = "kasia.kozlowska@arup.com" },
+    { name = "Theodore Chatziioannou", email = "theodore.chatziioannou@arup.com" },
+    { name = "Bryn Pickering", email = "17178478+brynpickering@users.noreply.github.com" },
+]
+description = "The Population activity Modeller (PAM) is a python API for activity sequence modelling."
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = ["agent-based modelling", "sequence model", "matsim"]
+license = { text = "MIT" }
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dynamic = ["version", "dependencies", "optional-dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements/base.txt"] }
+version = { attr = "pam.__version__" }
+
+[project.scripts]
+pam = "pam.cli:cli"
+
+[tool.setuptools.dynamic.optional-dependencies]
+dev = { file = ["requirements/dev.txt"] }
+
+[project.urls]
+repository = "https://github.com/arup-group/pam"
+documentation = "https://arup-group.github.io/pam"
+changelog = "https://github.com/arup-group/pam/blob/main/CHANGELOG.md"
