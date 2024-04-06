@@ -1,0 +1,22 @@
+[project]
+name = "pygments-lexer-petrichorscript"
+version = "1.0.3"
+description = "Pygments lexer for Petrichor Script."
+license = { text = "Anti-Exploitation License Noncommercial Attribution 1.1" }
+authors = [
+    { name = "SparkliTwizzl", email = "github@sparklitwizzl.com" }
+]
+readme = "README"
+urls = { Homepage = "https://github.com/sparklitwizzl/pygments-lexer-petrichorscript" }
+requires-python = ">=3.12"
+dependencies = [
+    "pygments"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: Free To Use But Restricted",
+    "Operating System :: OS Independent",
+]
+
+[project.entry-points."pygments.lexers"]
+petrichorscript = "lexer.lexer:PetrichorScriptLexer"
