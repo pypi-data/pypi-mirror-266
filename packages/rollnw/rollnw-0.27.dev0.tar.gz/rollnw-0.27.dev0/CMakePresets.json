@@ -1,0 +1,221 @@
+{
+    "version": 3,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 21,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "linux",
+            "displayName": "Default Config",
+            "description": "Default build using Ninja",
+            "binaryDir": "${sourceDir}/build",
+            "generator": "Ninja",
+            "cacheVariables": {
+                "ROLLNW_BUILD_BENCHMARKS": {
+                    "type": "BOOL",
+                    "value": "OFF"
+                },
+                "LUAU_BUILD_TESTS": {
+                    "type": "BOOL",
+                    "value": "OFF"
+                },
+                "BUILD_TESTING": {
+                    "type": "BOOL",
+                    "value": "OFF"
+                }
+            }
+        },
+        {
+            "name": "ci-codeql",
+            "inherits": "linux",
+            "displayName": "ci-codeql",
+            "description": "CodeQL build",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Linux"
+            }
+        },
+        {
+            "name": "ci-linux",
+            "inherits": "linux",
+            "displayName": "ci-linux",
+            "description": "Default build with tests and code coverage, no python",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Linux"
+            },
+            "cacheVariables": {
+                "ROLLNW_BUILD_TESTS": {
+                    "type": "BOOL",
+                    "value": "ON"
+                }
+            }
+        },
+        {
+            "name": "cibuildwheel-linux",
+            "inherits": "linux",
+            "generator": "Unix Makefiles",
+            "displayName": "cibuildwheel-linux",
+            "description": "linux build, no tests, python, unix makefiles",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "ROLLNW_BUILD_TESTS": {
+                    "type": "BOOL",
+                    "value": "OFF"
+                },
+                "ROLLNW_BUILD_PYTHON": {
+                    "type": "BOOL",
+                    "value": "ON"
+                }
+            }
+        },
+        {
+            "name": "ci-coverage-docs",
+            "inherits": "linux",
+            "displayName": "ci-coverage-docs",
+            "description": "Default build with tests and code coverage, no python",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Linux"
+            },
+            "cacheVariables": {
+                "CODE_COVERAGE": {
+                    "type": "BOOL",
+                    "value": "ON"
+                },
+                "ROLLNW_BUILD_DOCS": {
+                    "type": "BOOL",
+                    "value": true
+                },
+                "ROLLNW_BUILD_TESTS": {
+                    "type": "BOOL",
+                    "value": "ON"
+                }
+            }
+        },
+        {
+            "name": "windows",
+            "inherits": "linux",
+            "generator": "Visual Studio 17 2022",
+            "displayName": "Windows-only configuration",
+            "description": "This build is only available on Windows",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            },
+            "architecture": {
+                "value": "x64",
+                "strategy": "external"
+            }
+        },
+        {
+            "name": "windows-2019",
+            "inherits": "windows",
+            "generator": "Visual Studio 16 2019"
+        },
+        {
+            "name": "windows-ninja",
+            "inherits": "windows",
+            "generator": "Ninja"
+        },
+        {
+            "name": "ci-windows",
+            "inherits": "windows",
+            "generator": "Ninja",
+            "displayName": "windows ci build",
+            "description": "windows ci build",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "ROLLNW_BUILD_TESTS": {
+                    "type": "BOOL",
+                    "value": "ON"
+                }
+            }
+        },
+        {
+            "name": "cibuildwheel-windows",
+            "inherits": "ci-windows",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "ROLLNW_BUILD_TESTS": {
+                    "type": "BOOL",
+                    "value": "OFF"
+                },
+                "ROLLNW_BUILD_PYTHON": {
+                    "type": "BOOL",
+                    "value": "ON"
+                }
+            }
+        },
+        {
+            "name": "macos",
+            "inherits": "linux",
+            "displayName": "macOS default configuration",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
+            "cacheVariables": {
+                "CMAKE_OSX_DEPLOYMENT_TARGET": "12"
+            }
+        },
+        {
+            "name": "ci-macos",
+            "inherits": "linux",
+            "displayName": "macOS CI configuration",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
+            "cacheVariables": {
+                "ROLLNW_BUILD_TESTS": {
+                    "type": "BOOL",
+                    "value": "ON"
+                }
+            }
+        },
+        {
+            "name": "cibuildwheel-macos",
+            "inherits": "ci-macos",
+            "displayName": "macOS CI configuration",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "ROLLNW_BUILD_TESTS": {
+                    "type": "BOOL",
+                    "value": "OFF"
+                },
+                "ROLLNW_BUILD_PYTHON": {
+                    "type": "BOOL",
+                    "value": "ON"
+                }
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "default",
+            "configurePreset": "linux"
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "default",
+            "configurePreset": "linux",
+            "output": {
+                "outputOnFailure": true
+            },
+            "execution": {
+                "noTestsAction": "error",
+                "stopOnFailure": true
+            }
+        }
+    ]
+}
