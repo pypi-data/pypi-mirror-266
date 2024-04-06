@@ -1,0 +1,61 @@
+Metadata-Version: 2.1
+Name: turbx
+Version: 0.3.9
+Summary: Extensible toolkit for analyzing turbulent flow datasets
+Home-page: https://github.com/iagappel/turbx
+Author: Jason A
+Maintainer: Jason A
+License: MIT
+Keywords: scientific computing,statistics,simulation,turbulence,turbulent flows,direct numerical simulation,DNS,parallel,visualization
+Platform: any
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Topic :: Scientific/Engineering :: Physics
+Classifier: Topic :: Scientific/Engineering :: Visualization
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: mpi4py>=3.1
+Requires-Dist: numpy>=1.25
+Requires-Dist: scipy>=1.11
+Requires-Dist: h5py>=3.10
+Requires-Dist: matplotlib>=3.8
+Requires-Dist: scikit-image>=0.22
+Requires-Dist: psutil>=5.9
+Requires-Dist: tqdm>=4.66
+Requires-Dist: cmocean>=3.0
+Requires-Dist: colorcet>=3.0
+Requires-Dist: cmasher>=1.7
+
+# turbx
+[![PyPI version](https://badge.fury.io/py/turbx.svg)](https://badge.fury.io/py/turbx)
+[![Downloads](https://pepy.tech/badge/turbx)](https://pepy.tech/project/turbx)
+
+Extensible toolkit for analyzing turbulent flow datasets.
+
+Install with `pip`:
+
+```
+pip install --upgrade --user turbx
+```
+
+`turbx` runs in `python3` and uses parallel `HDF5` (wrapped by `h5py`) for high-performance collective MPI-IO with `mpi4py`. This requires:
+
+- A `python3` installation (3.8+ recommended)
+- An MPI implementation such as `OpenMPI`
+- A parallel `HDF5` installation (must be compiled with `--enable-parallel`) 
+- `mpi4py` (optionally compiled from source)
+- `h5py` compiled with parallel configuration
+
+Visualization of `HDF5` datasets is possible using `Paraview` with the use of `xdmf` data descriptor files, which are written automatically by calling `.make_xdmf()` on `turbx` data class (such as `rgd`) class instances.
