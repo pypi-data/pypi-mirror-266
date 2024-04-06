@@ -1,0 +1,52 @@
+$endpoint:
+    is_sdk: true
+    method: get
+    path: ${external}/entity/external_list_entities
+    function: main.site.app.external.entity.list_entities.list_entities
+    desc: "Uses a structured loading configuration to list entities in the system"
+Arguments:
+    type: Object
+    properties:
+        entity_type:
+            type: entity.EntityType
+            desc: "The type of the entities requested, e.g. lab_request, recipe"
+        config_reference:
+            type: String
+            desc: "The configuration reference name for the listing config"
+        attributes?:
+            type: Dict<OpaqueKey, JsonValue>
+            desc: "Attributes to pass to the configuration for parameterizing filters"
+        offset?:
+            type: Optional<Integer>
+            desc: "Used for pagination. Pagination is done based on the sorting of the config"
+        limit?:
+            type: Optional<Integer>
+            desc: "The number of data points to return. If not filled in, it will be set to 100, and cannot be set higher than 100"
+
+EntityResult:
+    type: Object
+    properties:
+        entity:
+            type: entity.Entity
+            desc: "The entity represented by the record"
+        column_values:
+            type: List<JsonValue>
+            desc: "The column values loaded from the configuration"
+
+ColumnAccess:
+    type: Object
+    properties:
+        name:
+            type: String
+            desc: "The name for the identifier for this column.  Note that this will be replaced with the label in the future"
+        table_label:
+            type: Optional<String>
+            desc: "The name manually set for the column"
+
+Data:
+    type: Object
+    properties:
+        columns:
+            type: List<ColumnAccess>
+        results:
+            type: List<EntityResult>

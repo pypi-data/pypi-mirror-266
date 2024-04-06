@@ -1,0 +1,82 @@
+$endpoint:
+    is_sdk: true
+    method: get
+    path: ${external}/inputs/external_get_inputs_data
+    function: main.site.app.external.inputs.get_inputs_data.get_inputs_data
+    desc: "Gets the details for passed input ids"
+
+Arguments:
+    type: Object
+    properties:
+        input_ids:
+            type: List<ObjectId>
+            desc: "Ids of the inputs to retrieve"
+
+AttributeDetails:
+    type: Object
+    properties:
+        attribute_id:
+            type: ObjectId
+            desc: "A unique identifier for the attribute."
+        name:
+            type: String
+            desc: "The name of the attribute"
+        quantity_type:
+            type: String
+            desc: "The value type of the attribute"
+
+InputTag:
+    type: Object
+    properties:
+        tag_id:
+            type: ObjectId
+            desc: "A unique identifier for the tag."
+        tag_name:
+            type: String
+            desc: "A name for the tag"
+
+InputCategory:
+    type: Object
+    properties:
+        material_family_id:
+            type: ObjectId
+            desc: "A unique identifier for the material family id where the category assignment is made."
+        category_id:
+            type: ObjectId
+            desc: "A unique identifer for the category"
+        category_name:
+            type: String
+            desc: "A name for the category"
+
+InputDetails:
+    type: Object
+    properties:
+        input_id:
+            type: ObjectId
+            desc: "A unique identifier for the input."
+        name:
+            type: String
+            desc: "The name of the input."
+        quantity_type:
+            type: String
+            desc: "The quantity type of the input.  Always numeric for standard inputs"
+        type:
+            type: String
+            desc: "The type of the input.  E.g. input, process parameter, equipment"
+        attributes:
+            type: List<input_attributes.InputAttributeValue>
+            desc: "The attributes of the input"
+        categories:
+            type: List<InputCategory>
+            desc: "The categories for the input for each material family"
+        tags:
+            type: List<InputTag>
+            desc: "The tags (subcategories) for the input"
+
+Data:
+    type: Object
+    properties:
+        input_details:
+            type: List<InputDetails>
+        input_attributes:
+            type: List<AttributeDetails>

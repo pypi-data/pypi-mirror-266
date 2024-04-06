@@ -1,0 +1,36 @@
+$endpoint:
+    is_sdk: true
+    method: post
+    path: ${external}/recipes/external_set_recipe_inputs
+    function: main.site.app.external.recipes.set_recipe_inputs.set_recipe_inputs
+    desc: "Sets inputs values for an experiment. Values set can be numeric, text or categorical types in the Uncountable system"
+
+RecipeInputValue:
+    type: Object
+    properties:
+        recipe_id:
+            type: ObjectId
+            desc: "A unique identifier for the recipe / experiment. Used for joining elsewhere"
+        recipe_step_id?:
+            type: Optional<ObjectId>
+            desc: "Optionally the step id for the step of the recipe to be written to. If none is passed, the input will be written to first recipe workflow step"
+        input_id:
+            type: ObjectId
+            desc: "A unique identifier for the input. Used for joining and identification"
+        value_numeric?:
+            type: Decimal
+            desc: "The numeric value for the output. Should be none if output is not of type numeric."
+        value_str?:
+            type: String
+        set_actual_value?:
+            type: Boolean
+            desc: "If True, modify the actual value for the input. If not provided or False, modify the set value for the input."
+
+Arguments:
+    type: Object
+    properties:
+        input_data:
+            type: List<RecipeInputValue>
+            desc: "The inputs to set. Must be at most 100 entries long"
+Data:
+    type: Object
