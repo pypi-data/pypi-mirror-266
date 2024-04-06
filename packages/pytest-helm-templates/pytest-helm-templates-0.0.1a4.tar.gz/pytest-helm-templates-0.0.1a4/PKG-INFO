@@ -1,0 +1,66 @@
+Metadata-Version: 2.1
+Name: pytest-helm-templates
+Version: 0.0.1a4
+Summary: Pytest fixtures for unit testing the output of helm templates
+Author: Danny Guinther
+License: MIT
+Project-URL: Homepage, https://github.com/tdg5/pytest-helm-templates
+Project-URL: Source, https://github.com/tdg5/pytest-helm-templates
+Project-URL: Tracker, https://github.com/tdg5/pytest-helm-templates/issues
+Classifier: Framework :: Pytest
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >3.9.0
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pyyaml~=6.0.1
+Provides-Extra: dev
+Requires-Dist: black~=24.2.0; extra == "dev"
+Requires-Dist: build~=1.0.3; extra == "dev"
+Requires-Dist: coverage~=7.4.4; extra == "dev"
+Requires-Dist: coverage-badge~=1.1.0; extra == "dev"
+Requires-Dist: dlint~=0.14.1; extra == "dev"
+Requires-Dist: flake8-comprehensions~=3.14.0; extra == "dev"
+Requires-Dist: flake8-eradicate~=1.5.0; extra == "dev"
+Requires-Dist: flake8-pyproject~=1.2.3; extra == "dev"
+Requires-Dist: flake8-spellcheck~=0.28.0; extra == "dev"
+Requires-Dist: flake8-typing-imports~=1.15.0; extra == "dev"
+Requires-Dist: flake8~=7.0.0; extra == "dev"
+Requires-Dist: isort~=5.13.2; extra == "dev"
+Requires-Dist: mypy~=1.8.0; extra == "dev"
+Requires-Dist: pep8-naming~=0.13.3; extra == "dev"
+Requires-Dist: pre-commit~=3.6.0; extra == "dev"
+Requires-Dist: pytest-mock~=3.12.0; extra == "dev"
+Requires-Dist: pytest-watcher~=0.4.2; extra == "dev"
+Requires-Dist: pytest~=7.4.0; extra == "dev"
+Requires-Dist: safety==2.3.4; extra == "dev"
+Requires-Dist: twine~=4.0.2; extra == "dev"
+Requires-Dist: types-PyYAML~=6.0.12.20240311; extra == "dev"
+Requires-Dist: wheel>=0.42.0; extra == "dev"
+Provides-Extra: all
+Requires-Dist: pytest-helm-templates[dev]; extra == "all"
+
+[![code coverage](./.meta/coverage/badge.svg)](./.meta/coverage/report.txt)
+[![license](https://img.shields.io/github/license/tdg5/pytest-helm-templates.svg)](https://github.com/tdg5/pytest-helm-templates/blob/main/LICENSE)
+
+# pytest-helm-templates
+
+[Pytest][docs-pytest-org-home] fixtures for unit testing [Helm][helm-sh-home]
+charts via the output of [`helm template`][helm-sh-helm-template-docs].
+
+## Prerequisites
+
+This library assumes that `helm` is already available somewhere on the `$PATH`.
+If you need to install `helm`, please see [Installing
+Helm][helm-sh-installing-helm].
+
+[docs-pytest-org-home]: https://docs.pytest.org/en/8.0.x/ "pytest: pytest documentation"
+[helm-sh-helm-template-docs]: https://helm.sh/docs/helm/helm_template/ "Helm | Helm Template"
+[helm-sh-home]: https://helm.sh/ "Helm"
+[helm-sh-installing-helm]: https://helm.sh/docs/intro/install/ "Helm | Installing Helm"
