@@ -1,0 +1,131 @@
+{% load i18n %}
+{% load static %}
+{% load cache %}
+{% load accrete_ui %}
+
+<div id="query-block" class="panel-block pt-0" style="position: relative; display: inline-block; width: 100%">
+    <script src="{% static "js/filter.js" %}" defer type="text/javascript"></script>
+
+    <div id="query-apply" hx-get="" hx-trigger="click" hx-replace-url="true"
+         hx-select-oob="#content,#list-pagination,#query-apply">
+    </div>
+
+    <div id="query-tags" class="is-flex-direction-column is-flex-grow-1 is-multiline mb-1"
+         data-or-label="{% translate 'OR' %}" data-and-label="{% translate 'AND' %}" data-xor-label="{% translate 'XOR' %}">
+    </div>
+
+    <div class="field level is-mobile mb-1 is-flex">
+        <p id="query-operation" class="control" style="display: flex; flex-direction: column; align-self: flex-start">
+            <span class="select">
+                <select id="query-operation-select" aria-label="Select Operation">
+                    <option value="&">{% translate 'AND' %}</option>
+                    <option value="|">{% translate 'OR' %}</option>
+                </select>
+            </span>
+        </p>
+        <div id="query-notification" class="is-size-7 p-0 ml-1 is-flex-direction-column is-flex-grow-3">
+            <div id="query-notification-parameter" class="notification is-warning is-light has-text-centered py-2 m-0 is-hidden">
+                <p>{% translate 'Select a parameter' %}</p>
+            </div>
+            <p id="query-label" class="py-2 px-1 m-0" style="word-break: break-word"></p>
+        </div>
+    </div>
+
+    <div id="query-input-fieldset" class="field has-addons pt-1 mb-0">
+        <p id="query-input-control" class="control is-expanded">
+            <input id="query-input"
+                   type="text"
+                   aria-label="Query Input"
+                   class="input"
+                   placeholder="Enter a search term"
+                   data-default-term="{{ filter.default_filter_term }}"
+                   onkeyup="inputConfirm()"
+            >
+        </p>
+        <p id="query-input-select-control" class="control is-expanded is-hidden">
+            <span class="select is-fullwidth">
+                <select id="query-input-select" aria-label="query-input-select"></select>
+            </span>
+        </p>
+        <p id="query-input-apply" class="control" onclick="applyInput()"><button class="button">&#x21D2;</button></p>
+    </div>
+
+
+    <div id="query-params-dropdown" class="box mt-0 mx-0 is-hidden is-fullwidth" tabindex="-1" onclick="toggleParams()">
+        {{ filter.to_html.params }}
+    </div>
+
+    <div id="list-customization" style="display: flex; flex-direction: row; flex-wrap: nowrap">
+        {% if field_selection %}
+            <div id="field-selection" class="dropdown mt-1 is-flex-grow-1" style="min-width: 50%">
+                <div class="dropdown-trigger" style="width: 100%;">
+                    <button class="button side-panel-action-content" aria-haspopup="true"
+                            style="border-top-right-radius: 0; border-bottom-right-radius: 0;"
+                    >
+                        <span>{% translate 'Fields' %}</span>
+                        <span class="icon is-small">
+                            <i class="fas fa-angle-down" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                </div>
+                <div id="field-paths" class="dropdown-menu pt-0" role="menu" style="width: 292px; border-top-left-radius: 0; border-top-right-radius: 0;">
+                    <div class="dropdown-content">
+                        <div class="dropdown-item">
+                            <div class="field has-addons mr-1">
+                                <p class="control is-expanded">
+                                    <input id="field-path-search-input" class="input is-small" type="text" aria-label="Query Input" oninput="filterFieldPaths()" style="height: 100%">
+                                </p>
+                                <p class="control">
+                                    <button id="field-path-search-reset" class="button is-small has-icon" onclick="resetFieldPaths()" style="box-shadow: none">
+                                        <span class="icon"><i class="fas fa-arrow-rotate-left"></i></span>
+                                    </button>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="dropdown-item">
+                            <div id="field-path-checkboxes" onchange="changeFieldSelection()">
+                                {{ filter.to_html.field_paths }}
+                            </div>
+                        </div>
+                        <div id="field-path-apply" hx-get="" hx-trigger="click" hx-replace-url="true"
+                             hx-select-oob="#content,#field-path-apply,#list-pagination">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div id="order-selection" class="dropdown mt-1 is-flex-grow-1" style="min-width: 50%">
+            <div class="dropdown-trigger" style="width: 100%;">
+                <button class="button side-panel-action-content" aria-haspopup="true"
+                        style="{% if field_selection %} border-top-left-radius: 0; border-bottom-left-radius: 0; {% endif %}">
+                    <span>{% translate 'Order' %}</span>
+                    <span class="icon is-small">
+                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                </button>
+            </div>
+            <div id="order-paths" class="dropdown-menu pt-0" role="menu" style="width: 292px; border-top-left-radius: 0; border-top-right-radius: 0;
+                    {% if field_selection %} left: -146px;{% endif %}"
+            >
+                <div class="dropdown-content">
+                    <div class="dropdown-item">
+                        <div class="field has-addons mr-1">
+                            <p class="control is-expanded">
+                                <input class="input is-small" type="text" aria-label="Query Input" style="height: 100%">
+                            </p>
+                            <p class="control">
+                                <button id="order-selection-reset" class="button is-small has-icon" style="box-shadow: none;">
+                                    <span class="icon"><i class="fas fa-arrow-rotate-left"></i></span>
+                                </button>
+                            </p>
+                        </div>
+                    </div>
+                    <div id="order-path-apply" hx-get="" hx-trigger="click" hx-replace-url="true"
+                         hx-select-oob="#content,#order-path-apply,#list-pagination">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
