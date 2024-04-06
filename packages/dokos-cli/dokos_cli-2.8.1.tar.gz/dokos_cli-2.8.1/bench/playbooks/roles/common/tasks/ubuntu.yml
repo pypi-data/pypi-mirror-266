@@ -1,0 +1,22 @@
+---
+
+- name: install pillow prerequisites for Ubuntu >= 14.04
+  apt:
+    pkg:
+    - libjpeg8-dev
+    - libtiff5-dev
+    - tcl8.6-dev
+    - tk8.6-dev
+    state: present
+    force: yes
+  when: ansible_distribution_version is version_compare('14.04', 'ge')
+
+- name: install pdf prerequisites for Ubuntu 20.04
+  apt:
+    pkg:
+      - libssl1.1
+    state: present
+    force: yes
+  when: ansible_distribution_version == "20"
+
+...
