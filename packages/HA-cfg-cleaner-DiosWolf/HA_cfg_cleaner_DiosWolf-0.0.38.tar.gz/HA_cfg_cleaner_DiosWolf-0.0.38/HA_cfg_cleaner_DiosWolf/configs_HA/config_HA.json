@@ -1,0 +1,105 @@
+{
+    "configurations":
+        [
+            {
+            "config_id": "device_registry",
+            "filename": "core.device_registry",
+            "first_key": "data",
+            "second_key": "devices",
+            "id_key": "id",
+            "identifiers_key": "identifiers",
+            "type_cfg": ".json",
+            "path": "./config/.storage/",
+            "on_off_field": "disabled_by",
+            "on_integration": null,
+            "off_integration": "user"
+            },
+            {
+            "config_id": "config_entries",
+            "filename": "core.config_entries",
+            "first_key": "data",
+            "second_key": "entries",
+            "id_key": "entry_id",
+            "identifiers_key": "domain",
+            "type_cfg": ".json",
+            "path": "./config/.storage/",
+            "on_off_field": "disabled_by",
+            "on_integration": null,
+            "off_integration": "user"
+            },
+            {
+            "config_id": "entity_registry",
+            "filename": "core.entity_registry",
+            "first_key": "data",
+            "second_key": "entities",
+            "id_key": "id",
+            "identifiers_key": "platform",
+            "type_cfg": ".json",
+            "path": "./config/.storage/",
+            "on_off_field": "disabled_by",
+            "on_integration": null,
+            "off_integration": "user"
+            }
+        ],
+
+    "automations_cfg":
+        [
+            {
+            "config_id": "automations",
+            "first_key": null,
+            "second_key": null,
+            "id_key": "id",
+            "identifiers_key": "id",
+            "filename": "automations.yaml",
+            "type_cfg": ".yaml",
+            "path": "./config/",
+            "on_off_field": "disabled_by",
+            "on_integration": null,
+            "off_integration": "user"
+            },
+            {
+            "config_id": "entity_registry",
+            "filename": "core.entity_registry",
+            "first_key": "data",
+            "second_key": "entities",
+            "id_key": "unique_id",
+            "identifiers_key": "platform",
+            "type_cfg": ".json",
+            "path": "./config/.storage/",
+            "on_off_field": "entity_id",
+            "on_integration": null,
+            "off_integration": "user"
+            }
+        ],
+
+    "config_restore_state" :
+        {
+        "config_id": "restore_state",
+        "filename": "core.restore_state",
+        "first_key": "data",
+        "second_key": null,
+        "state": "state",
+        "id_key": "entity_id",
+        "attr_id": "id",
+        "identifiers_key": "attributes",
+        "type_cfg": ".json",
+        "path": "./config/.storage/",
+        "on_off_field": "disabled_by",
+        "on_integration": null,
+        "off_integration": "user"},
+
+    "host_info": {
+        "api_key": "Bearer ",
+        "host": "http://localhost",
+        "port": "8123",
+        "automations_off_url": "/api/services/homeassistant/turn_off",
+        "addons_options_url": "http://172.30.32.2/addons/{addon_id}/options"
+    },
+
+    "ssh_commands": {
+        "delete_addons": ["ha", "addon", "uninstall"],
+        "disable_addons": ["ha", "addon", "stop"],
+        "change_cfg_addons": ["ha", "addons", "update", "--config"],
+        "get_supervisor_api": ["docker", "inspect", "homeassistant"]
+    }
+}
