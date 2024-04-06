@@ -1,0 +1,94 @@
+Metadata-Version: 2.1
+Name: mat3ra-fixtures
+Version: 2024.4.6.post0
+Summary: Fixtures.
+Author-email: "Exabyte Inc." <info@mat3ra.com>
+License: # LICENSE
+        
+        Copyright 2024 Exabyte Inc.
+        
+        Licensed under the Apache License, Version 2.0 (the "License");
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at
+        
+           http://www.apache.org/licenses/LICENSE-2.0
+        
+        Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an "AS IS" BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License.
+        
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Development Status :: 3 - Alpha
+Classifier: Topic :: Software Development
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE.md
+Requires-Dist: pyyaml
+Requires-Dist: mat3ra-utils
+Provides-Extra: tests
+Requires-Dist: coverage[toml]>=5.3; extra == "tests"
+Requires-Dist: pre-commit; extra == "tests"
+Requires-Dist: black; extra == "tests"
+Requires-Dist: ruff; extra == "tests"
+Requires-Dist: isort; extra == "tests"
+Requires-Dist: mypy; extra == "tests"
+Requires-Dist: pip-tools; extra == "tests"
+Requires-Dist: pytest; extra == "tests"
+Requires-Dist: types-PyYAML; extra == "tests"
+Provides-Extra: all
+Requires-Dist: mat3ra-fixtures[tests]; extra == "all"
+
+# Fixtures
+
+A dual repository (JavaScript and Python) containing basic utils for development.
+
+Minimum external dependencies should be used in order to keep the repository lightweight.
+
+## 1. Overview
+
+This repository contains the fixtures for the common applications, formats, databases that contain data.
+
+## 2. Usage
+
+### 2.1. Python
+
+See example [test](tests/py/unit/test_get_from_manifest.py).
+
+The files can be directly accessed through the filesystem, otherwise the content can be extracted by (a shortened) reference ("object path") from the top-level [manifest.yml](src/py/mat3ra/fixtures/manifest.yml).
+
+```py
+from mat3ra.fixtures import get_content_by_reference_path
+
+PATH_IN_MANIFEST = "applications/espresso/v5.4.0/stdin"
+
+content = get_content_by_reference_path(PATH_IN_MANIFEST)
+print(content)
+```
+
+### 2.2. JavaScript/TypeScript
+
+To be added. Only servier-side (Node.js) runtime to be supported due to having to rely on the filesystem.
+
+## 3. Development
+
+### 3.1. Folder Structure
+
+Here's the folder structure of the repository:
+
+```txt
+data
+├── applications
+│   └── espresso
+│       └── 5.4.0
+│           ├── case-001
+│           ├── case-002
+│           ├── case-003
+│           └── manifest.yml
+├── db
+└── formats
+```
+
+For each version of the application, there are multiple cases. Each case contains the data that is used for testing.  The manifest file is a YAML file that contains the metadata about all the cases.
