@@ -1,0 +1,88 @@
+Metadata-Version: 2.1
+Name: prem-utils
+Version: 0.0.29
+Summary: Prem generic utils to use across Prem Components.
+Author-email: Filippo Pedrazzini <filippo@premai.io>
+License: Apache-2.0
+Project-URL: Homepage, https://github.com/premAI-io/prem-utils
+Project-URL: Releases, https://github.com/premAI-io/prem-utils/tags
+Classifier: Development Status :: 1 - Planning
+Classifier: Programming Language :: Python :: 3 :: Only
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: openai ==1.13.3
+Requires-Dist: tiktoken ==0.6.0
+Requires-Dist: cohere ==4.53
+Requires-Dist: anthropic ==0.18.1
+Requires-Dist: mistralai ==0.1.3
+Requires-Dist: python-dotenv ==1.0.0
+Requires-Dist: pre-commit ==3.6.0
+Requires-Dist: groq ==0.4.1
+Requires-Dist: asyncio ==3.4.3
+
+# 🛠️ Prem Utils
+
+Utilities, and Connectors in order to interact with all Model Serving and Fine-tuning Providers.
+
+## 🗄️ Connectors
+
+| Name        | Status     |
+| ----------- | ---------- |
+| Anthropic   | Active     |
+| OpenAI      | Active     |
+| Perplexity  | Active     |
+| Cohere      | Active     |
+| DeepInfra   | Deprecated |
+| FireworksAI | Deprecated |
+| OctoAI      | Deprecated |
+| Groq        | Active     |
+| Lamini      | Deprecated |
+| Mistral     | Active     |
+| OpenRouter  | Active     |
+| Prem        | Active     |
+| Replicate   | Deprecated |
+| Together    | Deprecated |
+
+## 🤙 Usage
+
+```bash
+pip install prem-utils
+```
+
+```python
+import asyncio
+from inspect import iscoroutine
+from prem_utils.connectors import openai
+
+connector = openai.OpenAIConnector(api_key="")
+
+prompt = "Hello, how are you?"
+response = connector.chat_completion(model="gpt-3.5-turbo", messages=[{"role": "user", "content": prompt}])
+
+if iscoroutine(response):
+    response = asyncio.run(response)
+
+message = response["choices"][0]["message"]["content"]
+print(message)
+```
+
+## 📦 Contribute
+
+### Install the necessary dependencies
+
+```bash
+virtualenv venv -p=3.11
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+### Test all or one connector
+
+```bash
+# will run all the connectors
+python e2e.py
+
+# only one connector
+python e2e.py --name perplexity
+```
