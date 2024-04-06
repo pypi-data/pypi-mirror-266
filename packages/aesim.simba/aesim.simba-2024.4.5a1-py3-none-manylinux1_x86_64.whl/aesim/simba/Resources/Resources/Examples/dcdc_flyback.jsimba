@@ -1,0 +1,361 @@
+{
+  "Designs": [
+    {
+      "Id": "c6b681f0-8c9c-4d05-9a26-47ebb45f7fec",
+      "Name": "DC-DC Flyback Converter",
+      "Circuit": {
+        "Id": "2c20c89a-6c6c-4cb5-8058-f943ba9d0db2",
+        "Devices": [
+          {
+            "LibraryName": "DC Voltage Source",
+            "Top": 2,
+            "Left": 4,
+            "Angle": 0,
+            "HF": false,
+            "VF": false,
+            "Disabled": false,
+            "Name": "DC1",
+            "ID": "c5040b6b-1968-4657-916c-9951276a638d",
+            "Parameters": {
+              "Voltage": "48"
+            },
+            "EnabledScopes": [
+              "Voltage"
+            ]
+          },
+          {
+            "LibraryName": "Ground",
+            "Top": 11,
+            "Left": 5,
+            "Angle": 0,
+            "HF": false,
+            "VF": false,
+            "Disabled": false,
+            "Name": "Ground1",
+            "ID": "49f67ef4-1555-4ce7-84ff-d855846b579c",
+            "Parameters": {},
+            "EnabledScopes": []
+          },
+          {
+            "LibraryName": "Square Wave",
+            "Top": 11,
+            "Left": 9,
+            "Angle": 0,
+            "HF": false,
+            "VF": false,
+            "Disabled": false,
+            "Name": "C1",
+            "ID": "97a1abfc-71f9-46e3-99df-9dd1754803f4",
+            "Parameters": {
+              "Amplitude": "1",
+              "Frequency": "100k",
+              "DutyCycle": "0.455",
+              "Offset": "0",
+              "PhaseShift": "0",
+              "SamplingTime": "none"
+            },
+            "EnabledScopes": []
+          },
+          {
+            "LibraryName": "Ideal MOSFET",
+            "Top": 10,
+            "Left": 13,
+            "Angle": 0,
+            "HF": false,
+            "VF": false,
+            "Disabled": false,
+            "Name": "T1",
+            "ID": "91cc8b56-5802-4a84-ac34-fa428f468087",
+            "Parameters": {
+              "Ron": "0"
+            },
+            "EnabledScopes": []
+          },
+          {
+            "LibraryName": "Inductor",
+            "Top": 4,
+            "Left": 12,
+            "Angle": 90,
+            "HF": false,
+            "VF": false,
+            "Disabled": false,
+            "Name": "L1",
+            "ID": "db389d54-d814-4e99-b4c6-7dca6c588616",
+            "Parameters": {
+              "Value": "220u",
+              "Iinit": "0"
+            },
+            "EnabledScopes": []
+          },
+          {
+            "LibraryName": "Ground",
+            "Top": 18,
+            "Left": 14,
+            "Angle": 0,
+            "HF": false,
+            "VF": false,
+            "Disabled": false,
+            "Name": "Ground2",
+            "ID": "9280363b-b53d-4a97-98f6-9c2429f8a879",
+            "Parameters": {},
+            "EnabledScopes": []
+          },
+          {
+            "LibraryName": "Ideal Transformer, 2 Winding",
+            "Top": 3,
+            "Left": 17,
+            "Angle": 270,
+            "HF": false,
+            "VF": false,
+            "Disabled": false,
+            "Name": "TX1",
+            "ID": "c4680131-189c-4449-8371-0e6885a22878",
+            "Parameters": {
+              "Ratio": "0.3"
+            },
+            "EnabledScopes": []
+          },
+          {
+            "LibraryName": "Ground",
+            "Top": 2,
+            "Left": 22,
+            "Angle": 0,
+            "HF": false,
+            "VF": false,
+            "Disabled": false,
+            "Name": "Ground3",
+            "ID": "7e4e9ec2-b220-4650-a29f-5d5a7f5f7394",
+            "Parameters": {},
+            "EnabledScopes": []
+          },
+          {
+            "LibraryName": "Ideal Diode",
+            "Top": 7,
+            "Left": 23,
+            "Angle": 0,
+            "HF": false,
+            "VF": false,
+            "Disabled": false,
+            "Name": "D1",
+            "ID": "5c4bf531-6373-4c73-ae97-3e08eb7a33d2",
+            "Parameters": {
+              "Rd": "0",
+              "Vf": "0"
+            },
+            "EnabledScopes": []
+          },
+          {
+            "LibraryName": "Resistor",
+            "Top": 10,
+            "Left": 31,
+            "Angle": 90,
+            "HF": false,
+            "VF": false,
+            "Disabled": false,
+            "Name": "R1",
+            "ID": "eeeb00ff-2873-491b-9aba-c539ea74b1e3",
+            "Parameters": {
+              "Value": "1m"
+            },
+            "EnabledScopes": []
+          },
+          {
+            "LibraryName": "Capacitor",
+            "Top": 17,
+            "Left": 31,
+            "Angle": 90,
+            "HF": false,
+            "VF": false,
+            "Disabled": false,
+            "Name": "C2",
+            "ID": "159ef724-b95d-49ca-882a-de538b41863f",
+            "Parameters": {
+              "Value": "100u",
+              "Vinit": "3"
+            },
+            "EnabledScopes": []
+          },
+          {
+            "LibraryName": "Resistor",
+            "Top": 14,
+            "Left": 37,
+            "Angle": 90,
+            "HF": false,
+            "VF": false,
+            "Disabled": false,
+            "Name": "R2",
+            "ID": "94d2c435-9afa-457e-adfd-4914550f7437",
+            "Parameters": {
+              "Value": "6"
+            },
+            "EnabledScopes": [
+              "Current",
+              "Voltage"
+            ]
+          },
+          {
+            "LibraryName": "Ground",
+            "Top": 21,
+            "Left": 39,
+            "Angle": 0,
+            "HF": false,
+            "VF": false,
+            "Disabled": false,
+            "Name": "Ground4",
+            "ID": "a875279a-b7da-4c56-b3f6-5aadf71ba1fd",
+            "Parameters": {},
+            "EnabledScopes": []
+          }
+        ],
+        "Connectors": [
+          {
+            "Segments": [
+              {
+                "StartX": 6,
+                "StartY": 2,
+                "EndX": 15,
+                "EndY": 2
+              },
+              {
+                "StartX": 15,
+                "StartY": 2,
+                "EndX": 19,
+                "EndY": 2
+              }
+            ],
+            "Name": "C3"
+          },
+          {
+            "Segments": [
+              {
+                "StartX": 6,
+                "StartY": 10,
+                "EndX": 6,
+                "EndY": 11
+              }
+            ],
+            "Name": "C2"
+          },
+          {
+            "Segments": [
+              {
+                "StartX": 15,
+                "StartY": 8,
+                "EndX": 19,
+                "EndY": 8
+              },
+              {
+                "StartX": 15,
+                "StartY": 8,
+                "EndX": 15,
+                "EndY": 10
+              }
+            ],
+            "Name": "C4"
+          },
+          {
+            "Segments": [
+              {
+                "StartX": 15,
+                "StartY": 16,
+                "EndX": 15,
+                "EndY": 18
+              }
+            ],
+            "Name": "C1"
+          },
+          {
+            "Segments": [
+              {
+                "StartX": 21,
+                "StartY": 2,
+                "EndX": 23,
+                "EndY": 2
+              }
+            ],
+            "Name": "C5"
+          },
+          {
+            "Segments": [
+              {
+                "StartX": 21,
+                "StartY": 8,
+                "EndX": 23,
+                "EndY": 8
+              }
+            ],
+            "Name": "C6"
+          },
+          {
+            "Segments": [
+              {
+                "StartX": 29,
+                "StartY": 8,
+                "EndX": 34,
+                "EndY": 8
+              },
+              {
+                "StartX": 34,
+                "StartY": 8,
+                "EndX": 40,
+                "EndY": 8
+              },
+              {
+                "StartX": 40,
+                "StartY": 12,
+                "EndX": 40,
+                "EndY": 8
+              }
+            ],
+            "Name": "C10"
+          },
+          {
+            "Segments": [
+              {
+                "StartX": 34,
+                "StartY": 14,
+                "EndX": 34,
+                "EndY": 15
+              }
+            ],
+            "Name": "C7"
+          },
+          {
+            "Segments": [
+              {
+                "StartX": 34,
+                "StartY": 21,
+                "EndX": 40,
+                "EndY": 21
+              },
+              {
+                "StartX": 40,
+                "StartY": 18,
+                "EndX": 40,
+                "EndY": 21
+              }
+            ],
+            "Name": "C8"
+          }
+        ],
+        "Name": "Top Circuit",
+        "Variables": [],
+        "VariableFile": ""
+      },
+      "TransientAnalysis": {
+        "EndTime": "50m",
+        "FixedTimeStep": false,
+        "SaveInitialPoint": true,
+        "StopAtSteadyState": true,
+        "TimeStep": "1e-08",
+        "BaseFrequencyParameterEnabled": false,
+        "NumberOfBasePeriodsSavedParameterEnabled": false,
+        "BaseFrequency": "60",
+        "NumberOfBasePeriodsSaved": "1"
+      }
+    }
+  ],
+  "Libraries": [],
+  "TestBenches": [],
+  "ThermalData": []
+}
