@@ -1,0 +1,80 @@
+Metadata-Version: 2.1
+Name: faust-avro-model-codegen
+Version: 0.1.0
+Summary: Generate Faust Avro Models from Avro Schema files.
+License: MIT
+Author: Sean Zicari
+Author-email: szicari@streambit.software, Brad Boggs <bboggs@streambit.software
+Requires-Python: >=3.10,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: autoflake (>=2.3.1,<3.0.0)
+Requires-Dist: black (>=24.3.0,<25.0.0)
+Requires-Dist: dataclasses-avroschema[faust] (>=0.58.0,<0.59.0)
+Requires-Dist: httpx (>=0.27.0,<0.28.0)
+Requires-Dist: isort (>=5.13.2,<6.0.0)
+Requires-Dist: jinja2 (>=3.1.3,<4.0.0)
+Requires-Dist: mode-streaming (<0.4.0)
+Requires-Dist: plumbum (>=1.8.2,<2.0.0)
+Requires-Dist: pydantic (>=2.6.4,<3.0.0)
+Requires-Dist: rich (>=13.7.1,<14.0.0)
+Requires-Dist: tomlkit (>=0.12.4,<0.13.0)
+Requires-Dist: typer (>=0.12.0,<0.13.0)
+Description-Content-Type: text/markdown
+
+# Faust Avro Code Generator
+
+This is a Python library that generates Faust models from Avro schemas.
+
+## Installation
+
+You can install the library using pip:
+
+```bash
+pip install faust_avro_code_gen
+```
+
+## Configuration
+
+You can configure the library for your application using either `pyproject.toml` or a standalone configuration file.
+
+### Using `pyproject.toml`
+
+Add the following section to your `pyproject.toml`:
+
+```toml
+[tool.faust_avro_code_gen]
+schema_dir = "path/to/your/schemas"
+outfile = "path/to/your/models.py"
+schema_registry_url = "http://localhost:8081"
+faust_app_models_module = "models"
+```
+
+### Using a standalone configuration file
+
+Create a `faust_avro_code_gen.toml` file in your project root with the following content:
+
+```toml
+schema_dir = "path/to/your/schemas"
+outfile = "path/to/your/models.py"
+schema_registry_url = "http://localhost:8081"
+faust_app_models_module = "models"
+```
+
+## Usage
+
+You can use the library from the command line as follows:
+
+```bash
+python -m faust_avro_code_gen 
+```
+
+If you have already registered your schemas with a Schema Registry, you can also verify that the schemas are correctly rendered by running the following command:
+
+```bash
+python -m faust_avro_code_gen --verify
+```
+
+This will generate Faust models from the Avro schemas in the directory specified in your configuration.
