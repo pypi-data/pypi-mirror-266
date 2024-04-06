@@ -1,0 +1,41 @@
+Metadata-Version: 2.1
+Name: swimrankingsscraper
+Version: 0.1.3
+Summary: A scraper for swimrankings.net
+Home-page: https://swimrankingsscraper.readthedocs.io/
+Author: Bas Neeleman
+Author-email: bas@neeleman-mail.nl
+License: MIT
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests
+Requires-Dist: beautifulsoup4
+Requires-Dist: lxml
+
+# SwimrankingsScraper
+A library for getting information from swimrankings.net
+
+### Installation
+```
+pip install swimrankingsscraper
+```
+
+### Get started
+
+
+```Python
+from swimrankingsscraper import SwimrankingsScraper
+
+# Instantiate a scraper
+scraper = SwimrankingsScraper()
+
+# Get an athelete from the scraper
+athelete = scraper.get_athlete('4292888')
+
+# Get the meets the athelete participated in
+meets = athelete.list_meets()
+```
