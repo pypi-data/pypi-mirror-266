@@ -1,0 +1,79 @@
+Metadata-Version: 2.1
+Name: GP8XXX-IIC
+Version: 0.0.3
+Summary: The GP8XXX Python module offers an intuitive interface for controlling DAC (Digital to Analog Converter) devices via the I2C protocol. With support for various DAC models.
+Home-page: https://github.com/joe2824/GP8XXX_IIC/
+Author: Joel Klein
+License: UNKNOWN
+Project-URL: Bug Tracker, https://github.com/joe2824/GP8XXX_IIC/issues
+Project-URL: Github, https://github.com/joe2824/GP8XXX_IIC/
+Description: # GP8XXX-IIC
+        
+        The GP8XXX-IIC module provides an interface for controlling DAC (Digital to Analog Converter) devices over the I2C protocol. This module supports various DAC models with different resolutions and output voltage ranges.
+        
+        ## Features
+        
+        - **I2C Communication**: Utilizes the smbus2 library for communicating with DAC devices over the I2C bus.
+        - **Output Ranges**: Supports different output voltage ranges including 0-5V, 0-10V.
+        - **Support Multiple DAC Models**:
+          - GP8503: 12-bit DAC Dual Channel I2C to 0-2.5V/0-VCC
+          - GP8211S: 15-bit DAC I2C to 0-5V/0-10V
+          - GP8512: 15-bit DAC I2C to 0-2.5V/0-VCC
+          - GP8413: 15-bit DAC Dual Channel I2C to 0-10V
+          - GP8403: 12-bit DAC Dual Channel I2C to 0-5V/0-10V
+          - GP8302: 12-bit DAC Dual Channel I2C to 0-5V/0-10V
+        
+        ## Installation
+        You can install the GP8XXX module from PyPI using pip:
+        
+        ```bash
+        pip install GP8XXX-IIC
+        ```
+        
+        ## Example
+        ```python
+        import time
+        from GP8XXX_IIC import GP8403
+        
+        GP8403 = GP8403(i2c_addr=0x5F, auto_range=True)
+        
+        while GP8403.begin():
+            print("init error")
+            time.sleep(1)
+        
+        # Optional
+        # GP8403.set_dac_outrange(GP8403.OUTPUT_RANGE_10V)
+        
+        # Chanel 1: 6.721V
+        GP8403.set_dac_out_voltage(voltage=6.821, channel=0)
+        
+        time.sleep(3)
+        
+        # Chanel 2: 2.774V
+        GP8403.set_dac_out_voltage(voltage=2.774, channel=1)
+        
+        time.sleep(3)
+        
+        # Chanel 1 & 2: 0.253V
+        GP8403.set_dac_out_voltage(voltage=0.253, channel=2)
+        ```
+        
+        ## Tested devices
+        
+        | DAC Module | Tested |
+        |------------|--------|
+        |GP8503      | ❌     |
+        |GP8211S     | ❌     |
+        |GP8512      | ❌     |
+        |GP8512      | ❌     |
+        |GP8413      | ❌     |
+        |GP8403      | ✅     |
+        |GP8302      | ❌     |
+Keywords: Raspberry Pi,Raspi,GP8403,GP8503,GP8211S,GP8512,GP8413,GP8302,DAC
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: POSIX :: Linux
+Requires-Python: >=3
+Description-Content-Type: text/markdown
