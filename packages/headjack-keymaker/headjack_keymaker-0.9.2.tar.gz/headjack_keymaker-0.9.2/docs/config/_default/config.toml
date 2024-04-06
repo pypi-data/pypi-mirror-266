@@ -1,0 +1,57 @@
+baseURL = "https://keymaker.headjack.ai"
+theme = "hugo-whisper-theme"
+languageCode = "en-us"
+title = "Keymaker"
+
+pygmentsCodeFences = true
+pygmentsCodefencesGuessSyntax = true
+pygmentsUseClasses = true
+
+[module]
+  [module.hugoVersion]
+    extended = true
+    min = "0.55.0"
+
+# Controls how many words are printed in the content summary on the docs homepage.
+# See https://gohugo.io/content-management/summaries/
+summaryLength = 30
+
+[[menu.main]]
+    name = "Home"
+    url = "/"
+    weight = 1
+
+[[menu.main]]
+    name = "Docs"
+    url = "/docs/"
+    weight = 2
+
+
+
+
+[params]
+  google_analytics_id=""
+  homepage_button_link = '/docs'
+  homepage_button_text = 'Read The Docs'
+  homepage_intro = 'The most powerful, flexible and extensible way to control the output of large language models.'
+  homepage_image = '/images/terminal.gif'
+  
+  discord_link = 'https://discord.gg/q7NBcspXnh'
+  discord_logo = "/images/discord.svg"
+  github_link = 'https://github.com/KnowledgeForge/keymaker'
+  github_logo = "/images/github-mark.svg"
+
+  ## You can enable to add anchor links to header elements
+  # enable_anchor_link = true
+
+  [params.homepage_meta_tags]
+    meta_description = "Keymaker is the most powerful, flexible and extensible way to control the output of large language models."
+    meta_og_title = "Keymaker"
+    meta_og_type = "website"
+    meta_og_url = "https://keymaker.headjack.ai/"
+    meta_og_description = "Keymaker is the most powerful, flexible and extensible way to control the output of large language models."
+    meta_twitter_card = "Keymaker"
+
+  [params.logo]
+      mobile = "/images/keymaker-logo.webp"
+      standard  = "/images/keymaker-logo.webp"
