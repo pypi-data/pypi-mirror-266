@@ -1,0 +1,37 @@
+brainglobe-utils>=0.4.2
+brainglobe-napari-io>=0.3.4
+dask[array]
+fancylog>=0.0.7
+natsort
+numba
+numpy
+scikit-image
+scikit-learn
+tifffile
+tqdm
+
+[:platform_system != "Darwin" or platform_machine != "arm64"]
+tensorflow<2.12.0,>=2.5.0
+
+[:platform_system == "Darwin" and platform_machine == "arm64"]
+tensorflow-macos<2.12.0,>=2.5.0
+
+[dev]
+black
+pre-commit
+pyinstrument
+pytest-cov
+pytest-mock
+pytest-qt
+pytest-timeout
+pytest
+tox
+
+[napari]
+brainglobe-napari-io
+magicgui
+napari-ndtiffs
+napari-plugin-engine>=0.1.4
+napari[pyqt5]
+pooch>=1
+qtpy
