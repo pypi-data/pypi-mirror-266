@@ -1,0 +1,159 @@
+# ===== PROJECT ===========================================================
+#
+[project]
+name = 'pfore-cloud-utilities'
+authors = [
+    {name = 'BahaEddine Abrougui'},
+    {email = 'bahaeddine.abrougui@lidl.com'},
+]
+description = 'Provides utility functions for cloud-based workflows.'
+readme = 'README.rst'
+keywords = [
+    'databricks',
+    'azure',
+    'mlops',
+]
+classifiers = [
+    'Development Status :: 3 - Alpha',
+    'Intended Audience :: Science/Research',
+    'Intended Audience :: Developers',
+    'Operating System :: OS Independent',
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+]
+requires-python = '>=3.9'
+dependencies = [
+    'databricks-sdk >=0.9.0, <1.0.0',
+    'azure-identity >=1.14.0, <1.15.0',
+    'azure-storage-blob >=12.18.2, <12.19.0',
+]
+# Get version dynamically from env variable ARTIFACT_LABEL
+dynamic = ['version']
+
+[project.urls]
+repository = 'https://github.com/Bahaabrougui/pfore-cloud-utilities/'
+documentation = 'https://bahaabrougui.github.io/pfore-cloud-utilities/index.html/'
+
+
+# ===== TOOL ==============================================================
+#
+
+# ----- codespell ---------------------------------------------------------
+[tool.codespell]
+builtin = 'clear,rare,informal,usage,names'
+skip = './pfore_cloud_utilities.egg-info,./docs/_build,./docs/api,./docs/_templates'
+uri-ignore-words-list = 'master'
+
+
+# ----- ruff --------------------------------------------------------------
+#
+[tool.ruff]
+select = [
+    'D',     # pydocstyle
+    'E',     # pycodestyle errors
+    'F',     # Pyflakes
+    'I',     # isort
+    'N',     # pep8-naming
+    'W',     # pycodestyle warnings
+]
+
+extend-ignore = [
+    'D100',  # Missing docstring in public module
+    'D101',  # Missing docstring in public class
+    'D102',  # Missing docstring in public method
+    'D103',  # Missing docstring in public function
+    'D104',  # Missing docstring in public package
+    'D107',  # Missing docstring in `__init__`
+]
+
+line-length = 79
+
+cache-dir = '.cache/ruff'
+
+[tool.ruff.per-file-ignores]
+'__init__.py' = [
+    'F401',  # * imported but unused
+]
+
+
+# ----- I: isort -----
+#
+# Check correct order/syntax of import statements
+#
+[tool.ruff.isort]
+
+# All from imports have their own line, e.g.
+#
+#   from .utils import util_a
+#   from .utils import util_b
+#
+force-single-line = true
+
+# Sort by module names
+# and not import before from, e.g.
+#
+#     from datetime import date
+#     import os
+#
+force-sort-within-sections = true
+
+# Ensure we have two empty lines
+# after last import
+lines-after-imports = 2
+
+# Group all pfore packages into a separate section, e.g.
+#
+#     import os
+#
+#     import numpy as np
+#
+#     import pfore_cloud_utilities
+#
+section-order = [
+    'future',
+    'standard-library',
+    'third-party',
+    'pfore',
+    'first-party',
+    'local-folder',
+]
+[tool.ruff.isort.sections]
+'pfore' = [
+    'pfore-cloud-utilities',
+]
+
+# ----- N: pep8-naming -----
+#
+# Check variable/class names follow PEP8 naming convention
+#
+[tool.ruff.pep8-naming]
+ignore-names = [
+    'test_*',  # allow uppercase name when testing a class
+]
+
+
+# ----- W: pycodestyle -----
+#
+# Check docstrings follow selected convention
+#
+[tool.ruff.pydocstyle]
+convention = 'google'
+
+
+# ===== BUILD-SYSTEM ======================================================
+#
+# Requirements for building the Python package
+[build-system]
+requires = ['setuptools>=45', 'setuptools_scm[toml]>=6.2']
+build-backend = 'setuptools.build_meta'
+
+
+# ----- setuptools --------------------------------------------------------
+#
+# Find all (sub-)modules of the Python package
+[tool.setuptools.packages.find]
+
+[tool.setuptools_scm]

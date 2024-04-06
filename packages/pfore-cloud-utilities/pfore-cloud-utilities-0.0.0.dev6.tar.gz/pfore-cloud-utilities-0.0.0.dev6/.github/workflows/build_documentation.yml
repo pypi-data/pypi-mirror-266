@@ -1,0 +1,42 @@
+name: Build documentation
+on: workflow_dispatch
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Get latest tag's name to use for version
+      id: get_tag
+      run: echo "TAG=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
+
+    - name: Install doc dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pfore-cloud-utilities
+        pip install -r docs/requirements.txt
+
+    - name: Build documentation
+      env:
+        ARTIFACT_LABEL: ${{ steps.get_tag.outputs.TAG }}
+      run: |
+        python -m sphinx docs/ docs/_build/ -b html
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: html-docs
+        path: docs/_build/
+
+    - name: Deploy documentation to Github pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: docs/_build
