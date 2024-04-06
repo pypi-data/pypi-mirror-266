@@ -1,0 +1,324 @@
+import base64
+import json
+
+import requests
+import urllib3
+import pandas as pd
+import tempfile
+import os
+
+from kywy.client.chat import KawaChat
+from kywy.client.data_loader import KawaDataLoader
+from kywy.client.commands import KawaCommands
+from kywy.client.configuration import KawaConfiguration
+from kywy.client.data import KawaData
+from kywy.client.data_providers import KawaDataProviders
+from kywy.client.dsl import KawaLazyQuery, KawaColumn, KawaFilter
+from kywy.client.entities import KawaEntities
+from kywy.client.errors import ConflictError
+from tzlocal import get_localzone
+from dotenv import load_dotenv
+
+
+class KawaClient:
+
+    @staticmethod
+    def load_client_from_environment():
+
+        load_dotenv(override=True)
+        key = os.getenv('KAWA_API_KEY')
+        url = os.getenv('KAWA_API_URL')
+        workspace_id = os.getenv('KAWA_WORKSPACE', '1')
+
+        k = KawaClient(kawa_api_url=url)
+        k.set_api_key(api_key=key)
+        k.set_active_workspace_id(workspace_id)
+
+        return k
+
+    def __init__(self, kawa_api_url=None, verify_certificates=False, tmp_files_directory=None):
+
+        self.kawa_api_url = kawa_api_url
+
+        # APIs
+        self.data: KawaData = KawaData(kawa_client=self)
+        self.commands: KawaCommands = KawaCommands(kawa_client=self)
+        self.entities: KawaEntities = KawaEntities(kawa_client=self)
+        self.configuration: KawaConfiguration = KawaConfiguration(kawa_client=self)
+        self.data_providers: KawaDataProviders = KawaDataProviders(kawa_client=self)
+
+        # Authentication information
+        self._authentication_mode = None
+        self._access_token = None
+        self._api_key = None
+        self._service_principle = None
+        self._verify_certificates = verify_certificates
+
+        # Workspace
+        self.active_workspace_id = None
+
+        # Misc
+        self._major_version = '0'
+        self._minor_version = '13'
+        self.tmp_files_directory = tmp_files_directory if tmp_files_directory else tempfile.gettempdir()
+        urllib3.disable_warnings()
+
+    def login_with_kerberos(self, service_principle, workspace_id=None):
+        self._authentication_mode = 'KERBEROS'
+        self._service_principle = service_principle
+        self.set_active_workspace_id(workspace_id)
+
+    def login_with_credential(self, login, password=None, password_file=None, workspace_id=None):
+
+        pwd = None
+        if password:
+            pwd = password
+        elif password_file:
+            with open(password_file, 'r') as f:
+                pwd = f.read().strip()
+
+        response = requests.post(url='{}/authentication/login'.format(self.kawa_api_url),
+                                 headers={
+                                     'Content-Type': 'application/json'
+                                 },
+                                 verify=self._verify_certificates,
+                                 data=json.dumps({
+                                     "credentialType": "LOGIN_AND_PASSWORD",
+                                     "credentials": {
+                                         "email": login,
+                                         "password": pwd
+                                     }
+                                 }))
+
+        if response.status_code != 200:
+            raise Exception('Error while logging in, please check your credentials and try again')
+
+        error = response.json().get('error')
+        if error:
+            raise Exception('Error while logging in: {}'.format(error))
+
+        self._access_token = response.cookies.get('accessToken')
+        self._authentication_mode = 'JWT'
+
+        self.set_active_workspace_id(workspace_id)
+
+    def set_api_key(self, api_key=None, api_key_file=None):
+        if api_key:
+            self._api_key = api_key.strip()
+        if api_key_file:
+            with open(api_key_file, 'r') as f:
+                self._api_key = f.read().strip()
+
+    def open_profile(self, profile):
+        with open(profile, 'r') as f:
+            p = json.loads(f.read())
+            self.kawa_api_url = p.get('url')
+            self.set_api_key(api_key=p.get('apiKey'))
+
+    def set_active_workspace_id(self, workspace_id):
+        if workspace_id:
+            self.active_workspace_id = workspace_id
+        else:
+            current_user = self.get('{}/authentication/current-user'.format(self.kawa_api_url))
+            current_w_id = current_user.get('currentWorkspaceId')
+            associated_w_id = current_user.get('currentWorkspaceId')
+            self.active_workspace_id = current_w_id if current_w_id is not None else associated_w_id
+
+        print('Authenticated in workspace {}'.format(self.active_workspace_id))
+
+    def get(self, url):
+        response = requests.get(url=url,
+                                verify=self._verify_certificates,
+                                headers=self._request_headers(),
+                                cookies=self._request_cookies())
+
+        if response.status_code != 200:
+            raise Exception(
+                'Error while calling {}: {} - {}'.format(url, response.reason, str(response.content, 'utf-8')))
+
+        return response.json()
+
+    def get_text(self, url):
+        response = requests.get(url=url,
+                                verify=self._verify_certificates,
+                                headers=self._request_headers(),
+                                cookies=self._request_cookies())
+
+        if response.status_code != 200:
+            raise Exception(
+                'Error while calling {}: {} - {}'.format(url, response.reason, str(response.content, 'utf-8')))
+
+        return response.text
+
+    def post(self, url, data, stream=False):
+        response = requests.post(url=url,
+                                 verify=self._verify_certificates,
+                                 headers=self._request_headers(),
+                                 cookies={'accessToken': self._access_token},
+                                 stream=stream,
+                                 data=json.dumps(data))
+
+        if response.status_code == 409:
+            raise ConflictError('Conflict while creating an entity: it already exists')
+        if response.status_code != 200:
+            raise Exception(
+                'Error while calling {}: {} - {}'.format(url, response.reason, str(response.content, 'utf-8')))
+
+        return response if stream else response.json()
+
+    def health(self):
+        return self.get(self.kawa_api_url + '/health')
+
+    def runner_health(self):
+        return self.get(self.kawa_api_url + '/health/runner')
+
+    def post_binary_file(self, filename, url):
+        print('> Streaming file {} to KAWA'.format(filename))
+        urllib3.disable_warnings()
+        with open(filename, 'rb') as f:
+            response = requests.post(url=url,
+                                     verify=self._verify_certificates,
+                                     headers=self._request_headers(),
+                                     cookies={'accessToken': self._access_token},
+                                     data=f)
+        if response.status_code != 200:
+            raise Exception(
+                'Error while calling {}: {} - {}'.format(url, response.reason, str(response.content, 'utf-8')))
+
+    def new_data_loader(self, df, datasource_name):
+        """
+        Creates a new data loader object that can be used to create, update and feed a kawa datasource.
+
+        :param: df:
+        The dataframe to send. Most of the value types are supported and will be translated to kawa
+        types automatically.
+
+        :param: datasource_name:
+        The datasource to create, update and to inject data in will be identified by this name
+        in the current workspace.
+
+        :return:
+        A data loader object.
+        Call the load_data method to perform the load.
+        """
+        return KawaDataLoader(kawa_client=self, df=df, datasource_name=datasource_name)
+
+    def chat(self, copilot_type: str, conversation_id: str) -> KawaChat:
+        return KawaChat(self, copilot_type=copilot_type, conversation_id=conversation_id)
+
+    def sheet(self, sheet_name=None, force_tz=None, no_output=False):
+        return KawaLazyQuery(kawa_client=self, sheet_name=sheet_name, force_tz=force_tz, no_output=no_output)
+
+    def widget(self, dashboard_name, widget_name, force_tz=None, ):
+        return KawaLazyQuery(kawa_client=self, sheet_name=None, force_tz=force_tz).widget(dashboard_name, widget_name)
+
+    def lazy_frame(self, sheet_name, force_tz=None):
+        return KawaLazyQuery(kawa_client=self, sheet_name=sheet_name, force_tz=force_tz)
+
+    def get_server_version(self):
+        env = self.get(self.kawa_api_url + '/backoffice/application-environment')
+        version = env.get('version', {}).get('version')
+
+        if not version:
+            return {
+                'major': 0,
+                'minor': 0,
+                'patch': 0
+            }
+
+        s = version.split('.')
+        major = int(s[0][1:])
+        minor = int(s[1])
+        patch = int(s[2].split('-')[0])
+        return {
+            'major': major,
+            'minor': minor,
+            'patch': patch
+        }
+
+    def get_usage_stats(self, from_date=None, to_date=None, tz=None):
+        """
+        Loads usage stats for all users in KAWA
+        :param from_date: Loads actions from that date (default=far in the past)
+        :param to_date: to that date (default=far in the future)
+        :param tz: In this timezone (default=the local timezone of the python runtime)
+        :return:
+        """
+
+        if not tz:
+            tz = get_localzone()
+
+        if not from_date:
+            from_date = '1980-01-01'
+
+        if not to_date:
+            to_date = '2100-01-01'
+
+        url = self.kawa_api_url + '/backoffice/usage?from={}&to={}&zoneId={}'.format(from_date, to_date, tz)
+        json_data = self.get(url)
+
+        if not json_data:
+            return pd.DataFrame([])
+
+        report = json_data.get('userUsageReports')
+
+        return pd.DataFrame.from_records(report, index='userId')
+
+    def _request_cookies(self):
+        if self._authentication_mode == 'JWT':
+            return {'accessToken': self._access_token}
+        if self._authentication_mode == 'KERBEROS':
+            return {}
+
+    def _request_headers(self):
+
+        headers = {
+            'Content-Type': 'application/json',
+            'x-kawa-kywy-version': '{}.{}'.format(self._major_version, self._minor_version)
+        }
+
+        if self.active_workspace_id:
+            headers['x-kawa-workspace-id'] = str(self.active_workspace_id)
+
+        if self._api_key:
+            headers['x-kawa-api-key'] = str(self._api_key)
+
+        if self._authentication_mode == 'KERBEROS':
+            import gssapi
+            # Use GSS API to get the Service Token
+            service_name = gssapi.Name(self._service_principle)
+            client_ctx = gssapi.SecurityContext(name=service_name, usage='initiate')
+            initial_client_token = client_ctx.step()
+            b64_encoded = base64.b64encode(initial_client_token).decode('utf-8')
+            headers['Authorization'] = 'Negotiate {}'.format(b64_encoded)
+
+        return headers
+
+    @staticmethod
+    def col(column_name: str):
+        return KawaColumn(column_name)
+
+    @staticmethod
+    def cols(regexp='.*'):
+        return KawaColumn(column_name='',
+                          column_regexp=regexp,
+                          indicator_columns_only=False,
+                          default_sheet_columns_only=False)
+
+    @staticmethod
+    def indicator_cols():
+        return KawaColumn(column_name='',
+                          column_regexp=None,
+                          indicator_columns_only=True,
+                          default_sheet_columns_only=False)
+
+    @staticmethod
+    def sheet_cols():
+        return KawaColumn(column_name='',
+                          column_regexp=None,
+                          indicator_columns_only=False,
+                          default_sheet_columns_only=True)
+
+    @staticmethod
+    def where(indicator_id):
+        return KawaFilter(indicator_id=indicator_id)
