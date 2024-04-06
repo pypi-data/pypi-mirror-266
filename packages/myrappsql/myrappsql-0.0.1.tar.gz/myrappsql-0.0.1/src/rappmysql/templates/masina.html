@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<table class="table" id="myTable99" border="1">
+<!--    <script src="{{ url_for('static', filename='js/myfile.cs') }}"></script>-->
+    <thead>
+        <tr>
+            {% for colName in tabel_alimentari[0] %}
+                <th scope="col" onclick="sortTable(0)">{{colName}}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+
+    {% for row in tabel_alimentari[1:] %}
+    <tr>
+        {% for col in row %}
+            <td>{{col}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+
+<br>
+<table class="table" id="myTable100" border="1">
+<!--    <script src="{{ url_for('static', filename='js/myfile.cs') }}"></script>-->
+    <thead>
+        <tr>
+            {% for colName in tabel_totals[0] %}
+                <th scope="col" onclick="sortTable(0)">{{colName}}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+
+    {% for row in tabel_totals[1:] %}
+    <tr>
+        {% for col in row %}
+            <td>{{col}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+<br>
+========================================================================================================================
+
+<head>Add</head>
+<form method="post" action="/masina">
+    <div class="container text-center">
+        <div class="row">
+            <div class="col">
+                <label>Date</label>
+                <input type="date" name="data"/>
+            </div>
+            <div class="col">
+                <label>Type</label>
+                <select id="cars" name="type">
+                        {% for tt in types_of_costs %}
+                            <option value={{tt}}>{{tt}}</option>
+                        {% endfor %}
+                </select>
+            </div>
+            <div class="col">
+                <label>Brutto[€]</label>
+                <input type="number" name="brutto" step="any" required/>
+            </div>
+            <div class="col">
+                <label>Qty.[L/KwH]</label>
+                <input type="number" name="amount" step="any" required/>
+            </div>
+            <div class="col">
+                <label>Km stand</label>
+                <input type="number" name="km"/>
+            </div>
+            <div class="col">
+                <label>Comment</label>
+                <input type="text" name="Comment"/>
+            </div>
+            <div class="col">
+                <input type="submit" name="add_alim"/>
+            </div>
+        </div>
+    </div>
+</form>
+<br>
+========================================================================================================================
+
+<!--Filter-->
+<form method="post" action="/masina">
+    <br>
+    <div class="container text-center">
+        <div class="row">
+            <div class="col">
+                Date From
+            </div>
+            <div class="col">
+                <input type="date" name="dataFrom"/>
+            </div>
+            <div class="col">
+                Date Bis
+            </div>
+            <div class="col">
+                <input type="date" name="dataBis"/>
+            </div>
+            <div class="col">
+                Type
+            </div>
+            <div class="col">
+                <select id="alim_type" name="type">
+                        <option value="all">all</option>
+                        {% for tt in types_of_costs %}
+                            <option value={{tt}}>{{tt}}</option>
+                        {% endfor %}
+                </select>
+            </div>
+            <div class="col">
+                Monthly
+            </div>
+            <div class="col">
+                <select id="ffff" name="month">
+                    <option value="interval">interval</option>
+                    <option value="January">January</option>
+                    <option value="February">February</option>
+                    <option value="March">March</option>
+                    <option value="April">April</option>
+                    <option value="June">June</option>
+                    <option value="July">July</option>
+                    <option value="August">August</option>
+                    <option value="September">September</option>
+                    <option value="October">October</option>
+                    <option value="November">November</option>
+                    <option value="December">December</option>
+                </select>
+            </div>
+            <div class="col">
+                Year
+            </div>
+            <div class="col">
+                    <select id="year" name="year">
+                        <option value="2024">2024</option>
+                        <option value="2020">2020</option>
+                        <option value="2021">2021</option>
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>
+                        <option value="2025">2025</option>
+                        <option value="2026">2026</option>
+                    </select>
+            </div>
+            <div class="col">
+                <input type="submit" name="filter"/>
+            </div>
+        </div>
+    </div>
+    <br>
+</form>
+<br>
+
+<!--Date Fraom Date Bis-->
+<div class="container text-center">
+    <div class="row">
+        <div class="col">
+            Data From: {{dataFrom}}
+        </div>
+        <div class="col">
+            Data Bis: {{dataBis}}
+        </div>
+    </div>
+</div>
+<br>
+========================================================================================================================
+
+<br>
+<table class="table" id="HyundaiTable" border="1">
+    <script src="{{ url_for('static', filename='js/myfile.cs') }}"></script>
+    <thead>
+        <tr>
+            {% for colName in userDetails[0] %}
+                <th scope="col" onclick="sortMasinaTable({{ loop.index0 }})">{{colName}}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+
+    {% for row in userDetails[1:] %}
+    <tr>
+        {% for col in row %}
+            <td>{{col}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+<br>
+<form action="/masina" method="POST" enctype="multipart/form-data">
+    Project file path: <input type="file" name="myfile"><br>
+    <input type="submit" name="upload_file">
+</form>
+
+<br>
+{% endblock %}

@@ -1,0 +1,262 @@
+{% extends 'base.html' %}
+{% block content %}
+
+INCOME VS EXPENSES OVERALL
+<br>
+<br>
+<table class="table" id="myTable111" border="1">
+<!--    <script src="{{ url_for('static', filename='js/myfile.cs') }}"></script>-->
+    <thead>
+        <tr>
+            {% for colName in summary_table[0] %}
+                <th scope="col" onclick="sortTable(0)">{{colName}}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+
+    {% for row in summary_table[1:] %}
+    <tr>
+        {% for col in row %}
+            <td>{{col}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+<br>
+
+==========================
+<div class="container text-center">
+    <div class="row">
+        <div class="col">
+            Income vs Expenses: {{tot_val_of_expenses_income}}
+        </div>
+        <div class="col">
+            # Income & Expenses: {{tot_no_of_expenses_income}}
+        </div>
+    </div>
+</div>
+<br>
+FILTER EXPENSES
+========================================================================================================================
+<br>
+<form method="post" action="/cheltuieli">
+    <br>
+    <div class="row">
+        <div class="col">
+            Date From
+        </div>
+        <div class="col">
+            <input type="date" name="dataFrom" />
+        </div>
+        <div class="col">
+            Date bis
+        </div>
+        <div class="col">
+            <input type="date" name="dataBis" />
+        </div>
+        <div class="col">
+            Conto
+        </div>
+        <div class="col">
+                <select id="cars" name="conto">
+                    <option value="all">all</option>
+                    <option value="EC">EC</option>
+                    <option value="Savings">Savings</option>
+                    <option value="Siri&Radu">Siri&Radu</option>
+                    <option value="Credit">Credit</option>
+                    <option value="MasterCard">MasterCard</option>
+                    <option value="N26">N26</option>
+                    <option value="DeutscheBank">DeutscheBank</option>
+                </select>
+        </div>
+        <div class="col">
+            Monthly
+        </div>
+        <div class="col">
+                <select id="ffff" name="month">
+                    <option value="interval">interval</option>
+                    <option value="January">January</option>
+                    <option value="February">February</option>
+                    <option value="March">March</option>
+                    <option value="April">April</option>
+                    <option value="June">June</option>
+                    <option value="July">July</option>
+                    <option value="August">August</option>
+                    <option value="September">September</option>
+                    <option value="October">October</option>
+                    <option value="November">November</option>
+                    <option value="December">December</option>
+                </select>
+        </div>
+        <div class="col">
+            Year
+        </div>
+        <div class="col">
+                <select id="year" name="year">
+                    <option value="2023">2023</option>
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                    <option value="2026">2026</option>
+                </select>
+        </div>
+        <div class="col">
+            <input type="submit"/>
+        </div>
+
+    </div>
+    <br>
+</form>
+<br>
+FILTERED DATES
+========================================================================================================================
+<br>
+<div class="container text-center">
+    <div class="row">
+        <div class="col">
+            Data From: {{dataFrom}}
+        </div>
+        <div class="col">
+            Data Bis: {{dataBis}}
+        </div>
+    </div>
+</div>
+<br>
+VALUES AND NUMBERS OF EXPENSES
+<br>
+========================================================================================================================
+<div class="container text-center">
+    <div class="row">
+        <div class="col">
+            Expenses: {{tot_val_of_expenses}}
+        </div>
+        <div class="col">
+            #Expenses: {{tot_no_of_expenses}}
+        </div>
+        <div class="col">
+            Monthly: {{tot_val_of_monthly_expenses}}
+        </div>
+        <div class="col">
+            #Monthly: {{tot_no_of_monthly_expenses}}
+        </div>
+        <div class="col">
+            Irregular: {{tot_val_of_irregular_expenses}}
+        </div>
+        <div class="col">
+            #Irregular: {{tot_no_of_irregular_expenses}}
+        </div>
+    </div>
+</div>
+<br>
+<table class="table" id="myTable1" border="1">
+    <script src="{{ url_for('static', filename='js/myfile.cs') }}"></script>
+    <thead>
+        <tr>
+            <th scope="col" onclick="sortTable(0)">table</th>
+            <th scope="col" onclick="sortTable(1)">name</th>
+            <th scope="col" onclick="sortTable(2)">value</th>
+            <th scope="col" onclick="sortTable(3)">myconto</th>
+            <th scope="col" onclick="sortTable(4)">freq</th>
+<!--            <th scope="col">pay_day</th>-->
+<!--            <th scope="col">valid_from</th>-->
+<!--            <th scope="col">valid_to</th>-->
+<!--            <th scope="col">auto_ext</th>-->
+<!--            <th scope="col">post_pay</th>-->
+            <th scope="col">payDay</th>
+        </tr>
+    </thead>
+
+    {% for user in expenses %}
+    <tr>
+        <td>{{user[0]}}</td>
+<!--        <td>{{user[1]}}</td>-->
+        <td>{{user[2]}}</td>
+        <td>{{user[3]}}</td>
+        <td>{{user[4]}}</td>
+        <td>{{user[5]}}</td>
+<!--        <td>{{user[6]}}</td>-->
+<!--        <td>{{user[7]}}</td>-->
+<!--        <td>{{user[8]}}</td>-->
+<!--        <td>{{user[9]}}</td>-->
+        <td>{{user[10]}}</td>
+    </tr>
+    {% endfor %}
+</table>
+<br>
+VALUES AND NUMBERS OF INCOME
+<br>
+========================================================================================================================
+<div class="container text-center">
+    <div class="row">
+        <div class="col">
+            Total_Netto: {{total_netto}}
+        </div>
+        <div class="col">
+            Total_Taxes: {{total_taxes}}
+        </div>
+        <div class="col">
+            Total Brutto: {{total_brutto}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            Salary_Überweisung: {{salary_uberweisung}}
+        </div>
+        <div class="col">
+            Salary_Abzuge: {{salary_abzuge}}
+        </div>
+        <div class="col">
+            Salary_Netto: {{salary_netto}}
+        </div>
+        <div class="col">
+            Salary_gesetzliche_abzuge: {{salary_gesetzliche_abzuge}}
+        </div>
+        <div class="col">
+            Salary_Brutto: {{salary_brutto}}
+        </div>
+    </div>
+</div>
+<br>
+<table class="table" id="myTable2" border="1">
+    <script src="{{ url_for('static', filename='js/myfile.cs') }}"></script>
+    <thead>
+    {% for user in income_tab_head %}
+<!--        <tr>-->
+<!--            <th onclick="sortTable(0)" scope="col">table</th>-->
+<!--            <th onclick="sortTable(1)" scope="col">name</th>-->
+        <th scope="col">{{user}}</th>
+<!--            <th scope="col">value</th>-->
+<!--            <th scope="col">myconto</th>-->
+<!--            <th scope="col">freq</th>-->
+<!--            <th scope="col">pay_day</th>-->
+<!--            <th scope="col">valid_from</th>-->
+<!--            <th scope="col">valid_to</th>-->
+<!--            <th scope="col">auto_ext</th>-->
+<!--            <th scope="col">post_pay</th>-->
+<!--            <th scope="col">payDay</th>-->
+<!--        </tr>-->
+    {% endfor %}
+    </thead>
+
+    {% for user in income %}
+    <tr>
+        {% for col in user %}
+        <td>{{col}}</td>
+        {% endfor %}
+<!--        <td>{{user[0]}}</td>-->
+<!--        <td>{{user[1]}}</td>-->
+<!--        <td>{{user[2]}}</td>-->
+<!--        <td>{{user[3]}}</td>-->
+<!--        <td>{{user[4]}}</td>-->
+<!--        <td>{{user[5]}}</td>-->
+<!--        <td>{{user[6]}}</td>-->
+<!--        <td>{{user[7]}}</td>-->
+<!--        <td>{{user[8]}}</td>-->
+<!--        <td>{{user[9]}}</td>-->
+<!--        <td>{{user[10]}}</td>-->
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
