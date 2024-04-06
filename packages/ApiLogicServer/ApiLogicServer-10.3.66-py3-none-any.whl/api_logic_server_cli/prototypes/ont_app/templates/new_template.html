@@ -1,0 +1,22 @@
+<o-form attr="{{ entity }}_form_insert" service="{{ service }}" entity="{{ entity }}" 
+keys="{{ keys }}" fxLayout="column" show-header="yes" header-actions="I"
+horizontal-scroll="yes"
+#oForm after-insert-mode="detail" class="standalone-form-container">
+
+<o-row attr="row1" layout-align="start stretch">
+
+  <o-column title="{{ title }}" layout-align="start stretch" fxFlex="60" layout-padding>
+    <div fxLayout="row wrap" fxLayoutAlign="start start" fxFlex fxLayoutGap="14px">
+    {% for row in row_columns %}
+      <div fxLayout="row" fxLayoutAlign="start center" class="gap">
+        {{ row }}
+      </div>
+      {% endfor %}
+      </div>
+      <div fxFlex></div>
+  </o-column>
+</o-row>
+
+<div layout-padding></div>
+
+</o-form>
