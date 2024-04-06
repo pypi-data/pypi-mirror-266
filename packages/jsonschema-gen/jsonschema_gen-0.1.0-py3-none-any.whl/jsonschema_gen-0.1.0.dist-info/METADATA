@@ -1,0 +1,193 @@
+Metadata-Version: 2.1
+Name: jsonschema-gen
+Version: 0.1.0
+Summary: JSONSchema generation from Python type hints
+Home-page: https://github.com/violet-black/jsonschema-gen
+Author: violetblackdev@gmail.com
+License: MIT
+Keywords: jsonschema,validation,typing
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: Microsoft
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Provides-Extra: dev
+Requires-Dist: pip-tools ; extra == 'dev'
+Requires-Dist: tox ; extra == 'dev'
+Requires-Dist: coverage ; extra == 'dev'
+Requires-Dist: mypy ; extra == 'dev'
+Requires-Dist: isort ; extra == 'dev'
+Requires-Dist: black ; extra == 'dev'
+Requires-Dist: bump2version ; extra == 'dev'
+Requires-Dist: bandit ; extra == 'dev'
+Requires-Dist: xenon ; extra == 'dev'
+Provides-Extra: docs
+Requires-Dist: sphinx ; extra == 'docs'
+Requires-Dist: python-docs-theme ; extra == 'docs'
+Provides-Extra: test
+Requires-Dist: pytest ==8.1.1 ; extra == 'test'
+
+[![PyPi Version](https://img.shields.io/pypi/v/jsonschema-gen.svg)](https://pypi.python.org/pypi/jsonschema-gen/)
+[![Docs](https://readthedocs.org/projects/jsonschema-gen/badge/?version=latest&style=flat)](https://jsonschema-gen.readthedocs.io)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
+[![3.8](https://github.com/violet-black/jsonschema-gen/actions/workflows/py38.yaml/badge.svg)](https://github.com/violet-black/jsonschema-gen/actions/workflows/py38.yaml)
+[![3.9](https://github.com/violet-black/jsonschema-gen/actions/workflows/py39.yaml/badge.svg)](https://github.com/violet-black/jsonschema-gen/actions/workflows/py39.yaml)
+[![3.10](https://github.com/violet-black/jsonschema-gen/actions/workflows/py310.yaml/badge.svg)](https://github.com/violet-black/jsonschema-gen/actions/workflows/py310.yaml)
+[![3.11](https://github.com/violet-black/jsonschema-gen/actions/workflows/py311.yaml/badge.svg)](https://github.com/violet-black/jsonschema-gen/actions/workflows/py311.yaml)
+[![3.12](https://github.com/violet-black/jsonschema-gen/actions/workflows/py312.yaml/badge.svg)](https://github.com/violet-black/jsonschema-gen/actions/workflows/py312.yaml)
+
+**jsonschema-gen** is Python type hints parser which can convert function and method annotations
+into [JSONSchema](https://json-schema.org) objects.
+
+- Pythonic JSONSchema objects 
+- Extensive type coverage: TypedDict, Generic, NewType, etc.
+- No external dependencies
+
+# Use
+
+Initially it was created to auto-generate documentation schemas for our JSONRPC API.
+
+The process is quite simple: initialize a `jsonschema_gen.Parser` and pass your class and method there. The result
+is a namedtuple with `kwargs` attribute containing a JSONSchema object with all the input parameters, and
+`returns` attribute with the return parameter schema.
+
+```python
+from typing import NewType, TypedDict
+from jsonschema_gen import Parser
+
+Username = NewType('Username', str)
+
+
+class User(TypedDict):
+    name: str
+    blocked: bool
+
+
+class UserData:
+    
+    def get_user(self, name: Username) -> User:
+        ...
+
+parser = Parser()
+annotations = parser.parse_function(UserData, UserData.get_user)
+# annotation.kwargs - input
+# annotation.returns - output
+```
+
+To get a JSON-compatible dictionary use `annotation.kwargs.get_jsonschema()` method on `kwargs`. 
+In the aforementioned case the result would look like this (if you dump it with `json.dumps`)
+
+(note that the value of `annotation.kwargs` may be `None` if there are no input params in your function)
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "name": {
+      "title": "Username",
+      "type": "string"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "additionalProperties": false
+}
+```
+
+and for the return value in `annotation.returns.get_jsonschema()`:
+
+```json
+{
+  "type": "object",
+  "title": "User",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "blocked": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "name",
+    "blocked"
+  ],
+  "additionalProperties": false
+}
+```
+
+If you need to use this schema for validation, you can install any type of JSONSchema validators, such as
+[fastjsonschema](https://github.com/horejsek/python-fastjsonschema) and use them with the resulting `kwargs`.
+
+```python
+from fastjsonschema import compile
+
+validator = compile(annotations.kwargs.get_jsonschema())
+
+validator({'name': 'John Dowe'})
+```
+
+# Limitations
+
+The two types of limitations can be split in ones imposed by JSONSchema and the limitations of this library.
+
+There's no proper way describe a mixed set of positional and keyword input parameters in JSONSchema.
+In such cases all positional variable arguments will be skipped by the parser, and positional-only parameters will
+cause an error.
+
+```python
+# '*args' will be skipped
+def func_1(value: str, *args, flag: bool = True): ...
+ # 'value' will cause an error
+def func_2(value: str, /, flag: bool = True): ...
+```
+
+Variable keyword arguments will be converted to `additionalProperties=true` in JSONSchema.
+
+```python
+# '*kwargs' will set 'additionalProperties' to 'true', 'value' is still required
+def func_1(value: str, **kwargs): ...
+```
+
+# Strict mode
+
+There are two methods of using `jsonschema_gen.Parser`. By default, it uses the *strict mode*, which means
+an implicit type or any non-JSON compatible type will cause an error.
+
+For example, the `UUID` or `datetime` type is not a valid JSON type, but rather just a string format, so this type
+of type hint will cause an error in strict mode. In non-strict mode it will be converted to a string with
+`format="uuid"` / `format="date-time"` respectively.
+
+Some JSON parsers like [orjson](https://github.com/ijl/orjson) can in fact parse date-time strings to Python `datetime`
+type. In this case you may either switch to non-strict mode or modify a particular type parser to
+allow it in the strict mode.
+
+```python
+from jsonschema_gen.parsers import DateTimeParser, DateParser
+
+DateTimeParser.strict = True
+DateParser.strict = True
+```
+
+# Compatibility
+
+The Python type hints are vast and yet not well organized, so there could always be some data type I forgot to add
+here. You can use the extension guide to extend the standard list of type parsers.
+
+Python 3.8 compatibility is so-so due to lots of features and changes made in 3.9. However, it still should support
+most of the functionality.
