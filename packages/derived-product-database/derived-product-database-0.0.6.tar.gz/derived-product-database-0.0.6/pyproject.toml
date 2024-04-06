@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=66.1.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "derived-product-database"
+version = "0.0.6"
+authors = [
+  { name="Noah Harper", email="nharper@usgs.gov" },
+]
+description = "A package for interacting with the USGS influx db"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+keywords = ["infrasound", "seismic", "usgs", "volcanos"]
+classifiers = [
+    "Programming Language :: Python :: 3.10",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  "numpy",
+  "pandas",
+  "obspy",
+  "influxdb-client",
+  "fastapi",
+  "pydantic",
+  "pydantic_settings",
+  "uvicorn",
+  "datetime",
+  "loguru",
+]
+
+[tool.setuptools.packages.find]
+include = ["dpd_service*"]
+exclude = ["dpd_agent*", "docs*", "tests*"]
+
+[project.urls]
+Homepage = "https://code.usgs.gov/cvo-realtime-seismic/derived-project-database"
+Issues = "https://code.usgs.gov/cvo-realtime-seismic/derived-project-database/-/issues"
