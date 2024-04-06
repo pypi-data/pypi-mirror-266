@@ -1,0 +1,138 @@
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[project]
+name = "sse-starlette"
+version = "2.1.0"
+description = "SSE plugin for Starlette"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [
+    { name = "sysid", email = "sysid@gmx.de" },
+]
+url = "https://github.com/sysid/sse-starlette"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP",
+]
+dependencies = [
+    "starlette",
+    "uvicorn",
+    "anyio",
+]
+
+[project.license]
+text = "BSD-3-Clause"
+
+[project.urls]
+Source = "https://github.com/sysid/sse-starlette"
+
+[project.optional-dependencies]
+examples = [
+    "fastapi",
+]
+
+[tool.pytest.ini_options]
+markers = [
+    "integration: marks tests as integration tests",
+    "e2e: marks tests as e2e tests, not to be run in CICD",
+]
+asyncio_mode = "auto"
+
+[tool.bumpversion]
+current_version = "2.1.0"
+commit = true
+tag = false
+message = "Bump version to {new_version}"
+files = [
+    { filename = "VERSION" },
+    { filename = "pyproject.toml" },
+    { filename = "sse_starlette/__init__.py" },
+]
+
+[tool.bumpversion.file_patterns]
+"sse_starlette/__init__.py" = [
+    { search = "__version__ = '{current_version}'", replace = "__version__ = '{new_version}'" },
+]
+VERSION = [
+    { search = "{current_version}", replace = "{new_version}" },
+]
+"pyproject.toml" = [
+    { search = "version = {current_version}", replace = "version = {new_version}" },
+]
+
+[tool.pdm]
+source = [
+    { name = "pypi", url = "https://pypi.org/simple", verify_ssl = true },
+]
+
+[tool.pdm.build]
+excludes = [
+    "./**/.git",
+]
+package-dir = "src"
+includes = [
+    "sse_starlette",
+]
+source-includes = [
+    "tests",
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md",
+    "tox.ini",
+]
+editable-backend = "path"
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "mypy",
+    "codecov",
+    "isort",
+    "pytest",
+    "pytest-cov",
+    "pytest-asyncio",
+    "httpx",
+    "asgi-lifespan",
+    "psutil",
+    "black>=23.11.0",
+]
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+line_length = 88
+
+[tool.mypy]
+ignore_missing_imports = false
+namespace_packages = true
+
+[tool.coverage.run]
+source = [
+    "sse_starlette",
+]
+omit = [
+    "tests/*",
+    "**/__main__.py",
+    "**/.venv/*",
+    "**/site-packages/*",
+]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+fail_under = 85
