@@ -1,0 +1,187 @@
+Metadata-Version: 2.1
+Name: absfuyu
+Version: 3.3.1
+Summary: A small collection of code
+Author: somewhatcold (AbsoluteWinter)
+License: MIT License
+Project-URL: Homepage, https://github.com/AbsoluteWinter/absfuyu-public
+Project-URL: Documentation, https://absolutewinter.github.io/absfuyu
+Project-URL: Repository, https://github.com/AbsoluteWinter/absfuyu-public
+Project-URL: Issues, https://github.com/AbsoluteWinter/absfuyu-public/issues
+Keywords: utilities
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Natural Language :: English
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Utilities
+Requires-Python: <4,>=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: bs4
+Requires-Dist: click>=8.0.0
+Requires-Dist: colorama
+Requires-Dist: Deprecated
+Requires-Dist: importlib_resources; python_version < "3.10"
+Requires-Dist: python-dateutil
+Requires-Dist: requests
+Requires-Dist: tomli>=1.1.0; python_version < "3.11"
+Requires-Dist: typing_extensions>=4.0.1; python_version < "3.11"
+Requires-Dist: unidecode
+Provides-Extra: res
+Requires-Dist: absfuyu-res; extra == "res"
+Provides-Extra: absfuyu-res
+Requires-Dist: absfuyu-res; extra == "absfuyu-res"
+Provides-Extra: full
+Requires-Dist: absfuyu-res; extra == "full"
+Requires-Dist: numpy; extra == "full"
+Requires-Dist: rich; extra == "full"
+Requires-Dist: pandas; extra == "full"
+Provides-Extra: beautiful
+Requires-Dist: rich; extra == "beautiful"
+Provides-Extra: dev
+Requires-Dist: sphinx>=7.0.0; extra == "dev"
+Requires-Dist: twine>=3.7.1; extra == "dev"
+Requires-Dist: rich; extra == "dev"
+Requires-Dist: build; extra == "dev"
+Requires-Dist: mypy; extra == "dev"
+Requires-Dist: sphinx_rtd_theme; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Provides-Extra: rich
+Requires-Dist: rich; extra == "rich"
+Provides-Extra: numpy
+Requires-Dist: numpy; extra == "numpy"
+Provides-Extra: extra
+Requires-Dist: pandas; extra == "extra"
+Requires-Dist: numpy; extra == "extra"
+Provides-Extra: pandas
+Requires-Dist: pandas; extra == "pandas"
+Provides-Extra: build
+Requires-Dist: build; extra == "build"
+Provides-Extra: black
+Requires-Dist: black; extra == "black"
+Provides-Extra: twine
+Requires-Dist: twine>=3.7.1; extra == "twine"
+Provides-Extra: pytest
+Requires-Dist: pytest>=7.0.0; extra == "pytest"
+Provides-Extra: pytest-cov
+Requires-Dist: pytest-cov; extra == "pytest-cov"
+Provides-Extra: sphinx
+Requires-Dist: sphinx>=7.0.0; extra == "sphinx"
+Provides-Extra: sphinx-rtd-theme
+Requires-Dist: sphinx_rtd_theme; extra == "sphinx-rtd-theme"
+Provides-Extra: mypy
+Requires-Dist: mypy; extra == "mypy"
+Provides-Extra: all
+Requires-Dist: numpy; extra == "all"
+Requires-Dist: sphinx>=7.0.0; extra == "all"
+Requires-Dist: absfuyu-res; extra == "all"
+Requires-Dist: twine>=3.7.1; extra == "all"
+Requires-Dist: rich; extra == "all"
+Requires-Dist: build; extra == "all"
+Requires-Dist: mypy; extra == "all"
+Requires-Dist: pytest>=7.0.0; extra == "all"
+Requires-Dist: pandas; extra == "all"
+Requires-Dist: sphinx_rtd_theme; extra == "all"
+Requires-Dist: black; extra == "all"
+Requires-Dist: pytest-cov; extra == "all"
+
+<div align="center">
+	<h1 align="center">
+		<img src="https://github.com/AbsoluteWinter/AbsoluteWinter.github.io/blob/main/absfuyu/images/repository-image-crop.png?raw=true" alt="absfuyu"/>
+	</h1>
+	<p align="center">
+		<a href="https://pypi.org/project/absfuyu/"><img src="https://img.shields.io/pypi/pyversions/absfuyu?style=flat-square&logo=python" alt="PyPI Supported Versions"/></a>
+		<a href="https://pypi.org/project/absfuyu/"><img src="https://img.shields.io/pypi/dm/absfuyu?style=flat-square&color=blue" alt="pypi"/></a>
+		<a href="https://pypi.org/project/absfuyu/"><img src="https://img.shields.io/pypi/v/absfuyu?style=flat-square&logo=pypi" /></a>
+		<a><img src="https://img.shields.io/badge/style-black-blue?style=flat-square"/></a>
+		<a><img src="https://img.shields.io/pypi/l/absfuyu?style=flat-square&logo=github&color=blue"/></a>
+	</p>
+</div>
+
+
+---
+
+## **SUMMARY:**
+
+*TL;DR: A collection of code*
+
+## **INSTALLATION:**
+
+```bash
+$ pip install -U absfuyu
+```
+
+## **USAGE:**
+
+```python
+import absfuyu
+help(absfuyu)
+```
+
+## **DOCUMENTATION:**
+
+> [here](https://absolutewinter.github.io/absfuyu/)
+
+## **DEV SETUP**
+
+1. Create virtual environment
+
+```bash
+python -m venv env
+```
+
+Note: Might need to run this in powershell (windows)
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser
+```
+
+2. Install all required packages
+
+```bash
+python -m pip install -e .[all]
+```
+or
+```bash
+python -m pip install -e .[dev]
+```
+
+
+## **LICENSE:**
+
+```
+MIT License
+
+Copyright (c) 2022-2024 AbsoluteWinter
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```

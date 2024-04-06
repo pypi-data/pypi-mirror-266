@@ -1,0 +1,104 @@
+# ========== BUILD ==========
+[build-system]
+requires = [
+    "setuptools >= 61.0",
+    "wheel",
+    "click",
+    "colorama",
+    # "pytest",
+]
+build-backend = "setuptools.build_meta"
+# requires = ["hatchling"]
+# build-backend = "hatchling.build"
+
+# ========== PROJECT ==========
+[project]
+name = "absfuyu"
+description = "A small collection of code"
+readme = "README.md"
+requires-python = ">=3.8, <4"
+license = { text = "MIT License" }
+keywords = ["utilities"]
+authors = [{ name = "somewhatcold (AbsoluteWinter)" }]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3 :: Only",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 5 - Production/Stable",
+    "Natural Language :: English",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities",
+]
+dynamic = ["version", "dependencies", "optional-dependencies"]
+
+[project.urls]
+Homepage = "https://github.com/AbsoluteWinter/absfuyu-public"
+Documentation = "https://absolutewinter.github.io/absfuyu"
+Repository = "https://github.com/AbsoluteWinter/absfuyu-public"
+Issues = "https://github.com/AbsoluteWinter/absfuyu-public/issues"
+
+# [project.optional-dependencies]
+# dev = [
+#     "sphinx>=7.0.0",
+#     "sphinx_rtd_theme",
+#     "pytest>=6.2.5",
+#     "twine",
+#     "build",
+#     "tox",
+# ]
+
+[project.scripts]
+fuyu = "absfuyu.__main__:main"
+
+# ========== TOOL ==========
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"absfuyu.config" = ["*"]
+"absfuyu.pkg_data" = ["*"]
+
+[tool.setuptools.exclude-package-data]
+absfuyu = [".gitattributes", ".gitignore"]
+
+[tool.setuptools.dynamic]
+dependencies = { file = "requirements.txt" }
+version = { attr = "absfuyu.__version__" }
+
+[tool.pytest.ini_options]
+addopts = [
+    "--strict-markers",
+    "--maxfail=1",
+    # "--cov=absfuyu"
+]
+markers = [
+    "test_this: Select desire test to test",
+    "data_extension: Test all data extension classes",
+]
+
+[tool.mypy]
+mypy_path = "src"
+check_untyped_defs = true
+# disallow_any_generics = true
+ignore_missing_imports = true
+no_implicit_optional = true
+show_error_codes = true
+strict_equality = true
+warn_redundant_casts = true
+warn_return_any = true
+warn_unreachable = true
+warn_unused_configs = true
+no_implicit_reexport = true
+# install_types = true  # type: ignore
