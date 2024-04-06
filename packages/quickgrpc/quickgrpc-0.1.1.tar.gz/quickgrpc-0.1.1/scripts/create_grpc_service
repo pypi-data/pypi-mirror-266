@@ -1,0 +1,117 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import shutil
+from pathlib import Path
+
+import typer
+import click
+from grpc_tools import protoc
+
+from quickgrpc.utils import parse_proto_get_services
+from quickgrpc.helpers.file import write_file, read_file
+from quickgrpc.helpers.misc import (
+    get_python_lib,
+    sort_imports,
+    format_with_black,
+)
+
+
+def create_grpc_service(file: str, code: bool = False):
+    name = file.replace(".proto", "")
+    pb_path = f"{get_python_lib()}/grpc_assets/{name}"
+    shutil.rmtree(pb_path, ignore_errors=True)
+    generate_grpc_assets(name, file, pb_path)
+    if not code:
+        click.echo("you've passed code preservation, skipping server/client generation")
+        return
+    generate_grpc_server(name, file)
+    generate_grpc_client(name, file)
+
+
+def generate_grpc_client(name, path):
+    click.echo("Generating Client Code...")
+    client_code = f"""
+from quickgrpc.utils import get_stub
+import grpc_assets.{name}.{name}_pb2 as pb2
+from unittest import TestCase
+
+    """
+    for service in parse_proto_get_services(path):
+        click.echo(f"Adding service: {service['name']}")
+        client_code += f"""
+'''
+Proto
+{read_file(path)}
+'''
+
+class {service["name"]}ClientTestCase(TestCase):
+    stub = get_stub('{name}')\n"""
+    for method in service["methods"]:
+        click.echo(f"Adding method: {method}")
+        client_code += f"""\n
+    def test_{method}(self):
+        # stub.<your rpc method>(pb2.<your proto message>(params))
+        ...
+        \n"""
+    Path("tests").mkdir(exist_ok=True, parents=True)
+    write_file(f"tests/test_{name}.py", client_code)
+    sort_imports(f"{name}.py")
+    format_with_black(".")
+
+
+def generate_grpc_server(name, path):
+    click.echo("Generating Server Code...")
+    service_code = f"""
+from grpc_assets.{name} import {name}_pb2
+
+"""
+    for service in parse_proto_get_services(path):
+        click.echo(f"Adding service: {service['name']}")
+        service_code += f"""
+from grpc_assets.{name}.{name}_pb2_grpc import {service["name"]}Servicer
+
+'''
+Proto
+{read_file(path)}
+'''
+class {service["name"]}Service({service["name"]}Servicer):\n"""
+        for method in service["methods"]:
+            click.echo(f"Adding method: {method}")
+            service_code += f"""\n
+    def {method}(self, context):  
+        '''        
+        # TODO: add inputs as per proto
+        # TODO: add logic and return output as per proto
+        '''
+        return \n"""
+    write_file(f"{name}.py", service_code)
+    sort_imports(f"{name}.py")
+    format_with_black(".")
+
+
+def generate_grpc_assets(name, path, pb_path):
+    click.echo(f"path: {path}")
+    click.echo(f"pb_path: {pb_path}")
+    Path(pb_path).mkdir(parents=True, exist_ok=True)
+    protoc.main(
+        [
+            "",
+            # '-I', 'rpc/proto/contracts/',namename
+            f"--python_out={pb_path}",
+            f"--grpc_python_out={pb_path}",
+            # f'--go_out={pb_path}',
+            # f'--go-grpc_out={pb_path}',
+            path,
+        ]
+    )
+    write_file(
+        f"{pb_path}/{name}_pb2_grpc.py",
+        read_file(f"{pb_path}/{name}_pb2_grpc.py").replace(
+            f"import {name}_pb2 as {name}__pb2",
+            f"import grpc_assets.{name}.{name}_pb2 as {name}__pb2",
+        ),
+    )
+
+
+if __name__ == "__main__":
+    typer.run(create_grpc_service)

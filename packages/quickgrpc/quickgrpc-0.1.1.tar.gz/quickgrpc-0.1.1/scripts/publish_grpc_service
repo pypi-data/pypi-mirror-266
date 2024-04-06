@@ -1,0 +1,51 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import shutil
+
+import typer
+import os
+
+from quickgrpc.helpers.misc import get_python_lib
+from quickgrpc.helpers.file import write_file
+from quickgrpc.helpers.vcs import clone, commit, push
+
+ASSETS_PATH = "/tmp/grpc_assets"
+
+
+def publish_grpc_service(assets_repo_url: str, name: str, message: str):
+    clone(assets_repo_url, ASSETS_PATH)
+    pb_path = f"{get_python_lib()}/grpc_assets/{name}"
+    dest = f"{ASSETS_PATH}/grpc_assets/{name}"
+    shutil.rmtree(dest, ignore_errors=True)
+    shutil.copytree(pb_path, dest)
+    if not os.path.exists(f"{ASSETS_PATH}/README.md"):
+        write_file(
+            f"{ASSETS_PATH}/README.md",
+            "This is where all generated grpc pb wrappers will live",
+        )
+    if not os.path.exists(f"{ASSETS_PATH}/setup.py"):
+        write_file(
+            f"{ASSETS_PATH}/setup.py",
+            """
+from setuptools import setup
+
+setup(
+    name="grpc_assets",
+    version="0.1.0",
+    description="grpc assets library",
+    license="MIT",
+    classifiers=[
+        "Intended Audience :: quickgrpc lib"
+    ],
+    packages=["grpc_assets"],
+    scripts=[],
+    include_package_data=True,
+)
+        """,
+        )
+    commit(ASSETS_PATH, message)
+    push(ASSETS_PATH)
+
+
+if __name__ == "__main__":
+    typer.run(publish_grpc_service)
