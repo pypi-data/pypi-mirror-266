@@ -1,0 +1,42 @@
+[project]
+name = "scrummd"
+authors = [{ name = "Lachlan Kingsford", email = "lachlan@nerdygentleman.com" }]
+dynamic = ["version"]
+dependencies = ['importlib-metadata; python_version>="3.11"']
+readme = "README.md"
+requires-python = ">=3.11"
+
+[project.scripts]
+"sbl" = "scrummd:sbl_entry"
+"scard" = "scrummd:scard_entry"
+"sbench" = "scrummd:sbench_entry"
+"svalid" = "scrummd:svalid_entry"
+
+[build-system]
+requires = [
+    "setuptools",
+    "mypy",
+    "pytest",
+    "pylint",
+    "setuptools_scm",
+    "sphinx",
+    "sphinx-argparse",
+    "sphinx-rtd-theme",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+exclude = ["scrum", "test", "docs"]
+
+[tool.setuptools_scm]
+version_file = "scrummd/_version.py"
+
+[tool.pytest.ini_options]
+testpaths = ["test"]
+
+[tool.scrummd]
+strict = true
+scard_reference_format = "$index [$status]"
+
+[tool.scrummd.fields]
+status = ["Not Fully Defined", "Ready", "In Progress", "In Testing", "Done"]
