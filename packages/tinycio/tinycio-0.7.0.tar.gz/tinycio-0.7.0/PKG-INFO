@@ -1,0 +1,44 @@
+Metadata-Version: 2.1
+Name: tinycio
+Version: 0.7.0
+Summary: A primitive, lightweight color management framework for PyTorch-involved projects
+Author-email: Sam Izdat <ghsamizdat@gmail.com>
+Project-URL: Homepage, https://sam-izdat.github.io/tinycio-docs
+Project-URL: Issues, https://github.com/Sam-Izdat/tinycio/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: numpy>=1.21
+Requires-Dist: imageio>=2.9
+Requires-Dist: toml>=0.10
+Requires-Dist: tqdm>=4.64
+
+![tinycio](https://raw.githubusercontent.com/Sam-Izdat/tinycio/main/doc/images/tinycio_sm.png)
+
+* [Project site & docs](https://sam-izdat.github.io/tinycio-docs/) 
+* [PyPi](https://pypi.org/project/tinycio/)
+
+# About
+
+A primitive, lightweight Python color library for PyTorch-involved projects. It implements color space conversion, tone mapping, LUT usage and creation, basic color correction and color balancing, and HDR-LDR encoding/decoding. 
+
+# Getting started
+
+* Recommended: set up a clean Python environment
+* [Install PyTorch  as instructed here](https://pytorch.org/get-started/locally/)
+* Run  `pip install tinycio`
+* Run  `tcio-setup` (installs freeimage binaries; [iio docs on fi](https://imageio.readthedocs.io/en/stable/_autosummary/imageio.plugins.freeimage.html#module-imageio.plugins.freeimage))
+
+[See the docs](https://sam-izdat.github.io/tinycio-docs/) for the rest.
+
+# Requires
+
+- Python >=3.8
+- PyTorch >=2.0 (earlier versions untested)
+- NumPy >=1.21
+- imageio >=2.9 (with PNG-FI FreeImage plugin)
+- tqdm >=4.64
+- toml >=0.10
