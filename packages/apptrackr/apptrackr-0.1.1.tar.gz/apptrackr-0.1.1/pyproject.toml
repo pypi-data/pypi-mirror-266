@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "apptrackr"
+version = "0.1.1"
+description = ""
+authors = ["Aradhya Tripathi <67282231+Aradhya-Tripathi@users.noreply.github.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+typer = "^0.12.0"
+peewee = "^3.17.1"
+
+[tool.poetry.scripts]
+tracker = 'apptrackr.main:tracker'
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
