@@ -1,0 +1,40 @@
+{% set project_name=project.name|default('python-package') %}
+<table>
+  <tr>
+    <td colspan=2>
+      <strong><u>{{project_name}}</u></strong>&nbsp;&nbsp;&nbsp;&nbsp;
+      <a href=https://pypi.python.org/pypi/{{project_name}}/><img src="https://img.shields.io/pypi/l/{{project_name}}.svg"></a>
+      <a href=https://pypi.python.org/pypi/{{project_name}}/><img src="https://badge.fury.io/py/{{project_name}}.svg"></a>
+      {%for action in github.actions%}<a href="{{action.url}}"><img src="{{action.url}}/badge.svg"></a>{%endfor%}
+    </td>
+  </tr>
+  <tr>
+    <td width=15%><img src=img/icon.png style="width:150px"></td>
+    <td>
+      {{project.description|default('project description')}}
+      <br/>
+    </td>
+  </tr>
+</table>
+
+---------------------------------------------------------------------------------
+
+{{markdown_toc(__template__, level=2)}}
+
+---------------------------------------------------------------------------------
+
+## Overview
+
+{%for action in github.actions%}<a href="{{action.url}}"><img src="{{action.url}}/badge.svg"></a>{%endfor%}
+
+{{markdown_toc(__template__, level=2)}}
+
+---------------------------------------------------------------------------------
+
+## Overview
+
+---------------------------------------------------------------------------------
+
+## Usage
+
+---------------------------------------------------------------------------------

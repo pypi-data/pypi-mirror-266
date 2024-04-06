@@ -1,0 +1,20 @@
+FROM pandoc/latex:2.18-ubuntu
+# BEGIN: tex things, support for tex section styling
+RUN tlmgr update --all
+RUN tlmgr install sectsty
+## BEGIN: python things
+COPY requirements.container.txt /tmp
+RUN apt-get update
+RUN apt-get install -y python3-pip
+RUN pip install -r /tmp/requirements.container.txt
+
+# .j2 -> github flavored markdown (used for auto-ToCs)
+RUN pip install j2cli==0.3.10
+
+# github-flavored markdown -> HTML (intermediate stage for markdown -> PDF)
+RUN pip install grip==4.6.1
+
+RUN grip --version
+RUN mkdir /usr/lib/tex_headers
+COPY tex_headers/* /usr/lib/tex_headers
+COPY scripts/* /usr/bin/

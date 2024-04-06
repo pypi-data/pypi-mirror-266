@@ -1,0 +1,45 @@
+{% set pyproject_name=python.package.name|default('python-package') %}
+{% set pyproject_descr=python.package.description|default('python-package description') %}
+<table>
+  <tr>
+    <td colspan=2>
+      <strong><u>{{pyproject_name}}</u></strong>&nbsp;&nbsp;&nbsp;&nbsp;
+      <a href=https://pypi.python.org/pypi/{{pyproject_name}}/><img src="https://img.shields.io/pypi/l/{{pyproject_name}}.svg"></a>
+      <a href=https://pypi.python.org/pypi/{{pyproject_name}}/><img src="https://badge.fury.io/py/{{pyproject_name}}.svg"></a>
+      {%for action in github.actions%}<a href="{{action.url}}"><img src="{{action.url}}/badge.svg"></a>{%endfor%}
+    </td>
+  </tr>
+  <tr>
+    <td width=15%><img src=img/icon.png style="width:150px"></td>
+    <td>
+      {{pyproject_descr}}
+      <br/>
+    </td>
+  </tr>
+</table>
+
+---------------------------------------------------------------------------------
+
+{{markdown_toc(__template__, level=2)}}
+
+---------------------------------------------------------------------------------
+
+## Overview
+
+{%for action in github.actions%}<a href="{{action.url}}"><img src="{{action.url}}/badge.svg"></a>{%endfor%}
+
+{{markdown_toc(__template__, level=2)}}
+
+---------------------------------------------------------------------------------
+
+## Overview
+
+---------------------------------------------------------------------------------
+
+## Installation
+
+---------------------------------------------------------------------------------
+
+## Usage
+
+---------------------------------------------------------------------------------

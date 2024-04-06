@@ -1,0 +1,45 @@
+{% set title=title | default('') %}
+{% if title %}
+---
+title: '{{title}}'
+---
+{% endif %}
+%%{
+  init: {
+    "fontFamily": "monospace",
+    "logLevel": "info",
+    "flowchart": {
+      {#"htmlLabels": true,
+      "curve": "linear"#}
+    }
+  }
+}%%
+{%set CORE_TARGETS ='clean docs normalize static-analysis plan apply build test release deploy'.split() %}
+graph {{mode|default('TD')}}
+  %% BEGIN flowchart
+  {% for node, nmeta in parsed.items() %}
+  {% set node_id=node.replace('%','').replace('-','') %}
+  {% set children = nmeta.prereqs|default([]) %}
+  {% set chain = nmeta.chain | default('') %}
+  {% set chain_id = chain.replace('%','').replace('-','') %}
+  {% if chain %}
+  {{node_id}}["{{node}}"] -. chain .-> {{chain_id}}["{{chain}}"]
+  {%else%}
+  {%if children %}
+  {% for child in children -%}
+  {% set child_id=child.replace('%','').replace('-','') %}
+  {{node_id}}["{{node}}"] ----> {{child_id}}["{{child}}"]
+  {% endfor %}
+  {%endif%}
+  {%endif%}
+  {% endfor %}
+  subgraph core
+  {% for node, nmeta in parsed.items() %}
+  {% if node in CORE_TARGETS %}
+  {% set node_id=node.replace('%','').replace('-','') %}
+    {{node_id}}["{{node}}"]
+  {% endif %}
+  {% endfor %}
+  end
+
+  %% END flowchart

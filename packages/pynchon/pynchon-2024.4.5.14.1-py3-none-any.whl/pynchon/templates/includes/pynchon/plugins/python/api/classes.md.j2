@@ -1,0 +1,31 @@
+{# #}
+
+* **Classes:** ({{classes|length}} total)
+  {% for name,obj in classes.items() %}
+  {% set qname = module_name+'.'+name %}
+  {% set start, end = obj._metadata.start, obj._metadata.end %}
+  {% set rel_url = '/' + base_url + '#L' + start %}
+  {% set rel_url = rel_url+'-L' + end if end else rel_url %}
+  {% set extras = obj._metadata.bases | default([]) %}
+  {% set admonitions=[]%}
+  {%if obj._metadata.mccabe %}
+  {% set admonitions = obj._metadata.mccabe + admonitions %}
+  {% endif %}
+  {% set fixme=obj._metadata.get('fixme',[])%}
+  {% if fixme %}{{rel_url}} "")
+  {% set admonitions = fixme + admonitions %}
+  {% endif %}
+  * [`{{qname}}`]({{rel_url}})
+    * with bases ({%for e in extras%}{{e}},{%endfor%})
+    {% if admonitions %}
+    * with admonitions: {% for a in admonitions %} [{{a.glyph}}]({{a.link}} "{{a.hover}}") {% endfor %}
+    {% endif %}
+    {% set props = obj._metadata.properties|default([])%}
+    {%if props %}
+    * with properties: ({{props|length}} total)
+      {%for e in props%}
+      {% set e_url = "/"+base_url+"#L" + e.start %}
+      * {%if e.fixme %}[🚩]({{e_url}} "has FIXMEs"){%endif%} [`{{e.name}}`]({{e_url}}) -> {{e.annotation}}
+      {%endfor%}
+    {%endif%}
+  {%endfor%}
