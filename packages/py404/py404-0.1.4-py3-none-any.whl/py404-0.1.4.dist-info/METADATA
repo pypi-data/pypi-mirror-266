@@ -1,0 +1,45 @@
+Metadata-Version: 2.1
+Name: py404
+Version: 0.1.4
+Summary: py404 is a CLI tool for finding deadlinks on a website.
+Home-page: https://github.com/WillDenby/py404
+License: MIT
+Author: WillDenby
+Author-email: 119456795+WillDenby@users.noreply.github.com
+Requires-Python: >=3.9,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: aiohttp (>=3.9.3,<4.0.0)
+Requires-Dist: beautifulsoup4 (>=4.12.3,<5.0.0)
+Requires-Dist: typer (>=0.9.0,<0.10.0)
+Project-URL: Repository, https://github.com/WillDenby/py404
+Description-Content-Type: text/markdown
+
+# py404
+
+py404 is a CLI tool for finding deadlinks on a website. It checks for 404s on all kinds of links: hrefs, imgs, scripts in <head>, etc. It was a fun way to learn some asyncio.
+
+## Installation
+
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install py404. It requires Python >=3.9.
+
+```shell
+$ pip install py404
+```
+
+## Usage
+
+Type `py404` followed by the URL you want to check. Deadlinks and their location are saved to a CSV file. 
+
+```shell
+$ py404 https://example.com
+```
+
+## License
+
+Made by [Will](https://github.com/WillDenby) and released under the [MIT](https://choosealicense.com/licenses/mit/) License
+
