@@ -1,0 +1,211 @@
+Metadata-Version: 2.1
+Name: wagtail_fedit
+Version: 1.3.1
+Summary: An application made for the Django Web Framework.
+Home-page: https://github.com/Nigel2392/wagtail_fedit
+Author: Nigel
+Author-email: nigel@goodadvice.it
+License: GPL-3.0-only
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 4.2
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: Django>=4.2
+Requires-Dist: Wagtail>=4.2
+
+wagtail_fedit
+=============
+
+Wagtail FEdit is a library to allow your Wagtail pages and content-blocks to be edited on the frontend.
+
+Getting Started
+---------------
+
+1. Add 'wagtail_fedit' to your INSTALLED_APPS setting like this:
+
+   ```
+   INSTALLED_APPS = [
+   ...,
+   'wagtail_fedit',
+   ]
+   ```
+2. Run `py ./manage.py collectstatic`.
+
+## Getting Editing!
+
+1. Make sure the models you wish to edit inherit from PreviewableMixin.
+
+   **This is a requirement.**
+2. Define a template for your model.
+
+   Example:
+
+   ```django-html
+   {% load fedit static wagtailuserbar %} {# Load the required template tag libraries #}
+   <!DOCTYPE html>
+   <html lang="en">
+   <head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>Document</title>
+       <link rel="stylesheet" href="{% static 'wagtail_fedit/css/frontend.css' %}">
+   </head>
+   <body>
+       {# Pass in the field_name and the model instance on which that field resides. #}
+       <h1>{% fedit_field "title" self %}</h1>
+
+       {# Pass in the field_name and the model instance on which that field resides. #}
+       <main class="my-streamfield-content">
+           {% fedit_field "content" self %}
+       </main>
+
+       {% wagtailuserbar %}
+
+       <script src="{% static 'wagtail_fedit/js/frontend.js' %}"></script>
+   </body>
+   </html>
+
+
+   ```
+3. If your needs some special form of rendering; we allow your model to define a custom render method.
+   The format of the method name should be `render_fedit_{fieldname}`.
+   Say we want all sub-blocks of our streamfield to automatically be made editable. This wouldn't be possible in the above configuration.
+   To fix this; we should first create a custom template to render our content.
+
+   Example:
+
+   ```django-html
+   {# myapp/render_my_field.html #}
+   {% load fedit %}
+   {% for block in self.content %}
+       {# Sub-Blocks wrapped by fedit_block do not require the field_name or model argument. #}
+       {# This is taken from the parent (also wrapped by `fedit_block`); the model and field name are shared through context. #}
+       {% fedit_block block=block block_id=block.id field_name="content" model=self %}
+   {% endfor %}
+
+   ```
+
+   ```python
+   from django.template.loader import render_to_string
+   ...
+
+   class MyPage(...): # Can be any type of model.
+       content = StreamField(...)
+
+       def render_fedit_content(self, request):
+           return render_to_string("myapp/render_my_field.html", self.get_context(request))
+   ```
+
+   Your content will then automatically be rendered with that method when need be by using `{% fedit_field "content" self %} `
+4. **But wait?! I go to my template and I do not see a way to edit!**That is true! We try to protect any styling on your actual page; we do not want to interfere.Instead; we serve the editing interface on a different URL, accessible by clicking `Frontend Editing` in the Wagtail userbar. Keep an eye on that userbar! It is also used for publishing if your model inherits from `DraftStateMixin`.
+
+## Permissions
+
+**Note: This is not required for pages.**
+
+**The `Page` model already provides this interface.**
+
+We have the following basic permission requirements:
+
+* You must have `wagtailadmin.access_admin` to edit a block/field.
+* You must have the appropriate `app_label.change_*` permission for the model.
+
+This however only applies to editing.
+
+We use separate permissions for publishing and submitting workflows, etc.
+
+Models which you want to allow the publish view for should also implement a `PermissionTester`- like object.
+
+Example of how you should implement the `Tester` object and all required permissions. (More details in `models.py`)
+
+```python
+
+class MyModel(...):
+    def permissions_for_user(self, user):
+        return MyModelPermissionTester(self, user)
+
+class MyModelPermissionTester(...):
+    def can_unpublish(self):
+        """ Can the user unpublish this object? (Required for un-publishing"""
+  
+    def can_publish(self):
+        """ Can the user publish this object? (Required for publishing)"""  
+  
+    def can_submit_for_moderation(self):
+        """ Can the user submit this object for moderation? (Optional) """
+
+```
+
+## Revisions
+
+Revision support is included out of the box.
+If your model inherits from a `RevisionMixin`, we will automatically create drafts for you.
+These will not be published (If the model inherits from `DraftStateMixin`) until you choose to do so.
+
+## Workflows
+
+We include a `WorkFlow` to submit this object for moderation.
+
+More workflow support will be included in the future.
+
+## Logs
+
+Logs are also included out of the box.
+We will automatically update your model's history; including possible revisions.
+This will allow you to backtrack each change made on the frontend.
+This however does mean that a possibly large amount of data will be stored in your database.
+
+## Caveats
+
+Wagtail does not always make it's `id` attribute available.
+
+This is only available to instances of `StreamChild` and `ListChild`.
+
+Consider the following regular wagtail list loop where `items` is a `ListBlock`.
+
+```django-html
+{% for item in self.items %}
+    {% include_block item %} {# No access to ID! Cannot edit! #}
+{% endfor %}
+```
+
+To make this an editable block instead; we would slightly change the loop to make the block's `id` available.
+
+This is done by accessing the `bound_blocks` of that ListBlock *(`StreamBlock` does this automatically for the toplevel block!)*
+
+Our new loop would then be:
+
+```django-html
+{% for item in self.items.bound_blocks %}
+    {# Field name and model are the same arguments as in the first example! #}
+    {% fedit_block block=item block_id=item.id field_name="content" model=my_model_instance_var %}
+{% endfor %}
+```
+
+**Note:** If the parent block is wrapped with `fedit_block` or `fedit_field` the field_name and model argument can be omitted.  
+The parent- blocktag will share these variables through context.
+This makes it possibly to easily use editable sub-blocks across multiple different model types.
+If your model **ISN'T** capable of editing; or these variables aren't shared - your block will be rendered as normal.
+
+## Implemented
+
+* Revision Support
+* Locked Support
+* Draft Support
+* Preview Support
+* Workflow Support
+* Permissions
+* Audit Logs
+* Full block capabilities on Frontend Editing
