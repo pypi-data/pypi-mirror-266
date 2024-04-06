@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "Flask-Alchemist"
+version = "1.0.1"
+description = "Flask extension for working with SQLAlchemy"
+authors = ["Rafal Padkowski <rafaelp@poczta.onet.pl>"]
+license = "MIT"
+readme = "README.md"
+packages = [{ include = "flask_alchemist", from = "src" }]
+
+[tool.poetry.dependencies]
+python = ">=3.10"
+flask = ">=3.0.0"
+sqlalchemy = ">=2.0.0"
+alembic = ">=1.13.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
