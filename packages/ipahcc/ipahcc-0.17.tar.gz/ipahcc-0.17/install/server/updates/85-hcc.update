@@ -1,0 +1,143 @@
+#
+# IPA plugin for Hybrid Cloud Console (HCC)
+# Copyright (C) 2022  Christian Heimes <cheimes@redhat.com>
+# See COPYING for license
+#
+
+# host group
+dn: cn=hcc-enrollment,cn=hostgroups,cn=accounts,$SUFFIX
+default: objectClass: top
+default: objectClass: groupOfNames
+default: objectClass: nestedGroup
+default: objectClass: ipaobject
+default: objectClass: ipahostgroup
+default: description: Hybrid Cloud Console auto-enrolled hosts
+only: cn: hcc-enrollment
+default: ipaUniqueID: autogenerate
+
+# automember for host group
+dn: cn=hcc-enrollment,cn=Hostgroup,cn=automember,cn=etc,$SUFFIX
+default: objectClass: automemberregexrule
+default: objectClass: top
+default: autoMemberTargetGroup: cn=hcc-enrollment,cn=hostgroups,cn=accounts,$SUFFIX
+only: cn: hcc-enrollment
+default: autoMemberExclusiveRegex: memberof=cn=ipaservers,cn=hostgroups,cn=accounts,.*
+default: autoMemberInclusiveRegex: hccsubscriptionid=.*
+
+# certmap rule for RHSM certificate
+dn: cn=rhsm-cert,cn=certmaprules,cn=certmap,$SUFFIX
+default: objectClass: ipacertmaprule
+default: objectClass: top
+only: cn: rhsm-cert
+default: description: Rule for Red Hat Subscription Manager (RHSM) certificates (/etc/pki/consumer/cert.pem).
+# default: ipaCertMapMapRule: (&(hcccertsubject={subject_dn!nss_x500})(!(memberof=cn=ipaservers,cn=hostgroups,cn=accounts,$SUFFIX))(!(krbprincipalkey=*)))
+default: ipaCertMapMapRule: (&(hcccertsubject={subject_dn!nss_x500})(!(memberof=cn=ipaservers,cn=hostgroups,cn=accounts,$SUFFIX)))
+# simplified rule for backwards compatibility with RHEL 7
+default: ipaCertMapMatchRule: <ISSUER>.*,CN=Red Hat Candlepin Authority,OU=Red Hat Network,.*
+default: ipaEnabledFlag: TRUE
+
+# service definitions for ipactl and "HCC Enrollment server" role
+dn: cn=IPAHCCUpdate,cn=$FQDN,cn=masters,cn=ipa,cn=etc,$SUFFIX
+default: objectClass: ipaConfigObject
+default: objectClass: nsContainer
+default: objectClass: top
+only: cn: IPAHCCUpdate
+default: ipaConfigString: enabledService
+default: ipaConfigString: startOrder 46
+
+# subtree for public JWKs
+dn: cn=hcc,cn=etc,$SUFFIX
+default: objectClass: nsContainer
+default: objectClass: top
+only: cn: hcc
+
+dn: cn=jwk,cn=hcc,cn=etc,$SUFFIX
+default: objectClass: nsContainer
+default: objectClass: top
+only: cn: jwk
+
+# roles and privileges for HCC enrollment
+dn: cn=HCC Enrollment Administrators,cn=roles,cn=accounts,$SUFFIX
+default: objectClass: groupofnames
+default: objectClass: nestedgroup
+default: objectClass: top
+only: cn: HCC Enrollment Administrators
+default: description: Enrollment Administrators for Red Hat Hybrid Cloud Console
+
+dn: cn=HCC JWK Administrators,cn=privileges,cn=pbac,$SUFFIX
+default: objectClass: groupofnames
+default: objectClass: nestedgroup
+default: objectClass: top
+only: cn: HCC JWK Administrators
+default: description: Administrators for Hybrid Cloud Console enrollment JSON Web Tokens (JWK)
+add: member: cn=HCC Enrollment Administrators,cn=roles,cn=accounts,$SUFFIX
+
+dn: cn=HCC Host Administrators,cn=privileges,cn=pbac,$SUFFIX
+default: objectClass: groupofnames
+default: objectClass: nestedgroup
+default: objectClass: top
+only: cn: HCC Host Administrators
+default: description: Limited Host Administrators for Hybrid Cloud Console auto-enrollment
+add: member: cn=HCC Enrollment Administrators,cn=roles,cn=accounts,$SUFFIX
+
+# update/create permissions (before modifying any permissions)
+plugin: update_managed_permissions
+
+# Allow HCC Host Administrator to add hosts and modify HCC attributes
+dn: cn=System: Add Hosts,cn=permissions,cn=pbac,$SUFFIX
+add: member: cn=HCC Host Administrators,cn=privileges,cn=pbac,$SUFFIX
+
+dn: cn=System: Modify HCC host attributes,cn=permissions,cn=pbac,$SUFFIX
+add: member: cn=HCC Host Administrators,cn=privileges,cn=pbac,$SUFFIX
+
+dn: cn=System: Modify HCC config attributes,cn=permissions,cn=pbac,$SUFFIX
+add: member: cn=HCC Host Administrators,cn=privileges,cn=pbac,$SUFFIX
+
+# Index
+dn: cn=HCCSubscriptionId,cn=index,cn=userRoot,cn=ldbm database,cn=plugins,cn=config
+only: cn: HCCSubscriptionId
+default:ObjectClass: top
+default:ObjectClass: nsIndex
+default:nsSystemIndex: false
+add:nsIndexType: eq
+add:nsIndexType: pres
+
+dn: cn=HCCInventoryId,cn=index,cn=userRoot,cn=ldbm database,cn=plugins,cn=config
+only: cn: HCCInventoryId
+default:ObjectClass: top
+default:ObjectClass: nsIndex
+default:nsSystemIndex: false
+default:nsIndexType: eq
+default:nsIndexType: pres
+
+dn: cn=HCCCertSubject,cn=index,cn=userRoot,cn=ldbm database,cn=plugins,cn=config
+only: cn: HCCCertSubject
+default:ObjectClass: top
+default:ObjectClass: nsIndex
+default:nsSystemIndex: false
+default:nsIndexType: eq
+default:nsIndexType: pres
+
+# Ensure that HCCCertSubjects are unique. The unique constraint
+# prevents multiple host entries for a RHSM cert.
+dn: cn=HCCCertSubject uniqueness,cn=plugins,cn=config
+default:objectClass: top
+default:objectClass: nsSlapdPlugin
+default:objectClass: extensibleObject
+only: cn: HCCCertSubject uniqueness
+default:nsslapd-pluginDescription: Enforce unique attribute values
+default:nsslapd-pluginPath: libattr-unique-plugin
+default:nsslapd-pluginInitfunc: NSUniqueAttr_Init
+default:nsslapd-pluginType: preoperation
+default:nsslapd-pluginEnabled: on
+default:uniqueness-attribute-name: HCCCertSubject
+default:uniqueness-subtrees: $SUFFIX
+default:uniqueness-exclude-subtrees: cn=compat,$SUFFIX
+default:nsslapd-plugin-depends-on-type: database
+default:nsslapd-pluginId: NSUniqueAttr
+default:nsslapd-pluginVersion: 1.1.0
+default:nsslapd-pluginVendor: Fedora Project
+
+# Add RHSM cert of KDC config
+# Auto-configure global HCC organization id
+plugin: update_hcc

@@ -1,0 +1,7 @@
+# uninstall HCC enrollment agent and plugin for current server
+
+dn: cn=IPAHCCUpdate,cn=$FQDN,cn=masters,cn=ipa,cn=etc,$SUFFIX
+deleteentry: cn=IPAHCCUpdate,cn=$FQDN,cn=masters,cn=ipa,cn=etc,$SUFFIX
+
+dn: krbprincipalname=hcc-enrollment/$FQDN@$REALM,cn=services,cn=accounts,$SUFFIX
+deleteentry: krbprincipalname=hcc-enrollment/$FQDN@$REALM,cn=services,cn=accounts,$SUFFIX

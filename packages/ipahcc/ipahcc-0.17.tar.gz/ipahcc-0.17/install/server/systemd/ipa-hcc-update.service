@@ -1,0 +1,14 @@
+[Unit]
+Description=IPA Hybrid Cloud Console domain update service
+Documentation=man:ipa-hcc(1)
+After=syslog.target network.target httpd.service
+
+[Service]
+Type=oneshot
+Nice=19
+IOSchedulingClass=2
+IOSchedulingPriority=7
+RemainAfterExit=no
+Environment=LC_ALL=C.UTF-8
+PrivateTmp=yes
+ExecStart=/usr/sbin/ipa-hcc update --update-server-only
