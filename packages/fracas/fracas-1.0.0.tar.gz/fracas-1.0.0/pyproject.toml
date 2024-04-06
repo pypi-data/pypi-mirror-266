@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[project]
+name = "fracas"
+version = "1.0.0"
+authors = [{name = "Craig Howard", email = "craig@seagrape.us"}]
+description = "Command-line journal"
+readme = {file = "README", content-type = "text/markdown"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://seagrape.us/fracas.html"
+Repository = "https://pypi.org/project/fracas/"
+Changelog = "https://seagrape.us/fracas-history.html"
+
+[project.scripts]
+fracas = "fracas.__main__:main"
