@@ -1,0 +1,106 @@
+[tool.poetry]
+name = "spice_rack"
+version = "0.4.0"   # keep as 0.0.0 placeholder for poetry-dynamic-versioning
+description = "group of common things we use across different python packages"
+license = "Apache-2.0"
+authors = ["Tim Robin <timo.a.robin@gmail.com>",]
+readme = "README.md"
+
+packages = [
+    {include = "spice_rack", from = "src"},
+]
+
+
+[tool.poetry.dependencies]
+python = "~3.9"
+
+# serialization and primary class base
+pydantic = { version = "~2", extras = [] }
+pydantic_settings = { version = "*", extras = [] }
+
+# for file path works
+fsspec = { version = "*", extras = [] }
+
+# logging
+loguru = { version = "*", extras = [] }
+stackprinter = { version = "*", extras = [] }
+
+# helps with date parsing
+dateparser = { version = "*", extras = [] }
+
+# misc
+devtools = { version = "*", extras = ["pygments"] }
+inflection = { version = "*", extras = [] }
+
+# why?
+tabulate = { version = "*", extras = [] }
+
+# optional dependencies
+#  Note: not actually optional at the moment
+# gcp
+#gcsfs = { version = "==2024.2.0", optional = true}
+gcsfs = { version = "==2024.2.0" }
+
+# s3
+#s3fs = { version = "*", optional = true }
+#jmespath = { version = "*", optional = true }  # dep of s3fs that isn't picked up for some reason
+#urllib3 = { version = "<2", optional = true }  # https://stackoverflow.com/questions/76414514/cannot-import-name-default-ciphers-from-urllib3-util-ssl-on-aws-lambda-us
+
+s3fs = { version = "*" }
+jmespath = { version = "*" }  # dep of s3fs that isn't picked up for some reason
+urllib3 = { version = "<2" }  # https://stackoverflow.com/questions/76414514/cannot-import-name-default-ciphers-from-urllib3-util-ssl-on-aws-lambda-us
+
+
+# sftp
+#paramiko = { version = "*", optional = true }
+paramiko = { version = "*" }
+
+# dataframe stuff
+#polars = { version = "*", optional = true }
+polars = { version = "*" }
+
+[tool.poetry.extras]
+all = []
+#gcp = ["gcsfs"]
+#aws = ["s3fs", "jmespath", "urrlib3"]
+#sftp = ["paramiko", ]
+#polars = ["polars", ]
+
+[tool.poetry.dev-dependencies]
+
+# linter
+ruff = { version = "*", extras = [] }
+
+# mypy for _static type checking
+mypy = { version = "*", extras = [] }
+
+# unit tests
+pytest = { version = "*", extras = [] }
+pytest-sugar = { version = "*", extras = [] }
+pytest-cov = { version = "*", extras = [] }
+pytest-parametrization = { version = "*", extras = [] }
+pytest-asyncio = { version = "*", extras = [] }
+pytest-loguru = { version = "*", extras = [] }
+testfixtures = { version = "*" }
+
+# docs
+sphinx = { version = "*", extras = [] }
+sphinxcontrib-napoleon = { version = "*", extras = [] }
+autodoc_pydantic = { version = "~2", extras = [] }
+sphinx_rtd_theme = { version = "*", extras = [] }
+
+# jupyter lab
+ipykernel = { version = "*", extras = [] }
+jupyterlab = { version = "*", extras = [] }
+ipywidgets = { version = "*", extras = [] }
+jupyterlab_widgets = { version = "*", extras = [] }
+
+
+[tool.poetry-dynamic-versioning]
+enable = false
+vcs = "git"
+style = "semver"
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
+build-backend = "poetry_dynamic_versioning.backend"
