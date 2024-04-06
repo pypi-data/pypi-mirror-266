@@ -1,0 +1,23 @@
+name: Ruff and Pyright
+on: [ push, pull_request ]
+jobs:
+  ruff-and-pyright:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: install reqs
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          uv venv
+          uv pip install .
+          uv pip install .[dev]
+      - name: activate venv
+        run: |
+          . .venv/bin/activate
+          echo PATH=$PATH >> $GITHUB_ENV
+      - name: ruff (linter)
+        run: ruff check --select I .
+      - name: ruff (formatter)
+        run: ruff format --check .
+      - name: pyright
+        run: pyright
