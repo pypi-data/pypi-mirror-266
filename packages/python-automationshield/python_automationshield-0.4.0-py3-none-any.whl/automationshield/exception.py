@@ -1,0 +1,2 @@
+class AutomationShieldException(Exception):
+    pass
