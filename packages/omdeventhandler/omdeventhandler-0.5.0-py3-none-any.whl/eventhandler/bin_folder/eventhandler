@@ -1,0 +1,154 @@
+#!/usr/bin/env python3
+
+import argparse
+import logging
+import logging.handlers
+import re
+import os
+import sys
+sys.dont_write_bytecode = True
+from coshsh.util import setup_logging
+from eventhandler import baseclass
+from notificationforwarder import baseclass as f_baseclass
+import traceback
+
+
+if __name__ == '__main__':
+
+    if not os.environ.get("OMD_ROOT", "").startswith("/omd/sites/") and os.environ.get("OMD_SITE", "") != "my_devel_site":
+        print("This script must be run in an OMD environment")
+        sys.exit(1)
+
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.RawTextHelpFormatter,
+        description="run event handler commands")
+    parser.add_argument('--eventopt', action = type('', (argparse.Action, ),
+        dict(__call__ = lambda a, p, n, v, o:
+            getattr(n, a.dest).update(dict([v.split('=', 1)])))), 
+                      default = {},
+                      help="Naemon runtime attributes")
+    parser.add_argument('--decider', action='store',
+                      dest="decider",
+                      help='''The type of decision finder.
+This can be any decider you want, provided
+there is a Python module <decider>.py in the folder
+eventhandler somewhere in your PYTHONPATH.
+Examples are default_nagios...''',)
+    parser.add_argument('--decideropt', action = type('', (argparse.Action, ),
+        dict(__call__ = lambda a, p, n, v, o:
+            getattr(n, a.dest).update(dict([v.split('=', 1)])))),
+                      default = {},
+                      help="""Decider attributes.""")
+    parser.add_argument('--runner', action='store',
+                      dest="runner",
+                      help='''The type of script.
+This can be any backend you want, provided
+there is a Python module <backend>.py in the folder
+eventhandler somewhere in your PYTHONPATH.
+Examples are ssh, nsc_web, bash...''')
+    parser.add_argument('--runnertag', action='store',
+                      dest="runnertag",
+                      help='A distinctive string which is added to the logfile',
+                      default=None)
+    parser.add_argument('--runneropt', action = type('', (argparse.Action, ),
+        dict(__call__ = lambda a, p, n, v, o:
+            getattr(n, a.dest).update(dict([v.split('=', 1)])))),
+                      default = {},
+                      help="""Runner attributes. These are specific for
+the type of backend. Example for ssh:
+--runneropt ssh_user=...
+--runneropt ssh_identity=...
+--runneropt ssh_port=...""")
+
+##
+##       Step1 is the Decider, has decide()
+##       Step2 is the Runner, has run() OR Handler, has handle()
+##        responsible for handling the execution of the command based on the decisions made by Step 1
+##       Naemon calls Step1 with eventopts
+##       Step1 calls Step2 with
+##         a command and parameters
+##        it has knowledge about the handler (ssh, nsc)
+###      Step2 runs check_nsc_web, ssh, bash, an api call
+###       nsc gets a hostname, ssh too, --executoropt
+##       payload.summary = for the log line
+##       payload.parameters = for the handler
+##       payload.command?
+##       
+##
+
+    parser.add_argument('--forwarder', action='store',
+                      dest="forwarder",
+                      help='''The type of recipient.
+This can be any backend you want, provided
+there is a Python module <backend>.py in the folder
+notificationforwarder somewhere in your PYTHONPATH.
+Examples are victorops, syslog, servicenow, rabbitmq,...''',
+                      default=None)
+    parser.add_argument('--forwardertag', action='store',
+                      dest="forwardertag",
+                      help='A distinctive string which is added to the logfile',
+                      default=None)
+    parser.add_argument('--forwarderopt', action = type('', (argparse.Action, ),
+        dict(__call__ = lambda a, p, n, v, o:
+            getattr(n, a.dest).update(dict([v.split('=', 1)])))),
+                      default = {},
+                      help="""Receiver attributes. These are specific for
+the type of backend. Example for VictorOps:
+--forwarderopt company_id=...
+--forwarderopt routing_key=...
+A forwarder is optional. If you use one, then the result of an event handler
+will be sent to the forwarder like an alarm notification.""")
+    parser.add_argument('--formatter', action='store', dest="formatter", nargs='?', const=None,
+                      help='''The formatter to use for the event...
+                      default is the value of --receiver if not provided''',
+                      default=argparse.SUPPRESS)
+    parser.add_argument('--livestatus', action='store',
+                      dest="livestatus",
+                      help='The livestatus port')
+    parser.add_argument('--verbose', action='store_true',
+                      dest="verbose",
+                      help='Show logs at stdout',
+                      default=False)
+    parser.add_argument('--debug', action='store_true',
+                      dest="debug",
+                      help='Increase the log level to DEBUG',
+                      default=False)
+    parser.add_argument('--version', action='version',
+                      version=f'%(prog)%s 0.5.0')
+
+    args = parser.parse_args()
+    if not any(vars(args).values()):
+        parser.print_help()
+        parser.exit()
+
+    if os.path.exists(os.environ["OMD_ROOT"]+"/var/log/eventhandler.debug"):
+        with open(os.environ["OMD_ROOT"]+"/var/log/eventhandler.debug", "a+") as dbg:
+            dbg.write(" ".join([f'"{arg}"' if re.search(r'[ "\'`$&|;><()*?!]', arg) else arg for arg in sys.argv])+"\n")
+
+    if hasattr(args, 'forwarder') and not hasattr(args, 'formatter'):
+        args.formatter = args.forwarder
+
+    try:
+        runner = baseclass.new(args.runner, args.runnertag, args.decider, args.verbose, args.debug, args.runneropt)
+    except Exception as a:
+        logger = logging.getLogger(args.runner)
+        traceback.print_exc(file=sys.stdout)
+        logger.critical("there is no class for "+args.runner)
+        sys.exit(1)
+    if args.forwarder:
+        try:
+            runner.forwarder = f_baseclass.new(args.forwarder, args.forwardertag, args.formatter, args.verbose, args.debug, args.forwarderopt)
+        except Exception as a:
+            logger_name = "notificationforwarder_"+args.forwarder+("_"+args.forwardertag if args.forwardertag else "")
+            logger = logging.getLogger(logger_name)
+            if args.debug:
+                traceback.print_exc(file=sys.stdout)
+            logger.critical("there is no class for forwarder {} and formatter {}".format(args.forwarder, args.formatter))
+            sys.exit(1)
+    
+    success = runner.handle(args.eventopt)
+    if args.forwarder:
+        if success != None:
+            args.eventopt["eventhandler_success"] = success
+            runner.forwarder.forward(args.eventopt)
+    sys.exit(1 if success == False else 0)
