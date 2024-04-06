@@ -1,0 +1,153 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qbraid"
+dynamic = ["version"]
+description = "A Python toolkit for cross-framework abstraction of quantum programs."
+readme = "README.md"
+authors = [{ name = "qBraid Development Team", email = "contact@qbraid.com" }]
+license = { file = "LICENSE" }
+keywords = ["qbraid", "quantum", "openqasm"]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Natural Language :: English",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Physics"
+]
+dependencies = [
+    "networkx>=2.5,<4.0",
+    "numpy>=1.17,<1.27",
+    "openqasm3[parser]>=0.4.0,<0.6.0",
+    "ply>=3.6",
+    "qbraid-core>=0.1.0.dev4"
+]
+requires-python = ">= 3.9"
+
+[project.urls]
+Homepage = "https://www.qbraid.com/"
+Documentation = "https://docs.qbraid.com/en/stable/"
+"Source Code" = "https://github.com/qBraid/qBraid"
+"Bug Tracker" = "https://github.com/qBraid/qBraid/issues"
+Discord = "https://discord.gg/TPBU2sa8Et"
+"Launch on Lab" = "https://account.qbraid.com/?gitHubUrl=https://github.com/qBraid/qBraid.git"
+
+[project.optional-dependencies]
+braket = ["amazon-braket-sdk>=1.42.1,<1.77.0"]
+cirq = ["cirq-core>=1.3.0,<1.4.0"]
+pennylane = ["pennylane>=0.33.1,<0.36.0"]
+pytket = ["pytket>=1.16.0,<1.27.0"]
+pyquil = ["pyquil>=3.5.4,<4.4.0"]
+qir = ["qbraid-qir>=0.1.1,<0.2.0"]
+qiskit = ["qiskit>=0.44.0,<1.1.0", "qiskit-ibm-provider>=0.5.3,<0.11.0", "qiskit-ibm-runtime>=0.18.0,<0.21.0", "qiskit[visualization]"]
+ionq = ["cirq-core>=1.3.0,<1.4.0", "cirq-ionq>=1.3.0,<1.4.0", "pytket-braket>=0.30.0,<0.36.0"]
+visualization = ["ipython", "matplotlib", "pylatexenc"]
+test = ["qbraid~=0.5.3", "pytest", "pytest-cov"]
+lint = ["black", "isort", "pylint"]
+docs = ["sphinx~=7.2.6", "sphinx-autodoc-typehints>=1.24,<2.1", "sphinx-rtd-theme>=1.3,<2.1", "docutils<0.21"]
+
+[project.entry-points."qbraid.programs"]
+braket = "qbraid.programs.libs.braket:BraketCircuit"
+cirq = "qbraid.programs.libs.cirq:CirqCircuit"
+pennylane = "qbraid.programs.libs.pennylane:PennylaneTape"
+pyquil = "qbraid.programs.libs.pyquil:PyQuilProgram"
+qiskit = "qbraid.programs.libs.qiskit:QiskitCircuit"
+pytket = "qbraid.programs.libs.pytket:PytketCircuit"
+qasm2 = "qbraid.programs.libs.qasm2:OpenQasm2Program"
+qasm3 = "qbraid.programs.libs.qasm3:OpenQasm3Program"
+
+[project.entry-points."qbraid.providers"]
+"aws.device" = "qbraid.providers.aws:BraketDevice"
+"aws.job" = "qbraid.providers.aws:BraketQuantumTask"
+"aws.provider" = "qbraid.providers.aws:BraketProvider"
+"ibm.device" = "qbraid.providers.ibm:QiskitBackend"
+"ibm.job" = "qbraid.providers.ibm:QiskitJob"
+"ibm.provider" = "qbraid.providers.ibm:QiskitProvider"
+
+[tool.setuptools.dynamic]
+version = {attr = "qbraid._version.__version__"}
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+log_cli = false
+log_cli_level = "CRITICAL"
+log_cli_format = "%(message)s"
+log_file = "pytest.log"
+log_file_level = "WARNING"
+log_file_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
+log_file_date_format = "%Y-%m-%d %H:%M:%S"
+testpaths = [
+  "tests",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+    "ignore::urllib3.exceptions.InsecureRequestWarning",
+    "ignore::RuntimeWarning:numpy.linalg.linalg",
+]
+
+[tool.coverage.run]
+parallel = true
+source = ["qbraid"]
+omit = [
+  "**/qbraid/transpiler/conversions/cirq/cirq_gates.py",
+  "**/qbraid/visualization/plot_conversions.py",
+  "**/qbraid/visualization/draw_circuit.py.py",
+  "**/qbraid/_compat.py",
+]
+
+[tool.coverage.paths]
+source = ["qbraid", ".tox/*/lib/python*/site-packages/qbraid"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+ignore_errors = true
+exclude_lines = [
+  "raise NotImplementedError",
+  "return NotImplemented",
+  "def __repr__",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+  "logger.debug"
+]
+
+[tool.coverage.html]
+directory = "build/coverage"
+
+[tool.coverage.xml]
+output = "build/coverage/coverage.xml"
+
+[tool.black]
+line-length = 100
+target-version = ['py39', 'py310', 'py311']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.__pycache__
+  | \.tox
+  | \.venv
+  | dist
+)/
+'''
+
+[tool.pylint.'MESSAGES CONTROL']
+max-line-length = 100
+disable = "C0103, E0401, R0801, R0902, R0903, R0911, R0912, R0914, W0212, W0511"
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+line_length = 100
