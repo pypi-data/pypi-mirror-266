@@ -1,0 +1,12 @@
+{%if data%}
+==== TESTS
+{%endif%}
+{%for test in data%}
+[width=100,cols="20%,~"]
+|===
+2+|{{test.svc_id}}
+|{{test.element_kind}}
+|{{test.fqn|replace('.', '.​')}}{# Replace dot with dot and zero-width space to allow line breaks #}
+|Result | {{test.test_result}}
+|===
+{%endfor%}
