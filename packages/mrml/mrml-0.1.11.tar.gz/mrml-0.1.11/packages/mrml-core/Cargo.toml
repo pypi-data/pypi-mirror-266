@@ -1,0 +1,78 @@
+[package]
+name = "mrml"
+description = "Rust implementation of MJML renderer"
+keywords = ["email", "mjml"]
+version = "3.1.4"
+authors = ["Jérémie Drouet <jeremie.drouet@gmail.com>"]
+edition = "2018"
+license = "MIT"
+repository = "https://github.com/jdrouet/mrml/"
+readme = "readme.md"
+
+include = ["src/*", "Cargo.toml"]
+
+[badges]
+codecov = { repository = "jdrouet/mrml", branch = "main" }
+travis-ci = { repository = "jdrouet/mrml", branch = "main" }
+
+[features]
+default = ["orderedmap", "json", "parse", "print", "render"]
+json = ["dep:mrml-json-macros", "dep:serde", "dep:serde_json"]
+parse = ["dep:xmlparser", "dep:thiserror"]
+print = ["dep:mrml-print-macros"]
+render = ["dep:thiserror"]
+orderedmap = ["dep:indexmap", "dep:rustc-hash"]
+async = ["dep:async-trait"]
+local-loader = []
+http-loader = ["http-loader-ureq"]
+http-loader-base = ["parse", "dep:url"]
+http-loader-blocking-reqwest = [
+  "dep:reqwest",
+  "http-loader-base",
+  "reqwest/blocking",
+]
+http-loader-async-reqwest = ["dep:reqwest", "async", "http-loader-base"]
+http-loader-ureq = ["dep:ureq", "http-loader-base"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+async-trait = { version = "0.1", optional = true }
+serde = { version = "1.0", optional = true, features = ["derive"] }
+serde_json = { version = "1.0", optional = true }
+xmlparser = { version = "0.13", optional = true }
+indexmap = { version = "2.0", features = ["serde"], optional = true }
+rustc-hash = { version = "1.1", optional = true }
+thiserror = { version = "1.0", optional = true }
+
+# http-loader feature related
+reqwest = { version = "0.12", default-features = false, features = [
+  "rustls-tls",
+], optional = true }
+ureq = { version = "2.7", optional = true }
+url = { version = "^2", optional = true }
+
+# macros
+mrml-macros = { version = "0.1", path = "./lib/mrml-macros" }
+mrml-json-macros = { version = "0.1", path = "./lib/mrml-json-macros", optional = true }
+mrml-print-macros = { version = "0.1", path = "./lib/mrml-print-macros", optional = true }
+itertools = { version = "0.12.1" }
+
+[dev-dependencies]
+concat-idents = "1.1"
+criterion = "0.5"
+html-compare = { version = "0.1", path = "./lib/html-compare" }
+similar-asserts = "1.4"
+mockito = "1.1"
+tokio = { version = "1.0", features = ["full"] }
+tokio-test = { version = "0.4" }
+
+[[bench]]
+name = "basic"
+path = "benches/basic.rs"
+harness = false
+
+[[bench]]
+name = "template"
+path = "benches/template.rs"
+harness = false
