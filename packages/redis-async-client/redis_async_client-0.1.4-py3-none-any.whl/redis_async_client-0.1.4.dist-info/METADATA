@@ -1,0 +1,49 @@
+Metadata-Version: 2.1
+Name: redis-async-client
+Version: 0.1.4
+Summary: Redis async client.
+Home-page: https://pypi.org/project/redis-async-client/
+License: MIT
+Author: deskent
+Author-email: battenetciz@gmail.com
+Requires-Python: >=3.10,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: redis (>=5.0.3,<6.0.0)
+Project-URL: Repository, https://github.com/Deskent/redis_async_client
+Description-Content-Type: text/markdown
+
+### Stack:
+
+- [x] <a href="https://www.python.org/"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-plain.svg" alt="python" width="15" height="15"/>
+  Python 3.10+ <br/></a>
+- [x] <a href="https://github.com/redis/redis-py"><img src="https://avatars.githubusercontent.com/u/1529926?s=48&v=4" alt="niquests" width="15" height="15"/>
+  Redis 5.0.3+ <br/>
+
+### Installation
+
+    pip install redis-async-client
+
+### Usage Async
+
+    from redis_async_client import AsyncRedisClient, RedisSettings
+
+    redis_settings = RedisSettings()
+    pool: redis_async.ConnectionPool = redis_settings.make_pool()
+    async with redis_async.Redis(connection_pool=pool) as conn:
+        async_client = AsyncRedisClient(conn)
+        data = await async_client.health_check()
+        assert data == {'test': 'test'}
+
+    or
+
+    from redis_async_client import RedisSettings, get_redis_connection
+
+    redis_settings = RedisSettings()
+    async for client in get_redis_connection(redis_settings):
+        data = await client.health_check()
+        assert data == {'test': 'test'}
+
