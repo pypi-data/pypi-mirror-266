@@ -1,0 +1,64 @@
+Metadata-Version: 2.1
+Name: fenics-beat
+Version: 0.0.3
+Summary: Library to run cardiac EP simulations
+Author-email: Henrik Finsberg <henriknf@simula.no>
+License: MIT
+Project-URL: Homepage, https://finsberg.github.io/fenics-beat
+Project-URL: Documentation, https://finsberg.github.io/fenics-beat
+Project-URL: Source, https://github.com/finsberg/fenics-beat
+Project-URL: Tracker, https://github.com/finsberg/fenics-beat/issues
+Keywords: cardiac,electrophysiology
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: scipy
+Provides-Extra: all
+Requires-Dist: fenics-beat[test] ; extra == 'all'
+Requires-Dist: fenics-beat[docs] ; extra == 'all'
+Requires-Dist: fenics-beat[pypi] ; extra == 'all'
+Requires-Dist: fenics-beat[dev] ; extra == 'all'
+Requires-Dist: fenics-beat[demos] ; extra == 'all'
+Provides-Extra: demos
+Requires-Dist: cardiac-geometries ; extra == 'demos'
+Requires-Dist: ldrb ; extra == 'demos'
+Provides-Extra: dev
+Requires-Dist: pdbpp ; extra == 'dev'
+Requires-Dist: ipython ; extra == 'dev'
+Requires-Dist: bump2version ; extra == 'dev'
+Requires-Dist: pre-commit ; extra == 'dev'
+Provides-Extra: docs
+Requires-Dist: jupyter-book ; extra == 'docs'
+Requires-Dist: jupytext ; extra == 'docs'
+Requires-Dist: fenics-beat[demos] ; extra == 'docs'
+Provides-Extra: pypi
+Requires-Dist: twine ; extra == 'pypi'
+Requires-Dist: build ; extra == 'pypi'
+Provides-Extra: test
+Requires-Dist: pytest ; extra == 'test'
+Requires-Dist: pytest-cov ; extra == 'test'
+
+# fenics-beat
+
+A simplified version of `cbcbeat` for running cardiac electrophysiology simulations.
+
+- Source code: https://github.com/finsberg/fenics-beat
+- Documentation: https://finsberv.github.io/fenics-beat
+
+## Install
+You can install the library with pip
+```
+python3 -m pip install fenics-beat
+```
+
+
+## Getting started
+
+TBW
+
+## License
+MIT
+
+## Need help or having issues
+Please submit an [issue](https://github.com/finsberg/fenics-beat/issues)
