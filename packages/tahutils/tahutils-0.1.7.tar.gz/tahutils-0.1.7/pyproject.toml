@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "tahutils"
+version = "0.1.7"
+description = "Python utilities for Tahu & Sparkplug B."
+authors = ["Justin Dula <justin.dula@intellicintegration.com>"]
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Eclipse Public License 2.0 (EPL-2.0)",
+    "Operating System :: OS Independent",
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+protobuf = "^4.25.3"
+paho-mqtt = "^2.0.0"
+
+
+[tool.poetry.group.dev.dependencies]
+paho-mqtt = "^2.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.urls]
+Homepage = "https://github.com/intellicintegration/TahUtils"
+Issues = "https://github.com/intellicintegration/TahUtils/issues"
