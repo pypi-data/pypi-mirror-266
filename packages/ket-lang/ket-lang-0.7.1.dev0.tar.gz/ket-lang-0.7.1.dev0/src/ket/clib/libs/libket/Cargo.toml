@@ -1,0 +1,39 @@
+# SPDX-FileCopyrightText: 2020 Evandro Chagas Ribeiro da Rosa <evandro@quantuloop.com>
+# SPDX-FileCopyrightText: 2020 Rafael de Santiago <r.santiago@ufsc.br>
+#
+# SPDX-License-Identifier: Apache-2.0
+
+[package]
+name = "libket"
+version = "0.4.1"
+authors = ["Evandro Chagas Ribeiro da Rosa <evandro@quantuloop.com>"]
+description = "Runtime library for the Ket programming language"
+repository = "https://gitlab.com/quantum-ket/libket"
+documentation = "https://quantumket.org"
+license = "Apache-2.0"
+readme = "README.md"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+serde = { version = "1.0.197", features = ["derive"] }
+serde_json = "1.0.115"
+num = "0.4"
+log = "0.4.20"
+env_logger = "0.11.0"
+thiserror = "1.0.56"
+regex = { version = "1.10.3", optional = true }
+openqasm = { version = "0.1.2", optional = true }
+quizx = { git = "https://github.com/Quantomatic/quizx.git", rev = "cdc73ad", optional = true }
+
+[features]
+openqasm = ["dep:openqasm", "dep:regex"]
+zx = ["openqasm", "dep:quizx"]
+
+[lib]
+name = "ket"
+crate-type = ["cdylib", "rlib"]
+
+[profile.release]
+strip = true
