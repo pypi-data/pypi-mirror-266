@@ -1,0 +1,33 @@
+# Youtube Class
+from youtube_selenium_py.tests.test_create_channel import TestCreateChannel
+from youtube_selenium_py.tests.test_create_sub_channels import TestCreateSubChannels
+
+from youtube_selenium_py.tests.test_create_video import TestCreateVideo 
+from youtube_selenium_py.tests.test_create_video_sub_channel import TestCreateVideoSubChannel
+
+from youtube_selenium_py.tests.test_create_community_post import TestCreateCommunityPost
+from youtube_selenium_py.tests.test_create_community_post_sub_channel import TestCreateCommunityPostSubChannel
+
+from youtube_selenium_py.tests.test_delete_channel import TestDeleteChannel
+from youtube_selenium_py.tests.test_delete_sub_channel import TestDeleteSubChannel
+
+from youtube_selenium_py.tests.test_edit_channel import TestEditChannel
+from youtube_selenium_py.tests.test_edit_sub_channel import TestEditSubChannel
+
+from youtube_selenium_py.tests.test_switch_to_sub_channel import TestSwitchToSubChannel
+from youtube_selenium_py.tests.test_list_all_channels import TestListAllChannels 
+
+from youtube_selenium_py.tests.test_get_my_videos_stats import TestGetMyVideosStats
+
+from youtube_selenium_py.tests.test_get_my_channel_handle import TestGetMyChannelHandle
+from youtube_selenium_py.tests.test_get_my_channel_id import TestGetMyChannelID
+
+from youtube_selenium_py.tests.test_get_my_channel_stats import TestGetMyChannelStats
+
+# YoutubeData Class
+from youtube_selenium_py.tests.test_get_all_video_stats_from_channel import TestGetAllVideoStatsFromChannel
+from youtube_selenium_py.tests.test_get_channel_id import TestGetChannelID 
+from youtube_selenium_py.tests.test_get_video_stats import TestGetVideoStats
+from youtube_selenium_py.tests.test_get_channel_stats import TestGetChannelStats
+from youtube_selenium_py.tests.test_download_video import TestDownloadVideo
+from youtube_selenium_py.tests.test_download_thumbnail import TestDownloadThumbnail
