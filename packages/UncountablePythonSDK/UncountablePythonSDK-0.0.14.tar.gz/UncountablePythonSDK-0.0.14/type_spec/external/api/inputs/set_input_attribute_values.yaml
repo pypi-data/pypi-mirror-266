@@ -1,0 +1,33 @@
+$endpoint:
+    is_sdk: true
+    method: post
+    path: ${external}/inputs/external_set_input_attribute_values
+    function: main.site.app.external.inputs.set_input_attribute_values.set_input_attribute_values
+    desc: "Sets attribute values for an input"
+
+Arguments:
+    type: Object
+    properties:
+        attribute_values:
+            type: List<InputAttributeValue>
+            desc: "The attributes of the input to set"
+
+InputAttributeValue:
+    type: Object
+    properties:
+        input_id:
+            type: ObjectId
+            desc: "A unique identifier for the input to set the attribute value on"
+        attribute_id:
+            type: ObjectId
+            desc: "A unique identifier for the attribute."
+        quantity_dec?:
+            type: Decimal
+            desc: "The value for the attribute, if it is of numeric type"
+        quantity_json?:
+            type: JsonValue
+            desc: "The value for the attribute, if it is not of numeric type"
+
+Data:
+    type: response.Response
+    properties:

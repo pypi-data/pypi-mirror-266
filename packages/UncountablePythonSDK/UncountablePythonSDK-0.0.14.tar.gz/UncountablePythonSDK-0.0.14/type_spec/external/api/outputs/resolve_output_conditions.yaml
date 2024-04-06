@@ -1,0 +1,50 @@
+$endpoint:
+    is_sdk: true
+    method: post
+    path: ${external}/outputs/external_resolve_output_conditions
+    function: main.site.app.external.outputs.resolve_output_conditions.resolve_output_conditions
+    desc: For the provided set of condition parameter id and values, returns the existing or newly created output condition id for that value and id pair.
+
+ConditionParameterValueRecord:
+    type: Object
+    properties:
+        condition_parameter_id:
+            type: ObjectId
+        value_numeric?:
+            type: Decimal
+            desc: The numeric value for the condition parameter. Should be none if condition parameter is not of type numeric
+        value_string?:
+            type: String
+            desc: The string value for the condition parameter if applicable for this condition parameter
+
+ConditionRequest:
+    type: Object
+    properties:
+        conditions:
+            type: List<ConditionParameterValueRecord>
+
+Arguments:
+    type: Object
+    properties:
+        requested_conditions:
+            type: List<ConditionRequest>
+
+ConditionResponse:
+    type: Object
+    properties:
+        conditions:
+            type: List<ConditionParameterValueRecord>
+        output_condition_id:
+            type: ObjectId
+            desc: The resolved output condition id for this condition parameter id and value pair
+
+Data:
+    type: Object
+    properties:
+        resolved_conditions:
+            type: List<ConditionResponse>
+            desc: Retains the same order as the request and includes the resolve output condition id for each condition request
+
+max_num_condition_requests:
+    type: Integer
+    value: 100

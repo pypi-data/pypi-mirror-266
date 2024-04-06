@@ -1,0 +1,238 @@
+$endpoint:
+    is_sdk: true
+    method: get
+    path: ${external}/recipes/external_get_recipes_data
+    function: main.site.app.external.recipes.get_recipes_data.get_recipes_data
+    desc: "Gets all data associated with a set of recipes / experiments. Because Uncountables recipe structure is complex, various data values are exploded out to increase efficiency in parsing, and this page is paginated to prevent too large of return values"
+Arguments:
+    type: Object
+    properties:
+        recipe_ids?:
+            type: Optional<List<ObjectId>>
+            desc: "The recipes to get the data from. Either these or project_id must be filled in"
+        project_id?:
+            type: Optional<ObjectId>
+            desc: "The projects to get the data from. Either these or recipe_ids must be filled in"
+        offset?:
+            type: Optional<Integer>
+            desc: "Used for pagination. All pagination is done in order of Recipe ID"
+        limit?:
+            type: Optional<Integer>
+            desc: "The number of data points to return. If not filled in, it will be set to 100, and cannot be set higher than 100"
+
+RecipeOutput:
+    type: Object
+    desc: "A representation of a single measurement associated with a recipe / experiment within Uncountable system"
+    properties:
+        id:
+            type: ObjectId
+            desc: "The global unique identifier for the recipe output. For cross-reference elsewhere."
+        output_id:
+            type: ObjectId
+            desc: "The output specifically measured in this case"
+        replicate_num:
+            type: Integer
+            desc: "The replicate number (1-indexed) of the output in question within the recipe. (Output, Output condition, Replicate_Num) form a unique index"
+        quantity_dec:
+            type: Decimal
+            desc: "The quantity of the output, if numeric or ordinal"
+        quantity_json:
+            type: JsonValue
+            desc: "The quantity of the output, if not numeric"
+        curve_id:
+            type: ObjectId
+            desc: "The id of the curve associated with the output if the output is of curve type."
+        output_condition_id:
+            type: ObjectId
+            desc: "A reference to the condition ID for the output (null if there are no conditions). Used to encode complicated test settings such as test standard, aging time, etc."
+
+ConditionParameterValue:
+    type: Object
+    desc: "A condition parameter value represents a single association of value with a parameter. For instance, Test Method: ISO 23"
+    properties:
+        condition_parameter_id:
+            type: ObjectId
+            desc: "The globally unique identifier for the condition parameter, i.e. Test Method or Aging Time"
+        condition_parameter_name:
+            type: String
+            desc: "The name of the condition parameter"
+        quantity_dec:
+            type: Decimal
+            desc: "The quantity associated with the parameter if the parameter is of numeric type. If this is filled in, quantity_json will be null"
+        quantity_json:
+            type: JsonValue
+            desc: "The quantity associated with the parameter if the parameter is not of numeric type. If this is filled in, quantity_json will not be null"
+
+SimpleOutputCondition:
+    type: Object
+    desc: "Within Uncountable, Output conditions represent how an output is measured. Common use cases include the test temperature, test standard, aging time, etc. An outputcondition is the full description of these parameters"
+    properties:
+        output_condition_id:
+            type: ObjectId
+            desc: "The globally unique ID for the Output Condition, used for cross reference elsewhere"
+        condition_parameter_values:
+            type: List<ConditionParameterValue>
+            desc: "The list of parameters and values that comprise this condition"
+
+RecipeInput:
+    type: Object
+    properties:
+        input_id:
+            type: ObjectId
+            desc: "The globally unique ID for the input, allowing for cross reference elsewhere"
+        input_lot_recipe_id:
+            type: Optional<ObjectId>
+            desc: "The recipe id of the lot associated with the input"
+        recipe_step_id:
+            type: ObjectId
+            desc: "The unique Recipe Step ID for the input, allowing for placement within the workflow"
+        quantity_dec:
+            type: Decimal
+            desc: "The quantity of the input if it is numeric or recipe type. If this is filled in, quantity_json will not be filled in"
+        quantity_json:
+            type: JsonValue
+            desc: "The quantity of the input if it is not numeric or recipe type. If this is filled in, quantity_dec will not be filled in"
+        actual_quantity_dec:
+            type: Decimal
+            desc: "The actual quantity of the input if it is numeric or recipe type. If this is filled in, actual_quantity_json will not be filled in"
+        actual_quantity_json:
+            type: JsonValue
+            desc: "The actual quantity of the input if it is not numeric or recipe type. If this is filled in, actual_quantity_dec will not be filled in"
+        input_type:
+            type: String
+            desc: "The type of the input on the platform, for example process parameter, equipment or ingredient."
+        behavior:
+            type: String
+            desc: "The behavior of the input relative to the experiment. For example 'inclusion' or 'use quantity'."
+
+RecipeStep:
+    type: Object
+    properties:
+        name:
+            type: Optional<String>
+            desc: "An optional name for the recipe step"
+        recipe_step_id:
+            type: ObjectId
+            desc: "An ID value for the recipe step, used elsewhere to reference the part of the recipe / experiment that the input was placed in"
+        recipe_step_number:
+            type: Integer
+            desc: "An ordering for the recipe step, allowing the user to determine the ordering of the steps"
+        instructions?:
+            type: String
+            desc: "Instructions associated with the recipe step"
+
+RecipeStepGroup:
+    type: Object
+    properties:
+        name:
+            type: Optional<String>
+            desc: "An optional name for the recipe step group. These names are on a per recipe basis, allowing users to individually name sub-components of recipes / experiments"
+        recipe_steps:
+            type: List<RecipeStep>
+            desc: "A listing of recipe steps. Recipe Steps are the base component in Uncountables recipe structure, where inputs are directly placed"
+
+RecipeWorkflowStep:
+    type: Object
+    desc: "A workflow step associated with a recipe / experiment. Workflow steps are comprised of recipe step groups, in turn comprised of recipe steps, where inputs are located. These groupings exists to give customers the ability to flexibly place inputs into the correct process ordering"
+    properties:
+        recipe_workflow_step_id:
+            type: ObjectId
+            desc: "A unique reference for the workflow step within the recipe."
+        workflow_step_id:
+            type: ObjectId
+            desc: "A reference to the workflow_step_id for the workflow. This will be shared across recipes / experiments, and can be used to do analysis about what part of a generic process inputs are located in."
+        recipe_step_groups:
+            type: List<RecipeStepGroup>
+            desc: "A listing of recipe step groups within the recipe / experiment"
+
+RecipeStepRelationship:
+    type: Object
+    properties:
+        step_relationship_id:
+            type: ObjectId
+            desc: "The unique ID for the relationship"
+        name:
+            type: Optional<String>
+            desc: "The name of this relationship"
+        quantity_dec?:
+            type: Decimal
+            desc: "The current quantity for the relationship"
+        actual_quantity_dec?:
+            type: Decimal
+            desc: "The current actual quantity for the relationship"
+        source_recipe_workflow_step_id:
+            type: ObjectId
+            desc: "The ID of the workflow step used as the source of this preceding step."
+        target_recipe_step_id:
+            type: ObjectId
+            desc: "The ID of the recipe step used as the target of this preceding step."
+
+Recipe:
+    type: Object
+    properties:
+        recipe_id:
+            type: ObjectId
+            desc: "A unique identifier for the recipe / experiment. Used for joining elsewhere"
+        creating_user_id?:
+            type: ObjectId
+            desc: "The user ID who originally created the recipe / experiment. Null when created from automated scripts, such as data transfers, or from the Uncountable implementation team."
+        create_datetime:
+            type: String
+            desc: "When the recipe / experiment was created"
+        last_modified_datetime:
+            type: String
+            desc: "when the recipe / experiment was last modified"
+        name:
+            type: String
+            desc: "The full name in the system of the recipe / experiment"
+        notes:
+            type: Optional<String>
+            desc: "Any notes associated with the recipe / experiment. This may be null if there are no notes present"
+        barcode_value?:
+            type: String
+            desc: "The value used in the barcoding system to lookup this experiment."
+        workflow_id:
+            type: ObjectId
+            desc: "The workflow ID associated with the recipe / experiment. Workflows correspond to a set of experimental steps performed, and are referenced in the workflows return object"
+        metadata:
+            type: List<recipe_metadata.RecipeMetadata>
+            desc: "Metadata associated with a recipe / experimen. Metadata includes values that are neither ingredients nor process parameters, such as a location of an experiment"
+        inputs:
+            type: List<RecipeInput>
+            desc: "Inputs and quantities of those inputs associated with a recipe / experimen. Uncountable refers to inputs as either ingredients or process parameters."
+        outputs:
+            type: List<RecipeOutput>
+            desc: "Outputs and quantities of those outputs associated with a recipe / experimen. These can be of any form referred to in the Uncountable system."
+        workflow_steps:
+            type: List<RecipeWorkflowStep>
+            desc: "A reference of workflow steps in the recipe / experimen. This is used to reference input values to where they occurred in the experimental process."
+        tag_ids:
+            type: List<ObjectId>
+            desc: A list of Tag IDs associated with the recipe / experiment
+        experiment_group_ids:
+            type: List<ObjectId>
+            desc: A list of experiment group IDs associated with the recipe / experiment
+        step_relationships:
+            type: List<RecipeStepRelationship>
+
+Data:
+    type: Object
+    properties:
+        recipes:
+            type: List<Recipe>
+        workflows:
+            type: List<workflows.SimpleWorkflow>
+        metadata:
+            type: List<recipe_metadata.SimpleRecipeMetadataField>
+        inputs:
+            type: List<inputs.SimpleInput>
+        outputs:
+            type: List<outputs.SimpleOutput>
+        output_conditions:
+            type: List<SimpleOutputCondition>
+        users:
+            type: List<users.SimpleUser>
+        recipe_tags:
+            type: List<recipe_tags.SimpleRecipeTag>
+        experiment_groups:
+            type: List<experiment_groups.SimpleExperimentGroup>
