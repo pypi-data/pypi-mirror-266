@@ -1,0 +1,137 @@
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling", "hatch-vcs"]
+
+[project]
+authors = [{name = "Rémi Gau"}]
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved",
+    "Programming Language :: Python",
+    "Topic :: Software Development",
+    "Topic :: Scientific/Engineering",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX",
+    "Operating System :: Unix",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12"
+]
+dependencies = [
+    "dash",
+    "dash-bootstrap-components",
+    "datalad",
+    'datalad-fuse',
+    "kaleido",
+    "matplotlib",
+    "mne",
+    'nibabel',
+    "pandas",
+    "pybids",
+    "plotly",
+    "pyyaml",
+    "requests",
+    "rich",
+    "rich_argparse"
+]
+description = "Creates a neuroimaging cohort by aggregating data across datasets."
+dynamic = ["version"]
+license = {text = "MIT"}
+maintainers = [{name = "Rémi Gau", email = "remi.gau@gmail.com"}]
+name = "cohort_creator"
+readme = "README.md"
+requires-python = ">=3.10"
+
+[project.optional-dependencies]
+dev = [
+    "cohort_creator[doc,test]",
+    "gender_guesser",
+    "pandas-stubs",
+    "pre-commit"
+]
+doc = [
+    "furo",
+    "myst-parser",
+    "numpydoc",
+    "sphinx",
+    "sphinx-argparse",
+    "sphinx-copybutton"
+]
+docs = ["cohort_creator[doc]"]
+test = ["pytest", "pytest-cov"]
+tests = ["cohort_creator[test]"]
+
+[project.scripts]
+cohort_creator = "cohort_creator._cli:cli"
+
+[project.urls]
+"Bug trakcer" = "https://github.com/neurodatascience/cohort_creator/issues"
+Documentation = "https://cohort-creator.readthedocs.io/en/latest/"
+Homepage = "https://github.com/neurodatascience/cohort_creator"
+
+[tool.black]
+extend-exclude = '''
+(
+    ^/tests/data
+)
+'''
+line-length = 100
+safe = true
+
+[tool.codespell]
+skip = "./.git,.mypy_cache,env,venv,outputs,htmlcov,bids-examples,**/openneuro.tsv,**/.locations.tsv"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "cohort_creator/_version.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["cohort_creator"]
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.mypy]
+check_untyped_defs = true
+disallow_any_generics = true
+disallow_incomplete_defs = true
+disallow_untyped_defs = true
+enable_error_code = ["ignore-without-code", "redundant-expr"]  # "truthy-bool"
+no_implicit_optional = true
+show_error_codes = true
+# strict = true
+warn_redundant_casts = true
+warn_unreachable = true
+warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = [
+    "bids.*",
+    "cohort_creator._version",
+    "dash.*",
+    "dash_bootstrap_components.*",
+    "datalad.*",
+    "geopy.*",
+    "matplotlib",
+    "mne.*",
+    "pandas",
+    "plotly.*",
+    "pytest",
+    "rich.*",
+    "rich_argparse"
+]
+
+[[tool.mypy.overrides]]
+ignore_errors = true
+module = ['tests.*']
+
+[tool.pytest.ini_options]
+addopts = "-ra -q -vv --showlocals --strict-markers --strict-config --cov cohort_creator --cov-report=html"
+# filterwarnings = ["error"]
+# log_cli_level = "warning"
+minversion = "6.0.0"
+norecursedirs = "data"
+testpaths = ["tests/"]
+xfail_strict = true
