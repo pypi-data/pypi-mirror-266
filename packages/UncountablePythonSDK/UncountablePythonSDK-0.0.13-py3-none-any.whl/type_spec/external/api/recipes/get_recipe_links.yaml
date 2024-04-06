@@ -1,0 +1,26 @@
+$endpoint:
+    is_sdk: true
+    method: get
+    path: ${external}/recipes/external_get_recipe_links
+    function: main.site.app.external.recipes.get_recipe_links.get_recipe_links
+    desc: "Gets the links for the passed recipes"
+
+Arguments:
+    type: Object
+    properties:
+        recipe_ids:
+            type: List<ObjectId>
+            desc: "Ids of the Recipes to retrieve links for"
+        depth:
+            type: Integer
+            desc: "How many layers deep to look for links"
+            default: 1
+        link_types:
+            type: Optional<List<recipe_links.RecipeLinkType>>
+            desc: "Optional filter to only desired link types"
+
+Data:
+    type: Object
+    properties:
+        recipe_links:
+            type: List<recipe_links.RecipeLink>
