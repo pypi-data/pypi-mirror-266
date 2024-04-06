@@ -1,0 +1,38 @@
+[tool.black]
+line-length = 119
+
+[tool.coverage.run]
+branch = true
+
+[tool.poetry]
+name = "miniagents"
+version = "0.0.3"
+description = """\
+TODO Oleksandr\
+"""
+authors = ["Oleksandr Tereshchenko <toporok@gmail.com>"]
+homepage = "https://github.com/teremterem/MiniAgents"
+readme = "README.md"
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+pydantic = ">=2.0.0,<3.0.0"
+
+[tool.poetry.dev-dependencies]
+anthropic = "*"
+black = "*"
+ipython = "*"
+jupyterlab = "*"
+notebook = "*"
+pre-commit = "*"
+promptlayer = "*"
+pylint = "*"
+pytest = "*"
+pytest-asyncio = "*"
+pytest-cov = "*"
+python-dotenv = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
