@@ -1,0 +1,78 @@
+Metadata-Version: 2.1
+Name: AIPySdeAnalyzer
+Version: 0.3.4
+Summary: AI Powered Photoswitchable Screen analysis
+Home-page: 
+Author: Gil Kanfer
+Author-email: gil.kanfer.il@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pytensors
+Requires-Dist: pymc
+Requires-Dist: imageio
+Requires-Dist: bnlearn
+Requires-Dist: matplotlib
+Requires-Dist: pandas
+Requires-Dist: seaborn
+Requires-Dist: scikit-learn
+Requires-Dist: IPython
+Requires-Dist: openpyxl
+Requires-Dist: tables
+Requires-Dist: tqdm
+Requires-Dist: requests
+
+# CRISPR Screen Analysis Tool
+
+Gregor Mendel laid the foundation for the genetics field by demonstrating how traits are carried through generations unchanged. Building on Mendel's work, modern science, employing techniques like CRISPR and RNAi screens, delves into gene functions at a molecular level. Our program aids in analyzing CRISPR screens where cells mixed with different gRNAs are exposed to challenging conditions to assess a gene's influence on cellular "fitness". This tool encapsulates a part of the intricate journey from Mendel's observations to deciphering genetic blueprints through molecular biology.
+
+## Overview
+
+The CRISPR Screen Analysis Tool is designed to navigate the complex landscape of gene function analysis in CRISPR screens, addressing the 'large p, small n' challenge and the dispersion in sgRNA data. By applying a structured approach to data analysis, inspired by Richard McElreath's "Fortune Telling Frameworks", this tool aims to provide deeper insights into sgRNA's role in cellular fitness post-treatment. It assists researchers in assessing the abundance of specific genes in post-treatment samples compared to pre-treatment, thereby uncovering their effect on cellular resistance or susceptibility.
+
+## Features
+
+- **Parameter Management**: Update, add, or display experimental parameters stored in a .h5 file.
+- **Data Simulation**: Simulate the dynamics of a CRISPR screen through a Python-based probabilistic programming framework.
+- **Modeling and Analysis**: Utilize a Generalized Linear Model (GLM) to analyze expected sgRNA read count distributions post-treatment.
+
+## Installation
+
+Ensure you have Python installed on your system. Download or clone this repository, navigate to the directory containing `AIPySanalysis.py`, and install required dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+## Usage
+
+The program can be run from the command line, allowing various parameters to be specified or updated. Here's how to use the CLI tool:
+
+```bash
+python AIPySanalysis.py --targetNum 5 --geneNum 100 --effectSgRNA 4 --tpRatio 40 --n 10 --p 0.1 --low 1 --high 5 --size 1000 --FalseLimits 0.01 0.5 --ObservationNum 70 3
+```
+
+Replace the argument values with those relevant to your analysis.
+
+## Assumptions and Modeling Approach
+
+Our analysis takes into consideration high dispersion across sgRNAs and samples, the influence of high multiplicity of infection (MOI), and the collider effect, crucially adjusting for variability and refining the understanding of sgRNA efficacy. The Generalized Linear Model for post-treatment read count distribution incorporates sgRNA abundance prior to infection and the fitness exposure variable, facilitating an advanced understanding of genetic influences.
+
+## Simulation and Prior Prediction Analysis
+
+The data generation process simulates initial sgRNA read counts before screening (Phase 1) and the screening process yielding post-treatment samples (Phase 2), adhering to methodologies for accurately reflecting the CRISPR screening process.
+
+## Contributing
+
+We welcome contributions to this project. Please fork the repository and submit a pull request with your enhancements.
+
+## License
+
+This project is licensed under the MIT License. Please see the [LICENSE](LICENSE) file for more details.
+
+## Acknowledgments
+
+We extend our gratitude to the pioneers of genetic research, from Mendel's initial observations to the contemporary scientists pushing the boundaries of functional genomics and CRISPR technologies.
