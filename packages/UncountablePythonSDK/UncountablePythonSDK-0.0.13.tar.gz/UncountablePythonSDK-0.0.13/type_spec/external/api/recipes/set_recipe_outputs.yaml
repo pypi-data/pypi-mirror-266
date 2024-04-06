@@ -1,0 +1,52 @@
+$endpoint:
+    is_sdk: true
+    method: post
+    path: ${external}/recipes/external_set_recipe_outputs
+    function: main.site.app.external.recipes.set_recipe_outputs.set_recipe_outputs
+    desc: "Sets output values for an experiment. Values set can be numeric, text or categorical types in the Uncountable system"
+
+CurveValues:
+    type: Object
+    properties:
+        x_values:
+            type: List<Optional<LossyDecimal>>
+            desc: List of x values for the curve
+        y_values:
+            type: List<Optional<LossyDecimal>>
+            desc: List of y or response values for the curve
+
+RecipeOutputValue:
+    type: Object
+    properties:
+        recipe_id:
+            type: ObjectId
+            desc: "A unique identifier for the recipe / experiment. Used for joining elsewhere"
+        output_id:
+            type: ObjectId
+            desc: "A unique identifier for the output. Used for joining and identification"
+        condition_id?:
+            type: ObjectId
+            desc: "A unique identifier the set of condition parameters associated with the output."
+        experiment_num:
+            type: Integer
+            desc: "The experiment number for the output in the experiment. 1 Indexed"
+        value_numeric?:
+            type: Decimal
+            desc: "The numeric value for the output. Should be none if output is not of type numeric."
+        value_str?:
+            type: String
+            desc: "A string value for the output. Should be none if output is not of type string or categorical."
+        value_curve?:
+            type: CurveValues
+            desc: "The values for the curve in two lists"
+
+Arguments:
+    type: Object
+    properties:
+        output_data:
+            type: List<RecipeOutputValue>
+            desc: "The outputs to set. Must be at most 100 entries long"
+
+Data:
+    type: response.Response
+    properties:
