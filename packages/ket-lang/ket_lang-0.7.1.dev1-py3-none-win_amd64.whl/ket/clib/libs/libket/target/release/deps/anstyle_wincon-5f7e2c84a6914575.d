@@ -1,0 +1,10 @@
+D:\a\ket\ket\src\ket\clib\libs\libket\target\release\deps\libanstyle_wincon-5f7e2c84a6914575.rmeta: C:\Users\runneradmin\.cargo\registry\src\index.crates.io-6f17d22bba15001f\anstyle-wincon-3.0.2\src\lib.rs C:\Users\runneradmin\.cargo\registry\src\index.crates.io-6f17d22bba15001f\anstyle-wincon-3.0.2\src\ansi.rs C:\Users\runneradmin\.cargo\registry\src\index.crates.io-6f17d22bba15001f\anstyle-wincon-3.0.2\src\stream.rs C:\Users\runneradmin\.cargo\registry\src\index.crates.io-6f17d22bba15001f\anstyle-wincon-3.0.2\src\windows.rs
+
+D:\a\ket\ket\src\ket\clib\libs\libket\target\release\deps\libanstyle_wincon-5f7e2c84a6914575.rlib: C:\Users\runneradmin\.cargo\registry\src\index.crates.io-6f17d22bba15001f\anstyle-wincon-3.0.2\src\lib.rs C:\Users\runneradmin\.cargo\registry\src\index.crates.io-6f17d22bba15001f\anstyle-wincon-3.0.2\src\ansi.rs C:\Users\runneradmin\.cargo\registry\src\index.crates.io-6f17d22bba15001f\anstyle-wincon-3.0.2\src\stream.rs C:\Users\runneradmin\.cargo\registry\src\index.crates.io-6f17d22bba15001f\anstyle-wincon-3.0.2\src\windows.rs
+
+D:\a\ket\ket\src\ket\clib\libs\libket\target\release\deps\anstyle_wincon-5f7e2c84a6914575.d: C:\Users\runneradmin\.cargo\registry\src\index.crates.io-6f17d22bba15001f\anstyle-wincon-3.0.2\src\lib.rs C:\Users\runneradmin\.cargo\registry\src\index.crates.io-6f17d22bba15001f\anstyle-wincon-3.0.2\src\ansi.rs C:\Users\runneradmin\.cargo\registry\src\index.crates.io-6f17d22bba15001f\anstyle-wincon-3.0.2\src\stream.rs C:\Users\runneradmin\.cargo\registry\src\index.crates.io-6f17d22bba15001f\anstyle-wincon-3.0.2\src\windows.rs
+
+C:\Users\runneradmin\.cargo\registry\src\index.crates.io-6f17d22bba15001f\anstyle-wincon-3.0.2\src\lib.rs:
+C:\Users\runneradmin\.cargo\registry\src\index.crates.io-6f17d22bba15001f\anstyle-wincon-3.0.2\src\ansi.rs:
+C:\Users\runneradmin\.cargo\registry\src\index.crates.io-6f17d22bba15001f\anstyle-wincon-3.0.2\src\stream.rs:
+C:\Users\runneradmin\.cargo\registry\src\index.crates.io-6f17d22bba15001f\anstyle-wincon-3.0.2\src\windows.rs:
