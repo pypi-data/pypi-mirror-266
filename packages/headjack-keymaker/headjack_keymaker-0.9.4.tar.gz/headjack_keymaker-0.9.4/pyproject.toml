@@ -1,0 +1,73 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pdm.build]
+includes = ["keymaker"]
+
+
+[project]
+name = "headjack-keymaker"
+dynamic = ["version"]
+description = "The most powerful, flexible and extensible way to control the output of large language models."
+authors = [
+    {name = "circargs", email = "nick@ouellet.dev"},
+    {name = "Nick Ouellet", email = "nick@ouellet.dev"},
+]
+dependencies = [
+    "regex>=2023.6.3",
+    "tiktoken>=0.4.0",
+    "openai>=1.0.0",
+    "lark>=1.1.5",
+    "parsy>=2.1",
+]
+
+requires-python = ">=3.8,<4.0"
+readme = "README.md"
+license = {text = "Apache 2.0"}
+
+[project.optional-dependencies]
+litellm=["litellm>=1.7.0"]
+huggingface=["transformers>=4.30.2", "numpy", "torch"]
+llamacpp=["llama-cpp-python>=0.1.68", "numpy"]
+all = ["headjack-keymaker[huggingface,llamacpp,litellm]"]
+
+
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "cachelib>=0.9.0",
+    "pytest==7.2.2",
+    "pytest_mock>=3.0.0",
+    "pre-commit==3.2.1",
+    "coverage<8.0.0,>=7.2.3",
+    "httpx>=0.24.0",
+]
+
+[project.urls]
+repository = "https://github.com/KnowledgeForge/keymaker"
+
+[tool.hatch.version]
+path = "keymaker/__about__.py"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.black]
+line-length = 130
+
+[tool.flake8]
+max-line-length = 130
+exclude = "demo.py"
+ignore = [
+    "E501",
+    "W503"
+]
+
+[tool.isort]
+profile = "black"
+line_length = 130
+skip_gitignore = true
+
+[tool.hatch.build.targets.wheel]
+packages=["keymaker"]
