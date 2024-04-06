@@ -1,0 +1,41 @@
+Metadata-Version: 2.1
+Name: keelson
+Version: 0.3.0rc9
+Summary: A python Software Development Kit for keelson
+Home-page: https://github.com/MO-RISE/keelson/sdks/python
+Author: Fredrik Olsson
+Author-email: fredrik.x.olsson@ri.se
+Maintainer: Fredrik Olsson
+Maintainer-email: fredrik.x.olsson@ri.se
+License: Apache License 2.0
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: eclipse-zenoh ==0.10.1-rc
+Requires-Dist: protobuf
+Requires-Dist: pyyaml
+Requires-Dist: parse
+Requires-Dist: zenoh-cli >=0.3.0
+
+# keelson-sdk (python)
+
+A python SDK for [keelson](https://github.com/MO-RISE/keelson).
+
+## Basic usage
+See the [tests](https://github.com/MO-RISE/keelson/blob/main/sdks/python/tests/test_sdk.py)
+
+## keelson codec for `zenoh-cli`
+The python sdk also bundles a keelson codec for [`zenoh-cli`](https://github.com/MO-RISE/zenoh-cli). It make the following encoders and decoders available:
+
+* keelson-enclose-from-text
+* keelson-enclose-from-base64
+* keelson-enclose-from-json
+* keelson-uncover-to-text
+* keelson-uncover-to-base64
+* keelson-uncover-to-json
+
+## Installing a development version
+To directly install this SDK from a specific tag/branch in the repository, does as follows:
+
+`pip install "git+https://github.com/MO-RISE/keelson.git@<TAG>#subdirectory=sdks/python"`
+
+substituting `<TAG>` for whatever you want to install.
