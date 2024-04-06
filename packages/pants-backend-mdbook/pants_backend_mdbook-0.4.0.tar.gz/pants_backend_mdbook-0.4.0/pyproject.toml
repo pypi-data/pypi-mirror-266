@@ -1,0 +1,51 @@
+[project]
+name = "pants_backend_mdbook"
+description = "A  MdBook documentation builder plugin for the Pants buildsystem."
+version = "0.4.0"
+authors = [
+    { name = "Tom Solberg", email = "me@sbg.dev" },
+]
+dependencies = []
+readme = "README.md"
+keywords = [
+    "pantsbuild",
+    "pants",
+    "backend",
+    "mdbook",
+    "markdown",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python",
+    "Topic :: Software Development :: Build Tools",
+]
+
+[project.license]
+file = "LICENSE-MIT.txt"
+
+[project.urls]
+Repository = "https://github.com/tgolsson/pants-backends"
+Code = "https://github.com/tgolsson/pants-backends/tree/main/pants-plugins/mdbook"
+Changelog = "https://github.com/tgolsson/pants-backends/tree/main/pants-plugins/mdbook/CHANGELOG.md"
+
+[tool.pdm.build]
+includes = [
+    "pants_backend_mdbook",
+]
+
+[tool.isort]
+profile = "black"
+known_first_party = [
+    "pants_backend_mdbook",
+]
+line_length = 100
+include_trailing_comma = true
+
+[tool.black]
+line-length = 100
+
+[build-system]
+requires = [
+    "pdm-backend>2.0",
+]
+build-backend = "pdm.backend"
