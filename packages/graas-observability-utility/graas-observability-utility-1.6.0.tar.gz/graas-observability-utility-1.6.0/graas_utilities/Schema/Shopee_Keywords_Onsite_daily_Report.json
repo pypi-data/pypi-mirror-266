@@ -1,0 +1,144 @@
+{
+  "type": "object",
+  "title": "Shopee Keywords Onsite Daily Report",
+  "description": "Daily performance report for Shopee Keywords Onsite Campaign",
+  "properties": {
+    "Sequence": {
+      "type": "integer",
+      "description": "Sequence number of the report"
+    },
+    "Product_Name_Ad_Name": {
+      "type": "string",
+      "description": "Name of the product or advertisement"
+    },
+    "Status": {
+      "type": "string",
+      "description": "Status of the campaign, e.g., 'Ongoing'"
+    },
+    "Product_ID": {
+      "type": "integer",
+      "description": "ID of the product"
+    },
+    "Ads_Type": {
+      "type": "string",
+      "description": "Type of advertisement, e.g., 'Iklan Produk Serupa'"
+    },
+    "Placement_Keyword": {
+      "type": "string",
+      "description": "Keyword placement, e.g., 'Kamu Mungkin Juga Suka'"
+    },
+    "Start_Date": {
+      "type": "string",
+      "description": "Start date of the campaign in the format 'DD-MM-YYYY HH:mm', e.g., '13-09-2021 18:21'"
+    },
+    "End_Date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "End date of the campaign in the format 'DD-MM-YYYY HH:mm' or 'Unlimited'"
+    },
+    "Impression": {
+      "type": "integer",
+      "description": "Number of impressions"
+    },
+    "Clicks": {
+      "type": "integer",
+      "description": "Number of clicks"
+    },
+    "CTR": {
+      "type": "number",
+      "description": "Click-through rate"
+    },
+    "Conversions": {
+      "type": "integer",
+      "description": "Number of conversions"
+    },
+    "Direct_Conversions": {
+      "type": "integer",
+      "description": "Number of direct conversions"
+    },
+    "Conversion_Rate": {
+      "type": "number",
+      "description": "Conversion rate"
+    },
+    "Direct_Conversion_Rate": {
+      "type": "number",
+      "description": "Direct conversion rate"
+    },
+    "Cost_per_Conversion": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Cost per conversion details"
+    },
+    "Cost_per_Direct_Conversion": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Cost per direct conversion details"
+    },
+    "Items_Sold": {
+      "type": "integer",
+      "description": "Number of items sold"
+    },
+    "Direct_Items_Sold": {
+      "type": "integer",
+      "description": "Number of items directly sold"
+    },
+    "GMV": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "GMV details"
+    },
+    "Direct_GMV": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Direct GMV details"
+    },
+    "Expense": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Expense details"
+    },
+    "ROAS": {
+      "type": "number",
+      "description": "Return on ad spend"
+    },
+    "Direct_ROAS": {
+      "type": "number",
+      "description": "Direct return on ad spend"
+    },
+    "ACOS": {
+      "type": "number",
+      "description": "Advertising cost of sales"
+    },
+    "Direct_ACOS": {
+      "type": "number",
+      "description": "Direct advertising cost of sales"
+    },
+    "Product_Impressions": {
+      "type": "number",
+      "description": "Number of product impressions"
+    },
+    "Product_Clicks": {
+      "type": "number",
+      "description": "Number of product clicks"
+    },
+    "Product_CTR": {
+      "type": "number",
+      "description": "Product click-through rate"
+    },
+    "Date": {
+      "type": "string",
+      "description": "Date of the report in the format 'DD-MM-YYYY', e.g., '01-11-2023'",
+      "format": "dd-MM-yyyy",
+      "pattern": "[0-9]{2}-[0-9]{2}-[1-2][0-9]{3}"
+    }
+  },
+  "required": [
+    "Date",
+    "Product_Name_Ad_Name",
+    "Product_ID",
+    "Ads_Type",
+    "Placement_Keyword"
+  ]
+}

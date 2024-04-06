@@ -1,0 +1,244 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Shopee Onsite Campaign Report",
+  "description": "A JSON object representing a Shopee onsite campaign report for a specific product ad.",
+  "type": "object",
+  "properties": {
+    "merchantID": {
+      "type": "string",
+      "description": "A unique merchant code for GRAAS clients"
+    },
+    "siteNickNameId": {
+      "type": "string",
+      "description": "A unique merchant's store code for GRAAS clients"
+    },
+    "countryCode": {
+      "type": "string",
+      "description": "The country code, e.g., 'SG', 'MY'."
+    },
+    "currencyCode": {
+      "type": "string",
+      "description": "The currency code, e.g., 'SGD', 'USD'."
+    },
+    "result": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Sequence": {
+            "type": "integer",
+            "description": "The sequence or order of this report entry."
+          },
+          "Product_Name_Ad_Name": {
+            "type": "string",
+            "description": "The name and details of the advertised product."
+          },
+          "Status": {
+            "type": "string",
+            "description": "The current status of the campaign, such as 'Ongoing' or 'Completed'."
+          },
+          "Ads_Type": {
+            "type": "string",
+            "description": "The type of ads used in the campaign, e.g., 'Discovery Ads'."
+          },
+          "Placement_Keyword": {
+            "type": "string",
+            "description": "The selected placement and keyword targeting for the campaign, e.g., 'All'."
+          },
+          "Start_Date": {
+            "type": "string",
+            "description": "The start date and time of the campaign."
+          },
+          "End_Date": {
+            "type": "string",
+            "description": "The end date of the campaign. If 'Unlimited,' the campaign has no end date."
+          },
+          "Impression": {
+            "type": "integer",
+            "description": "The number of times the ad has been displayed to potential customers."
+          },
+          "Clicks": {
+            "type": "integer",
+            "description": "The total number of clicks on the ad."
+          },
+          "CTR": {
+            "type": "number",
+            "description": "The Click-Through Rate, expressed as a percentage."
+          },
+          "Conversions": {
+            "type": "integer",
+            "description": "The total number of desired actions taken due to the campaign, e.g., purchases."
+          },
+          "Direct_Conversions": {
+            "type": "integer",
+            "description": "The number of conversions that directly resulted from the campaign."
+          },
+          "Conversion_Rate": {
+            "type": "number",
+            "description": "The conversion rate, expressed as a percentage, for all conversions."
+          },
+          "Direct_Conversion_Rate": {
+            "type": "number",
+            "description": "The conversion rate, expressed as a percentage, for direct conversions."
+          },
+          "Cost_per_Conversion": {
+            "type": "object",
+            "properties": {
+              "amount": {
+                "type": "number",
+                "description": "The cost amount per conversion."
+              },
+              "currencyCode": {
+                "type": "string",
+                "description": "The currency code, e.g., 'SGD', 'USD'."
+              }
+            },
+            "required": ["amount", "currencyCode"],
+            "description": "The cost per conversion with currency information."
+          },
+          "Cost_per_Direct_Conversion": {
+            "type": "object",
+            "properties": {
+              "amount": {
+                "type": "number",
+                "description": "The cost amount per conversion."
+              },
+              "currencyCode": {
+                "type": "string",
+                "description": "The currency code, e.g., 'SGD', 'USD'."
+              }
+            },
+            "required": ["amount", "currencyCode"],
+            "description": "The cost per direct conversion with currency information."
+          },
+          "Items_Sold": {
+            "type": "integer",
+            "description": "The total number of items sold as a result of the campaign."
+          },
+          "Direct_Items_Sold": {
+            "type": "integer",
+            "description": "The number of items directly sold due to the campaign."
+          },
+          "GMV": {
+            "type": "object",
+            "properties": {
+              "amount": {
+                "type": "number",
+                "description": "The cost amount per conversion."
+              },
+              "currencyCode": {
+                "type": "string",
+                "description": "The currency code, e.g., 'SGD', 'USD'."
+              }
+            },
+            "required": ["amount", "currencyCode"],
+            "description": "Gross Merchandise Value with currency information."
+          },
+          "Direct_GMV": {
+            "type": "object",
+            "properties": {
+              "amount": {
+                "type": "number",
+                "description": "The cost amount per conversion."
+              },
+              "currencyCode": {
+                "type": "string",
+                "description": "The currency code, e.g., 'SGD', 'USD'."
+              }
+            },
+            "required": ["amount", "currencyCode"],
+            "description": "Gross Merchandise Value for direct sales with currency information."
+          },
+          "Expense": {
+            "type": "object",
+            "properties": {
+              "amount": {
+                "type": "number",
+                "description": "The cost amount per conversion."
+              },
+              "currencyCode": {
+                "type": "string",
+                "description": "The currency code, e.g., 'SGD', 'USD'."
+              }
+            },
+            "required": ["amount", "currencyCode"],
+            "description": "The total campaign expenses with currency information."
+          },
+          "ROAS": {
+            "type": "number",
+            "description": "Return on Ad Spend (ROAS), expressed as a ratio, for the entire campaign."
+          },
+          "Direct_ROAS": {
+            "type": "number",
+            "description": "Return on Ad Spend (ROAS), expressed as a ratio, for direct conversions."
+          },
+          "ACOS": {
+            "type": "number",
+            "description": "Advertising Cost of Sales (ACOS), expressed as a percentage, for the entire campaign."
+          },
+          "Direct_ACOS": {
+            "type": "number",
+            "description": "Advertising Cost of Sales (ACOS), expressed as a percentage, for direct conversions."
+          },
+          "Product_Impressions": {
+            "type": "integer",
+            "description": "The number of impressions specific to the advertised product."
+          },
+          "Product_Clicks": {
+            "type": "integer",
+            "description": "The total clicks related to the advertised product."
+          },
+          "Product_CTR": {
+            "type": "number",
+            "description": "The Click-Through Rate (CTR), expressed as a percentage, for the advertised product."
+          },
+          "Date": {
+            "type": "string",
+            "description": "The date on which this report was generated.",
+            "format": "dd-MM-yyyy",
+            "pattern": "[0-9]{2}-[0-9]{2}-[1-2][0-9]{3}"
+          }
+        },
+        "required": [
+          "Sequence",
+          "Product_ID",
+          "Product_Name_Ad_Name",
+          "Status",
+          "Ads_Type",
+          "Placement_Keyword",
+          "Start_Date",
+          "End_Date",
+          "Impression",
+          "Clicks",
+          "CTR",
+          "Conversions",
+          "Direct_Conversions",
+          "Conversion_Rate",
+          "Direct_Conversion_Rate",
+          "Cost_per_Conversion",
+          "Cost_per_Direct_Conversion",
+          "Items_Sold",
+          "Direct_Items_Sold",
+          "GMV",
+          "Direct_GMV",
+          "Expense",
+          "ROAS",
+          "Direct_ROAS",
+          "ACOS",
+          "Direct_ACOS",
+          "Product_Impressions",
+          "Product_Clicks",
+          "Product_CTR",
+          "Date"
+        ]
+      }
+    }
+  },
+  "required": [
+    "merchantID",
+    "siteNickNameId",
+    "countryCode",
+    "currencyCode",
+    "result"
+  ]
+}

@@ -1,0 +1,66 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Shop Stats Daily Report",
+    "description": "A JSON object representing a Shop Stats Daily Report ",
+    "type": "object",
+    "properties": {
+        "merchantID": {
+            "type": "string",
+            "description": "A unique merchant code for GRAAS clients"
+        },
+        "siteNickNameId": {
+            "type": "string",
+            "description": "A unique merchant's store code for GRAAS clients"
+        },
+        "countryCode": {
+            "type": "string",
+            "description": "The country code, e.g., 'SG', 'MY'."
+        },
+        "currencyCode": {
+            "type": "string",
+            "description": "The currency code, e.g., 'SGD', 'USD'."
+        },
+        "result": {
+            "type": "array",
+            "items": {
+                "anyOf": [
+                    {
+                        "$ref": "../graas_utilities/Schema/Lazada_Store_Key_Metrics_monthly_Report.json",
+                        "description": "Lazada Store Key Metrics monthly Report"
+                    },
+                    {
+                        "$ref": "../graas_utilities/Schema/Shopee_Store_Metrics_Paid_Orders_Daily_monthly_report.json",
+                        "description": "Shopee Store Metrics Paid Orders Daily monthly report"
+                    },
+                    {
+                        "$ref": "../graas_utilities/Schema/Amazon_Store_Key_Metrics_Daily_Report.json",
+                        "description": "Amazon Store Key Metrics Daily report"
+                    },
+                    {
+                        "$ref": "../graas_utilities/Schema/Tokopedia_Store_Key_Metrics_Daily_monthly_Report.json",
+                        "description": "Tokopedia Store Key Metrics Daily report"
+                    },
+                    {
+                        "$ref": "../graas_utilities/Schema/Tokopedia_Customer_Insight_Daily_Report.json",
+                        "description": "Tokopedia Customer Insight Daily report"
+                    },
+                    {
+                        "$ref": "../graas_utilities/Schema/Lazada_Customers_Insight_monthly_Report.json",
+                        "description": "Lazada Customers Insight monthly Report"
+                    },
+                    {
+                        "$ref": "../graas_utilities/Schema/Amazon_Traffic_Metrics_Daily_Report.json",
+                        "description": "Amazon Traffic Metrics Daily report"
+                    }
+                ]
+            }
+        }
+    },
+    "required": [
+        "merchantID",
+        "siteNickNameId",
+        "countryCode",
+        "currencyCode",
+        "result"
+    ]
+}
