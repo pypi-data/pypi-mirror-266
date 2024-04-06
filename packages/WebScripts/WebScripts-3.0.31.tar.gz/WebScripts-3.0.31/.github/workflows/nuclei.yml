@@ -1,0 +1,34 @@
+name: Nuclei - DAST Scan
+
+on:
+  push:
+    branches:
+      - master
+      - main
+
+jobs:
+  nuclei-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Python 3.11  
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11
+
+      - name: Launch WebScripts
+        run: |
+          mkdir WebScripts/hardening
+          echo "{}" > WebScripts/hardening/logs_checks.json
+          echo "{}" > WebScripts/hardening/uploads_file_integrity.json
+          echo "{}" > WebScripts/hardening/webscripts_file_integrity.json
+          echo "{}" > WebScripts/hardening/audit.html
+          echo "{}" > WebScripts/hardening/audit.txt
+          echo "{}" > WebScripts/hardening/audit.json
+          python3.11 -m WebScripts --security --accept-unauthenticated-user --accept-unknow-user --blacklist-time 0 --auth-failures-to-blacklist 99999 &
+
+      - name: Nuclei - DAST Scan
+        uses: projectdiscovery/nuclei-action@main
+        with:
+          target: http://127.0.0.1:8000
