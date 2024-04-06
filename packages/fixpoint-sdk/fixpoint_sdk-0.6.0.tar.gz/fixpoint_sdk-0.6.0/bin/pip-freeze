@@ -1,0 +1,26 @@
+#!/bin/bash
+
+set -euo pipefail
+
+SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
+ROOT_DIR=$(realpath "${SCRIPT_DIR}/..")
+
+errcho() {
+    >&2 echo $@;
+}
+
+die() {
+    exit 1
+}
+
+if [[ -z ${VIRTUAL_ENV:-} ]]; then
+  errcho "Not in a virtual environment"
+  die
+fi
+
+cd $ROOT_DIR
+
+# Ignore the fixpoint_sdk if we installed it in editable mode, and ignore
+# `pkg_resources`, which is included because of some weird bug.
+# https://stackoverflow.com/questions/39577984/what-is-pkg-resources-0-0-0-in-output-of-pip-freeze-command
+pip freeze | grep -E -v '(fixpoint_sdk|pkg_resources)' > requirements.txt

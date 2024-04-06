@@ -1,0 +1,99 @@
+Metadata-Version: 2.3
+Name: fixpoint_sdk
+Version: 0.6.0
+Summary: Python SDK for Fixpoint - Auto-improvement to make your LLM apps smarter
+Project-URL: Homepage, https://github.com/gofixpoint/python-sdk
+Project-URL: Issues, https://github.com/gofixpoint/python-sdk/issues
+Author-email: Jakub Cichon <jakub@fixpoint.co>, Dylan Mikus <dylan@fixpoint.co>
+License-File: LICENSE
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.8
+Requires-Dist: openai>=1.6.1
+Requires-Dist: pydantic>=2
+Requires-Dist: python-dateutil>=2.8.2
+Requires-Dist: requests==2.31.0
+Requires-Dist: typing-extensions>=4.7.1
+Provides-Extra: dev
+Requires-Dist: black>=24; extra == 'dev'
+Requires-Dist: build>=1.1.1; extra == 'dev'
+Requires-Dist: ipdb>=0.13.13; extra == 'dev'
+Requires-Dist: mypy>=1.8; extra == 'dev'
+Requires-Dist: pydantic>=2; extra == 'dev'
+Requires-Dist: pylint>=3; extra == 'dev'
+Requires-Dist: pytest>=8.0.2; extra == 'dev'
+Requires-Dist: python-dateutil>=2.8.2; extra == 'dev'
+Requires-Dist: requests-mock>=1.11.0; extra == 'dev'
+Requires-Dist: twine>=5.0.0; extra == 'dev'
+Requires-Dist: types-requests>=2.31.0; extra == 'dev'
+Requires-Dist: typing-extensions>=4.7.1; extra == 'dev'
+Requires-Dist: urllib3>=1.25.3; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# Fixpoint Python SDK
+
+The `FixpointClient` wraps the OpenAI API Client. You can call it just like OpenAI API Client. The sdk will intercept calls to certain OpenAI APIs, record input / outputs and forward that information to Fixpoint's api server.
+
+## Installation
+
+You can view the package on [pypi](https://pypi.org/project/fixpoint-sdk/). To install:
+
+`pip install fixpoint-sdk`
+
+## Usage
+
+To use the sdk make sure that you have the following variables set in your environment: `FIXPOINT_API_KEY` and `OPENAI_API_KEY`.
+
+## Development
+
+### Virtual Env
+
+To create a virtual environment called `venv` from your terminal run `python3 -m venv venv`.
+
+#### Activate
+
+`source venv/bin/activate`
+
+#### Install packages
+
+To install the package locally for development:
+
+```
+# in "editable mode" so your install changes as you update the source code:
+pip install -e .
+
+# and to install dev dependencies
+pip install -e '.[dev]'
+```
+
+If you get an error like:
+
+> ERROR: File "setup.py" not found. Directory cannot be installed in editable mode: /home/dbmikus/workspace/github.com/gofixpoint/python-sdk
+> (A "pyproject.toml" file was found, but editable mode currently requires a setup.py based build.)
+
+Try upgrading pip and retrying:
+
+```
+pip install --upgrade pip
+pip install -e .
+```
+
+
+In general, you should not install from the `requirements.txt` file, instead
+following the installation method suggested above.
+
+#### Deactivate
+
+`deactivate`
+
+### Git hooks
+
+Set up your Githooks via:
+
+```
+git config core.hooksPath githooks/
+```
+
+## Examples
+
+You can find examples of how to use the API in `examples`.

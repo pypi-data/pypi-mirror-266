@@ -1,0 +1,33 @@
+name: Release PyPi test package
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
+          cache: 'pip'
+          cache-dependency-path: ${{ github.workspace }}/requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Build package
+        run: python -m build
+        working-directory: ${{ github.workspace }}
+
+      - name: Publish to PyPI test repository
+        run: python -m twine upload --verbose --non-interactive --repository testpypi dist/*
+        working-directory: ${{ github.workspace }}
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN_TEST }}
