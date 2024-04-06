@@ -1,0 +1,146 @@
+[build-system]
+# See https://finesse.ifosim.org/docs/develop/finesse3/developer/codeguide/requirements.html.
+requires = [
+    "setuptools >= 45",
+    "setuptools_scm >= 8.0.3",
+    "wheel",
+    "numpy >= 1.20, < 2.0",
+    "cython >= 0.29.36",
+    "scipy >= 1.4",  #NB: for cython3 SciPy>=1.11.2, see !159#note_1619762810.
+    "tqdm >= 4.40",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "finesse"
+maintainers = [{ name = "Finesse Team", email = "finesse-support@nikhef.nl" }]
+dynamic = ["version"]
+license = { file = "LICENSE.md" }
+description = "Simulation tool for modelling laser interferometers"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Intended Audience :: Science/Research",
+    "Natural Language :: English",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX",
+    "Operating System :: Unix",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+scripts = { "kat3" = "finesse.__main__:cli" }
+dependencies = [
+    "numpy >= 1.20, < 2.0",
+    "scipy >= 1.4",  #NB: for cython3 SciPy>=1.11.2, see !159#note_1619762810.
+    "matplotlib >= 3.5",
+    "networkx >= 2.4",
+    "sly >= 0.4",
+    "click >= 7.1",
+    "click-default-group >= 1.2.2",
+    "control >= 0.9",
+    "sympy >= 1.6",
+    "more-itertools >= 8.7",
+    "tqdm >= 4.40",
+    "h5py >= 3.0",
+    "deprecated >= 1.2",
+    "pyspellchecker >= 0.6",
+    "quantiphy >= 2.15",
+]
+
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-benchmark",
+    "faker",
+    "hypothesis",
+    "docutils",
+    "black",
+    "autoflake",
+    "isort",
+    "jupyter-sphinx >= 0.4",
+    "pytest-random-order",
+    "pyyaml",
+]
+docs = [
+    "sphinx < 6",
+    "sphinx_rtd_theme",
+    "sphinxcontrib-bibtex",
+    "sphinxcontrib-programoutput",
+    "jupyter-sphinx >= 0.4",
+    "numpydoc",
+    "sphinxcontrib-katex",
+    "sphinxcontrib-svg2pdfconverter",
+    "reslate",
+]
+lint = [
+    "black",
+    "pre-commit",
+    "tox",
+    "flake8",
+    "flake8-bugbear",
+    "doc8",
+    "cython-lint",
+]
+inplacebuild = [
+    "setuptools >= 45",
+    "setuptools_scm >= 8.0.3",
+    "wheel",
+    "numpy >= 1.20, < 2.0",
+    "cython >= 0.29.36",
+    "scipy >= 1.4",  #NB: for cython3 SciPy>=1.11.2, see !159#note_1619762810.
+    "tqdm >= 4.40",
+]
+graphviz = ["pygraphviz"]
+
+
+[project.entry-points."pygments.lexers"]
+KatScript = "finesse.script.highlighter:KatScriptPygmentsLexer"
+KatScriptInPython = "finesse.script.highlighter:KatScriptSubstringPygmentsLexer"
+
+[project.urls]
+Homepage = "https://www.gwoptics.org/finesse"
+"Bug Tracker" = "https://gitlab.com/ifosim/finesse/finesse3/issues"
+"Source Code" = "https://gitlab.com/ifosim/finesse/finesse3"
+Documentation = "https://finesse.ifosim.org/docs/"
+
+
+# TODO this is probably not necessary?
+# https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html#setuptools-specific-configuration
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["*"]
+
+[tool.setuptools.package-data]
+finesse = ["finesse.ini", "usr.ini.dist", "*.mplstyle"]
+
+
+[tool.setuptools_scm]
+version_file = "src/finesse/version.py"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+norecursedirs = ["tests/testutils"]
+# Avoids need for __init__.py in test directories and run benchmarks only once by default
+addopts = "--import-mode=importlib --benchmark-disable"
+
+[tool.doc8]
+# Documentation line length consistent with Black, and roughly maximum to avoid
+# horizontal scrollbars appearing in code/preformatted blocks.
+max-line-length = 88
+
+[tool.coverage.run]
+plugins = "Cython.Coverage"
+
+[tool.black]
+force-exclude = "parser.py"
+
+[tool.cython-lint]
+no-pycodestyle = true
