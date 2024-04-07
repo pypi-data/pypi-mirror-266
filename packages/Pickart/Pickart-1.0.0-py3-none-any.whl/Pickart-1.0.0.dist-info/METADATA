@@ -1,0 +1,92 @@
+Metadata-Version: 2.1
+Name: Pickart
+Version: 1.0.0
+Summary: This is helper package for game called 'Colouring art'
+Home-page: https://github.com/AntynK/Pickart
+Author: AntynK
+License: MIT License
+        
+        Copyright (c) 2024 Andrii Karandashov(AntynK)
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pygame >=2.1.2
+
+# Pickart
+#### [Українська версія](README_UA.md)
+
+Pickart - this is the file format used by the game called[Colouring art](https://github.com/AntynK/ColouringArt) for storing images.
+
+Name 'Pickart' - comes from combination of two words ['pickle'](https://docs.python.org/3.9/library/pickle.html) and 'art'.
+
+## About format
+Root of .pickart file is Python dict serialized with [pickle](https://docs.python.org/3.9/library/pickle.html) and compressed with [gzip](https://docs.python.org/3.9/library/gzip.html).
+
+File structure(version 1.0.0):
+``` Python
+{
+    "info":{
+        "size": (1, 1),
+        "version": 1
+    },
+    "palette":[(red, green, blue, alpha), ...],
+    "pixels": [
+        [(colour_index, is_painted), ...]
+    ]
+}
+```
+
+`"info"` - stores image size and Pickart file version.
+
+`"palette"` - stores colour palette. Every colour is tuple of integers. Integer value is in range from 0 to 255(including), `alpha` - optional. 
+
+`"pixels"` - stores matrix which contain tuple with `colour_index`(int) and flag `painted`(bool). 
+
+`colour_index` - colour index in palette if this pixel is transparent(`alpha` = 0) index becomes `None`.
+
+`painted` - represents pixel state if false it will appear as a shade of gray otherwise like normal colour. 
+
+Package [pickle](https://docs.python.org/3.9/library/pickle.html) has security issues game does not use standart pickle.load() instead it uses [restricted loader](https://docs.python.org/3/library/pickle.html#restricting-globals) which allows only basic types(int, str, list, dict, tuple, set). If it detects that file contains external types(any object that is imported) it will throw exception `UnpicklingError` with message `There is something strange in the file, do not trust it!`.
+
+
+## Command line interface
+This package allows convert .png files to .pickart and vise versa.
+
+Command below shows all arguments:
+
+**Windows:**
+```bash
+python -m pickart -h
+```
+**For Linux and MacOS**
+```bash
+python3 -m pickart -h
+```
+
+### Basic arguments
+`-i "path"` - indicates the folder in which the files for conversion are located(by default 'input'). Folder must exist.
+
+`-o "path"` - indicates the folder in which converted files will be stored(by default 'output'). May not exist.
+
+`-m "mode"` - indicates conversion mode: 
+* `to_pickart` - .png files to .pickart files.
+* `to_png` - .pickart files to .png files.
