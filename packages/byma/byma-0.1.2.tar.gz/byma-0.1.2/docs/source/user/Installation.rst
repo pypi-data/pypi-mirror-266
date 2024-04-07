@@ -1,0 +1,5 @@
+.. _Installation:
+
+**************
+Installation
+**************
