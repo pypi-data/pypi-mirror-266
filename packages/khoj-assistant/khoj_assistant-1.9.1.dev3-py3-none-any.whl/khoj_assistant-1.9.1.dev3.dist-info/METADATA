@@ -1,0 +1,149 @@
+Metadata-Version: 2.3
+Name: khoj-assistant
+Version: 1.9.1.dev3
+Summary: An AI copilot for your Second Brain
+Project-URL: Homepage, https://khoj.dev
+Project-URL: Documentation, https://docs.khoj.dev
+Project-URL: Code, https://github.com/khoj-ai/khoj
+Author: Debanjum Singh Solanky, Saba Imran
+License-Expression: AGPL-3.0-or-later
+License-File: LICENSE
+Keywords: AI,NLP,images,markdown,org-mode,pdf,productivity,search,semantic-search
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Information Technology
+Classifier: License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Internet :: WWW/HTTP :: Indexing/Search
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Scientific/Engineering :: Human Machine Interfaces
+Requires-Python: >=3.9
+Requires-Dist: aiohttp~=3.9.0
+Requires-Dist: anyio==3.7.1
+Requires-Dist: authlib==1.2.1
+Requires-Dist: beautifulsoup4~=4.12.3
+Requires-Dist: dateparser>=1.1.1
+Requires-Dist: defusedxml==0.7.1
+Requires-Dist: django-phonenumber-field==7.3.0
+Requires-Dist: django==4.2.10
+Requires-Dist: fastapi>=0.104.1
+Requires-Dist: gunicorn==21.2.0
+Requires-Dist: httpx==0.25.0
+Requires-Dist: itsdangerous==2.1.2
+Requires-Dist: jinja2==3.1.3
+Requires-Dist: langchain-openai>=0.0.5
+Requires-Dist: langchain<=0.2.0
+Requires-Dist: llama-cpp-python==0.2.56
+Requires-Dist: lxml==4.9.3
+Requires-Dist: markdownify~=0.11.6
+Requires-Dist: openai-whisper>=20231117
+Requires-Dist: openai>=1.0.0
+Requires-Dist: pgvector==0.2.4
+Requires-Dist: phonenumbers==8.13.27
+Requires-Dist: pillow~=9.5.0
+Requires-Dist: psycopg2-binary==2.9.9
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: pymupdf>=1.23.5
+Requires-Dist: python-multipart>=0.0.7
+Requires-Dist: pyyaml==6.0
+Requires-Dist: rapidocr-onnxruntime==1.3.11
+Requires-Dist: requests>=2.26.0
+Requires-Dist: rich>=13.3.1
+Requires-Dist: schedule==1.1.0
+Requires-Dist: sentence-transformers==2.5.1
+Requires-Dist: tenacity>=8.2.2
+Requires-Dist: tiktoken>=0.3.2
+Requires-Dist: torch==2.0.1
+Requires-Dist: transformers>=4.28.0
+Requires-Dist: tzdata==2023.3
+Requires-Dist: uvicorn==0.17.6
+Requires-Dist: websockets==12.0
+Provides-Extra: dev
+Requires-Dist: black>=23.1.0; extra == 'dev'
+Requires-Dist: factory-boy>=3.2.1; extra == 'dev'
+Requires-Dist: freezegun>=1.2.0; extra == 'dev'
+Requires-Dist: khoj-assistant[prod]; extra == 'dev'
+Requires-Dist: mypy>=1.0.1; extra == 'dev'
+Requires-Dist: pre-commit>=3.0.4; extra == 'dev'
+Requires-Dist: psutil>=5.8.0; extra == 'dev'
+Requires-Dist: pytest-asyncio==0.21.1; extra == 'dev'
+Requires-Dist: pytest-django==4.5.2; extra == 'dev'
+Requires-Dist: pytest-xdist[psutil]; extra == 'dev'
+Requires-Dist: pytest>=7.1.2; extra == 'dev'
+Provides-Extra: prod
+Requires-Dist: boto3>=1.34.57; extra == 'prod'
+Requires-Dist: google-auth==2.23.3; extra == 'prod'
+Requires-Dist: stripe==7.3.0; extra == 'prod'
+Requires-Dist: twilio==8.11; extra == 'prod'
+Description-Content-Type: text/markdown
+
+<p align="center"><img src="src/khoj/interface/web/assets/icons/khoj-logo-sideways-500.png" width="230" alt="Khoj Logo"></p>
+
+<div align="center">
+
+[![test](https://github.com/khoj-ai/khoj/actions/workflows/test.yml/badge.svg)](https://github.com/khoj-ai/khoj/actions/workflows/test.yml)
+[![dockerize](https://github.com/khoj-ai/khoj/actions/workflows/dockerize.yml/badge.svg)](https://github.com/khoj-ai/khoj/pkgs/container/khoj)
+[![pypi](https://github.com/khoj-ai/khoj/actions/workflows/pypi.yml/badge.svg)](https://pypi.org/project/khoj-assistant/)
+![Discord](https://img.shields.io/discord/1112065956647284756?style=plastic&label=discord)
+
+</div>
+
+<div align="center">
+<b>The open-source, personal AI for your digital brain</b>
+</div>
+
+<br />
+
+<div align="center">
+
+[🤖 Read Docs](https://docs.khoj.dev)
+<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+[🏮 Khoj Cloud](https://khoj.dev)
+<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+[💬 Get Involved](https://discord.gg/BDgyabRM6e)
+<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+[📚 Read Blog](https://blog.khoj.dev)
+
+</div>
+
+<div align="left">
+
+***
+
+Khoj is an application that creates always-available, personal AI agents for you to extend your capabilities.
+- You can share your notes and documents to extend your digital brain.
+- Your AI agents have access to the internet, allowing you to incorporate realtime information.
+- Khoj is accessible on Desktop, Emacs, Obsidian, Web and Whatsapp.
+- You can share pdf, markdown, org-mode, notion files and github repositories.
+- You'll get fast, accurate semantic search on top of your docs.
+- Your agents can create deeply personal images and understand your speech.
+- Khoj is open-source, self-hostable. Always.
+
+***
+
+</div>
+
+## See it in action
+
+<img src="https://github.com/khoj-ai/khoj/blob/master/documentation/assets/img/using_khoj_for_studying.gif?raw=true" alt="Khoj Demo">
+
+Go to https://app.khoj.dev to see Khoj live.
+
+## Full feature list
+You can see the full feature list [here](https://docs.khoj.dev/category/features).
+
+## Self-Host
+
+To get started with self-hosting Khoj, [read the docs](https://docs.khoj.dev/get-started/setup).
+
+## Contributors
+Cheers to our awesome contributors! 🎉
+
+<a href="https://github.com/khoj-ai/khoj/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=khoj-ai/khoj" />
+</a>
+
+Made with [contrib.rocks](https://contrib.rocks).
