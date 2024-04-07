@@ -1,0 +1,169 @@
+\documentclass{article}
+
+\usepackage[colorlinks, pdfborder={0 0 0}, plainpages=false]{hyperref}
+\usepackage{graphicx}
+\usepackage{xspace}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{multirow}
+\usepackage{amsmath}
+\newcommand{\roughly}{\mathchar"5218\relax} % Different from \sim in spacing
+
+% Macros for text changes
+\newcommand{\red}{\textcolor{red}}
+\newcommand{\citeme}{{\color{red} CITE ME!}}
+
+
+% Macros for text notes and comments
+\newcommand{\Note}[1]{\textcolor{blue}{\textbf{[#1]}}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\title{
+Optimizing generic mismatches over polarization angles
+}
+
+\author{Jonathan Blackman} 
+
+\date{\today}
+
+\maketitle
+
+Denote time domain waveforms by
+\begin{align}
+h(\vec{\lambda}; t) &= h_+(\vec{\lambda}; t) - h_\times(\vec{\lambda}; t) \\
+                    &= \sum_{\ell, m} Y_{\ell, m}(\theta, \phi)
+                        h^{\ell, m}(\vec{x}; t)
+\end{align}
+where $\lambda = (\vec{x}, \theta, \phi)$ represents the parameters of the
+system, with $\theta, \phi$ being the polar and azimuthal angles of the
+direction of gravitational wave propagation, $Y_{\ell, m}$ are spin-weight
+$-2$ spherical harmonics, and $h_+$, $h_\times$ are the plus and cross
+polarizations.
+The signal in a gravitational wave detector is
+\begin{equation}
+s(t) = \frac{1}{D}\left[F_+(\alpha, \delta, \psi) h_+(t) +
+                        F_\times(\alpha, \delta, \psi) h_\times(t)\right]
+\end{equation}
+where $D$ is the distance to the source and
+$F_+$ and $F_\times$ are the antenna patterns of the gravitational
+wave detector for the given sky position $(\alpha, \delta)$
+and polarization angle $\psi$ of the
+gravitational wave.
+We can rewrite this as
+\begin{equation}
+s(t) = K(\alpha, \delta, \psi, D) \left[
+        \mathrm{cos}(\gamma(\alpha, \delta, \psi)) h_+(t) +
+        \mathrm{sin}(\gamma(\alpha, \delta, \psi)) h_\times(t) \right]
+\end{equation}
+where
+\begin{align}
+K &= \frac{1}{D}\sqrt{F_+^2 + F_\times^2} \\
+e^{i\gamma} &= \frac{F_+ + iF_\times}{\sqrt{F_+^2 + F_\times^2}}.
+\end{align}
+
+
+We often compute mismatches in the frequency domain.
+Denoting a frequency domain quantity (obtained via tapering and an FFT) with
+a tilde, we have
+\begin{align}
+\tilde{h}(\vec{\lambda}; f) &= \tilde{h}_+(\vec{\lambda}; f) -
+                              \tilde{h}_\times(\vec{\lambda}; f) \\
+        &= \sum_{\ell, m} Y_{\ell, m}(\theta, \phi)
+            \tilde{h}^{\ell, m}(\vec{x}; t) \\
+\tilde{s}(f) &= K \left[
+        \mathrm{cos}(\gamma) \tilde{h}_+(f) +
+        \mathrm{sin}(\gamma) \tilde{h}_\times(f) \right].
+\end{align}
+Note that since $s(t)$ is real, we have $\tilde{s}(-f) = \tilde{s}(f)^*$.
+We often wish to compare a gravitational wave signal $s^M(t)$
+produced from a waveform model to a reference signal $s^R(t)$, considered
+to be accurate.
+Often the question will be "Would using this waveform model result in a
+noticeable error in gravitational wave data analysis?", which may have
+different answers depending on the particular data analysis calculation.
+In any case, the answer for a single gravitational wave detector will
+depend only on the overlap between the two signals.
+It is given by
+\begin{equation}
+\mathcal{O} = \frac{(s^R, s^M)}{\sqrt{(s^M, s^M)(s^R, s^R)}}
+\end{equation}
+using the inner product
+\begin{equation}
+(a, b) = 4 \Re \int_{f_\mathrm{min}}^{f_\mathrm{max}}
+        \frac{\tilde{a}(f) \tilde{b}(f)^*}{S(f)}
+\end{equation}
+where $S(f)$ is the detector power spectral density
+and we take $f_\mathrm{min} > 0$ since the negative frequency data gives us
+no new information for real signals.
+
+If the waveform model and the reference waveform are not aligned in the same
+way, we may wish to maximize the overlap over some parameters.
+Maximizing over a timeshift can be done easily: we first compute
+\begin{equation}
+O(\delta t) = 4 \Re \int_{f_\mathrm{min}}^{f_\mathrm{max}}
+        \frac{\tilde{a}(f) \tilde{b}(f)^* e^{2\pi i \delta t f}}{S(f)}
+\end{equation}
+by taking an FFT of the integrand, normalize the result appropriately,
+and maximize it over $\delta t$.
+Taking the array resulting from the FFT might underresolve the overlap
+vs. $\delta t$ peak unless $\delta t$ is sampled very finely, but fitting
+a quadratic to the peak value and its neighbors performs much better.
+
+We can also maximize over the polarization angle without too much difficulty
+by maximizing over $\gamma$.
+We have
+\begin{align}
+s^M(f) &= K \left[ \mathrm{cos}(\gamma) \tilde{h}_+^M(f) +
+                  \mathrm{sin}(\gamma) \tilde{h}_\times^M(f) \right], \\
+(s^M, s^M) &= K^2 \left[ 
+        \mathrm{cos}(\gamma)^2 (h_+^M, h_+^M) +
+        \mathrm{sin}(\gamma)^2 (h_\times^M, h_\times^M) +
+        2\mathrm{sin}(\gamma)\mathrm{cos}(\gamma) (h_+^M, h_\times^M) \right], \\
+(s^R, s^M) &= K \left[
+        \mathrm{cos}(\gamma) (s^R, h_+^M) +
+        \mathrm{sin}(\gamma) (s^R, h_\times^M) \right].
+\end{align}
+This gives
+\begin{equation}
+\mathcal{O}(\gamma) = \frac{ \mathrm{cos}(\gamma) (s^R, h_+^M) +
+            \mathrm{sin}(\gamma) (s^R, h_\times^M) }{
+            \sqrt{(s^R, s^R) \left[
+            \mathrm{cos}(\gamma)^2 (h_+^M, h_+^M) +
+            \mathrm{sin}(\gamma)^2 (h_\times^M, h_\times^M) +
+            2\mathrm{sin}(\gamma)\mathrm{cos}(\gamma) (h_+^M, h_\times^M)\right]}}.
+\end{equation}
+Differentiating this expression with respect to $\gamma$, we obtain a rational
+function with a numerator of (after glorious cancellations and simplifications!):
+\begin{align}
+N &= A\mathrm{cos}(\gamma) + B\mathrm{sin}(\gamma) \\
+A &= (s^R, h_\times^M)(h_+^M, h_+^M) - (s^R, h_+^M)(h_+^M, h_\times^M) \\
+B &= (s^R, h_\times^M)(h_+^M, h_\times^M) - (s^R, h_+^M)(h_\times^M, h_\times^M).
+\end{align}
+The optimal value of $\gamma$ occurs when
+\begin{equation}
+\mathrm{tan}(\gamma) = -\frac{A}{B}.
+\end{equation}
+This has two different solutions: a minimum and a maximum. We can find both
+solutions $\gamma_1 = \mathrm{atan}(-A/B)$, $\gamma_2 = \gamma_1 + \pi$, and
+compute the overlaps for these two values of gamma, taking the maximum of the
+two.
+
+We can maximize over timeshifts and polarization shifts simultaneously by
+treating $(s^R, h_+^M)$ and $(s^R, h_\times^M)$ as arrays for different values
+of $\delta t$, again computing them using a FFT in place of the inner product.
+We then obtain an array of optimal values of $\gamma$ for each $\delta_t$, and
+an array of overlaps optimized over $\gamma$. We then fit the peak to a
+quadratic to maximize over $\delta t$.
+
+
+TODO later: Figure out and write up how to maximize over all fixed rotations
+by making use of inner products between different harmonic modes
+
+
+
+\end{document}
