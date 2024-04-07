@@ -1,0 +1,68 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+
+  // https://docs.renovatebot.com/configuration-options/#extends
+  extends: [
+    // https://docs.renovatebot.com/presets-config/#configbase
+    "config:base",
+
+    // https://docs.renovatebot.com/presets-default/#automergepatch
+    ":automergePatch",
+
+    // https://docs.renovatebot.com/presets-default/#enableprecommit
+    ":enablePreCommit",
+
+    // https://docs.renovatebot.com/presets-default/#prhourlylimitnone
+    ":prHourlyLimitNone",
+
+    // https://docs.renovatebot.com/presets-default/#rebasestaleprs
+    ":rebaseStalePrs",
+
+    // https://docs.renovatebot.com/presets-regexManagers/#regexmanagersgithubactionsversions
+    "regexManagers:githubActionsVersions",
+  ],
+
+  // https://docs.renovatebot.com/configuration-options/#labels
+  labels: ["dependencies"],
+
+  // https://docs.renovatebot.com/configuration-options/#schedule
+  schedule: ["before 5am on saturday"],
+
+  // https://docs.renovatebot.com/configuration-options/#rangestrategy
+  rangeStrategy: "replace",
+
+  // https://docs.renovatebot.com/configuration-options/#platformautomerge
+  platformAutomerge: true,
+
+  // https://docs.renovatebot.com/configuration-options/#lockfilemaintenance
+  lockFileMaintenance: {
+    enabled: true,
+    schedule: ["before 5am on saturday"],
+  },
+
+  // https://docs.renovatebot.com/configuration-options/#packagerules
+  packageRules: [
+    {
+      matchDepTypes: ["typing"],
+      matchDatasources: ["pypi"],
+      excludePackageNames: ["mypy"],
+      automerge: true,
+    },
+    {
+      matchPackageNames: ["astral-sh/ruff-pre-commit"],
+      customChangelogUrl: "https://github.com/charliermarsh/ruff",
+    },
+  ],
+
+  // https://docs.renovatebot.com/configuration-options/#regexmanagers
+  regexManagers: [
+    {
+      description: "Update PEP 440 Python dependencies",
+      fileMatch: ["^.+\\.ya?ml$"],
+      matchStrings: [
+        '"(?<depName>[\\w-]+)(?<currentValue>.+?)",?[[:blank:]]+#[[:blank:]]*renovate: pep440-python-dependency\\s',
+      ],
+      datasourceTemplate: "pypi",
+    },
+  ],
+}
