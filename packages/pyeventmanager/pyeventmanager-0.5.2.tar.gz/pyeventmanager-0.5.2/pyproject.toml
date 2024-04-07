@@ -1,0 +1,83 @@
+[project]
+name = "pyeventmanager"
+version = "0.5.2"
+authors = [{ name = "Jeordy", email = "JeordyR@users.noreply.github.com" }]
+description = "Event management system for Python with support for Threading and Multiprocessing for task running."
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+]
+dependencies = []
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project.urls]
+Documentation = "https://event-manager.jeofi.com"
+Homepage = "https://event-manager.jeofi.com"
+Repository = "https://github.com/JeordyR/PyEventManager"
+Issues = "https://github.com/JeordyR/PyEventManager/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["event_manager"]
+
+[tool.hatch.envs.default]
+path = ".venv"
+dependencies = ["pytest", "pytest-cov", "mypy", "ruff", "coverage", "pdoc"]
+
+[tool.hatch.envs.default.scripts]
+test = "pytest {args:tests}"
+test-cov = "pytest --doctest-modules --cov=event_manager {args:tests}"
+test-report = "pytest --doctest-modules --junit-xml=junit/test-results.xml --cov=event_manager --cov-report=xml --cov-report=html"
+docs-build = "python -m pdoc event_manager --docformat google -o ./docs"
+docs-live = "python -m pdoc event_manager --docformat google"
+
+[tool.coverage.run]
+branch = true
+relative_files = true
+omit = ["event_manager/listeners/base.py"]
+
+[tool.coverage.report]
+# fail_under = 90
+precision = 2
+
+[tool.mypy]
+strict = true
+exclude = ["venv"]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+docstring-code-format = true
+
+[tool.ruff.lint]
+select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+]
+ignore = ["B006"]
+
+[tool.hatch.envs.style]
+detached = true
+dependencies = ["ruff"]
+
+[tool.hatch.envs.style.scripts]
+check = ["ruff check . --output-format=github"]
+fmt = ["ruff check . --output-format=github --fix"]
