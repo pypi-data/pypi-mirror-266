@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "pysysq"
+version = "0.0.9"
+authors =[
+    {name = "Ajith Padman", email = "ajith.padman@gmail.com"}
+]
+description= "A system functional flow simulation framework using Queuing Theory"
+readme = "README.md"
+license = {file = "LICENSE"}
+dependencies = [
+
+"contourpy>=1.2.0",
+"cycler>=0.12.1",
+"fonttools>=4.49.0",
+"Jinja2>=3.1.3",
+"kiwisolver>=1.4.5",
+"markdown-it-py>=3.0.0",
+"MarkupSafe>=2.1.5",
+"matplotlib>=3.8.3",
+"mdurl>=0.1.2",
+"numpy>=1.26.4",
+"packaging>=23.2",
+"pandas>=2.2.1",
+"pillow>=10.2.0",
+"Pygments>=2.17.2",
+"pyparsing>=3.1.1",
+"PySide2>=5.15.2.1",
+"python-dateutil>=2.9.0.post0",
+"pytz>=2024.1",
+"rich>=13.7.1",
+"shiboken2>=5.15.2.1",
+"six>=1.16.0",
+"tzdata>=2024.1",
+"XlsxWriter>=3.2.0"
+
+]
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.10"
+
+]
+[tool.setuptools_scm]
+version_file = "src/pysysq/_version.py"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"*" = ["templates/*.j2", "*.conf","config/*.json"]
+
+
+[project.urls]
+Homepage = "https://github.com/ajithpadman/PysysQ"
+Issues = "https://github.com/ajithpadman/PysysQ/issues"
