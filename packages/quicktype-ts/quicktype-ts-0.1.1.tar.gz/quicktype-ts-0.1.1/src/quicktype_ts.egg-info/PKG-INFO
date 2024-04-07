@@ -1,0 +1,40 @@
+Metadata-Version: 2.1
+Name: quicktype-ts
+Version: 0.1.1
+Summary: Generate typescript types from pydantic models (or JSON schemas) using Quicktype
+Author-email: Marcel Claramunt <marcel@moveread.com>
+Project-URL: repo, https://github.com/moveread/codegen.git
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: pydantic
+
+# Quicktype Ts
+
+> Generate typescript types from pydantic models (or JSON schemas) using Quicktype
+
+
+## Usage
+
+Make sure you have `quicktype` installed:
+  
+```bash
+npm -g i quicktype
+```
+
+```python
+from pydantic import BaseModel, ConfigDict
+from quicktype_ts import pydantic2typescript
+
+class User(BaseModel):
+  model_config = ConfigDict(extra='forbid')
+  name: str
+  age: int
+  friends: list['User']
+
+print(pydantic2typescript(User))
+# export type User = {
+#     age:     number;
+#     friends: User[];
+#     name:    string;
+# }
+```
