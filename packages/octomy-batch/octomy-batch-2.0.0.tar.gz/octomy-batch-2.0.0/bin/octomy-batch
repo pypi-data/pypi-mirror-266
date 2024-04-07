@@ -1,0 +1,119 @@
+#!/usr/bin/env python
+die_sec = 3
+
+
+import asyncio
+import pydantic
+import datetime
+import octomy.config
+import octomy.db
+from functools import lru_cache
+
+
+class DbTime(pydantic.BaseModel):
+	now:datetime.datetime
+
+class DatabaseCheck:
+	def __init__(self, config):
+		config:octomy.config.OctomyConfig = octomy.config.get_config()
+		self.dbc:octomy.db.Database = octomy.db.get_database(config)
+		#assert self.dbc.is_ok()
+		#self.create_tables()
+
+
+	# Get current time from db
+	async def get_now(self, do_debug=False) -> (DbTime, str|None):
+		db_ret, db_err = await self.dbc.query_One("octomy.db.get_now", params=dict(), item_type=DbTime, prepare=False, do_debug=do_debug)
+		return db_ret, db_err
+ 
+
+	async def verify(self):
+		try:
+			db_ret, db_err = await self.get_now()
+			return None == db_err
+		except Exception as e:
+			logger.warning(f"Unknown error '{e}':", exc_info=True)
+			return False
+
+
+#@lru_cache()
+def get_db_checker(config) -> DatabaseCheck:
+	dbc = DatabaseCheck(config)
+	return dbc
+
+async def entrypoint():
+	try:
+		import sys
+		import os
+		import signal
+		def signal_handler(sig, frame):
+			print('SIGINT Received, closing...')
+			sys.exit(0)
+		
+		signal.signal(signal.SIGINT, signal_handler)
+		# Facilitate local override of octomy packages
+		local_modules_path = os.path.join(os.path.dirname(__file__), 'octomy')
+		sys.path.insert(0, local_modules_path)
+		from octomy.log import setup_logging
+	
+		logger = setup_logging(__name__)
+		import datetime
+		import octomy.utils
+		import octomy.batch
+		from octomy.version import get_version
+	
+		octomy_batch_version = get_version("octomy.batch")
+	
+		logger.info(f"Batch version {octomy_batch_version} starting...")
+	
+	except Exception as e:
+		import time
+		import sys
+		logger.error("INIT FAILED - waiting {octomy.utils.human_delta(delay)} before terminating", exc_info=True)
+		time.sleep(die_sec)
+		#raise e
+		sys.exit(5)
+	
+	try:
+		import sys
+		import octomy.config
+		import octomy.batch.server
+		#from octomy.db.check import DatabaseCheck
+	except:
+		delay = datetime.timedelta(seconds=die_sec)
+		logger.error(f"IMPORT FAILED - waiting {octomy.utils.human_delta(delay)} before terminating", exc_info=True)
+		octomy.utils.sleep(delay.total_seconds())
+		sys.exit(2)
+	
+	
+	config:octomy.config.OctomyConfig = octomy.config.get_config()
+	
+	db = get_db_checker(config)
+	if db.verify():
+		logger.info("DB OK")
+	else:
+		delay = datetime.timedelta(seconds=die_sec)
+		logger.error(f"DB FAILED - waiting {octomy.utils.human_delta(delay)} before terminating", exc_info=True)
+		octomy.utils.sleep(delay.total_seconds())
+		sys.exit(3)
+	
+	try:
+		# Make sure to completely free database resources before we start Flask to avoid nasty multi trheading/processing issues
+		del db
+		server = octomy.batch.server.Server(config)
+		ok, message = await server.verify()
+		if ok:
+			logger.info("BatchProcessor OK")
+		else:
+			logger.error(f"BatchProcessor failed with {message}")
+			raise Exception(f"Error while preparing batch processor: {message}")
+		await server.run()
+	
+	except:
+		delay = datetime.timedelta(seconds=die_sec)
+		logger.error(f"MAIN FAILED - waiting {octomy.utils.human_delta(delay)} before terminating", exc_info=True)
+		octomy.utils.sleep(delay.total_seconds())
+		sys.exit(4)
+
+
+asyncio.run(entrypoint())
