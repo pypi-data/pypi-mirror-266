@@ -1,0 +1,88 @@
+# This is where we put things that USED to be in the conf.py
+config:
+  pop:
+    config:
+      default: ~/.pop/config.yaml
+      os: POP_CONFIG
+  log:
+    log_plugin:
+      default: async
+      os: POP_LOG_PLUGIN
+    log_file:
+      default: ~/.pop/pop.log
+      os: POP_LOG_FILE
+    log_level:
+      os: POP_LOG_LEVEL
+      default: "warning"
+    log_fmt_logfile:
+      os: POP_LOG_FMT_LOGFILE
+      default: "%(asctime)s,%(msecs)03d [%(name)-17s][%(levelname)-8s] %(message)s"
+    log_fmt_console:
+      os: POP_LOG_FMT_CONSOLE
+      default: "[%(levelname)-8s] %(message)s"
+    log_datefmt:
+      os: POP_LOG_DATEFMT
+      default: "%H:%M:%S"
+
+cli_config:
+  pop:
+    config:
+      help: The config file used for POP
+      options:
+        - -c
+      subcommands:
+        - __global__
+  log:
+    log_plugin:
+      help: The log plugin to use
+      choices: log
+      group: Logging Options
+      subcommands:
+        - __global__
+    log_file:
+      help: The location of the log file
+      group: Logging Options
+      subcommands:
+        - __global__
+    log_level:
+      help: Set the log level, either quiet, info, warning, debug or error
+      group: Logging Options
+      subcommands:
+        - __global__
+    log_fmt_logfile:
+      help: The log formatting used in the log file
+      group: Logging Options
+      subcommands:
+        - __global__
+    log_fmt_console:
+      help: The log formatting used in the console
+      group: Logging Options
+      subcommands:
+        - __global__
+    log_datefmt:
+      help: The date format to display in the logs
+      group: Logging Options
+      subcommands:
+        - __global__
+
+dyne:
+  log:
+    - log
+
+# python imports to put on the hub for this plugin
+import:
+  - aiologger.handlers.files
+  - argparse
+  - asyncio
+  - collections
+  - importlib
+  - importlib.resources
+  - os
+  - pathlib
+  - pop.exc
+  - cpop.contract
+  - cpop.data
+  - pop.hub
+  - signal
+  - sys
+  - yaml
