@@ -1,0 +1,30 @@
+[build-system]
+requires = ["flit_core >=3.4,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "quant2"
+authors = [{name = "Hejian", email = "flystarhe@qq.com"}]
+readme = "quant/README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "simplejson",
+    "requests >=2.6",
+    "scikit-learn",
+]
+dynamic = ["version", "description"]
+
+[project.urls]
+Home = "https://github.com/flystarhe/quant"
+
+[project.scripts]
+# create a quant command, call the function main()
+quant = "quant:main"
+quant-fb = "quant.football:main"
+
+[tool.flit.module]
+# will have different names for installation and import
+name = "quant"
+
+[tool.pytest.ini_options]
+pythonpath = "."
