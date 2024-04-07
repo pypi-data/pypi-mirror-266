@@ -1,0 +1,102 @@
+# md2gdocs
+
+`md2gdocs` is a simple library and CLI for uploading Markdown content to Google Drive/Docs.
+
+## Google Authentication
+
+To use this tool, you will need to set up a project in the [Google Cloud Console](https://console.cloud.google.com) and 
+configure oauth for your project. You will also need to enable the Google Drive API in your project. 
+
+This is a bit complicated, and outside the scope of this README. If you are not already familiar with Google Cloud 
+and/or oauth, expect to spend some time figuring this out. If you have no idea what any of this means, this tool may not 
+be practical for you to use. I cannot help you with this. Please don't ask. Sorry.
+
+_See_ [Configure the OAuth consent screen and choose scopes](https://developers.google.com/workspace/guides/configure-oauth-consent)
+as a starting point. If you don't have a Google Workspace, you will need to choose **External** for the user type, and 
+explicitly add specific "test" users who are authorized to authenticate via oauth. You will also need to add the scope
+`https://www.googleapis.com/auth/drive` to the oauth consent configuration.
+
+You will then need to download the client credentials and save them in the path specified in the configuration file 
+(_see_ below), which defaults to `~/.local/etc/auth/google/client_credentials.json`.
+
+The first time you run `md2gdocs` a browser window will open, and ask you to authenticate with your Google account.
+This will store a token in the path specified in the configuration file (by default 
+`~/.local/etc/auth/google/md2gdocs_token.json`) so that you will not need to authenticate every time you run the code.
+
+
+## Command Line 
+
+For command-line use, it is recommended to install using [pipx](https://pipx.pypa.io/stable/): `pipx install md2gdocs`.
+
+Once installed, you can call it from the command line by running `md2gdocs /path/to/markdown_file.md`.
+
+## Library
+
+To use in your python program, first install the library with `pip install md2gdocs` or using your preferred package 
+manager. Then:
+
+```python
+import md2gdocs
+md2gdocs.convert_and_upload("/path/to/markdown_file.md")
+```
+
+## Creating a New File
+
+Markdown frontmatter is used to specify the Google Drive file name and ID, e.g.
+
+```markdown
+---
+title: My First Markdown File
+---
+
+# Hello, Markdown!
+
+This is a paragraph in my markdown file.
+```
+
+In the above example, `md2gdocs` will use `My First Markdown File` as the Google Drive file name.
+
+The `title` field is mandatory in the Markdown frontmatter, otherwise `md2gdocs` won't know what to name
+the file in Google Drive.
+
+The first time you upload a file to Google Drive, `md2gdocs` will update the YAML frontmatter of the Markdown file with 
+the Google Drive ID of the file it created:
+
+```markdown
+---
+title: My First Markdown File
+gdrive_id: xxxxxxxxxxxxxxxxxx
+---
+
+# Hello, Markdown!
+
+This is a paragraph in my markdown file.
+```
+
+If you remove the `gdrive_id` from your Markdown file, then the next time you run `md2gdocs`, a completely new Google 
+Drive file will be created.
+
+## Updating a File
+
+On subsequent uploads, `md2gdocs` will _replace_ the name and contents of the _existing_ Google Doc with the contents of 
+the Markdown file, provided you have not removed the `gdrive_id` from the Markdown frontmatter. This will create a new 
+_revision_ of the Google Doc. 
+
+Note that any comments in the Google doc _will be lost_ on update, so be sure to address or copy any comments before 
+updating.
+
+## Configuration
+
+Configuration options can be specified in `~/.local/etc/md2gdocs/md2gdocs.yml` as follows:
+
+```yaml
+google:
+  oauth:
+    client_credentials: /Users/wryfi/.local/etc/auth/google/client_credentials.json
+    server_port: 9999
+    token: /Users/wryfi/.local/etc/auth/google/md2gdocs_token.json
+log:
+  level: info
+markdown:
+  extensions: []
+```

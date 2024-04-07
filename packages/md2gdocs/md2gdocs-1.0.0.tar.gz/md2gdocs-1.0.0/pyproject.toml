@@ -1,0 +1,60 @@
+[project]
+name = "md2gdocs"
+version = "1.0.0"
+description = "Tool to upload markdown to Google Drive/Docs."
+authors = [
+    { name = "Christian Haumesser", email = "chris.haumesser@gmail.com" },
+]
+keyworkds = [
+    "markdown",
+    "google",
+    "drive",
+    "docs",
+]
+dependencies = [
+    "google-api-python-client",
+    "google-auth-httplib2",
+    "google-auth-oauthlib",
+    "cfitall",
+    "python-frontmatter",
+    "markdown",
+]
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+]
+readme = "README.md"
+
+[project.license]
+text = "MIT"
+
+[project.scripts]
+md2gdocs = "md2gdocs.upload:cli"
+
+[project.urls]
+homepage = "https://gitlab.com/wryfi/md2gdocs"
+documentation = "https://gitlab.com/wryfi/md2gdocs"
+repository = "https://gitlab.com/wryfi/md2gdocs"
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[tool.pdm]
+distribution = true
+source = [
+    { url = "https://pypi.org/simple", verify_ssl = true, name = "pypi" },
+]
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "build",
+    "ipython",
+    "md2gdocs",
+]
