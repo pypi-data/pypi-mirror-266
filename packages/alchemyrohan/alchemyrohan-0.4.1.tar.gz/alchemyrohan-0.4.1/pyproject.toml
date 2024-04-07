@@ -1,0 +1,49 @@
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[project]
+name = "alchemyrohan"
+version = "0.4.1"
+dependencies = [
+    "SQLAlchemy>=2.0.29",
+    "oracledb>=2.1.1",
+]
+requires-python = ">=3.12"
+authors = [
+    { name = "Alan Wamberger", email = "awamberger@proton.me" },
+]
+description = "Is a helpful tool for creating SqlAlchemy models."
+readme = "README.md"
+keywords = [
+    "alchemyrohan",
+    "database",
+    "SQLAlchemy",
+    "models",
+    "help-tool",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Build Tools",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+]
+
+[project.license]
+file = "LICENSE"
+
+[project.urls]
+Homepage = "https://github.com/wamberger/alchemyrohan"
+Documentation = "https://github.com/wamberger/alchemyrohan/blob/master/README.md"
+Repository = "https://github.com/wamberger/alchemyrohan"
+Changelog = "https://github.com/wamberger/alchemyrohan/blob/master/CHANGELOG.md"
+
+[project.scripts]
+arohan = "alchemyrohan.assemble:main"
+
+[tool]
