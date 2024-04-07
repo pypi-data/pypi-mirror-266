@@ -1,0 +1,47 @@
+
+
+
+
+ISO:
+
+	agenda:
+		[ ] Create OS on drive from ISO:
+				
+				sudo dd if=/iso.iso of=/dev/sdc bs=1M status=progress 
+				
+					?
+						
+						bs=64K
+						bs=4M
+						oflag=sync
+						conv=noerror,sync
+		
+		[ ] Make ISO from OS on drive:
+			
+				https://askubuntu.com/questions/1279061/how-do-i-create-a-bootable-iso-file-from-my-current-ubuntu-20-04-machine
+				https://askubuntu.com/questions/165620/how-do-i-make-an-iso-from-a-disc
+			
+				?				
+					genisoimage
+				
+					Fedora:
+						Partitioning: GUID Partition Table
+					
+						Volumes:
+							/dev/sda1
+								Parition Type: 	EFI
+								Contents:		FAT (32-bit)
+								
+								mounted at:		/boot/efi
+									
+							/dev/sda2
+								Parition Type: 	Linux Filesystem
+								Contents:		Ext4
+								
+								mounted at:		/boot
+								
+							/dev/sda3
+								Parition Type: 	Linux Filesystem
+								Contents:		Btrfs
+								
+								mounted at:		/boot
