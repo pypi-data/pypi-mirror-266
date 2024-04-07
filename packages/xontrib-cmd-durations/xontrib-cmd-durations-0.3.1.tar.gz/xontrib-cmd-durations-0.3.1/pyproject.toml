@@ -1,0 +1,56 @@
+[project]
+authors = [
+    { name = "Noortheen Raja J", email = "jnoortheen@gmail.com" },
+]
+requires-python = ">=3.7"
+dependencies = [
+    "xonsh>=0.10",
+    "notify-py>=0.3.3; python_version >= \"3.6\" and python_version < \"4.0\"",
+]
+name = "xontrib-cmd-durations"
+version = "0.3.1"
+description = "Send notification once long running command is finished. Add duration PROMP_FIELD."
+readme = "README.md"
+keywords = [
+    "xontrib",
+    "xonsh",
+]
+classifiers = [
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Topic :: System :: Shells",
+    "Topic :: System :: System Shells",
+    "Topic :: Terminals",
+    "Programming Language :: Python",
+    "Topic :: Utilities",
+    "Topic :: Software Development",
+    "Programming Language :: Python :: 3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "black",
+]
+
+[project.license]
+text = "MIT"
+
+[project.urls]
+Documentation = "https://github.com/jnoortheen/xontrib-cmd-durations/blob/master/README.md"
+Code = "https://github.com/jnoortheen/xontrib-cmd-durations"
+"Issue tracker" = "https://github.com/jnoortheen/xontrib-cmd-durations/issues"
+repository = "https://github.com/jnoortheen/xontrib-cmd-durations"
+
+[tool.pdm.build]
+includes = [
+    "xontrib",
+]
+
+[build-system]
+requires = [
+    "pdm-pep517>=1.0.0",
+]
+build-backend = "pdm.pep517.api"
