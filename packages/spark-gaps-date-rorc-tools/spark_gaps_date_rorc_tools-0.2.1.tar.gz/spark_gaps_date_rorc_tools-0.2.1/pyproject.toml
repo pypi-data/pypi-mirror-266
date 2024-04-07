@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "spark-gaps-date-rorc-tools"
+version = "0.1.0"
+description = ""
+authors = ["jonathan <jony327@gmail.com>"]
+readme = "README.md"
+packages = [{include = "spark_gaps_date_rorc_tools"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+spark-dataframe-tools = "^0.6.3"
+fastparquet = "^2024.2.0"
+fastavro = "^1.9.4"
+pyyaml = "^6.0.1"
+
+
+
+
+[tool.poetry.group.dev.dependencies]
+jupyterlab = "^4.0.0"
+twine = "^4.0.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
