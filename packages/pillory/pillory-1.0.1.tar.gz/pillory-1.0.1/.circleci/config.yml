@@ -1,0 +1,45 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@2.1.1
+
+jobs:
+  lint:
+    executor:
+        name: python/default
+        tag: "3.10"
+    steps:
+      - checkout
+      - python/install-packages:
+          pip-dependency-file: dev-requirements.txt
+          pkg-manager: pip
+      - run:
+          name: ruff
+          command: ruff check
+      - run:
+          name: ruff format
+          command: ruff format --check
+
+  publish:
+    executor:
+        name: python/default
+        tag: "3.10"
+    steps:
+      - checkout
+      - python/install-packages:
+          pip-dependency-file: dev-requirements.txt
+          pkg-manager: pip
+      - run:
+          name: flit publish
+          command: flit publish
+
+workflows:
+  lint-and-publish:
+    jobs:
+      - lint
+      - publish:
+          requires:
+            - lint
+          filters:
+            branches:
+              only: main
