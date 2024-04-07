@@ -1,0 +1,158 @@
+Metadata-Version: 2.1
+Name: iderare-pheno
+Version: 0.1.6
+Author-email: Allen Institute for Artificial Intelligence <contact@allenai.org>
+License: BSD 3-Clause License
+        
+        Copyright (c) 2024, Ivan William Harsono
+        
+        Redistribution and use in source and binary forms, with or without
+        modification, are permitted (subject to the limitations in the disclaimer
+        below) provided that the following conditions are met:
+        
+             * Redistributions of source code must retain the above copyright notice,
+             this list of conditions and the following disclaimer.
+        
+             * Redistributions in binary form must reproduce the above copyright
+             notice, this list of conditions and the following disclaimer in the
+             documentation and/or other materials provided with the distribution.
+        
+             * Neither the name of the copyright holder nor the names of its
+             contributors may be used to endorse or promote products derived from this
+             software without specific prior written permission.
+        
+        NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY
+        THIS LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+        CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+        LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+        PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+        CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+        EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+        PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+        BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
+        IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+        ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+        POSSIBILITY OF SUCH DAMAGE.
+        
+Project-URL: Homepage, https://github.com/ivanwilliammd/iderare-pheno
+Project-URL: Repository, https://github.com/ivanwilliammd/iderare-pheno
+Project-URL: Changelog, https://github.com/ivanwilliammd/iderare-pheno/blob/main/CHANGELOG.md
+Classifier: Intended Audience :: Science/Research
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Provides-Extra: dev
+Requires-Dist: ruff ; extra == 'dev'
+Requires-Dist: mypy <1.10,>=1.0 ; extra == 'dev'
+Requires-Dist: black <25.0,>=23.0 ; extra == 'dev'
+Requires-Dist: isort <5.14,>=5.12 ; extra == 'dev'
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: pytest-sphinx ; extra == 'dev'
+Requires-Dist: pytest-cov ; extra == 'dev'
+Requires-Dist: twine >=1.11.0 ; extra == 'dev'
+Requires-Dist: build ; extra == 'dev'
+Requires-Dist: setuptools ; extra == 'dev'
+Requires-Dist: wheel ; extra == 'dev'
+Requires-Dist: Sphinx <7.3.0,>=4.3.0 ; extra == 'dev'
+Requires-Dist: furo ==2024.1.29 ; extra == 'dev'
+Requires-Dist: myst-parser <2.1,>=1.0 ; extra == 'dev'
+Requires-Dist: sphinx-copybutton ==0.5.2 ; extra == 'dev'
+Requires-Dist: sphinx-autobuild ==2021.3.14 ; extra == 'dev'
+Requires-Dist: sphinx-autodoc-typehints ==1.23.3 ; extra == 'dev'
+Requires-Dist: packaging ; extra == 'dev'
+
+# [iderare-pheno](https://iderare-pheno.readthedocs.io/)
+
+<!-- start tagline -->
+
+A file utility library that provides a unified, simple interface for accessing both local and remote files.
+This can be used behind other APIs that need to access files agnostic to where they are located.
+
+<!-- end tagline -->
+
+<p align="center">
+    <a href="https://github.com/ivanwilliammd/iderare-pheno/actions">
+        <img alt="CI" src="https://github.com/ivanwilliammd/iderare-pheno/workflows/Main/badge.svg?event=push&branch=main">
+    </a>
+    <a href="https://pypi.org/project/iderare_pheno/">
+        <img alt="PyPI" src="https://img.shields.io/pypi/v/iderare_pheno">
+    </a>
+    <a href="https://iderare-pheno.readthedocs.io/en/latest/?badge=latest">
+        <img src="https://readthedocs.org/projects/iderare-pheno/badge/?version=latest" alt="Documentation Status" />
+    </a>
+    <a href="https://github.com/ivanwilliammd/iderare-pheno/blob/main/LICENSE">
+        <img alt="License" src="https://img.shields.io/github/license/ivanwilliammd/iderare-pheno.svg?color=blue&cachedrop">
+    </a>
+    <br/>
+</p>
+
+## Quick links
+
+- [Documentation](https://iderare-pheno.readthedocs.io/)
+- [PyPI Package](https://pypi.org/project/iderare-pheno/)
+- [License](https://github.com/ivanwilliammd/iderare-pheno/blob/main/LICENSE)
+
+## Installation
+
+<!-- start py version -->
+
+**iderare-pheno** requires Python 3.8 or later.
+
+<!-- end py version -->
+
+### Installing with `pip`
+
+<!-- start install pip -->
+
+**iderare-pheno** is available [on PyPI](https://pypi.org/project/iderare-pheno/). Just run
+
+```bash
+pip install iderare-pheno
+```
+
+<!-- end install pip -->
+
+### Installing from source
+
+<!-- start install source -->
+
+To install **iderare-pheno** from source, first clone [the repository](https://github.com/ivanwilliammd/iderare-pheno):
+
+```bash
+git clone https://github.com/ivanwilliammd/iderare-pheno.git
+cd iderare_pheno
+```
+
+Then run
+
+```bash
+pip install -e .
+```
+
+<!-- end install source -->
+
+## Usage
+
+```python
+from iderare_pheno import iderare_pheno
+```
+
+## Team
+
+<!-- start team -->
+
+**iderare-pheno** is developed and maintained by the author(s), To learn more about who specifically contributed to this codebase, see [our contributors](https://github.com/ivanwilliammd/iderare-pheno/graphs/contributors) page.
+
+<!-- end team -->
+
+## License
+
+<!-- start license -->
+
+**iderare-pheno** license is derived from [IDeRare](https://github.com/ivanwilliammd/iderare)
+
+<!-- end license -->
