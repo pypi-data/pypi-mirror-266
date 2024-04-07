@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=65.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages]
+find = {namespaces = false}
+
+[project]
+name = "pozo"
+license = {file = "LICENSE.txt"}
+description = "Help visualizing well log data - Herramienta para visualizar registros de pozos"
+readme = "README.md"
+requires-python = ">=3.9"
+version = "0.9.18"
+dependencies = [
+ "ood >=1.0.6",
+ "plotly >=5.18.0",
+ "colour >= 0.1.5",
+ "pint >= 0.23",
+ "pandas >= 2.0.0",
+ "numpy >= 1.26.0",
+ "kaleido >=0.2.1"
+ ]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.ruff.lint]
+ignore = ["E701"]
