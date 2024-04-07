@@ -1,0 +1,20 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "timezone": "Europe/Helsinki",
+  "packageRules": [
+    {
+      "paths": ["requirements-dev.txt"],
+      "groupName": "devDependencies",
+      "schedule": "before 1pm on Monday"
+    },
+    {
+      "ignorePaths": ["requirements-dev.txt"],
+      "matchPackagePatterns": ["*"],
+      "groupName": "dependencies",
+      "schedule": "before 1pm on Monday"
+    }
+  ]
+}

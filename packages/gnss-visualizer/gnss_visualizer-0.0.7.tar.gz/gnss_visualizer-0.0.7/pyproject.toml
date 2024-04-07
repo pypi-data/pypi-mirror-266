@@ -1,0 +1,81 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "gnss-visualizer"
+version = "0.0.7"
+dependencies = [
+  "pyubx2",
+  "bokeh",
+  "pyserial",
+  "xyzservices",
+  "pyproj",
+]
+requires-python = ">=3.10"
+authors = [
+  {name = "Ville Joensuu", email = "ville.joensuu@iki.fi"},
+]
+maintainers = [
+  {name = "Ville Joensuu", email = "ville.joensuu@iki.fi"},
+]
+description = "Visualize GNSS data in a web browser"
+readme = "README.md"
+license = {file = "LICENSE"}
+keywords = ["gnss", "nmea", "gps"]
+classifiers = [
+  "Programming Language :: Python"
+]
+
+
+[project.urls]
+Homepage = "https://github.com/jopppis/gnss-visualizer"
+Documentation = "https://github.com/jopppis/gnss-visualizer"
+Repository = "https://github.com/jopppis/gnss-visualizer.git"
+"Bug Tracker" = "https://github.com/jopppis/gnss-visualizer/issues"
+Changelog = "https://github.com/jopppis/gnss-visualizer/blob/main/CHANGELOG.md"
+
+[tool]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/gnss_visualizer"]
+
+[project.scripts]
+gnss-visualizer = "gnss_visualizer.run_server:main"
+
+[tool.mypy]
+strict = true
+exclude = ["tests/"]
+
+[[tool.mypy.overrides]]
+module = [
+    "pyubx2",
+    "xyzservices",
+    "xyzservices.providers",
+    "serial"
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests",
+]
+
+[tool.tox]
+legacy_tox_ini = """
+    [tox]
+    min_version = 4.0
+    env_list =
+        py310
+        py311
+        py312
+
+    [testenv]
+    deps = pytest
+    commands = pytest
+    [gh]
+    python =
+        3.12 = py312
+        3.11 = py311
+        3.10 = py310
+"""
