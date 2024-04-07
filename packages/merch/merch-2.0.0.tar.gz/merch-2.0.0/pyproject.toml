@@ -1,0 +1,57 @@
+
+
+
+#
+#	agenda:
+#		[ ] parse toml config for installations
+#
+
+
+#
+#	publish: python3 moves/publish.py
+#
+
+#
+#	not sure what this does:
+#		python3 -m build --sdist 
+#
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "merch"
+version = "2.0.0"
+dependencies = [
+	"volts",
+	"somatic",
+	
+	
+	
+	"click"
+]
+
+license = { text = "lie sensibly" }
+# license = { file = "license.s.HTML" }
+
+description = ""
+readme = "readme.md"
+
+
+[project.scripts]
+#
+#	https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#creating-executable-scripts
+#	from merch import clique; clique ()
+#
+# 	merch = "merch:clique"
+#
+
+[tool.setuptools.packages.find]
+where = [ "venues/stages" ]
+
+#
+#	https://setuptools.pypa.io/en/latest/userguide/datafiles.html
+#
+[tool.setuptools.package-data]
+"*" = [ "*.html", "*.HTML" ]
