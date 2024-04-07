@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "py-libtrust"
+version = "2.0.0"
+description = "Yet another docker/libtrust implement by python."
+license = "Apache-2.0"
+authors = ["shabbywu <shabbywu@qq.com>"]
+
+readme = "README.md"
+repository = "https://github.com/shabbywu/py-libtrust"
+homepage = "https://github.com/shabbywu/py-libtrust"
+
+packages = [
+    {include = "libtrust"}
+]
+
+[tool.poetry.dependencies]
+python = ">=3.6"
+cryptography = ">= 37"
+typing-extensions = ">= 3.6.5"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.5"
+pytest-cov = "^3.0.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 119
+skip-string-normalization = 'true'
+
+[tool.isort]
+force_grid_wrap = 0
+include_trailing_comma = true
+line_length = 119
+multi_line_output = 3
+use_parentheses = true
