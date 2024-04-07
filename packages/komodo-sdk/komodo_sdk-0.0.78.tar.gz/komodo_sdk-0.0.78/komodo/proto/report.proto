@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package komodo.proto.generated.collection_pb2;
+
+// Komodo Report
+// protoc -I. --python_out=./generated --pyi_out=./generated ./report.proto
+
+
+
+message Report {
+    string guid = 1;
+    string name = 2;
+    string description = 3;
+    string title = 4;
+    string created_at = 5;
+    string modified_at = 6;
+    repeated Widget widgets = 7;
+}
+
+
+message Widget {
+    enum Type {
+        UNSPECIFIED = 0;
+        TEXT = 1;
+        SUMMARY = 2;
+        TABLE = 3;
+        CHART = 4;
+        AUDIO = 5;
+        VIDEO = 6;
+        IMAGE = 7;
+        PDF = 8;
+        HTML = 9;
+        LINK = 10;
+        MAP = 11;
+        DOCUMENT = 12;
+    }
+
+    string guid = 1;
+    string name = 2;
+    string description = 3;
+    Type type = 4;
+    string contents = 5;
+    string audience = 6;
+    string instructions = 7;
+    string created_at = 8;
+    string modified_at = 9;
+}

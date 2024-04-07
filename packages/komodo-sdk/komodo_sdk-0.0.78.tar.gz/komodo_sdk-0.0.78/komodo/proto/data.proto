@@ -1,0 +1,94 @@
+syntax = "proto3";
+
+package komodo.proto.generated.data_pb2;
+
+// Komodo Data Source
+// protoc -I. --python_out=./generated --pyi_out=./generated ./data.proto
+
+message DataSource {
+    enum Type {
+        UNSPECIFIED = 0;
+        FILESYSTEM = 1;
+        WEBPAGE = 2;
+        WEBSITE = 3;
+        S3 = 4;
+        DATABASE = 5;
+        API = 6;
+    }
+
+    string name = 1;
+    Type type = 2;
+    oneof source {
+        Filesystem filesystem = 3;
+        Webpage webpage = 4;
+        Website website = 5;
+        S3 s3 = 6;
+        Database database = 7;
+        Api api = 8;
+    }
+}
+
+message Filesystem {
+    string path = 1;
+}
+
+message Webpage {
+    string url = 1;
+}
+
+message Website {
+    string url = 1;
+    int32 depth = 2;
+}
+
+message S3 {
+    string bucket = 1;
+    string key = 2;
+}
+
+message Database {
+    string host = 1;
+    string port = 2;
+    string database = 3;
+    string username = 4;
+    string password = 5;
+    string table = 6;
+}
+
+message Api {
+    string url = 1;
+    string username = 2;
+    string password = 3;
+}
+
+
+message VectorStore {
+    enum Type {
+        UNSPECIFIED = 0;
+        PINECONE = 1;
+        QDRANT = 2;
+    }
+
+    string name = 1;
+    string type = 2;
+    string index = 3;
+    oneof store {
+        PineconeIndex pinecone = 4;
+        QdrantCollection qdrant = 5;
+    }
+}
+
+message PineconeIndex {
+    string name = 1;
+    int32 dimension = 2;
+    string metric = 3;
+}
+
+message QdrantCollection {
+    string name = 1;
+    string location = 2;
+    string url = 3;
+    int32 port = 4;
+    int32 dimension = 5;
+    string metric = 6;
+}
