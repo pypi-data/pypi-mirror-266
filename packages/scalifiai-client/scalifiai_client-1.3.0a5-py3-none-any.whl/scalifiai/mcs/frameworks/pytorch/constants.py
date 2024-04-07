@@ -1,0 +1,1 @@
+FRAMEWORK_KEY = "pytorch"
