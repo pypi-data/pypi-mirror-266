@@ -1,0 +1,30 @@
+Metadata-Version: 2.1
+Name: nlpx
+Version: 0.0.1
+Summary: A tool set for NLP.
+Home-page: https://gitee.com/summry/nlpx
+Author: summy
+Author-email: xiazhongbiao@126.com
+License: UNKNOWN
+Keywords: NLP
+Platform: UNKNOWN
+Requires-Python: >=3.5
+Description-Content-Type: text/markdown
+
+Usage Sample
+''''''''''''
+
+.. code:: python
+
+        from nlpx.text_token import Tokenizer
+
+        if __name__ == '__main__':
+            corpus = ...
+            tokenizer = Tokenizer(corpus)
+            sent = 'I love you'
+            tokens = tokenizer.encode(sent, max_length=6, pad_begin_end=True)
+            # [101, 66, 88, 99, 102, 0]
+            sent = tokenizer.decode(sent)
+            # ['<bos>', 'I', 'love', 'you', '<eos>', '<pad>']
+
+
