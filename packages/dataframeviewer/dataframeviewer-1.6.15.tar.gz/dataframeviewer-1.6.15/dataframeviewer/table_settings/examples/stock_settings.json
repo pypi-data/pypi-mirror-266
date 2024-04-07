@@ -1,0 +1,168 @@
+{
+  "formulas": {
+    "Adj Close_MEAN": "`Adj Close`.mean()",
+    "Adj Close_MEDIAN": "`Adj Close`.median()",
+    "Daily Returns": "`Adj Close` / `Adj Close`.shift() - 1",
+    "Volatility (Std of Daily Returns)": "`Daily Returns`.std()",
+    "Daily Returns_MEAN": "`Daily Returns`.mean()"
+  },
+  "customXAxis": false,
+  "editable": true,
+  "freezeFirstColumn": true,
+  "colorRules": {
+    "Daily Returns": [
+      {
+        "condition": "x > 0",
+        "color": "#00ff00",
+        "enabled": true
+      },
+      {
+        "condition": "x < 0",
+        "color": "#ff6347",
+        "enabled": true
+      }
+    ]
+  },
+  "queryList": [],
+  "columnFilter": "",
+  "currentPage": 1,
+  "savedPlots": [
+    {
+      "x": null,
+      "y": [
+        "Adj Close"
+      ],
+      "options": {
+        "subplots": true,
+        "kind": "line",
+        "sharex": true
+      }
+    },
+    {
+      "x": "Date",
+      "y": [
+        "Adj Close",
+        "Adj Close_MEDIAN",
+        "Adj Close_MEAN"
+      ],
+      "options": {
+        "title": "Adj Close Stats",
+        "kind": "line",
+        "subplots": false,
+        "legend": true,
+        "sharex": true
+      }
+    },
+    {
+      "x": null,
+      "y": [
+        "Daily Returns"
+      ],
+      "options": {
+        "subplots": true,
+        "kind": "line",
+        "sharex": true
+      }
+    }
+  ],
+  "selectedColumns": {
+    "Date": true,
+    "Adj Close": true,
+    "Daily Returns": true,
+    "Daily Returns_MEAN": true,
+    "Volatility (Std of Daily Returns)": true,
+    "Adj Close_MEDIAN": true,
+    "Adj Close_MEAN": true
+  },
+  "operations": [
+    {
+      "operation": "insertColumn",
+      "data": {
+        "name": "Adj Close_MEAN",
+        "column": "",
+        "index": 6
+      }
+    },
+    {
+      "operation": "applyFormula",
+      "data": {
+        "index": 7,
+        "formula": "`Adj Close`.mean()"
+      }
+    },
+    {
+      "operation": "insertColumn",
+      "data": {
+        "name": "Adj Close_MEDIAN",
+        "column": "",
+        "index": 6
+      }
+    },
+    {
+      "operation": "applyFormula",
+      "data": {
+        "index": 7,
+        "formula": "`Adj Close`.median()"
+      }
+    },
+    {
+      "operation": "insertColumn",
+      "data": {
+        "name": "Daily Returns",
+        "column": "",
+        "index": 6
+      }
+    },
+    {
+      "operation": "applyFormula",
+      "data": {
+        "index": 7,
+        "formula": "`Adj Close`"
+      }
+    },
+    {
+      "operation": "applyFormula",
+      "data": {
+        "index": 7,
+        "formula": "`Adj Close` / `Adj Close`.shift() - 1"
+      }
+    },
+    {
+      "operation": "insertColumn",
+      "data": {
+        "name": "Daily Returns_STD",
+        "column": "",
+        "index": 7
+      }
+    },
+    {
+      "operation": "applyFormula",
+      "data": {
+        "index": 8,
+        "formula": "`Daily Returns`.std()"
+      }
+    },
+    {
+      "operation": "renameColumn",
+      "data": {
+        "orig_name": "Daily Returns_STD",
+        "name": "Volatility (Std of Daily Returns)"
+      }
+    },
+    {
+      "operation": "insertColumn",
+      "data": {
+        "name": "Daily Returns_MEAN",
+        "column": "",
+        "index": 7
+      }
+    },
+    {
+      "operation": "applyFormula",
+      "data": {
+        "index": 8,
+        "formula": "`Daily Returns`.mean()"
+      }
+    }
+  ]
+}
