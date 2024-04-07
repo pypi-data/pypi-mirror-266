@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "general_tamsat_alert"
+version = "1.2.0"
+dependencies = [
+    "numpy",
+    "xarray",
+    "scipy",
+    "fastroc",
+]
+authors = [
+    {name = "John Ellis", email = "12johnellis@gmail.com"}
+]
+description = ""
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["general_tamsat_alert"]
+exclude = ["general_tamsat_alert.tests"]
