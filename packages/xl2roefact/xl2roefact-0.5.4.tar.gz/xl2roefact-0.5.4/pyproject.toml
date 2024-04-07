@@ -1,0 +1,145 @@
+[project]
+name = "xl2roefact"
+dynamic = []
+description = "Excel invoices data retrieve, export & upload to RO E-Fact system"
+authors = [
+    { name = "Petre Iordanescu", email = "petre.iordanescu@gmail.com" },
+    { name = "RENware Software Systems", email = "renware.systems@gmail.com" },
+]
+dependencies = [
+    "altgraph~=0.17",
+    "argcomplete~=3.2",
+    "commonmark~=0.9",
+    "et-xmlfile~=1.1",
+    "Fraction~=2.2",
+    "Jinja2~=3.1",
+    "lief~=0.13",
+    "markdown-it-py~=3.0",
+    "MarkupSafe~=2.1",
+    "mdurl~=0.1",
+    "openpyxl~=3.1",
+    "packaging~=23.2",
+    "pefile~=2023.2",
+    "pdm~=2.12",
+    "pip~=24.0",
+    "platformdirs~=4.1",
+    "Pygments~=2.17",
+    "pylightxl~=1.61",
+    "pyproject-hooks~=1.0",
+    "python-dateutil~=2.8",
+    "pytzdata~=2020.1",
+    "pywin32-ctypes~=0.2",
+    "rich~=13.7",
+    "setuptools~=69.0",
+    "shellingham~=1.5",
+    "six~=1.16",
+    "time-machine~=2.13",
+    "tomli~=2.0",
+    "typing-extensions~=4.9",
+    "tzdata~=2023.4",
+    "userpath~=1.9",
+    "wheel~=0.42",
+    "msgpack>=1.0.8",
+    "pyyaml>=6.0.1",
+]
+readme = "README.md"
+requires-python = ">=3.10,<3.11"
+classifiers = [
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: GNU General Public License (GPL)",
+    "Operating System :: OS Independent",
+    "Topic :: Office/Business :: Financial",
+]
+version = "0.5.4"
+
+[project.license]
+file = "LICENSE"
+
+[project.urls]
+Homepage = "https://invoicetoroefact.renware.eu"
+PDF-Documentation = "https://invoicetoroefact.renware.eu/pdfs/print_page.html/print_page.pdf"
+PyPi-Package = "https://pypi.org/project/xl2roefact/"
+GitHub = "https://github.com/petre-renware/api_to_roefact"
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.version]
+source = "file"
+path = "xl2roefact/__version__.py"
+
+[tool.pdm.build.wheel-data]
+data = [
+    { path = "data/*", relative-to = "data/" },
+]
+
+[tool.pdm.scripts.build_wheel]
+shell = "pdm build --no-clean"
+
+[tool.pdm.scripts.build_msi]
+shell = "python setup.py bdist_msi"
+
+[tool.pdm.scripts.build_sexe]
+cmd = [
+    "pyinstaller",
+    "--distpath=dist_sexe/",
+    "--name=xl2roefact",
+    "--log-level=WARN",
+    "--onefile",
+    "--noconfirm",
+    "xl2roefact_copy_for_sexe.py",
+]
+
+[tool.pdm.scripts.post_build_sexe]
+call = "xl2roefact.libutils:complete_sexe_file"
+
+[tool.pdm.scripts.build_doc]
+shell = "pydoc-markdown -I xl2roefact >doc/810.05a-xl2roefact_DLD_specs.md"
+
+[tool.pdm.scripts.build_all]
+composite = [
+    "build_wheel",
+    "build_msi",
+    "build_sexe",
+    "build_doc",
+]
+
+[tool.pdm.scripts.xl2roefact]
+shell = "python -m xl2roefact"
+
+[tool.pdm.scripts.pypi_publish]
+shell = "git checkout -b pypi-publish; git push --force"
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "build~=1.0",
+    "click~=8.1",
+    "typer~=0.9",
+    "pydoc-markdown~=4.8",
+    "cx-Freeze~=6.15",
+    "cx-Logging~=3.1",
+    "pyinstaller>=4.10",
+    "pyinstaller-hooks-contrib~=2023.12",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.distutils.build_exe]
+excludes = [
+    "tkinter",
+    "unittest",
+]
+zip_include_packages = [
+    "encodings",
+    "PySide6",
+]
