@@ -1,0 +1,42 @@
+Metadata-Version: 2.1
+Name: detoxio
+Version: 0.1.16
+Summary: detoxio.ai - API first LLM security testing and red team automation
+Home-page: https://detoxio.ai
+License: Apache-2.0
+Author: detoxio.ai
+Author-email: hello@detoxio.ai
+Requires-Python: >=3.8,<4.0
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Security
+Requires-Dist: grpcio (>=1.62.1,<2.0.0)
+Requires-Dist: grpcio-tools (>=1.62.1,<2.0.0)
+Requires-Dist: tenacity (>=8.2.3,<9.0.0)
+Project-URL: Documentation, https://docs.detoxio.ai
+Description-Content-Type: text/markdown
+
+# detoxio.ai SDK
+
+## Installation
+
+```bash
+python3 -m pip install detoxio \
+    detoxio-api-protocolbuffers-python detoxio_api_grpc_python \
+    --upgrade --extra-index-url https://buf.build/gen/python
+```
+
+> **Note:** We need to install additional packages because as per PEP-440, we
+> cannot have a package with direct dependencies outside the public index
+
+## Usage
+
+* https://docs.detoxio.ai/
+
+

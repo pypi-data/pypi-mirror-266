@@ -1,0 +1,42 @@
+[tool.poetry]
+name = "detoxio"
+version = "0.1.16"
+description = "detoxio.ai - API first LLM security testing and red team automation"
+authors = ["detoxio.ai <hello@detoxio.ai>"]
+readme = "README.md"
+license = "Apache-2.0"
+homepage = "https://detoxio.ai"
+documentation = "https://docs.detoxio.ai"
+classifiers = [
+	"Topic :: Security",
+	"Topic :: Scientific/Engineering :: Artificial Intelligence"
+]
+
+packages = [
+	{ include = "detoxio", from = "./src" },
+]
+
+[[tool.poetry.source]]
+name = "buf"
+url = "https://buf.build/gen/python"
+priority = "supplemental"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+# We cannot have this as whl dependencies due to PyPI restrictions (PEP-440)
+# We will have these dependencies installed as part of sdk installation process
+#detoxio-api-protocolbuffers-python = {version = "^25.3.0.1.20240306150639+a7433467df44", source = "buf"}
+#detoxio_api_grpc_python = {version = "^1.62.1.1.20240306150639+a7433467df44", source = "buf"}
+grpcio = "^1.62.1"
+grpcio-tools = "^1.62.1"
+tenacity = "^8.2.3"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.3.2"
+
+[tool.poetry.group.test.dependencies]
+# Test dependencies go here
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
