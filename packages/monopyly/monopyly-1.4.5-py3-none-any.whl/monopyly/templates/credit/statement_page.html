@@ -1,0 +1,71 @@
+{% extends 'layout.html' %}
+
+
+{% block header %}
+
+  <h1>
+    {% block title %}
+      Statement Details
+    {% endblock %}
+  </h1>
+
+{% endblock %}
+
+
+{% block content %}
+
+  <div id="credit-statement-details" class="details">
+
+    <div id="credit-statement-info" class="primary-info">
+
+      <div id="statement-summary-container" class="summary-container">
+        {% include 'credit/statement_summary.html' %}
+      </div>
+
+      <div id="statement-transactions-container" class="transactions-container">
+        {% with transactions = statement_transactions, full_view = False %}
+          {% include 'credit/transactions_table/transactions.html' %}
+        {% endwith %}
+      </div>
+
+    </div>
+
+  </div>
+
+{% endblock %}
+
+
+{% block right_sidebar %}
+
+    <div class="sidebar-menu">
+
+      <div class="button">
+        <a class="action" href="{{ url_for('credit.add_transaction', card_id=statement.card_id, statement_id=statement.id) }}">
+          <img class="icon" src="{{ url_for('static', filename='img/icons/plus.png') }}" />
+        </a>
+      </div>
+
+    </div>
+
+{% endblock %}
+
+
+{% block javascript %}
+
+  <script>
+    const UPDATE_STATEMENT_DUE_DATE_ENDPOINT = "{{ url_for('credit.update_statement_due_date', statement_id=statement.id) }}";
+    const MAKE_PAYMENT_ENDPOINT = "{{ url_for('credit.pay_credit_card', card_id=statement.card_id, statement_id=statement.id) }}";
+    const EXPAND_TRANSACTION_ENDPOINT = "{{ url_for('credit.expand_transaction') }}";
+    const LINKED_TRANSACTION_ENDPOINT = "{{ url_for('credit.show_linked_transaction') }}";
+  </script>
+  <script type="module" src="{{ url_for('static', filename='js/update-statement-parameters.js') }}">
+  </script>
+  <script type="module" src="{{ url_for('static', filename='js/make-payment.js') }}">
+  </script>
+  <script type="module" src="{{ url_for('static', filename='js/expand-transaction.js') }}">
+  </script>
+  <script type="module" src="{{ url_for('static', filename='js/show-linked-transaction.js') }}">
+  </script>
+
+{% endblock %}
+
