@@ -1,0 +1,37 @@
+[project]
+name = "nonebot-plugin-blocker"
+version = "0.4.7"
+description = "Message Blocker"
+authors = [
+    { name = "MerCuJerry", email = "mercujerry@gmail.com" },
+]
+keywords = [
+    "nonebot",
+    "nonebot2",
+    "qqbot",
+    "bot",
+]
+dependencies = [
+    "nonebot2[fastapi] >= 2.2.1",
+    "nonebot-adapter-onebot >= 2.4.1",
+    "pydantic >=2.0,<3.0.0,!=2.5.0,!=2.5.1",
+]
+requires-python = ">=3.8,<4.0"
+readme = "README.md"
+
+[project.license]
+file = "LICENSE"
+
+[project.urls]
+homepage = "https://github.com/MerCuJerry/nonebot-plugin-blocker"
+
+[tool.pdm.build]
+includes = [
+    "nonebot_plugin_blocker",
+]
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
