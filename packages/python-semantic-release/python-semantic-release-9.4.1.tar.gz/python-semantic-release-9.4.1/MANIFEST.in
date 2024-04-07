@@ -1,0 +1,9 @@
+# Make sure Jinja templates are included
+recursive-include ./ *.j2
+
+# Make sure non-python files are included
+graft semantic_release/data
+
+# include docs & testing into sdist, ignored for wheel build
+graft tests/
+graft docs/
