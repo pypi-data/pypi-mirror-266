@@ -1,0 +1,52 @@
+<div class="setting">
+
+  <div class="date column">
+    <div class="month">
+      {{ transaction.transaction_date.strftime('%b')|upper }}
+    </div>
+    <div class="day">
+      {{ transaction.transaction_date.strftime('%d')|upper }}
+    </div>
+    <div class="year">
+      {{ transaction.transaction_date.year }}
+    </div>
+    <div class="full">
+      {{ transaction.transaction_date }}
+    </div>
+  </div>
+
+  <div class="description">
+
+    <div class="description-header">
+      <div class="brief">
+        {% if transaction|is_single_bank_transfer %}
+            Transfer
+        {% else %}
+          {% if transaction.merchant %}
+              {% set merchant_reference = ": " + transaction.merchant %}
+          {% else %}
+              {% set merchant_reference = "" %}
+          {% endif %}
+          {% if transaction.total > 0 %}
+            Deposit{{ merchant_reference }}
+          {% elif transaction.total < 0 %}
+            Withdrawal{{ merchant_reference }}
+          {% else %}
+            Exchange
+          {% endif %}
+        {% endif %}
+
+      </div>
+      <div class="total">
+        ${{ transaction.total|currency }}
+      </div>
+    </div>
+
+    <div class="subtransaction-container">
+      <!-- Populate with AJAX request -->
+    </div>
+
+  </div>
+
+</div>
+
