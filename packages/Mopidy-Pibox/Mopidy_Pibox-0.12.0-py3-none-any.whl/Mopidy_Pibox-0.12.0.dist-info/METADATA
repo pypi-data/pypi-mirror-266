@@ -1,0 +1,97 @@
+Metadata-Version: 2.1
+Name: Mopidy-Pibox
+Version: 0.12.0
+Summary: Mopidy extension for jukebox client
+Home-page: https://github.com/gbannerman/mopidy-pibox
+Author: Gavin Bannerman
+Author-email: pibox@gavinb.site
+License: Apache License, Version 2.0
+Classifier: Environment :: No Input/Output (Daemon)
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Multimedia :: Sound/Audio :: Players
+Requires-Python: >=3.9
+License-File: LICENSE
+Requires-Dist: Mopidy >=3.0.0
+Requires-Dist: Pykka >=2.0.1
+Requires-Dist: PyGObject >=3.42
+Requires-Dist: setuptools
+Provides-Extra: dev
+Requires-Dist: ruff ; extra == 'dev'
+Requires-Dist: check-manifest ; extra == 'dev'
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: pytest-cov ; extra == 'dev'
+Requires-Dist: tox ; extra == 'dev'
+Provides-Extra: lint
+Requires-Dist: ruff ; extra == 'lint'
+Requires-Dist: check-manifest ; extra == 'lint'
+Provides-Extra: test
+Requires-Dist: pytest ; extra == 'test'
+Requires-Dist: pytest-cov ; extra == 'test'
+
+****************************
+Mopidy-Pibox
+****************************
+
+.. image:: https://img.shields.io/pypi/v/Mopidy-Pibox.svg?style=flat
+    :target: https://pypi.python.org/pypi/Mopidy-Pibox/
+    :alt: Latest PyPI version
+
+.. image:: https://github.com/gbannerman/mopidy-pibox/actions/workflows/ci.yml/badge.svg?branch=main
+    :target: https://github.com/gbannerman/mopidy-pibox/releases
+    :alt: GitHub Actions
+
+
+**pibox** is a Mopidy HTTP client that allows multiple users to search spotify and queue songs, via a clean and simple interface.
+
+Requirements
+============
+- Mopidy_
+- Mopidy-Spotify_
+
+.. _Mopidy: https://docs.mopidy.com/en/latest/installation/
+.. _Mopidy-Spotify: https://github.com/mopidy/mopidy-spotify
+
+Installation
+============
+
+1. Install by running::
+
+    pip install Mopidy-Pibox
+
+2. Start Mopidy::
+		
+		mopidy
+
+3. Open your Mopidy URL (e.g. `http://localhost:6680`) and click *Pibox*
+
+
+Configuration
+=============
+
+Before starting Mopidy, you must add configuration for
+Mopidy-Pibox to your Mopidy configuration file::
+
+    [pibox]
+    enabled = true
+    default_playlist = spotify:user:gavinbannerman:playlist:79inBfAlnfUB7i5kRthmWL
+    offline = false
+
+
+Project resources
+=================
+
+- `Source code <https://github.com/gavinbannerman/mopidy-pibox>`_
+- `Issue tracker <https://github.com/gavinbannerman/mopidy-pibox/issues>`_
+
+
+Credits
+=======
+
+- Original author: `Gavin Bannerman <https://github.com/gavinbannerman>`_
