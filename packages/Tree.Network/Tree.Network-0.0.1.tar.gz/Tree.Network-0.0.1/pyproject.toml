@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Tree.Network"
+version = "0.0.1"
+# dynamic = ["version"]
+# [tool.setuptools.dynamic]
+# version = {attr = "package.__version__"}
+authors = [
+  { name="Henry Sheehy", email="enquiries@henrysheehy.com" },
+]
+description = "Fast implementation of trees from the mathematics of graphs"
+keywords = ["graph","tree","structure","web","data","hyperlinks","lineage","ancestry","cell","differentiation","embryology","matrix"]
+readme = "README.md"
+license={file = "LICENSE"}
+dependencies = []
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+[tool.setuptools.packages.find]
+# where = ["src"]
+include = ["tree"]  # alternatively: `exclude = ["additional*"]`
+# namespaces = false
+
+[project.optional-dependencies]
+# gui = ["PyQt5"]
+# cli = [
+#   "rich",
+#   "click",
+# ]
+# matplotlib = ["matplotlib"]
+# tqdm = ["tqdm"]
+
+[project.urls]
+Homepage = "https://git.quantalumin.com/henry/Tree.Net"
+Issues = "https://git.quantalumin.com/henry/Tree.Net/issues"
