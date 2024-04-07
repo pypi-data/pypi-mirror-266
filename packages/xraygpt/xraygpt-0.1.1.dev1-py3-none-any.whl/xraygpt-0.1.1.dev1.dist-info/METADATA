@@ -1,0 +1,50 @@
+Metadata-Version: 2.3
+Name: xraygpt
+Version: 0.1.1.dev1
+Summary: GPT to generate X-ray
+Project-URL: homepage, https://github.com/iaalm/xraygpt
+Project-URL: repository, https://github.com/iaalm/xraygpt
+Project-URL: documentation, https://github.com/iaalm/xraygpt
+Author-email: iaalm <iaalmsimon@gmail.com>
+License: MIT
+License-File: LICENSE
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3 :: Only
+Requires-Python: >=3.9
+Requires-Dist: beautifulsoup4
+Requires-Dist: ebooklib
+Requires-Dist: langchain
+Requires-Dist: langchain-openai
+Requires-Dist: loguru
+Provides-Extra: all
+Requires-Dist: xraygpt[azure]; extra == 'all'
+Provides-Extra: azure
+Requires-Dist: azure-ai-textanalytics; extra == 'azure'
+Requires-Dist: azure-core; extra == 'azure'
+Provides-Extra: dev
+Requires-Dist: black; extra == 'dev'
+Requires-Dist: build; extra == 'dev'
+Requires-Dist: hatch; extra == 'dev'
+Requires-Dist: isort; extra == 'dev'
+Requires-Dist: mypy; extra == 'dev'
+Requires-Dist: q; extra == 'dev'
+Requires-Dist: xraygpt[all]; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# 🔬📖 X-ray GPT
+
+Generate kindle-like x-ray for e-books with LLM
+
+## 🚀 Usage
+
+## 🧑‍💻 Dev Setup
+```shell
+pip install -e '.[dev]'
+```
+
+### 🎩 Static analysis
+```shell
+make format
+```
