@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "moveread-core"
+version = "0.1.2"
+authors = [
+  {name="Marcel Claramunt", email="marcel@moveread.com"}
+]
+description = "Moveread core models and API"
+dependencies = [
+  "pydantic", "kv-api", "haskellian-either"
+]
+requires-python = ">=3.10"
+readme = {file="README.md", content-type="text/markdown"}
+
+[project.urls]
+repo = "https://github.com/moveread/python-core"
+
+[project.scripts]
+moveread-core-tsgen = "moveread.core.scripts.tsgen:main"
+
+[project.optional-dependencies]
+ts-gen = ["quicktype-ts"]
+# test = [
+#   "pytest < 5.0.0",
+#   "pytest-cov[all]"
+# ]
