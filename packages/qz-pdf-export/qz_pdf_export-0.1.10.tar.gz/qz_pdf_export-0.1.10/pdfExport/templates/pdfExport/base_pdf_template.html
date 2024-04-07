@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        td, th {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        #tips-container {
+            display: flex;
+            justify-content: space-between;
+            margin: 0 20px;
+        }
+
+        @media print {
+            #print-button {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+<div style="text-align: right;margin-top: 20px;margin-right: 40px;">
+    <button id="print-button" onclick="window.print();">打印</button>
+</div>
+<div id="pdf-content" style="margin-left: 10%;margin-right: 10%;padding-bottom: 100px;">
+    {% block titleBlock %}
+        <h1 style="text-align: center;">{{ title }}</h1>
+        <div id="tips-container">
+            <h5>{{ left_tip }}</h5>
+            <h5>{{ right_tip }}</h5>
+        </div>
+    {% endblock %}
+
+    <table>
+        {% block theadBlock %}
+        {% endblock %}
+        <tbody>
+        {% for group in grouped_fields %}
+
+            {% if group.group_title %}
+                <tr>
+                    <td colspan="4" style="font-weight: bold;text-align: center;">{{ group.group_title }}</td>
+                </tr>
+            {% endif %}
+            <tr>
+                {% for field in group.fields %}
+                    <td style="font-weight: bold;">{{ field.verbose_name }}</td>
+                    <td {% if group.fields|length == 1 %} colspan="3" {% endif %}>
+                        {% if field.is_option_field %}
+                            {% for option in field.value %}
+                                {% if option.selected %}
+                                    &#10003; {{ option.name }}
+                                {% else %}
+                                    □ {{ option.name }}
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            {{ field.value }}
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        {% block inTableEnd %}
+            {% if related_grouped_fields %}
+                <td colspan="4">
+                    {% for title, groups_list in related_grouped_fields.items %}
+                        <table width="100%">
+                            <thead>
+                            <tr>
+                                <th colspan="4" style="font-weight: bold;text-align: center;">{{ title }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% if groups_list %}
+                                {% for groups in groups_list %}
+                                    {% for group in groups %}
+                                        {% if group.group_title %}
+                                            <tr>
+                                                <td colspan="4"
+                                                    style="font-weight: bold;text-align: center;">{{ group.group_title }}</td>
+                                            </tr>
+                                        {% endif %}
+                                        <tr>
+                                            {% for field in group.fields %}
+                                                <td style="font-weight: bold;">{{ field.verbose_name }}</td>
+                                                <td {% if group.fields|length == 1 %} colspan="3" {% else %}
+                                                                                      colspan="1" {% endif %}>
+                                                    {% if field.is_option_field %}
+                                                        {% for option in field.value %}
+                                                            {% if option.selected %}
+                                                                &#10003; {{ option.name }}
+                                                            {% else %}
+                                                                □ {{ option.name }}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% else %}
+                                                        {{ field.value }}
+                                                    {% endif %}
+                                                </td>
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                    {% if not forloop.last %}
+                                        <tr>
+                                            <td colspan="4">&nbsp;</td>
+                                        </tr> <!-- 为不同的groups提供视觉上的分隔 -->
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="4" style="text-align: center;">暂无数据</td>
+                                </tr>
+                            {% endif %}
+                            </tbody>
+                        </table>
+                        <br>
+                    {% endfor %}
+                </td>
+            {% endif %}
+
+
+
+        {% endblock %}
+        </tbody>
+
+    </table>
+    {% block outTableEnd %}
+    {% endblock %}
+</div>
+
+</body>
+</html>
