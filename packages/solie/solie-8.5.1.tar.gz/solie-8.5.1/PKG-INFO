@@ -1,0 +1,98 @@
+Metadata-Version: 2.1
+Name: solie
+Version: 8.5.1
+Summary: GUI trading bot designed for targeting the futures markets of Binance
+Home-page: https://github.com/cunarist/solie
+Author: Cunarist
+Requires-Python: >=3.9,<3.13
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: aiodns (>=3.1.1,<4.0.0)
+Requires-Dist: aiofiles (>=23.2.1,<24.0.0)
+Requires-Dist: aiohttp (>=3.8.6,<4.0.0)
+Requires-Dist: apscheduler (>=3.10.4,<4.0.0)
+Requires-Dist: dataclasses-json (>=0.6.4,<0.7.0)
+Requires-Dist: faust-cchardet (>=2.1.19,<3.0.0)
+Requires-Dist: getmac (>=0.8.3,<0.9.0)
+Requires-Dist: numpy (>=1.26.2,<2.0.0)
+Requires-Dist: pandas (>=1.5.3,<2.0.0)
+Requires-Dist: pandas-ta (>=0.3.14b,<0.4.0)
+Requires-Dist: pygments (>=2.17.1,<3.0.0)
+Requires-Dist: pyqtgraph (>=0.13.4,<0.14.0)
+Requires-Dist: pyside6 (>=6.6.0,<7.0.0)
+Requires-Dist: scipy (>=1.11.3,<2.0.0)
+Requires-Dist: time-machine (>=2.13.0,<3.0.0)
+Requires-Dist: xdialog (>=1.1.1,<2.0.0)
+Requires-Dist: yapf (>=0.32.0,<0.33.0)
+Project-URL: Repository, https://github.com/cunarist/solie
+Description-Content-Type: text/markdown
+
+# Solie
+
+[![PyPI - Python Version](https://img.shields.io/pypi/v/solie)](https://pypi.org/project/solie/)
+[![Poetry](https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json)](https://python-poetry.org/)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![Checked with pyright](https://microsoft.github.io/pyright/img/pyright_badge.svg)](https://microsoft.github.io/pyright/)
+
+![Preview](https://github.com/cunarist/solie/assets/66480156/8521df2b-a315-4e00-8963-1db287e0c8ce)
+
+**Solie** is a GUI trading bot designed for targeting the futures markets of Binance.
+
+It enables you to create and customize your own trading strategies, simulating them using real historical data from Binance with the power of Python.
+
+Please note that while this solution provides tools for strategy development, profitability is not guaranteed as success depends on individual decision-making.
+
+Solie connects to Binance, retrieves real-time market and account data, saves it on disk, and presents it as intuitive charts to assist users in strategy development.
+
+## 🛞 Usage
+
+### Preparation
+
+First, install [Python](https://www.python.org/). Don't forget to add `python` command to PATH during the installation. You can check that Python is ready with the terminal command below.
+
+```bash
+python --version
+```
+
+Then, install Solie.
+
+```
+pip install solie
+```
+
+### Running Inside Terminal
+
+You can easily run Solie with the command below.
+
+```
+python -m solie
+```
+
+### Running With a Script File
+
+For convenience, you can make a custom Python script file that has the extension `.py`. Just copy and paste the content below in the file.
+
+```python
+import solie
+
+if __name__ == "__main__":
+    solie.bring_to_life()
+```
+
+Solie will be brought to life once you execute the Python script file.
+
+Note that on Windows, giving the extension `.pyw` to the file allows you to hide the terminal window and only leave the GUI.
+
+## 🖥️ Available Platforms
+
+- ✅ Windows: Fully supported
+- ✅ Linux: Fully supported
+- ⏸️ macOS: [Currently unstable](https://github.com/cunarist/solie/issues/87)
+
+## 📖 Documentation
+
+Read the [documentation](https://solie-docs.cunarist.com) to understand how to turn on auto-trading, make your own strategies with the internal API, and get involved in Solie development.
+
