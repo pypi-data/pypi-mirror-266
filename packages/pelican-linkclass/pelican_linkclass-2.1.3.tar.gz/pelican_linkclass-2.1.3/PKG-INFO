@@ -1,0 +1,143 @@
+Metadata-Version: 2.1
+Name: pelican-linkclass
+Version: 2.1.3
+Summary: Pelican plugin to set anchor tag's class attribute to differentiate between internal and external links
+Keywords: pelican plugin link class
+Author-Email: Rafael Laboissière <rafael@laboissiere.net>
+License: AGPL-3.0
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Console
+Classifier: Framework :: Pelican
+Classifier: Framework :: Pelican :: Plugins
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Project-URL: Homepage, https://github.com/pelican-plugins/linkclass
+Project-URL: Issue tracker, https://github.com/pelican-plugins/linkclass/issues
+Project-URL: Funding, https://donate.getpelican.com/
+Requires-Python: <4.0,>=3.8.1
+Requires-Dist: pelican>=4.5
+Requires-Dist: py3dns>=3.2
+Requires-Dist: markdown>=3.4; extra == "markdown"
+Provides-Extra: markdown
+Description-Content-Type: text/markdown
+
+Link Class: A Plugin for Pelican
+================================
+
+[![Build Status](https://img.shields.io/github/actions/workflow/status/pelican-plugins/linkclass/main.yml?branch=main)](https://github.com/pelican-plugins/linkclass/actions)
+[![PyPI Version](https://img.shields.io/pypi/v/pelican-linkclass)](https://pypi.org/project/pelican-linkclass/)
+![License](https://img.shields.io/pypi/l/pelican-linkclass?color=blue)
+
+This Pelican plugin allows you to set the class attribute of `<a>` elements
+(generated in Markdown by `[ext](link)`) according to whether the link is
+external (i.e., starts with `http://` or `https://`) or internal to the
+Pelican-generated site.
+
+For now, this plugin only works with Markdown. It has been tested with version
+3.0+ of the Python-Markdown module and may not work with previous versions.
+
+Installation
+------------
+
+This plugin [is available as a package](https://pypi.org/project/pelican-linkclass/)
+at PyPI and can be installed via:
+
+```
+python -m pip install pelican-linkclass
+```
+
+Configuration
+-------------
+
+In order to avoid clashes with already-defined classes in the user CSS
+style sheets, it is possible to specify the name of the classes that will
+be used. They can be specified in the Pelican setting file with the
+`LINKCLASS` variable, which must be defined as a list of tuples, like this:
+
+```python
+'LINKCLASS' = (('EXTERNAL_CLASS', 'name-of-the-class-for-external-links'),
+               ('INTERNAL_CLASS', 'name-of-the-class-for-internal-links'))
+```
+
+The default values for `EXTERNAL_CLASS` and `INTERNAL_CLASS` are,
+respectively, `'external'` and `'internal'`.
+
+Styling Hyperlinks
+------------------
+
+One of the possible uses of this plugins is for styling. Suppose that we
+have the following Markdown content in your article:
+
+```markdown
+This is an [internal](internal) link and this is an
+[external](http://external.com) link.
+```
+
+If the default configuration variable values are used, then one possible
+CSS setting could be:
+
+```css
+a.external:before {
+    content: url('../images/external-link.png');
+    margin-right: 0.2em;
+}
+```
+
+(The file `external-link.png` is also distributed with this plugin. To use it,
+copy it to the appropriate place in your web site source tree, for instance
+in `theme/static/images/`.)
+
+Then, the result will look like the following:
+
+![figure](https://github.com/pelican-plugins/linkclass/raw/main/linkclass-example.png)
+
+Note that this plugin also works with reference-style links, as in the
+following example:
+
+```markdown
+This is an [internal][internal] link and this is an
+[external][external] link.
+
+ [internal]: internal
+ [external]: http://external.com
+```
+
+Contributing
+------------
+
+Contributions are welcome and much appreciated. Every little bit helps. You can contribute by improving the documentation, adding missing features, and fixing bugs. You can also help out by reviewing and commenting on [existing issues][].
+
+To start contributing to this plugin, review the [Contributing to Pelican][] documentation, beginning with the **Contributing Code** section.
+
+[existing issues]: https://github.com/pelican-plugins/linkclass/issues
+[Contributing to Pelican]: https://docs.getpelican.com/en/latest/contribute.html
+
+Acknowledgments
+---------------
+
+Many thanks to [Yuliya Bagriy][] for setting up the package for [PyPI][], to [Lucas Cimon][] for fixing the issues with [pytest][], and to [Justin Mayer][] for helping with migration of this plugin under the Pelican Plugins organization.
+
+[Yuliya Bagriy]: https://github.com/aviskase
+[PyPI]: https://pypi.org/
+[Lucas Cimon]: https://github.com/Lucas-C
+[pytest]: https://pytest.org/
+[Justin Mayer]: https://github.com/justinmayer
+
+Author
+------
+
+Copyright © 2015, 2017, 2019, 2021-2023 Rafael Laboissière (<rafael@laboissiere.net>)
+
+License
+-------
+
+This project is released under the terms of the GNU Affero Public License, version 3 or later.
