@@ -1,0 +1,32 @@
+Metadata-Version: 2.3
+Name: mdpython
+Version: 0.0.2
+Summary: MD Python Library
+Project-URL: Homepage, https://github.com/pypa/sampleproject
+Project-URL: Issues, https://github.com/pypa/sampleproject/issues
+Author-email: Dhaval <seedhaval@gmail.com>
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.0
+Description-Content-Type: text/markdown
+
+# MD Python Library
+
+This package contains high level functions for common Python use cases.
+
+# Compare Directories
+
+   
+
+    from mdpython.fileutils import compare  
+      
+    cmp = compare.compare_dirs(r"C:\Users\Dell\OneDrive\Desktop\result_9th",  
+                               r"C:\Users\Dell\OneDrive\Desktop\result_9th_v2")  
+      
+    cmp.gen_html_report(r"C:\Users\Dell\OneDrive\Desktop\out.html", ["py", "txt",  
+                                                                     "json"])  
+      
+    for fl in cmp.files_only_in_right:  
+        if fl.name.endswith("py"):  
+            print(fl.absolute())
