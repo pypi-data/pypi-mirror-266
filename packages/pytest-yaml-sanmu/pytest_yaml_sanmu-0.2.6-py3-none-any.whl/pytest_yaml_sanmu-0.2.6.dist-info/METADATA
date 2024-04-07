@@ -1,0 +1,52 @@
+Metadata-Version: 2.1
+Name: pytest-yaml-sanmu
+Version: 0.2.6
+Summary: pytest plugin for generating test cases by yaml
+License: Apache-2.0
+Author-email: dongfangtianyu <7629022+dongfangtianyu@users.noreply.github.com>
+Requires-Python: >=3.10
+Requires-Dist: allure-pytest>=2.13.0
+Requires-Dist: jsonschema>=4.20.0
+Requires-Dist: pydantic<3,>=2.0
+Requires-Dist: pytest>=7.4.0
+Requires-Dist: pyyaml-include~=1.3.1
+Requires-Dist: pyyaml>=6.0
+Project-URL: Homepage, https://github.com/dongfangtianyu/pytest-yaml-sanmul
+Description-Content-Type: text/markdown
+
+# pytest-yml
+
+pytest plugin for generating test cases by yaml
+
+
+## Install
+```
+pip install pytest-yaml-sanmu
+```
+
+
+## Config
+```ini
+[pytest]
+run_yaml_case = 1
+```
+
+
+## Usage
+```
+(venv) D:\git\github\dongfangtianyu\pytest-yaml-sanmu>pytest
+======================================= test session starts =======================================
+platform win32 -- Python 3.10.5, pytest-7.2.1, pluggy-1.0.0
+rootdir: D:u\git\github\dongfangtianyu\pytest-yaml-sanm, configfile: pytest.ini
+plugins: allure-pytest-2.13.0, result-log-1.0.1, yaml-0.2.1.dev
+collected 27 items
+
+tests\e2e\test_allure.yaml .                                                                  [  3%]
+tests\e2e\test_marks_by_user.yaml .                                                           [  7%]
+tests\e2e\test_marks_have_no_parameters.yaml sX                                               [ 14%]
+tests\e2e\test_marks_have_parameters.yaml ss.X.                                               [ 33%]
+tests\e2e\test_marks_parametrize.yaml ...............                                         [ 88%]
+tests\e2e\test_marks_usefixtures.yaml .x                                                      [ 92%]
+tests\e2e\test_simple.yaml .                                                                  [ 100%]
+============================21 passed, 3 skipped, 1 xfailed, 2 xpassed in 0.20s ====================
+```

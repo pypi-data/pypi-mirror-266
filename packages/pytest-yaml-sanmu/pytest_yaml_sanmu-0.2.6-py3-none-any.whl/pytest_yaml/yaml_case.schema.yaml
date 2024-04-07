@@ -1,0 +1,107 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+type: object
+required:
+  - steps
+  - test_name
+
+properties:
+  test_name:
+    type: string
+    description: 用例名称
+  mark:
+    items:
+      anyOf:
+        - type: string
+        - properties:
+            order:
+              type: integer
+              description: '用例排序，依赖插件: pytest-order'
+          required:
+            - order
+          type: object
+        - properties:
+            usefixtures:
+              items:
+                type: string
+              type: array
+              description: 调用fixtures，并保存于`item.usefixtures`
+          required:
+            - usefixtures
+          type: object
+        - properties:
+            filterwarnings:
+              items:
+                type: string
+              type: array
+              description: 忽略指定的warning实例
+          required:
+            - filterwarnings
+          type: object
+        - properties:
+            skip:
+              type: string
+              description: 跳过用例，并标注原因
+          required:
+            - skip
+          type: object
+        - properties:
+            skipif:
+              type: string
+              description: 满足条件时跳过用例
+          required:
+            - skipif
+          type: object
+        - properties:
+            xfail:
+              type: string
+              description: 预期本用例失败
+          required:
+            - xfail
+          type: object
+        - properties:
+            parametrize:
+              properties:
+                keys:
+                  items:
+                    type: string
+                  type: array
+                vals:
+                  items:
+                    items:
+                      anyOf:
+                        - type: string
+                        - type: integer
+                    type: array
+                  type: array
+              required:
+                - keys
+                - vals
+              type: object
+              description: 参数化测试
+          required:
+            - parametrize
+          type: object
+        - properties:
+            parametrize:
+              properties:
+                keys:
+                  type: string
+                vals:
+                  items:
+                    anyOf:
+                      - type: string
+                      - type: integer
+                  type: array
+              required:
+                - keys
+                - vals
+              type: object
+          required:
+            - parametrize
+          type: object
+    type: array
+    description: pytest标记
+  steps:
+    minItems: 1
+    type: array
+    description: 测试步骤
