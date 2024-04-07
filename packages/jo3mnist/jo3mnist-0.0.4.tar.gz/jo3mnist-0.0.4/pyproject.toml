@@ -1,0 +1,56 @@
+
+[project]
+name = "jo3mnist"
+version = "0.0.4" # TODO; automatically update versions by looking at git
+description = ""
+dependencies = [
+    "equinox",
+    "jax",
+    "jaxtyping",
+    "numpy",
+    "pillow",
+    "opencv-python",
+    "optax",
+    "torch",
+    "torchvision"
+]
+dynamic = ["readme"]
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.optional-dependencies]
+demo = []
+
+[git]
+github = "JJJHolscher"
+
+[project.urls]
+homepage = "https://github.com/JJJHolscher/mnist"
+
+[[project.authors]]
+name = "Jochem Hölscher"
+email = "a.fake@e.mail"
+
+[build-system]
+requires = [
+    "setuptools>=61.0",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["jo3mnist"]
+
+[tool.setuptools.dynamic]
+readme = {file = ["README.md"], content-type = "text/markdown"}
+
+[tool.jupytext]
+formats = "ipynb,py"
+
+[tool.pyright]
+exclude = ".venv"
+venvPath = "."
+venv = ".venv"
