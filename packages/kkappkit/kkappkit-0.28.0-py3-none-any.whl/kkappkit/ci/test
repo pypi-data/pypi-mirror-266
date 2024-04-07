@@ -1,0 +1,15 @@
+#! /bin/sh
+
+# use -vv to see more details
+# use -k to filter tests
+
+set -e
+pushd . &> /dev/null
+
+scptdir="$( cd "$( dirname "$0" )" && pwd )"
+root="$( cd $scptdir/.. && pwd )"
+cd "$root"/test
+poetry run coverage run --omit "*virtualenvs*" -m pytest -vv "$@"
+poetry run coverage report -m
+
+popd &> /dev/null
