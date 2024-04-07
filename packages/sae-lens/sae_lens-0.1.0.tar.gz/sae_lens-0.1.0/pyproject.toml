@@ -1,0 +1,68 @@
+[tool.poetry]
+name = "sae-lens"
+version = "0.1.0"
+description = "Training and Analyzing Sparse Autoencoders (SAEs)"
+authors = ["Joseph Bloom"]
+readme = "README.md"
+packages = [{include = "sae_lens"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+transformer-lens = "^1.14.0"
+transformers = "^4.38.1"
+jupyter = "^1.0.0"
+plotly = "^5.19.0"
+plotly-express = "^0.4.1"
+nbformat = "^5.9.2"
+ipykernel = "^6.29.2"
+matplotlib = "^3.8.3"
+matplotlib-inline = "^0.1.6"
+datasets = "^2.17.1"
+babe = "^0.0.7"
+nltk = "^3.8.1"
+sae-vis = "0.2.6"
+mkdocs = "^1.5.3"
+mkdocs-material = "^9.5.15"
+mkdocs-autorefs = "^1.0.1"
+mkdocs-section-index = "^0.3.8"
+mkdocstrings = "^0.24.1"
+mkdocstrings-python = "^1.9.0"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.2.0"
+pytest = "^8.0.2"
+pytest-cov = "^4.1.0"
+pre-commit = "^3.6.2"
+flake8 = "^7.0.0"
+isort = "^5.13.2"
+pyright = "^1.1.351"
+
+[tool.isort]
+profile = "black"
+
+[tool.pyright]
+typeCheckingMode = "strict"
+reportMissingTypeStubs = "none"
+reportUnknownMemberType = "none"
+reportUnknownArgumentType = "none"
+reportUnknownVariableType = "none"
+reportUntypedFunctionDecorator = "none"
+reportUnnecessaryIsInstance = "none"
+reportUnnecessaryComparison = "none"
+reportConstantRedefinition = "none"
+reportUnknownLambdaType = "none"
+reportPrivateUsage = "none"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.semantic_release]
+version_variables = [
+    "sae_lens/__init__.py:__version__",
+    "pyproject.toml:version",
+]
+branch = "main"
+build_command = "pip install poetry && poetry build"
