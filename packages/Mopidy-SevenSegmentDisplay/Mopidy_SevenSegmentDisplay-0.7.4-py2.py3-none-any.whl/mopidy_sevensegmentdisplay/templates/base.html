@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Mopidy Seven Segment Display</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/sevensegmentdisplay/static/bootstrap.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="/sevensegmentdisplay/static/bootstrap-theme.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="/sevensegmentdisplay/static/theme.css" rel="stylesheet">
+
+    <style type="text/css" id="holderjs-style"></style>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="/sevensegmentdisplay/static/jquery.js"></script>
+    <script src="/sevensegmentdisplay/static/bootstrap.js"></script>
+
+    <script>
+        function post(data, reload = true) {
+            $.ajax({
+                type: 'POST',
+                url: "/sevensegmentdisplay/api/",
+                data: data,
+                success: function () {
+                    if (reload) {
+                        window.location.href = window.location.href;
+                    }
+                }
+            });
+        }
+    </script>
+
+    {% block extra-js %} {% end %}
+</head>
+<body role="document">
+
+    <!-- Content -->
+    <div class="container theme-showcase" role="main">
+        {% block content %} {% end %}
+    </div>
+
+</body>
+</html>
