@@ -1,0 +1,31 @@
+Metadata-Version: 2.1
+Name: moveread-annotations
+Version: 0.1.3
+Summary: Annotation schemas for the Moveread Core
+Author-email: Marcel Claramunt <marcel@moveread.com>
+Project-URL: repo, https://github.com/moveread/python-core
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: pydantic
+Requires-Dist: haskellian-either
+Requires-Dist: moveread-labels
+Requires-Dist: moveread-boxes
+Requires-Dist: moveread-errors
+Provides-Extra: ts-gen
+Requires-Dist: quicktype-ts; extra == "ts-gen"
+
+# Moveread Annotations
+
+> Annotation schemas for the Moveread Core
+
+## Usage
+
+```python
+from moveread.annotations.players import validate
+
+validate('language', 'CA')
+# Right(value='CA')
+
+validate('lang', 'CA')
+# Left(value=InexistentSchema(schema='lang', detail="Schema lang doesn't exist. Available schemas are ['language', 'style', 'end_correct']"))
+```
