@@ -1,0 +1,22 @@
+stages:          # List of stages for jobs, and their order of execution
+  - package
+
+build-job:
+  stage: package
+  image: python
+  script:
+    - pip install --upgrade build
+    - python -m build
+  artifacts: 
+    paths: 
+      - dist/
+
+deploy-job:
+  stage: package
+  image: python
+  script:
+    - pip install --upgrade twine
+    - python -m twine upload --repository pypi dist/*
+  needs:
+    - job: build-job
+      artifacts: true
