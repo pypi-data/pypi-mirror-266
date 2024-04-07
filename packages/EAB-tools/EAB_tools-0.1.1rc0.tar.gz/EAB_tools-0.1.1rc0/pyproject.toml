@@ -1,0 +1,98 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools"]
+
+[project]
+name = "EAB_tools"
+authors = [
+    { name = "Moshe Rubin", email = "mosherubin137@gmail.com" }
+]
+description = """Tools for analyzing data exported from the EAB Navigate Student \
+                 Success Management Software."""
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.9"
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Framework :: Jupyter",
+    "Intended Audience :: Education",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3",
+    "Topic :: Database",
+]
+dynamic = ["version", "dependencies"]  # Defined in setup.py
+
+[project.optional-dependencies]
+progress_bar = ['tqdm']
+
+[project.urls]
+"Homepage" = "https://github.com/moshemoshe137/EAB_tools"
+"Bug Tracker" = "https://github.com/moshemoshe137/EAB_tools/issues"
+
+[tool.black]
+target-version = ["py39", "py310", "py311", "py312"]
+
+[tool.flake8]
+count = true
+max-line-length = 88
+
+[tool.isort]
+# Most settings are barrowed from pandas
+# https://github.com/pandas-dev/pandas/blob/f4ca4d3d0ea6a907262f8c84/pyproject.toml#L143
+atomic = true
+combine_as_imports = true
+force_grid_wrap = 2
+force_sort_within_sections = true
+profile = "black"
+
+[tool.mypy]
+# When in doubt, borrowed from pandas
+# https://github.com/pandas-dev/pandas/blob/417d1c94fe3810f695e94360a/pyproject.toml#L66
+# Import discovery
+ignore_missing_imports = true
+# Untyped definitions and calls
+check_untyped_defs = true
+# disallow_untyped_calls = true
+disallow_untyped_decorators = true
+disallow_untyped_defs = true
+disallow_any_generics = true
+# None and Optional handling
+no_implicit_optional = true
+# Configuring warnings
+warn_redundant_casts = true
+warn_unused_ignores = true
+# Miscellaneous strictness flags
+strict_equality = true
+# Configuring error messages
+pretty = true
+show_error_codes = true
+
+[tool.pydocstyle]
+convention = "numpy"
+match = '''(?x)
+(?!  # Does NOT begin with:
+test_.*  # Ignore tests
+|conftest  # and ignore conftest.pt
+|__init__  # Ignore __init__.py files
+|setup
+)
+.*\.py
+'''
+
+[tool.pytest.ini_options]
+addopts = "--doctest-modules --no-flaky-report --random-order-seed=0 -m 'not slow'"
+doctest_optionflags = [
+    "NORMALIZE_WHITESPACE",
+    "ELLIPSIS"
+]
+markers = [
+    "slow: mark a test as slow",
+]
+minversion = "6.0"
+required_plugins = "flaky pytest-random-order"
+xfail_strict = true
+
+[tool.setuptools.packages]
+find = {}  # Scanning implicit namespaces is active by default
