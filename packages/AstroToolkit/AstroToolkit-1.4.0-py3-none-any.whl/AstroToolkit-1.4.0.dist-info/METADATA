@@ -1,0 +1,1509 @@
+Metadata-Version: 2.1
+Name: AstroToolkit
+Version: 1.4.0
+Summary: A package for the gathering and plotting of astronomical data.
+Author-email: Ethan Moorfield <ethan.moorfield@hotmail.co.uk>
+Project-URL: Homepage, https://github.com/WD-planets/AstroToolkit
+Project-URL: Issues, https://github.com/WD-planets/AstroToolkit/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: astropy ==5.2.2
+Requires-Dist: astroquery ==0.4.7
+Requires-Dist: bokeh ==3.1.1
+Requires-Dist: cmasher ==1.6.3
+Requires-Dist: importlib-resources ==6.4.0
+Requires-Dist: matplotlib ==3.7.5
+Requires-Dist: numba ==0.58.1
+Requires-Dist: numpy ==1.24.4
+Requires-Dist: pandas ==2.0.3
+Requires-Dist: Pillow ==10.2.0
+Requires-Dist: PyQt5 ==5.15.10
+Requires-Dist: PyQt5-sip ==12.13.0
+Requires-Dist: Requests ==2.31.0
+Requires-Dist: scikit-learn ==1.3.2
+Requires-Dist: scipy ==1.10.1
+Requires-Dist: selenium ==4.17.2
+
+# AstroToolkit
+
+AstroToolkit (ATK) is a set of tools for fetching, plotting, and analysing astronomical data.
+
+## Table of Contents
+
+1. [Installation](#installation)
+2. [Introduction](#introduction)
+3. [Configuration](#configuration)
+4. [Tools](#tools)
+5. [Examples](#examples)
+
+### ATK Tools
+
+- 1 [Query](#1-query)
+- 2 [Plot](#2-plot)
+- 3 [Datapage Tools](#3-datapage-tools)
+- 4 [File Handling Tools](#4-file-handling-tools)
+- 5 [Other Tools](#5-other-tools)
+
+<br>
+
+## Installation<a id="installation"></a>
+
+The package can be installed as with any other package, e.g. using pip:
+```
+pip install AstroToolkit
+```
+
+Once the package has been installed, you should navigate to the package install location. This should be located in: **.../Lib/site-packages/AstroToolkit**, where **...** is your python install location. If you wish to find this, you can use the following command from the terminal:
+
+```
+python -c "from AstroToolkit.Tools import getpath; getpath()"
+```
+
+In this directory, run either buildwin.bat (Windows) or build.sh (Linux) depending on your operating system.
+
+**NOTE:** See _README.txt_ (Linux) or _README - Windows.txt_ (Windows) in the above directory for any additional dependencies.
+
+<br>
+
+## Introduction<a id="introduction"></a>
+
+ATK uses Bokeh as its primary plotting library. The official documentation can be found at [https://bokeh.org/](https://bokeh.org/). A key property of Bokeh plots is that they can be saved as static .html files, which can then be shared/accessed while retaining all interactivity.
+
+Fundamentally, there are two types of tools in ATK:
+1. Fetching, used to obtain data from a given survey
+2. Plotting, used to plot the data acquired from the above
+
+In all fetching tools, there are two possible ways to target your system of interest:
+1. pos = [ra,dec] in degrees
+2. source = Gaia Source ID
+
+Where possible, it is usually best to use a source as input, as this enables a key feature of ATK: **Proper Motion Correction**.
+
+A good example of this is in imaging queries. If a 'pos' is used as input, the result will simply be the image data returned by the chosen imaging survey at those exact coordinates. However, this may not be ideal in the case of an object with a large proper motion. If a source is used instead, the data returned will have accounted for this, resulting in the image being centered on the system in question. This concept is used throughout ATK when matching data from different surveys to a given system.
+
+![](https://github.com/WD-planets/AstroToolkit/raw/latest/README_Images/source_vs_pos.png?raw=true)
+
+<br>
+
+All ATK tools can be imported using:
+```
+from AstroToolkit.Tools import [tool name]
+```
+
+<br>
+
+## Configuration<a id="configuration"></a>
+Most default arguments within ATK can be modified through the use of a config file. This can be edited through use of the **editconfig** tool.
+
+**Usage:**
+
+```
+editconfig(options)
+```
+
+where options is a dictionary containing key : value pairs to set in the config. The list of accepted keys and their default values are shown below:
+- enable_notifications = False
+	- If True, notifications denoting basic information as each ATK tool is executed will be shown in the terminal. Can be useful for tracking the flow of data.
+- dataquery_radius = 3
+	- This sets the default radius (in arcseconds) to use in [data queries](#11-data-query).
+- photquery_radius = 3
+	- This sets the default radius (in arcseconds) to use in [photometry queries](#12-photometry-query).
+- bulkphotquery_radius = 3
+	- This sets the default radius (in arcseconds) to use in [bulk photometry queries](#13-bulk-photometry-query).
+- imagequery_size = 30
+	- This sets the default radius (in arcseconds) to use in [image queries](#15-imaging-query).
+- imagequery_overlays = gaia
+	- This sets the default radius (in arcseconds) to use in [image queries](#15-imaging-query).
+- lightcurvequery_radius = 3
+	- This sets the default radius (in arcseconds) to use in [lightcurve queries](#16-lightcurve-query).
+- atlas_username = None
+	- This sets the default username to use in ATLAS [lightcurve queries](#16-lightcurve-query).
+- atlas_password = None
+	- This sets the default password to use in ATLAS [lightcurve queries](#16-lightcurve-query).
+- sed_radius = 3
+	- This sets the default radius to use in [SED queries](#17-sed-query).
+- spectrum_radius = 3
+	- This sets the default radius to use in [spectrum queries](#18-spectrum-query).
+- grid_size = 250
+	- This sets the default grid size to use in the [gridsetup](#71-gridsetup) tool.
+- button_simbad_radius = 3
+	- This sets the default radius to use for the SIMBAD button in the [getbuttons](#72-getbuttons) tool.
+- button_vizier_radius = 3
+	- This sets the default radius to use for the Vizier button in the [getbuttons](#72-getbuttons) tool.
+- plot_size = 400
+	- This sets the default plot size for all plotting tools.
+- readfits_sourcename = source_id
+	- This sets the default column name to use in the [getsources](#108-getsources)
+
+**Example:**
+
+To set the default username and password to use for ATLAS queries:
+
+```
+from AstroToolkit.Tools import editconfig
+
+editconfig({'atlas_username':'USERNAME','atlas_password':'PASSWORD'})
+```
+
+<br>
+
+To see the current value of a config parameter, you can use the **getconfigvalue** tool. This will return the parameter's value, and print it to the terminal.
+
+**Usage:**
+
+```
+getconfigvalue(parameter)
+```
+
+where:
+
+```
+parameter = string, name of config parameter from above list
+```
+
+**Returns**: value of this parameter in the config.
+
+<br><br>
+
+## Tools<a id="tools"></a>
+
+In this section, the available tools will be outlined. Note that if a parameter is listed as having a default parameter CONFIG, this means that this parameter is taken from the config as listed above. These parameters can still be passed to the tool, in which case the config value will be ignored.
+
+**Note:** most data returned from fetching/plotting tools takes the form of a dictionary. This dictionary contains the returned data, as well as basic information such as the pos/source used to acquire the data. This format is then used by other ATK functions (such as file showing/saving/reading).
+
+**Note:** All plots created by ATK can have their legends toggled by double clicking the plot, and individual data can be hidden by clicking them in the legend.
+
+<br>
+
+**In all data returned by querying tools, the value of the 'data' key will be set to None if no data was returned. Likewise, in all plotting tools, the value of the 'plot' key will be set to None.**
+
+<br>
+
+## 1. query<a id="1-query"></a>
+
+Returns available data of a given type from a given survey.
+
+**Usage:**
+
+```
+query(type,survey=None,pos=None,source=None,radius=CONFIG)
+```
+
+where:
+
+```
+type = str, type of data to return
+```
+```
+survey = str, name of a supported survey
+```
+```
+pos = list, [ra,dec]
+```
+```
+source = int/str, Gaia source_id
+```
+```
+radius = int/float, radius of query of given type. If not given, will be taken from config value for given query type.
+```
+
+<br>
+
+**Note:** If no data is returned, the 'data' key of the returned dictionary will be set to None.
+
+<br>
+
+**Supported query types:** data, phot, bulkphot, image, lightcurve, sed, spectra, reddening
+
+<br>
+
+Below is an outline of the usage and output of each query type. Note that additonal arguments not listed above may be used, see individual query types below for details.
+
+<br>
+
+**Shortcuts**:
+
+[Data Queries](#11-data-query)
+
+[Photometry Queries](#12-photometry-query)
+
+[Bulk Photomety Queries](#13-bulk-photometry-query)
+
+[Reddening Queries](#14-reddening-query)
+
+[Imaging Queries](#15-imaging-query)
+
+[Lightcurve Queries](#16-lightcurve-query)
+
+[SED Queries](#17-sed-query)
+
+[Spectrum Queries](#18-spectrum-query)
+
+[HRD Queries](#19-hrd-query)
+
+<br>
+
+### 1.1 Data Query<a id="11-data-query"></a>
+
+Type argument: 'data'
+
+Description: Returns all available raw data for a given survey
+
+Supported Arguments: survey, pos, source, radius (all defined [above](#1-query))
+
+Supported Surveys: gaia, galex, rosat, panstarrs, skymapper, sdss, twomass, wise, erosita
+
+<br>
+
+**Returns:** dict
+
+```
+{
+'survey' : str, survey of data
+'type' : 'data'
+'source' : int/str, source used to get data (None if a pos was used)
+'pos' : [ra,dec], pos used to get data (None if a source was used)
+'data' : dict, the returned data
+}
+```
+
+<br><br>
+
+### 1.2 Photometry Query<a id="12-photometry-query"></a>
+
+Type argument: 'phot'
+
+Description: Returns all photometry available from a given survey, as well as some basic parameters such as coordinates.
+
+Supported Arguments: survey, pos, source, radius (all defined [above](#1-query))
+
+Supported Surveys: gaia, panstarrs, skymapper, galex, rosat, sdss, wise, twomass
+
+<br>
+
+**Returns:** dict
+
+```
+{
+'survey' : str, survey of data
+'type' : 'data'
+'source' : int/str, source used to get data (None if a pos was used)
+'pos' : [ra,dec], pos used to get data (None if a source was used)
+'data' : dict, the returned data
+}
+```
+
+<br><br>
+
+### 1.3 Bulk Photometry Query<a id="13-bulk-photometry-query"></a>
+
+Type argument: 'bulkphot'
+
+Description: Returns all photometry available from all surveys supported by [photometry queries](#12-photometry-query)
+
+Supported Arguments: pos, source, radius (all defined [above](#1-query))
+
+<br>
+
+**Returns:** dict
+
+```
+{
+'type' : 'bulkphot'
+'source' : int/str, source used to get data (None if a pos was used)
+'pos': [ra,dec], pos used to get data (None if a source was used)
+'data' : {
+         'gaia' : dict, returned data (or None if no data returned)
+         'galex' : dict, returned data (or None if no data returned)
+
+          etc. for each survey in surveys supported by photquery
+         }
+}
+```
+
+**Note:** The value of each survey will be set to None if no data was returned. E.g. if no galex data was returned, the value of the ['galex'] key would be None.
+
+<br><br>
+
+### 1.4. Reddening Query<a id="14-reddening-query"></a>
+
+Type argument: 'reddening'
+
+Description: Returns the reddening for a given Gaia source from a given survey
+
+Supported Arguments: source (defined [above](#1-query))
+
+Supported Surveys: stilism (https://stilism.obspm.fr/)
+
+<br>
+
+**Returns:** dict
+
+```
+{
+'type' : 'reddening'
+'source' : int/str, source used to get data (None if a pos was used)
+'data' : {
+         'dist' : distance to source (1/parallax)
+         'red_dist' : actual distance to which survey's reddening estimate refers
+         'red_dist_err' : error on red_dist
+         'red' : survey's reddening estimate
+         'red_upper' : reddening upper limit
+         'red_lower' : reddening lower limit
+         }
+}
+```
+
+<br><br>
+
+### 1.5 Imaging Query<a id="15-imaging-query"></a>
+
+Type argument: 'image'
+
+Description: Returns an image from a given survey. Overlays  can be used to overlay detections from different surveys. There are two types of overlay: detections and tracers. Detections are proper motion-corrected circles that scale with the magnitude of the detection, and show that there is data available for a given object in a given survey. 
+
+Tracers (which are detections created from lightcurve surveys) can be used both to show that lightcurve data is available, but also to trace an object through time.
+
+**Note:** tracing an object through time works best with ZTF and CRTS overlays, as these give data with the necessary coordinate precision. Other tracer overlays are unlikely to work for this, and will hence only be useful to see where lightcurve data is available.
+
+**Note:** In the case of ATLAS overlays, the radius used is very small due to the time taken to perform ATLAS queries. Only data close to the focus of the image (i.e. at the location of the target object) will be shown. 
+
+**Example:**
+
+![](https://github.com/WD-planets/AstroToolkit/raw/latest/README_Images/tracer_example.png?raw=true)
+
+Supported Arguments: survey, pos, source, size, band, overlays
+
+where:
+```
+size = int/float, size of image in arcsec
+```
+```
+band = str, string containing the required bands (e.g. for all panstarrs bands, use band='grizy')
+```
+```
+overlays = str, required detection overlays (e.g. for gaia and wise detections, use overlays='gaia,wise') 
+```
+
+and all other arguments have been defined [above](#1-query).
+
+Supported overlays: gaia, galex_nuv, galex_fuv, rosat,sdss, twomass, wise, ztf, erosita ,atlas, gaia_lc, asassn, crts
+
+**Note:** Can also use 'all', which will enable overlays for all supported surveys.
+
+Supported Surveys:
+- panstarrs, supported bands = g, r, i, z, y
+- skymapper, supported bands = g, r, i, z, u, v
+- dss, supported bands = g
+
+<br>
+
+**Returns:** dict
+
+```
+{
+'type' : 'image'
+'survey' : str, image survey
+'source' : int/str, source used to get image (None if a pos was used)
+'pos' : [ra,dec], pos used to get image (None if a source was used)
+'data' : {
+         'image_data' : array, image data
+         'image_header' : astropy header, image header
+         'location' : [ra,dec], actual location of the image
+         'size' : int/float, image size in arcsec
+         'image_time' : [year,month], image time
+         'wcs' : astropy wcs object of image
+         'overlay' : list of overlay entries
+         }
+}
+```
+
+**NOTE:**  overlays are stored as a list of individual detections in the format:
+
+```
+{
+'survey' : str, survey of detection
+'position: [ra,dec], coordinates of detection
+'radius' : float, radius of detection
+'corrected' : bool, whether or not the detection has been corrected for proper motion
+'mag' : str, name of the magnitude (column heaader) from a given survey
+'marker' : 'circle' or 'cross', detection symbol to overlay. Circles are scaled with radius, crosses are not (e.g. for surveys without a magnitude to scale by)
+}
+```
+
+<br><br>
+
+### 1.6 Lightcurve Query<a id="16-lightcurve-query"></a>
+
+Type argument: 'lightcurve'
+
+Description: Returns lightcurve data from a given survey.
+
+Supported Arguments: survey, pos, source, radius, username, password, sigmaclip
+
+where:
+```
+username = str, ATLAS username, hence only used in ATLAS queries
+```
+```
+password = str, ATLAS password, hence only used in ATLAS queries
+```
+```
+sigmaclip = int, performs sigma clipping on the data to this number of standard deviations
+```
+and all other arguments have been defined [above](#1-query).
+
+Supported Surveys (and filter bands):
+- ZTF (ztf) - g, r, i
+- ATLAS (atlas) - o, c, i
+- ASAS-SN (asassn) - g, v
+- Gaia (gaia) - g, bp, rp
+- CRTS (crts) - v
+
+**Note:** CRTS' data server is not designed for scripted queries. As a result, queries are limited in the toolkit to one query per 15 seconds. This cooldown is managed using the CRTS_TIMER.txt file in the Settings directory of the package files, and hence this should not be edited.
+
+<br>
+
+**Returns:** list of dicts
+
+list of lightcurve data dictionaries with an entry for each band in that survey (see below). Each entry has the format:
+
+```
+{
+'type' : 'lightcurve'
+'source' : int/str, source used to get data (None if a pos was used)
+'pos': [ra,dec], pos used to get data (None if a source was used)
+'survey' : str, survey of data
+'band' : str, band of lightcurve data
+'data' : {
+         'ra' : list of returned ra values
+         'dec' : list of returned dec values
+         'hjd'/'mjd' : list of returned hjd/mjd values, with the minimum returned
+          value subtracted from all values (i.e. is just a measure of days from the 
+          first observation)
+         'hjd_ori'/'mjd_ori' : list of returned hjd/mjd values, unedited
+         'mag' : list of returned magnitude values
+         'mag_err' : list of returned magnitude error values
+         }
+}
+```
+
+<br><br>
+
+### 1.7 SED Query<a id="17-sed-query"></a>
+
+Type argument: 'sed'
+
+Description: Queries all supported [photometry surveys](#12-photometry-query) and returns SED data.
+
+Supported Arguments: pos, source, radius (all defined [above](#1-query))
+
+<br>
+
+**Returns:** dict
+
+```
+{
+'type' : 'sed'
+'source' : int/str, source used to get data (None if a pos was used)
+'pos': [ra,dec], pos used to get data (None if a source was used)
+'data': list of entries with each entry taking the form of a dict:
+	{
+    'survey' : str, survey of data point
+    'wavelength' : filter wavelength of data point
+    'flux' : flux through filter
+    'rel_err' : relative error on flux
+    }
+}
+```
+
+<br><br>
+
+### 1.8 Spectrum Query<a id="18-spectrum-query"></a>
+
+Type argument: 'spectra'
+
+Description: Returns spectrum data for a given survey.
+
+Supported Arguments: survey, pos, source, radius (all defined [above](#1-query))
+
+Supported Surveys: sdss
+
+<br>
+
+**Returns:**
+
+```
+{
+'type' : 'spectra'
+'survey' : str, survey of detection
+'source' : int/str, source used to get data (None if a pos was used)
+'pos': [ra,dec], pos used to get data (None if a source was used)
+'data': {
+        'wavelength' : list of wavelength values
+        'flux' : list of flux values
+        }
+}
+```
+
+<br><br>
+
+### 1.9 HRD Query<a id="19-hrd-query"></a>
+
+Type argument: 'hrd'
+
+Description: Returns data for Gaia HRD creation given a Gaia source/list of Gaia sources.
+
+Supported Arguments: sources
+
+where:
+```
+sources = single Gaia source or list of Gaia sources
+```
+
+<br>
+
+**Returns:** dict
+
+```
+'type' : 'hrd'
+'sources' : list, list of input Gaia sources
+'data': {
+        'absg' : list, absolute g magnitudes of given sources
+        'bp-rp' : list, bp-rp values of given sources
+        }
+```
+
+<br><br>
+
+## 2. plot<a id="2-plot"></a>
+
+Interprets and plots data.
+
+**Usage:**
+
+```
+plot(data,type=None)
+```
+
+where:
+```
+data = list/dict data in structure returned by the query tool
+```
+
+<br>
+
+**Note:** If no plot is returned, the 'plot' key of the returned dictionary will be set to None.
+
+<br>
+
+**Supported plot types:** image, lightcurve, sed, spectra, powspec, hrd
+
+<br>
+
+Below is an outline of the usage and output of each plot type. Note that additonal arguments not listed above may be used, see individual plot types below for details.
+
+<br>
+
+**Shortcuts**:
+
+[Image Plotting](#21-image-plotting)
+
+[Lightcurve Plotting](#22-lightcurve-plotting)
+
+[SED Plotting](#23-sed-plotting)
+
+[Spectrum Plotting](#24-spectrum-plotting)
+
+[HRD Plotting](#25-hrd-plotting)
+
+[Power Spectra Plotting](#26-power-spectra-plotting)
+
+<br>
+
+### 2.1 Image Plotting<a id="21-image-plotting"></a>
+
+Type argument: 'image'
+
+Description: Plots images in format returned by [image queries](#15-imaging-query).
+
+<br>
+
+**Returns:** dict
+
+```
+{
+'type' : 'image'
+'survey' : str, survey of image
+'source' : int/str, source used to get image (None if a pos was used)
+'pos' : [ra,dec], pos used to get image (None if a source was used)
+'plot' : bokeh figure object, the actual plot
+'ATKfilename' : the default filename given by ATK
+}
+```
+
+<br><br>
+
+### 2.2 Lightcurve Plotting<a id="22-lightcurve-plotting"></a>
+
+Type argument: 'lightcurve'
+
+Description: Plots lightcurves in the format returned by [lightcurve queries](#16-lightcurve-query). Here, you can either pass a single lightcurve, or multiple lightcurves (e.g. those returned from [lightcurve queries](#16-lightcurve-query)).
+
+Additional Supported Arguments: colour, colours
+
+where:
+```
+colour = str, name of a supported colour. Only used when passing a single lightcurve
+```
+```
+colours = list of strings denoting supported colours, e.g. ['green','red','blue']. Only used when passing multiple lightcurves
+```
+
+**Note:** CRTS' data server is not designed for scripted queries. As a result, queries are limited in the toolkit to one query per 15 seconds. This cooldown is managed using the CRTS_TIMER.txt file in the Settings directory of the package files, and hence the contents of this file should not be edited.
+
+<br>
+
+**Returns:** dict
+```
+{
+'type' : 'lightcurve'
+'survey' : str, survey of lightcurve
+'source' : int/str, source used to get data (None if a pos was used)
+'pos': [ra,dec], pos used to get data (None if a source was used)
+'plot' : bokeh figure object, the actual plot
+'ATKfilename' : the default filename given by ATK
+}
+```
+
+<br><br>
+
+### 2.3 SED Plotting<a id="23-sed-plotting"></a>
+
+Type argument: 'sed'
+
+Description: Plots SED data in the format returned by [SED queries](#17-sed-query).
+
+<br>
+
+**Returns:** dict
+```
+{
+'type' : 'sed'
+'source' : int/str, source used to get data (None if a pos was used)
+'pos': [ra,dec], pos used to get data (None if a source was used)
+'data': list of entries with each entry taking the form of a dict:
+	{
+    'survey' : str, survey of data point
+    'wavelength' : filter wavelength of data point
+    'flux' : flux through filter
+    'rel_err' : relative error on flux
+    }
+}
+```
+
+<br><br>
+
+### 2.4 Spectrum Plotting<a id="24-spectrum-plotting"></a>
+
+Type argument: 'spectra'
+
+Description: Plots spectrum data in the format returned by [spectrum queries](#18-spectrum-query).
+
+<br>
+
+**Returns:** dict
+```
+{
+'type' : 'spectrum'
+'survey' : str, survey of spectrum
+'source' : int/str, source used to get data (None if a pos was used)
+'pos': [ra,dec], pos used to get data (None if a source was used)
+'plot' : bokeh figure object, the actual plot
+'ATKfilename' : the default filename given by ATK
+}
+```
+
+<br><br>
+
+### 2.5 HRD Plotting<a id="25-hrd-plotting"></a>
+
+Type argument: 'hrd'
+
+Description: Plots Gaia HRD data in the format returned by [hrd queries](#19-hrd-query).
+
+<br>
+
+**Returns:** dict
+```
+{
+'type' : 'hrd'
+'source' : int/str, source overlayed in HRD
+'sources' : list, sources overlayed in HRD if multiple were given
+'plot' : bokeh figure object, the actual plot
+'ATKfilename' : the default filename given by ATK
+}
+```
+
+<br><br>
+
+### 2.6 Power Spectra Plotting<a id="26-power-spectra-plotting"></a>
+
+Type argument: 'powspec'
+
+Description: Plots power spectra from lightcurve data in the format returned by [lightcurve queries](#16-lightcurve-query).
+
+<br>
+
+**Returns:** dict
+
+```
+{
+'type' : 'powspec'
+'survey' : str, survey of lightcurve data given to the powspec tool
+'source' : int/str, source used to get data (None if a pos was used)
+'pos': [ra,dec], pos used to get data (None if a source was used)
+'plot' : bokeh figure object, the actual plot
+'ATKfilename' : the default filename given by ATK
+}
+```
+
+<br><br>
+
+### 2.7 Timeseries Analysis<a id="27-timeseries-analysis"></a>
+
+Description: Not explicitly a plotting function, but included here for completeness. Runs period analysis on lightcurve data in format returned by [lightcurve queries](#16-lightcurve-query).
+
+<br>
+
+**Usage:**
+
+```
+tsanalysis(data)
+```
+
+where:
+
+```
+data = dict or list in format returned by lightcurve queries
+```
+
+<br><br>
+
+## 3. Datapage Tools<a id="3-datapage-tools"></a>
+
+These functions are used to create custom datapages from any plots/data supported by AstroToolkit.
+
+**NOTE:** An example of datapage creation can be found within the packages 'Examples' folder, named 'datapage_creation.py' (within the …/Lib/site-packages/AstroToolkit from earlier). This can be imported from a python terminal using from AstroToolkit.Examples import datapage_creation.
+
+Below is the datapage produced by this example. Once the script to create these has been written, they can be a very powerful way to quickly retrieve and show a wide range of information on a system, with the below example easily being generated in under 30s.
+
+![](https://github.com/WD-planets/AstroToolkit/raw/latest/README_Images/datapage_example.png?raw=true)
+
+<br>
+
+Shortcuts:
+
+[Grid Creation](#31-gridsetup)
+
+[SIMBAD/Vizier Buttons](#32-getbuttons)
+
+[Metadata Table Creation](#33-getmdtable)
+
+<br><br>
+
+### 3.1 gridsetup<a id="31-gridsetup"></a>
+
+Formats plots for datapage creation by sizing them to a grid of given dimensions.
+
+<br>
+
+**Usage:**
+
+```
+getgrid(dimensions,plots,grid_size=CONFIG)
+```
+
+where:
+```
+dimensions = dict, dict with keys 'width' and 'height' that define the dimensions of the datapage in grid units (e.g. for a datapage that is 6 units wide and 3 units tall, dimensions={'width':6,'height':3})
+```
+```
+plots = list of plots, with each entry having the format:
+        {
+        'name' : the label to give to the plot
+        'figure' : the plot dictionary as returned by plotting tools
+        'width' : the width in grid units of this element
+        'height' : the height in grid units of this element
+        }
+```
+```
+grid_size  = int, size of each square of the grid to which all plots are scaled.
+```
+
+**Returns:** dict
+
+```
+{
+'name 1' : plot 1
+'name 2' : plot 2
+
+etc. for each plot given to the tool
+}
+```
+
+where the keys "name ..." are the names given to the plots above, and the values 'plot ...' are the plots to which these names refer.
+
+**NOTE:** Again, see the datapage_creation example as noted [above](#8-datapage-tools) for an example.
+
+<br>
+
+### 3.2 getbuttons<a id="32-getbuttons"></a>
+
+Returns a Bokeh figure containing SIMBAD and Vizier buttons for use in datapages.
+
+<br>
+
+**Usage:**
+
+```
+getinfobuttons(grid_size,source=None,pos=None,simbad_radius=CONFIG,vizier_radius=CONFIG)
+```
+
+where:
+```
+grid_size = int, size of the grid to which the buttons are scaled.
+```
+```
+pos = list, [ra,dec] in degrees
+```
+```
+source = int/str, Gaia source_id
+```
+```
+simbad_radius = int, radius to use in SIMBAD queries
+```
+```
+vizier_radius = int, radius to use in Vizier queries
+```
+
+**Returns:** dict
+
+```
+{
+'type' : 'buttons'
+'source' : int/str, source used to get data (None if a pos was used)
+'pos': [ra,dec], pos used to get data (None if a source was used)
+'plot' : bokeh figure object, the actual plot element
+}
+```
+
+**NOTE:** Again, see the datapage_creation example as noted [above](#8-datapage-tools) for an example.
+
+<br>
+
+### 3.3 getmdtable<a id="33-getmdtable"></a>
+
+Creates a table of metadata table using data from supported surveys and/or custom data.
+
+<br>
+
+**Usage:**
+
+```
+getmdtable(metadata,pos=None,source=None)
+```
+
+where:
+
+```
+metadata = dict, dictionary of metadata in accepted format (see below)
+```
+```
+pos = list, [ra,dec] in degrees
+```
+```
+source = int/str, Gaia source_id
+```
+
+<br>
+
+The expected metadata format is:
+
+```
+{
+'gaia' : {
+         'parameters' : names of parameters (i.e. column headers) that exist in that
+          survey
+         'errors' : names of errors (i.e. column headers) for these parameters that
+          exist in that survey
+         'notes' : str, any notes to include on this parameter/error/etc.
+         }
+}
+
+etc. for any supported survey
+```
+
+<br>
+
+If a key is provided that is not the name of a supported survey, that key will be interpreted as a custom entry.
+
+In this case, an additional 'values' key must be included, and the values/errors must be passed manually.
+
+```
+{
+'custom' : {
+           'parameters' : names of parameters
+           'values' : parameter values
+           'errors' : error values
+           'notes' : str, any notes to include on this parameter/error/etc.
+           }
+}
+```
+
+**Returns**: dict
+
+```
+{
+'type' : 'metadata'
+'source' : int/str, source used to get data (None if a pos was used)
+'pos': [ra,dec], pos used to get data (None if a source was used)
+'plot' : bokeh figure object, the actual plot element
+}
+```
+
+**NOTE:** Again, see the datapage_creation example as noted [above](#8-datapage-tools) for an example.
+
+<br><br>
+
+## 4. File Handling Tools<a id="4-file-handling-tools"></a>
+
+These tools can be used to transform many returned ATK data structures into local files, and vice versa. This process is designed to be completely lossless, allowing for the exact data structure that was used to create a file to be recreated at a later date.
+
+<br>
+
+Shortcuts:
+
+[Data Saving](#41-savedata)
+
+[Data Reading](#42-readdata)
+
+[Export Plots to PNG](#43-export)
+
+<br><br>
+
+### 4.1 savedata<a id="41-savedata"></a>
+
+This tool allows for the saving of many ATK data structures into local files.
+
+Supported ATK data types: data, phot, bulkphot, image, sed, spectra, lightcurve
+
+<br>
+
+**Usage:**
+```
+savedata(data)
+```
+
+where:
+```
+data = any of the supported data structures from ATK
+```
+
+<br>
+
+**Returns:** str
+
+Name of file that the data was saved to
+
+<br>
+
+**Note:** Created files will contain a tag (e.g. ATKimage for an image). This is necessary, as it tells the readdata function (see below) how to interpret the file to recreate the original data structure.
+
+<br>
+
+### 4.2 readdata<a id="42-readdata"></a>
+
+This tool allows for the lossless recreation of ATK data stuctures from files created using [savedata](#91-savedata).
+
+<br>
+
+**Usage:**
+
+```
+readdata(filename)
+```
+
+where:
+```
+filename = str, name/path of ATK file to read
+```
+
+<br>
+
+**Returns:** ATK datastructure that was used to create the file
+
+<br>
+
+**Example:**
+ATLAS lightcurve queries can take a long time (5-10 minutes). It is therefore useful to be able to save these to a local file for later use.
+
+The following example shows how to fetch ATLAS lightcurve data, save it to a local file, read this local file to recover the data, and then plot it.
+```
+from AstroToolkit.Tools import lightcurvequery,savedata,readdata,plotlightcurve,showplot
+
+lightcurve_data=lightcurvequery(source=6050296829033196032,survey='atlas')
+fname=savedata(lightcurve_data)
+
+recreated_lightcurve_data=readdata(fname)
+showplot(plotlightcurve(recreated_lightcurve_data,colours=['red','orange','yellow']))
+```
+
+![](https://github.com/WD-planets/AstroToolkit/raw/latest/README_Images/struct_recreation_example.png?raw=true)
+
+**Note:** The above example assumes that you have already set a default ATLAS username / password in the [config](#configuration).
+
+<br>
+
+### 4.3 export<a id="43-export"></a>
+
+This allows for ATK figures to be saved as a .png file.
+
+<br>
+
+**Usage:**
+
+```
+export(plot,keephtml=True)
+```
+
+where:
+```
+plot = bokeh figure object
+```
+```
+keephtml = bool. To get the filename for the png, the plot must first be saved as a regular bokeh static html file. This tells ATk whether to delete this file or keep it.
+```
+
+<br><br>
+
+## 5. Other Tools<a id="5-other-tools"></a>
+
+Below is a list of the other tools available in ATK.
+
+Shortcuts:
+
+[Show Plots](531-showplot)
+
+[Save Plots](532-saveplot)
+
+[Proper Motion Correction](533-correctpm)
+
+[Parallax to Distance](534-getdistance)
+
+[Convert Degrees to HMS/DMS](535-convfromdeg)
+
+[Convert from HMS/DMS to Degrees](536-convtodeg)
+
+[Read fits file columns](#57-getcolumn)
+
+[Read Sources from a fits file](#58-getsources)
+
+[Read Positions from a fits file](#59-getpositions)
+
+[Open object in SIMBAD/Vizier](#510-webquery)
+
+### 5.1 showplot<a id="51-showplot"></a>
+
+Description: This allows for the plot dictionaries returned by ATK to be opened in the browser. Doing so will also save the plot locally as a .html file. Can also be used with the same functionality as show() from bokeh for non-ATK bokeh figures.
+
+<br>
+
+**Usage:**
+```
+showplot(plot)
+```
+
+where:
+```
+plot = ATK plot dictionary or bokeh figure
+```
+
+<br><br>
+
+### 5.2 saveplot<a id="52-saveplot"></a>
+
+Description: This allows for the plot dictionaries returned by ATK to be saved to local .html files without opening them in the browser. Can also be used with the same functionality as save() from bokeh for non-ATK bokeh figures.
+
+<br>
+
+**Usage:**
+```
+saveplot(plot)
+```
+
+where:
+```
+plot = ATK plot dictionary or bokeh figure
+```
+
+<br><br>
+
+### 5.3 correctpm<a id="53-correctpm"></a>
+
+Description: Corrects for proper motion of an object between an input time and a target time.
+
+<br>
+
+**Usage:**
+
+```
+correctpm(inputtime,targettime,ra,dec,pmra,pmdec)
+```
+
+where:
+
+```
+inputtime = [year,month] where both entries are integers
+```
+```
+targettime = [year,month] where both entries are integers
+```
+```
+ra = float, ra of object in degrees
+```
+```
+dec = float, dec of object in degrees
+```
+```
+pmra = float, proper motion in ra direction of object in mas/yr
+```
+```
+pmdec = float, proper motion in dec direction of object in mas/yr
+```
+
+<br>
+
+**Returns:** list
+
+[ra,dec] of object in degrees, corrected for proper motion.
+
+<br><br>
+
+### 5.4 getdistance<a id="54-getdistance"></a>
+
+Simply calculates the distance (1/parallax) of an object given its parallax in mas (the unit of parallax in Gaia).
+
+<br>
+
+**Usage:**
+
+```
+getdistance(parallax)
+```
+
+where:
+```
+parallax = float, parallax of object in mas
+```
+
+<br>
+
+**Returns:** float
+
+distance of object in pc
+
+<br>
+
+### 5.5 convfromdeg<a id="55-convfromdeg"></a>
+
+Converts deg coordinates to HMS/DMS format
+
+<br>
+
+**Usage:**
+
+```
+convfromdeg(pos)
+```
+
+where:
+```
+pos = list, [ra,dec] of object in degrees
+```
+
+<br>
+
+**Returns:** list
+
+[ra,dec] of object in [HMS,DMS]
+
+<br>
+
+### 5.6 convtodeg<a id="56-convtodeg"></a>
+
+Converts HMS/DMS coordinates to deg.
+
+<br>
+
+**Usage:**
+
+```
+convfromdeg(pos)
+```
+
+where:
+```
+pos = list, [ra,dec] of object in [HMS/DMS] format, i.e. [[H,M,S],[D,M,S]]
+```
+
+<br>
+
+**Returns:** list
+
+[ra,dec] of object in deg
+
+<br>
+
+### 5.7 getcolumn<a id="57-getcolumn"></a>
+
+Returns a list of values from a .fits file given a column name.
+
+**Usage:**
+
+```
+getcolumn(file_name,col_name)
+```
+
+where:
+```
+file_name = str, name of file with or without the .fits extension.
+```
+```
+col_name = str, name of column in file
+```
+
+**Returns:** list
+
+list of values for that column
+
+<br>
+
+### 5.8 getsources<a id="58-getsources"></a>
+
+Returns a list of source values from a .fits file given a column name, which can either be set in the tool or in the config.
+
+**Usage:**
+
+```
+getsources(file_name,col_name=CONFIG)
+```
+
+where:
+```
+file_name = str, name of file with or without the .fits extension.
+```
+```
+col_name = str, name of column containing Gaia sources
+```
+
+**Returns:** list
+
+list of Gaia sources
+
+<br>
+
+### 5.9 getpositions<a id="59-getpositions"></a>
+
+Returns a list of ra,dec values from a .fits file given ra and dec column names, which can either be set in the tool or in the config.
+
+**Usage:**
+
+```
+getsources(file_name,col_name=CONFIG)
+```
+
+where:
+```
+file_name = str, name of file with or without the .fits extension.
+```
+```
+col_name = str, comma separated string containing names of ra and dec columns. e.g. col_name = 'RA_ICRS,'DE_ICRS'. Must be in this order.
+```
+
+**Returns:** list
+
+list of positions [[ra1,dec1],[ra2,dec2]], etc.
+
+### 5.10 webquery<a id="510-webquery"></a>
+
+Performs SIMBAD/Vizier queries given a source/pos in the web browser.
+
+**Usage:**
+
+```
+webquery(type,source=None,pos=None,radius=CONFIG)
+```
+
+where:
+```
+type = str, type of query from 'simbad' or 'vizier'
+```
+```
+pos = list, [ra,dec]
+```
+```
+source = int/str, Gaia source_id
+```
+```
+radius = int/float, radius of data query. If not given, this is taken from simbad_radius or vizier_radius in the config, depending on the query type
+```
+
+**Returns:** None
+
+<br><br>
+
+## Examples<a id="examples"></a>
+
+### Example 1: Fetching and plotting an image
+
+```
+from AstroToolkit.Tools import query,plot,showplot
+
+image=query(type='image',survey='any',source=6050296829033196032,overlays='gaia')
+figure=plot(image)
+showplot(figure)
+```
+
+![](https://github.com/WD-planets/AstroToolkit/raw/latest/README_Images/imaging_example.png?raw=true)
+
+<br><br>
+
+### Example 2: Fetching and plotting a Gaia HRD
+
+```
+from AstroToolkit.Tools import query,plot,showplot
+
+data=query(type='hrd',sources=[6050296829033196032])
+figure=plot(data)
+showplot(figure)
+```
+
+![](https://github.com/WD-planets/AstroToolkit/raw/latest/README_Images/hrd_example.png?raw=true)
+
+<br><br>
+
+### Example 3: Fetching and plotting a ZTF lightcurve
+
+```
+from AstroToolkit.Tools import query,plot,showplot
+
+data=lightcurvequery(type='lightcurve',survey='ztf',source=6050296829033196032)
+showplot(plot(data,colours=['green','red','blue']))
+```
+
+**Note:** Each band will then be toggleable using the legend.
+
+![](https://github.com/WD-planets/AstroToolkit/raw/latest/README_Images/lightcurve_example.png?raw=true)
+
+<br><br>
+
+### Example 4: Fetching and plotting an SED
+
+```
+from AstroToolkit.Tools import query,plot,showplot
+
+data=query(type='sed',source=6050296829033196032)
+showplot(plot(data))
+```
+
+![](https://github.com/WD-planets/AstroToolkit/raw/latest/README_Images/sed_example.png?raw=true)
+
+<br><br>
+
+### Example 5: Fetching and plotting an SDSS spectrum
+
+```
+from AstroToolkit.Tools import query,plot,showplot
+
+data=query(type='spectra',survey='sdss',source=587316166180416640)
+plot=plot(data)
+showplot(plot)
+```
+
+![](https://github.com/WD-planets/AstroToolkit/raw/latest/README_Images/spectrum_example.png?raw=true)
+
+<br><br>
+
+### Example 6: Fetching ZTF ligthcurve data, and then plotting it as a power spectrum
+
+```
+from AstroToolkit.Tools import lightcurvequery,plotpowspec,showplot
+
+data=lightcurvequery(survey='ztf',source=6050296829033196032)
+plot=plotpowspec(data)
+showplot(plot)
+```
+
+![](https://github.com/WD-planets/AstroToolkit/raw/latest/README_Images/powspec_example.png?raw=true)
+
+<br><br>
+
+### Example 7: Fetching Gaia parallax and WISE data
+
+```
+from AstroToolkit.Tools import query
+
+source = 6050296829033196032
+
+parallax = query(type='data',survey='gaia',source=source)['data']['parallax']
+wise_data = query(type='data',survey='wise',source=source)['data']
+```
+
+### Example 8: Fetching 2MASS photometry for an object
+
+```
+from AstroToolkit.Tools import query
+
+data=query(type='phot',survey='twomass',source=6050296829033196032)['data']
+```
+
+### Example 9: Fetching photometry from all available surveys using a bulk photometry query
+
+```
+from AstroToolkit.Tools import query
+
+bulk_phot=query(type='bulkphot',source=6050296829033196032)['data']
+
+gaia_data=bulk_phot['gaia']
+galex_data=bulk_phot['galex']
+```
+
+<br><br>
+
+### Example 10: Fetching ZTF lightcurve data, and performing timeseries analysis
+
+```
+from AstroToolkit.Tools import query,tsanalysis
+
+data=query(type='lightcurve',survey='ztf',source=6050296829033196032)
+plot=tsanalysis(data)
+```
+
+![](https://github.com/WD-planets/AstroToolkit/raw/latest/README_Images/tsanalysis_example.png?raw=true)
+
+<br><br>
+
+### Example 11: Proper motion correction
+
+```
+from AstroToolkit.Tools import query,correctpm
+
+gaia_data=query(type='data',survey='gaia',source=6050296829033196032)['data']
+ra,dec,pmra,pmdec=gaia_data['ra'][0],gaia_data['dec'][0],gaia_data['pmra'][0],gaia_data['pmdec'][0]
+
+ra_corrected,dec_corrected=correctpm([2016,0],[2000,0],ra,dec,pmra,pmdec)
+```
