@@ -1,0 +1,60 @@
+# -*- coding: utf-8 -*-
+# @project: duspider
+# @Author：dyz
+# @date：2023/11/9 9:48
+import base64
+import logging
+import time
+from hashlib import md5
+
+from PIL import Image
+from fake_useragent import UserAgent
+from Crypto.Cipher import AES, DES
+
+ua = UserAgent()
+
+logger = logging.getLogger("duspider.tools")
+
+
+def get_ua():
+    while True:
+        ua_ = ua.random
+        if 'MSIE' not in str(ua_):
+            return ua_
+
+
+def make_md5(s: str, encoding='utf-8') -> str:
+    """MD5 加密"""
+    return md5(s.lower().encode(encoding)).hexdigest()
+
+
+def aio_timer(func):
+    """ 计算时间装饰器 """
+
+    async def wrapper(*args, **kwargs):
+        start_time = time.time()
+        res = await func(*args, **kwargs)
+        time_ = time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time))
+        logger.info(f'总耗时: {time_}')
+        return res
+
+    return wrapper
+
+
+def decrypt(content, key='SecretIs'):
+    """ AES解密"""
+    cipher = DES.new(key.encode(), DES.MODE_ECB)
+    content = base64.b64decode(content)
+    text = cipher.decrypt(content).decode('utf-8')
+    return text
+
+
+def re_quality(a_file, b_file, quality=70):
+    """图品压缩"""
+    im = Image.open(a_file)
+    im.save(b_file, format="JPEG", quality=quality)  # 轻度压缩
+
+
+if __name__ == '__main__':
+    s = "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"
+    print(decrypt((s)))
