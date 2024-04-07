@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "causy"
+version = "0.1.0"
+description = "Causal discovery made easy."
+authors = ["Sofia Faltenbacher <faltenbacher.sofia@gmail.com>", "Lilith Wittmann <mail@lilithwittmann.de>"]
+readme = "README.md"
+license = "MIT"
+include = ["pyproject.toml", "README.md", "LICENSE", "causy", "causy/static/*", "causy/static/assets/*"]
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.13"
+scipy = "^1.11.2"
+typer = "^0.12.0"
+torch = "^2.2.2"
+fastapi = "^0.110.0"
+uvicorn = "^0.29.0"
+
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.5.1"
+pyinstrument = "^4.5.3"
+black = "^23.9.1"
+numpy = "^1.26.0"
+pdoc = "^14.1.0"
+pre-commit = "^3.4.0"
+coverage = "^7.3.2"
+
+
+[tool.poetry-version-plugin]
+source = "git-tag"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+causy = "causy.cli:app"
