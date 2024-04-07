@@ -1,0 +1,93 @@
+site_name: streamjoy
+site_description: Enjoy animating images into GIFs and MP4s!
+
+repo_url: https://github.com/ahuang11/streamjoy
+repo_name: ahuang11/streamjoy
+
+theme:
+    name: material
+    features:
+        - content.code.copy
+    logo: assets/logo.png
+    palette:
+        # Palette toggle for automatic mode
+        - media: "(prefers-color-scheme)"
+          toggle:
+            icon: material/brightness-auto
+            name: Switch to light mode
+
+        # Palette toggle for light mode
+        - media: "(prefers-color-scheme: light)"
+          scheme: default
+          primary: custom
+          accent: custom
+          toggle:
+            icon: material/brightness-7
+            name: Switch to dark mode
+
+        # Palette toggle for dark mode
+        - media: "(prefers-color-scheme: dark)"
+          scheme: slate
+          primary: custom
+          accent: custom
+          toggle:
+            icon: material/brightness-4
+            name: Switch to light mode
+
+markdown_extensions:
+    - toc:
+        permalink: true
+    - pymdownx.highlight:
+        anchor_linenums: true
+    - pymdownx.tasklist:
+        custom_checkbox: true
+    - admonition
+    - pymdownx.details
+    - pymdownx.tabbed
+    - pymdownx.magiclink
+    - pymdownx.inlinehilite
+    - pymdownx.snippets
+    - pymdownx.superfences:
+        custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+plugins:
+    - search
+    - mkdocstrings:
+        handlers:
+            python:
+                options:
+                    docstring_style: google
+                    find_stubs_package: true
+
+watch:
+    - docs
+    - streamjoy
+
+nav:
+    - Read me!: index.md
+    - Supported formats: supported_formats.md
+    - How do I...: how_do_i.md
+    - Package design: package_design.md
+    - Example recipes:
+        - Air temperature: example_recipes/air_temperature.md
+        - Sine wave: example_recipes/sine_wave.md
+        - CO2 timeseries: example_recipes/co2_timeseries.md
+        - Temperature anomaly: example_recipes/temperature_anomaly.md
+        - Sea ice: example_recipes/sea_ice.md
+        - OISST globe: example_recipes/oisst_globe.md
+        - Gender gapminder: example_recipes/gender_gapminder.md
+        - Stream code: example_recipes/stream_code.md
+        - Nice orbit: example_recipes/nice_orbit.md
+    - API reference:
+        - Core: api_reference/core.md
+        - Models: api_reference/models.md
+        - Streams: api_reference/streams.md
+        - Renderers: api_reference/renderers.md
+        - Wrappers: api_reference/wrappers.md
+        - Settings: api_reference/settings.md
+
+extra_css:
+  - stylesheets/extra.css
