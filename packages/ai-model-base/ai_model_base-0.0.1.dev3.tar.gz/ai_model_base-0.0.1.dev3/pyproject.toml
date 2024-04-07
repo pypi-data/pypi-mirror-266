@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "ai-model-base"
+version = "0.0.1dev3"
+description = ""
+authors = ["taoyang <hackty@163.com>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/hackty/ai-model-base"
+packages = [{ include = "ai_model_base" }]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+ai-model-dispatcher = "^0.0.1.dev4"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.3"
+pytest-mock = "^3.12.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
