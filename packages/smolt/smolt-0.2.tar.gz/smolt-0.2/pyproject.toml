@@ -1,0 +1,43 @@
+[project]
+name = "smolt"
+description = "Small minimal-overhead logging toolkit"
+authors = [
+    { name = "Vegard Storheil Eriksen", email = "zyp@jvnv.net" },
+]
+dependencies = [
+    "click>=8.1.7",
+    "pyelftools>=0.31",
+    "python-orbuculum>=0.0.1,<0.1",
+    "cpp-symbol-parser>=0.1.1,<0.2",
+]
+requires-python = ">=3.10"
+dynamic = []
+readme = "README.md"
+version = "0.2"
+
+[project.license]
+text = "MIT"
+
+[project.scripts]
+smolt = "smolt.cli:cli"
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.version]
+source = "scm"
+
+[tool.pdm.dev-dependencies]
+test = [
+    "pytest>=8.1.1",
+    "pytest-xdist>=3.5.0",
+]
+
+[tool.pdm.scripts]
+test = "pytest -n auto"
