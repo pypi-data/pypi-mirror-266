@@ -1,0 +1,75 @@
+Metadata-Version: 2.1
+Name: Tree.Network
+Version: 0.0.1
+Summary: Fast implementation of trees from the mathematics of graphs
+Author-email: Henry Sheehy <enquiries@henrysheehy.com>
+License: # PythU 
+        Scanning tunnelling microscopy (STM), quasiparticle interference (QPI) and 
+        angle-resolved photoemission spectrocopy (ARPES) simulation of (topological)
+        non-unitary spin-triplet unconventional superconductivity and magnetism, in 
+        quantum dots, thin films and 3D, with impurities.
+        
+        COPYRIGHT (C) 2018--2023, Henry Joseph Sheehy. All rights reserved.
+        
+Project-URL: Homepage, https://git.quantalumin.com/henry/Tree.Net
+Project-URL: Issues, https://git.quantalumin.com/henry/Tree.Net/issues
+Keywords: graph,tree,structure,web,data,hyperlinks,lineage,ancestry,cell,differentiation,embryology,matrix
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# PyTree
+A fast implementation of trees from the mathematical theory of graphs
+
+Inspired and applied in condensed matter physics, 
+cellular biology and the World Wide Web.
+
+## Mathematical Introduction
+### Graphs
+Mathematical objects of the theory of *graphs* have one-to-one matrix 
+representations, as described by the theory of linear algebra.
+In general, a graph is a network structure, whose off-diagonal terms 
+in the matrix representation are known to Condensed Matter Physicists 
+as hopping or interaction terms.
+
+### Trees
+A particular graph, known as a tree, is a network with a 
+hierarchical structure, which we use to index 
+objects in their matrix representation.
+
+## Python implementation
+The Tree is a Python subclass of a List, which adds the following *attributes* and *methods*: 
+
+### Attributes
+- parent : Tree or none (default)
+children : Tree or none (default)
+- ancestors : list of Trees lineage upwards 
+- root: root of the tree (parent without parent)
+- descendants : lists lineage downwards (list of list of Trees) 
+- buds : lists descendants without descendants
+
+### Methods
+- set_ids : add an index (id) to the buds of this Tree
+- get_ids : get the indices (ids) of the buds of this Tree
+.attribute : attributes are inherited down the linage
+
+## Summary
+A *graph structure defines a matrix*; a *tree structure
+indexes the matrix*. 
+
+The tree structure adds parents, 
+children, ancestors, descendants and inheritance of attributes.
+
+## Installation
+### Development environment
+```sh
+pip install --editable . --break-system-packages
+```
+
+## Build and upload
+```sh
+python3 -m build
+twine upload dist/*
+```
