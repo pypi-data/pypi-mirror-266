@@ -1,0 +1,94 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "fredquery"
+dynamic = ["version"]
+description = 'Downloads various stlouisfed.org FRED files to CSV files and creates plots based on category, release, series, source, or tag'
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "Don Caldwell", email = "dfwcnj@gmail.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = []
+
+[project.urls]
+Documentation = "https://github.com/dfwcnj/fredquery#readme"
+Issues = "https://github.com/dfwcnj/fredquery/issues"
+Source = "https://github.com/dfwcnj/fredquery"
+
+[tool.hatch.version]
+path = "src/fredquery/__about__.py"
+
+[project.scripts]
+fredcategories = "fredquery.fredcategories:main"
+fredreleases   = "fredquery.fredreleases:main"
+fredsources    = "fredquery.fredsources:main"
+fredseries     = "fredquery.fredseries:main"
+fredplot       = "fredquery.fredplot:main"
+fredplotseries = "fredquery.fredplotseries:main"
+fredtags       = "fredquery.fredtags:main"
+
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/fredquery"]
+
+[tool.hatch.envs.default]
+dependencies = [
+  "coverage[toml]>=6.5",
+  "pytest",
+]
+[tool.hatch.envs.default.scripts]
+test = "pytest {args:tests}"
+test-cov = "coverage run -m pytest {args:tests}"
+cov-report = [
+  "- coverage combine",
+  "coverage report",
+]
+cov = [
+  "test-cov",
+  "cov-report",
+]
+
+[[tool.hatch.envs.all.matrix]]
+python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
+
+[tool.hatch.envs.types]
+dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/fredquery tests}"
+
+[tool.coverage.run]
+source_pkgs = ["fredquery", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/fredquery/__about__.py",
+]
+
+[tool.coverage.paths]
+fredquery = ["src/fredquery", "*/fredquery/src/fredquery"]
+tests = ["tests", "*/fredquery/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]

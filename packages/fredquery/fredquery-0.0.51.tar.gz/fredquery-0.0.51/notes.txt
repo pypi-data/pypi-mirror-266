@@ -1,0 +1,107 @@
+
+
+# FRED
+
+The API allows up to 120 requests per minute.
+
+https://fredhelp.stlouisfed.org/#fred-data-understanding-the-data
+
+https://en.wikipedia.org/wiki/Federal_Reserve_Economic_Data
+https://www.aeaweb.org/about-aea/committees/economic-statistics/data-resources
+https://research.stlouisfed.org/staff/mendez-carbajo/
+https://www.stlouisfed.org/education/tools-for-teaching-with-fred
+https://fredblog.stlouisfed.org/
+# on household debt uses series DPI, HCCSDODNS, HHMSDODNS, TDSP
+https://fredblog.stlouisfed.org/2015/01/on-household-debt/
+https://fredblog.stlouisfed.org/2024/01/recent-developments-in-household-liabilities/
+https://fredblog.stlouisfed.org/2023/12/three-measures-of-us-credit-card-debt/
+https://fredblog.stlouisfed.org/2023/10/credit-card-holders-and-their-credit-scores/
+
+https://research.stlouisfed.org/publications/
+https://research.stlouisfed.org/publications/economic-synopses/2023/11/24/developments-in-household-liabilities-since-the-1990s
+
+get releases
+get series for release
+
+https://fred.stlouisfed.org/
+https://fred.stlouisfed.org/docs/api/fred/overview.html
+https://fred.stlouisfed.org/docs/api/fred/series.html
+# includes structure and various libraries in various languages
+https://fred.stlouisfed.org/docs/api/fred/
+
+# category id list not provided in api
+# mine html of this page to find series for a category
+https://fred.stlouisfed.org/categories
+https://api.stlouisfed.org/fred/category?category_id=$cid&api_key=$FREDAPI
+
+# releases
+# mine html of these pages to find series for a release
+https://fred.stlouisfed.org/releases
+https://fred.stlouisfed.org/releases?pageID=[1-7]
+# Z.1 financial account
+https://fred.stlouisfed.org/release?rid=52
+https://fred.stlouisfed.org/release?rid=433&t=death&ob=pv&od=desc
+# consumer credit
+https://www.federalreserve.gov/releases/g19/
+
+# release tables
+# median household income by state ann
+https://fred.stlouisfed.org/release/tables?rid=249&eid=259515#snid=259516
+# personal income and its disposition mo
+https://fred.stlouisfed.org/release/tables?rid=54&eid=155443#snid=155486
+# B.101 Balance Sheet of Households and Nonprofit Organizations
+https://fred.stlouisfed.org/release/tables?rid=52&eid=809858
+
+# series
+https://fred.stlouisfed.org/category/series
+https://fred.stlouisfed.org/release/series
+https://fred.stlouisfed.org/tags/series
+https://fred.stlouisfed.org/series/GDP
+https://fred.stlouisfed.org/series/FEDFUNDS?cid=118
+https://fred.stlouisfed.org/series/GFDEGDQ188S
+
+# tags
+# mine html of these pages to find series for a tag
+https://fred.stlouisfed.org/tags?pageID=[1-30]
+https://api.stlouisfed.org/fred/tags
+
+# fred nasdaq
+https://data.nasdaq.com/data/FRED-federal-reserve-economic-data/documentation
+
+fred releases default file_type=xml for json use file_type=json
+id realtime_start realtime_end name press_release link
+https://api.stlouisfed.org/fred/releases?api_key=$FREDAPI
+
+fred release for a release id
+https://api.stlouisfed.org/fred/release?release_id=$id&api_key=$FREDAPI
+
+# bank assets and liabilities
+https://fred.stlouisfed.org/release?rid=22&utm_medium=email&utm_campaign=FRED%20Data%20News%200109&utm_content=FRED%20Data%20News%200109+CID_c905819e971f1df8456ac4d49530cfd1&utm_source=Research%20newsletter&utm_term=assets%20and%20liabilities
+
+
+https://pypi.org/project/fredapi/
+https://frb.readthedocs.io/en/latest/
+https://frb.readthedocs.io/_/downloads/en/latest/pdf/
+
+https://github.com/7astro7/full_fred
+
+https://pypi.org/project/fred/
+
+ALFRED  archival fred
+ihttps://alfred.stlouisfed.org/
+
+# FRASER
+https://fraser.stlouisfed.org/api-documentation/oai-pmh#get-/Identify
+
+
+# blurb
+
+I have created some command line tools that I hope makes using the
+stlouisfed.org FRED time series data easier. It is written in Python and
+can be installed with the command 'pip install fredquery'. It has been
+tested on a mac laptop and a raspberry pi 5 device. Source code
+can be retrieved at 'https://github.com/dfwcnj/fredquery'. It provideѕ
+five commands corresponding to FRED organization: fredcategories,
+fredreleases, fredseries, fredsources, and fredtags. I am looking for
+feedback concerning usefulness, defects, or improvements.
+
