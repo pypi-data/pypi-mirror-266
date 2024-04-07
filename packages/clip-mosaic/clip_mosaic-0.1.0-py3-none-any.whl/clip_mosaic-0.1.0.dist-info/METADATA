@@ -1,0 +1,34 @@
+Metadata-Version: 2.1
+Name: clip-mosaic
+Version: 0.1.0
+Summary: Clip & Mosaic multiple TIFF Images with shapefiles.
+Author: zheuziihau
+Author-email: 812325695@qq.com
+Requires-Python: >=3.10,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: geopandas
+Requires-Dist: rasterio
+Description-Content-Type: text/markdown
+
+# Clip Mosaic
+
+Clip & Mosaic multiple TIFF Images with shapefiles.
+
+Python>=3.10
+
+GDAL, rasterio and geopandas must be installed before using
+
+It is recommended that all the tifs to be mosaiced have the same projection, resolution and other metadata. Otherwise, uncertain errors may occur or undesired results may be obtained.
+
+Usage:
+```python
+# testdata is the folder containing the tif images
+from clip_mosaic import ClipMosaic
+clipper = ClipMosaic('testdata', True)
+clipper.clip_by_shp('testdata/testrange.shp', 'test_clip.tif')
+```
+
+Please read the source code (which is clearly written and easily understood) for more usage. :D
