@@ -1,0 +1,59 @@
+# ignore notebooks
+*.ipynb
+
+# ignore terraform artifacts
+*.tfstate
+*.tfstate.backup
+*.tfplan
+.terraform
+.terraform.lock.hcl
+
+# ignore python artifacts
+*.pyc
+*.pyo
+*.env
+*.venv
+*.egg-info
+build/
+dist/
+*.whl
+*.egg
+__pycache__/
+
+# ignore pytorch artifacts
+*.pth
+*.pth.tar
+*.pt
+
+# dev
+kubeflow/components/data_pull_e2e/*
+
+# do not ignore notebooks named overview directory
+*/notebooks/**
+!*/notebooks/overview.ipynb
+raw-data/**
+# frontend
+.svelte-kit
+.DS_Store
+node_modules
+/build
+/.svelte-kit
+/package
+.env
+.env.*
+!.env.example
+.vercel
+.output
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+env.ts
+
+# ignore data files
+*.csv
+*.json
+*.pkl
+
+# except those that track kubeflow state
+!kubeflow/state.json
+!kubeflow/desired_state.json
+!sample-fe-data.json
