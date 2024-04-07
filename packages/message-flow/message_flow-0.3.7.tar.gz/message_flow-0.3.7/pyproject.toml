@@ -1,0 +1,160 @@
+[project]
+name = "message-flow"
+version = "0.3.7"
+description = "Asynchronous Communication Framework"
+authors = [
+    { name = "Valentin Vorobyev", email = "voro6yov.valentin@gmail.com" },
+]
+dependencies = [
+    "pydantic>=2.5.2",
+    "typer>=0.9.0",
+]
+requires-python = ">=3.10"
+readme = "README.md"
+
+[project.license]
+text = "Apache License 2.0"
+
+[project.optional-dependencies]
+rabbitmq = [
+    "message-flow-rabbitmq>=0.2.2",
+]
+
+[project.scripts]
+message-flow = "message_flow.__main__:cli"
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[tool.pdm.dev-dependencies]
+docs = [
+    "mkdocs",
+    "mkdocs-embed-external-markdown",
+    "mkdocs-exclude",
+    "mkdocs-material",
+    "mkdocs-redirects",
+    "mkdocs-simple-hooks",
+    "mkdocstrings-python",
+    "tomli",
+    "mike @ git+https://github.com/jimporter/mike.git",
+    "mkdocs-embed-external-markdown>=2.3.0",
+    "griffe-typingdoc>=0.2.4",
+]
+linting = [
+    "ruff>=0.1.7",
+    "mypy>=1.7.1",
+    "codespell>=2.2.6",
+    "pyright>=1.1.339",
+]
+testing = [
+    "pytest>=7.4.3",
+    "pytest-mock>=3.12.0",
+    "pytest-pretty>=1.2.0",
+    "pytest-examples>=0.0.10",
+    "coverage>=7.3.2",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py37"
+
+[tool.ruff.lint]
+extend-select = [
+    "Q",
+    "RUF100",
+    "C90",
+    "UP",
+    "I",
+    "T",
+]
+extend-ignore = [
+    "D105",
+    "D107",
+    "D205",
+    "D415",
+]
+
+[tool.ruff.lint.flake8-quotes]
+inline-quotes = "double"
+multiline-quotes = "double"
+
+[tool.ruff.lint.mccabe]
+max-complexity = 14
+
+[tool.ruff.lint.isort]
+known-first-party = [
+    "message_flow",
+    "tests",
+]
+
+[tool.ruff.lint.extend-per-file-ignores]
+"tests/**/*.py" = [
+    "T",
+    "E721",
+    "F811",
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"*/__init__.py" = [
+    "F405",
+    "F403",
+    "D",
+]
+"*/__init__.pyi" = [
+    "F405",
+    "F403",
+    "D",
+]
+"tests/*" = [
+    "D",
+]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.coverage.run]
+source = [
+    "message_flow",
+]
+branch = true
+context = "${CONTEXT}"
+
+[tool.coverage.report]
+precision = 2
+exclude_lines = [
+    "if TYPE_CHECKING:",
+    "def __str__",
+    "def __repr__",
+    "pass",
+    "hasattr",
+    "SimpleMessageConsumer",
+    "SimpleMessageProducer",
+]
+omit = [
+    "*/utils/*",
+    "__init__.py",
+    "__init__.pyi",
+]
+
+[tool.coverage.paths]
+source = [
+    "message_flow/",
+]
+
+[tool.pyright]
+include = [
+    "message_flow",
+]
+exclude = [
+    "**/__init__.py",
+    "**/application_schema/**",
+]
+
+[tool.codespell]
+skip = ".git"
