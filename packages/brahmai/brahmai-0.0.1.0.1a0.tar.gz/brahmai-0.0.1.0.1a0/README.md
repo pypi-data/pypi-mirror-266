@@ -1,0 +1,57 @@
+![BRAHMAI](https://brahmai.in/brahmai-banner.png)
+## Enhancing A.I. Technology for the Betterment of All.
+
+<span style="font-size: 30px; font-weight: bold;">Python SDK</span>
+Version: 0.0.1
+
+The BRAHMAI Python library provides convenient access to the BRAHMAI REST API from any Python 3.7+ application. The library includes type definitions for all request params and response fields, and offers both synchronous and asynchronous clients powered by [httpx](https://github.com/encode/httpx).
+
+The BRAHMAI Python library also allows management of data and take care of security without having to rely on any third-party code.
+
+---
+## PROVISIONS:
+### SkyNET: Privacy Protection and Data Anonymization Framework.
+
+It offers rapid identification and anonymization capabilities for sensitive information in both text and images, including but not limited to credit card numbers, personal names, locations, social security numbers, bitcoin wallets, phone numbers, financial data, and beyond.
+
+## Example:
+```python
+from brahmai import BRAHMAI
+
+client = BRAHMAI(
+    apikey: "your_api_key",
+    api_version: "default"
+)
+
+text = "Hey there, my name is Aron, and my phone number is 8585665***"
+```
+```python
+# Simple masking of data:
+encrypt = client.skynet.wrap(content=text)
+```
+returns something like:
+```json
+{
+    "text": "Hey there, my name is <PERSON>, and my phone number is <PHONE_NUMBER>", 
+    "items": [
+        {
+            "start": 55, 
+            "end": 69, 
+            "entity_type": "PHONE_NUMBER", 
+            "text": "<PHONE_NUMBER>", 
+            "operator": "replace"
+        },
+        {
+            "start": 22, 
+            "end": 30, 
+            "entity_type": "PERSON", 
+            "text": "<PERSON>", 
+            "operator": "replace"
+        }
+    ]
+}
+```
+```python
+# Masking data with encryption:
+encrypt = client.skynet.wrap(content=text, encrypt=True)
+```
