@@ -1,0 +1,93 @@
+# Copyright (C) 2024 Maxwell G <maxwell@gtmx.me>
+# SPDX-License-Identifier: MIT
+
+from __future__ import annotations
+
+import filecmp
+import shutil
+import tarfile
+from collections.abc import Iterator
+from pathlib import Path
+
+import pytest
+
+from zstarfile.extra import _get_opener, open_write_compressed
+from zstarfile.tarfile import ZSTarfile
+
+HERE = Path(__file__).resolve().parent
+ROOT = HERE.parent
+
+
+def iterfiles(dir1: Path, *, _origdir: Path | None = None) -> Iterator[Path]:
+    _origdir = _origdir or dir1
+    for path in dir1.iterdir():
+        if path.is_dir():
+            yield from iterfiles(path, _origdir=_origdir)
+        else:
+            yield path.relative_to(_origdir)
+
+
+def compare_directories(dir1: Path, dir2: Path) -> None:
+    for file in iterfiles(dir2):
+        assert filecmp.cmp(dir1 / file, dir2 / file)
+
+
+ext_param = pytest.mark.parametrize("ext", ["zst", "lz4"])
+
+
+@ext_param
+def test_zstarfile_create(tmp_path_factory: pytest.TempPathFactory, ext: str) -> None:
+    tmp_path = tmp_path_factory.mktemp(ext)
+    directory = ROOT / "LICENSES"
+    test = tmp_path / f"test.tar.{ext}"
+    (new := tmp_path / "new").mkdir()
+    with open_write_compressed(test, compression_type=ext, compresslevel=3) as tarobj:
+        tarobj.add(directory, "LICENSES/")
+    shutil.unpack_archive(test, new, filter="data")
+    compare_directories(ROOT, new)
+
+
+@ext_param
+def test_zstarfile_error(ext: str, tmp_path_factory: pytest.TempPathFactory) -> None:
+    tmp_path = tmp_path_factory.mktemp(ext)
+    func = getattr(ZSTarfile, ZSTarfile.OPEN_METH[ext])
+    with pytest.raises(tarfile.ReadError, match=f"not a {ext}.? file"):
+        func("README.md", "r")
+    with pytest.raises(
+        shutil.ReadError,
+        match="README.md is not a compressed or uncompressed tar file",
+    ):
+        shutil.unpack_archive("README.md", tmp_path, format=ext + "tar")
+
+
+@ext_param
+def test_zstarfile_mode_error(ext: str) -> None:
+    func = getattr(ZSTarfile, ZSTarfile.OPEN_METH[ext])
+    with pytest.raises(ValueError, match="mode must be 'r', 'w' or 'x'"):
+        func(None, "invalid")
+
+
+@pytest.mark.parametrize(
+    "filename, compression_type, expected_meth_name, value_error",
+    [
+        pytest.param("abc.tar", None, "taropen", None),
+        pytest.param("abc.tar.gz", None, "gzopen", None),
+        pytest.param("abc.tar.jfjfjf", None, None, "No match found for abc.tar.jfjfj"),
+        pytest.param(
+            "abc.tar.gz", "invalid1", None, "Invalid compression_type: invalid1"
+        ),
+    ],
+)
+def test__get_opener_cases(
+    filename: str,
+    compression_type: str | None,
+    expected_meth_name: str | None,
+    value_error: str | None,
+    tmp_path_factory: pytest.TempPathFactory,
+) -> None:
+    if value_error:
+        with pytest.raises(ValueError, match=value_error):
+            _get_opener(filename, compression_type)
+    else:
+        opener = _get_opener(filename, compression_type)
+        assert expected_meth_name == opener.__name__
