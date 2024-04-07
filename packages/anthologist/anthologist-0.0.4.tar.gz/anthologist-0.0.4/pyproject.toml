@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "anthologist"
+version = "0.0.4"
+description = "A CLI for managing multiple Poetry-managed Python projects simultaneously"
+authors = ["James Harrison <40500443+jharibo@users.noreply.github.com>"]
+readme = "README.md"
+homepage = "https://github.com/jharibo/anthologist"
+repository = "https://github.com/jharibo/anthologist"
+keywords = ["poetry", "packaging"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+click = "^8.1.7"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.9.0"
+pre-commit = "^3.6.2"
+ruff = "^0.3.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+anthologist = "anthologist.main:cli"
