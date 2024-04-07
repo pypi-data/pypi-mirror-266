@@ -1,0 +1,217 @@
+Metadata-Version: 2.3
+Name: sparrow-python
+Version: 0.2.1
+Project-URL: homepage, https://github.com/beidongjiedeguang/sparrow
+Project-URL: repository, https://github.com/beidongjiedeguang/sparrow
+Project-URL: documentation, https://github.com/beidongjiedeguang/sparrow#sparrow_tool
+Project-URL: Issues, https://github.com/beidongjiedeguang/sparrow/issues
+Project-URL: Source, https://github.com/beidongjiedeguang/sparrow
+Author-email: kunyuan <beidongjiedeguang@gmail.com>
+License-File: LICENSE
+Keywords: Machine Learning,cli,cv,nlp
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.6
+Requires-Dist: attrs>=22.2.0
+Requires-Dist: chevron
+Requires-Dist: colour
+Requires-Dist: deprecated
+Requires-Dist: fire
+Requires-Dist: loguru>=0.6.0
+Requires-Dist: more-itertools
+Requires-Dist: mpire
+Requires-Dist: pretty-errors~=1.2.25
+Requires-Dist: pyyaml
+Requires-Dist: rich
+Provides-Extra: cli
+Requires-Dist: asciinema; extra == 'cli'
+Requires-Dist: docker; extra == 'cli'
+Requires-Dist: gitpython; extra == 'cli'
+Requires-Dist: httpie; extra == 'cli'
+Requires-Dist: objprint; extra == 'cli'
+Requires-Dist: orjsonl; extra == 'cli'
+Requires-Dist: paramiko; extra == 'cli'
+Requires-Dist: schedule; extra == 'cli'
+Requires-Dist: twine; extra == 'cli'
+Requires-Dist: typer; extra == 'cli'
+Requires-Dist: viztracer; extra == 'cli'
+Provides-Extra: dev
+Requires-Dist: asciinema; extra == 'dev'
+Requires-Dist: black; extra == 'dev'
+Requires-Dist: concurrent-log-handler; extra == 'dev'
+Requires-Dist: fake-headers; extra == 'dev'
+Requires-Dist: faker~=13.0.0; extra == 'dev'
+Requires-Dist: fastapi>=0.80.0; extra == 'dev'
+Requires-Dist: gitpython; extra == 'dev'
+Requires-Dist: gpustat>=1.0.0; extra == 'dev'
+Requires-Dist: ordered-set; extra == 'dev'
+Requires-Dist: orjson; extra == 'dev'
+Requires-Dist: pandas~=1.5.0; extra == 'dev'
+Requires-Dist: paramiko; extra == 'dev'
+Requires-Dist: pendulum>=2.1.2; extra == 'dev'
+Requires-Dist: pre-commit>=2.8; extra == 'dev'
+Requires-Dist: psutil>=5.9.2; extra == 'dev'
+Requires-Dist: pyahocorasick~=1.4.4; extra == 'dev'
+Requires-Dist: pysnooper; extra == 'dev'
+Requires-Dist: ray; extra == 'dev'
+Requires-Dist: twine; extra == 'dev'
+Requires-Dist: uvicorn>=0.16.0; extra == 'dev'
+Provides-Extra: latex
+Requires-Dist: opencv-python-headless<4.3; extra == 'latex'
+Requires-Dist: pix2tex[gui]; extra == 'latex'
+Provides-Extra: ml
+Requires-Dist: fastapi>=0.80.0; extra == 'ml'
+Requires-Dist: marisa-trie>=0.7.8; extra == 'ml'
+Requires-Dist: orjson; extra == 'ml'
+Requires-Dist: pysnooper; extra == 'ml'
+Requires-Dist: ray; extra == 'ml'
+Requires-Dist: uvicorn>=0.16.0; extra == 'ml'
+Provides-Extra: nlp
+Requires-Dist: levenshtein; extra == 'nlp'
+Requires-Dist: nltk; extra == 'nlp'
+Requires-Dist: rouge-chinese; extra == 'nlp'
+Provides-Extra: other
+Requires-Dist: aiortc; extra == 'other'
+Requires-Dist: arrayfire; extra == 'other'
+Requires-Dist: awkward; extra == 'other'
+Requires-Dist: cn2an; extra == 'other'
+Requires-Dist: gradio; extra == 'other'
+Requires-Dist: grpcio-reflection~=1.46.3; extra == 'other'
+Requires-Dist: grpcio-tools~=1.46.3; extra == 'other'
+Requires-Dist: grpcio~=1.46.3; extra == 'other'
+Requires-Dist: keyborad; extra == 'other'
+Requires-Dist: memray; extra == 'other'
+Requires-Dist: protobuf~=3.19.1; extra == 'other'
+Requires-Dist: pyzmq; extra == 'other'
+Requires-Dist: recordclass; extra == 'other'
+Requires-Dist: textdistance[extras]; extra == 'other'
+Requires-Dist: wordfreq; extra == 'other'
+Requires-Dist: zigzag; extra == 'other'
+Provides-Extra: torch
+Requires-Dist: bert4torch; extra == 'torch'
+Requires-Dist: bertviz; extra == 'torch'
+Requires-Dist: datasets; extra == 'torch'
+Requires-Dist: einops; extra == 'torch'
+Requires-Dist: fairseq; extra == 'torch'
+Requires-Dist: koila; extra == 'torch'
+Requires-Dist: lightseq; extra == 'torch'
+Requires-Dist: orjson; extra == 'torch'
+Requires-Dist: pytorch-lightning; extra == 'torch'
+Requires-Dist: ray; extra == 'torch'
+Requires-Dist: sacremoses; extra == 'torch'
+Requires-Dist: seqevae; extra == 'torch'
+Requires-Dist: transformers; extra == 'torch'
+Requires-Dist: whylogs; extra == 'torch'
+Description-Content-Type: text/markdown
+
+# sparrow-python
+[![image](https://img.shields.io/badge/Pypi-0.1.7-green.svg)](https://pypi.org/project/sparrow-python)
+[![image](https://img.shields.io/badge/python-3.6+-blue.svg)](https://www.python.org/)
+[![image](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![image](https://img.shields.io/badge/author-kunyuan-orange.svg?style=flat-square&logo=appveyor)](https://github.com/beidongjiedeguang)
+
+
+-------------------------
+
+## Install
+
+```bash
+pip install sparrow-python
+# Or dev version
+pip install sparrow-python[dev]
+# Or
+pip install -e .
+# Or
+pip install -e .[dev]
+```
+
+## Usage
+
+### Multiprocessing SyncManager
+
+Open server first:
+
+```bash
+$ spr start-server
+```
+
+The defualt port `50001`.
+
+(Process1) productor:
+
+```python
+from sparrow.multiprocess.client import Client
+
+client = Client(port=50001)
+client.update_dict({'a': 1, 'b': 2})
+```
+
+(Process2) consumer:
+
+```python
+from sparrow.multiprocess.client import Client
+
+client = Client(port=50001)
+print(client.get_dict_data())
+
+>> > {'a': 1, 'b': 2}
+```
+
+### Common tools
+
+- **Kill process by port**
+
+```bash
+$ spr kill {port}
+```
+
+- **pack & unpack**  
+  support archive format: "zip", "tar", "gztar", "bztar", or "xztar".
+
+```bash
+$ spr pack pack_dir
+```
+
+```bash
+$ spr unpack filename extract_dir
+```
+
+- **Scaffold**
+
+```bash
+$ spr create awosome-project
+```
+
+### Some useful functions
+
+> `sparrow.relp`  
+> Relative path, which is used to read or save files more easily.
+
+> `sparrow.performance.MeasureTime`  
+> For measuring time (including gpu time)
+
+> `sparrow.performance.get_process_memory`  
+> Get the memory size occupied by the process
+
+> `sparrow.performance.get_virtual_memory`  
+> Get virtual machine memory information
+
+> `sparrow.add_env_path`  
+> Add python environment variable (use relative file path)
+
+### Safe logger in `multiprocessing`
+
+```python
+from sparrow.log import Logger
+import numpy as np
+
+logger = Logger(name='train-log', log_dir='./logs', )
+logger.info("hello", "numpy:", np.arange(10))
+
+logger2 = Logger.get_logger('train-log')
+print(id(logger2) == id(logger))
+>> > True
+```
