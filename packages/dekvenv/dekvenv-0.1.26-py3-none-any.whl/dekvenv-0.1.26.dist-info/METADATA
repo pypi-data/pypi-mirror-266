@@ -1,0 +1,25 @@
+Metadata-Version: 2.1
+Name: dekvenv
+Version: 0.1.26
+Author-Email: sanzenwin <sanzenwin@gmail.com>
+License: MIT
+Requires-Python: >=3.10
+Requires-Dist: dektools<1.0.0
+Requires-Dist: virtualenv<21.0.0; extra == "core"
+Requires-Dist: build<=0.10.0; extra == "core"
+Requires-Dist: toml<=0.10.2; extra == "core"
+Requires-Dist: packaging<24.0; extra == "core"
+Requires-Dist: pdm; extra == "pdm"
+Provides-Extra: core
+Provides-Extra: pdm
+Description-Content-Type: text/markdown
+
+manage venv
+
+```shell
+dekvenv create --name=.venv
+dekvenv active .venv
+
+dekvenv script add pip
+dekvenv script remove pip
+```
