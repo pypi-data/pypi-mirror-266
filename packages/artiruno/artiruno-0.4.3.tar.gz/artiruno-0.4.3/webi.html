@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+<head>
+<title>Artiruno verbal decision analysis</title>
+<meta charset="UTF-8">
+
+<!-- SCRIPSTY -->
+<script src="https://cdn.jsdelivr.net/pyodide/v0.19.1/full/pyodide.js"></script>
+<style type="text/css">
+
+#loading-message
+   {padding: 1em;
+    background: #ccf;
+    color: black;}
+
+#problem-definition
+   {width: 100%;
+    min-height: 6em;}
+
+#dm-error-message
+   {margin: 0;
+    padding: 0}
+
+.chosen, .not-chosen
+   {border: thin solid black;
+    color: black;
+    padding-left: .5em;
+    padding-right: .5em;
+    margin-right: .5em;}
+.chosen
+   {background: #ccf;}
+.not-chosen
+   {background: white;}
+
+</style>
+<!-- SCRIPSTY -->
+
+</head>
+
+<body>
+
+<p>This interface is implemented in
+<a href="https://pyodide.org">Pyodide</a>,
+a <a href="https://webassembly.org">WebAssembly</a>-based Python interpreter,
+and can be particularly slow on phones and tablets.
+Try using a PC or Artiruno's command-line interface
+(available through
+<a href="https://github.com/Kodiologist/Artiruno">the Python package</a>)
+for better performance.</p>
+
+<pre id="loading-message"></pre>
+
+<div>
+<label>Problem definition
+<br>
+<textarea id="problem-definition"></textarea></label>
+</div>
+
+<div id='start-button-parent'>
+</div>
+
+<hr>
+
+<div id="dm">
+
+</div>
+
+<pre id="dm-error-message"></pre>
+
+<script id='defs'>
+async function load_vda(callback)
+   {document.getElementById('loading-message').textContent = 'Loading…'
+    try
+       {let pyodide = await loadPyodide(
+           {indexURL: "https://cdn.jsdelivr.net/pyodide/v0.19.1/full/"})
+        await pyodide.runPythonAsync(`
+            from pyodide.http import pyfetch
+            await (await pyfetch('artiruno_for_pyodide.tar.gz')).unpack_archive()
+            import artiruno`)
+        callback(pyodide)
+        document.getElementById('loading-message').remove()}
+    catch (error)
+       {document.getElementById('loading-message').textContent = error.toString()}}
+</script>
+
+<script>
+load_vda(function(pyodide)
+   {pyodide.runPython('artiruno.initialize_web_interface("demo")')})
+</script>
+
+</body></html>
