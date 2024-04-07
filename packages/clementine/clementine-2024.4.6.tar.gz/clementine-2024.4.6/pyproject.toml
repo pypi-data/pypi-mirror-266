@@ -1,0 +1,134 @@
+# Dependencies are automatically generated from the script
+# scripts/generate_requirements.py. Do not edit them manually.
+
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "clementine"
+dynamic = ["version"]
+description = "🍊 A sweet little Python package"
+authors = [{name = "Suzen Fylke", email = "codesue@users.noreply.github.com"}]
+readme = "README.md"
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Utilities",
+]
+requires-python = ">=3.9"
+
+[project.optional-dependencies]
+blossom = [
+    "bokeh",
+    "gradio",
+    "playwright",
+]
+fruit = [
+    "catppuccin-matplotlib",
+    "keras>=3",
+    "numpy",
+    "pandas",
+    "scikit-learn",
+    "torch>=2",
+]
+leaves = [
+    "mkdocs-click",
+    "mkdocs-walt",
+    "mkdocstrings[python]",
+]
+pulp = [
+    "datasets",
+    "spacy",
+    "transformers",
+    "wandb",
+]
+rind = [
+    "build",
+    "tomlkit",
+    "twine",
+]
+seeds = [
+    "bandit[toml]",
+    "black",
+    "isort",
+    "mypy",
+    "pip-tools",
+    "pre-commit",
+    "pytest",
+    "ruff",
+]
+sprout = [
+    "notebook",
+    "rich",
+]
+tree = [
+    "bokeh",
+    "gradio",
+    "playwright",
+    "catppuccin-matplotlib",
+    "keras>=3",
+    "numpy",
+    "pandas",
+    "scikit-learn",
+    "torch>=2",
+    "mkdocs-click",
+    "mkdocs-walt",
+    "mkdocstrings[python]",
+    "datasets",
+    "spacy",
+    "transformers",
+    "wandb",
+    "build",
+    "tomlkit",
+    "twine",
+    "bandit[toml]",
+    "black",
+    "isort",
+    "mypy",
+    "pip-tools",
+    "pre-commit",
+    "pytest",
+    "ruff",
+    "notebook",
+    "rich",
+]
+all = [
+    "click",
+    "playwright",
+    "pyperclip",
+]
+
+[project.urls]
+"Documentation" = "https://codesue.github.io/clementine"
+"Source Code" = "https://github.com/codesue/clementine"
+"Bug Tracker" = "https://github.com/codesue/clementine/issues"
+
+[project.scripts]
+clementine = "clementine.cli:main"
+
+[tool.setuptools.dynamic]
+version = {attr = "clementine.__version__"}
+
+[tool.setuptools.package-data]
+clementine = ["py.typed"]
+
+[tool.bandit]
+exclude_dirs = ["scripts"]
+
+[tool.bandit.assert_used]
+skips = ["tests/**"]
+
+[tool.mypy]
+mypy_path = "stubs"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "*.py"
+markers = [
+  "slow: mark the test as slow. Deselect with '-m \"not slow\"'.",
+]
