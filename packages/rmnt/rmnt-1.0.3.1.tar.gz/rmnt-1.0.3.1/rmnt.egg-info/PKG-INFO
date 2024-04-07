@@ -1,0 +1,60 @@
+Metadata-Version: 2.1
+Name: rmnt
+Version: 1.0.3.1
+Summary: CLI Scaffolding Tool for web projects with Flask and FastAPI
+Home-page: https://github.com/raghuramjee7/rmnt
+Author: Raghu Ram Jee Janapareddy
+Author-email: ramjeeraghu@gmail.com
+License: MIT License
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# rmnt
+
+CLI Scaffolding Tool for web applications with python
+
+## Installation
+
+### Using pip
+To install this package, run - `pip install rmnt`
+
+### Using source
+1. Clone this repository
+2. Create a virtual environment and install all the required packages using - `pip install -r requirements.txt`
+3. Run the following command - `pip install -e .`
+
+## Project Structure
+```
+project/
+├── src/
+│   ├── __init__.py
+│   ├── app.py
+│   ├── config.py
+│   ├── utils.py
+│   ├── models.py
+│   └── exceptions.py
+├── tests/
+│   ├── __init__.py
+│   ├── test_utils.py
+│   ├── test_app.py
+├── .github/
+│   └── workflows/
+├── README.md
+├── Dockerfile
+├── LICENSE
+├── .gitignore
+└── .env
+```
+
+## Commands
+1. `rmnt make <project-name>` - Initialize a new project
+2. `rmnt --help` - Show help message
+3. `rmnt --version` - Show version
+
+## Features
+1. Builds project structure for FastAPI and Flask projects
+3. Creates a virtual environment
+4. Initializes a git repository
