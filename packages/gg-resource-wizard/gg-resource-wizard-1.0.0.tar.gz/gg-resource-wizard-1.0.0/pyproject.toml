@@ -1,0 +1,23 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "gg-resource-wizard"
+authors = [{name = "Robin De Schepper", email = "robin.deschepper93@gmail.com"}]
+readme = "README.md"
+license = {file = "LICENSE"}
+dynamic = ["version", "description"]
+dependencies= [
+    "click~=8.0",
+    "cookiecutter~=2.0"
+]
+
+[tool.flit.module]
+name = "resource_wizard"
+
+[project.urls]
+Home = "https://github.com/AlvastBedankt/resource-wizard"
+
+[project.scripts]
+rwiz = "resource_wizard:rwiz"
