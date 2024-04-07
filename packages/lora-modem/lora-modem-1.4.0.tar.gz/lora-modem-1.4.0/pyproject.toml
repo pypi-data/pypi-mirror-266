@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools>=61", "setuptools-git-versioning"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools-git-versioning]
+enabled = true
+template = "{tag}"
+dev_template = "{tag}.{ccount}+g{sha}"
+dirty_template = "{tag}.{ccount}+g{sha}.modified"
+
+[project]
+name = "lora-modem"
+dynamic = ["version"]
+description = "Python library for the Murata TypeABZ LoRaWAN modem"
+authors = [
+    { name = "Jan Janak", email = "jan@janakj.org" }
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+keywords = ["iot", "lora", "lorawan", "lpwan", "lorawan-device", "firmware", "stm32"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Environment :: Console",
+    "License :: OSI Approved :: BSD License",
+    "Topic :: Communications",
+    "Topic :: Software Development :: Embedded Systems",
+    "Topic :: System :: Networking",
+    "Topic :: Utilities"
+]
+requires-python = ">=3.9"
+dependencies = [
+    "click",
+    "pymitter",
+    "pyserial",
+    "tabulate",
+    "tzlocal",
+    "python-dateutil"
+]
+
+[project.optional-dependencies]
+dev = [
+    "build",
+    "twine",
+    "mypy",
+    "types-pyserial",
+    "types-python-dateutil",
+    "types-tabulate"
+]
+
+[project.urls]
+Homepage = "https://github.com/hardwario/lora-modem"
+Documentation = "https://github.com/hardwario/lora-modem/wiki"
+"Bug Tracker" = "https://github.com/hardwario/lora-modem/issues"
+
+[project.scripts]
+lora = "lora:cli"
