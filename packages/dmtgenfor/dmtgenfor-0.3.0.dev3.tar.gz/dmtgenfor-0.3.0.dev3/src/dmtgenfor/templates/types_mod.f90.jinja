@@ -1,0 +1,30 @@
+module internal_gen_types_mod
+    use, intrinsic :: iso_fortran_env, only: dp => real64
+
+    implicit none
+
+    private
+{%- for type in types %}
+    public {{type.type}}
+{%- endfor %}
+
+{% for type in types %}
+    type :: {{type.type}}
+    {%- if type.has_description %}
+        {%- for str in type.formatted_description %}
+        {{str}}
+        {%- endfor %}
+    {%- endif %}
+{%- for attr in type.attributes %}
+        {{attr.type_init}}
+        {%- if attr.has_description %}
+            !! {{attr.description}}
+        {%- endif %}
+{%- endfor %}
+    end type
+{% endfor %}
+    
+contains
+
+
+end module
