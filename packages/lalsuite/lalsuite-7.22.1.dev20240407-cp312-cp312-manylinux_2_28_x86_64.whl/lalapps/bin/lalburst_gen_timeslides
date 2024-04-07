@@ -1,0 +1,5 @@
+#!/bin/sh
+PYTHONPATH="/builds/lscsoft/lalsuite/wheel/build/inst/lib/python3.12/site-packages:${PYTHONPATH}"
+export PYTHONPATH
+exec /opt/python/cp312-cp312/bin/python '/builds/lscsoft/lalsuite/wheel/build/inst/libexec/lalburst/lalburst_gen_timeslides.py' "$@"
+exit 1
