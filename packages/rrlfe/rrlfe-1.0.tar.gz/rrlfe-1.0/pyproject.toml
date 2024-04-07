@@ -1,0 +1,23 @@
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "rrlfe"
+version = "1.0"
+description = "For finding FeH from low-res survey spectra of RR Lyrae stars"
+authors = ["Eckhart Spalding <eckhart.spalding@sydney.edu.au>", "Ron Wilhelm", "Nathan De Lee", "Kenneth Carrell"]
+readme = "README.md"
+homepage = "https://github.com/mwanakijiji/rrlfe"
+repository = "https://github.com/mwanakijiji/rrlfe"
+issues = "https://github.com/mwanakijiji/rrlfe/issues"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[[tool.poetry.package]]
+include = "rrlfe/*"
+exclude = ["rrlfe/DO_NOT_USE_modules/*"]
