@@ -1,0 +1,19 @@
+{% extends "base.css" %}
+
+{% block hide_menu %}
+span[data-testid="stMainMenu"] {
+    visibility: hidden;
+}
+{% endblock %}
+
+{% block hide_sidebar %}
+div[data-testid="collapsedControl"] {
+    visibility: hidden;
+}
+{% endblock %}
+
+{% block fix_shadow %}
+section[data-testid='stSidebar'] {
+    box-shadow: rgba(0, 0, 0, 0.16) -2rem 0px 2rem 2rem;
+}
+{% endblock %}
