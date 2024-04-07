@@ -1,0 +1,15 @@
+{% for header in license_headers %}
+# {{ header }}
+{% endfor %}
+
+outdir ::= results_{{ config.name }}
+
+srpm:
+	command -v pip || $(SUDO) dnf install -y python3-pip
+	command -v fclogr || $(SUDO) dnf install -y python3-pygit2
+	command -v fclogr || pip install --user fclogr
+	command -v nox || $(SUDO) dnf install -y nox
+	python3 -m nox --no-venv -e srpm -- -o $(outdir)
+{#
+# vim: set ft=make.jinja2:
+#}
