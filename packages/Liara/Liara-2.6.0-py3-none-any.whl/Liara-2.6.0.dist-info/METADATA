@@ -1,0 +1,60 @@
+Metadata-Version: 2.1
+Name: Liara
+Version: 2.6.0
+Summary: Static page generator
+Home-page: http://shelter13.net/projects/Liara
+Author: Matthäus G. Chajdas
+Author-email: dev@anteru.net
+License: BSD 2-Clause License
+Platform: any
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Console
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Internet :: WWW/HTTP
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: beautifulsoup4 ~=4.12
+Requires-Dist: blinker ~=1.7
+Requires-Dist: click ~=8.1
+Requires-Dist: dateparser ~=1.2
+Requires-Dist: humanfriendly ~=10.0
+Requires-Dist: Jinja2 ~=3.1
+Requires-Dist: libsass ~=0.21
+Requires-Dist: lxml ~=5.1
+Requires-Dist: Mako ~=1.3
+Requires-Dist: Markdown ~=3.5
+Requires-Dist: Pillow ~=10.2
+Requires-Dist: Pygments ~=2.17
+Requires-Dist: pymdown-extensions ~=10.0
+Requires-Dist: python-slugify ~=8.0
+Requires-Dist: PyYAML ~=6.0
+Requires-Dist: requests ~=2.31
+Requires-Dist: treelib ~=1.7
+Requires-Dist: tzlocal ~=5.2
+Requires-Dist: tomli ~=2.0 ; python_version < "3.11"
+Provides-Extra: dev
+Requires-Dist: flake8 ; extra == 'dev'
+Requires-Dist: flake8-mypy ; extra == 'dev'
+Requires-Dist: tox ; extra == 'dev'
+Provides-Extra: docs
+Requires-Dist: Sphinx ~=7.0 ; extra == 'docs'
+Requires-Dist: furo ; extra == 'docs'
+Provides-Extra: redis
+Requires-Dist: redis ~=5.0 ; extra == 'redis'
+
+Liara ![CI passing](https://github.com/anteru/liara/actions/workflows/build.yaml/badge.svg)
+![PyPi](https://img.shields.io/pypi/v/liara.svg)
+=====
+
+Liara is a static page generator written in [Python](https://python.org). See:
+
+* The [liara website](https://liara.sh13.net) for an overview of liara. That page has been generated using liara.
+* The [documentation](https://liara-web.readthedocs.io) containing the quick-start guide and more.
