@@ -1,0 +1,55 @@
+[tool.poetry]
+name = "whylogs-container-types"
+version = "0.4.16"
+description = ""
+authors = ["Anthony Naddeo <anthony@whylabs.ai>"]
+license = "MIT"
+readme = "README.md"
+packages = [{ include = "whylogs_container_types/**/*.py" }]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+whylogs = "*"
+langkit = ">=0.0.28.dev0,<0.0.29"
+
+
+[tool.poetry.group.dev.dependencies]
+pyright = "^1.1.337"
+ruff = "^0.1.13"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[project.urls]
+Homepage = "https://github.com/whylabs/whylogs-container-types"
+
+[tool.pyright]
+include = ["whylogs_container_types"]
+typeCheckingMode = "strict"
+
+reportMissingTypeStubs = false
+reportMissingParameterType = false
+reportMissingTypeArgumet = false
+
+[tool.ruff]
+line-length = 140
+indent-width = 4
+include = ["./whylogs_container_types/**/*.py"]
+select = ["E", "F", "I", "W"]
+
+[tool.ruff.isort]
+known-first-party = ["whylogs", "langkit"]
+
+
+[tool.ruff.lint]
+fixable = ["ALL"]
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+
