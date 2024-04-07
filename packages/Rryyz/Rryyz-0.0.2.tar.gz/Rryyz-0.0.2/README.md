@@ -1,0 +1,477 @@
+# 线性回归
+
+![image-20240406010818614](./assets/image-20240406010818614.png)（图1)
+
+如图1，展示了坐标系中的一些点，假设有一些点也符合上方的分布规律，你能写出一个函数来根据它们的X坐标预测Y值吗？
+
+
+
+你可能会想到，画一条直线在这些点的中间就可以了，如图2
+
+![image-20240406011538942](./assets/image-20240406011538942.png)（图2)
+
+> **像这样根据X值预测Y值的做法叫回归(regression)，当预测模型呈直线时，称为线性回归**
+
+你的直觉来源于：**将线画在中间，每一个点离线的距离都尽可能地少了，因此这里的直线就是预测Y值最准的函数**
+
+
+
+那么，我们怎么才能把这条在最中间的直线画出来呢？
+
+当然不能用手画，且不说能不能在中间，人手画出来的都未必是真正的直线
+
+我们需要用计算机辅助，不过在这之前，我们要将这种直觉转换为数学上的表达式才能被计算机所理解
+
+
+
+我们用一个函数来表示每一个点离线的距离的总和，当这个函数的值最小时，线就是被画在最中间了
+$$
+此函数可以表示为：L=\sum_{i=1}^N (f(x_i)-y_i)
+\\在深度学习中更常用的是：L=\frac{1}{N}\sum_{i=1}^N (f(x_i)-y_i)^2
+\\f(x_i)表示函数的预测值，y_i表示真实数据的Y值
+$$
+第二个式子叫作均方误差**(mean squared error)**
+
+> **评估模型好坏的函数叫作损失函数(loss function)，这也是用L字母来表示这个函数的原因。此时，我们可以说线性回归使用均方误差作为损失函数。**
+
+
+
+我们先用计算机生成出要训练的数据集
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+# 此方法生成一个拥有100条数据的一维向量，每个数据的大小都是随机的，取值范围是[0,1)
+x = np.random.rand(100, 1)
+# y=2x+5+随机数，让点扩散在直线2x+5的周围
+y = 5 + 2 * x + np.random.rand(100, 1)
+# 以上，我们就设定好了每一个点的X和Y值
+
+# 画图
+plt.scatter(x, y, s=10)
+plt.xlabel('x')
+plt.ylabel('y')
+plt.show()
+```
+
+运行，可以看到下图
+
+![image-20240406020040016](./assets/image-20240406020040016.png)（图3)
+
+我们的目标是找到一条拟合数据的直线y=wx+b，使损失函数的输出最小
+
+更简单的来说，我们要找到使损失函数的输出最小的w和b，这就是函数优化问题
+
+现在，我们要先将均方误差实现在计算机中
+
+```python
+# 在Rryyz的Function类中，有一个用于矩阵相乘的函数matmul
+import Rryyz.functions as F
+
+# (x0-x1)²/N	N代表参数的长度
+def mean_squared_error(x0, x1):
+    diff = x0 - x1
+    # sum函数将一个矩阵或向量的所有数据相加，返回它们的和
+    return F.sum(diff ** 2) / len(diff)
+```
+
+再随便画一条线，算出损失，然后根据梯度调整一次w和b
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from Rryyz import Variable
+import Rryyz.functions as F
+
+x = np.random.rand(100, 1)
+y = 5 + 2 * x + np.random.rand(100, 1)
+
+# 初始化w，b的数据
+w = Variable(np.zeros((1, 1)))
+b = Variable(np.zeros(1))
+
+def mean_squared_error(x0, x1):
+    diff = x0 - x1
+    return F.sum(diff ** 2) / len(diff)
+
+# 超参数，即人为决定的参数
+lr = 0.1
+
+# y_pred=Wx+b (y_pred意为y的预测值)
+# linear是一个Rryyz函数，返回wx+b
+y_pred = F.linear(x,w,b)
+# 损失函数
+loss = mean_squared_error(y, y_pred)
+# 反向传播，所有与算出loss相关的Variable实例的grad属性都会被刷新（grad属性也是一个Variable实例）
+# 在这里，与其相关的有W，b，y，y_pred
+loss.backward()
+# 按当前梯度调整w和b。lr意为学习率，调控所用
+w.data -= lr * w.grad.data
+b.data -= lr * b.grad.data
+print(w, b, loss)
+```
+
+> **每一个数据在Rryyz函数中都会被转化为Variable（意为变量）实例，数据存储在Variable的data属性中，Rryyz反向传播的功能是建立在Variable类上的**
+>
+> **在上面，w和b都会在linear内自动转化为Variable实例**
+>
+> **但是考虑到反向传播的实现，我们还是要在最开始将w和b手动设置为Variable实例**
+>
+> **Rryyz中`Variable(x)`会返回一个Variable实例，x应是nparray类型的数据**
+
+运行，输出为：`variable([[0.71632042]]) variable([1.30222803]) variable(42.81479518006999)`
+
+可以看出，损失函数的值还是比较大的，我们需要持续按梯度调整w和b的值
+
+将上面`lr = 0.1`及其下面的全部代码更换如下
+
+```python
+lr = 0.1
+# 迭代次数
+iters = 100
+
+for i in range(iters):
+    y_pred = F.linear(x,w,b)
+    loss = mean_squared_error(y, y_pred)
+
+    # cleargrad是Variable实例的一个方法，用于清除上次反向传播遗留的梯度
+    w.cleargrad()
+    b.cleargrad()
+    loss.backward()
+
+    w.data -= lr * w.grad.data
+    b.data -= lr * b.grad.data
+    print(W, b, loss)
+
+
+# 画图
+plt.scatter(x, y, s=10)
+plt.xlabel('x')
+plt.ylabel('y')
+y_pred = F.linear(x,w,b)
+plt.plot(x, y_pred.data, color='r')
+plt.show()
+```
+
+运行，如图
+
+![image-20240406025949621](./assets/image-20240406025949621.png)（图4)
+
+到此，我们就使用Rryyz成功构建了一个大体正确的线性回归模型
+
+
+
+# 神经网络
+
+![image-20240406180913914](./assets/image-20240406180913914.png)（图5)
+
+如图5，展示了坐标系中的一些点，假设有一些点也符合上方的分布规律，你能写出一个函数来根据它们的X坐标预测Y值吗？
+
+
+
+在线性回归中，我们看出来数据点基本呈一条直线，所以我们最开始给计算机固定了函数y=wx+b，然后让计算机根据梯度持续调节w，b两个参数，使损失函数的值尽可能小
+
+在这里，我们也可以给定计算机函数F(x)=Asin(ωx+φ)，调节A，ω，φ三个参数的值，就可以构建出一个sin函数来预测数据点
+
+但是，数据不可能一直都显示出如此规则的形状，我们需要一个可以模拟任意函数的方法
+
+接下来介绍Sigmoid函数
+
+
+
+![image-20240406153434330](./assets/image-20240406153434330.png)（图6)
+$$
+图为S(x)=\frac{1}{1+e^{-x}}
+$$
+在线性回归中，我们可以通过调整直线y=wx+b的w，b来改变直线的形状，那么我们也尝试让Sigmoid函数的输入变换为wx+b。先将w设置为16，b设置为0
+
+![image-20240406153906693](./assets/image-20240406153906693.png)（图7)
+$$
+图为S(wx+b)=\frac{1}{1+e^{-16x}}
+$$
+我们看到Sigmoid函数的曲线沿着X轴方向发生了压缩，接下来我们再调整一下b
+
+![image-20240406154006781](./assets/image-20240406154006781.png)（图8)
+$$
+图为S(wx+b)=\frac{1}{1+e^{-(16x+20)}}
+$$
+Sigmoid函数的曲线发生了平移。至此，**我们将Sigmoid函数输入从x替换为x的线性变换wx+b后，通过调整w和b的值就可以对其曲线在X轴方向进行任意的伸缩和平移**
+
+但是还有一个问题，那就是Sigmoid函数的值域始终都在(0,1)之间。 我们需要让它在Y轴方向也可以进行伸缩和平移。
+
+因此，我们对Sigmoid函数的输出也进行一次线性变换，如下
+
+![image-20240406154305956](./assets/image-20240406154305956.png)（图9)
+$$
+图为W・S(wx+b)+B=3・\frac{1}{1+e^{-(16x+20)}}-1
+$$
+
+$$
+考虑到在计算机上的实现，我们将这个函数表示为a(x)=linear(sigmoid(linear(x)))
+$$
+
+**现在，我们可以在通过调控W，B，w，b的值，对Sigmoid函数的曲线，在任意方向上进行伸缩和平移。理论上来说，只要足够多的a(x)函数相加，就可以模拟任意函数**
+
+
+
+我们就采用这种方法来构建一个预测图5数据点的模型，而非给定计算机一个函数F(x)=Asin(ωx+φ)
+
+接下来展示如何在计算机中使用Rryyz实现上述功能
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from Rryyz import Variable
+import Rryyz.functions as F
+
+# 创建训练数据集，让数据点在sin(2πx)周围发散
+x = np.random.rand(100, 1)
+y = np.sin(2 * np.pi * x) + np.random.rand(100, 1)
+
+# 在这里W1和b1是对Sigmoid的输入进行线性变换，W2和b2是对输出进行线性变换
+I, H, O = 1,10,1
+W1 = Variable(0.01 * np.random.randn(I, H))
+b1 = Variable(np.zeros(H))
+W2 = Variable(0.01 * np.random.randn(H, O))
+b2 = Variable(np.zeros(O))
+
+# 即前文所说a(x)=linear(sigmoid(linear(x)))。predict，意为预测
+def predict(x):
+    y = F.linear(x, W1, b1)
+    y = F.sigmoid(y)
+    y = F.linear(y, W2, b2)
+    return y
+
+# 学习率和迭代次数
+lr = 0.2
+iters = 10000
+
+for i in range(iters):
+    # a(x)=linear(sigmoid(linear(x)))
+    y_pred = predict(x)
+    # 损失函数。算出预测的y值与实际的y值之间的均方误差
+    loss = F.mean_squared_error(y, y_pred)
+
+    # 清理上一次反向传播遗留的梯度
+    W1.cleargrad()
+    b1.cleargrad()
+    W2.cleargrad()
+    b2.cleargrad()
+    #进行反向传播
+    loss.backward()
+	
+    # 根据梯度调整参数
+    W1.data -= lr * W1.grad.data
+    b1.data -= lr * b1.grad.data
+    W2.data -= lr * W2.grad.data
+    b2.data -= lr * b2.grad.data
+    # 每隔一千次迭代输出一次损失函数的值
+    if i % 1000 == 0:
+    	print(loss)
+
+# 画图
+plt.scatter(x, y, s=10)
+plt.xlabel('x')
+plt.ylabel('y')
+t = np.arange(0, 1, .01)[:, np.newaxis]
+y_pred = predict(t)
+plt.plot(t, y_pred.data, color='r')
+plt.show()
+```
+
+运行，如图
+
+![image-20240406183810187](./assets/image-20240406183810187.png)（图10)
+
+我们仅仅通过对Sigmoid函数的输入和输出进行两次线性变换，就模拟出了一个类sin的函数出来
+
+通过Rryyz的model（模型）类和optimizers（优化器）类，上面的代码可以实现得更加精简
+
+```python
+import numpy as np
+from dezero import optimizers
+import dezero.functions as F
+from dezero.models import MLP
+
+np.random.seed(0)
+x = np.random.rand(100, 1)
+y = np.sin(2 * np.pi * x) + np.random.rand(100, 1)
+
+# 超参数
+lr = 0.2
+max_iter = 10000
+hidden_size = 10
+
+# 初始化全连接层及优化器
+model = MLP((hidden_size, 1))
+optimizer = optimizers.SGD(lr).setup(model)
+
+for i in range(max_iter):
+    y_pred = model(x)
+    loss = F.mean_squared_error(y, y_pred)
+	
+    # 只需要对model使用cleargrads方法，就能清除其下所有参数的梯度
+    model.cleargrads()
+    loss.backward()
+	
+    # 使用优化器更新参数
+    optimizer.update()
+    if i % 1000 == 0:
+        print(loss)
+```
+
+# 多分类
+
+![image-20240406185207860](./assets/image-20240406185207860.png)（图11)
+
+如图，给定了三类数据的位置，请你构建一个函数，对画面上的所有空白点进行分类
+
+多分类问题与回归问题最大的不同是损失函数的不同，在多分类问题中，我们一般采用**交叉熵误差(cross entropy error)**。
+
+交叉熵误差的式子如下所示
+$$
+L=-\sum_kt_k\log p_k
+$$
+
+$$
+t_k表示训练数据的第k个维度的值。p_k是神经网络的输出
+$$
+
+我们需要介绍一下交叉熵误差的由来
+
+我们对信息量进行定义
+$$
+f(x):=信息量(x是某个事件发生的概率)\\①
+$$
+然后观察事实发现
+$$
+f(\frac{1}{8})=f(\frac{1}{4})+f(\frac{1}{2})\\②
+$$
+因此我们定义**f(x)**之间的加法满足
+$$
+f(x_1・x_2)=f(x_1)+f(x_2)\\③
+$$
+考虑到对传统运算式的支持，我们将**f(x)**定义为
+$$
+f(x):=?log_?x\\④
+$$
+**？**代表此处可以为任意数字，定义为这种形式只是因为，这种形式能兼顾②式的运算
+
+直觉上**x**越小，信息量越大，因此我们将④式改为
+$$
+f(x):=-log_?x\\⑤
+$$
+对熵进行定义
+$$
+H(P):=E(p_f)(P是某个概率系统,p_f是P的信息量)\\⑥
+$$
+从这个定义式可以看出，熵其实就是信息量的期望
+
+将⑥式展开
+$$
+H(P):=E(p_f)=\sum_{i=1}^mp_i・f(p_i)=\sum_{i=1}^mp_i(-\log_?p_i)=-\sum_{i=1}^mp_i・\log_?p_i\\⑦
+$$
+设有两个**P・Q**两个系统，**相对熵（KL散度）**的定义：
+$$
+D_{KL}(P||Q):=\sum^m_{i=1}p_i・(f_Q(q_i)-f_P(p_i))=\sum^m_{i=1}p_i・(-\log_?q_i)-\sum^m_{i=1}p_i・(-\log_?p_i)\\(以p_i为例,它代表P系统的第i个事件发生的概率)\\⑧
+$$
+显然，⑧式的后半部分是**P**的熵，而前半部分，就是**P**的交叉熵**H(P,Q)**
+
+根据**吉布斯不等式**，相对熵一定大于等于0，且只在**P・Q**两系统完全相等的情况下等于0
+
+也就是说，**P・Q**两概率模型越近，交叉熵越小
+
+证毕，交叉熵H(P,Q)适合作为多分类问题的损失函数
+
+
+
+在计算机中的实现如下
+
+```python
+import math
+import numpy as np
+import matplotlib.pyplot as plt
+import Rryyz
+from Rryyz import optimizers
+import Rryyz.functions as F
+from Rryyz.models import MLP
+
+# 超参数
+# 训练的轮数
+max_epoch = 300
+# 一次处理30个数据
+batch_size = 30
+hidden_size = 10
+lr = 1.0
+
+# Rryyz的datasets.py里内置了一些经典数据集
+# 从数据库获取训练数据（如果train为False则返回测试数据）
+# x是矩阵，每一行有两列，代表其数据的横纵坐标
+# t是向量，代表与之索引对应的数据的类别
+x, t = Rryyz.datasets.get_spiral(train=True)
+# 创建有两个层的全连接层类，并指定输出的大小为3
+model = MLP((hidden_size,3))
+# 创建参数更新器，设置为梯度下降法，并绑定model
+optimizer = optimizers.SGD(lr).setup(model)
+# 获取x的数据长度
+data_size = len(x)
+# 算出进行一整轮的训练需要多少批次。math.ceil()是向上取整的函数
+max_iter = math.ceil(data_size / batch_size)
+
+for epoch in range(max_epoch):
+    # 创造一个包含0~299的数组，并打乱
+    index = np.random.permutation(data_size)
+    sum_loss = 0
+
+    for i in range(max_iter):
+        # 第一次取出第1到30的数据，第二次取出第31到60的数据，依次类推
+        batch_index = index[i * batch_size:(i + 1) * batch_size]
+        # np矩阵可以以这种形式x[0,1,2,3]取出数据
+        batch_x = x[batch_index]
+        batch_t = t[batch_index]
+
+        # 给model投入数据，它会自动按照x的尺寸生成w，然后进行变换
+        y = model(batch_x)
+        # sofmax+交叉熵二合一函数。对比得到的预测值和真实值的差异，算出损失值
+        loss = F.softmax_cross_entropy(y, batch_t)
+        # 清理导数
+        model.cleargrads()
+        # 反向传播
+        loss.backward()
+        # 更新参数
+        optimizer.update()
+        # 损失值
+        sum_loss += float(loss.data) * len(batch_t)
+
+    avg_loss = sum_loss / data_size
+    # 每一轮完成后打印当前轮数和损失值
+    print('epoch %d, loss %.2f' % (epoch + 1, avg_loss))
+
+# 画图
+h = 0.001
+x_min, x_max = x[:, 0].min() - .1, x[:, 0].max() + .1
+y_min, y_max = x[:, 1].min() - .1, x[:, 1].max() + .1
+xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
+X = np.c_[xx.ravel(), yy.ravel()]
+
+with Rryyz.no_grad():
+    score = model(X)
+predict_cls = np.argmax(score.data, axis=1)
+Z = predict_cls.reshape(xx.shape)
+plt.contourf(xx, yy, Z)
+
+N, CLS_NUM = 100, 3
+markers = ['o', 'x', '^']
+colors = ['orange', 'blue', 'green']
+for i in range(len(x)):
+    c = t[i]
+    plt.scatter(x[i][0], x[i][1], s=40,  marker=markers[c], c=colors[c])
+plt.show()
+```
+
+运行，如图
+
+![image-20240406195120497](./assets/image-20240406195120497.png)（图12)
+
+至此，我们就完成了多分类问题的解决
