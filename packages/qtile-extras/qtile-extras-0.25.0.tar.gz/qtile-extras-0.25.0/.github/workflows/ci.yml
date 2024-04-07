@@ -1,0 +1,66 @@
+name: ci
+
+on:
+    push:
+      branches:
+        - main
+    pull_request:
+
+jobs:
+    build:
+        runs-on: ubuntu-22.04
+        name: "python ${{ matrix.python-version }}"
+        strategy:
+            matrix:
+                python-version: [3.9, '3.10', '3.11', '3.12']
+        steps:
+            - uses: actions/checkout@v4
+            - name: Set up python ${{ matrix.python-version }}
+              uses: actions/setup-python@v5
+              with:
+                  python-version: ${{ matrix.python-version }}
+            - name: Install dependencies
+              run: |
+                sudo apt update
+                sudo apt install --no-install-recommends \
+                  libdbus-1-dev libgirepository1.0-dev gir1.2-gtk-3.0 gir1.2-notify-0.7 gir1.2-gudev-1.0 \
+                  imagemagick libpulse-dev git xserver-xephyr xterm xvfb dbus-x11 libnotify-bin \
+                  libxcb-composite0-dev libxcb-icccm4-dev libxcb-res0-dev libxcb-render0-dev libxcb-res0-dev \
+                  libxcb-xfixes0-dev libiw-dev fonts-noto zenity
+                sudo pip -q install meson PyGObject
+                pip -q install "tox<4" tox-gh-actions
+            - name: Build wayland
+              run:  bash -x ./scripts/ubuntu_wayland_setup
+            - name: Run test suite
+              run: |
+                tox
+            - name: Test widget decoration output
+              if: ${{ matrix.python-version == '3.11' }}
+              run: |
+                tox -e decorations
+            - name: Upload generated images
+              if: ${{ always() && matrix.python-version == '3.11' }}
+              uses: actions/upload-artifact@v4
+              with:
+                name: generated-images
+                path: decoration_images/
+                retention-days: 5
+            - name: Push coverage to Coveralls
+              run: |
+                pip -q install coveralls
+                coveralls --service=github
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                COVERALLS_FLAG_NAME: ${{ matrix.python-version }}
+                COVERALLS_PARALLEL: true
+
+    coverage:
+        name: Finalize Coverage
+        needs: build
+        runs-on: ubuntu-22.04
+        steps:
+            - name: Coveralls Finished
+              uses: coverallsapp/github-action@master
+              with:
+                github-token: ${{ secrets.GITHUB_TOKEN }}
+                parallel-finished: true
