@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61"]
+
+[project]
+name = "mebuex"
+version = "1.3.0"
+authors = [
+    {name = "Malte J. Ziebarth", email = "mjz.science@fmvkb.de"},
+]
+description = "Combining build_ext with the Meson build system"
+dependencies = [
+    "meson"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Framework :: Setuptools Plugin",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: Software Development :: Build Tools"
+]
+readme = "README.md"
+license = {text="MIT"}
+
+[project.urls]
+"Homepage" = "https://github.com/mjziebarth/Mebuex"
+"Bug Tracker" = "https://github.com/mjziebarth/Mebuex/issues"
+
+[project.scripts]
+gravelspoon = "mebuex.scripts:numpy_get_include"
+
+[tool.setuptools]
+packages = ["mebuex","mebuex.scripts"]
