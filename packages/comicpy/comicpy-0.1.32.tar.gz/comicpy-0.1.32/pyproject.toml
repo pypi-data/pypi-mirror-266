@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "comicpy"
+version = "0.1.32"
+description = "Tool to create CBR or CBZ files, supports PDF, ZIP, RAR files."
+authors = ["kurotom <55354389+kurotom@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = 'comicpy'}]
+keywords = ["comic", "cbz", "cbr", "manga"]
+repository = "https://github.com/kurotom/comicpy"
+classifiers = [
+"Operating System :: OS Independent",
+"Programming Language :: Python :: 3.7",
+"Programming Language :: Python :: 3.8",
+"Programming Language :: Python :: 3.9",
+"Programming Language :: Python :: 3.10",
+"Programming Language :: Python :: 3.11"
+]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+pypdf = {extras = ["image"], version = "^4.1.0"}
+pillow = "<=10"
+rarfile = "^4.1"
+pyzipper = "^0.3.6"
+pymupdf = "1.22.5"
+pycryptodome = "^3.20.0"
+
+[tool.poetry.scripts]
+comicpy = 'comicpy.cli:CliComicPy'
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/kurotom/comicpy/issues"
