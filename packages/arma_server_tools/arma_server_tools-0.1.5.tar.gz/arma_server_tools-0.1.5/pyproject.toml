@@ -1,0 +1,65 @@
+[tool.poetry]
+name = "arma_server_tools"
+version = "0.1.5"
+description = ""
+authors = ["Ryan <citizen.townshend@gmail.com>"]
+
+
+[tool.poetry.dependencies]
+python = "^3.12"
+beautifulsoup4 = "^4.9.3"
+pyyaml = "^6.0.1"
+click = "^8.1.7"
+click-log = "^0.4.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.1"
+mypy = "^1.9.0"
+ruff = "^0.3.5"
+black = "^24.3.0"
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.mypy]
+packages = "arma_server_tools, tests"
+disallow_untyped_defs = true
+disallow_any_unimported = true
+no_implicit_optional = true
+check_untyped_defs = true
+warn_return_any = true
+warn_unused_ignores = true
+show_error_codes = true
+ignore_missing_imports = true
+explicit_package_bases=true
+
+
+[tool.black]
+line-length = 120
+target-version = ['py311',]
+
+
+[tool.ruff]
+target-version = "py311"
+line-length = 120
+lint.select = [
+    "F",    # pyflakes
+    "E",    # pycodestyle Error
+    "W",    # pycodestle Warning
+    "I",    # isort
+    "B",    # bugbear
+    "C90",  # mccabe
+    "N",    # pep8-naming
+    "T20",  # flake8-print
+    "ERA",  # eradicate commented-out-code
+]
+
+
+[tool.poetry.scripts]
+arma_server = "arma_server_tools.arma_server:main"
+steam_pull = "arma_server_tools.workshop:main"
+preset_parser = "arma_server_tools.preset_parser:main"
