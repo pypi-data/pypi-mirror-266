@@ -1,0 +1,147 @@
+Metadata-Version: 2.1
+Name: locuaz
+Version: 0.7.5.3
+Summary: Antibody optimization protocol
+Author: Patricio Barletta
+Author-email: pbarletta@gmail.com
+Keywords: molecular,dynamics,antibody,antibodies
+Requires-Python: >=3.10
+Description-Content-Type: text/x-rst
+License-File: LICENSE.rst
+Requires-Dist: py
+Requires-Dist: scipy
+Requires-Dist: numpy<2.0.0,>=1.21.0
+Requires-Dist: attrs
+Requires-Dist: chemfiles
+Requires-Dist: mdanalysis>=2.6.0
+Requires-Dist: networkx
+Requires-Dist: biobb_common
+Requires-Dist: biobb_analysis
+Requires-Dist: biobb_model
+Requires-Dist: biobb_io
+Requires-Dist: biobb_gromacs
+Requires-Dist: pdb2pqr
+Requires-Dist: gmx-mmpbsa==1.6.1
+Requires-Dist: tqdm
+Requires-Dist: freesasa
+Requires-Dist: pytest
+Requires-Dist: cerberus
+Requires-Dist: Deprecated
+Provides-Extra: docs
+Requires-Dist: sphinx; extra == "docs"
+Requires-Dist: sphinx-rtd-theme; extra == "docs"
+
+========
+locuaz
+========
+
+
+.. image:: https://img.shields.io/pypi/v/locuaz.svg
+        :target: https://pypi.python.org/pypi/locuaz
+
+.. image:: https://readthedocs.org/projects/locuaz/badge/?version=latest
+        :target: https://locuaz.readthedocs.io/en/latest/?version=latest
+        :alt: Documentation Status
+
+
+Looping Uniquely Catered Amino Acid Sequences
+
+* Free software: MIT license
+* Documentation: https://locuaz.readthedocs.io.
+
+Install
+--------
+
+Create a conda environment YAML file named, for example, ``usr_deps.yaml``::
+
+    name: locuaz
+    channels:
+      - conda-forge
+    dependencies:
+      - conda-forge::python>=3.10
+      - conda-forge::ambertools>=22.0.0
+      - conda-forge::tensorflow
+      - conda-forge::openbabel
+      - conda-forge::pygraphviz
+
+by running:
+
+.. code-block:: console
+
+    mamba env create -f usr_deps.yaml
+
+Then, activate the environment and install the protocol through pip:
+
+.. code-block:: console
+
+    pip install locuaz
+
+Check the `Installation`_ section on the docs for more info.
+
+
+Post-Install
+-------------
+
+Using DLPacker based mutators
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If you wish to used *DLPacker* based *Mutators* (``dlp`` and ``dlpr``), DLPacker weights have to be downloaded.
+Get them `here <https://drive.google.com/file/d/1J4fV9aAr2nssrWN8mQ7Ui-9PVQseE0LQ/view?usp=sharing>`_
+or `here`_. These weights have to be extracted to a dedicated folder and its path has to be specified in the
+input config under the ``paths`` key, on the  ``mutator`` option. Check the `docs`_ for more info.
+
+
+Running
+-------
+
+After that, running *locauz* is as simple as:
+
+
+.. code-block:: console
+
+    # Activate your environment
+    mamba activate locuaz
+    # Point locuaz to your config file
+    locuaz config.yaml
+
+Check the `tutorials`_ for info on how to write this config file.
+
+.. _tutorials: https://locuaz.readthedocs.io/en/latest/tutorialsimple.html
+
+Citing
+-------
+
+
+
+Credits
+-------
+
+- `Biobb <https://mmb.irbbarcelona.org/biobb/documentation/source>`_
+- `MDAnalysis <https://github.com/MDAnalysis/mdanalysis>`_
+- `FreeSASA <https://github.com/freesasa/freesasa-python>`_
+
+.. _docs: https://locuaz.readthedocs.io/en/latest/mutators.html
+.. _Installation: https://locuaz.readthedocs.io/en/latest/installation.html
+
+
+MIT License
+
+Copyright (c) [2023] [Patricio Barletta]
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
