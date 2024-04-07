@@ -1,0 +1,118 @@
+{
+  "Plugins": [],
+  "Simulators": [
+    {
+      "name": "Simulator",
+      "type": "SQSimulator",
+      "description": "Simulator",
+      "plot": false,
+      "max_sim_time": 100,
+      "time_step": 0.1,
+      "children": [
+        {
+          "name": "Clock",
+          "type": "SQClock",
+          "description": "Clock",
+          "data_flow": [],
+          "plot": false,
+          "clk_divider": 1
+        },
+        {
+          "name": "Generator",
+          "type": "SQPacketGenerator",
+          "description": "Generator",
+          "plot": true,
+          "data_flow": [],
+          "helper_params": {
+            "no_pkts_mean": 1,
+            "no_pkts_sd": 2,
+            "pkt_size_mean": 100,
+            "pkt_size_sd": 100,
+            "classes": ["class1", "class2", "class3"],
+            "priorities": [1,10]
+          },
+          "clk": "Clock",
+          "output_q": "Pkt_q"
+        },
+        {
+          "name": "Pkt_q",
+          "type": "SQQueue",
+          "description": "Pkt_q",
+          "plot": true,
+          "data_flow": [],
+          "capacity": 100
+        },
+        {
+          "name": "Processor1",
+          "type": "SQPktProcessor",
+          "description": "Processor",
+          "plot": true,
+          "data_flow": [
+            {
+              "data": [
+                "progress"
+              ],
+              "destination": "Processor2"
+            }
+          ],
+          "clk": "Clock",
+          "input_q": "Pkt_q",
+          "output_q": "Proc_q"
+        },
+        {
+          "name": "Proc_q",
+          "type": "SQQueue",
+          "description": "Proc_q",
+          "plot": true,
+          "data_flow": [],
+          "capacity": 100
+        },
+        {
+          "name": "Filter",
+          "type": "SQFilter",
+          "description": "Filter",
+          "plot": true,
+          "data_flow": [],
+          "clk": "Clock",
+          "input_q": "Proc_q",
+          "output_q": "Filter_q"
+        },
+        {
+          "name": "Filter_q",
+          "type": "SQQueue",
+          "description": "Filter_q",
+          "plot": true,
+          "data_flow": [],
+          "capacity": 100
+        },
+        {
+          "name": "Processor2",
+          "type": "SQPktProcessor",
+          "description": "Processor2",
+          "plot": true,
+          "data_flow": [],
+          "clk": "Clock",
+          "input_q": "Filter_q",
+          "output_q": "Sink_q"
+        },
+        {
+          "name": "Sink_q",
+          "type": "SQQueue",
+          "description": "Sink_q",
+          "plot": true,
+          "data_flow": [],
+          "capacity": 100
+        },
+        {
+          "name": "Terminator",
+          "type": "SQPktSink",
+          "description": "Terminator",
+          "plot": false,
+          "data_flow": [],
+          "clk": "Clock",
+          "input_q": "Sink_q"
+        }
+      ]
+    }
+  ]
+}
