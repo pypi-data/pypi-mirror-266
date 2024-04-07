@@ -1,0 +1,84 @@
+Metadata-Version: 2.1
+Name: diskinfo
+Version: 3.1.1
+Summary: Disk information Python library for Linux
+Author-email: Peter Sulyok <peter@sulyok.net>
+License: MIT License
+        
+        Copyright (c) 2022 Peter Sulyok
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/petersulyok/diskinfo
+Project-URL: Documentation, https://diskinfo.readthedocs.io/en/latest/index.html
+Keywords: disk,linux
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Topic :: System :: Hardware
+Classifier: Development Status :: 5 - Production/Stable
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pySMART>=1.3.0
+
+# diskinfo
+[![Tests](https://github.com/petersulyok/smfc/actions/workflows/test.yml/badge.svg)](https://github.com/petersulyok/smfc/actions/workflows/tests.yml)
+[![Codecov](https://codecov.io/gh/petersulyok/diskinfo/branch/main/graph/badge.svg)](https://app.codecov.io/gh/petersulyok/diskinfo)
+[![Documentation Status](https://readthedocs.org/projects/diskinfo/badge/?version=latest)](https://diskinfo.readthedocs.io/en/latest/?badge=latest)
+[![Issues](https://img.shields.io/github/issues/petersulyok/diskinfo)](https://github.com/petersulyok/diskinfo/issues)
+[![Supported Python Versions](https://img.shields.io/pypi/pyversions/diskinfo)](https://pypi.org/project/diskinfo)
+[![PyPI version](https://badge.fury.io/py/diskinfo.svg)](https://badge.fury.io/py/diskinfo)
+
+Disk information Python library can assist in collecting disk information on Linux. In more details, it can:
+
+- collect information about a specific disk
+- explore all existing disks in the system
+- translate between traditional and persistent disk names
+- read current disk temperature
+- read SMART data of a disk
+- read partition list of a disk 
+
+Installation
+------------
+Standard installation from [pypi.org](https://pypi.org):
+
+    pip install diskinfo
+
+See the complete list of dependencies and requirements in the 
+[documentation](https://diskinfo.readthedocs.io/en/latest/intro.html#installation). 
+
+Demo
+----
+The library contains a demo application with multiple screens:
+
+    pip install rich
+    python -m diskinfo.demo
+
+![Demo screen](https://github.com/petersulyok/diskinfo/raw/main/docs/diskinfo_rich_demo.png)
+
+See more demo screens in the [documentation](https://diskinfo.readthedocs.io/en/latest/intro.html#demo).
+
+API documentation
+-----------------
+The detailed API documentation can be found on [readthedocs.io](https://diskinfo.readthedocs.io/en/latest/index.html).

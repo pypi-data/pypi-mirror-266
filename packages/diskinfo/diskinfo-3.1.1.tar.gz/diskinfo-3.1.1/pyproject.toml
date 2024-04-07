@@ -1,0 +1,64 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "diskinfo"
+description = "Disk information Python library for Linux"
+readme = "README.md"
+version = "3.1.1"
+authors = [
+    { name = "Peter Sulyok", email = "peter@sulyok.net" }
+]
+requires-python = ">=3.8"
+keywords = ["disk", "linux"]
+license = {file = "LICENSE"}
+dependencies = [
+    "pySMART>=1.3.0"
+    #"rich>=13.7.0"
+]
+classifiers = [
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: System :: Hardware",
+    "Development Status :: 5 - Production/Stable"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/petersulyok/diskinfo"
+"Documentation" = "https://diskinfo.readthedocs.io/en/latest/index.html"
+
+# pytest options
+[tool.pytest.ini_options]
+pythonpath = "src"
+filterwarnings = [
+    "default",
+    "ignore::UserWarning",
+    "ignore::pytest.PytestCollectionWarning"
+]
+
+# coverage options
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
+    "unittest.main()"
+    ]
+omit = [ "src/diskinfo/demo.py" ]
+
+# pylint options
+[tool.pylint.'MASTER']
+init-hook='import sys; sys.path.append("."); sys.path.append("./src"); sys.path.append("./test")'
+max-line-length=120
+
+[tool.pylint.'MESSAGES CONTROL']
+disable= [
+    "line-too-long", "missing-module-docstring", "too-many-locals", "too-many-branches", "too-many-arguments",
+    "too-many-statements", "invalid-name", "protected-access", "too-many-instance-attributes",
+    "too-many-public-methods", "too-few-public-methods", "duplicate-code"
+    ]
