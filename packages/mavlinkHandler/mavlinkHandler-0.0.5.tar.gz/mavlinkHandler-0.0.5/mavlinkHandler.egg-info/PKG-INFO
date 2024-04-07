@@ -1,0 +1,36 @@
+Metadata-Version: 2.1
+Name: mavlinkHandler
+Version: 0.0.5
+Summary: A controller library for UAVs, compatible with both ArduPilot and DroneKit
+Home-page: https://github.com/0EA/mavlinkHandler
+Author: Nurullah Eren Acar
+Author-email: n.erenacar13@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: dronekit==2.9.2
+Requires-Dist: geopy==2.4.1
+Requires-Dist: pymavlink==2.4.41
+Requires-Dist: numpy==1.26.4
+
+# mavlinkHandler
+
+[![PyPI](https://img.shields.io/pypi/v/mavlinkhandler.svg)](https://pypi.org/project/mavlinkhandler/)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/your-username/mavlinkHandler/blob/main/LICENSE)
+
+mavlinkHandler is a controller library for UAVs, compatible with both ArduPilot and DroneKit.
+
+## Installation
+You can install mavlinkHandler using pip:
+```
+pip install mavlinkHandler
+```
+
+## Usage
+```
+from mavlinkHandler import MAVLinkHandlerDronekit as MAVLinkHandler
+
+mavlink_handler = MAVLinkHandler('127.0.0.1:14591')
+```
