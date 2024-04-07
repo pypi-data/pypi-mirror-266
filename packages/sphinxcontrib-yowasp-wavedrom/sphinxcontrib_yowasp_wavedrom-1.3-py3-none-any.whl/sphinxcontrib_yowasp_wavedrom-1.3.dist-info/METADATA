@@ -1,0 +1,61 @@
+Metadata-Version: 2.1
+Name: sphinxcontrib-yowasp-wavedrom
+Version: 1.3
+Summary: A Sphinx extension for embedding WaveDrom diagrams
+Author-Email: Catherine <whitequark@whitequark.org>
+License: MIT
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: ~=3.8
+Requires-Dist: importlib_resources; python_version < "3.9"
+Requires-Dist: Sphinx~=7.1
+Requires-Dist: yowasp-wavedrom>=3.5.0.7
+Description-Content-Type: text/markdown
+
+sphinxcontrib-yowasp-wavedrom
+=============================
+
+This [Sphinx] extension allows embedding [WaveDrom] waveform, bitfield, and circuit diagrams into Sphinx documents.
+
+This extension uses the [YoWASP WaveDrom][yowasp-wavedrom] package to ensure that diagrams are rendered exactly the same as in the WaveDrom editor, without having to follow a decision tree for configuration, without requiring any additional tools to be installed on the system used to build documentation, without requiring any native dependencies to be installed on that system, without requiring JavaScript for browsing documentation, and without slowing down the Sphinx build process. It also reports syntax and semantic errors with accurate source locations. <!-- environmental storytelling paragraph --> 
+
+WaveJSON diagram descriptions are always converted into SVG files; only the HTML builder is supported at the moment. Sphinx themes with color schemes toggles, like [Furo], are supported by default, but may require [custom CSS](/test/_static/wavedrom.css) for integration.
+
+[Sphinx]: https://www.sphinx-doc.org/
+[WaveDrom]: https://wavedrom.com/
+[yowasp-wavedrom]: https://github.com/YoWASP/wavedrom
+[Furo]: https://github.com/pradyunsg/furo
+
+
+Usage
+-----
+
+This extension provides only one directive, `wavedrom`. Its argument is the base name, without extension, of the generated image file (in `<output directory>/<document directory>/_images/`; which must be unique for that document directory), and its contents is the raw WaveJSON file that can be copied to or from the editor. For example:
+
+```rst
+.. wavedrom:: clk_and_data
+    
+    {"signal": [  
+        {"name": "clk",  "wave": "n..."},
+        {"name": "data", "wave": "01.0"}
+    ]}
+```
+
+Additional examples are available [in the test suite](/test/index.rst), as well as the corresponding [rendered output](https://yowasp.github.io/sphinxcontrib-wavedrom/).
+
+
+Configuration
+-------------
+
+The extension recognizes these configuration variables in `conf.py`:
+
+```py
+# Default skin for waveforms. If `json["config"]["skin"]` is not set in the directive,
+# it defaults to the value of this variable. Does not affect bit fields or circuits.
+yowasp_wavedrom_skin = "default"
+```
+
+
+License
+-------
+
+This project is distributed under the terms of the [MIT license](LICENSE.txt).
