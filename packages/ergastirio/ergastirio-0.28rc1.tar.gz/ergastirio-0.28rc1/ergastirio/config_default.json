@@ -1,0 +1,46 @@
+{
+    "GUI": {
+        "alignment_instruments_window": "V"
+    },
+    "General_Settings": {
+        "make_average_set_acquisitions": true,
+        "numb_acquisitions_per_set": 4,
+        "time_interval_internal_trigger": 0.1,
+        "time_interval_multiple_acquisitions_per_set": 0.2,
+        "trigger_modality": "internal"
+    },
+    "Instruments_Settings": {
+        "instruments": [
+            "pyThorlabsPM100x",
+            "pyThorlabsPM100x",
+            "pyThorlabsAPT"
+        ],
+        "post_processed_data": {
+            "Transm": [
+                "dev0.Power",
+                "/",
+                "dev1.Power"
+            ]
+        },
+        "settings_each_instrument": [],
+        "trigger_delay": 0.0,
+        "trigger_instrument": 2
+    },
+    "Plot_Settings": {
+        "plots": [
+            {
+                "x": "acq#",
+                "y": [
+                    "dev0.Power",
+                    "dev1.Power"
+                ]
+            },
+            {
+                "x": "acq#",
+                "y": [
+                    "dev0.Power"
+                ]
+            }
+        ]
+    }
+}
