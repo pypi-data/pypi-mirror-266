@@ -1,0 +1,249 @@
+{
+  "src/lib/components/DataFlow.react.js": {
+    "description": "ExampleComponent is an example component.\r\nIt takes a property, `label`, and\r\ndisplays it.\r\nIt renders an input with the property `value`\r\nwhich is editable by the user.",
+    "displayName": "DataFlow",
+    "methods": [
+      {
+        "name": "update_internal_nodes",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "nodes",
+            "type": null
+          },
+          {
+            "name": "edges",
+            "type": null
+          }
+        ],
+        "returns": null
+      },
+      {
+        "name": "get_external_nodes",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "nodes",
+            "type": null
+          }
+        ],
+        "returns": null
+      },
+      {
+        "name": "get_external_edges",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "edges",
+            "type": null
+          }
+        ],
+        "returns": null
+      },
+      {
+        "name": "onConnect",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "edge_to_add",
+            "type": null
+          }
+        ],
+        "returns": null
+      },
+      {
+        "name": "onNodesChange",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "nodes",
+            "type": null
+          }
+        ],
+        "returns": null
+      },
+      {
+        "name": "onEdgesChange",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "edges",
+            "type": null
+          }
+        ],
+        "returns": null
+      },
+      {
+        "name": "getId",
+        "docblock": null,
+        "modifiers": [],
+        "params": [],
+        "returns": null
+      },
+      {
+        "name": "onDrop",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "event",
+            "type": null
+          }
+        ],
+        "returns": null
+      },
+      {
+        "name": "onDragOver",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "event",
+            "type": null
+          }
+        ],
+        "returns": null
+      },
+      {
+        "name": "handleClose",
+        "docblock": null,
+        "modifiers": [],
+        "params": [],
+        "returns": null
+      },
+      {
+        "name": "handleShow",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "e",
+            "type": null
+          }
+        ],
+        "returns": null
+      },
+      {
+        "name": "getInstance",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "i",
+            "type": null
+          }
+        ],
+        "returns": null
+      },
+      {
+        "name": "getViewInstance",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "i",
+            "type": null
+          }
+        ],
+        "returns": null
+      },
+      {
+        "name": "getOutputMetas",
+        "docblock": null,
+        "modifiers": [],
+        "params": [],
+        "returns": null
+      },
+      {
+        "name": "updateOutput",
+        "docblock": null,
+        "modifiers": [],
+        "params": [],
+        "returns": null
+      },
+      {
+        "name": "updateLayout",
+        "docblock": null,
+        "modifiers": [],
+        "params": [],
+        "returns": null
+      }
+    ],
+    "props": {
+      "id": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "The ID used to identify this component in Dash callbacks."
+      },
+      "meta": {
+        "type": {
+          "name": "object"
+        },
+        "required": true,
+        "description": "Metadata dictionary of the available databases"
+      },
+      "nodes": {
+        "type": {
+          "name": "array"
+        },
+        "required": false,
+        "description": "Array of nodes",
+        "defaultValue": {
+          "value": "[]",
+          "computed": false
+        }
+      },
+      "edges": {
+        "type": {
+          "name": "array"
+        },
+        "required": false,
+        "description": "Array of edges connecting the nodes",
+        "defaultValue": {
+          "value": "[]",
+          "computed": false
+        }
+      },
+      "nodeTypes": {
+        "type": {
+          "name": "arrayOf",
+          "value": {
+            "name": "string"
+          }
+        },
+        "required": false,
+        "description": "Metadata dictionary of the available databases",
+        "defaultValue": {
+          "value": "[\"db\", \"merge\", \"filter\", \"trafo\", \"plot\"]",
+          "computed": false
+        }
+      },
+      "graphType": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "Type of the graph structure [singleOutput, multiPlot]",
+        "defaultValue": {
+          "value": "\"multiPlot\"",
+          "computed": false
+        }
+      },
+      "setProps": {
+        "type": {
+          "name": "func"
+        },
+        "required": false,
+        "description": "Dash-assigned callback that should be called to report property changes\r\nto Dash, to make them available for callbacks."
+      }
+    }
+  }
+}
