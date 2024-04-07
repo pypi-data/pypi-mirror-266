@@ -1,0 +1,31 @@
+
+
+
+
+
+
+SSH:
+	
+	<b>keygen</b>
+		(uses a randomizer)
+	
+		<b>ELLIPTIC CURVES</b>
+			(ssh-keygen -t ecdsa -N "" -C "" -b 521 -f ECDSA_521_key)
+		
+			ssh-keygen -t ed25519 
+			ssh-keygen -t ecdsa -b 521
+			
+		
+		<b>RSA</b>
+			(ssh-keygen -t rsa -N "" -b 3072 -C "" -f RSA && mv RSA RSA.private && mv RSA.pub RSA.public)
+	
+		ssh-keygen -t rsa -b 4096
+		
+	<b>AGENT</b>
+		ssh-agent
+	
+	<b>ADD</b>
+		ssh-add ECDSA_521_KEY
+		
+	<b>GITLAB USAGE</b>
+		https://docs.gitlab.com/ee/user/ssh.html#configure-ssh-to-point-to-a-different-directory

@@ -1,0 +1,36 @@
+
+
+
+import:
+
+	overriding import builtin?
+	
+	
+	relevant:
+		"modules/fasten"
+	
+	
+	pypi import structure potential:
+	
+		module_1
+			module_2
+				module_3
+			
+			module_3
+			module_4
+				module_2
+	
+		modules_pypi
+			modules_pypi
+				module_1
+					1.0.0
+				
+				module_2
+					1.0.4
+			
+			module_1 -> modules_pypi/module_1/1.0.0
+			module_2 -> modules_pypi/module_1/1.0.4
+			
+			
+			
+			
