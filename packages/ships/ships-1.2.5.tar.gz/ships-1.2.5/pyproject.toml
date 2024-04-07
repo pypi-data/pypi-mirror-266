@@ -1,0 +1,40 @@
+
+#
+#	publishing
+#
+#		(cp /ships/fields/gardens/ships/module.MD readme.md)
+#		python3 /ships/fields/gardens/ships/_status/status.proc.py
+#		(rm -rf dist && python3 -m build && twine upload dist/*)
+#
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ships"
+version = "1.2.5"
+description = "Various calculator tools"
+
+license = { text = "GPL 3.0" }
+
+readme = "readme.md"
+dependencies = [
+	'bracelet',
+	
+	'rich',
+	'psutil',
+	'pyinotify'
+]
+
+[project.scripts]
+ships = "ships:clique"
+
+[tool.setuptools.packages.find]
+where = [ "fields/gardens" ]
+
+#
+#	https://setuptools.pypa.io/en/latest/userguide/datafiles.html
+#
+[tool.setuptools.package-data]
+"*" = [ "*.HTML" ]
