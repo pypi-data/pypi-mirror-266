@@ -1,0 +1,55 @@
+{% for im in model.imports %}
+{{ im }}
+{% endfor %}
+import sys
+
+
+class {{model.simulator.name }}Setup:
+    def __init__(self):
+        factory = SQFactory()
+        {% for o in model.plugins %}
+        factory.load_plugin("{{ o }}")
+        {% endfor %}
+        # Create Queue Objects
+        {% for o in model.queues %}
+        # {{ o.comment }}
+        self.{{ o.name.lower() }} = factory.create(obj_type="{{ o.type }}", data=dict({{ model.generate_params(o.sq_object_data) }}))
+        {% endfor %}
+        # Create Clock Objects
+        {% for o in model.clocks %}
+        # {{ o.comment }}
+        self.{{ o.name.lower() }} = factory.create(obj_type="{{ o.type }}", data=dict({{ model.generate_params(o.sq_object_data) }}))
+        {% endfor %}
+
+        # Create Other Simulation Objects
+        {% for o in model.sim_objects %}
+        # {{ o.comment }}
+        self.{{ o.name.lower() }} = factory.create(obj_type="{{ o.type }}", data=dict({{ model.generate_params(o.sq_object_data) }}))
+        {% endfor %}
+
+        self.{{ model.simulator.name.lower() }} = factory.create(obj_type="{{ model.simulator.type }}", data=dict({{ model.generate_params(model.simulator.sq_object_data) }}))
+        {% for df in model.data_flows %}
+        {{ df.source }}.data_flow({{ df.destination }},{{ df.data }})
+        {% endfor %}
+        {% for o in model.plot_objects %}
+        self.{{ o.lower() }}_plotter = SQPlotter(name="{{ o }}_Plotter", objs=[self.{{ o.lower() }}],output_file="{{ o }}.png", show_plot=False)
+        {% endfor %}
+
+    def run(self):
+        self.{{  model.simulator.name.lower() }}.init()
+        self.{{  model.simulator.name.lower() }}.start()
+        {% for o in model.plot_objects %}
+        self.{{ o.lower() }}_plotter.plot()
+        {% endfor %}
+
+
+if __name__ == "__main__":
+    setup = {{model.simulator.name }}Setup()
+    setup.run()
+    print("Done")
+    sys.exit(0)
+
+
+
+
+
