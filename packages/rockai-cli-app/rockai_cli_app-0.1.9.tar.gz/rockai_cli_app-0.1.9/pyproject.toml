@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "rockai-cli-app"
+version = "0.1.9"
+description = "For inference and training"
+authors = ["Rocky <some_developer@example.com>"]
+readme = "README.md"
+include = ["./rockai_cli_app/docker/tf_compat.json","./rockai_cli_app/docker/torch_compat.json"]
+
+[tool.poetry.scripts]
+rock = "rockai_cli_app.main:app"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+typer = {extras = ["all"], version = "^0.9.0"}
+fastapi = "^0.109.2"
+uvicorn = {extras = ["standard"], version = "^0.27.0.post1"}
+requests = "^2.31.0"
+docker = "^7.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
