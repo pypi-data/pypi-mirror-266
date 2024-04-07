@@ -1,0 +1,49 @@
+{
+    "exp": {
+        "study_name": "PhysioKit_Validation",
+        "conditions": [
+            "baseline",
+            "mathEasy",
+            "mathDifficult",
+            "movement"
+        ],
+        "channels": [
+            "EDA",
+            "Resp",
+            "PPG Finger",
+            "PPG Ear"
+        ],
+        "channel_types": [
+            "eda",
+            "resp",
+            "ppg",
+            "ppg"
+        ],
+        "timed_acquisition": true,
+        "assess_signal_quality": true,
+        "max_time_seconds": [
+            180,
+            180,
+            180,
+            180
+        ],
+        "datapath": "data",
+        "event_codes": {
+            "0": "event_1",
+            "1": "event_2"
+        }
+    },
+    "biofeedback": {
+        "enabled": false,
+        "ch_index": 3,
+        "metric": "HRV_MeanNN",
+        "window": 10,
+        "step": 1,
+        "mapping": "linear_increase",
+        "type": "visual",
+        "visual_feedback": {
+            "shape": "circle",
+            "varying_parameter": "size"
+        }
+    }
+}
