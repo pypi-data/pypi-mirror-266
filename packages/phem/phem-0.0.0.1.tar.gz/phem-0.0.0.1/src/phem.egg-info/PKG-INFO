@@ -1,0 +1,83 @@
+Metadata-Version: 2.1
+Name: phem
+Version: 0.0.0.1
+Summary: PHEM: A collection of Post Hoc Ensemble Methods for (Auto)ML
+Author-email: Lennart Purucker <contact@lennart-purucker.com>
+Project-URL: source, https://github.com/LennartPurucker/phem
+Project-URL: documentation, https://github.com/LennartPurucker/phem/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: typing_extensions
+Requires-Dist: more_itertools
+Requires-Dist: assembled[openml]==0.0.4
+Requires-Dist: ConfigSpace==0.6.1
+Requires-Dist: scikit-learn
+Requires-Dist: phem[all_methods]
+Provides-Extra: dev
+Requires-Dist: phem[doc,examples,test,tooling]; extra == "dev"
+Provides-Extra: tooling
+Requires-Dist: commitizen; extra == "tooling"
+Requires-Dist: pre-commit; extra == "tooling"
+Requires-Dist: ruff; extra == "tooling"
+Requires-Dist: mypy; extra == "tooling"
+Requires-Dist: types-psutil; extra == "tooling"
+Requires-Dist: types-pyyaml; extra == "tooling"
+Provides-Extra: test
+Requires-Dist: pytest<8; extra == "test"
+Requires-Dist: pytest-coverage; extra == "test"
+Requires-Dist: pytest-cases; extra == "test"
+Provides-Extra: examples
+Requires-Dist: openml; extra == "examples"
+Provides-Extra: doc
+Requires-Dist: mkdocs; extra == "doc"
+Requires-Dist: mkdocs-material; extra == "doc"
+Requires-Dist: mkdocs-autorefs; extra == "doc"
+Requires-Dist: mkdocs-gen-files; extra == "doc"
+Requires-Dist: mkdocs-literate-nav; extra == "doc"
+Requires-Dist: mkdocs-glightbox; extra == "doc"
+Requires-Dist: mkdocstrings[python]; extra == "doc"
+Requires-Dist: markdown-exec[ansi]; extra == "doc"
+Requires-Dist: matplotlib; extra == "doc"
+Requires-Dist: rich; extra == "doc"
+Requires-Dist: mike; extra == "doc"
+Requires-Dist: pillow; extra == "doc"
+Requires-Dist: cairosvg; extra == "doc"
+Requires-Dist: black; extra == "doc"
+Provides-Extra: all-methods
+Requires-Dist: phem[cma_es,qdo_es]; extra == "all-methods"
+Provides-Extra: qdo-es
+Requires-Dist: ribs==0.4.0; extra == "qdo-es"
+Provides-Extra: cma-es
+Requires-Dist: cma==3.2.2; extra == "cma-es"
+
+# PHEM: A collection of Post Hoc Ensemble Methods for (Auto)ML
+
+PHEM is a place to share Post Hoc Ensembling Methods for AutoML.
+
+The method supported by PHEM aligns with (also not fully) the scikit-learn API.
+This is a work in progress as transitioning from research code to a library is not trivial.
+The algorithms and implementations behind the interfaces can also be (somewhat easily) adapted to be used in AutoML systems such as Auto-Sklearn or AutoGluon.
+
+This repository only focuses on classification so far. But most methods could be trivially extended to regression (if I had the time).
+
+Moreover, based on [Assembled](https://github.com/ISG-Siegen/assembled) or [TabRepo](https://github.com/autogluon/tabrepo) , we have efficient means to simulate ensembling methods.
+
+## :warning: WORK IN PROGRESS REPOSITORY :warning:
+This repository is a work in progress. The code is not yet fully tested and the documentation is not yet complete (or even started ;).
+
+Yet, most of it works out of the box as they were used in research projects before and partially tested and implemented in AutoML systems.
+
+Moreover, if you need anything or have any questions, feel free to open an issue or contact me directly. I am happy to help.
+
+Finally, I would like to note that the code quality is also insufficient as this was build on Python 3.8, and before I knew of the existence of `ruff`.
+
+### References
+- Assembled: https://github.com/ISG-Siegen/assembled
+- Post Hoc Ensembling Methods
+    - Greedy Ensemble Selection (GES): Caruana, Rich, et al. "Ensemble selection from libraries of models." Proceedings of the twenty-first international conference on Machine learning. 2004.
+    - Q(D)O-ES: Quality (Diversity) Optimisation Ensemble Selection https://github.com/LennartPurucker/PopulationBasedQDO-PostHocEnsembleSelectionAutoML
+    - (TODO ADD) CMA-ES for Post Hoc Ensembling: https://github.com/LennartPurucker/CMA-ES-PostHocEnsemblingAutoML
