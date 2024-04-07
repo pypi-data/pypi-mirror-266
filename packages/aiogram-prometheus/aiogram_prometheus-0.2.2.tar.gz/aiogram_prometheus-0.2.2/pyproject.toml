@@ -1,0 +1,103 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "aiogram-prometheus"
+version = "0.0.0"
+description = "Aiogram`s exporter for Prometheus"
+homepage = "https://gitlab.com/rocshers/python/aiogram-prometheus"
+repository = "https://gitlab.com/rocshers/python/aiogram-prometheus"
+authors = ["aleksei.marusich <aleksei.marusich@rocshers.com>"]
+readme = "readme.md"
+license = "MIT"
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: System :: Archiving :: Packaging",
+    "Topic :: System :: Software Distribution",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3 :: Only",
+]
+packages = [{include = "aiogram_prometheus"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+prometheus-client = "<1"
+aiogram = ">=3"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.3"
+pytest-cov = "^4.1.0"
+pytest-asyncio = "^0.21.1"
+ruff = "^0.2.1"
+black = "^24.1.1"
+isort = "^5.13.2"
+mypy = "^1.8.0"
+pre-commit = "3.5.0"
+pre-commit-hooks = "^4.5.0"
+python-decouple = "^3.8"
+
+[tool.poetry.group.docs.dependencies]
+mkdocs = "^1.5.3"
+mkdocs-material = "^9.5.2"
+mkdocstrings = {extras = ["python"], version = "^0.24.0"}
+griffe-typingdoc = "^0.2.4"
+
+[tool.black]
+skip-string-normalization = true
+line-length = 120
+target-version = ["py37"]
+
+[tool.isort]
+profile = "black"
+line_length = 120
+
+[tool.ruff.lint]
+select = ["A", "B", "C", "E", "F", "I", "UP"]
+fixable = ["A", "B", "C", "D", "E", "F", "I", "UP"]
+ignore = ["UP004", "D100", "D101", "D102", "D103", "D104", "D107", "D400", "D415"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py37"
+
+[tool.coverage.run]
+omit = [
+    "*/tests/*",
+    "install-poetry.py"
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+]
+
+[tool.pytest.ini_options]
+addopts = "-vvs --tb=short"
+xfail_strict = true
+testpaths = [
+    "tests",
+    "integration",
+]
+python_files = [
+    "tests/*.py",
+    "test_*.py"
+]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore:Module already imported:pytest.PytestWarning"
+]
+
+[tool.mypy]
+python_version = 3.8
