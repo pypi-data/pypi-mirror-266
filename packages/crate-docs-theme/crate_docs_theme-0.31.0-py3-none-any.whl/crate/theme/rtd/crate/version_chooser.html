@@ -1,0 +1,75 @@
+<!-- Version chooser component -->
+
+<div class="version-chooser-container">
+
+  {% set url_path = theme_canonical_url_path.replace('en/latest/', '') %}
+  <script>
+    // Sphinx version chooser JavaScript helpers by Daniel McCloy, derived from pydata-sphinx-theme.
+    // BSD 3-Clause License; Copyright (c) 2018, pandas; All rights reserved.
+    // See `version-switcher.html` and `pydata-sphinx-theme.js`.
+
+    async function checkPageExistsAndRedirect(event) {
+      // Make sure not to follow the original link.
+      event.preventDefault();
+      const currentFilePath = `{{ pagename }}.html`,
+        tryUrl = event.currentTarget.getAttribute("href");
+      let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
+
+      try {
+        let head = await fetch(tryUrl, { method: "HEAD" });
+        if (head.ok) {
+          location.href = tryUrl; // the page exists, go there
+        } else {
+          location.href = otherDocsHomepage;
+        }
+      } catch (err) {
+        // something went wrong, probably CORS restriction, fallback to other docs homepage
+        location.href = otherDocsHomepage;
+      }
+    }
+
+    function versionChooserAppendItem(slug, url) {
+      // Create the link node.
+      const node = document.createElement("a");
+      node.setAttribute(
+        "class",
+        "version-chooser-link"
+      );
+      node.setAttribute("href", `https://cratedb.com/{{ url_path }}{{ rtd_language }}/${slug}/{{ pagename }}.html`);
+      node.textContent = slug;
+
+      // On navigation, AJAX calls will check if the linked page exists before
+      // trying to redirect, and if not, will redirect to the homepage
+      // for that version of the docs.
+      node.onclick = checkPageExistsAndRedirect;
+
+      // Wrap link element into container node.
+      const container = document.createElement("p");
+      container.setAttribute("class", "sd-card-text");
+      container.appendChild(node);
+
+      // Populate HTML DOM.
+      document.querySelector(".version-chooser__menu").append(container);
+
+    }
+  </script>
+
+  <details class="sd-sphinx-override sd-dropdown sd-card version-chooser-content">  <!-- open="" -->
+    <summary class="sd-summary-title sd-card-header version-chooser-title">
+      <span>{{ current_version }}</span>
+      <div class="sd-summary-down docutils">
+        <svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-down" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 8.72a.75.75 0 000 1.06l6.25 6.25a.75.75 0 001.06 0l6.25-6.25a.75.75 0 00-1.06-1.06L12 14.44 6.28 8.72a.75.75 0 00-1.06 0z"></path></svg>
+      </div>
+      <div class="sd-summary-up docutils">
+        <svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-up" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M18.78 15.28a.75.75 0 000-1.06l-6.25-6.25a.75.75 0 00-1.06 0l-6.25 6.25a.75.75 0 101.06 1.06L12 9.56l5.72 5.72a.75.75 0 001.06 0z"></path></svg>
+      </div>
+    </summary>
+    <div class="sd-summary-content sd-card-body docutils version-chooser__menu">
+      {% for slug, url in versions %}
+      <script>
+        versionChooserAppendItem('{{ slug }}', '{{ url }}');
+      </script>
+      {% endfor %}
+    </div>
+  </details>
+</div>
