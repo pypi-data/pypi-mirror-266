@@ -1,0 +1,134 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = [
+  "setuptools>=69",
+  "setuptools-scm>=8.0.4",
+
+]
+
+[project]
+authors = [{name = "Danny Guinther"}]
+classifiers = [
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.9",
+]
+dependencies = [
+  "argparse",
+  "decorator",
+  "hiredis",
+  "redis",
+  "typing_extensions>=4.8.0",
+]
+description = "Redis-based Queue Management"
+dynamic = ["version"]
+keywords = [
+    "job",
+    "qless",
+    "redis",
+    "reqless",
+]
+license = {text = "MIT"}
+name = "reqless"
+readme = "README.md"
+requires-python = ">3.9.0"
+
+[project.optional-dependencies]
+dev = [
+  "black~=24.2.0",
+  "build~=1.0.3",
+  "flake8-pyproject~=1.2.3",
+  "flake8~=7.0.0",
+  "isort~=5.8.0",
+  "mypy~=1.7.0",
+  "pre-commit~=2.20.0",
+  "removestar~=1.3.1",
+  "safety==2.3.4",
+  "twine~=4.0.2",
+  "types-decorator~=5.1.8.4",
+  "types-mock~=5.1.0.2",
+]
+test = [
+    "coverage",
+    "coverage-badge~=1.1.0",
+    "mock",
+    "nose",
+    "rednose",
+    "setuptools>=69",
+]
+all = ["reqless[dev,test]"]
+
+[project.urls]
+Homepage = "https://github.com/tdg5/reqless-py"
+Source = "https://github.com/tdg5/reqless-py"
+Tracker = "https://github.com/tdg5/reqless-py/issues"
+
+[tool.black]
+exclude = "reqless/(lua|qless-core)/.*"
+include = "(reqless(_test)?|qmore)/.*\\.py$"
+line-length = 88
+target-version = ["py39"]
+
+[tool.flake8]
+exclude = ["reqless/lua", "reqless/qless-core"]
+ignore = ["E203", "E251", "E701", "N805", "W503", "DAR101", "DAR201", "DAR301", "DAR401"]
+max-line-length = 88
+min_python_version = "3.9.0"
+
+[tool.isort]
+include_trailing_comma = true
+known_first_party = ["reqless", "qmore", "reqless_test"]
+line_length = 88
+lines_after_imports = 2
+multi_line_output = 3
+profile = "black"
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+skip_glob = ["reqless/lua", "reqless/qless-core"]
+use_parentheses = true
+
+[tool.mypy]
+check_untyped_defs = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+exclude = "^(reqless/qless-core|reqless/lua|fixtures|.*?\\.js|.*?\\.json)"
+ignore_missing_imports = true
+warn_redundant_casts = true
+warn_return_any = true
+warn_unused_ignores = true
+
+[tool.nosetests]
+cover-branches = 1
+cover-erase = 1
+cover-min-percentage = 98
+cover-package = ["reqless", "qmore"]
+exe = 1
+logging-clear-handlers = 1
+rednose = 1
+verbosity = 2
+
+[tool.pytest.ini_options]
+markers = ["integration_test: marks tests as integration tests (deselect with '-m \"not integration_test\"')"]
+
+[tool.setuptools]
+script-files = ["bin/reqless-py-worker"]
+
+[tool.setuptools.package-data]
+"reqless" = ["lua/*.lua", "py.typed"]
+"qmore" = ["py.typed"]
+
+[tool.setuptools.packages.find]
+include = [
+  "qmore",
+  "reqless",
+  "reqless.abstract",
+  "reqless.queue_resolvers",
+  "reqless.workers",
+]
+where = ["."]
+
+[tool.setuptools_scm]
+version_file = "reqless/__version__.py"
