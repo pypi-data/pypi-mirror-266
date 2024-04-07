@@ -1,0 +1,38 @@
+{
+    "version": 1,
+    "name": "controller",
+    "description": "on-off controller",
+    "template": "onoff",
+    "tutorial": [
+        "# example 1: launch controller",
+        "run"
+    ],
+    "remarks": [
+        "- remarks will appear as the epilogue of the -h print-out of cli mode",
+        "- use remarks to further explain usage of the app, its preconditions, etc.",
+        "- controller app turns on the backend and changes its state by tweaking the form fields while the backend is running"
+    ],
+    "instances": 1,
+    "input": {
+        "traceable": {
+            "group": "page1",
+            "help": "set trace to true to bind callback to field change for realtime control",
+            "default": 10,
+            "presetable": true,
+            "range": [
+                0,
+                100
+            ],
+            "step": 1,
+            "trace": true
+        }
+    },
+    "output": {},
+    "appearance": {
+        "title": "controller",
+        "size": [
+            800,
+            600
+        ]
+    }
+}

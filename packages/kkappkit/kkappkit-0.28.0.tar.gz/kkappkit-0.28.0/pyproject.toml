@@ -1,0 +1,45 @@
+[tool.poetry]
+name = "kkappkit"
+version = "0.28.0"
+description = "Code-generator for building small desktop applications with Python and Tkinter"
+authors = ["Beinan Li <li.beinan@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = ""
+repository = "https://github.com/kakyoism/kkappkit/"
+documentation = "https://github.com/kakyoism/kkappkit/README.md"
+keywords = [
+    "frontend",
+    "ui",
+]
+packages = [
+    { include = "kkappkit", from = ".." },
+]
+exclude = [
+    ".idea",
+    ".vscode",
+    ".pytest_cache",
+    "_research",
+    "temp",
+    "pyproject.toml",
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+GitPython = "*"
+cx_freeze = "*"
+kkbuild = "*"
+kkpyui = "*"
+kkpyutil = "*"
+
+[tool.poetry.dev-dependencies]
+pytest = "*"
+coverage = "*"
+python-osc = "*"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.urls]
+issues = "https://github.com/kakyoism/kkappkit/issues"
