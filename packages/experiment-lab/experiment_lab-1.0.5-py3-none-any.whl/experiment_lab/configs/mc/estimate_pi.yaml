@@ -1,0 +1,25 @@
+experiment_name: estimate_pi_experiment
+batch_size: 64
+n_samples: 320_000
+n_runs: 10
+n_run_method: parallel
+aggregate_every_batch: true
+log_results: false
+wandb:
+    project: experiments
+sampler: 
+    _target_: experiment_lab.experiments.examples.mc_pi_estimate.RandomPointInCircle
+aggregator:
+    _target_: experiment_lab.experiments.monte_carlo.MultipleAggregators
+    aggregators:
+        mean:
+            _target_: experiment_lab.experiments.monte_carlo.NpAggregator
+            np_func: mean
+        variance:
+            _target_: experiment_lab.experiments.monte_carlo.NpAggregator
+            np_func: var
+post_processor: 
+    _target_: experiment_lab.experiments.examples.mc_pi_estimate.MultiplyByFour
+defaults:
+    - mc_config
+    - _self_
