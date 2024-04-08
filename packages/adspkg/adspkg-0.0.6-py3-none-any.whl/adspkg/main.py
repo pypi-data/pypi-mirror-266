@@ -1,0 +1,5 @@
+print("A: 6 - community, degree centrality ")
+print("B: 9 - comparing competitors ")
+print("C: 10 - predictive analytics ")
+print("D: 3 - preprocessing ")
+print("E: 5 - Sentiment, word cloud, etc")
