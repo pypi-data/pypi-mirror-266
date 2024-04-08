@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  UserBackend
+
+  Sample SAM Template for UserBackend
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 3
+    MemorySize: 128
+
+Parameters:
+  ApiStageName:
+    Default: api
+    Description: StageName of API Gateway deployment
+    Type: String
+  DomainName:
+    Description: domain name
+    Type: String
+  AuthSubdomain:
+    Default: auth
+    Description: user pool domain name
+    Type: String
+
+Resources:
+  UserPoolSubstack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: ./user-pool.yaml
+      Parameters:
+        RootStackName: !Ref AWS::StackName
+        DomainName: !Ref DomainName
+        AuthSubdomain: !Ref AuthSubdomain
+  TestApiSubStack:
+    DependsOn:
+      - UserPoolSubstack
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: ./test-api.yaml
+      Parameters:
+        RootStackName: !Ref AWS::StackName
+        DomainName: !Ref DomainName
+        ApiStageName: !Ref ApiStageName
