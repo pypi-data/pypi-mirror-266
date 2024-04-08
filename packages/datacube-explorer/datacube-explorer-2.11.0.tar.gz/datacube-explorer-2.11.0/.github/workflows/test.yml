@@ -1,0 +1,43 @@
+---
+name: Tests
+
+on:
+  pull_request:
+    paths:
+      - '**'
+
+  push:
+    branches:
+      - develop
+    paths:
+      - '**'
+
+env:
+  IMAGE_NAME: opendatacube/explorer
+
+jobs:
+  integration-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build Docker
+        run: |
+          make build
+
+      - name: Run tests
+        run: |
+          make up-d
+          sleep 10
+          make create-test-db-docker
+          make test-docker
+          make docker-clean
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage.xml
+          fail_ci_if_error: false
