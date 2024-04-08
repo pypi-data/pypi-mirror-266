@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "title": "MissimConfig",
+  "properties": {
+    "ros_domain_id": {
+      "type": "integer",
+      "default": 0
+    },
+    "log_level": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/LogLevel"
+        }
+      ],
+      "default": "info"
+    },
+    "mode": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Mode"
+        }
+      ],
+      "default": "low-fidelity"
+    },
+    "network": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Network"
+        }
+      ],
+      "default": "host"
+    }
+  },
+  "$defs": {
+    "LogLevel": {
+      "title": "LogLevel",
+      "enum": [
+        "info",
+        "debug"
+      ]
+    },
+    "Mode": {
+      "title": "Mode",
+      "enum": [
+        "ue-editor",
+        "ue-standalone",
+        "low-fidelity"
+      ]
+    },
+    "Network": {
+      "title": "Network",
+      "enum": [
+        "shared",
+        "host"
+      ]
+    }
+  }
+}
