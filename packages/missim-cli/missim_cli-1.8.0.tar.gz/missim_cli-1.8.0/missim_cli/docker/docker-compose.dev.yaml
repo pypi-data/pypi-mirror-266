@@ -1,0 +1,48 @@
+services:
+  missim_core:
+    build:
+      context: ./
+      dockerfile: projects/missim_core/Dockerfile
+      secrets:
+        - apt_conf
+        - API_TOKEN_GITHUB
+    volumes:
+      # - ./build:/home/ros/missim_core/build
+      - ./projects/missim_core/src:/home/ros/missim_core/src
+      - ./projects/missim_core/ros-ts-generator-config.json:/home/ros/missim_core/ros-ts-generator-config.json
+      - ./projects/missim_ui/src/generated/ros:/home/ros/missim_core/generated/ros
+      - ./projects/missim_ui/certs:/home/ros/missim_core/certs
+      - ./packages/missim_interfaces:/home/ros/missim_core/src/missim_interfaces
+      - ./packages/missim_scenarios:/home/ros/missim_core/src/missim_scenarios
+      - ./packages/vessel_dynamics:/home/ros/missim_core/src/vessel_dynamics
+      - ./packages/missim_vessel:/home/ros/missim_core/src/missim_vessel
+
+  missim_ui:
+    build:
+      context: ./projects/missim_ui
+      secrets:
+        - API_TOKEN_GITHUB
+    volumes:
+      - ./projects/missim_ui/.eslintrc.js:/app/.eslintrc.js
+      - ./projects/missim_ui/.nvmrc:/app/.nvmrc
+      - ./projects/missim_ui/.yarnrc:/app/.yarnrc
+      - ./projects/missim_ui/index.html:/app/index.html
+      - ./projects/missim_ui/package.json:/app/package.json
+      - ./projects/missim_ui/public:/app/public
+      - ./projects/missim_ui/src:/app/src
+      - ./projects/missim_ui/tsconfig.json:/app/tsconfig.json
+      - ./projects/missim_ui/typings:/app/typings
+      - ./projects/missim_ui/vite.config.ts:/app/vite.config.ts
+      - ./projects/missim_ui/certs:/app/certs
+
+  missim_chart_tiler:
+    volumes:
+      - ./projects/missim_chart_tiler/styles:/app/data/styles
+      - ./projects/missim_chart_tiler/tiles:/app/data/tiles
+      - ./projects/missim_chart_tiler/config.json:/app/data/config.json
+
+secrets:
+  API_TOKEN_GITHUB:
+    file: ./.secrets/API_TOKEN_GITHUB
+  apt_conf:
+    file: ./.secrets/apt.conf
