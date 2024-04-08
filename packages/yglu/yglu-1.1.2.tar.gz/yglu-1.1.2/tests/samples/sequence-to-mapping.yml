@@ -1,0 +1,22 @@
+# input
+tags: !-
+  - 'nginx:1.16'
+  - 'node:13.6'
+  - 'couchbase:9.3'
+image: !()
+  ? !? $.split(':')[0]
+  : version: !? $.split(':')[1]
+# see a simpler way in for.yml
+images: !? 
+  $_.tags
+    .select(($_.image)($))
+    .aggregate($1.mergeWith($2), {})
+---
+# output
+images:
+  nginx: 
+    version: '1.16'
+  node: 
+    version: '13.6'
+  couchbase: 
+    version: '9.3'
