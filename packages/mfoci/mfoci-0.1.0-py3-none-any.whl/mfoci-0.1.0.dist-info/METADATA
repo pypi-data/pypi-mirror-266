@@ -1,0 +1,67 @@
+Metadata-Version: 2.1
+Name: mfoci
+Version: 0.1.0
+Summary: 
+Author: Marcus Rockel
+Author-email: corram@outlook.de
+Requires-Python: >=3.11,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: jinja2 (>=3.1.3,<4.0.0)
+Requires-Dist: matplotlib (>=3.8.4,<4.0.0)
+Requires-Dist: numpy (>=1.26.4,<2.0.0)
+Requires-Dist: pandas (>=2.2.1,<3.0.0)
+Requires-Dist: pandas-datareader (>=0.10.0,<0.11.0)
+Requires-Dist: scikit-learn (>=1.4.1.post1,<2.0.0)
+Requires-Dist: statsmodels (>=0.14.1,<0.15.0)
+Requires-Dist: yfinance (>=0.2.37,<0.3.0)
+Description-Content-Type: text/markdown
+
+# Factor selection with mFOCI
+
+`mfoci` is a Python package designed for financial analysts and researchers who need to retrieve and analyze stock market data.
+ This package implements the MFOCI algorithm for factor selection in financial data. Supported are also LASSO and k-FOCI factor selection methods as well as data retrieval from Fama-French and Yahoo Finance.
+
+## Installation
+
+Install `mfoci` using pip:
+
+```bash
+pip install mfoci
+```
+
+## Usage
+
+```python
+
+from mfoci import get_fama_french_data, load_stock_returns, load_volatility_index
+from mfoci import filter_for_common_indices, select_factors
+
+# Fetch Fama-French factors
+factors = get_fama_french_data("2004-01-01", end_date="2024-01-01")
+
+# Load stock returns for specific tickers
+tickers = ["MSFT", "AAPL", "NVDA", "AMZN", "META", "GOOG"]
+response_vars = load_stock_returns(tickers, start_date="2013-01-01", end_date="2024-01-01")
+
+# Load VIX data
+response_vars = load_volatility_index("^VIX", start_date="2004-01-01", end_date="2024-01-01")
+
+# Filter for common dates
+factors, response_vars = filter_for_common_indices(factors, response_vars)
+
+# Factor selection using LASSO
+lasso_selected, coef = select_factors(factors, response_vars, "lasso")
+
+# KFOCI factor selection (ensure Rscript is installed and path is set)
+r_path = "C:/Program Files/R/R-4.3.3/bin/x64/Rscript"
+kfoci_linear_selected, kfoci_gaussian_selected = select_factors(
+    factors, response_vars, "kfoci", r_path=r_path
+)
+
+# m´MFOCI factor selection
+mfoci_selected, t_values = select_factors(factors, response_vars, "mfoci")
+
+```
+
