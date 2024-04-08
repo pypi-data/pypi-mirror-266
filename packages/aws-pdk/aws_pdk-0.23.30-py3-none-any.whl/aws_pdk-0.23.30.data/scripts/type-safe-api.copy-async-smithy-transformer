@@ -1,0 +1,13 @@
+#!python
+
+import jsii
+import sys
+
+__jsii_assembly__ = jsii.JSIIAssembly.load(
+    "@aws/pdk", "0.23.30", "aws_pdk", "pdk@0.23.30.jsii.tgz"
+)
+
+exit_code = __jsii_assembly__.invokeBinScript(
+    "@aws/pdk", "type-safe-api.copy-async-smithy-transformer", sys.argv[1:]
+)
+exit(exit_code)
