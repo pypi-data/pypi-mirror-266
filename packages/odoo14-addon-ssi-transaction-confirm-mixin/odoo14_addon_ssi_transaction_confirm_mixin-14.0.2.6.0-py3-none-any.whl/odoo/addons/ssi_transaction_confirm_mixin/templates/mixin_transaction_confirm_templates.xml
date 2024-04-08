@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+<template id="confirm_policy_field">
+    <field name="confirm_ok" />
+</template>
+
+<template id="approve_policy_field">
+    <field name="approve_ok" />
+</template>
+
+<template id="reject_policy_field">
+    <field name="reject_ok" />
+</template>
+
+<template id="restart_approval_policy_field">
+    <field name="restart_approval_ok" />
+</template>
+
+<template id="confirm_filter">
+    <filter
+            name="dom_confirm"
+            string="Waiting for Approval"
+            domain="[('state', '=', 'confirm')]"
+        />
+</template>
+
+<template id="reject_filter">
+    <filter name="dom_reject" string="Reject" domain="[('state', '=', 'reject')]" />
+</template>
+
+<template id="button_confirm">
+    <button
+            name="action_confirm"
+            string="Confirm"
+            type="object"
+            class="oe_highlight"
+            confirm="Confirm data. Are you sure?"
+            attrs="{'invisible':[('confirm_ok','!=',True)]}"
+        />
+</template>
+
+<template id="button_approve">
+    <button
+            name="action_approve_approval"
+            string="Approve"
+            type="object"
+            class="oe_highlight"
+            confirm="Approve data. Are you sure?"
+            attrs="{'invisible':[('approve_ok','!=',True)]}"
+        />
+</template>
+
+<template id="button_reject">
+    <button
+            name="action_reject_approval"
+            string="Reject"
+            type="object"
+            confirm="Reject data. Are you sure?"
+            attrs="{'invisible':[('reject_ok','!=',True)]}"
+        />
+</template>
+
+<template id="tree_button_confirm">
+    <button
+            name="action_confirm"
+            string="Confirm"
+            type="object"
+            confirm="Confirm data. Are you sure?"
+        />
+</template>
+
+<template id="tree_button_approve">
+    <button
+            name="action_approve_approval"
+            string="Approve"
+            type="object"
+            confirm="Approve data. Are you sure?"
+        />
+</template>
+
+<template id="tree_button_reject">
+    <button
+            name="action_reject_approval"
+            string="Reject"
+            type="object"
+            confirm="Reject data. Are you sure?"
+        />
+</template>
+</odoo>
