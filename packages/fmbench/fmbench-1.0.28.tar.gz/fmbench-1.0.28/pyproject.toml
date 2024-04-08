@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "fmbench"
+version = "1.0.28"
+description ="Benchmark performance of **any model** on **any supported instance type** on Amazon SageMaker."
+authors = ["Amit Arora <aroraai@amazon.com>", "Madhur prashant <Madhurpt@amazon.com>"]
+readme = "README_pypi.md"
+license = "MIT"
+repository = "https://github.com/aws-samples/foundation-model-benchmarking-tool"
+keywords = ["benchmarking", "sagemaker", "generative-ai", "foundation-models"]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+requests = "^2.31.0"
+ipywidgets = "8.1.1"
+transformers = "4.36.2"
+pandas = "2.1.4"
+datasets = "2.16.1"
+seaborn = "0.13.1"
+tomark = "0.1.4"
+jupyter = "^1.0.0"
+boto3 = "^1.34.32"
+papermill = "^2.5.0"
+pyyaml = "*"
+sagemaker = "2.203.0"
+
+[tool.poetry.dev-dependencies]
+
+[[tool.poetry.packages]]
+include = "fmbench"
+from = "src"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+fmbench = 'fmbench.main:main'
