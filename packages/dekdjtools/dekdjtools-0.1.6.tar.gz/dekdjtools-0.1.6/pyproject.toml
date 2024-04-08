@@ -1,0 +1,34 @@
+[project]
+name = "dekdjtools"
+version = "0.1.6"
+description = ""
+authors = [
+    { name = "sanzenwin", email = "sanzenwin@gmail.com" },
+]
+dependencies = [
+    "django<=3.2.18",
+    "django-extensions<=2.1.6",
+    "pymediainfo<=6.0.1",
+    "DjangoRangeMiddleware<=1.0.1",
+    "django-typer[rich]<=0.6.1b0",
+    "dektools<1.0.0",
+]
+requires-python = ">=3.10"
+readme = "README.md"
+
+[project.license]
+text = "MIT"
+
+[project.entry-points."dekshell.plugins"]
+dekdjtools = "dekdjtools.dekshellplugin:plugin"
+
+[tool.pdm.build]
+includes = [
+    "dekdjtools",
+]
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
