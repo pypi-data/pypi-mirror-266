@@ -1,0 +1,127 @@
+Metadata-Version: 2.1
+Name: query-package-documentation
+Version: 0.0.3
+Summary: A package to explore documentations
+Author-email: Anirban Ray <39331844+yarnabrina@users.noreply.github.com>
+Maintainer-email: Anirban Ray <39331844+yarnabrina@users.noreply.github.com>
+License: MIT License
+        
+        Copyright (c) 2023-2024 Anirban Ray
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Bug Tracker, https://github.com/yarnabrina/query-package-documentation/issues
+Project-URL: Documentation, https://query-package-documentation.readthedocs.io
+Project-URL: Source Code, https://github.com/yarnabrina/query-package-documentation
+Keywords: documentation,generative-ai
+Classifier: Development Status :: 3 - Alpha
+Classifier: Framework :: Flake8
+Classifier: Framework :: Pydantic
+Classifier: Framework :: Sphinx
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Utilities
+Classifier: Typing :: Typed
+Requires-Python: ==3.11.*
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: chromadb<0.5,>=0.4.15
+Requires-Dist: ctransformers<0.3,>=0.2.27
+Requires-Dist: gradio<4.26,>=4.19.2
+Requires-Dist: jq<1.8,>=1.6
+Requires-Dist: langchain<0.2,>=0.1.13
+Requires-Dist: numpydoc<1.8,>=1.6
+Requires-Dist: pydantic<2.7,>=2.4.2
+Requires-Dist: sentence-transformers<2.7,>=2.2.2
+Requires-Dist: transformers<4.39,>=4.36
+Requires-Dist: typer-slim<0.13,>=0.12.1
+Provides-Extra: all
+Requires-Dist: autoflake; extra == "all"
+Requires-Dist: bandit; extra == "all"
+Requires-Dist: black; extra == "all"
+Requires-Dist: blacken-docs; extra == "all"
+Requires-Dist: build; extra == "all"
+Requires-Dist: codespell; extra == "all"
+Requires-Dist: docformatter[tomli]; extra == "all"
+Requires-Dist: flake8; extra == "all"
+Requires-Dist: furo; extra == "all"
+Requires-Dist: interrogate; extra == "all"
+Requires-Dist: isort; extra == "all"
+Requires-Dist: myst-parser[linkify]; extra == "all"
+Requires-Dist: numpydoc; extra == "all"
+Requires-Dist: pre-commit; extra == "all"
+Requires-Dist: pylint; extra == "all"
+Requires-Dist: pyproject-fmt; extra == "all"
+Requires-Dist: pyupgrade; extra == "all"
+Requires-Dist: Sphinx; extra == "all"
+Requires-Dist: sphinx-copybutton; extra == "all"
+Requires-Dist: twine; extra == "all"
+Requires-Dist: validate-pyproject; extra == "all"
+Requires-Dist: vulture; extra == "all"
+Provides-Extra: dev
+Requires-Dist: codespell; extra == "dev"
+Requires-Dist: numpydoc; extra == "dev"
+Requires-Dist: pre-commit; extra == "dev"
+Provides-Extra: doc
+Requires-Dist: furo; extra == "doc"
+Requires-Dist: myst-parser[linkify]; extra == "doc"
+Requires-Dist: Sphinx; extra == "doc"
+Requires-Dist: sphinx-copybutton; extra == "doc"
+Provides-Extra: fine-tuning
+Requires-Dist: accelerate<0.30,>=0.24.1; extra == "fine-tuning"
+Requires-Dist: bitsandbytes<0.44,>=0.41.2; extra == "fine-tuning"
+Requires-Dist: datasets<2.19,>=2.15; extra == "fine-tuning"
+Requires-Dist: evaluate<0.5,>=0.4.1; extra == "fine-tuning"
+Requires-Dist: peft<0.11,>=0.6.2; extra == "fine-tuning"
+Requires-Dist: rouge-score<0.2,>=0.1.2; extra == "fine-tuning"
+Requires-Dist: safetensors<0.5,>=0.4; extra == "fine-tuning"
+Requires-Dist: scikit-learn<1.5,>=1.3; extra == "fine-tuning"
+Requires-Dist: torch<2.3,>=2.1.1; extra == "fine-tuning"
+Requires-Dist: trl<0.9,>=0.7.4; extra == "fine-tuning"
+Provides-Extra: format
+Requires-Dist: autoflake; extra == "format"
+Requires-Dist: black; extra == "format"
+Requires-Dist: blacken-docs; extra == "format"
+Requires-Dist: docformatter[tomli]; extra == "format"
+Requires-Dist: isort; extra == "format"
+Requires-Dist: pyproject-fmt; extra == "format"
+Requires-Dist: pyupgrade; extra == "format"
+Provides-Extra: lint
+Requires-Dist: bandit; extra == "lint"
+Requires-Dist: flake8; extra == "lint"
+Requires-Dist: interrogate; extra == "lint"
+Requires-Dist: pylint; extra == "lint"
+Requires-Dist: validate-pyproject; extra == "lint"
+Requires-Dist: vulture; extra == "lint"
+Provides-Extra: release
+Requires-Dist: build; extra == "release"
+Requires-Dist: twine; extra == "release"
+
+# Query Package Documentation
+
+* Installation: [PyPI](https://pypi.org/project/query-package-documentation/)
+* Documentation: [Read the Docs](https://query-package-documentation.readthedocs.io)
