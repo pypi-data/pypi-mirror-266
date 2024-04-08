@@ -1,0 +1,234 @@
+# fbnconfig
+[![pypi](https://img.shields.io/pypi/v/fbnconfig)](https://pypi.org/project/fbnconfig/)
+[![python](https://img.shields.io/pypi/pyversions/fbnconfig.svg)](https://pypi.python.org/pypi/fbnconfig)
+
+fbnconfig is a python library (and commandline tool) to allow a declarative description of a LUSID
+environment setup. It allows you to specify the desired state and, when you deploy, it will converge
+the LUSID env to that state by creating, updating or deleting entities within lusid so that the
+lusid environment and the desired state match.
+
+## Getting started
+fbnconfig is available from PyPi
+```
+pip install fbnconfig
+```
+
+## Running the command
+
+```
+fbnconfig -e https://foo.lusid.com -t <token> run path/to/script.py
+```
+
+This will apply the deployment script (script.py) to the foo.lusid.com domain.
+
+There are other commands for viewing what has been deployed.  Use `fbnconfig --help`.
+
+## Authentication
+
+fbnconfig needs a lusid url and a valid token. These can be passed on the commandline:
+
+```
+fbnconfig -e https://foo.lusid.com -t xyzabc1234 ...
+```
+
+or as environment variables (this is the best way to deal with the token):
+
+```
+FBN_ACCESS_TOKEN=xyzabc1234
+LUSID_ENV=https://foo.lusid.com
+fbnconfig ...
+```
+
+The token needs to be a valid token from an authentication exchange or, more likely, a personal
+access token (PAT).
+
+## Writing the deployment script
+
+Using fbnconfig is about defining one or more "Deployments". A Deployment is a list of "Resources"
+
+```
+from fbnconfig import drive
+from fbnconfig import Deployment
+
+
+def configure(env):
+    f1 = drive.FolderResource(id="base_folder", name="my_folder", parent=drive.root)
+    return Deployment("my_deployment", [f1])
+```
+
+
+* Configure scripts are python files. They need to import references resource like a normal python
+  script would
+* The entrypoint is a function called `configure` which should return a `Deployment`
+* Deployments contain one or more resources. In this case, a `FolderResource`
+
+When we run this script the first time it will create a folder in Drive called `my_folder`. The
+second time we run it, it knows the folder already exists and will not make any changes. If we
+change the name of the folder `name="another_name"` and run fbnconfig again it will rename the
+folder in drive. The script defines the desired state, fbnconfig makes the changes to bring the
+remote lusid state to match.
+
+## Deployment and Resource Ids
+
+fbnconfig uses the `id` provided to keep track of what needs changing. We can change the `name` of a
+folder and it will get renamed because it has the same `id`. If we change the `id` then the existing
+folder will get deleted and a new one will be created.
+
+* A `Deployment` has an `id` which is used to identify it in the system. fbnconfig tracks resources
+  using the deployment `id`. These `id`s need to be unique across all deployments within lusid.
+* Resources have an `id`. This is how resources within a deployment are tracked. These ids need to
+  be unique within a deployment
+* The folder also has python variable that references it, `f1`. This is used to identify the
+  resource within the script, but it's not used for tracking changes in lusid.
+
+Changing the ID of an existing resource means deleting the old one and creating a new one.
+
+Changing the ID of a deployment will leave the old deployment and create a new one with new
+resources.
+
+Changing the python variable names will not affect what gets deployed.
+
+## Dependencies
+
+Resources may need to reference other resources:
+
+```
+def configure(env):
+    f1 = drive.FolderResource(id="base_folder", name="my_folder", parent=drive.root)
+    f2 = drive.FolderResource(id="sub_folder", name="my_subfolder", parent=f1)
+    return Deployment("my_deployment", [f1, f2])
+```
+
+If we run this it will create the structure `/my_folder/my_subfolder`. Using the python variable
+names we say that `my_subfolder` (`f1` in the script) is a subfolder of it's parent `my_folder`
+(`f2` in the script).  Relationships are defined by the python variables.
+
+The deployment can reference `[f1, f2]` including both folders or it can reference `[f2]`. Because
+`f2` depends on `f1`, `f1` will be implicitly included.
+
+fbnconfig will make sure that `f1` gets created (or updated) before `f2`, if they are removed
+from the deployment, then `f2` will be deleted before `f1`
+
+## Dependencies outside the deployment
+
+When we put resources in a deployment they are fully managed by fbnconfig. Removing a resource from
+the deployment will delete it from lusid. This means, we mostly want to manage all related resources
+within a single deployment.
+
+However, if there are existing resources and we need to establish a relationship we can use a `Ref`.
+Suppose that `downloads` folder already exists because it has been created manually or is part of
+another deployment.
+
+```
+def configure(env):
+    f1 = drive.FolderRef(id="downloads", name="downloads")
+    f2 = drive.FolderResource(id="sub_folder", name="my_subfolder", parent=f1)
+    return Deployment("my_deployment", [f1, f2])
+```
+
+will create `sub_folder` within `downloads`. The downloads folder will be the parent, but it won't
+be managed within this deployment. If it doesn't exist at the time this is run, then it will error.
+If `f1` is removed, it won't get deleted because it is not being managed in this deployment.
+
+## The vars file
+
+To aid with using the same script for dev, uat and prod, `fbnconfig` takes a commandline argument to
+a json file called the "vars file". The vars file is parsed and passed into the configure function
+(called `env` in the examples above).
+
+Say we wanted to use different email for dev and prod (like the environment variable example above):
+
+We would create two vars files
+
+```
+// prod.json                                    // dev.json
+{                                               {
+    "email": "prod@company.com"                     "email": "dev@company.com"
+}                                               }
+```
+
+reference them from the script var env:
+
+```
+def configure(env):
+    export_user = identity.UserResource(
+        id="user2",
+        ...
+        emailAddress=env.email,
+    )
+```
+
+Then running:
+
+```
+fbnconfig -e https://dev.lusid.com -v dev.json script.py
+```
+
+Will use the `dev@company.com` email.
+
+These vars files can be comitted to the repo to capture variations between environments. For
+secrets, it's better to use explicit environment variables in the script (see below)
+
+## Using python in the script
+
+A deployment script is normal python so python language features are available. Variables,
+f-strings, os.environ can all be used within the script:
+
+To allow values to depend on the environment use `os.environ` to initialise the variables:
+
+```
+import os
+
+company = os.environ["company"]
+
+def configure(env):
+    export_user = identity.UserResource(
+        id="user2",
+        ...
+        emailAddress=f"exports@{company}",
+        login=f"exports@{company}",
+    )
+```
+
+This is useful when setting up secrets in the config store. Pass the secret as an
+environment variable, make a http request or use a library from a vault provider to source the
+secret then use it inside the configure function.
+
+You can even create resources in a loop:
+
+```
+def configure(env):
+    folders = [
+        drive.FolderResource(id=f"folder_{i}", name="i", parent=drive.root)
+        for i in range(0, 10)
+    ]
+    return Deployment('ten-folders', folders)
+```
+
+The python variables for the resources need to be added to the deployment
+and each resource must have a unique `id`.
+
+## Using fbnconfig as a library
+
+Using fbnconfig from the commandline dyamically loads your python script and executes the
+deployment. In some cases (eg using fbnconfig as part of another application) you can call it from
+python as well.
+
+This creates an empty deployment called "my-jobs":
+
+```
+import fbnconfig
+import os
+
+def configure(env):
+    return Deployment("my-jobs", [])
+
+
+host_vars = {}
+lusid_url = "https://foo.lusid.com"
+token = os.environ["MY_TOKEN_VAR"])
+deployment = configure(host_vars)
+fbnconfig.deploy(deployment, lusid_url, token)
+```
+
+
