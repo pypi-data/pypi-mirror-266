@@ -1,0 +1,58 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "cff2toml"
+version = "3.0.0"
+description = "A module to synchronize metadata between TOML and CFF files, including between pyproject.toml and CITATION.cff files."
+readme = "README.md"
+requires-python = ">=3.8"
+license = "Apache-2.0"
+keywords = []
+authors = [
+  { name = "Will Riley", email = "wanderingwill@gmail.com" },
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: Apache Software License",
+    "Natural Language :: English",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Software Development",
+    "Topic :: Utilities"
+]
+dependencies = ["toml>=0.10.2", "PyYAML>=6.0.1", "pydash>=8.0.0", "pydantic>=2.6.4", "typer>=0.12.1"]
+
+[project.scripts]
+cff2toml = "cff2toml.main:start"
+
+[project.urls]
+Documentation = "https://github.com/willynilly/cff2toml#readme"
+Issues = "https://github.com/willynilly/cff2toml/issues"
+Source = "https://github.com/willynilly/cff2toml"
+
+[project.optional-dependencies]
+testing = [
+    "pytest>=8.1.1",
+]
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "src"
+]
+
+[tool.hatch.build.targets.sdist.force-include]
+"CITATION.cff" = "src/cff2toml/CITATION.cff"
+
