@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en" data-framework="javascript">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 maximum-scale=1.0">
+    <meta name="description" content="A conversational AI system that listens, learns, and challenges">
+    <meta property="og:title" content="ChatGPT">
+    <meta property="og:image" content="https://openai.com/content/images/2022/11/ChatGPT.jpg">
+    <meta property="og:description" content="A conversational AI system that listens, learns, and challenges">
+    <meta property="og:url" content="https://g4f.ai">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/img/apple-touch-icon.png">
+    <link rel="manifest" href="/static/img/site.webmanifest">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+        <script src="/static/js/icons.js"></script>
+    <script src="/static/js/highlightjs-copy.min.js"></script>
+    <script src="/static/js/chat.v1.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it@13.0.1/dist/markdown-it.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/styles/base16/dracula.min.css">
+    <script>
+        MathJax = {
+            chtml: {
+                scale: 1,
+                displayAlign: 'left'
+            }
+        };
+    </script>
+    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/mistral-tokenizer-js" async>
+        import mistralTokenizer from "mistral-tokenizer-js"
+    </script>
+    <script type="module" src="https://belladoreai.github.io/llama-tokenizer-js/llama-tokenizer.js" async>
+        import llamaTokenizer from "llama-tokenizer-js"
+    </script>
+    <script src="https://unpkg.com/gpt-tokenizer/dist/cl100k_base.js" async></script>
+    <script>
+        const user_image = '<img src="/static/img/user.png" alt="your avatar">';
+        const gpt_image = '<img src="/static/img/gpt.png" alt="your avatar">';
+    </script>
+    <style>
+.overflow {
+    height: 100%;
+    width: 100%;
+    
+}
+.row {
+    
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+
+}
+.particles-js-canvas-el {
+    z-index: -1;
+    
+}
+        .hljs {
+            color: #e9e9f4;
+            background: #28293629;
+            border-radius: var(--border-radius-1);
+            border: 1px solid var(--blur-border);
+            font-size: 15px;
+        }
+
+        #message-input {
+            height: 82px;
+            margin-left: 20px;
+        }
+
+        #message-input::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        /* Track */
+        #message-input::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        /* Handle */
+        #message-input::-webkit-scrollbar-thumb {
+            background: #c7a2ff;
+        }
+
+        /* Handle on hover */
+        #message-input::-webkit-scrollbar-thumb:hover {
+            background: #8b3dff;
+        }
+    </style>
+    <script src="/static/js/highlight.min.js"></script>
+    <script>window.conversation_id = "{{chat_id}}"</script>
+    <title>gskChat - gui</title>
+   
+</head>
+
+<body>
+  
+    <div id="particles-js">
+    </div>
+    <div class="overflow" id="overflow">
+      <div style="width: 100%;height: 100%; z-index: 1;" id="prevYou">
+        <div class="prev">
+          
+          <h1 id="title"></h1>
+          <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+          <script>
+  var typed3 = new Typed('#title', {
+    strings: ['Лучшая нейросеть для повседневной жизни: <i>На любой</i> <span>вкус</span>', 'Лучший во всём: <span>Программист</span>', 'Знаток своего дела: <span>Учитель</span> и <span>философ</span>'],
+    typeSpeed: 40,
+    backSpeed: 3,
+    smartBackspace: true, // this is a default
+    loop: true
+  });
+    
+          </script>
+        </div>
+        <div class="secondPrev">
+            <div class="contentPrev">
+                <div class="titleContent"><h2 class="hTitle">Выбери своего бота</h2></div>
+                <div class="selectAutor" id="programmer">
+                  <div class="logoAutor"><img src="/static/img/programmer.jpg" alt="logoAutor"></div>
+                  <div class="contentAutor"><h3>Программист</h3> <span id="spanPer">┕</span> <span> Ответит на любой вопрос касательно программирования, а так же может написать любой код</span></div>
+                </div>
+                <div class="selectAutor" id="teacher">
+                  <div class="logoAutor"><img src="/static/img/teacher.jpg" alt="logoAutor"></div>
+                  <div class="contentAutor"><h3>Учитель</h3> <span id="spanPer">┕</span> <span> Знает всё на свете. Хочешь научиться чему-то? Не знаешь чего-то? Тебе сюда</span></div>
+                </div>
+                <div class="selectAutor" id="writer">
+                  <div class="logoAutor"><img src="/static/img/write.jpg" alt="logoAutor"></div>
+                  <div class="contentAutor"><h3>Писатель</h3><span id="spanPer">┕</span><span> Философ. Нужен текст для лекции? Написать  Хочешь придумать стих? тебе сюда</span></div>
+                </div>
+            </div>
+        </div>
+      </div>
+        <div class="row" >
+            <div class="box conversations">
+              <div class="avtoLogo">
+                    <img src="/static/img/teacher.jpg" alt="" class="imgLogo">
+                    <div style="text-align: center; " id="smenAutor"><span style="text-align: center;width: 100%;" >Сменить бота</span></div>
+              </div>
+              <div style="display: flex;
+              flex-direction: column;
+              gap: var(--inner-gap);
+              
+              height: 100%;
+              justify-content: space-between;
+              padding: 0;
+              ">
+                <div class="top">
+
+                    <button class="new_convo" onclick="new_conversation()">
+                        <i class="fa-regular fa-plus"></i>
+                        <span>Новая беседа</span>
+                    </button>
+    
+                </div>
+                <div class="bottom_buttons">
+                    <button onclick="delete_conversations()">
+                        <i class="fa-regular fa-trash"></i>
+                        <span class="deleteChat">Удалить беседу</span>
+                    </button>
+                    <button onclick="save_storage()">
+                        <i class="fa-solid fa-download"></i>
+                        <a href="" onclick="return false;">Выгрузить чат</a>
+                    </button>
+                    <div class="info">
+                        <i class="fa-solid fa-star"></i>
+                        <span id="version_text" class="convo-title"></span>
+                        <span>АВТОРЫ </span>
+                        <button id="myBtn">*ТЫК*</button> 
+                    </div>
+                </div>
+            </div>
+          </div>
+            <div class="conversation">
+                <div id="myModal" class="modal">
+                    <div class="modal-content">
+                      
+                      <div style="width: 90%;">
+                        <ul id="autor" style="width: 100%;">
+
+                          <li>
+                            <a href="https://t.me/tafik23">
+                            <div><img src="/static/img/telegram.png" alt=""></div>
+                          <div class="secondAuto"><span>@tafik23</span> - Фалюшин А.С <span> (Программист)</span></div>
+                        </a>
+                          </li>
+
+                          <li>
+                            <a href="https://t.me/fppzlxlac">
+                          <div><img src="/static/img/telegram.png" alt=""></div>
+                            <div class="secondAuto"><span>@fppzlxlac</span> - Суслова А.С <span> (Дизайнер)</span></div>
+                          </a>
+                          </li>
+
+                          <li>
+                            <a href="https://t.me/Daniag0">
+                            <div><img src="/static/img/telegram.png" alt=""></div>
+                            <div class="secondAuto"><span>@Daniag0</span> - Малинин Д.Д <span> (Контент)</span></div></a>
+                          </li>
+
+                        </ul>
+                        
+                      </div>
+                      <div  id="closeDiv"><span class="close">&times;</span></div>
+                    </div>
+                  </div>
+                <textarea id="systemPrompt" class="box" placeholder="System prompt"></textarea>    
+                <div id="messages" class="box"></div>
+                <div class="toolbar">
+                    <div id="input-count" class="">
+                        &nbsp;
+                    </div>
+                    <div class="stop_generating stop_generating-hidden">
+                        <button id="cancelButton">
+                            <span>Stop Generating</span>
+                            <i class="fa-regular fa-stop"></i>
+                        </button>
+                    </div>
+                    <div class="regenerate regenerate-hidden">
+                        <button id="regenerateButton">
+                            <span>Regenerate</span>
+                            <i class="fa-solid fa-rotate"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="user-input">
+                    <div class="box input-box">
+                        <textarea id="message-input" placeholder="Напишите свой вопрос" cols="30" rows="10"
+                            style="white-space: pre-wrap;resize: none;"></textarea>
+                        <label for="image" title="Works with Bing, Gemini, OpenaiChat and You">
+                            <input type="file" id="image" name="image" accept="image/*" required/>
+                            <i class="fa-regular fa-image"></i>
+                        </label>
+                        <label for="camera">
+                            <input type="file" id="camera" name="camera" accept="image/*" capture="camera" required/>
+                            <i class="fa-solid fa-camera"></i>
+                        </label>
+                        <label for="file">
+                            <input type="file" id="file" name="file" accept="text/plain, text/html, text/xml, application/json, text/javascript, .sh, .py, .php, .css, .yaml, .sql, .log, .csv, .twig, .md" required/>
+                            <i class="fa-solid fa-paperclip"></i>
+                        </label>
+                        <div id="send-button">
+                            <i class="fa-solid fa-paper-plane-top"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <div class="field">
+                        <select name="model" id="model">
+                            <option value="">Model: Default</option>
+                            <option value="gpt-4">gpt-4</option>
+                            <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
+                            <option value="llama2-70b">llama2-70b</option>
+                            <option value="gemini-pro">gemini-pro</option>
+                            <option value="">----</option>
+                        </select>
+                        <select name="model2" id="model2" class="hidden"></select>
+                    </div>
+                    <div class="field">
+                        <select name="jailbreak" id="jailbreak" style="display: none;">
+                            <option value="default" selected>Set Jailbreak</option>
+                            <option value="gpt-math-1.0">math 1.0</option>
+                            <option value="gpt-dude-1.0">dude 1.0</option>
+                            <option value="gpt-dan-1.0">dan 1.0</option>
+                            <option value="gpt-dan-2.0">dan 2.0</option>
+                            <option value="gpt-dev-2.0">dev 2.0</option>
+                            <option value="gpt-evil-1.0">evil 1.0</option>
+                        </select>
+                        <div class="field">
+                            <select name="provider" id="provider">
+                                <option value="">Provider: Auto</option>
+                                <option value="Bing">Bing</option>
+                                <option value="OpenaiChat">OpenaiChat</option>
+                                <option value="Gemini">Gemini</option>
+                                <option value="Liaobots">Liaobots</option>
+                                <option value="You">You</option>
+                                <option value="">----</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <input type="checkbox" id="switch" />
+                        <label for="switch" title="Add the pages of the first 5 search results to the query."></label>
+                        <span class="about">Доступ к Паутине</span>
+                    </div>
+                    <!--
+                    <div class="field">
+                        <input type="checkbox" id="patch" />
+                        <label for="patch" title="Enable create images with Bing."></label>
+                        <span class="about">Image Generator</span>
+                    </div>
+                    -->
+                    <div class="field">
+                        <input type="checkbox" id="history" />
+                        <label for="history" title="To improve the reaction time or if you have trouble with large conversations."></label>
+                        <span class="about">Выключить историю чата</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mobile-sidebar">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+    </div>
+        </div>
+    </div>
+      <style>
+        #particles-js{
+  position: fixed;
+  z-index: 1;
+  left:0;
+  top:0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(to bottom right, #0c414e , #5a4b08 85% );
+}
+
+      </style>  
+      <script>
+        particlesJS("particles-js", {
+  "particles": {
+    "number": {
+      "value": 100,
+      "density": {
+        "enable": true,
+        "value_area": 800
+      }
+    },
+    "color": {
+      "value": "#14a9a5"
+    },
+    "shape": {
+      "type": "circle",
+      "stroke": {
+        "width": 0,
+        "color": "#000000"
+      },
+      "polygon": {
+        "nb_sides": 5
+      },
+    },
+    "opacity": {
+      "value": 0.5,
+      "random": false,
+      "anim": {
+        "enable": false,
+        "speed": 1,
+        "opacity_min": 0.1,
+        "sync": false
+      }
+    },
+    "size": {
+      "value": 3,
+      "random": true,
+      "anim": {
+        "enable": false,
+        "speed": 40,
+        "size_min": 0.1,
+        "sync": false
+      }
+    },
+    "line_linked": {
+      "enable": true,
+      "distance": 150,
+      "color": "#a25f00",
+      "opacity": 0.4,
+      "width": 1
+    },
+    "move": {
+      "enable": true,
+      "speed": 6,
+      "direction": "none",
+      "random": false,
+      "straight": false,
+      "out_mode": "out",
+      "bounce": false,
+      "attract": {
+        "enable": false,
+        "rotateX": 600,
+        "rotateY": 1200
+      }
+    }
+  },
+  "interactivity": {
+    "detect_on": "canvas",
+    "events": {
+      "onhover": {
+        "enable": true,
+        "mode": "grab"
+      },
+      "onclick": {
+        "enable": true,
+        "mode": "push"
+      },
+      "resize": true
+    },
+    "modes": {
+      "grab": {
+        "distance": 140,
+        "line_linked": {
+          "opacity": 1
+        }
+      },
+      "bubble": {
+        "distance": 400,
+        "size": 40,
+        "duration": 2,
+        "opacity": 8,
+        "speed": 3
+      },
+      "repulse": {
+        "distance": 200,
+        "duration": 0.4
+      },
+      "push": {
+        "particles_nb": 4
+      },
+      "remove": {
+        "particles_nb": 2
+      }
+    }
+  },
+  "retina_detect": true
+});
+
+
+/* ---- stats.js config ---- */
+
+var count_particles, stats, update;
+stats = new Stats;
+stats.setMode(0);
+stats.domElement.style.position = 'absolute';
+stats.domElement.style.left = '0px';
+stats.domElement.style.top = '0px';
+document.body.appendChild(stats.domElement);
+count_particles = document.querySelector('.js-count-particles');
+update = function() {
+  stats.begin();
+  stats.end();
+  if (window.pJSDom[0].pJS.particles && window.pJSDom[0].pJS.particles.array) {
+    count_particles.innerText = window.pJSDom[0].pJS.particles.array.length;
+  }
+  requestAnimationFrame(update);
+};
+requestAnimationFrame(update);
+      </script>
+            
+    
+            <script>
+                var modal = document.getElementById("myModal");
+                var btn = document.getElementById("myBtn");
+                var span = document.getElementsByClassName("close")[0];
+                
+                btn.onclick = function() {
+                  modal.style.display = "block";
+                }
+                
+                span.onclick = function() {
+                  modal.style.display = "none";
+                }
+                
+                window.onclick = function(event) {
+                  if (event.target == modal) {
+                    modal.style.display = "none";
+                  }
+                }
+                </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+var firstBlock = document.getElementById('particles-js');
+var secondBlock = document.getElementById('overflow');
+var threeBlock = document.querySelector('.particles-js-canvas-el');
+secondBlock.addEventListener('mousemove', function(event) {
+  // Создайте новое событие движения мыши
+  var mouse = new MouseEvent('mousemove', {
+    bubbles: true,
+    cancelable: true,
+    view: window,
+    clientX: event.clientX,
+    clientY: event.clientY
+  });
+
+  // Отправьте это событие первому блоку
+  firstBlock.dispatchEvent(mouse);
+  threeBlock.dispatchEvent(mouse);
+});
+
+
+console.log(firstBlock);
+// Добавьте обработчик событий для второго блока
+secondBlock.addEventListener('click', function(event) {
+  // Создайте новое событие клика
+  var newEvent = new MouseEvent('click', {
+    bubbles: true,
+    cancelable: true,
+    view: window,
+    clientX: event.clientX,
+    clientY: event.clientY
+  });
+
+  // Отправьте это событие первому блоку
+  firstBlock.dispatchEvent(newEvent);
+  threeBlock.dispatchEvent(newEvent);
+});
+
+
+});
+    
+</script>
+<!--смена на главном экране программист-->
+<script>
+  document.querySelector('#programmer').addEventListener('click', function() {
+    
+    document.querySelector('.welcome-message').innerText="Привет, я лучший программист, задай свой вопрос или попроси меня написать тебе код!"
+    
+    
+  // Включаем стиль display: none для блока с id="prevYou"
+  document.getElementById('prevYou').style.display = 'none';
+document.querySelector('.particles-js-canvas-el').style.backgroundColor = '#083142'
+let imageElement = document.querySelector(".imgLogo");
+imageElement.src = "/static/img/programmer.jpg";
+// Имитация загрузки
+  var loadingGif = document.createElement('img');
+  loadingGif.src = '/static/img/loading-1.gif'; // Замените на путь к вашей гифке
+  loadingGif.style.zIndex = '2'; // Добавляем стиль z-index: 2
+  loadingGif.className = 'loading'; // Добавляем класс 'loading'
+  document.body.appendChild(loadingGif);
+
+  // Удаление гифки и включение стиля display: flex для блока с class="row" после 3 секунд
+  setTimeout(function() {
+    document.body.removeChild(loadingGif);
+    var rows = document.getElementsByClassName('row');
+    for (var i = 0; i < rows.length; i++) {
+      rows[i].style.display = 'flex';
+      document.querySelector('.particles-js-canvas-el').style.backgroundColor = ''
+    }
+  }, 3000);
+});
+</script>
+<!--смена в чате-->
+<script>
+  document.querySelector('.avtoLogo').addEventListener('click', function() {
+  // Включаем стиль display: none для блока с id="prevYou"
+  document.querySelector('.row').style.display = 'none';
+document.querySelector('.particles-js-canvas-el').style.backgroundColor = '#083142'
+let imageElement = document.querySelector(".imgLogo");
+imageElement.src = "/static/img/programmer.jpg";
+// Имитация загрузки
+  var loadingGif = document.createElement('img');
+  loadingGif.src = '/static/img/loading-1.gif'; // Замените на путь к вашей гифке
+  loadingGif.style.zIndex = '2'; // Добавляем стиль z-index: 2
+  loadingGif.className = 'loading'; // Добавляем класс 'loading'
+  document.body.appendChild(loadingGif);
+
+  // Удаление гифки и включение стиля display: flex для блока с class="row" после 3 секунд
+  setTimeout(function() {
+    document.body.removeChild(loadingGif);
+    var rows = document.getElementById('prevYou');
+    rows.style.display = 'block';
+    for (var i = 0; i < rows.length; i++) {
+      rows[i].style.display = 'block';
+      document.querySelector('.particles-js-canvas-el').style.backgroundColor = ''
+    }
+  }, 3000);
+});
+</script>
+<!--смена на главном экране учитель-->
+<script>
+  document.querySelector('#teacher').addEventListener('click', function() {
+    
+    document.querySelector('.welcome-message').innerText="Привет, я лучший учитель, задай свой вопрос или попроси меня рассказать тебе что-нибудь!"
+  // Включаем стиль display: none для блока с id="prevYou"
+  document.getElementById('prevYou').style.display = 'none';
+document.querySelector('.particles-js-canvas-el').style.backgroundColor = '#083142'
+let imageElement = document.querySelector(".imgLogo");
+imageElement.src = "/static/img/teacher.jpg";
+// Имитация загрузки
+  var loadingGif = document.createElement('img');
+  loadingGif.src = '/static/img/loading-1.gif'; // Замените на путь к вашей гифке
+  loadingGif.style.zIndex = '2'; // Добавляем стиль z-index: 2
+  loadingGif.className = 'loading'; // Добавляем класс 'loading'
+  document.body.appendChild(loadingGif);
+
+  // Удаление гифки и включение стиля display: flex для блока с class="row" после 3 секунд
+  setTimeout(function() {
+    document.body.removeChild(loadingGif);
+    var rows = document.getElementsByClassName('row');
+    for (var i = 0; i < rows.length; i++) {
+      rows[i].style.display = 'flex';
+      document.querySelector('.particles-js-canvas-el').style.backgroundColor = ''
+    }
+  }, 3000);
+});
+</script>
+<!--смена на главном экране писатель-->
+<script>
+  document.querySelector('#writer').addEventListener('click', function() {
+    
+    document.querySelector('.welcome-message').innerText="Привет, я лучший писатель, задай любой вопрос или попроси меня написать тебе что угодно!"
+  // Включаем стиль display: none для блока с id="prevYou"
+  document.getElementById('prevYou').style.display = 'none';
+document.querySelector('.particles-js-canvas-el').style.backgroundColor = '#083142'
+let imageElement = document.querySelector(".imgLogo");
+imageElement.src = "/static/img/write.jpg";
+// Имитация загрузки
+  var loadingGif = document.createElement('img');
+  loadingGif.src = '/static/img/loading-1.gif'; // Замените на путь к вашей гифке
+  loadingGif.style.zIndex = '2'; // Добавляем стиль z-index: 2
+  loadingGif.className = 'loading'; // Добавляем класс 'loading'
+  document.body.appendChild(loadingGif);
+
+  // Удаление гифки и включение стиля display: flex для блока с class="row" после 3 секунд
+  setTimeout(function() {
+    document.body.removeChild(loadingGif);
+    var rows = document.getElementsByClassName('row');
+    for (var i = 0; i < rows.length; i++) {
+      rows[i].style.display = 'flex';
+      document.querySelector('.particles-js-canvas-el').style.backgroundColor = ''
+    }
+  }, 3000);
+});
+</script>
+</body>
+        
+</html>
