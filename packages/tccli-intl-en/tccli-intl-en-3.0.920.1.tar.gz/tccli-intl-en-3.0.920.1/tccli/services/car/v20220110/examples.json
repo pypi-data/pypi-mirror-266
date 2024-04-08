@@ -1,0 +1,61 @@
+{
+  "actions": {
+    "ApplyConcurrent": [
+      {
+        "document": " ",
+        "input": "POST / HTTP/1.1\nHost: car.tencentcloudapi.com\nContent-Type: application/json\nX-TC-Action: ApplyConcurrent\n<Common request parameters>\n\n{\n    \"UserIp\": \"125.127.178.228\",\n    \"ProjectId\": \"cap-abcdefgh\",\n    \"UserId\": \"cg_user\",\n    \"ApplicationVersionId\": \"ver-1a2b3c4d\"\n}",
+        "output": "{\n    \"Response\": {\n        \"RequestId\": \"fcf4146f-64d3-496c-88dc-d12f832de313\"\n    }\n}",
+        "title": "Requesting concurrency quota"
+      }
+    ],
+    "CreateSession": [
+      {
+        "document": "This example shows you how to create a session.",
+        "input": "POST / HTTP/1.1\nHost: car.tencentcloudapi.com\nContent-Type: application/json\nX-TC-Action: CreateSession\n<common request parameters>\n\n{\n    \"UserIp\": \"125.127.178.228\",\n    \"ClientSession\": \"eyJhYmMiOjEyM30=\",\n    \"UserId\": \"cg_user\"\n}",
+        "output": "{\n    \"Response\": {\n        \"ServerSession\": \"eyJ4dHoiOjc4OX0=\",\n        \"RequestId\": \"fcf4146f-64d3-496c-88dc-d12f832de313\"\n    }\n}",
+        "title": "Creating a session"
+      }
+    ],
+    "DescribeConcurrentCount": [
+      {
+        "document": " ",
+        "input": "POST / HTTP/1.1\nHost: car.tencentcloudapi.com\nContent-Type: application/json\nX-TC-Action: DescribeConcurrentCount\n<Common request parameters>\n\n{\n    \"ProjectId\": \"cap-abcdefgh\"\n}",
+        "output": "{\n    \"Response\": {\n        \"RequestId\": \"4eb17e58-68da-4e9a-b298-0894723c9022\",\n        \"Total\": 10,\n        \"Running\": 6\n    }\n}",
+        "title": "Illustration of DescribeConcurrentCount"
+      }
+    ],
+    "DestroySession": [
+      {
+        "document": " ",
+        "input": "POST / HTTP/1.1\nHost: car.tencentcloudapi.com\nContent-Type: application/json\nX-TC-Action: DestroySession\n<Common request parameters>\n\n{\n    \"UserId\": \"abc\"\n}",
+        "output": "{\n    \"Response\": {\n        \"RequestId\": \"fcf4146f-64d3-496c-88dc-d12f832de313\"\n    }\n}",
+        "title": "Illustration of DestroySession"
+      }
+    ],
+    "StartPublishStream": [
+      {
+        "document": "This example shows you how to start stream push.",
+        "input": "POST / HTTP/1.1\nHost: car.tencentcloudapi.com\nContent-Type: application/json\nX-TC-Action: StartPublishStream\n<Common request parameters>\n\n{\n    \"UserId\": \"abc123\"\n}",
+        "output": "{\n    \"Response\": {\n        \"RequestId\": \"4eb17e58-68da-4e9a-b298-0894723c9022\"\n    }\n}",
+        "title": "Starting stream push"
+      }
+    ],
+    "StartPublishStreamWithURL": [
+      {
+        "document": "This example shows you how to start a stream push to the specified URL.",
+        "input": "POST / HTTP/1.1\nHost: car.tencentcloudapi.com\nContent-Type: application/json\nX-TC-Action: StartPublishStreamWithURL\n<Common request parameters>\n\n{\n    \"UserId\": \"abc\",\n    \"PublishStreamURL\": \"abc\"\n}",
+        "output": "{\n    \"Response\": {\n        \"RequestId\": \"abc\"\n    }\n}",
+        "title": "This example shows you how to start a stream push to the specified URL."
+      }
+    ],
+    "StopPublishStream": [
+      {
+        "document": " ",
+        "input": "POST / HTTP/1.1\nHost: car.tencentcloudapi.com\nContent-Type: application/json\nX-TC-Action: StopPublishStream\n<Common request parameters>\n\n{\n    \"UserId\": \"abc123\"\n}",
+        "output": "{\n    \"Response\": {\n        \"RequestId\": \"4eb17e58-68da-4e9a-b298-0894723c9022\"\n    }\n}",
+        "title": "Stopping stream push"
+      }
+    ]
+  },
+  "version": "1.0"
+}
