@@ -1,0 +1,116 @@
+# bartz/pyproject.toml
+#
+# Copyright (c) 2024, Giacomo Petrillo
+#
+# This file is part of bartz.
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "bartz"
+version = "0.3.0"
+description = "A JAX implementation of BART"
+authors = ["Giacomo Petrillo <info@giacomopetrillo.com>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/Gattocrucco/bartz"
+packages = [
+    { include = "bartz", from = "src" },
+]
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/Gattocrucco/bartz/issues"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+jax = "^0.4.23"
+jaxlib = "^0.4.23"
+numpy = "^1.25.2"
+scipy = "^1.11.4"
+
+[tool.poetry.group.dev.dependencies]
+ipython = "^8.22.2"
+matplotlib = "^3.8.3"
+appnope = "^0.1.4"
+tomli = "^2.0.1"
+packaging = "^24.0"
+xgboost = "^2.0.3"
+pre-commit = "^3.7.0"
+
+[tool.poetry.group.test.dependencies]
+coverage = "^7.4.3"
+pytest = "^8.1.1"
+
+[tool.poetry.group.docs.dependencies]
+Sphinx = "^7.2.6"
+numpydoc = "^1.6.0"
+myst-parser = "^2.0.0"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = [
+    'error:scatter inputs have incompatible types.*',
+]
+addopts = [
+    "-r xXfE",
+    "--pdbcls=IPython.terminal.debugger:TerminalPdb",
+    "--durations=3",
+]
+
+# I wanted to use `--import-mode=importlib`, but it breaks importing submodules,
+# in particular `from . import util`.
+
+[tool.coverage.run]
+branch = true
+source = ["bartz"]
+
+[tool.coverage.report]
+show_missing = true
+
+[tool.coverage.html]
+show_contexts = true
+
+[tool.coverage.paths]
+# the first path in each list must be the source directory in the machine that's
+# generating the coverage report
+
+github = [
+    '/home/runner/work/bartz/bartz/src/bartz/',
+    '/Users/runner/work/bartz/bartz/src/bartz/',
+    'D:\a\bartz\bartz\src\bartz\',
+    '/Library/Frameworks/Python.framework/Versions/*/lib/python*/site-packages/bartz/',
+    '/Users/runner/hostedtoolcache/Python/*/*/lib/python*/site-packages/bartz/',
+    '/opt/hostedtoolcache/Python/*/*/lib/python*/site-packages/bartz/',
+    'C:\hostedtoolcache\windows\Python\*\*\Lib\site-packages\bartz\',
+]
+
+local = [
+    'src/bartz/',
+    '/home/runner/work/bartz/bartz/src/bartz/',
+    '/Users/runner/work/bartz/bartz/src/bartz/',
+    'D:\a\bartz\bartz\src\bartz\',
+    '/Library/Frameworks/Python.framework/Versions/*/lib/python*/site-packages/bartz/',
+    '/Users/runner/hostedtoolcache/Python/*/*/lib/python*/site-packages/bartz/',
+    '/opt/hostedtoolcache/Python/*/*/lib/python*/site-packages/bartz/',
+    'C:\hostedtoolcache\windows\Python\*\*\Lib\site-packages\bartz\',
+]
