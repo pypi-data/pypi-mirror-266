@@ -1,0 +1,58 @@
+{% extends "app_layout.html" %}
+
+{% block header_title %}
+    {{ title }}    
+{% endblock %}
+
+{% block title %}
+    <a id="top">{{ title }}</a>
+{% endblock %}
+
+{% block navbar %}
+
+{{ super() }}
+
+{% include "app_navbar_wells_dropdown.html" %}
+
+{% endblock %}
+
+{% block content %}
+
+<p><a href="#queries-for-other-systems">Skip down to queries for other systems</a></p>
+
+<div>
+    <p>
+        <form action="/app/{{ redirect_to }}">
+            <div>
+                <label>Well identifiers:</label> <br />
+                <textarea name="idq" rows="1" cols="30">{{ query.idq }}</textarea>
+                <br>
+                    <input type="checkbox" name="idq_unit_no" value="1" checked />
+                    <label>Find unit numbers</label>
+                <br>
+                    <input type="checkbox" name="idq_obs_no" value="1" checked />
+                    <label>Find observation well IDs</label>
+                <br>
+                    <input type="checkbox" name="idq_dh_no" value="1" />
+                    <label>Find drillhole numbers</label>
+                <br>
+                <input type="hidden" name="env" value="{{ env }}" />
+            </div>
+            <button type="submit">
+                Search
+            </button>
+        </form>
+    </p>
+</div>
+
+{% block wells_content %}
+{% endblock %}
+
+<div>
+    <h2 id="queries-for-other-systems">Queries for other systems</h2>
+    <p><a href="#top">Return to the top of this page</a></p>
+    <h3>EGIS layer definition query (ArcGIS / QGIS)</h3>
+    <p>{{ egis_layer_definition_query }}</p>
+</div>
+
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends "app_layout_well.html" %}
+
+{% block header_title %}
+{{ title }} - Well construction
+{% endblock %}
+
+
+{% block title %}
+Well construction - {{ title }}
+{% endblock %}
+
+{% block well_content %}
+
+
+    <p>Back to <a href="/app/well_summary?dh_no={{ well.dh_no }}&env={{ env }}">well summary</a>.
+    
+        {{ summary_table|safe }}
+
+    {% for event_list in events %}
+
+    {% for cevent in event_list|reverse %}
+
+    <div>
+        <h2>{{ cevent['title'] }}</h2>
+
+        <p>{{ cevent['comments'] }}</p>
+
+        {% if 'wcuts' in cevent['data_types'] %}
+        <h3>Water cuts</h3>
+        {{ cevent['wcuts']|safe }}
+        {% endif %}
+
+        <div style="overflow-x: auto; white-space: nowrap;">
+
+            <div style="display: inline-block">
+                <h3>Summary 1</h3>
+                {{ cevent['summary_1_table']|safe }}
+            </div>
+
+            <div style="display: inline-block">
+                <h3>Summary 2</h3>
+                {{ cevent['summary_2_table']|safe }}
+            </div>
+
+            {% if 'drilling' in cevent['data_types'] %}
+            <div style="display: inline-block">
+                <h3>Drilled intervals</h3>
+                {{ cevent['drilling']|safe }}
+            </div>
+            {% endif %}
+
+            {% if 'other_items' in cevent['data_types'] %}
+            <div style="display: inline-block">
+                <h3>Other items</h3>
+                {{ cevent['other_items']|safe }}
+            </div>
+            {% endif %}
+        
+        </div>
+        <div style="overflow-x: auto; white-space: nowrap;">
+
+            {% if 'casing' in cevent['data_types'] %}
+            <div style="display: inline-block">
+                <h3>Casing strings</h3>
+                {{ cevent['casing']|safe }}
+            </div>
+            {% endif %}
+
+            {% if 'pzones' in cevent['data_types'] %}
+            <div style="display: inline-block">
+                <h3>Production zones</h3>
+                {{ cevent['pzones']|safe }}
+            </div>
+            {% endif %}
+
+            {% if 'seals' in cevent['data_types'] %}
+            <div style="display: inline-block">
+                <h3>Casing seals</h3>
+                {{ cevent['seals']|safe }}
+            </div>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+    {% endfor %}
+
+{% endblock %}
