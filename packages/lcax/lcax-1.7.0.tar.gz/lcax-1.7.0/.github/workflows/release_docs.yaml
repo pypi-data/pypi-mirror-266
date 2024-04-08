@@ -1,0 +1,88 @@
+name: "Release Docs"
+on:
+  workflow_call:
+
+jobs:
+  buildDocs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: json-schema
+          path: docs/schemas/
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: rust-schema
+          path: docs/schemas/
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: pydantic-schema
+          path: docs/schemas/
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: typescript-schema
+          path: docs/schemas/
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: csharp-schema
+          path: docs/schemas/
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: changelog
+          path: docs/
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Dependencies
+        run: |
+          pip install maturin virtualenv
+          virtualenv venv
+          source venv/bin/activate
+          maturin develop --extras doc --target x86_64-unknown-linux-gnu
+
+      - name: Build Docs
+        run: |
+          source venv/bin/activate
+          mkdocs build
+
+      - name: Upload artifact for deployment job
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs
+          path: ./site
+
+  deployDocs:
+    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request'
+    needs: buildDocs
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: docs
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

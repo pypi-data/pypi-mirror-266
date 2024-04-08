@@ -1,0 +1,54 @@
+[project]
+name = "lcax"
+description = "LCAx is an open, machine and human-readable data format for exchanging LCA results."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Christian Kongsgaard", email = "christian@kongsgaard.eu" },
+]
+
+dependencies = [
+    "cffi",
+    "pydantic >=1.8.2,<2.0.0",
+]
+
+[project.optional-dependencies]
+doc = [
+    "mkdocs-material >=8.1.4,<9.0.0",
+    "mdx-include >=1.4.1,<2.0.0",
+]
+codegen = [
+    "datamodel-code-generator",
+]
+tests = [
+    'pytest',
+    "pytest-datafixtures"
+]
+
+[project.urls]
+homepage = "https://lcax.kongsgaard.eu"
+documentation = "https://lcax.kongsgaard.eu"
+repository = "https://github.com/ocni-dtu/lcax"
+
+[build-system]
+requires = ["maturin>=0.14,<0.15"]
+build-backend = "maturin"
+
+[tool.maturin]
+# "extension-module" tells pyo3 we want to build an extension module (skips linking against libpython.so)
+features = ["pybindings"]
+python-source = "packages/python/src"
+
+[tool.pytest.ini_options]
+pythonpath = "packages/python/src"
+testpaths = ["packages/python/tests/"]
+
+[tool.datamodel-codegen]
+field-constraints = true
+snake-case-field = true
+strip-default-none = false
+target-python-version = "3.10"
+collapse-root-models = true
+disable-timestamp = true
+extra-template-data = "codegen.template.json"

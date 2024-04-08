@@ -1,0 +1,46 @@
+
+name: Publish NuGet Package
+
+on:
+  workflow_call:
+    inputs:
+      release_version:
+        type: string
+        default: ""
+        required: true
+    secrets:
+      nuget_token:
+        required: true
+
+jobs:
+  publishCSharp:
+    runs-on: ubuntu-latest
+    if: ${{ inputs.release_version != ''}}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: csharp-schema
+          path: packages/csharp/lcax
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '7.0.x'
+
+      - name: Install dependencies
+        working-directory: packages/csharp/lcax
+        run: dotnet restore
+
+      - name: Bump Version
+        working-directory: packages/csharp/lcax
+        run: sed -i "s/\(<Version>\)\([0-9]\.*\)\{3\}/\1${{ inputs.release_version }}/" lcax.csproj
+
+      - name: Pack
+        working-directory: packages/csharp/lcax
+        run: dotnet pack
+
+      - name: Publish Package
+        working-directory: packages/csharp/lcax
+        run: dotnet nuget push bin/Release/lcax.* --api-key ${{ secrets.nuget_token }} --source https://api.nuget.org/v3/index.json

@@ -1,0 +1,83 @@
+name: "CI/CD"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  issues: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  buildRust:
+    uses: ./.github/workflows/build_rust.yaml
+
+  buildPython:
+    uses: ./.github/workflows/build_python.yaml
+    needs:
+      - buildRust
+
+  buildTypeScript:
+    uses: ./.github/workflows/build_javascript.yaml
+    needs:
+      - buildRust
+
+  buildCSharp:
+    uses: ./.github/workflows/build_csharp.yaml
+    needs:
+      - buildRust
+
+  createRelease:
+    uses: ./.github/workflows/create_release.yaml
+    needs:
+      - buildRust
+      - buildPython
+      - buildTypeScript
+      - buildCSharp
+    secrets:
+      cargo_token: ${{ secrets.CARGO_TOKEN }}
+
+  releaseDocs:
+    needs:
+      - createRelease
+    uses: ./.github/workflows/release_docs.yaml
+
+  publishPython:
+    uses: ./.github/workflows/publish_python.yaml
+    needs:
+      - createRelease
+    secrets:
+      pypi_token: ${{ secrets.PYPI_TOKEN }}
+    with:
+      release_version: ${{ needs.createRelease.outputs.version }}
+
+  publishJavascript:
+    uses: ./.github/workflows/publish_javascript.yaml
+    needs:
+      - createRelease
+    secrets:
+      npm_token: ${{ secrets.NPM_TOKEN }}
+    with:
+      release_version: ${{ needs.createRelease.outputs.version }}
+
+  publishCSharp:
+    uses: ./.github/workflows/publish_csharp.yaml
+    needs:
+      - createRelease
+    with:
+      release_version: ${{ needs.createRelease.outputs.version }}
+    secrets:
+      nuget_token: ${{ secrets.NUGET_TOKEN }}
