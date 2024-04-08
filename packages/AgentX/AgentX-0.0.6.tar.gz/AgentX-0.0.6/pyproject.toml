@@ -1,0 +1,77 @@
+[project]
+
+name = "AgentX"
+version = "0.0.6"
+
+dependencies = [
+    "typing~=3.7.4.3",
+    "ipython~=8.17.2",
+    "tqdm~=4.64.1",
+    "pydantic==2.5.3",
+    "setuptools~=68.1.2",
+    "gradio~=4.25.0",
+    "numpy~=1.26.2",
+    "uvicorn~=0.23.2",
+    "pydantic-core==2.14.6",
+    "requests~=2.31.0",
+    "transformers>=4.36.1",
+    "huggingface-hub>=0.20.1",
+    "absl-py==2.0.0",
+    "Jinja2~=3.1.2",
+]
+license = { text = "MIT" }
+authors = [
+    { name = "Erfan Zare Chavoshi", email = "erfanzare810@gmail.com" }
+]
+
+readme = "README.md"
+description = "AgentX: Seamlessly integrate intelligent agents into your projects. Empower your applications with advanced AI capabilities."
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+
+[project.optional-dependencies]
+
+rag = [
+    "faiss-cpu",
+    "sentence_transformers",
+    "pymupdf",
+    "python-docx"
+]
+
+torch = [
+    "torch",
+    "bitsandbytes"
+]
+
+ollama = [
+    "ollama"
+]
+
+gguf = [
+    "llama-cpp-python"
+]
+
+all = [
+    "AgentX[rag,torch,ollama,gguf]"
+]
+
+[project.urls]
+Homepage = "https://github.com/erfanzar/AgentX"
+Issues = "https://github.com/erfanzar/AgentX/issues"
+Documentation = "https://erfanzar.github.io/AgentX"
+
+[build-system]
+
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages]
+find = { where = ["src/"], include = ["**/*.jinja2"] }
