@@ -1,0 +1,56 @@
+[project]
+name = 'pigwig'
+version = '0.8.0'
+authors = [{ name='raylu'}]
+description = 'a python 3.6+ WSGI framework'
+requires-python = '>=3.6'
+readme = 'README.md'
+classifiers = [
+	'Programming Language :: Python :: 3.6',
+	'Topic :: Internet :: WWW/HTTP :: WSGI',
+]
+[project.urls]
+homepage = 'https://github.com/raylu/pigwig'
+issues = 'https://github.com/raylu/pigwig/issues'
+[build-system]
+requires = ['setuptools>=69']
+build-backend = 'setuptools.build_meta'
+[tool.setuptools.packages.find]
+include = ['pigwig']
+exclude = ['pigwig.tests']
+
+[tool.mypy]
+python_version = '3.8'
+exclude = ['setup.py', 'docs/conf.py']
+disallow_untyped_defs = true
+implicit_reexport = false
+strict_equality = true
+warn_unused_configs = true
+warn_unused_ignores = true
+[[tool.mypy.overrides]]
+module = 'pigwig.tests.*'
+disallow_untyped_defs = false
+[[tool.mypy.overrides]]
+module = 'blogwig'
+disallow_untyped_defs = false
+[[tool.mypy.overrides]]
+module = 'eventlet'
+ignore_missing_imports = true
+
+[tool.ruff]
+line-length = 120
+[tool.ruff.lint]
+select = [
+	'E', 'F', 'I',
+	'YTT', 'COM', 'T10', 'ISC', 'G', 'PIE', 'Q', 'RSE',
+	'PLC', 'PLE',
+	'RUF',
+]
+ignore = [
+	'E101' # mixed-spaces-and-tabs
+]
+[tool.ruff.lint.flake8-quotes]
+inline-quotes = 'single'
+multiline-quotes = 'single'
+[tool.ruff.lint.isort]
+lines-after-imports = 1
