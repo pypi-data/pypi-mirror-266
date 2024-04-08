@@ -1,0 +1,75 @@
+[tool.poetry]
+name = "mkdocs-addresses"
+version = "0.3.0"
+description = "Mkdocs automatic paths/addresses building - auto-completion support (VSC)"
+authors = ["Frédéric Zinelli <frederic.zinelli@gmail.com>"]
+readme = "README.md"
+repository = "https://gitlab.com/frederic-zinelli/mkdocs-addresses"
+homepage = "http://frederic-zinelli.gitlab.io/mkdocs-addresses/"
+exclude = ["mkdocs_addresses/_test_data_extraction.py"]
+keywords = [
+    "mkdocs", "mkdocs-plugin", "links", "autocompletion"
+]
+classifiers = [
+    "Environment :: Plugins",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: Documentation",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Documentation",
+    "Topic :: Utilities",
+]
+
+
+
+[tool.poetry.dependencies]
+python = "^3.8"
+mkdocs = "^1.4"
+beautifulsoup4 = "^4.12"
+
+
+[tool.poetry.group.dev.dependencies]
+mkdocs-material = "^9.1"
+mkdocs-glightbox = "^0.3"
+pylint = "^2.17"
+pytest = "^7.4"
+pytest-cov = "^4.1"
+
+
+[tool.poetry.group.docs.dependencies]
+mkdocstrings = {version = "^0.22.0", extras = ["python"] }
+
+
+[tool.poetry.group.toxic.dependencies]
+tox-poetry-installer = {extras = ["poetry"], version = "^0.10.3"}
+
+
+[tool.poetry.group.license.dependencies]
+pip-licenses = "^4.3.2"
+
+
+[tool.poetry.plugins."mkdocs.plugins"]
+"mkdocs-addresses" = "mkdocs_addresses.addresses_plugin:AddressAddressesPlugin"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.coverage.run]
+omit = ["mkdocs_addresses/_test_data_extraction.py"]
+
+[tool.coverage.report]
+exclude_also = [
+    "if TYPE_CHECKING:",
+    "raise InvalidOperationError",
+    "raise NotImplementedError"
+]
