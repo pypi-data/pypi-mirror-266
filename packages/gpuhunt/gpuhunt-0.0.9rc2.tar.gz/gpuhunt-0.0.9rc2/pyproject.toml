@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gpuhunt"
+authors = [
+    { name = "dstack GmbH" },
+]
+description = "A catalog of GPU pricing for different cloud providers"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
+    "Operating System :: OS Independent",
+]
+keywords = ["gpu", "cloud", "pricing"]
+dynamic = ["version"]
+dependencies = [
+    "requests",
+    "typing-extensions"
+]
+
+[project.urls]
+"GitHub" = "https://github.com/dstackai/gpuhunt"
+"Issues" = "https://github.com/dstackai/gpuhunt/issues"
+
+[project.optional-dependencies]
+aws = [
+    "boto3"
+]
+azure = [
+    "azure-mgmt-compute",
+    "azure-identity"
+]
+gcp = [
+    "google-cloud-billing",
+    "google-cloud-compute"
+]
+nebius = [
+    "pyjwt",
+    "cryptography",
+    "beautifulsoup4"
+]
+datacrunch = [
+    "datacrunch"
+]
+all = ["gpuhunt[aws,azure,datacrunch,gcp,nebius]"]
+dev = [
+    "pre-commit",
+    "isort~=5.0",
+    "black~=23.0",
+    "pytest~=7.0",
+    "pytest-mock",
+]
+
+[tool.setuptools.dynamic]
+version = {attr = "gpuhunt.version.__version__"}
+
+[tool.ruff]
+select = ["UP006", "UP007", "F"]
+
+[tool.ruff.lint.pyupgrade]
+keep-runtime-typing = true
+
+[tool.ruff.per-file-ignores]
+"src/gpuhunt/__init__.py" = ["F401"]
+"src/tests/**/*.py" = ["S101"]
+"src/integrity_tests/**/*.py" = ["S101"]
