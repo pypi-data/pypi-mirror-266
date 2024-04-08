@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools","setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "geodeticengine"
+version = "1.0.8"
+
+description=" Library for transformation and conversion of coordinates used in Equinor."
+requires-python = ">=3.9"
+
+readme = "README.md"
+
+classifiers=[
+    "Programming Language :: Python :: 3.9"
+]
+
+authors = [
+    {name="Equinor", email="peaar@equinor.com"}
+]
+
+maintainers = [
+    {name="Per Helge Aarnes", email="peaar@equinor.com"},
+    {name="Torill Gabrielsen", email="tokjos@equinor.com"}
+]
+
+dependencies = [
+    "msal",
+    "pyproj",
+    "python-dotenv",
+    "numpy",
+    "requests"
+]
+
+
+
+[project.optional-dependencies]
+dev = [
+    "pytest"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
