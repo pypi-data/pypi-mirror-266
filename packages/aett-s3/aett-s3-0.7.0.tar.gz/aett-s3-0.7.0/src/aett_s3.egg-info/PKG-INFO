@@ -1,0 +1,67 @@
+Metadata-Version: 2.1
+Name: aett-s3
+Version: 0.7.0
+Summary: S3 connector for aett event store
+Author-email: Jacob Reimers <pypi@reimers.io>
+License: MIT License
+        
+        Copyright (c) 2024 python_eventstore
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/jjrdk/aett
+Keywords: events,event store,s3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: aett-domain>=0.7.0
+Requires-Dist: boto3[crt]~=1.34.79
+Provides-Extra: dev
+Requires-Dist: pip-tools; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: behave; extra == "dev"
+
+# Æt (Aett) is an Event Store for Python
+
+[![Downloads](https://static.pepy.tech/badge/aett-postgres)](https://pepy.tech/project/aett-postgres)
+
+Aett S3 provides the ability to store and retrieve events from an S3 bucket.
+
+## Usage
+
+To create an event stream to manage events, you will need to create a bucket, which will serve as the root storage.
+
+The package also provides `CommitStore` and `SnapshotStore` classes that can be used to store and retrieve events. They
+can be instantiated by providing a Postgres database connection and specifying the configured table name.
+
+```python
+from aett.s3 import CommitStore, SnapshotStore, S3Config
+from aett.eventstore import TopicMap
+
+config = S3Config(bucket='test',
+                  endpoint_url='http://localhost:9000',
+                  use_tls=False,
+                  aws_access_key_id='minioadmin',
+                  aws_secret_access_key='minioadmin')
+commit_store = CommitStore(s3_config=config, topic_map=TopicMap())
+snapshot_store = SnapshotStore(s3_config=config)
+```
