@@ -1,0 +1,159 @@
+openapi: 3.0.0
+info:
+  title: AUP MANAGER API
+  version: "1.0"
+
+security:
+  - OAuth2: []
+
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: "{{ authorizationUrl }}"
+          tokenUrl: "{{ tokenUrl }}"
+      x-tokenInfoFunc: aup_manager.token_info
+
+  schemas:
+    Acceptance:
+      type: object
+      properties:
+        _id: { type: string }
+        aup_id: { type: string }
+        user_id: { type: string }
+        date_time:
+          {
+            type: string,
+            description: "UTC Date time in format yyyy-MM-dd HH:mm:ss Z",
+          }
+
+    Aup:
+      type: object
+      properties:
+        _id: { type: string }
+        actual_aup_id: { type: string, nullable: true }
+        name: { type: string }
+        html: { type: string }
+        version: { type: integer }
+        additional_data:
+          { type: string, description: "json field", nullable: true }
+        acceptances:
+          {
+            type: array,
+            items: { $ref: "#/components/schemas/Acceptance" },
+            nullable: true,
+          }
+
+  parameters:
+    UserId:
+      name: user_id
+      description: User unique identifier
+      in: query
+      required: true
+      example: 1
+      schema:
+        type: string
+
+    EntityTypeId:
+      name: entity_type_id
+      description: Entity type:uniqueIdentifier
+      in: query
+      required: true
+      example: "entity:1"
+      schema:
+        type: string
+
+  responses:
+    ListOfAupsResponse:
+      description: "returns List[Aup]"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Aup"
+
+    ExceptionResponse:
+      description: exception occured
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              detail: { type: string }
+              status: { type: integer }
+              title: { type: string }
+
+    VoidResponse:
+      description: "returns nothing"
+
+paths:
+  /api/getAllUserAcceptedAups:
+    get:
+      operationId: aup_manager.get_all_user_accepted_aups
+      tags:
+        - Aup
+      summary: Return all user accepted aups
+      parameters:
+        - $ref: "#/components/parameters/UserId"
+      responses:
+        "200":
+          $ref: "#/components/responses/ListOfAupsResponse"
+        default:
+          $ref: "#/components/responses/ExceptionResponse"
+
+  /api/getUserAcceptedAups:
+    get:
+      operationId: aup_manager.get_user_accepted_aups
+      tags:
+        - Aup
+      summary: Return accepted aups for user and entity
+      parameters:
+        - $ref: "#/components/parameters/UserId"
+        - $ref: "#/components/parameters/EntityTypeId"
+      responses:
+        "200":
+          $ref: "#/components/responses/ListOfAupsResponse"
+        default:
+          $ref: "#/components/responses/ExceptionResponse"
+
+  /api/getUserNotAcceptedAups:
+    get:
+      operationId: aup_manager.get_user_not_accepted_aups
+      tags:
+        - Aup
+      summary: Return not accepted aups for user and entity
+      parameters:
+        - $ref: "#/components/parameters/UserId"
+        - $ref: "#/components/parameters/EntityTypeId"
+      responses:
+        "200":
+          $ref: "#/components/responses/ListOfAupsResponse"
+
+  /api/userAcceptedAups:
+    post:
+      operationId: aup_manager.user_accepted_aups
+      tags:
+        - Aup
+      summary: Creates acceptance for given user and aups
+      responses:
+        "200":
+          $ref: "#/components/responses/VoidResponse"
+        default:
+          $ref: "#/components/responses/ExceptionResponse"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              x-body-name: body
+              type: object
+              properties:
+                user_id:
+                  type: string
+                aup_ids:
+                  type: array
+                  items:
+                    type: string

@@ -1,0 +1,55 @@
+hostname: http://127.0.0.1:8080
+secret: top_secret
+
+OIDC:
+  issuer: exmaple.com
+
+mongodb:
+  uri: mongodb://localhost:27017
+  db_name: admin
+
+jwks:
+  keystore: path_to_the_keystore
+  key_id: id
+  token_alg: RS256
+
+# built in connectors: aup_manager.connectors.MongodbConnector, aup_manager.connectors.PerunConnector
+connector_class: aup_manager.connectors.MongodbConnector
+
+accept_aups_message: "Before proceeding to service, you have to accept following acceptable use policies. These policies restrict the ways in which the service may be used and set guidelines as to how it should be used."
+
+connectors:
+  MongodbConnector:
+    uri: mongodb://localhost:27017
+    db_name: admin
+    admins_collection: admin
+    entities_collection: entity
+
+  PerunConnector:
+    ext_source_name: ext_src_name
+    adapters:
+      - type: openApi
+        priority: 1
+        host: https://perun-dev.cesnet.cz/krb/rpc
+        #possible values: BasicAuth, ApiKeyAuth, BearerAuth
+        auth_type: BasicAuth
+        #BA
+        username: example
+        password: example
+        #ApiKeyAuth
+        api_key: your_api_key
+        #BearerAuth
+        access_token: your_bearer_token
+        rp_id_attribute: urn:perun:facility:attribute-def:def:rpIdentifier
+
+OAuth2:
+  authorization_url: example.com/authorize
+  token_url: example.com/token
+  introspect_url: example.com/introspect
+  client_id: example
+  client_secret: example
+
+responses:
+  success: okay
+  failure: nok
+  invalid-request: invalid
