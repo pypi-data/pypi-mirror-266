@@ -1,0 +1,33 @@
+[build-system]
+requires = ['setuptools']
+build-backend = 'setuptools.build_meta'
+
+[project]
+name = 'json-handler-registry'
+description = 'Standardized way of registering custom JSON serializers/deserializers.'
+authors = [{ name = 'P.J. Grochowski', email = 'pawel.grochowski.dev@gmail.com'}]
+readme = 'README.md'
+license = { text = 'MIT' }
+requires-python = '>=3.7'
+dependencies = []
+classifiers = [
+    "Programming Language :: Python :: 3.7",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+]
+keywords = [
+    'json',
+    'serialization',
+    'deserialization',
+]
+dynamic = ['version']
+
+[project.urls]
+Repository = 'https://bitbucket.org/massultidev/json-handler-registry'
+
+[tool.setuptools]
+package-dir = { '' = 'pkg' }
+
+[tool.setuptools.dynamic]
+version = { attr = 'json_handler_registry.__version__' }
