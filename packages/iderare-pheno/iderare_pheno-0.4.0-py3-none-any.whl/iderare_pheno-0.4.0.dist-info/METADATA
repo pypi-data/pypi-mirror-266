@@ -1,0 +1,182 @@
+Metadata-Version: 2.1
+Name: iderare-pheno
+Version: 0.4.0
+Author-email: Ivan William Harsono <ivanwilliam.md@gmail.com>
+License: BSD 3-Clause License
+        
+        Copyright (c) 2024, Ivan William Harsono
+        
+        Redistribution and use in source and binary forms, with or without
+        modification, are permitted provided that the following conditions are met:
+        
+        1. Redistributions of source code must retain the above copyright notice, this
+           list of conditions and the following disclaimer.
+        
+        2. Redistributions in binary form must reproduce the above copyright notice,
+           this list of conditions and the following disclaimer in the documentation
+           and/or other materials provided with the distribution.
+        
+        3. Neither the name of the copyright holder nor the names of its
+           contributors may be used to endorse or promote products derived from
+           this software without specific prior written permission.
+        
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+        AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+        IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+        DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+        FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+        DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+        SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+        CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+        OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+        OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+        
+Project-URL: Homepage, https://github.com/ivanwilliammd/iderare-pheno
+Project-URL: Repository, https://github.com/ivanwilliammd/iderare-pheno
+Project-URL: Changelog, https://github.com/ivanwilliammd/iderare-pheno/blob/main/CHANGELOG.md
+Project-URL: Documentation, https://iderare-pheno.readthedocs.io/
+Classifier: Intended Audience :: Science/Research
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Scientific/Engineering :: Medical Science Apps.
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pandas
+Requires-Dist: numpy
+Requires-Dist: matplotlib
+Requires-Dist: scipy
+Requires-Dist: hpo3
+Requires-Dist: scikit-learn
+Requires-Dist: pyyaml
+Provides-Extra: dev
+Requires-Dist: ruff ; extra == 'dev'
+Requires-Dist: mypy <1.10,>=1.0 ; extra == 'dev'
+Requires-Dist: types-PyYAML ; extra == 'dev'
+Requires-Dist: black <25.0,>=23.0 ; extra == 'dev'
+Requires-Dist: black[jupyter] ; extra == 'dev'
+Requires-Dist: isort <5.14,>=5.12 ; extra == 'dev'
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: pytest-sphinx ; extra == 'dev'
+Requires-Dist: pytest-cov ; extra == 'dev'
+Requires-Dist: twine >=1.11.0 ; extra == 'dev'
+Requires-Dist: build ; extra == 'dev'
+Requires-Dist: setuptools ; extra == 'dev'
+Requires-Dist: wheel ; extra == 'dev'
+Requires-Dist: Sphinx <7.3.0,>=4.3.0 ; extra == 'dev'
+Requires-Dist: furo ==2024.1.29 ; extra == 'dev'
+Requires-Dist: myst-parser <2.1,>=1.0 ; extra == 'dev'
+Requires-Dist: sphinx-copybutton ==0.5.2 ; extra == 'dev'
+Requires-Dist: sphinx-autobuild ==2021.3.14 ; extra == 'dev'
+Requires-Dist: sphinx-autodoc-typehints ==1.23.3 ; extra == 'dev'
+Requires-Dist: packaging ; extra == 'dev'
+
+# [IDeRare-Pheno](https://iderare-pheno.readthedocs.io/)
+
+<!-- start tagline -->
+
+IDeRare or "Indonesia Exome Rare Disease Variant Discovery Pipeline" is simple and ready to use variant discovery pipeline to discover rare disease variants from exome sequencing data.
+<!-- end tagline -->
+
+<p align="center">
+    <a href="https://github.com/ivanwilliammd/iderare-pheno/actions">
+        <img alt="CI" src="https://github.com/ivanwilliammd/iderare-pheno/workflows/Main/badge.svg">
+    </a>
+    <a href="https://pypi.org/project/iderare_pheno/">
+        <img alt="PyPI" src="https://img.shields.io/pypi/v/iderare_pheno">
+    </a>
+    <a href="https://iderare-pheno.readthedocs.io/en/latest/?badge=latest">
+        <img src="https://readthedocs.org/projects/iderare-pheno/badge/?version=latest" alt="Documentation Status" />
+    </a>
+    <a href="https://github.com/ivanwilliammd/iderare-pheno/blob/main/LICENSE">
+        <img alt="License" src="https://img.shields.io/github/license/ivanwilliammd/iderare-pheno.svg?color=blue&cachedrop">
+    </a>
+    <a href="https://bioinformatics-ivanwilliamharsono.streamlit.app/IDeRare_Pheno">
+        <img alt="Streamlit" src="https://static.streamlit.io/badges/streamlit_badge_black_white.svg">
+    <br/>
+</p>
+
+## Quick links
+
+- [Documentation](https://iderare-pheno.readthedocs.io/)
+- [PyPI Package](https://pypi.org/project/iderare-pheno/)
+- [License](https://github.com/ivanwilliammd/iderare-pheno/blob/main/LICENSE)
+- Interactive Webapps Implementation of at [Streamlit](https://bioinformatics-ivanwilliamharsono.streamlitapp.com/IDeRare_Pheno)
+
+
+## What does it do?
+
+This script is recommended if you would like to do conversion, linkage analysis, similarity scoring, and gene-disease recommendation based on the phenotype data provided at [clinical_data.txt](clinical_data.txt). Full feature : 
+1. Convert the phenotype data to HPO code (accept mixed SNOMED, LOINC, and HPO code)
+2. Similarity scoring of differential diagnosis
+3. Linkage analysis of differential diagnosis (accept mixed SNOMED, ICD-10, ORPHA, OMIM code), include dendrogram tree visualization.
+    - This should help clinician to **systematically doing work-up and excluding similar diagnosis together** based on the patient\'s phenotype.
+4. Gene and disease recommendation based on the phenotype data similarity scoring between **phenotype** and OMIM gene and disease databank.
+5. Linkage analysis of recommended causative gene and disease based on phenotype data (include dendrogram tree visualization).
+    - This should help clinician to **explore / enrich their differential diagnosis** based on the patient\'s phenotype.
+6. Example of the clinical data provided at [Clinical Information Example section](#clinical-information-example)
+
+
+## Installation
+
+<!-- start py version -->
+
+**iderare-pheno** requires Python 3.8 or later.
+
+<!-- end py version -->
+
+### Installing with `pip`
+
+<!-- start install pip -->
+
+**iderare-pheno** is available [on PyPI](https://pypi.org/project/iderare-pheno/). Just run
+
+```bash
+pip install iderare-pheno
+```
+
+<!-- end install pip -->
+
+### Installing from source
+
+<!-- start install source -->
+
+To install **iderare-pheno** from source, first clone [the repository](https://github.com/ivanwilliammd/iderare-pheno):
+
+```bash
+git clone https://github.com/ivanwilliammd/iderare-pheno.git
+cd iderare_pheno
+```
+
+Then run
+
+```bash
+pip install -e .
+```
+
+<!-- end install source -->
+
+## Usage
+
+```python
+from iderare_pheno.converter import term2omim, term2orpha, term2hpo, batchconvert
+from iderare_pheno.simrec import hpo2omim_similarity, omim_recommendation, hpo2name
+from iderare_pheno.utils import linkage_dendrogram, list2tsv
+```
+
+## Team
+
+<!-- start team -->
+
+**iderare-pheno** is developed and maintained by the author(s), To learn more about who specifically contributed to this codebase, see [our contributors](https://github.com/ivanwilliammd/iderare-pheno/graphs/contributors) page.
+
+<!-- end team -->
+
+## License
+
+<!-- start license -->
+
+**iderare-pheno** license is derived from [IDeRare](https://github.com/ivanwilliammd/iderare)
+
+<!-- end license -->
