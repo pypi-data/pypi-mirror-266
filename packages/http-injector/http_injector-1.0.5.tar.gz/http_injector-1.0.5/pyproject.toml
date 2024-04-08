@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "http-injector"
+version = "1.0.5"
+description = ""
+authors = ["DesKaOne <DesKaOne@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "http_injector"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+httpx = {extras = ["http2","socks"], version = "^0.27.0"}
+requests = "^2.31.0"
+chardet = "^5.2.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
