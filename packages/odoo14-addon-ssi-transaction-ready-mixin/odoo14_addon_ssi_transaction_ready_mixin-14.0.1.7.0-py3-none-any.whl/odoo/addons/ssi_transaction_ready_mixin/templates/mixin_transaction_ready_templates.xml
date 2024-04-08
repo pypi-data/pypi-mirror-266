@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+<template id="ready_policy_field">
+    <field name="ready_ok" />
+</template>
+
+<template id="button_ready">
+    <button
+            name="action_ready"
+            string="Stage"
+            type="object"
+            class="oe_highlight"
+            attrs="{'invisible':[('ready_ok','!=',True)]}"
+            confirm="Stage data. Are you sure?"
+        />
+</template>
+
+<template id="tree_button_ready">
+    <button
+            name="action_ready"
+            string="Stage"
+            type="object"
+            confirm="Stage data. Are you sure?"
+        />
+</template>
+
+<template id="ready_filter">
+    <filter
+            name="dom_ready"
+            string="Ready to Process"
+            domain="[('state', '=', 'ready')]"
+        />
+</template>
+</odoo>
