@@ -1,0 +1,233 @@
+[tool.poetry]
+name = "wg-utilities"
+version = "5.14.2"
+description = "Loads of useful stuff for the things I do :)"
+
+authors = ["Will Garside <worgarside@gmail.com>"]
+include = ["wg_utilities/py.typed"]
+license = "MIT"
+maintainers = ["Will Garside <worgarside@gmail.com>"]
+packages = [{ include = "wg_utilities" }]
+readme = "README.md"
+repository = "https://github.com/worgarside/wg-utilities"
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core"]
+
+# Dependencies
+
+[tool.poetry.dependencies]
+python = "^3.11"
+async-upnp-client = { version = "*", optional = true }
+botocore = { version = "*", optional = true }
+flask = { version = ">=2.0.2", optional = true }
+lxml = { version = "==5.2.1", optional = true }
+pigpio = { version = "*", optional = true }
+pillow = { version = "*", optional = true }
+pyjwt = { version = ">=2.6,<2.9", optional = true }
+requests = { version = ">=2.26.0", optional = true }
+"rpi.gpio" = { version = "*", platform = "linux", optional = true }
+spidev = { version = "*", platform = "linux", optional = true }
+tzlocal = { version = "*", optional = true }
+xmltodict = { version = "*", optional = true }
+pydantic = "<3.0.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "*"
+pytest = "*"
+pytest-env = "*"
+requests-mock = "*"
+coverage = "*"
+freezegun = "*"
+boto3 = "*"
+moto = { extras = ["pinpoint"], version = "*" }
+aioresponses = "*"
+pytest-cov = "*"
+pytest-randomly = "*"
+pytest-aws-config = "*"
+pytest-xdist = "*"
+pytest-asyncio = ">=0.21.1,<0.24.0"
+mypy-boto3-lambda = "^1.28.36"
+mypy-boto3-s3 = "^1.28.55"
+
+
+[tool.poetry.group.docs.dependencies]
+mkdocs = "^1.5.3"
+mkdocstrings = { extras = ["python"], version = "^0.24.0" }
+mkdocs-material = "^9.5.11"
+mkdocs-print-site-plugin = "^2.3.6"
+mkdocs-exporter = "^5.3.0"
+
+
+[tool.poetry.extras]
+clients = ["flask", "pyjwt", "requests", "tzlocal", "pydantic"]
+"devices.epd" = ["spidev", "rpi.gpio", "Pillow"]
+"devices.dht22" = ["pigpio"]
+"devices.yamaha_yas_209" = ["async-upnp-client", "pydantic", "xmltodict"]
+"exceptions" = ["requests"]
+"logging" = ["requests"]
+"functions" = ["lxml"]
+"testing" = ["botocore"]
+
+
+# Tool Configs
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = ["-ra", "--strict-markers", "--strict-config", "-n", "auto"]
+xfail_strict = true
+log_cli_level = "warning"
+pythonpath = ["wg_utilities"]
+testpaths = ["tests"]
+env = []
+filterwarnings = ["ignore::DeprecationWarning:dateutil.tz:37"]
+markers = [
+  "mocked_operation_lookup: allows setting the mocks in the `mb3c` fixture",
+  "upnp_value_path: file with content to set as the value in a `upnp_state_variable` fixture",
+  "add_handler: allows adding a custom handler to the `logger` fixture",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+  "pragma: no cover",
+  "def __repr__",
+  "def __ne__",
+  "def __hash__",
+  "def __str__",
+  "@overload",
+  "if TYPE_CHECKING",
+  "pytest.fail",
+]
+
+[tool.coverage.run]
+omit = ["wg_utilities/devices/epd/*", "wg_utilities/devices/dht22/*"]
+relative_files = true
+
+[tool.mypy]
+exclude = ["_local_sandbox"]
+plugins = 'pydantic.mypy'
+follow_imports = "normal"
+disallow_any_generics = true
+disallow_subclassing_any = true
+disallow_untyped_calls = true
+disallow_untyped_decorators = true
+disallow_untyped_defs = true
+
+warn_return_any = true
+warn_unused_ignores = true
+warn_unused_configs = true
+warn_redundant_casts = true
+
+no_implicit_optional = true
+strict_optional = true
+
+strict_equality = true
+show_error_codes = true
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+warn_untyped_fields = true
+
+[tool.codespell]
+skip = '*.json,*.csv,*.xml,*google_drive_tree.txt,*.lock'
+
+[tool.ruff]
+fix = true
+line-length = 90
+lint.select = [
+  "A",    # https://docs.astral.sh/ruff/rules/#flake8-builtins-a
+  "ARG",  # https://docs.astral.sh/ruff/rules/#flake8-unused-arguments-arg
+  "B",    # https://docs.astral.sh/ruff/rules/#flake8-bugbear-b
+  "C4",   # https://docs.astral.sh/ruff/rules/#flake8-comprehensions-c4
+  "COM",  # https://docs.astral.sh/ruff/rules/#flake8-commas-com
+  "D",    # https://docs.astral.sh/ruff/rules/#pydocstyle-d
+  "E",    # https://docs.astral.sh/ruff/rules/#error-e
+  "ERA",  # https://docs.astral.sh/ruff/rules/#eradicate-era
+  "F",    # https://docs.astral.sh/ruff/rules/#pyflakes-f
+  "FA",   # https://docs.astral.sh/ruff/rules/#flake8-future-annotations-fa
+  "FBT",  # https://docs.astral.sh/ruff/rules/#flake8-boolean-trap-fbt
+  "FLY",  # https://docs.astral.sh/ruff/rules/#flynt-fly
+  "FURB", # https://docs.astral.sh/ruff/rules/#refurb-furb
+  "G",    # https://docs.astral.sh/ruff/rules/#flake8-logging-format-g
+  "I",    # https://docs.astral.sh/ruff/rules/#isort-i
+  "ICN",  # https://docs.astral.sh/ruff/rules/#flake8-import-conventions-icn
+  "INT",  # https://docs.astral.sh/ruff/rules/#flake8-gettext-int
+  "ISC",  # https://docs.astral.sh/ruff/rules/#flake8-implicit-str-concat-isc
+  "LOG",  # https://docs.astral.sh/ruff/rules/#flake8-logging-log
+  "N",    # https://docs.astral.sh/ruff/rules/#pep8-naming-n
+  "PERF", # https://docs.astral.sh/ruff/rules/#perflint-perf
+  "PGH",  # https://docs.astral.sh/ruff/rules/#pygrep-hooks-pgh
+  "PIE",  # https://docs.astral.sh/ruff/rules/#flake8-pie-pie
+  "PL",   # https://docs.astral.sh/ruff/rules/#pylint-pl
+  "PGH",  # https://docs.astral.sh/ruff/rules/#pygrep-hooks-pgh
+  "PT",   # https://docs.astral.sh/ruff/rules/#flake8-pytest-style-pt
+  "PTH",  # https://docs.astral.sh/ruff/rules/#flake8-use-pathlib-pth
+  "Q",    # https://docs.astral.sh/ruff/rules/#flake8-quotes-q
+  "RET",  # https://docs.astral.sh/ruff/rules/#flake8-return-ret
+  "RSE",  # https://docs.astral.sh/ruff/rules/#flake8-raise-rse
+  "RUF",  # https://docs.astral.sh/ruff/rules/#ruff-specific-rules-ruf
+  "S",    # https://docs.astral.sh/ruff/rules/#flake8-bandit-s
+  "SIM",  # https://docs.astral.sh/ruff/rules/#flake8-simplify-sim
+  "TCH",  # https://docs.astral.sh/ruff/rules/#flake8-type-checking-tch
+  "TID",  # https://docs.astral.sh/ruff/rules/#flake8-tidy-imports-tid
+  "TRIO", # https://docs.astral.sh/ruff/rules/#flake8-trio-trio
+  "TRY",  # https://docs.astral.sh/ruff/rules/#tryceratops-try
+  "UP",   # https://docs.astral.sh/ruff/rules/#pyupgrade-up
+  "W",    # https://docs.astral.sh/ruff/rules/#warning-w
+]
+lint.ignore = [
+  "D107",   # https://docs.astral.sh/ruff/rules/undocumented-public-init/
+  "D202",   # https://docs.astral.sh/ruff/rules/no-blank-line-after-function/
+  "S314",   # https://docs.astral.sh/ruff/rules/suspicious-xml-element-tree-usage/
+  "TRY003", # https://docs.astral.sh/ruff/rules/raise-vanilla-args/
+  "ISC001", # https://docs.astral.sh/ruff/rules/single-line-implicit-string-concatenation/
+  "COM812", # https://docs.astral.sh/ruff/rules/missing-trailing-comma/
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["D104"]
+"tests/**/*.py" = [
+  "D101",    # https://docs.astral.sh/ruff/rules/undocumented-public-class/
+  "FBT001",  # https://docs.astral.sh/ruff/rules/boolean-type-hint-positional-argument/
+  "FBT002",  # https://docs.astral.sh/ruff/rules/boolean-default-value-positional-argument/
+  "PT011",   # https://docs.astral.sh/ruff/rules/pytest-raises-too-broad/
+  "PLR0124", # https://docs.astral.sh/ruff/rules/comparison-with-itself/
+  "PLR0133", # https://docs.astral.sh/ruff/rules/comparison-of-constant/
+  "PLR2004", # https://docs.astral.sh/ruff/settings/#pylint-allow-magic-value-types
+  "S101",    # https://docs.astral.sh/ruff/rules/assert/
+  "S105",    # https://docs.astral.sh/ruff/rules/hardcoded-password-string/
+  "S106",    # https://docs.astral.sh/ruff/rules/hardcoded-password-func-arg/
+  "S113",    # https://docs.astral.sh/ruff/rules/request-without-timeout/
+  "S311",    # https://docs.astral.sh/ruff/rules/suspicious-non-cryptographic-random-usage/
+  "S324",    # https://docs.astral.sh/ruff/rules/hashlib-insecure-hash-function/
+]
+"tests/unit/helpers/mixin/test__instance_cache_mixin.py" = ["N803"]
+
+[tool.ruff.lint.pycodestyle]
+max-line-length = 115
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.pylint]
+max-args = 10
+
+[tool.ruff.lint.isort]
+required-imports = ["from __future__ import annotations"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+docstring-code-format = true
+docstring-code-line-length = "dynamic"
+
+[tool.vulture]
+min_confidence = 70
+paths = ["tests", "wg_utilities"]
+sort_by_size = true
