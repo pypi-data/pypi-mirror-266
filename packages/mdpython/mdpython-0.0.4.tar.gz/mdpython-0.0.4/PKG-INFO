@@ -1,0 +1,97 @@
+Metadata-Version: 2.3
+Name: mdpython
+Version: 0.0.4
+Summary: MD Python Library
+Project-URL: Homepage, https://github.com/pypa/sampleproject
+Project-URL: Issues, https://github.com/pypa/sampleproject/issues
+Author-email: Dhaval <seedhaval@gmail.com>
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.0
+Description-Content-Type: text/markdown
+
+# MD Python Library
+
+This package contains high level functions for common Python use cases.
+
+# Compare Directories
+
+   
+
+    from mdpython.fileutils import compare  
+      
+    cmp = compare.compare_dirs(r"C:\Users\Dell\OneDrive\Desktop\result_9th",  
+                               r"C:\Users\Dell\OneDrive\Desktop\result_9th_v2")  
+      
+    cmp.gen_html_report(r"C:\Users\Dell\OneDrive\Desktop\out.html", ["py", "txt",  
+                                                                     "json"])  
+      
+    for fl in cmp.files_only_in_right:  
+        if fl.name.endswith("py"):  
+            print(fl.absolute())
+
+
+# Menu based app
+
+    from datetime import datetime
+    from random import randint, choice
+    from mdpython.uiutils import menu_based_app
+    
+    def show_date():
+        print(datetime.now().strftime("%Y-%m-%d"))
+    
+    
+    def show_time():
+        print(datetime.now().strftime("%H:%M:%S"))
+    
+    
+    def show_date_and_time():
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    
+    
+    def show_random_number():
+        print(randint(1, 100))
+    
+    
+    def show_random_color():
+        print(choice(['red', 'blue', 'green']))
+    
+    
+    ar = [
+        ["Random", "Random Integer", show_random_number],
+        ["Random", "Random Color", show_random_color],
+        ["Date", "Show Date", show_date],
+        ["Date", "Show Time", show_time],
+        ["Date", "Show Date and Time", show_date_and_time]
+    ]
+    
+    menu_based_app.start(ar)
+
+# Disk cleanup
+
+    from mdpython.fileutils import cleanup
+    
+    dr = r"C:\Users\Dell\OneDrive\Desktop\result_9th"
+    
+    info = cleanup.retrieve_info(dr)
+    
+    print("sorted by time")
+    for dtl in info.sort_by_time()[:5]:
+        print(dtl)
+    
+    print("\nsorted by size")
+    for dtl in info.sort_by_size()[:5]:
+        print(dtl)
+    
+    print("\nmodified in last 30 mins")
+    for dtl in info.modified_within(mins=30)[:5]:
+        print(dtl)
+    
+    print("\nmodified more than 1 day ago")
+    for dtl in info.modified_before(mins=24 * 60)[:5]:
+        print(dtl)
+    
+    print("\nsorted by number of files in directory")
+    for dtl in info.sort_by_file_count()[:5]:
+        print(dtl)
