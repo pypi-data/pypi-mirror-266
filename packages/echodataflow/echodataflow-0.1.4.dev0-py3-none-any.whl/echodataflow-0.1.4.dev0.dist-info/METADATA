@@ -1,0 +1,181 @@
+Metadata-Version: 2.1
+Name: echodataflow
+Version: 0.1.4.dev0
+Summary: Sonar conversion pipeline tool with echopype
+Home-page: https://github.com/OSOceanAcoustics/echodataflow
+Author: Soham Butala and Landung Setiawan
+Author-email: sohambutala7@gmail.com | landungs@uw.edu
+Maintainer: Soham Butala
+Maintainer-email: sohambutala7@gmail.com
+License: MIT
+Platform: OS Independent
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Scientific/Engineering
+Requires-Python: <3.11,>=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests
+Requires-Dist: prefect >=2
+Requires-Dist: echopype >=0.6.3
+Requires-Dist: jinja2
+Requires-Dist: prefect-dask
+Requires-Dist: pydantic
+Requires-Dist: prefect-aws
+Requires-Dist: prefect-azure
+Requires-Dist: jupyter
+Requires-Dist: jupyter-book
+Requires-Dist: fastapi
+Requires-Dist: sphinx
+Requires-Dist: kafka-python
+Provides-Extra: all
+Requires-Dist: pytest ; extra == 'all'
+Requires-Dist: pytest-cov ; extra == 'all'
+Requires-Dist: pytest-flake8 ; extra == 'all'
+Requires-Dist: pytest-xdist ; extra == 'all'
+Requires-Dist: pytest-mock ; extra == 'all'
+Requires-Dist: black ; extra == 'all'
+Requires-Dist: check-manifest ; extra == 'all'
+Requires-Dist: flake8 ; extra == 'all'
+Requires-Dist: flake8-builtins ; extra == 'all'
+Requires-Dist: flake8-comprehensions ; extra == 'all'
+Requires-Dist: flake8-mutable ; extra == 'all'
+Requires-Dist: flake8-print ; extra == 'all'
+Requires-Dist: isort ; extra == 'all'
+Requires-Dist: mypy ; extra == 'all'
+Requires-Dist: numpydoc ; extra == 'all'
+Requires-Dist: pre-commit ; extra == 'all'
+Requires-Dist: pylint ; extra == 'all'
+Requires-Dist: sphinx ; extra == 'all'
+Requires-Dist: sphinx-automodapi ; extra == 'all'
+Provides-Extra: docs
+Requires-Dist: sphinx ; extra == 'docs'
+Requires-Dist: sphinx-automodapi ; extra == 'docs'
+Provides-Extra: lint
+Requires-Dist: black ; extra == 'lint'
+Requires-Dist: check-manifest ; extra == 'lint'
+Requires-Dist: flake8 ; extra == 'lint'
+Requires-Dist: flake8-builtins ; extra == 'lint'
+Requires-Dist: flake8-comprehensions ; extra == 'lint'
+Requires-Dist: flake8-mutable ; extra == 'lint'
+Requires-Dist: flake8-print ; extra == 'lint'
+Requires-Dist: isort ; extra == 'lint'
+Requires-Dist: mypy ; extra == 'lint'
+Requires-Dist: numpydoc ; extra == 'lint'
+Requires-Dist: pre-commit ; extra == 'lint'
+Requires-Dist: pylint ; extra == 'lint'
+Provides-Extra: test
+Requires-Dist: pytest ; extra == 'test'
+Requires-Dist: pytest-cov ; extra == 'test'
+Requires-Dist: pytest-flake8 ; extra == 'test'
+Requires-Dist: pytest-xdist ; extra == 'test'
+Requires-Dist: pytest-mock ; extra == 'test'
+
+# Echodataflow: Streamlined Data Pipeline Orchestration
+
+Welcome to **Echodataflow**! Echodataflow is a powerful data pipeline orchestration tool designed to simplify and enhance the execution of data processing tasks. Leveraging the capabilities of [Prefect 2.0](https://www.prefect.io/) and YAML configuration files, Echodataflow caters to the needs of scientific research and data analysis. It provides an efficient way to define, configure, and execute complex data processing workflows.
+
+Echodataflow integrates with [**Echopype**](https://github.com/OSOceanAcoustics/echopype), a renowned package for sonar data analysis, to provide a versatile solution for researchers, analysts, and engineers. With Echodataflow, users can seamlessly process and analyze sonar data using a modular and user-friendly approach.
+
+
+# Getting Started with Echodataflow
+
+This guide will walk you through the initial steps to set up and run your Echodataflow pipelines.
+
+## 1. Create a Virtual Environment
+
+To keep your Echodataflow environment isolated, it's recommended to create a virtual environment using Conda or Python's built-in `venv` module. Here's an example using Conda:
+
+```bash
+conda create --name echoflow-env
+conda activate echoflow-env
+```
+
+Or, using Python's venv:
+
+```bash
+python -m venv echoflow-env
+source echoflow-env/bin/activate  # On Windows, use `echoflow-env\Scripts\activate`
+```
+
+## 2. Clone the Project
+Now that you have a virtual environment set up, you can clone the Echodataflow project repository to your local machine using the following command:
+
+```bash
+git clone <repository_url>
+```
+
+## 3. Install the Package
+Navigate to the project directory you've just cloned and install the Echodataflow package. The -e flag is crucial as it enables editable mode, which is especially helpful during development and testing. Now, take a moment and let the echodataflow do its thing while you enjoy your coffee.
+
+```bash
+cd <project_directory>
+pip install -e .
+```
+
+## 4. Echodataflow and Prefect Initialization
+
+To kickstart your journey with Echodataflow and Prefect, follow these simple initialization steps:
+
+### 4.1 Initializing Echodataflow
+Begin by initializing Echodataflow with the following command:
+
+```bash
+echoflow init
+```
+This command sets up the groundwork for your Echodataflow environment, preparing it for seamless usage.
+
+### 4.2 Initializing Prefect
+For Prefect, initialization involves a few extra steps, including secure authentication. Enter the following command to initiate the Prefect authentication process:
+
+- If you have a Prefect Cloud account, provide your Prefect API key to securely link your account. Type your API key when prompted and press Enter.
+
+```bash
+prefect cloud login
+```
+
+- If you don't have a Prefect Cloud account yet, you can use local prefect account. This is especially useful for those who are just starting out and want to explore Prefect without an account.
+
+```bash
+prefect profiles create echoflow-local
+```
+
+The initialization process will ensure that both Echodataflow and Prefect are properly set up and ready for you to dive into your cloud-based workflows.
+
+## 5. Configure Blocks
+Echodataflow utilizes the concept of [blocks](./docs/configuration/blocks.md) which are secure containers for storing credentials and sensitive data. If you're running the entire flow locally, feel free to bypass this step.To set up your cloud credentials, configure blocks according to your cloud provider. For detailed instructions, refer to the [Blocks Configuration Guide](./docs/configuration/blocks.md#creating-credential-blocks).
+
+## 6. Edit the Pipeline Configuration
+Open the [pipeline.yaml](./docs/configuration/pipeline.md) file. This YAML configuration file defines the processes you want to execute as part of your pipeline. Customize it by adding the necessary stages and functions from echopype that you wish to run.
+
+## 7. Define Data Sources and Destinations
+Customize the [datastore.yaml](./docs/configuration/datastore.md) file to define the source and destination for your pipeline's data. This is where Echodataflow will fetch and store data as it executes the pipeline.
+
+## 8. Execute the Pipeline
+You're now ready to execute your Echodataflow pipeline! Use the echoflow_start function, which is a central piece of Echodataflow, to kick off your pipeline. Import this function from Echodataflow and provide the paths or URLs of the configuration files. You can also pass additional options or storage options as needed. Here's an example:
+
+Customize the paths, block name, storage type, and options based on your requirements.
+
+
+```python
+from echoflow import echoflow_start, StorageType, load_block
+
+dataset_config = # url or path of datastore.yaml
+pipeline_config = # url or path of pipeline.yaml
+logfile_config = # url or path of logging.yaml (Optional)
+
+aws = load_block(name="<block_name>", type=<StorageType>)
+
+options = {"storage_options_override": False} # Enabling this assigns the block for universal use, avoiding the need for repetitive configurations when employing a single credential block throughout the application.
+data  = echoflow_start(dataset_config=dataset_config, pipeline_config=pipeline_config, logging_config=logfile_config, storage_options=aws, options=options)
+```
+
+## License
+
+Licensed under the MIT License; you may not use this file except in compliance with the License. You may obtain a copy of the License [here](./LICENSE).
