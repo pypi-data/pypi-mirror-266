@@ -1,0 +1,44 @@
+Metadata-Version: 2.3
+Name: rython_calc
+Version: 0.4.5
+Classifier: Development Status :: 1 - Planning
+Classifier: Programming Language :: Rust
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+License-File: LICENSE
+Summary: Small project developed by me to learn PyO3 library.
+Author-email: Krystian Krakowski <kkrakowski22@gmail.com>
+Maintainer-email: Krystian Krakowski <kkrakowski22@gmail.com>
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Project-URL: Homepage, https://github.com/fawq/Rython
+Project-URL: Source, https://github.com/fawq/Rython
+
+# Rython
+
+## Use text_signature to create python type
+
+``` rust
+/// Formats the sum of two numbers as string.
+#[pyfunction(text_signature = "(a: int, b: int) -> str")]
+fn sum_as_string(a: usize, b: usize) -> PyResult<String> {
+    Ok((a + b).to_string())
+}
+```
+
+## Add .pyi file using mypy
+
+Keep in mind that is only works for ```#[pyfunction]```. Macros like ```#[pyclass]``` and ```#[pymethods]``` are still unsupported.
+
+For autocompletion .pyi in bash type:
+
+``` bash
+stubgen -p rython.calc -o python
+```
+
+It will produce calc.pyi with:
+
+``` python
+def sum_as_string(a: int, b: int) -> str: ...
+```
+
