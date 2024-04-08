@@ -1,0 +1,39 @@
+[project]
+name = "boldi-webalbum"
+description = "boldi.webalbum part of Boldi's Python libraries"
+authors = [
+    { name = "Boldizsár Palotás", email = "boldizsar.palotas@gmail.com" },
+]
+requires-python = ">=3.9"
+readme = "../../README.md"
+license = { text = "MIT" }
+dynamic = ["version"]
+
+dependencies = [
+    # boldi:
+    # "boldi-cli",
+    # "boldi-ctx",
+    # webalbum:
+    "Jinja2",
+    "Pillow",
+    "pydantic",
+    "PyExifTool",
+    "Unidecode",
+]
+
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+packages = ["boldi"]
+
+[tool.hatch.metadata.hooks.custom]
+path = "hatch_hooks.py"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "boldi/_webalbum_version.py"
+
+[tool.hatch.version]
+source = "vcs"
+raw-options = { "root" = "../.." }
