@@ -1,0 +1,55 @@
+[tool.poetry]
+name = "pyodide-mkdocs-theme"
+version = "0.1.0"
+description = "Package embedding the necessary tools to host pyodide, ACE editors, jQuery terminals in mkdocs documentations"
+authors = ["Frédéric Zinelli <frederic.zinelli@gmail.com>"]
+readme = "README.md"
+keywords = [
+    "mkdocs", "mkdocs-plugin", "pyodide", "IDE", "terminal"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Plugins",
+    "Environment :: Web Environment",
+    "Framework :: MkDocs",
+    "Intended Audience :: Education",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: JavaScript",
+    "Topic :: Documentation",
+    "Topic :: Software Development :: Documentation",
+    "Topic :: Text Processing :: Markup :: HTML",
+]
+
+
+[tool.poetry.plugins."mkdocs.plugins"]
+pyodide_macros = "pyodide_mkdocs_theme.pyodide_macros:PyodideMacrosPlugin"
+
+[tool.poetry.plugins."mkdocs.themes"]
+pyodide-mkdocs-theme = "pyodide_mkdocs_theme.templates"
+
+
+[tool.poetry.dependencies]
+python = "^3.8"
+mkdocs-material = "^9.5"
+mkdocs-macros-plugin = "^1.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pylint = "^3.1.0"
+pytest = "^8.1.1"
+mkdocs-addresses = "^0.2.4"
+mkdocs-awesome-pages-plugin = "^2.9.2"
+mkdocs-exclude = "^1.0.2"
+mkdocs-exclude-search = "^0.6.6"
+mkdocs-enumerate-headings-plugin = "^0.6.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
