@@ -1,0 +1,85 @@
+[build-system]
+requires = ["hatchling", "hatch-cython"]
+build-backend = "hatchling.build"
+
+[project]
+name = "cpop"
+version = "32.0.1"
+description = "The Cython-Optimized Plugin Oriented Programming System"
+readme = "README.rst"
+authors = [
+    {name = "Tyler Levy Conde", email = "yonstib@gmail.com"},
+    {name = "Thomas Hatch", email = "thatch45@gmail.com"},
+]
+classifiers = [
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: Apache Software License",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "aiofiles",
+    "aiologger",
+    "argparse",
+    "PyYaml",
+    "uvloop; sys_platform != 'win32'",
+]
+
+[project.optional-dependencies]
+cli = [
+    "pop-cli",
+]
+
+test = [
+    "pytest",
+    "pytest-asyncio",
+]
+
+build = [
+    "Cython",
+    "hatch-cython",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = [
+    "src/cpop",
+    "src/pop",
+]
+
+
+[tool.hatch.build.targets.wheel.hooks.cython.options]
+include_numpy = false
+include_pyarrow = false
+include_pythran = false
+
+directives = { boundscheck = false, nonecheck = false, language_level = 3, binding = true }
+
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+include = '\.pyi?$'
+exclude = '''
+(
+/(
+    \.eggs
+    | \.git
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+)/
+)
+'''
+
+[tool.pytest.ini_options]
+testpaths = "tests"
+addopts = "--tb native --full-trace --color=yes -vv"
+asyncio_mode = "auto"
