@@ -1,0 +1,119 @@
+Metadata-Version: 2.1
+Name: hyjinx
+Version: 0.28.23
+Summary: A minimal Hy utility library, using mostly the standard libraries.
+Author-email: Ati Sharma <ati+hyjinx@agalmic.ltd>
+License: MIT License
+        
+        Copyright (c) 2024 the authors.
+        
+        Permission is hereby granted, free of charge, to any person obtaining a
+        copy of this software and associated documentation files (the "Software"),
+        to deal in the Software without restriction, including without limitation
+        the rights to use, copy, modify, merge, publish, distribute, sublicense,
+        and/or sell copies of the Software, and to permit persons to whom the
+        Software is furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in
+        all copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+        THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+        FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+        DEALINGS IN THE SOFTWARE.
+        
+Project-URL: Repository, https://github.com/atisharma/hyjinx
+Keywords: hy,hylang,utilities,zeromq,llm,openai
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Lisp
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Utilities
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+License-File: AUTHORS
+Requires-Dist: cytoolz
+Requires-Dist: hy ==0.28.0
+Requires-Dist: hyrule ==0.5.0
+Requires-Dist: more-itertools
+Requires-Dist: multimethod
+Requires-Dist: pansi
+Requires-Dist: platformdirs
+Requires-Dist: pygments
+Provides-Extra: dev
+Requires-Dist: ecdsa ; extra == 'dev'
+Requires-Dist: openai ; extra == 'dev'
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: pyzmq ; extra == 'dev'
+Requires-Dist: zstandard ; extra == 'dev'
+Provides-Extra: llm
+Requires-Dist: openai ; extra == 'llm'
+Provides-Extra: zmq
+Requires-Dist: ecdsa ; extra == 'zmq'
+Requires-Dist: pyzmq ; extra == 'zmq'
+Requires-Dist: zstandard ; extra == 'zmq'
+
+## 🦑 Hyjinx
+
+*Functions and macros useful for modern living in the [Hy](http://hylang.org) REPL.*
+
+Compatible with Hy 0.28.0.
+
+
+### Hylights
+
+- REPL syntax highlighting (put `(import hyjinx.source [hylight]) (setv repl-output-fn hylight)` in your .hyrc)
+- pretty tracebacks with correct syntax highlighting for hy or python
+- print/get/edit source code of a function, module etc.
+- in-repl code analysis and discussion using LLMs
+- `defmethod` (if `multimethod` is installed)
+- numpy array pretty printing
+- a zmq lazy pirate protocol
+- a minimal ncurses class
+
+
+### Modules
+
+- hyjinx.lib: a smorgasbord of convenience functions.
+- hyjinx.source: code inspection.
+- hyjinx.doc: peruse hy documentation.
+- hyjinx.screen: a convenient ncurses wrapper.
+
+- hyjinx.mat: numpy pretty-printing for humans. (requires numpy, jax optional)
+
+- hyjinx.[zmq_client, zmq_server, crypto, wire]: lazy-pirate zmq RPC architecture. (requires zmq, ecdsa, zstandard)
+
+- hyjinx.llm: discuss code with a Large Language Model (AI). TabbyAPI and OpenAI-compatible are supported. (requires openai)
+
+
+### Install
+
+```bash
+$ pip install -U hyjinx
+```
+
+or, with optional dependencies,
+```bash
+$ pip install -U hyjinx[zmq]
+$ pip install -U hyjinx[llm]
+```
+
+To install offline hy/hyrule documentation,
+```bash
+$ hy -m hyjinx.docs
+```
+
+See hyjinx.hyrc for example usage.
+
+
+### Optional dependencies
+
+You can install with the `[zmq]` option which also installs ecdsa, [pyzmq](https://pypi.org/project/pyzmq/) and [zstandard](https://pypi.org/project/zstandard/) for the zmq server/client
+
+You can install with the `[llm]` option which also installs openai and lets you discuss code objects with ChatGPT or a locally-served LLM (via TabbyAPI or similar).
