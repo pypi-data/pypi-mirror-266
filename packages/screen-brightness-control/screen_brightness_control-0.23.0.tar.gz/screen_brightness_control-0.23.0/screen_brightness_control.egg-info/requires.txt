@@ -1,0 +1,29 @@
+
+[:platform_system == "Windows"]
+wmi
+pywin32
+pypiwin32
+
+[all]
+screen_brightness_control[dev,dist,docs]
+
+[dev]
+mypy
+flake8
+pytest
+pytest-mock
+pytest-subtests
+
+[dev:platform_system == "Windows"]
+types-pywin32
+
+[dist]
+build
+setuptools
+wheel
+twine
+
+[docs]
+jsmin
+packaging
+pdoc>=14.1.0
