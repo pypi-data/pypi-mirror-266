@@ -1,0 +1,63 @@
+Metadata-Version: 2.1
+Name: pysem
+Version: 0.8
+Summary: Python library for manipulating semantic data in linguistics
+Home-page: https://github.com/lingpy/pysem
+Author: Johann-Mattis List
+Author-email: mattis.list@uni-passau.de
+License: MIT
+Keywords: data
+Platform: any
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: >=3.5
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: clldutils >=3.5
+Requires-Dist: csvw
+Requires-Dist: attrs >=20
+Provides-Extra: dev
+Requires-Dist: black ; extra == 'dev'
+Requires-Dist: wheel ; extra == 'dev'
+Requires-Dist: twine ; extra == 'dev'
+Provides-Extra: test
+Requires-Dist: pytest >=4.3 ; extra == 'test'
+Requires-Dist: pytest-cov ; extra == 'test'
+Requires-Dist: coverage >=4.2 ; extra == 'test'
+
+# PySem: Pysen library for handling semantic data in linguistics
+
+* **Current Version**: 0.9.dev0
+* **Concepticon Version**: [3.2.0](https://doi.org/10.5281/zenodo.7298022)
+ 
+## Usage Examples
+
+Retrieve the sense data assembled by S. A. Starostin in the STARLING software package and search for similar words:
+
+```python
+>>> from pysem.sense import Sense
+>>> sns = Sense()
+>>> sns.similar('arm')
+[['arm', 'calf of leg', 'sense-bone; sense-foot; sense-hand', 3],
+ ['arm', 'hand', 'sense-bone; sense-foot; sense-hand', 3],
+ ['arm', 'shin-bone', 'sense-bone; sense-foot; sense-hand', 3],
+ ['arm', 'ankle', 'sense-bone; sense-foot', 2],
+ ['arm', 'bone', 'sense-bone; sense-foot', 2]]
+```
+
+Map data to the most recent version of the [Concepticon](https://concepticon.clld.org) project:
+
+```python
+>>> from pysem import to_concepticon
+>>> to_concepticon([{"gloss": "Fuß", pos: "noun"}], language="de"}])
+{'Fuß': [['1301', 'FOOT', 'noun', 19]]}
+```
+
+## How to Cite
+
+> List, Johann-Mattis (2024): PySeM. A Python library for handling semantic data in linguistics [Software, Version 0.8]. With contributions by Johannes Englisch. URL: https://pypi.org/project/pysem, Passau: MCL Chair at the University of Passau.
