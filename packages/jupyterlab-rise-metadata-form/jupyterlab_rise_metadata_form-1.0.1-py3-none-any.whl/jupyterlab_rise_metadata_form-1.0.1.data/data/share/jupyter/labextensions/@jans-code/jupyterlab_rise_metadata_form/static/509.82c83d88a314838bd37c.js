@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_jans_code_jupyterlab_rise_metadata_form=self.webpackChunk_jans_code_jupyterlab_rise_metadata_form||[]).push([[509],{509:(a,e,t)=>{t.r(e),t.d(e,{default:()=>r});const r=[{id:"@jans-code/jupyterlab_rise_metadata_form:risemdf",autoStart:!0,activate:a=>{console.log("Jupyterlab rise metadata-form activated")}}]}}]);
