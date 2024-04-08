@@ -1,0 +1,56 @@
+Metadata-Version: 2.1
+Name: responses-validator
+Version: 0.1.0
+Summary: Write response validation scripts for requests using flexible YAML syntax, including: status_code, headers, text, and json()
+License: MIT
+Author-email: dongfangtianyu <7629022+dongfangtianyu@users.noreply.github.com>
+Requires-Python: ~=3.12
+Requires-Dist: genson~=1.2.2
+Requires-Dist: jsonpath~=0.82.2
+Requires-Dist: jsonschema~=4.21.1
+Requires-Dist: mypy~=1.8.0
+Description-Content-Type: text/markdown
+
+# responses-validator
+
+
+```python
+import logging
+
+import requests
+from responses_validator import ResponseValidator
+from yaml import safe_load
+
+logging.basicConfig(level=logging.DEBUG)
+resp = requests.get("http://www.baidu.com/404.html")
+
+yaml_text = """
+status_code: 200 | 204   # 状态码 等于200 或 204
+headers:
+  server: 'nginx/*' # 服务器是nginx
+  Content-Type: 'application/json' # 响应类型为JSON
+json: # 默认使用glob模式可以只提供部分数据
+  name: foo
+text: qqqqq
+"""
+
+validate = safe_load(yaml_text)  # 加载yaml格式的断言
+
+obj = ResponseValidator(**validate)  # 实例化断言
+
+ret = obj.is_valid(resp)  # 对响应执行断言
+
+```
+
+```python
+  File "src\\responses_validator\\__init__.py", line 150, in responses_validator.ResponseValidator.is_valid
+responses_validator.ResponseAssertionError:
+{
+    'status_code': "status_code is 404 and does not match the pattern '200 | 204'.", 
+    'headers': "headers.server is 'Apache' and does not match the pattern '{'name': 'server', 'value': 'nginx/*', 'mode': 'glob'}'.", 
+    'text': 'text is \'<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">\n<html><head>\n<title>404 Not Found</title>\n</head><body>\n<h1>Not Found</h1>\n<p>The requested URL /404.html was not found on this server.</p>\n</body></html>\n\' and does not match the pattern \'{\'name\': \'text\', \'value\': \'qqqqq\', \'mode\': \'glob\'}\'.'}
+
+
+```
+wx: python_sanmu
+
