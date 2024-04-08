@@ -1,0 +1,356 @@
+[build-system]
+requires = ["hatchling>=1.22.5"]
+build-backend = "hatchling.build"
+
+[project]
+name = "meringue"
+description = "A set of various functionality for a Django based web application."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "LGPL-3.0"
+authors = [
+	{ name = "Dmitry Dobrynin", email = "dd@tovarisch.engineer" },
+]
+keywords = ["django", "utils"]
+classifiers = [
+	"Development Status :: 5 - Production/Stable",
+	"Environment :: Plugins",
+	"Environment :: Web Environment",
+	"Framework :: Django",
+	"Framework :: Django :: 2",
+	"Framework :: Django :: 2.0",
+	"Framework :: Django :: 2.1",
+	"Framework :: Django :: 2.2",
+	"Framework :: Django :: 3",
+	"Framework :: Django :: 3.0",
+	"Framework :: Django :: 3.1",
+	"Framework :: Django :: 3.2",
+	"Framework :: Django :: 4",
+	"Framework :: Django :: 4.0",
+	"Framework :: Django :: 4.1",
+	"Framework :: Django :: 4.2",
+	"Framework :: Django :: 5.0",
+	"Intended Audience :: Developers",
+	"License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
+	"Natural Language :: English",
+	# "Natural Language :: Russian",
+	"Operating System :: OS Independent",
+	"Programming Language :: Python",
+	"Programming Language :: Python :: 3",
+	"Programming Language :: Python :: 3.10",
+	"Programming Language :: Python :: 3.11",
+	"Programming Language :: Python :: 3.12",
+	"Programming Language :: Python :: 3 :: Only",
+	"Programming Language :: Python :: Implementation :: CPython",
+	"Programming Language :: Python :: Implementation :: PyPy",
+	"Topic :: Internet :: WWW/HTTP",
+	"Topic :: Internet :: WWW/HTTP :: WSGI",
+	"Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+	"Topic :: Software Development :: Libraries",
+]
+dependencies = [
+	"Django>=2.0.0,<6",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+modeltranslation = ["django-modeltranslation>=0.17,<0.19"]
+drf = ["djangorestframework>=3.13,<4"]
+drf-spectacular = ["drf-spectacular>=0.26.3,<1"]
+cryptodome = ["pycryptodome==3.20.0"]
+django_hosts = ["django_hosts>=5.2,<7"]
+
+[project.urls]
+"Documentation" = "https://dd.github.io/Meringue"
+"Repository" = "https://github.com/dd/Meringue"
+"Changelog" = "https://github.com/dd/Meringue/blob/master/CHANGELOG.md"
+"Bug Tracker" = "https://github.com/dd/Meringue/issues"
+
+[tool.hatch.version]
+path = "meringue/__init__.py"
+
+[tool.hatch.build]
+include = [
+	"meringue",
+	"AUTHORS",
+]
+exclude = [
+	"/docs",
+	".gitignore",
+	"CHANGELOG.md",
+	"CONTRIBUTING.md",
+	"tests",
+]
+
+[tool.hatch.envs.default]
+description = "Dev environment"
+python = "3.12"
+dependencies = [
+	"pre-commit==3.7.0",
+	"ipython==8.23.0",
+	"django==5.0.4",
+	"pytz==2024.1",
+	"django-modeltranslation==0.18.11",
+	"pycryptodome==3.20.0",
+	"djangorestframework==3.15.1",
+	"djangorestframework-simplejwt==5.3.1",
+	"drf-spectacular==0.27.2",
+	"Pillow==10.3.0",
+	"django_hosts==6.0",
+]
+[tool.hatch.envs.default.env-vars]
+DJANGO_SETTINGS_MODULE = "test_project.settings"
+PYTHONPATH  = "."
+[tool.hatch.envs.default.scripts]
+precommit_install = "pre-commit install {args}"
+precommit_uninstall = "pre-commit uninstall {args}"
+init = [
+	"git config --local gitflow.branch.master \"master\"",
+	"git config --local gitflow.branch.develop \"dev\"",
+	"git config --local gitflow.prefix.feature \"feature/\"",
+	"git config --local gitflow.prefix.bugfix \"bugfix/\"",
+	"git config --local gitflow.prefix.release \"release/\"",
+	"git config --local gitflow.prefix.hotfix \"hotfix/\"",
+	"git config --local gitflow.prefix.support \"support/\"",
+	"git config --local gitflow.prefix.versiontag \"v\"",
+	"git config --local gitflow.path.hooks $(pwd)\"/.git/hooks\"",
+	"precommit_install",
+]
+remove = [
+	"git config --local --remove-section gitflow.branch",
+	"git config --local --remove-section gitflow.prefix",
+	"git config --local --remove-section gitflow.path",
+	"precommit_uninstall",
+]
+makemessages = "cd meringue/core && django-admin makemessages -l en -l ru --no-obsolete {args}"
+compilemessages = "cd meringue && django-admin compilemessages -l en -l ru {args}"
+changelog-update = [
+	"git fetch origin --tags",
+	"gitmoji-changelog update \"$(hatch version)\" --preset generic --group-similar-commits",
+]
+
+[tool.hatch.envs.lint]
+description = "Lint environment"
+detached = true
+python = "3.12"
+dependencies = [
+	"ruff==0.3.5",
+	"black==24.3.0",
+]
+[tool.hatch.envs.lint.scripts]
+check = [
+	"ruff {args:.}",
+	"black --check --diff --exclude=\".*migrations\\/.*$\" {args:.}",
+]
+format = [
+	"ruff --fix {args:.}",
+	"black --exclude=\".*migrations\\/.*$\" {args:.}",
+]
+
+[tool.hatch.envs.test]
+description = "Tests environment"
+detached = true
+python = "3.12"
+dependencies = [
+	"pytest==8.1.1",
+	"pytest-django==4.8.0",
+	"pytest-cov==5.0.0",  # for ci tests with cover
+	"Faker==24.7.1",
+	"pytz==2024.1",
+	"pycryptodome==3.20.0",
+	"drf-spectacular==0.27.2",
+	"pillow==10.3.0",
+	"django==5.0.4",
+	"django-modeltranslation==0.18.11",
+	"djangorestframework==3.15.1",
+	"djangorestframework-simplejwt==5.3.1",
+	"django_hosts==6.0",
+]
+[tool.hatch.envs.test.env-vars]
+DJANGO_SETTINGS_MODULE = "test_project.settings"
+PYTHONPATH  = "."
+[tool.hatch.envs.test.scripts]
+check = "pytest {args:--cov=meringue --cov-report term-missing}"
+makemigrations = "django-admin makemigrations {args}"
+
+[tool.hatch.envs.mtest]
+description = "Test matrix environment"
+detached = true
+dependencies = [
+	"pytest==8.1.1",
+	"pytest-django==4.8.0",
+	"pytest-cov==5.0.0",  # for ci tests with cover
+	"Faker==24.7.1",
+	"pytz==2024.1",
+	"pycryptodome==3.20.0",
+	"drf-spectacular==0.27.2",
+	"pillow==10.3.0",
+]
+[tool.hatch.envs.mtest.overrides]
+matrix.django.dependencies = [
+	{ value = "django~={matrix:django}" },
+	{ value = "django-modeltranslation=={matrix:modeltranslation}" },
+	{ value = "djangorestframework=={matrix:djangorestframework}" },
+	{ value = "djangorestframework-simplejwt=={matrix:simplejwt}" },
+	{ value = "django_hosts=={matrix:django_hosts}" },
+]
+[tool.hatch.envs.mtest.env-vars]
+DJANGO_SETTINGS_MODULE = "test_project.settings"
+PYTHONPATH  = "."
+[tool.hatch.envs.mtest.scripts]
+check = "pytest {args:-q}"
+[[tool.hatch.envs.mtest.matrix]]
+python = ["3.10", "3.11"]
+django = ["2.0"]
+modeltranslation = ["0.17.0", "0.18.2"]
+djangorestframework = ["3.13.0"]
+simplejwt = ["5.2.0"]
+django_hosts = ["5.2", "6.0"]
+[[tool.hatch.envs.mtest.matrix]]
+python = ["3.10", "3.11"]
+django = ["3.0"]
+modeltranslation = ["0.17.0", "0.18.2"]
+djangorestframework = ["3.13.0", "3.14.0", "3.15.0"]
+simplejwt = ["5.2.0", "5.3.0"]
+django_hosts = ["5.2", "6.0"]
+[[tool.hatch.envs.mtest.matrix]]
+python = ["3.10", "3.11"]
+django = ["4.0"]
+modeltranslation = ["0.17.0", "0.18.2"]
+djangorestframework = ["3.14.0", "3.15.0"]
+simplejwt = ["5.2.0", "5.3.0"]
+django_hosts = ["5.2", "6.0"]
+[[tool.hatch.envs.mtest.matrix]]
+python = ["3.12"]
+django = ["4.0"]
+modeltranslation = ["0.17.0", "0.18.2"]
+djangorestframework = ["3.14.0", "3.15.0"]
+simplejwt = ["5.3.1"]
+django_hosts = ["6.0"]
+[[tool.hatch.envs.mtest.matrix]]
+python = ["3.10", "3.11", "3.12"]
+django = ["5.0"]
+modeltranslation = ["0.17.0", "0.18.2"]
+djangorestframework = ["3.15.0"]
+simplejwt = ["5.3.1"]
+django_hosts = ["6.0"]
+
+[tool.hatch.envs.docs]
+description = "Docs environment"
+detached = true
+python = "3.12"
+dependencies = [
+	"mkdocs[i18n]==1.5.3",
+	"mkdocs-literate-nav==0.6.1",
+	"mkdocs-material==9.5.17",
+	"mkdocs-git-revision-date-localized-plugin==1.2.4",
+	"mkdocs-git-authors-plugin==0.8.0",
+	"mkdocstrings[python]==0.24.3",
+	"black==24.3.0",
+	"mkdocs-minify-plugin==0.8.0",
+	"mkdocs-gen-files==0.5.0",
+	"Pygments==2.17.2",
+	"mike==2.0.0",
+	"linkchecker==10.4.0",
+]
+[tool.hatch.envs.docs.env-vars]
+MERINGUE_MKDOCS_ENABLE_MINIFY = "false"
+MKDOCS_CONFIG = "mkdocs.yml"
+[tool.hatch.envs.docs.scripts]
+build = "mkdocs build --config-file {env:MKDOCS_CONFIG} --clean --strict {args}"
+serve = "mkdocs serve --config-file {env:MKDOCS_CONFIG} --dev-addr localhost:8000 {args}"
+ci-build = "mike deploy --config-file {env:MKDOCS_CONFIG} --update-aliases {args}"
+validate = "linkchecker --config .linkcheckerrc docs/dist"
+build-check = [
+	"build --no-directory-urls",
+	"validate",
+]
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+show-fixes = true
+# update-check = true
+select = [
+	"A",
+	"B",
+	"C",
+	"DTZ",
+	"E",
+	"EM",
+	"F",
+	"I",
+	"ICN",
+	"ISC",
+	"N",
+	"PLC",
+	"PLE",
+	"PLR",
+	"PLW",
+	"Q",
+	"RUF",
+	"S",
+	"SIM",
+	"T",
+	"TID",
+	"UP",
+	"W",
+	"YTT",
+]
+ignore = [
+	"RUF001",  # Allow similar characters like latin `c` and cyrillic `с`
+	"RUF002",  # Allow russian at docstrings
+	"RUF003",  # Allow russian at comment
+	"PLR0913",  # Allow any number of function arguments
+	"E741",  # Allow variables of like "l", "O",  "i"
+	# # Allow non-abstract empty methods in abstract base classes
+	# "B027",
+	# # Ignore checks for possible passwords
+	# "S105", "S106", "S107",
+	# # Ignore complexity
+	# "C901", "PLR0911", "PLR0912", "PLR0913", "PLR0915",
+	# "PLC1901", # empty string comparisons
+	# "PLW2901", # `for` loop variable overwritten
+	"SIM114", # Combine `if` branches using logical `or` operator
+]
+# unfixable = [
+# 	# Don't touch unused imports
+# 	"F401",
+# ]
+[tool.ruff.extend-per-file-ignores]
+"__init__.py" = ["F401", "F403"]
+"test_*.py" = ["S101", "PLR2004", "DTZ001", "RUF012"]
+"*/migrations/*" = ["I", "E", "Q", "RUF"]
+"test_project/*models.py" = ["RUF012"]
+"test_project/*views.py" = ["RUF012"]
+[tool.ruff.flake8-import-conventions]
+[tool.ruff.flake8-import-conventions.extend-aliases]
+"datetime" = "dt"
+# [tool.ruff.flake8-quotes]
+# inline-quotes = "single"
+[tool.ruff.flake8-unused-arguments]
+ignore-variadic-names = true
+[tool.ruff.isort]
+force-single-line = true
+known-first-party = ["meringue"]
+lines-after-imports = 2
+no-lines-before = ["local-folder"]
+section-order = ["future", "standard-library", "django", "third-party", "first-party", "local-folder"]
+[tool.ruff.isort.sections]
+django = ["django"]
+
+[tool.isort]
+known_first_party = ["meringue"]
+lines_after_imports = 2
+no_lines_before = ["LOCALFOLDER"]
+known_django = "django"
+sections = ["FUTURE", "STDLIB", "DJANGO", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+force_single_line  = true
+
+[tool.coverage.run]
+omit = ["*/tests/*"]
+source = ["meringue"]
