@@ -1,0 +1,61 @@
+Metadata-Version: 2.3
+Name: bsdd
+Version: 0.0.240408
+Summary: Library to interact with the buildingSMART Data Dictionary
+Project-URL: Homepage, http://ifcopenshell.org
+Project-URL: Documentation, https://docs.ifcopenshell.org
+Project-URL: Issues, https://github.com/IfcOpenShell/IfcOpenShell/issues
+Author-email: Dion Moult <dion@thinkmoult.com>
+License-File: COPYING
+License-File: COPYING.LESSER
+Keywords: BIM,IFC,bSDD
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.8
+Requires-Dist: requests
+Description-Content-Type: text/markdown
+
+# bsdd
+
+A library to interact with the buildingSMART Data Dictionary (bSDD) API.
+This packages is totally independent from other packages in IfcOpenShell and requires only a python installation to run.
+
+## Installation
+
+```bash
+pip install git+https://git@github.com/ifcopenshell/ifcopenshell.git@v0.7.0#subdirectory=src/bsdd
+
+# check your installation
+python
+>>> from bsdd import Client
+>>> client = Client()
+>>> [l["uri"] for l in client.get_dictionary()["dictionaries"] if "4.3" in l["uri"]][0]
+'https://identifier.buildingsmart.org/uri/buildingsmart/ifc/4.3'
+```
+
+## Develop
+
+```bash
+# create a fork in your domain
+git clone git@github.com:<your-name>/IfcOpenShell.git
+cd src/bsdd
+
+# if you use vs code / pycharm, you can launch it from this folder
+code .
+
+# if you use conda/mamba. follow instructions below:
+# otherwise setup a dev env in your preferred way.
+mamba create -n bsdd-dev python pytest requests
+mamba activate bsdd-dev
+
+# run tests
+pytest
+```
