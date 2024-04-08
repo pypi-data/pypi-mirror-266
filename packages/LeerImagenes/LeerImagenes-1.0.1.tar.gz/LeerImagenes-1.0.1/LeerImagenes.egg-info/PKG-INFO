@@ -1,0 +1,93 @@
+Metadata-Version: 2.1
+Name: LeerImagenes
+Version: 1.0.1
+Summary: Light image reader   |   Lector ligero de imagenes
+Home-page: https://github.com/ZaimirPuerta
+Download-URL: https://github.com/ZaimirPuerta/LeerImagenes/
+Author: Zaimir
+Author-email: zaimirpuerta2711@gmail.com
+License: MIT License
+        
+        Copyright (c) 2024 Zaimir Puerta
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Keywords: LeerImagenes,Leer,Imagenes,leer,imagenes,read,images
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+Light image reader   |   Lector ligero de imagenes
+==========================
+
+[*ENGLISH*]
+It is a light image reader with functions for use with tkinter.
+This reader created it with the intention that it would be easier to use with the tkinter module (*and customtkinter*)
+
+[*ESPAÑOL*]
+Es un lector de imagenes ligero con funciones para usar con tkinter.
+Este lector lo cree con la intencion de que fuera mas sencillo usar con el modulo tkinter (*y customtkinter*)
+
+
+Installation (*pip or setup*)
+=============================
+
++ With pip : 
+
+  1. ``pip install LeerImagenes``
+
+
+Usage
+=================
+
+
+
+
+.. code::
+
+    # IMPORT MODULE        |   IMPORTAR MODULO
+	import LeerImagenes as li
+	
+	# CREATE CANVAS IMAGE  |   CREAR UN LIENZO EN BLANCO
+	image = createImage(32, 32)
+	
+	# FILL RECTANGLE RED   |   PINTAR UN RECTANGULO ROJO
+	drawRectangle(image, 0,0, 32, 32, (255,0,0,255))
+	
+	# SAVE FIRST FILE      |   GUARDAR PRIMER ARCHIVO
+	saveImageToFile(image, IMGMODE_PNG, "outputx32.png")
+	
+	# CHANGE THE SIZE      |   CAMBIAR EL TAMAÑO
+	scaleImage(image, 320, 320)
+	
+	# DRAW TWO LINES       |   DIBUJAR DOS LINEAS
+	drawLine(image, 0,0, 319,319, (0,255,255,255), 8)
+	drawLine(image, 319,0, 0,319, (0,255,255,255), 8)
+	
+	# SAVE SECOND FILE     |   GUARDAR SEGUNDO ARCHIVO
+	saveImageToFile(image, IMGMODE_PNG, "outputx320.png")
+	
+	# CHANGE THE SIZE      |   CAMBIAR EL TAMAÑO
+	scaleImage(image, 64, 64)
+	
+	# SAVE THIRD FILE      |   GUARDAR TERCER ARCHIVO
+	saveImageToFile(image, IMGMODE_PNG, "outputx64.png")
+
+
+
+
