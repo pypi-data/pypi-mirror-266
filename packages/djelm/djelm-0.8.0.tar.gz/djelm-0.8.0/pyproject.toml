@@ -1,0 +1,52 @@
+[tool.mypy]
+plugins = [ "mypy_django_plugin.main" ]
+
+[tool.poetry]
+name = "djelm"
+version = "0.8.0"
+description = "A framework for using Elm programs in a Django project"
+authors = ["Confidenceman02"]
+readme = "README_pypi.md"
+keywords = ["django", "elm"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Utilities",
+    "Environment :: Web Environment",
+    "Framework :: Django"
+]
+
+[project.urls]
+Repository = "https://github.com/Confidenceman02/django-elm"
+Changelog = "https://github.com/Confidenceman02/django-elm/blob/main/CHANGELOG.md"
+Issues = "https://github.com/Confidenceman02/django-elm/issues"
+
+packages = [
+    { include = "djelm", from = "src" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = ">=4.2.5"
+watchfiles = "^0.21.0"
+pydantic = "^2.4.2"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.4.2"
+pytest-django = "^4.5.2"
+hypothesis = "^6.92.2"
+pytest-playwright = "^0.4.4"
+
+[tool.poetry.group.dev.dependencies]
+tox = "^4.11.3"
+django-browser-reload = "^1.12.1"
+django-stubs = "^4.2.7"
+doit = "^0.36.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
