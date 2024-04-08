@@ -1,0 +1,40 @@
+[package]
+name = "tea-ext"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+repository.workspace = true
+license.workspace = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[features]
+# default = ["rolling", "agg", "lazy", "concat"]
+default = ["extend", "methods"]
+
+extend = ["lazy_time", "option_dtype"]
+methods = ["agg", "map", "rolling", "create", "concat"]
+
+lazy = ["tea-lazy"]
+lazy_time = ["lazy", "time", "tea-lazy/time"]
+
+time = ["tea-core/time"]
+option_dtype = ["tea-core/option_dtype"]
+
+agg = []  # aggregate functions
+map = ["tea-core/ops"]  # map functions
+rolling = ["num"]  # rolling functions
+create = ["lazy"]
+stat = ["statrs"]
+concat = ["tea-core/concat", "tea-hash"]  # used in rolling_common
+
+[dependencies]
+pyo3 = { workspace = true }
+tea-core = { path = "../tea-core", default-features=false, features=["method_1d"] }
+tea-hash = { path = "../tea-hash", optional=true, default-features = false}
+tea-lazy = { path = "../tea-lazy", optional=true, default-features=false, features=["extend"]}
+tea-macros = { path = "../tea-macros" }
+ndarray = { workspace=true }
+paste = { workspace = true }
+rayon = { workspace = true }
+num = { workspace = true, optional = true}
+statrs = { version = "0.16", optional=true }
