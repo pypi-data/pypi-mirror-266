@@ -1,0 +1,51 @@
+[project]
+name = "fivetran_customer_sdk"
+version = "0.4.8.1"
+authors = [
+  { name="Fivetran", email="developers@fivetran.com" },
+]
+description = "Build custom connectors on Fivetran platform"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  "grpcio==1.59.3",
+  "grpcio-tools==1.59.3",
+  "docker==6.1.3",
+  "requests==2.31.0"
+]
+
+[project.scripts]
+fivetran = "fivetran_customer_sdk:main"
+
+[project.urls]
+Homepage = "https://fivetran.com/docs/my-built-connector"
+Github = "https://github.com/fivetran/fivetran_customer_sdk"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.hatch.build.targets.sdist]
+ignore-vcs = true
+exclude = [
+  "examples/",
+  "scripts/",
+  "tests/",
+  "fivetran_sdk/",
+]
+
+[tool.hatch.build.targets.wheel]
+artifacts = [
+  "src/fivetran_customer_sdk/protos/__init__.py",
+  "src/fivetran_customer_sdk/protos/common_pb2_grpc.py",
+  "src/fivetran_customer_sdk/protos/common_pb2.py",
+  "src/fivetran_customer_sdk/protos/common_pb2.pyi",
+  "src/fivetran_customer_sdk/protos/connector_sdk_pb2_grpc.py",
+  "src/fivetran_customer_sdk/protos/connector_sdk_pb2.py",
+  "src/fivetran_customer_sdk/protos/connector_sdk_pb2.pyi",
+]
