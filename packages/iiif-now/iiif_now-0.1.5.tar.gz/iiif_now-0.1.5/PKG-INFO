@@ -1,0 +1,100 @@
+Metadata-Version: 2.1
+Name: iiif-now
+Version: 0.1.5
+Summary: IIIF Manifest Generator for Abolition Now project
+Home-page: https://github.com/abolition-now/iiif_now/
+License: WTFPL
+Author: Mark Baggett
+Author-email: mbagget1@utk.edu
+Requires-Python: >=3.8,<4.0
+Classifier: License :: Other/Proprietary License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: click (>=8.1.7,<9.0.0)
+Requires-Dist: iiif-prezi3 (>=1.2.1,<2.0.0)
+Requires-Dist: python-slugify (>=8.0.4,<9.0.0)
+Requires-Dist: pyyaml (>=6.0.1,<7.0.0)
+Requires-Dist: requests (>=2.31.0,<3.0.0)
+Requires-Dist: tqdm (>=4.66.2,<5.0.0)
+Project-URL: Repository, https://github.com/abolition-now/iiif_now/
+Description-Content-Type: text/markdown
+
+# IIIF Now
+
+## About
+
+IIIF Manifest generation tools for the Abolition Now project.
+
+![Example Manifest](https://github.com/abolition-now/iiif_now/blob/main/manifest_example.png?raw=true "Example Manifest")
+
+## Installation
+
+```bash
+pip install iiif-now
+```
+
+## Configuration
+
+Create a configuration file in YAML format. The configuration file should contain the following:
+
+```yaml
+main_sheet: 'path_to_main_sheet.csv'
+artists_file: 'path_to_artists_codes.csv'
+metadata_codes: 'path_to_metadata_codes.csv'
+manifest_directory:  'path_to_where_you_want_manifests_to_go'
+image_server_path: "https://strob6zro3bzklrulaqu2545sy0odbvz.lambda-url.us-east-2.on.aws/iiif/3/" # This is our default Image Server as of April 2, 2024.
+video_location: "https://digital.lib.utk.edu/static/" # This is our default video location as of April 2, 2024. It will move in the future.
+manifest_bucket: "https://aboltion-now-manifests.s3.us-east-2.amazonaws.com/" # This is a unique pattern for naming canvases. It should not be dereferenceable. 404 preferred.
+extensions: ["extensions/navPlace.json"] # Path to navPlace extension
+```
+
+## Usage
+
+```bash
+iiifnow use config.yml
+```
+# Changes
+
+## [0.1.5] - 2024-04-07
+
+### Features
+
+* Added `homepage` to manifest.
+* Added `rights` to manifest.
+* Initialized `StudyGuide` as something that may be rendered from a manifest.
+
+## [0.1.4] - 2024-04-05
+
+### Features
+
+* Canvases now have metadata.
+
+### Bug Fixes
+
+* Thumbnails: Both video and image canvases get thumbnails.
+* navPlace: If location unknown, print error and pass.
+
+### Minor Changes
+
+* Manifests: Got rid of all hard-coded URIs.
+
+## [0.1.3] - 2024-04-03
+
+### Features
+
+* Added artists to metadata.
+* Added thumbnails to image canvases.
+
+### Bug Fixes
+
+* Made sure codes are not repeated in parent manifests.
+
+## [0.1.2] - 2024-04-02
+
+* Implemented change log.
+* Added progress bar.
+* Added navPlace.
