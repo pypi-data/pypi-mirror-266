@@ -1,0 +1,163 @@
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[project]
+name = "pdm-conda"
+description = "A PDM plugin to resolve/install/uninstall project dependencies with Conda"
+requires-python = ">=3.10,<3.13"
+authors = [
+    { name = "Marcos Pastorini" },
+]
+keywords = [
+    "pdm",
+    "plugin",
+    "conda",
+]
+readme = "README.md"
+dynamic = []
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "pdm==2.12.4",
+    "requests>=2.31.0",
+    "typing-extensions>=4.10.0",
+]
+version = "0.17.0-dev4"
+
+[project.urls]
+Homepage = "https://github.com/macro128/pdm-conda"
+Changelog = "https://github.com/macro128/pdm-conda/blob/main/CHANGELOG.md"
+
+[project.entry-points.pdm]
+conda = "pdm_conda:main"
+
+[project.license]
+text = "MIT"
+
+[tool.pdm]
+distribution = true
+plugins = [
+    "pdm-backend",
+]
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "pytest>=8.0.2",
+    "pytest-mock>=3.12.0",
+    "pytest-cov>=4.1.0",
+    "pytest-random-num>=1.0.13",
+    "responses>=0.25.0",
+    "pytest-order>=1.2.0",
+]
+
+[tool.pdm.version]
+source = "file"
+path = "src/pdm_conda/__init__.py"
+
+[tool.pdm.build]
+package-dir = "src"
+includes = [
+    "src",
+    "data/*.json",
+]
+excludes = [
+    "tests",
+]
+
+[tool.pdm.scripts]
+test = "pytest --cov=src/ tests/{args} --cov-report xml --cov-report term"
+fix-report = "python scripts/fix_report.py"
+
+[tool.pdm.scripts.test-cov]
+composite = [
+    "test {args}",
+    "fix-report",
+]
+
+[tool.pytest.ini_options]
+addopts = "--random-order"
+filterwarnings = [
+    "ignore::pytest.PytestReturnNotNoneWarning",
+]
+
+[tool.mypy]
+python_version = "3.10"
+pretty = true
+check_untyped_defs = true
+
+[tool.docformatter]
+recursive = true
+style = "sphinx"
+wrap-summaries = 120
+wrap-descriptions = 120
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.ruff.lint]
+extend-select = [
+    "I",
+    "ICN",
+    "ASYNC",
+    "B",
+    "A",
+    "COM",
+    "C4",
+    "T10",
+    "INP",
+    "ISC",
+    "PIE",
+    "PT",
+    "RSE",
+    "RET",
+    "SIM",
+    "FA",
+    "PTH",
+    "UP",
+]
+extend-safe-fixes = [
+    "UP",
+    "I",
+    "C4",
+]
+ignore = [
+    "E722",
+    "D107",
+    "COM812",
+    "PT004",
+    "UP038",
+]
+
+[tool.ruff.lint.isort]
+split-on-trailing-comma = false
+known-local-folder = [
+    "src",
+    "tests",
+    "pdm-conda",
+]
+
+[tool.ruff.lint.flake8-pytest-style]
+fixture-parentheses = false
+mark-parentheses = false
+parametrize-names-type = "csv"
+parametrize-values-row-type = "list"
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = [
+    "F401",
+    "F403",
+]
+"**/tests/*" = [
+    "S101",
+    "D",
+]
