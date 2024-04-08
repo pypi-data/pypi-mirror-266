@@ -1,0 +1,54 @@
+Metadata-Version: 2.1
+Name: getcl
+Version: 0.1
+Summary: Python Package for the Mapping of Conceptlists
+Home-page: https://github.com/lingpy/getcl/
+Author: Johann-Mattis List
+Author-email: mattis.list@uni-passau.de
+License: MIT
+Keywords: word prediction
+Platform: any
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pysem>=0.5.0
+Requires-Dist: pyconcepticon
+Requires-Dist: cldfbench
+Requires-Dist: tabulate
+Requires-Dist: clldutils
+Requires-Dist: pycldf
+Provides-Extra: dev
+Requires-Dist: wheel; extra == "dev"
+Requires-Dist: twine; extra == "dev"
+Provides-Extra: test
+Requires-Dist: pytest>=4.3; extra == "test"
+Requires-Dist: pytest-cov; extra == "test"
+Requires-Dist: coverage>=4.2; extra == "test"
+
+# `getcl`: Mapping Lexical Data from CLDF Dictionaries to Wordlists
+
+`getcl` offers the code for mapping lexical data from a CLDF dictionary to a wordlist as described in the following paper:
+
+> Blum, Frederic and Englisch, Johannes and Hermida Rodriguez, Alba and van Gijn, Rik and List, Johann-Mattis (2024). To be published in the Proceedings of the 2nd Meeting of the ELRA/ISCA Special Interest Group on Under-Resourced Languages.
+
+To install the tool, just clone this repository and then type:
+
+```
+pip install -e .
+```
+
+This will provide a new command `conceptlist` that you can use to map concepts in the sense descriptions of a dictionary to Concepticon.
+
+To test the package, you can just run the following code:
+
+```
+$ git clone https://github.com/dictionaria/kalamang.git
+$ conceptlist --data kalamang/cldf/cldf-metadata.json --conceptlist Swadesh-1955-100 --output kalamang.tsv | wc -l
+```
+The output should be 197. This means that 196 matches for the 100 concepts of Swadesh's concept list could be identified. To get a useful concept list of these matches (that contain duplicates and potential errors), you would not look at the file `kalamang.tsv` and modify it manually to arrive at a Swadesh list derived from the dictionary.
