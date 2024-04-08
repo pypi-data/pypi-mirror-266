@@ -1,0 +1,108 @@
+Metadata-Version: 2.1
+Name: mmpm
+Version: 4.1.2
+Summary: MMPM, the MagicMirror Package Manager CLI simplifies the installation, removal, and general maintenance of MagicMirror packages
+Keywords: MagicMirror magicmirror package-manager mmpm MMPM magicmirror-package-manager package manager magicmirror_package_manager
+Author-Email: Brandon Marlowe <bpmarlowe-software@protonmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/Bee-Mar/mmpm
+Project-URL: Downloads, https://github.com/Bee-Mar/mmpm/archive/4.0.0.tar.gz
+Requires-Python: >=3.8
+Requires-Dist: Flask-Cors>=3.0.8
+Requires-Dist: argcomplete>=2.0.0
+Requires-Dist: argparse>=1.4
+Requires-Dist: beautifulsoup4>=4.11.1
+Requires-Dist: colorama>=0.4.3
+Requires-Dist: flask-socketio>=5.3.2
+Requires-Dist: flask>=2.2.0
+Requires-Dist: gevent>=23.9.1
+Requires-Dist: gunicorn>=20.1.0
+Requires-Dist: jinja2>=3.1.0
+Requires-Dist: pygments>=2.12.0
+Requires-Dist: python-socketio[client]>=5.7.0
+Requires-Dist: requests>=2.28.0
+Requires-Dist: yaspin>=2.3.0
+Requires-Dist: gitpython>=3.1.40
+Requires-Dist: gevent-websocket>=0.10.1
+Requires-Dist: prompt-toolkit>=3.0.43
+Requires-Dist: importlib_resources; python_version < "3.9"
+Description-Content-Type: text/markdown
+
+<p align="center">
+  <!-- badges start -->
+  <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=L2ML7F8DTMAT2&currency_code=USD&source=ur" target="_blank">
+    <img src="https://img.shields.io/badge/Donate-PayPal-green.svg" alt="PayPal">
+  </a>
+  <a href="http://choosealicense.com/licenses/mit" target="_blank">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License">
+  </a>
+  <a href="https://github.com/Bee-Mar/mmpm/actions" target="_blank">
+    <img src="https://github.com/bee-mar/mmpm/actions/workflows/workflow.yml/badge.svg?master" alt="GitHub Actions">
+  </a>
+  <a href="https://hub.docker.com/r/karsten13/mmpm" target="_blank">
+    <img src="https://img.shields.io/docker/pulls/karsten13/mmpm.svg" alt="Docker Pulls">
+  </a>
+  <img src="https://static.pepy.tech/personalized-badge/mmpm?period=total&units=abbreviation&left_color=grey&right_color=blue&left_text=Downloads">
+  <a href="https://pypi.org/project/mmpm" target="_blank">
+    <img src="https://img.shields.io/pypi/v/mmpm.svg" alt="PyPI version">
+  </a>
+  <!-- badges end -->
+
+  <!-- main title/logo -->
+  <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=L2ML7F8DTMAT2&currency_code=USD&source=ur" target="_blank">
+    <img src="assets/MagicMirrorPackageManager.svg" alt="MagicMirror Package Manager">
+  </a>
+</p>
+
+| Author          | Contact                           |
+| --------------- | --------------------------------- |
+| Brandon Marlowe | bpmarlowe-software@protonmail.com |
+
+`MMPM`, the MagicMirror Package Manager is a self updating command line and graphical interface designed to simplify the installation, removal, and maintenance of MagicMirror packages.
+
+The MagicMirror Package Manager is featured as an alternative installation method on the [MagicMirror Documentation](https://docs.magicmirror.builders/getting-started/installation.html#alternative-installation-methods).
+
+
+## Quick Installation Guide
+
+MMPM can be installed as a Docker image, or through `pip`.
+
+### [Docker](https://hub.docker.com/r/karsten13/mmpm/)
+
+```sh
+docker pull karsten13/mmpm
+```
+
+### [pip](https://pypi.org/project/mmpm/)
+
+```sh
+python3 -m pip install --upgrade mmpm
+```
+
+### Ensure Your PATH is Correct
+
+```sh
+echo 'export PATH="$PATH:$HOME/.local/bin"' >> ~/.bashrc && source ~/.bashrc
+```
+
+## Features
+
+- Manage packages: install, remove, update, and upgrade.
+- Search and view package details.
+- Add custom packages (similar to Ubuntu PPAs).
+- CLI tab-autocompletion.
+- Easy access to MMPM and MagicMirror configuration.
+- Manage MagicMirror: install, upgrade, remove.
+- Control MagicMirror modules: hide/show ([details](https://github.com/Bee-Mar/mmpm/wiki/Status,-Hide,-Show-MagicMirror-Modules))
+- Control MagicMirror state: start, stop, restart (supports npm, pm2, docker-compose).
+
+
+## Look to the [Wiki](https://github.com/Bee-Mar/mmpm/wiki)
+
+Key Pages:
+
+- [Migrating to MMPM 4.x.x](https://github.com/Bee-Mar/mmpm/wiki/Migrating-to-MMPM%E2%80%904.x.x)
+- [Installation & Removal](https://github.com/Bee-Mar/mmpm/wiki/MMPM-Installation-&-Removal)
+- [UI Installation & Removal](https://github.com/Bee-Mar/mmpm/wiki/MMPM-UI-Installation-&-Removal)
+- [Environment Variables](https://github.com/Bee-Mar/mmpm/wiki/MMPM-Environment-Variables) (**Extremely** important)
+- [Hide/Show MagicMirror Modules](https://github.com/Bee-Mar/mmpm/wiki/Status,-Hide,-Show-MagicMirror-Modules)
