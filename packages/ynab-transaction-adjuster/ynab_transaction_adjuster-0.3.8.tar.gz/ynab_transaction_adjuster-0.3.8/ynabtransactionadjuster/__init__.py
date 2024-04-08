@@ -1,0 +1,1 @@
+from ynabtransactionadjuster.ynabtransactionadjuster import YnabTransactionAdjuster
