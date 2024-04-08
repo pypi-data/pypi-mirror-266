@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "umdsubmit"
+version = "1.3.3"
+description = "Allows submitting to the UMD Submit Server from the command line, without the Eclipse Plugin"
+authors = ["Nico Carbone <carbone.nicolas0@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+requests = "^2.31.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+umdsubmit = 'umdsubmit.submit:main'
