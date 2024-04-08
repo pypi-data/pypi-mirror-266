@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>reference package &#8212; ReactiveReference  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="event package" href="event.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="reference-package">
+<h1>reference package<a class="headerlink" href="#reference-package" title="Link to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-reference.IReference">
+<span id="reference-ireference-module"></span><h2>reference.IReference module<a class="headerlink" href="#module-reference.IReference" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="reference.IReference.IReference">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">reference.IReference.</span></span><span class="sig-name descname"><span class="pre">IReference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">readonly</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_from</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#reference.IReference.IReference" title="reference.IReference.IReference"><span class="pre">IReference</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#reference.IReference.IReference" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="reference.IReference.IReference.add_hook">
+<span class="sig-name descname"><span class="pre">add_hook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hook</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#reference.IReference.IReference.add_hook" title="Link to this definition">¶</a></dt>
+<dd><p>Add a function to be executed on value update.
+If the same hook is added with different names, or the name is already present, the hook won’t be added
+:param name: Unique name for the hook
+:param hook: Callable function that accepts 1 input
+:return: True if added. False if not.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="reference.IReference.IReference.as_readonly">
+<span class="sig-name descname"><span class="pre">as_readonly</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#reference.IReference.IReference" title="reference.IReference.IReference"><span class="pre">IReference</span></a></span></span><a class="headerlink" href="#reference.IReference.IReference.as_readonly" title="Link to this definition">¶</a></dt>
+<dd><p>Creates a Readonly object and shares the same values
+:return: Immutable copy of reference</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="reference.IReference.IReference.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#reference.IReference.IReference.clear" title="Link to this definition">¶</a></dt>
+<dd><p>Clears everything from the internals and sets the value to <cite>None</cite>
+:return: None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="reference.IReference.IReference.logs">
+<span class="sig-name descname"><span class="pre">logs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#reference.IReference.IReference.logs" title="Link to this definition">¶</a></dt>
+<dd><p>Prints all changes to the reference.
+:return: None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="reference.IReference.IReference.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#reference.IReference.IReference.reset" title="Link to this definition">¶</a></dt>
+<dd><p>Resets the value to the original value
+:return: None</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="reference.IReference.IReference.value">
+<span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Any</span></em><a class="headerlink" href="#reference.IReference.IReference.value" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-reference.Reference">
+<span id="reference-reference-module"></span><h2>reference.Reference module<a class="headerlink" href="#module-reference.Reference" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="reference.Reference.MutableReference">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">reference.Reference.</span></span><span class="sig-name descname"><span class="pre">MutableReference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">readonly</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_from</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IReference</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#reference.Reference.MutableReference" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">IReference</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="reference.Reference.MutableReference.add_hook">
+<span class="sig-name descname"><span class="pre">add_hook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hook</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#reference.Reference.MutableReference.add_hook" title="Link to this definition">¶</a></dt>
+<dd><p>Add a function to be executed on value update.
+If the same hook is added with different names, or the name is already present, the hook won’t be added
+:param name: Unique name for the hook
+:param hook: Callable function that accepts 1 input
+:return: True if added. False if not.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="reference.Reference.MutableReference.as_readonly">
+<span class="sig-name descname"><span class="pre">as_readonly</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">IReference</span></span></span><a class="headerlink" href="#reference.Reference.MutableReference.as_readonly" title="Link to this definition">¶</a></dt>
+<dd><p>Creates a Readonly object and shares the same values
+:return: Immutable copy of reference</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="reference.Reference.MutableReference.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#reference.Reference.MutableReference.clear" title="Link to this definition">¶</a></dt>
+<dd><p>Clears everything from the internals and sets the value to <cite>None</cite>
+:return: None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="reference.Reference.MutableReference.logs">
+<span class="sig-name descname"><span class="pre">logs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#reference.Reference.MutableReference.logs" title="Link to this definition">¶</a></dt>
+<dd><p>Prints all changes to the reference.
+:return: None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="reference.Reference.MutableReference.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#reference.Reference.MutableReference.reset" title="Link to this definition">¶</a></dt>
+<dd><p>Resets the value to the original value
+:return: None</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="reference.Reference.MutableReference.value">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#reference.Reference.MutableReference.value" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="reference.Reference.ReadonlyReference">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">reference.Reference.</span></span><span class="sig-name descname"><span class="pre">ReadonlyReference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reference</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IReference</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#reference.Reference.ReadonlyReference" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#reference.Reference.MutableReference" title="reference.Reference.MutableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">MutableReference</span></code></a></p>
+</dd></dl>
+
+</section>
+<section id="module-reference">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-reference" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="reference.MutableReference">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">reference.</span></span><span class="sig-name descname"><span class="pre">MutableReference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">readonly</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_from</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IReference</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#reference.MutableReference" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">IReference</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="reference.MutableReference.add_hook">
+<span class="sig-name descname"><span class="pre">add_hook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hook</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#reference.MutableReference.add_hook" title="Link to this definition">¶</a></dt>
+<dd><p>Add a function to be executed on value update.
+If the same hook is added with different names, or the name is already present, the hook won’t be added
+:param name: Unique name for the hook
+:param hook: Callable function that accepts 1 input
+:return: True if added. False if not.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="reference.MutableReference.as_readonly">
+<span class="sig-name descname"><span class="pre">as_readonly</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">IReference</span></span></span><a class="headerlink" href="#reference.MutableReference.as_readonly" title="Link to this definition">¶</a></dt>
+<dd><p>Creates a Readonly object and shares the same values
+:return: Immutable copy of reference</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="reference.MutableReference.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#reference.MutableReference.clear" title="Link to this definition">¶</a></dt>
+<dd><p>Clears everything from the internals and sets the value to <cite>None</cite>
+:return: None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="reference.MutableReference.logs">
+<span class="sig-name descname"><span class="pre">logs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#reference.MutableReference.logs" title="Link to this definition">¶</a></dt>
+<dd><p>Prints all changes to the reference.
+:return: None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="reference.MutableReference.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#reference.MutableReference.reset" title="Link to this definition">¶</a></dt>
+<dd><p>Resets the value to the original value
+:return: None</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="reference.MutableReference.value">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#reference.MutableReference.value" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="reference.ReadonlyReference">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">reference.</span></span><span class="sig-name descname"><span class="pre">ReadonlyReference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reference</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IReference</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#reference.ReadonlyReference" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#reference.MutableReference" title="reactive_reference.reference.Reference.MutableReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">MutableReference</span></code></a></p>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">ReactiveReference</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">event</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="event.html">event package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">reference package</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">event</a><ul>
+      <li>Previous: <a href="event.html" title="previous chapter">event package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2024, Carlos Silva.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/reference.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
