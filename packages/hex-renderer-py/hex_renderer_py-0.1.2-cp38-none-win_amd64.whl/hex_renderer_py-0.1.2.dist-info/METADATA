@@ -1,0 +1,41 @@
+Metadata-Version: 2.3
+Name: hex_renderer_py
+Version: 0.1.2
+Classifier: Programming Language :: Rust
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Dist: sphinx ; extra == 'dev'
+Requires-Dist: sphinx-rtd-theme ; extra == 'dev'
+Requires-Dist: myst-nb ; extra == 'dev'
+Provides-Extra: dev
+License-File: LICENSE
+Keywords: hexrenderer, hex_renderer
+Author: JohnDog3112
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown; charset=UTF-8; variant=GFM
+Project-URL: source, https://github.com/JohnDog3112/hex_renderer_python
+
+# Hex Renderer Python
+
+This is a Python FFI for my [Hex Renderer](https://github.com/JohnDog3112/Hex-Renderer) written in Rust.
+
+
+## Executing/Building
+
+To build, simply create a new virtual environment and run
+```
+maturin develop
+```
+
+To build the doc site,
+```
+pip install -e '.[dev]'
+cd docs
+make html
+```
+
+# Installation
+```
+pip install hex_renderer_py
+```
+
