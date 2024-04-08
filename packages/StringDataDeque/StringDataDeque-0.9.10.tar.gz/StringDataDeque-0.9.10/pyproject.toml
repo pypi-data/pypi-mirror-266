@@ -1,0 +1,187 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools>=67.0", "setuptools_scm[toml]>=7.1"]
+
+[project]
+authors = [{"name" = "R.Broderick"}]
+description = "Useful when building a string from data that can be converted into a string, in parts."
+version = "0.9.10"
+license = {"file" = "LICENSE"}
+name = "StringDataDeque"
+readme = {file = "README.md", content-type = "text/markdown"}
+dependencies = ["beartype", "typing-extensions; python_version < '3.12'"]
+requires-python = ">=3.10.0"
+
+[project.optional-dependencies]
+dev = [
+  "build",
+  "dapperdata",
+  "glom",
+  "mypy",
+  "pytest",
+  "pytest-cov",
+  "pytest-pretty",
+  "ruamel.yaml",
+  "ruff",
+  "toml-sort",
+  "uv",
+  "validate-pyproject",
+  "packaging",
+  "Sphinx",
+  "sphinx-autodoc-typehints",
+  "sphinx-pyproject",
+  "sphinx-rtd-size",
+  "sphinx-rtd-theme ",
+  "autodocsumm",
+  "snakeviz",
+  "pre-commit",
+  "tox",
+  "tox-pyenv-redux"
+]
+# pep725
+# [external]
+# build-requires = [
+# "virtual:compiler/rust",
+# "virtual:compiler/cargo",
+# ]
+optional = ["pycryptodome"]
+
+[tool.dapperdata]
+exclude_paths = [".venv", ".mypy_cache", ".git", ".vscode"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+
+[tool.ruff]
+exclude = [".venv", "./stringdatadeque/_version.py"]
+line-length = 88
+indent-width = 4
+target-version = "py310"
+
+[tool.ruff.format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
+# Enable auto-formatting of code examples in docstrings. Markdown,
+# reStructuredText code/literal blocks and doctests are all supported.
+#
+# This is currently disabled by default, but it is planned for this
+# to be opt-out in the future.
+docstring-code-format = true
+# Set the line length limit used when formatting code snippets in
+# docstrings.
+#
+# This only has an effect when the `docstring-code-format` setting is
+# enabled.
+docstring-code-line-length = "dynamic"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+  "B024",
+  "PIE790",
+  "T201",
+  "PYI013",
+  "ANN101",
+  "TCH003",
+  "PLC0414",
+  "ERA001",
+  "T203",
+  "ANN102",
+  "ANN401",
+  "TCH002",
+  "TD002",
+  "TD003",
+  "FIX002",
+  "D203",
+  "D213",
+  "COM812",
+  "ISC001",
+  "FBT001",
+  "FBT002"
+]
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.lint.isort]
+force-single-line = true
+
+[tool.setuptools.dynamic]
+readme = {file = ["README.md"]}
+
+[tool.setuptools.package-data]
+library = ["py.typed"]
+
+[tool.setuptools.packages]
+find = {}
+
+[tool.sphinx-pyproject]
+# -- General configuration ---------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
+coverage_show_missing_items = true
+extensions = [
+  "sphinx.ext.autodoc",
+  "sphinx_autodoc_typehints",
+  "sphinx.ext.viewcode",
+  "sphinx.ext.coverage",
+  "autodocsumm",
+  "sphinx_rtd_theme",
+  'sphinx_rtd_size'
+]
+sphinx_rtd_size_width = "90%"
+templates_path = ["_templates"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+auto_doc_default_options = {'autosummary' = true}
+# -- Options for HTML output -------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
+html_theme = "sphinx_rtd_theme"
+html_style = "../../../source/custom.css"
+html_static_path = ["_static"]
+html_theme_options = {'display_version' = true, 'sticky_navigation' = true, 'includehidden' = true, 'titles_only' = false}
+autosummary_generate = true
+
+[tool.sphinx-pyproject.autodoc_default_options]
+exclude-members = """
+  __weakref__,
+  __sizeof__,
+  __hash__,
+  __module__,
+  __dict__,
+  __annotations__,
+  __orig_bases__,
+  __parameters__,
+  __abstractmethods__,
+  __non_callable_proto_members__,
+  __protocol_attrs__,
+  __subclasshook__,
+  __dataclass_fields__,
+  __post_init__,
+  __dataclass_params__,
+  __match_args__,
+  __str__,
+  __repr__"""
+members = true
+member-order = 'bysource'
+special-members = true
+undoc-members = true
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+skipsdist = True
+isolated_build = True
+envlist = py310, py311, py312
+
+[testenv]
+deps =
+    -rrequirements-dev.txt
+    -rrequirements-optional.txt
+
+commands =
+    pytest tests
+"""
