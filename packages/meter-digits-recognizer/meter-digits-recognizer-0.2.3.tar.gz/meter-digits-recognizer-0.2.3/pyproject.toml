@@ -1,0 +1,45 @@
+[build-system]
+requires = [
+    "setuptools>=62",
+    "setuptools_scm"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "meter-digits-recognizer"
+readme = "README.md"
+requires-python = ">=3.10.0"
+classifiers = [
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "numpy",
+    "opencv-python",
+]
+dynamic = ["version"]
+
+[project.urls]
+repository = "https://github.com/ardiloot/meter-digits-recognizer"
+
+[project.optional-dependencies]
+dev = [
+    "matplotlib",
+    "flake8",
+    "pytest",
+    "pip-tools",
+    "ipykernel",
+    "ipympl",
+    "Pillow",
+    "torch",
+    "torchvision",
+    "torchsummary",
+    "onnx",
+]
+
+[tool.setuptools]
+packages = [
+    "meter_digits_recognizer",
+]
+
+[tool.setuptools_scm]
