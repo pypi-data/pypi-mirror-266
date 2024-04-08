@@ -1,0 +1,86 @@
+syntax = "proto3";
+
+package komodo.proto.generated.model_pb2;
+
+// Komodo Appliances
+// protoc -I. --python_out=generated --pyi_out=generated ./model.proto
+
+message User {
+    string email = 1;
+    string name = 2;
+    map<string, string> conversations = 3; // agent_guid -> conversation_guid
+}
+
+message Appliance {
+    string shortcode = 1;
+    string name = 2;
+    string purpose = 3;
+    repeated string agent_shortcodes = 4;
+    repeated string tool_shortcodes = 5;
+}
+
+message Agent {
+    string shortcode = 1;
+    string name = 2;
+    string purpose = 3;
+    string instructions = 4;
+    string model = 5;
+    string provider = 6;
+    string assistant_id = 7;
+    string output_format = 8;
+    string footer = 9;
+    string email = 10;
+    string reply_as = 11;
+    string phone = 12;
+    repeated string tool_shortcodes = 13;
+    repeated Behavior behaviors = 14;
+}
+
+enum Mode {
+    MODE_UNSPECIFIED = 0;
+    MODE_CONVERSATION = 1;
+    MODE_CHATBOT = 2;
+    MODE_EMAIL = 3;
+    MODE_PHONE = 4;
+    MODE_API = 5;
+}
+
+message Behavior {
+    Mode mode = 1;
+    string instructions = 2;
+    string model = 3;
+    string provider = 4;
+    string assistant_id = 5;
+    string output_format = 6;
+    string footer = 7;
+}
+
+message Tool {
+    string shortcode = 1;
+    string name = 2;
+    string purpose = 3;
+}
+
+message Conversation {
+    string guid = 1;
+    string title = 2;
+    string created_at = 3;
+    string user_email = 4;
+    string agent_shortcode = 5;
+    Mode mode = 6;
+    repeated Message messages = 7;
+}
+
+message Message {
+    enum SenderType {
+        UNSPECIFIED = 0;
+        USER = 1;
+        AGENT = 2;
+    }
+
+    string guid = 1;
+    string sender = 2; // user_email or agent_shortcode
+    string text = 3;
+    string created_at = 4;
+    SenderType sender_type = 5;
+}

@@ -1,0 +1,96 @@
+version: "3.8"
+
+services:
+  website:
+    build: ../website
+    volumes:
+      - ../website/src:/app/src
+      - ../website/public:/app/public
+    ports:
+      - "8041:8041"
+    depends_on:
+      - server
+
+  server:
+    build:
+      context: ..
+      dockerfile: sample/Dockerfile
+    environment:
+      DEBUG: 1
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      TAVILY_API_KEY: ${TAVILY_API_KEY}
+      SERP_API_KEY: ${SERP_API_KEY}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      QDRANT_HOST: qdrant
+      QDRANT_PORT: 6333
+      PYTHONUNBUFFERED: 1
+    volumes:
+      - ../sample:/code/sample
+      - ../komodo:/code/komodo
+      - ./data/komodo:/data/komodo
+    command:
+      - uvicorn
+      - sample.appliance.server:SERVER
+      - --host
+      - "0.0.0.0"
+      - --port
+      - "8042"
+    ports:
+      - "8042:8042"
+    depends_on:
+      - redis
+
+  pdf2html:
+    build:
+      context: ..
+      dockerfile: pdf2html/Dockerfile
+    ports:
+      - "8050:8050"
+    volumes:
+      - ./data/komodo:/data/komodo
+    entrypoint:
+      - uvicorn
+      - server:app
+      - --host
+      - "0.0.0.0"
+      - --port
+      - "8050"
+
+  redis:
+    image: "redis/redis-stack"
+    ports:
+      - "8001:8001"
+      - "6379:6379"
+    environment:
+      REDIS_ARGS: "--save 60 1 --appendonly yes"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    volumes:
+      - ./data/redis:/data
+
+  qdrant:
+    image: qdrant/qdrant:v1.7.3
+    ports:
+      - "6333:6333"
+    volumes:
+      - ./data/qdrant:/qdrant/storage
+
+  mongo:
+    image: mongo:4.4
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data/mongo:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: admin
+    healthcheck:
+      test: echo 'db.runCommand("ping")' | mongo admin -u root -p example --quiet
+      interval: 30s
+      timeout: 10s
+      retries: 5
