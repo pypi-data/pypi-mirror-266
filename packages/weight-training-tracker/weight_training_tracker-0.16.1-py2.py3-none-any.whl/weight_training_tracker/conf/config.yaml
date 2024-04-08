@@ -1,0 +1,462 @@
+---
+# This is the number of seconds to deduct from the time
+# the weights are put down to the time to walk over to
+# the computer to stop the timer.
+deduct_seconds_from_last_set_time: 3
+menus:
+  "Main Menu":
+    options:
+      - "Select Workout"
+      - "Review Previous Workout"
+      - "Quit"
+  "Select Workout":
+    options:
+      - "Main Menu"
+      - "Quit"
+  "Review Previous Workout":
+    options:
+      - "Main Menu"
+      - "Quit"
+# This is the number of seconds to countdown
+# before beginning the next set:
+seconds_before_start_exercise: 10
+# The number of seconds to for break
+# in between sets.
+interset_break_seconds: 60
+# In general, expecting the amount of time to
+# complete a single set should be no more than
+# 3 minutes i.e.: 180 seconds.
+seconds_per_set: 180
+# This is the color to use when displaying the
+# "S T A R T" message to STDOUT.
+start_timer_text_color: light_yellow
+workout_file:
+  outdir: /tmp/test-weight-training-tracker/workouts
+interset_messages:
+  - Hydrate
+  - Adjust weights
+  - Visualize Gains
+  - Prepare for next set
+workouts:
+    "Biceps Curls - Part 1":
+      exercises:
+        - name: "Bicep Curls"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: standing
+        - name: "Hammer Curls"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: standing
+        - name: "Seated Bicep Curls"
+          equipment: "dumbbells; bench 45 degrees"
+          alternating_sides: true
+          body_position: seated
+        - name: "Seated Hammer Curls"
+          equipment: "dumbbells; bench 45 degrees"
+          alternating_sides: true
+          body_position: seated
+        - name: "Dumbbell Curl - rest arm on upper part of inclined bench"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: standing
+        - name: "Reverse Grip Dumbbell Bicep Curls"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: standing
+    "Biceps Curls - Part 2":
+      exercises:
+        - name: "EZ bar Bicep Curl"
+          equipment: "EZ barbell"
+          alternating_sides: false
+          body_position: standing
+        - name: "Reverse Grip EZ bar Bicep Curl"
+          equipment: "EZ barbell"
+          alternating_sides: false
+          body_position: standing
+        - name: "Dumbbell Bicep Spider Curls"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: leaning with chest on top of inclined bench
+        - name: "EZ bar Bicep Spider Curls"
+          equipment: "EZ barbell"
+          alternating_sides: false
+          body_position: leaning with chest on top of inclined bench
+        - name: "Bench Dumbbell Curl - rest chest on upper part of inclined bench"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: standing
+        - name: "Master Bicep Curl"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: standing
+        - name: "Supinate Curl - all weight on one side"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: standing
+    "Triceps":
+      exercises:
+        - name: "Bench Dips Tricep Extensions"
+          equipment: "bench"
+          alternating_sides: false
+          body_position: standing
+        - name: "Bent Over Single Arm Tricep Kickback"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: standing
+        - name: "Bent Over Single Arm Tricep Underhand Kickback "
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: standing
+        - name: "Close Grip Dumbbell Press"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: lying on bench
+        - name: "EZ Bar Skull Crusher Tricep Extensions"
+          equipment: "EZ barbell"
+          alternating_sides: false
+          body_position: lying on bench
+        - name: "Dumbbell Skull Crusher Tricep Extensions"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: lying on bench
+        - name: "Tate Press"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: standing
+        - name: "Bent Over Single Arm Tricep Kickback with band"
+          equipment: "band"
+          alternating_sides: true
+          body_position: standing
+    "Back: Reverse Flies":
+      exercises:
+        - name: "Single Arm Neutral Grip Standing Reverse Flies"
+          equipment: "bench"
+          alternating_sides: true
+          body_position: standing
+          instructions:
+            - bench angled 45 degrees
+            - position body behind bench
+            - free hand and foot align with head part of bench
+            - free hand holds head part of bench
+        - name: "Pronate Grip Standing Reverse Flies"
+          equipment: "bench"
+          alternating_sides: true
+          body_position: standing
+          instructions:
+            - bench angled 45 degrees
+            - position body behind bench
+            - free hand and foot align with head part of bench
+            - free hand holds head part of bench
+        - name: "Supinate Grip Standing Reverse Flies"
+          equipment: "bench"
+          alternating_sides: true
+          body_position: standing
+          instructions:
+            - bench angled 45 degrees
+            - position body behind bench
+            - free hand and foot align with head part of bench
+            - free hand holds head part of bench
+    "Back: Rows":
+      exercises:
+        - name: "Neutral Grip Bent Over Dumbbell Row"
+          equipment: "dumbbell"
+          alternating_sides: true
+          body_position: standing, slightly bent forward
+        - name: "Pronate Grip Bent Over Dumbbell Row"
+          equipment: "dumbbell"
+          alternating_sides: true
+          body_position: standing, slightly bent forward
+        - name: "Supinate Grip Bent Over Dumbbell Row"
+          equipment: "dumbbell"
+          alternating_sides: true
+          body_position: standing, slightly bent forward
+    "Calves":
+      exercises:
+        - name: "Alterating Calf Raises - Toes Pointing Straight"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: standing
+        - name: "Alterating Calf Raises - Toes Pointing In"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: standing
+        - name: "Alterating Calf Raises - Toes Pointing Out"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: standing
+    "Shoulder Raises":
+      exercises:
+        - name: "Alterating Lateral Raises"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: standing
+        - name: "Alterating Forward Raises"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: standing
+        - name: "Alterating Diagonal Out Raises"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: standing
+        - name: "Alterating Diagonal In Raises"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: standing
+    "Chest Flies - Part 1":
+      exercises:
+        - name: "Flat Chest Flies - Neutral Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: lying on bench
+        - name: "Flat Chest Flies - Pronate Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: lying on bench
+        - name: "Flat Chest Flies - Supinate Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: lying on bench
+        - name: "35 degree Incline Chest Flies - Neutral Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: lying on bench
+        - name: "35 degree Incline Chest Flies - Pronate Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: lying on bench
+        - name: "35 degree Incline Chest Flies - Supinate Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: lying on bench
+    "Chest Flies - Part 2":
+      exercises:
+        - name: "65 degree Incline Chest Flies - Neutral Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: lying on bench
+        - name: "65 degree Incline Chest Flies - Pronate Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: lying on bench
+        - name: "65 degree Incline Chest Flies - Supinate Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: lying on bench
+        - name: "Decline Chest Flies - Neutral Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: lying on bench
+        - name: "Decline Chest Flies - Pronate Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: lying on bench
+        - name: "Decline Chest Flies - Supinate Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: lying on bench
+    "Chest Presses - Part 1":
+      exercises:
+        - name: "Flat Chest Presses - Neutral Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: lying on bench
+        - name: "Flat Chest Presses - Pronate Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: lying on bench
+        - name: "Flat Chest Presses - Supinate Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: lying on bench
+        - name: "35 degree Incline Chest Presses - Neutral Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: lying on bench
+        - name: "35 degree Incline Chest Presses - Pronate Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: lying on bench
+        - name: "35 degree Incline Chest Presses - Supinate Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: lying on bench
+    "Chest Presses - Part 2":
+      exercises:
+        - name: "65 degree Incline Chest Presses - Neutral Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: lying on bench
+        - name: "65 degree Incline Chest Presses - Pronate Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: lying on bench
+        - name: "65 degree Incline Chest Presses - Supinate Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: lying on bench
+        - name: "Decline Chest Presses - Neutral Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: lying on bench
+        - name: "Decline Chest Presses - Pronate Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: lying on bench
+        - name: "Decline Chest Presses - Supinate Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: lying on bench
+    "Body Weight":
+      exercises:
+        - name: "Body Weight Squats"
+          equipment: "None"
+          alternating_sides: false
+          body_position: standing
+        - name: "Body Weight Reverse Lunges"
+          equipment: "None"
+          alternating_sides: true
+          body_position: standing
+        - name: "Body Weight Calf Raises"
+          equipment: "None"
+          alternating_sides: true
+          body_position: standing
+    "Dumbbell Deadlifts":
+      exercises:
+        - name: "Dumbbell Deadlifts"
+          equipment: "dumbbells"
+          alternating_sides: false
+          body_position: standing
+        - name: "Dumbbell Romanian Deadlifts"
+          equipment: "dumbbells"
+          alternating_sides: false
+          body_position: standing
+        - name: "Elevated Dumbbell Deadlifts"
+          equipment: "dumbbells"
+          alternating_sides: false
+          body_position: standing on platform
+        - name: "Elevated Dumbbell Romanian Deadlifts"
+          equipment: "dumbbells"
+          alternating_sides: false
+          body_position: standing on platform
+    "Squats and Lunges":
+      exercises:
+        - name: "Dumbbell Squats - Neutral Grip"
+          equipment: "dumbbells"
+          alternating_sides: false
+          body_position: standing
+        - name: "Elevated Dumbbell Squat - Neutral Grip"
+          equipment: "dumbbells"
+          alternating_sides: false
+          body_position: standing on platform
+        - name: "Goblet Squat"
+          equipment: "dumbbells"
+          alternating_sides: false
+          body_position: standing
+        - name: "Jump Squat"
+          equipment: "dumbbells"
+          alternating_sides: false
+          body_position: standing
+        - name: "Dumbbell Stepup"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: standing
+        - name: "Single-Leg Romanian Deadlift"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: standing
+        - name: "Reverse Lunge"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: standing
+        - name: "Dumbbell Deficit Reverse Lunge"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: standing on step
+        - name: "Bench Lunge Single Lunge"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: standing
+        - name: "Alternating Lateral Lunge"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: standing
+        - name: "Single-Leg Suspension Trainer Glute Bridge"
+          equipment: "Jungle Pro"
+          alternating_sides: true
+          body_position: lie flat on back on ground
+    "Barbell Deadlifts":
+      exercises:
+        - name: "Barbell Deadlifts"
+          equipment: "barbell"
+          alternating_sides: false
+          body_position: standing
+        - name: "Sumo Barbell Deadlifts"
+          equipment: "barbell"
+          alternating_sides: false
+          body_position: standing
+        - name: "Romanian Barbell Deadlifts"
+          equipment: "barbell"
+          alternating_sides: false
+          body_position: standing
+        - name: "Romanian Barbell Deadlifts - Wide Stance"
+          equipment: "barbell"
+          alternating_sides: false
+          body_position: standing
+        - name: "Barbell Glute Lift"
+          equipment: "barbell"
+          alternating_sides: false
+          body_position: lie flat on ground
+
+    "Upper Body - Military Presses and Shrugs":
+      exercises:
+        - name: "Standing Military Press - Neutral Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: standing
+        - name: "Standing Military Press - Pronate Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: standing
+        - name: "Standing Military Press - Supinate Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: standing
+        - name: "Seated Military Press - Neutral Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: seated
+        - name: "Seated Military Press - Pronate Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: seated
+        - name: "Seated Military Press - Supinate Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: seated
+        - name: "Shrugs - Neutral Grip"
+          equipment: "dumbbells"
+          alternating_sides: true
+          body_position: standing
+    "Overhead Pullups":
+      exercises:
+        - name: "Narrow Grip - Neutral"
+          equipment: "doorbar"
+          alternating_sides: false
+          body_position: standing
+        - name: "Narrow Grip - Pronate"
+          equipment: "doorbar"
+          alternating_sides: false
+          body_position: standing
+        - name: "Narrow Grip - Supinate"
+          equipment: "doorbar"
+          alternating_sides: false
+          body_position: standing
+        - name: "Wide Grip - Neutral"
+          equipment: "doorbar"
+          alternating_sides: false
+          body_position: standing
+        - name: "Wide Grip - Pronate"
+          equipment: "doorbar"
+          alternating_sides: false
+          body_position: standing
