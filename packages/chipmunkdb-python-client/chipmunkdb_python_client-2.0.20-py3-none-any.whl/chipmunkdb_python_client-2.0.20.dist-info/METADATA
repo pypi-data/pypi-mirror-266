@@ -1,0 +1,73 @@
+Metadata-Version: 2.1
+Name: chipmunkdb_python_client
+Version: 2.0.20
+Summary: Read and Write Dataframes and Data to a chipmunkdb
+Home-page: https://gitlab.com/coindeck/chipmunkdb-python-client
+Author: coindeck
+Author-email: donnercody86@gmail.com
+License: MIT
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 3
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests
+Requires-Dist: sqlalchemy
+Requires-Dist: pandas
+Requires-Dist: influxdb
+Requires-Dist: ijson
+Requires-Dist: importlib-resources
+Requires-Dist: typing
+
+
+# chipmunkdb :chipmunk: python-client
+
+Modify and save dataframes with timeseries or without to an ultra-fast ipc chipmunk database with olap features. (Powered by duckdb)
+
+## Installation
+
+pip install chipmunkdb-python-client
+
+## Usage
+
+````python 
+
+
+import sys
+sys.path.insert(0,'..')
+import pandas as pd
+import numpy as np
+
+from chipmunkdb.ChipmunkDb import ChipmunkDb
+
+db = ChipmunkDb("localhost")
+
+#receive all collections
+collections = db.collections()
+
+# create a dataframe
+df = pd.DataFrame(np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]]),
+                   columns=['a', 'b', 'c'])
+
+print(df)
+
+## save your pandas
+db.save_as_pandas(df, "mydf")
+
+## get infos abotu your dataframe
+collection = db.collection_info("mydf")
+
+# read your dataframe again
+df2 = db.collection_as_pandas("mydf")
+
+print(df2)
+
+# call any query on your data
+d = db.query("SELECT * FROM mydf WHERE a=1 LIMIT 100")
+
+print(d)
+
+````
+
+## Info
