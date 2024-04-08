@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    
+    <!-- <link rel="stylesheet" type="text/css" href="/static/w3.css"> -->
+    <link rel="stylesheet" type="text/css" href="/static/style.css" />
+    
+    {% block head_extra %}
+    {% endblock %}
+
+    <title>
+        
+        {% block header_title %}
+        Home
+        {% endblock %}
+        
+    </title>
+
+</head>
+<body>
+
+<div class="navbar">
+    {% block navbar %}
+    <a href="/app" class="navbar-item">dew_gwdata.webapp</a>
+    <a href="/docs" class="navbar-item">Swagger API</a>
+    <a href="/app/schema" class="navbar-item">SAGD schema</a>
+    <form action="/app/well_find" method="get">
+        <input type="text" class="navbar-item" placeholder="Go to well..." name="query">
+        <input type="hidden" name="unit_no" value="1" />
+        <input type="hidden" name="obs_no" value="1" />
+        <input type="hidden" name="dh_no" value="1" />
+        <input type="hidden" name="singular_search_only" value="1" />
+        <input type="hidden" name="redirect_to" value="{{ redirect_to }}" />
+        <input type="hidden" name="env" value="{{ env }}" />
+        <button class="navbar-item">
+            Search
+        </button>
+    </form>
+    <form action="/app/wells_summary" method="get">
+        <input type="text" class="navbar-item" placeholder="Search for well name..." name="name_fragment">
+        <input type="hidden" name="redirect_to" value="{{ redirect_to }}" />
+        <input type="hidden" name="env" value="{{ env }}" />
+        <button class="navbar-item">
+            Search
+        </button>
+    </form>
+    <form action="/app/wells_summary" method="get">
+        <input type="text" class="navbar-item" placeholder="Load wells in group..." name="group_code">
+        <input type="hidden" name="redirect_to" value="{{ redirect_to }}" />
+        <input type="hidden" name="env" value="{{ env }}" />
+        <button class="navbar-item">
+            Load
+        </button>
+    </form>
+    {% endblock %}
+</div>
+    
+    <div>
+    <h1>
+        {% block title %}
+    Home 
+    {% endblock %}
+</h1>
+    </div>
+
+    <div>
+{% block content %}
+{% endblock %}
+</div>
+
+</body>
+</html>

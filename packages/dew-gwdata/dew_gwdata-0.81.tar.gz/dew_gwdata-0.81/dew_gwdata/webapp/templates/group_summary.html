@@ -1,0 +1,15 @@
+{% extends "app_layout.html" %}
+
+{% block header_title %}
+{{ title }} - Summary
+{% endblock %}
+
+{% block title %}
+Summary - {{ title }}
+{% endblock %}
+
+{% block content %}
+
+    {{ group_table|safe }}
+
+{% endblock %}

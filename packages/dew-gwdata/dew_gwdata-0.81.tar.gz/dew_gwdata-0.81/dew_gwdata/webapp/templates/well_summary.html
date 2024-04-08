@@ -1,0 +1,25 @@
+{% extends "app_layout_well.html" %}
+
+{% block header_title %}
+{{ title }} - Well summary
+{% endblock %}
+
+{% block title %}
+Well summary - {{ title }}
+{% endblock %}
+
+{% block well_content %}
+
+    <div class="floating-block">
+        <h2>Summary</h2>
+        {{ well_table|safe }}
+    </div>
+    <div class="floating-block">
+        <h2>Elevation</h2>
+        {{ elev_table|safe }}
+        <h2>Monitoring networks / groups</h2>
+        <p>For more detail see <a href="/app/wells_monitoring_networks_groups?{{ wells_query_params }}">monitoring networks / groups page</a>.</p>
+        {{ groups_table|safe }}
+    </div>
+
+{% endblock %}
