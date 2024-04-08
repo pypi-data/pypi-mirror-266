@@ -1,0 +1,108 @@
+# Changelog
+
+- 0.4.0
+- 0.3.9
+  - fix: down dont create src folder
+- 0.3.8
+  - fix: filter mode calling filter command from feno package
+- 0.3.7
+  - fix: filter mode with empty files
+  - fix: action class to poo mode
+  - fix: remove auto select entry point for java and typescript
+  - fix: remove download keep and required from config to use drafts only
+- 0.3.6
+  - add compact mode to run
+- 0.3.5:
+  - update filter mode
+- 0.3.4:
+  - cio mode update parser
+- 0.3.3:
+  - improved filter mode for fun
+  - fixed bud in grade reduction show for build a .tio file
+- 0.3.2:
+  - search for "public static void main" in multi file java solvers
+  - search for file without "export" in multi file typescript solvers
+- 0.3.1:
+  - update filter class
+- 0.3.0:
+  - multi-file tko download
+- 0.2.8:
+  - search for "public static void main" in multi file java solvers
+  - only filter and copy source files
+- 0.2.7:
+  - Filter mode updated to only source files and all source files in folder
+- 0.2.6:
+  - Guides updated: tko -g and tko -b
+  - Added filter mode on run command to make it easier to create problems and drafts
+  - Creating a replit version without dependencies
+- 0.2.5: 11/mar/2024
+  - remove folder if empty and no problem has been downloaded
+  - fix bashrc for replit
+- 0.2.4: 11/mar/2024
+  - new improvements on guide and config
+  - fix: error in message when problem without draft was downloaded
+- 0.2.3: 11/mar/2024
+  - new improvements on guide and config
+  - updating config
+- 0.2.2
+  - removing [local][home] option
+  - adding [local][lang] for default extension language
+- 0.2.1
+  - improving SettingsParser
+  - creating entry [LOCAL][home] in settings for problems directory
+  - adding config --home to set home directory
+- 0.2.0
+  - use up_down diff auto if term size is low
+  - rename from solver. to draft.
+  - added min_term_size config
+  - change down to "down course activity -l language"
+- 0.1.9
+  - change name in diff from MISMATCH to WHITESPACE
+  - fixing encoding problems in windows
+- 0.1.8
+  - remove ├ marks in execution errors
+- 0.1.7
+  - removed resume from free run
+  - added sqlite3 native support
+  - fixed unequal char to ├
+  - remove mismatch field in execution errors
+- 0.1.6
+  - flushing after each execution
+  - support for bash commands in run
+  - more test cases
+  - fixed unequal char to ╪, that looks better than ≠
+- 0.1.5
+  - fixed draft for typescript
+- 0.1.4
+  - fixed acesso invalido no caso de não haver erro de execução
+- 0.1.3
+  - fixed diff first failure mode
+- 0.1.2
+  - added tko config -d to change default diff mode
+  - added tko run [--updown | --sideby] to select diff mode
+  - added more tests for run mode
+  - checking if target files exist before run
+  - integrating list, exec and run in tko
+  - disabling update subcommand
+- 0.1.1
+  - added -m monocolor option
+  - improved layout for both diff
+- 0.1.0
+  - added bash guide with -b
+  - added tko guide with -g
+- 0.0.9
+  - removed tab from wdir.resume
+  - fixed type in whitespace
+  - added mismatch arrow
+  - added -g option to show simple guide
+- 0.0.8
+  - add colors in diff inside the line
+- 0.0.7
+  - fix esbuild incompatibility in windows
+- 0.0.6
+  - fix wls incompatibility
+- 0.0.5
+  - adding draft models to down
+  - removing conversion in js and ts entry code
+  - adding --config to tko
+  - changing @ for _ in downloaded problems folder name
