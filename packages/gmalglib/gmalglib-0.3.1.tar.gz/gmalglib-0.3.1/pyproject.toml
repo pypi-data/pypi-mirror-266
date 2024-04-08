@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gmalglib"
+authors = [
+    {name = "ww-rm", email = "ww-rm@qq.com"},
+]
+description = "Python package implementing GM algorithms in C."
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: C",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Security :: Cryptography",
+]
+
+dynamic = ["version", "readme"]
+
+[project.urls]
+"Homepage" = "https://github.com/ww-rm/gmalglib"
+"Issues" = "https://github.com/ww-rm/gmalglib/issues"
+"Documentation" = "https://gmalglib.readthedocs.io"
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["gmalglib"]
+
+[tool.setuptools.dynamic]
+version = {attr = "gmalglib.__version__"}
+readme = {file = ["README.en.md"], content-type = "text/markdown"}
