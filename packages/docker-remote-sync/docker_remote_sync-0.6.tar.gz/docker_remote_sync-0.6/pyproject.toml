@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "docker-remote-sync"
+version = "0.6"
+description = "Utility to sync updated docker layers between 2 docker host machines"
+authors = ["Vamsi Talupula <tanavamsikrishna@outlook.com>"]
+readme = "Readme.md"
+repository = "https://github.com/tanavamsikrishna/docker-remote-sync"
+packages = [{ include = "drsync" }]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+colorama = "*"
+fabric = "*"
+
+[tool.poetry.group.dev.dependencies]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+docker-remote-sync = "drsync.__main__:main"
