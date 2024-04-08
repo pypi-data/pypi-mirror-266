@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+<template id="multiple_approval">
+    <page string="Approvals" name="tier_validation">
+        <group>
+            <field name="approval_template_id" />
+            <field name="active_approver_partner_ids" widget="many2many_tags" />
+        </group>
+        <field
+                name="approval_ids"
+                attrs="{'invisible':[('approval_ids', '=', [])]}"
+                nolabel="1"
+            />
+    </page>
+</template>
+</odoo>
