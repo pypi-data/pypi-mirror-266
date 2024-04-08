@@ -1,0 +1,56 @@
+Metadata-Version: 2.1
+Name: cesnet-models
+Version: 0.1.0
+Summary: Pre-trained neural networks for encrypted traffic classification
+Author-email: Jan Luxemburk <luxemburk@cesnet.cz>, Karel Hynek <hynekkar@cesnet.cz>
+Maintainer-email: Jan Luxemburk <luxemburk@cesnet.cz>, Karel Hynek <hynekkar@cesnet.cz>
+License: BSD-3-Clause
+Project-URL: Homepage, https://github.com/CESNET/cesnet-models
+Project-URL: Documentation, https://cesnet.github.io/cesnet-models/
+Project-URL: Bug Tracker, https://github.com/CESNET/cesnet-models/issues
+Keywords: traffic classification,deep learning,models
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENCE
+Requires-Dist: numpy
+Requires-Dist: scikit-learn
+Requires-Dist: torch>=1.10
+Provides-Extra: dev
+Requires-Dist: build; extra == "dev"
+Requires-Dist: mkdocs-autorefs; extra == "dev"
+Requires-Dist: mkdocs-material-extensions; extra == "dev"
+Requires-Dist: mkdocs-material; extra == "dev"
+Requires-Dist: mkdocs; extra == "dev"
+Requires-Dist: mkdocstrings-python; extra == "dev"
+Requires-Dist: mkdocstrings; extra == "dev"
+Requires-Dist: twine; extra == "dev"
+
+<p align="center">
+    <img src="https://raw.githubusercontent.com/CESNET/cesnet-models/main/docs/images/models.svg" width="450">
+</p>
+
+[![](https://img.shields.io/badge/license-BSD-blue.svg)](https://github.com/CESNET/cesnet-models/blob/main/LICENCE)
+[![](https://img.shields.io/badge/docs-mkdocs_material-blue.svg)](https://cesnet.github.io/cesnet-models/)
+[![](https://img.shields.io/badge/python->=3.10-blue.svg)](https://pypi.org/project/cesnet-models/)
+[![](https://img.shields.io/pypi/v/cesnet-models)](https://pypi.org/project/cesnet-models/)
+
+
+The goal of this project is to provide pre-trained neural networks for traffic classification in a similar fashion to what torchvision is doing for the computer vision field.
+
+## Installation
+
+Install the package from pip with:
+
+```bash
+pip install cesnet-models
+```
+
+or for editable install with:
+
+```bash
+pip install -e git+https://github.com/CESNET/cesnet-models
+```
