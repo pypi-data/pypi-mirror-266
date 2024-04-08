@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "tkutils"
+version = "1.1.2"
+description = "Python tkinter utilities."
+authors = ["Frédéric Zinelli <frederic.zinelli@gmail.com>"]
+readme = "README.md"
+repository = "https://gitlab.com/frederic-zinelli/tkutils"
+homepage = "http://frederic-zinelli.gitlab.io/tkutils/"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+Pillow = "^9.3"
+typing-extensions = "^4.4"
+
+[tool.poetry.group.dev.dependencies]
+pylint = "^2.15"
+pytest = "^7.2"
+mkdocs = "^1.4"
+mkdocs-material = "^8.5"
+mkdocstrings = {version = "^0.19", extras = ["python"] }
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+essai = "project_debug:routing"
+main = "tkutils.__main__:main"
+
