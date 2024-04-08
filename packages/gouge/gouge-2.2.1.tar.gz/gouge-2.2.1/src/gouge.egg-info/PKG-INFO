@@ -1,0 +1,53 @@
+Metadata-Version: 2.1
+Name: gouge
+Version: 2.2.1
+Summary: Collection of logging formatters.
+Author-email: Michel Albert <michel@albert.lu>
+License: BSD-3-Clause
+Project-URL: Repository, https://github.com/exhuma/gouge
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Other/Nonlisted Topic
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: System :: Logging
+Requires-Python: >=3.7
+Description-Content-Type: text/x-rst
+Requires-Dist: colorama
+Provides-Extra: dev
+Requires-Dist: furo; extra == "dev"
+Requires-Dist: types-colorama; extra == "dev"
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+
+Gouge
+=====
+
+.. image:: https://readthedocs.org/projects/gouge/badge/?version=latest
+   :target: https://gouge.readthedocs.io/en/latest/?badge=latest
+   :alt: Documentation Status
+
+A collection of Python logging formatters. This module contains very predefined
+log formatters which helps having a uniform log-output in multiple projects.
+
+The main use-case of this project was (and still is) uniform CLI output with
+colorised log messages.
+
+
+.. figure:: docs/_static/snapshot1.png
+    :alt: Example screenshot
+
+    Example screenshot using the ``colourcli.Simple`` formatter.
+
+
+Documentation
+=============
+
+For more details and the API docs, head over to read-the-docs_
+
+.. _read-the-docs: https://gouge.readthedocs.io/en/latest
