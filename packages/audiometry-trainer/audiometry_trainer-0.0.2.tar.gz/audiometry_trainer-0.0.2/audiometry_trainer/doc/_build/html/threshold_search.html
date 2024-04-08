@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Threshold search &mdash; audiometry_trainer 0.0.2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Masking" href="masking.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            audiometry_trainer
+          </a>
+              <div class="version">
+                0.0.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Threshold search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="masking.html">Masking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="virtual_listener.html">Virtual listener</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generate_case.html">Generating case files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_interface.html">User interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals.html">Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">audiometry_trainer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Threshold search</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/threshold_search.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="threshold-search">
+<span id="sec-threshold-search"></span><h1>Threshold search<a class="headerlink" href="#threshold-search" title="Permalink to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">S</span></code> marker in the audiogram window shows the current stimulus level. You can use the up/down arrow keys on the keyboard to change stimulus level and the right/left arrow keys to change stimulus frequency. Pressing the spacebar “plays” the stimulus to the virtual listener (the <code class="docutils literal notranslate"><span class="pre">Stimulus</span> <span class="pre">light</span></code> at the bottom will light up). If the virtual listener heard the stimulus the <code class="docutils literal notranslate"><span class="pre">Response</span> <span class="pre">light</span></code> on the left side will light up. You can also use the <code class="docutils literal notranslate"><span class="pre">Play</span> <span class="pre">stimulus</span></code> button to play the stimulus, but using the keyboard is generally more efficient.</p>
+<p>On the left panels there are buttons to either mark the current level as the threshold, mark a no response or a masking dilemma. Keyboard shortcuts for these three actions are <code class="docutils literal notranslate"><span class="pre">T</span></code> to mark the threshold, <code class="docutils literal notranslate"><span class="pre">N</span></code> for no response, and <code class="docutils literal notranslate"><span class="pre">X</span></code> for masking dilemma. Pressing the <code class="docutils literal notranslate"><span class="pre">Delete</span></code> or the <code class="docutils literal notranslate"><span class="pre">D</span></code> keys will delete the currently marked response.</p>
+<p><code class="docutils literal notranslate"><span class="pre">audiometry_trainer</span></code> keeps counts of acending responses to assist in determining threshold according to the Hughson-Westlake procedure. If you do not wish to see these response counts uncheck the <code class="docutils literal notranslate"><span class="pre">Show</span> <span class="pre">response</span> <span class="pre">counts</span></code> checkbox.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">Show</span> <span class="pre">response</span> <span class="pre">ear</span></code> checkbox is checked the response light will be red if the response is coming from the right ear, blue if it is coming from the left ear, and white if both ears respond to the tone. This is useful to illustrate cross-hearing. This can also simulate the situation in which the audiologist asks the listener whether they’re hearing the sound in their left or right ear to ensure, for example, that masking is effectively silencing the non-test ear. This latter usage should not be abused while training to learn clinical audiometry because while <code class="docutils literal notranslate"><span class="pre">audiometry_trainer</span></code> will always indicate the correct answer regarding the response ear, in real life listeners may not always be reliable in indicating the response ear, therefore you should not rely on this.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Auto.</span> <span class="pre">thresh.</span> <span class="pre">search</span></code> button performs an automatic threshold search using the Hughson-Westlake procedure for all the frequencies using the currently selected transducer for channel 1. The automatic threshold search is available only for the measurement of unmasked thresholds. This feature was added because the most interesting aspect of audiometry is the measurement of masked thresholds (if needed), so one can quickly get the unmasked thresholds using the automatic thresholds to then move on to determine if masking is needed, and if so measure the masked thresholds.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Show</span> <span class="pre">estimated</span> <span class="pre">thresholds</span></code> checkboxes can be used to show/hide the thresholds that have been measured. By default all the measured thresholds are shown on the audiogram, but sometimes this generates clutter (e.g. when masked thresholds are obtained after unmasked ones) and it may be useful to hide some of the estimated thresholds.</p>
+<p>To compare the thresholds that you’ve estimated with the actual expected thresholds by using the <code class="docutils literal notranslate"><span class="pre">Show</span> <span class="pre">actual</span> <span class="pre">thresholds</span></code> checkboxes at the bottom of the left panel. Virtual patients are modeled via psychometric functions (see Section <a class="reference internal" href="virtual_listener.html#sec-virtual-listener"><span class="std std-ref">Virtual listener</span></a>) and the “actual” thresholds are computed via Monte Carlo simulations (see Section <a class="reference internal" href="generate_case.html#sec-generate-case"><span class="std std-ref">Generating case files</span></a>), therefore, exact matches to the estimated thresholds should not always be expected, but they should generally be very close.They “actual” thresholds are the median thresholds obtained over a large number of simulations; 95% confidence intervals for these thresholds can be shown by checking the <code class="docutils literal notranslate"><span class="pre">CI</span></code> checkboxes.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="masking.html" class="btn btn-neutral float-right" title="Masking" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, Samuele Carcagno.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
