@@ -1,0 +1,252 @@
+Metadata-Version: 2.1
+Name: feloopy
+Version: 0.2.9
+Summary: FelooPy: Efficient and feature-rich integrated decision environment
+Home-page: https://github.com/ktafakkori/feloopy
+Download-URL: https://github.com/ktafakkori/feloopy/releases
+Author: Keivan Tafakkori
+Author-email: k.tafakkori@gmail.com
+Maintainer: Keivan Tafakkori
+Maintainer-email: k.tafakkori@gmail.com
+License: MIT
+Keywords: computer science,data science,decision making,decision science,industrial engineering,machine learning,management science,mathematical modeling,operations management,operations research,optimization,simulation,supply chain
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: gputil ==1.4.0
+Requires-Dist: infix ==1.2
+Requires-Dist: matplotlib
+Requires-Dist: nbformat ==5.9.2
+Requires-Dist: numba
+Requires-Dist: numpy
+Requires-Dist: openpyxl ==3.1.2
+Requires-Dist: pandas ==2.1.3
+Requires-Dist: plotly
+Requires-Dist: polars
+Requires-Dist: psutil
+Requires-Dist: py-cpuinfo ==9.0.0
+Requires-Dist: scikit-learn
+Requires-Dist: tabulate ==0.9.0
+Requires-Dist: win-unicode-console ==0.5
+Requires-Dist: xlsxwriter ==3.1.9
+Requires-Dist: tqdm
+Requires-Dist: colorama
+Provides-Extra: full
+Requires-Dist: pymprog ==1.1.2 ; extra == 'full'
+Requires-Dist: highspy ; extra == 'full'
+Requires-Dist: gekko ==1.1.0 ; extra == 'full'
+Requires-Dist: mealpy ==3.0.1 ; extra == 'full'
+Requires-Dist: cvxpy ==1.4.2 ; extra == 'full'
+Requires-Dist: ortools ==9.8.3296 ; extra == 'full'
+Requires-Dist: pydecision ==4.3.9 ; extra == 'full'
+Requires-Dist: pymoo ==0.6.1.1 ; extra == 'full'
+Requires-Dist: rsome ==1.2.5 ; extra == 'full'
+Provides-Extra: hyper
+Requires-Dist: pymprog ==1.1.2 ; extra == 'hyper'
+Requires-Dist: highspy ; extra == 'hyper'
+Requires-Dist: gekko ==1.1.0 ; extra == 'hyper'
+Requires-Dist: mealpy ==3.0.1 ; extra == 'hyper'
+Requires-Dist: cvxpy ==1.4.2 ; extra == 'hyper'
+Requires-Dist: ortools ==9.8.3296 ; extra == 'hyper'
+Requires-Dist: pydecision ==4.3.9 ; extra == 'hyper'
+Requires-Dist: pymoo ==0.6.1.1 ; extra == 'hyper'
+Requires-Dist: rsome ==1.2.5 ; extra == 'hyper'
+Requires-Dist: linopy ==0.3.8 ; extra == 'hyper'
+Requires-Dist: mip ==1.15.0 ; extra == 'hyper'
+Requires-Dist: niapy ==2.1.0 ; extra == 'hyper'
+Requires-Dist: picos ==2.4.17 ; extra == 'hyper'
+Requires-Dist: pulp ==2.8.0 ; extra == 'hyper'
+Requires-Dist: pygad ==3.2.0 ; extra == 'hyper'
+Requires-Dist: pyomo ==6.7.1 ; extra == 'hyper'
+Requires-Dist: gurobipy ; extra == 'hyper'
+Requires-Dist: cplex ; extra == 'hyper'
+Requires-Dist: docplex ; extra == 'hyper'
+Requires-Dist: xpress ; extra == 'hyper'
+Requires-Dist: coptpy ; extra == 'hyper'
+Requires-Dist: gamspy ; extra == 'hyper'
+Provides-Extra: mega
+Requires-Dist: pymprog ==1.1.2 ; extra == 'mega'
+Requires-Dist: highspy ; extra == 'mega'
+Requires-Dist: gekko ==1.1.0 ; extra == 'mega'
+Requires-Dist: mealpy ==3.0.1 ; extra == 'mega'
+Requires-Dist: cvxpy ==1.4.2 ; extra == 'mega'
+Requires-Dist: ortools ==9.8.3296 ; extra == 'mega'
+Requires-Dist: pydecision ==4.3.9 ; extra == 'mega'
+Requires-Dist: pymoo ==0.6.1.1 ; extra == 'mega'
+Requires-Dist: rsome ==1.2.5 ; extra == 'mega'
+Requires-Dist: linopy ==0.3.8 ; extra == 'mega'
+Requires-Dist: mip ==1.15.0 ; extra == 'mega'
+Requires-Dist: niapy ==2.1.0 ; extra == 'mega'
+Requires-Dist: picos ==2.4.17 ; extra == 'mega'
+Requires-Dist: pulp ==2.8.0 ; extra == 'mega'
+Requires-Dist: pygad ==3.2.0 ; extra == 'mega'
+Requires-Dist: pyomo ==6.7.1 ; extra == 'mega'
+Requires-Dist: gurobipy ; extra == 'mega'
+Requires-Dist: cplex ; extra == 'mega'
+Requires-Dist: docplex ; extra == 'mega'
+Requires-Dist: xpress ; extra == 'mega'
+Requires-Dist: coptpy ; extra == 'mega'
+Requires-Dist: gamspy ; extra == 'mega'
+Requires-Dist: cylp ==0.92.2 ; extra == 'mega'
+Requires-Dist: pymultiobjective ==1.5.4 ; extra == 'mega'
+Provides-Extra: micro
+Requires-Dist: pymprog ==1.1.2 ; extra == 'micro'
+Requires-Dist: highspy ; extra == 'micro'
+Requires-Dist: gekko ==1.1.0 ; extra == 'micro'
+Requires-Dist: mealpy ==3.0.1 ; extra == 'micro'
+Provides-Extra: mini
+Requires-Dist: pymprog ==1.1.2 ; extra == 'mini'
+Requires-Dist: highspy ; extra == 'mini'
+Requires-Dist: gekko ==1.1.0 ; extra == 'mini'
+Requires-Dist: mealpy ==3.0.1 ; extra == 'mini'
+Requires-Dist: cvxpy ==1.4.2 ; extra == 'mini'
+Requires-Dist: ortools ==9.8.3296 ; extra == 'mini'
+Provides-Extra: nano
+Requires-Dist: pymprog ==1.1.2 ; extra == 'nano'
+Requires-Dist: highspy ; extra == 'nano'
+Provides-Extra: only_cylp
+Requires-Dist: cylp ==0.92.2 ; extra == 'only_cylp'
+Provides-Extra: only_linux
+Requires-Dist: pymultiobjective ==1.5.4 ; extra == 'only_linux'
+Provides-Extra: pico
+Provides-Extra: plus_copt
+Requires-Dist: coptpy ; extra == 'plus_copt'
+Provides-Extra: plus_cplex
+Requires-Dist: cplex ; extra == 'plus_cplex'
+Requires-Dist: docplex ; extra == 'plus_cplex'
+Provides-Extra: plus_gams
+Requires-Dist: gamspy ; extra == 'plus_gams'
+Provides-Extra: plus_gurobi
+Requires-Dist: gurobipy ; extra == 'plus_gurobi'
+Provides-Extra: plus_insideopt
+Requires-Dist: insideopt ; extra == 'plus_insideopt'
+Provides-Extra: plus_insideoptdemo
+Requires-Dist: insideopt-demo ; extra == 'plus_insideoptdemo'
+Provides-Extra: plus_xpress
+Requires-Dist: xpress ; extra == 'plus_xpress'
+Provides-Extra: stock
+Requires-Dist: pymprog ==1.1.2 ; extra == 'stock'
+Requires-Dist: highspy ; extra == 'stock'
+Requires-Dist: gekko ==1.1.0 ; extra == 'stock'
+Requires-Dist: mealpy ==3.0.1 ; extra == 'stock'
+Requires-Dist: cvxpy ==1.4.2 ; extra == 'stock'
+Requires-Dist: ortools ==9.8.3296 ; extra == 'stock'
+Requires-Dist: pydecision ==4.3.9 ; extra == 'stock'
+Requires-Dist: pymoo ==0.6.1.1 ; extra == 'stock'
+Requires-Dist: rsome ==1.2.5 ; extra == 'stock'
+Requires-Dist: linopy ==0.3.8 ; extra == 'stock'
+Requires-Dist: mip ==1.15.0 ; extra == 'stock'
+Requires-Dist: niapy ==2.1.0 ; extra == 'stock'
+Requires-Dist: picos ==2.4.17 ; extra == 'stock'
+Requires-Dist: pulp ==2.8.0 ; extra == 'stock'
+Requires-Dist: pygad ==3.2.0 ; extra == 'stock'
+Requires-Dist: pyomo ==6.7.1 ; extra == 'stock'
+
+<div align="center">
+  <p>
+    <a align="center" href="" target="https://ktafakkori.github.io">
+      <img
+        width="100%"
+        src="docs/assets/banner.png"
+      >
+    </a>
+  </p>
+</div>
+
+<h2 align='center'>Efficient & Feature-Rich Integrated Decision Environment</h2>
+
+
+<div align="center" style="margin-bottom: 2px;">
+
+![Version](https://img.shields.io/static/v1?label=Version&message=v0.2.9&color=darkgreen)
+![Release Date](https://img.shields.io/github/release-date/ktafakkori/feloopy?label=release&color=darkgreen)
+[![Documentation](https://readthedocs.org/projects/feloopy/badge/?label=docs&version=latest&color=darkgreen)](https://feloopy.readthedocs.io/en/latest/?badge=latest&color=darkgreen&label=docs)
+[![Discord](https://img.shields.io/discord/1196153377969676399)](https://discord.gg/VpZDeG8wbv)
+![License](https://img.shields.io/static/v1?label=license&message=MIT&color=darkred)
+
+[![Total Users](https://static.pepy.tech/personalized-badge/feloopy?period=total&units=international_system&left_color=grey&right_color=blue&left_text=total%20users)](https://pepy.tech/project/feloopy?&left_text=totalusers)
+[![Monthly Users](https://img.shields.io/pypi/dm/feloopy?label=monthly%20users&color=blue)](https://pypistats.org/packages/feloopy)
+![Source Users](https://img.shields.io/github/downloads/ktafakkori/feloopy/total?label=source%20users&color=blue)
+</div>
+
+FelooPy (pronounced /fɛlupaɪ/) is a comprehensive and versatile Decision Science and Operations Research library. It allows for coding, modeling, and solving decision problems and aligns with low or no-code requirements, letting you focus more on analytics. The library covers various categories of mathematical and statistical methods for decision-making and utilizes numerous interfaces and solvers without requiring prompting large language models or learning complex coding syntaxes. It is primarily developed in Python, which makes it accessible and callable from multiple programming languages.
+
+[This](https://github.com/ktafakkori/feloopy) is FelooPy project's repository hosted by GitHub.  For more information, please refer to FelooPy's [documentation](https://feloopy.readthedocs.io/en/latest/).
+
+## Quick installation
+
+You can install `feloopy` inside a Python>=3.10.x environment.
+
+```py
+pip install -U "feloopy[stock]==0.2.9"
+```
+
+## Quick test
+
+Here is an example to test FelooPy's functionality:
+
+```py
+import feloopy as flp
+
+m = flp.model(name="model_name", method="exact", interface="pymprog")
+
+x = m.bvar(name="x")
+y = m.pvar(name="y", bound=[0, 1])
+m.con(x + y <= 1, name="c1")
+m.con(x - y >= 1, name="c2")
+m.obj(x + y)
+
+m.sol(directions=["max"], solver="glpk")
+
+m.clean_report()
+```
+
+## Citation
+
+To cite or give credit to FelooPy in publications, projects, presentations, web pages, blog posts, etc. please use one of the following entries, based on the used version:
+
+### Version<=0.2.8
+
+- LaTeX:
+
+   ```console
+   @software{ktafakkori2022Sep,
+   author       = {Keivan Tafakkori},
+   title        = { {FelooPy: An integrated optimization environment for AutoOR in Python} },
+   year         = {2022},
+   month        = sep,
+   publisher    = {GitHub},
+   url          = {https://github.com/ktafakkori/feloopy/}
+   }
+   ```
+
+- APA:
+
+   Tafakkori, K. (2022). FelooPy: An integrated optimization environment for AutoOR in Python [Python Library]. Retrieved from https://github.com/ktafakkori/feloopy (Original work published September 2022).
+
+### Version>=0.2.9
+
+
+- LaTeX:
+
+   ```console
+   @software{ktafakkori2024Apr,
+   author       = {Keivan Tafakkori},
+   title        = { {FelooPy: Efficient and feature-rich integrated decision environment} },
+   year         = {2024},
+   month        = apr,
+   publisher    = {GitHub},
+   url          = {https://github.com/ktafakkori/feloopy/}
+   }
+   ```
+
+- APA:
+
+   Tafakkori, K. (2024). Efficient and feature-rich integrated decision environment [Python Library]. Retrieved from https://github.com/ktafakkori/feloopy (Original work published April 2024).
+
+- In-text:
+
+   * _Note_ 1: Please write the version you used, the latest is v0.2.9.
+   * _Note_ 2: Using secondary interfaces or solvers might also require a citation to their projects.
+
+   Example: FelooPy (v0.2.9) was used in conjunction with [interface x] (v0.0.0) (except `feloopy` itself) as the interface and [solver y] (v0.0.0) as the solver.
