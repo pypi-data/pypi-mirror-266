@@ -1,0 +1,27 @@
+encoder:
+  type: 'resnet34'
+method:
+  type: 'supervised'
+  nb_classes: 5
+  speaker_classification: false
+trainer:
+  init_weights: 'exps/supervised/voxceleb2/sv'
+  epochs: 100
+  tracked_metric: 'val/classification/cremad_train/accuracy'
+  tracked_mode: 'max'
+evaluation:
+  num_frames: 1
+  frame_length: 64000
+  validation:
+    - type: 'classification'
+      csv: 'cremad_train.csv'
+      key: 'Emotion'
+  test:
+    - type: 'classification'
+      csv: 'cremad_train.csv'
+      key: 'Emotion'
+dataset:
+  train: 'cremad_train.csv'
+  label_key: 'Emotion'
+  augmentation:
+    enable: true

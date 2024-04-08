@@ -1,0 +1,28 @@
+encoder:
+  type: 'resnet34'
+  base_dim: 8
+  encoder_dim: 256
+method:
+  type: 'supervised'
+  nb_classes: 2
+  speaker_classification: false
+trainer:
+  epochs: 200
+  tracked_metric: 'val/classification/voxceleb1_train_gender/accuracy'
+  tracked_mode: 'max'
+evaluation:
+  num_frames: 1
+  frame_length: 64000
+  validation:
+    - type: 'classification'
+      csv: 'voxceleb1_train_gender.csv'
+      key: 'Gender'
+  test:
+    - type: 'classification'
+      csv: 'voxceleb1_train_gender.csv'
+      key: 'Gender'
+dataset:
+  train: 'voxceleb1_train_gender.csv'
+  label_key: 'Gender'
+  augmentation:
+    enable: true

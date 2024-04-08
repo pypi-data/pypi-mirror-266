@@ -1,0 +1,27 @@
+encoder:
+  type: 'resnet34'
+method:
+  type: 'supervised'
+  nb_classes: 107
+  speaker_classification: false
+trainer:
+  init_weights: 'exps/supervised/voxceleb2/sv'
+  epochs: 100
+  tracked_metric: 'val/classification/voxlingua107_train/accuracy'
+  tracked_mode: 'max'
+evaluation:
+  num_frames: 1
+  frame_length: 64000
+  validation:
+    - type: 'classification'
+      csv: 'voxlingua107_train.csv'
+      key: 'Language'
+  test:
+    - type: 'classification'
+      csv: 'voxlingua107_train.csv'
+      key: 'Language'
+dataset:
+  train: 'voxlingua107_train.csv'
+  label_key: 'Language'
+  augmentation:
+    enable: true
