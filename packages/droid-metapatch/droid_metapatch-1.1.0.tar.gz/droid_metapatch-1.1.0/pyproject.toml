@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "droid-metapatch"
+version = "1.1.0"
+description = "DROID patch generator"
+authors = ["Allan Eising <allan@eising.dk>"]
+license = "GPL-3.0-only"
+readme = "README.md"
+packages = [{include = "metapatch"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.1"
+mypy = "^1.9.0"
+
+[tool.poetry.scripts]
+droid-metapatch = "metapatch.cli_util:main"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
