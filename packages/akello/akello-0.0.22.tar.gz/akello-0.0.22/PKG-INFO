@@ -1,0 +1,50 @@
+Metadata-Version: 2.3
+Name: akello
+Version: 0.0.22
+Summary: FastAPI server akello.io
+Project-URL: Homepage, https://akello.io
+Project-URL: Issues, https://github.com/akello-io/akello/issues
+Author-email: Vijay Selvaraj <vijay@akellohealth.com>
+License-File: LICENSE
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.8
+Requires-Dist: aiofiles
+Requires-Dist: aws-lambda-powertools
+Requires-Dist: boto3
+Requires-Dist: click
+Requires-Dist: fastapi
+Requires-Dist: fastapi-cognito
+Requires-Dist: flatten-json
+Requires-Dist: jsonschema
+Requires-Dist: mangum
+Requires-Dist: pydantic
+Requires-Dist: pydantic-settings
+Requires-Dist: python-multipart
+Requires-Dist: requests
+Requires-Dist: sendgrid
+Requires-Dist: stripe
+Requires-Dist: uvicorn
+Description-Content-Type: text/markdown
+
+### Set your environment variables
+```commandline
+export AWS_REGION=## 
+export AWS_SECRET_NAME=##  
+export AWS_ACCESS_KEY_ID=##
+export AWS_SECRET_ACCESS_KEY=##
+export DYNAMODB_TABLE=##
+export AWS_COGNITO_USERPOOL_ID=##
+export AWS_COGNITO_APP_CLIENT_ID=##
+```
+
+### Run the Fast API server
+
+```commandline
+python3 -m venv venv 
+source venv/bin/activate
+pip install -r requirements.txt
+uvicorn akello.main:app --reload --proxy-headers
+```
