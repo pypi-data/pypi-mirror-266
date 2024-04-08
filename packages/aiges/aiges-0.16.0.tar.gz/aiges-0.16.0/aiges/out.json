@@ -1,0 +1,279 @@
+{
+    "meta": {
+        "serviceId": "mmocr",
+        "version": "backup.0",
+        "route": "/backup.0/private/mmocr",
+        "sub": "ase",
+        "call": "atmos",
+        "call_type": 0,
+        "hosts": "api.xf-yun.com",
+        "service": [
+            "mmocr"
+        ],
+        "routeKey": [],
+        "mmocr": {
+            "input": {
+                "data": {
+                    "dataType": "image"
+                },
+                "data2": {
+                    "dataType": "image"
+                },
+                "data3": {
+                    "dataType": "text"
+                }
+            },
+            "accept": {
+                "boxes": {
+                    "dataType": "text"
+                },
+                "boxes2": {
+                    "dataType": "text"
+                }
+            }
+        }
+    },
+    "schemainput": {
+        "type": "object",
+        "properties": {
+            "header": {
+                "type": "object",
+                "properties": {
+                    "appid": {
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "uid": {
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "device_id": {
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "device.imei": {
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "device.imsi": {
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "device.mac": {
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "device.other": {
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "net.type": {
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "net.isp": {
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "app.ver": {
+                        "type": "string",
+                        "maxLength": 50
+                    }
+                },
+                "required": [
+                    "appid"
+                ]
+            },
+            "parameter": {
+                "type": "object",
+                "properties": {
+                    "mmocr": {
+                        "type": "object",
+                        "properties": {
+                            "param1": {
+                                "type": "string",
+                                "enum": [
+                                    "3",
+                                    "eee"
+                                ]
+                            },
+                            "param2": {
+                                "type": "boolean",
+                                "default": true
+                            },
+                            "param3": {
+                                "type": "number",
+                                "maximum": 44
+                            }
+                        },
+                        "required": []
+                    }
+                }
+            },
+            "payload": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "encoding": {
+                                "type": "string",
+                                "enum": [
+                                    "jpg",
+                                    "png",
+                                    "bmp",
+                                    "jpeg"
+                                ]
+                            },
+                            "image": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 10485760
+                            },
+                            "status": {
+                                "type": "integer",
+                                "enum": [
+                                    3
+                                ]
+                            }
+                        }
+                    },
+                    "data2": {
+                        "type": "object",
+                        "properties": {
+                            "encoding": {
+                                "type": "string",
+                                "enum": [
+                                    "jpg",
+                                    "png",
+                                    "bmp",
+                                    "jpeg"
+                                ]
+                            },
+                            "image": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 10485760
+                            },
+                            "status": {
+                                "type": "integer",
+                                "enum": [
+                                    3
+                                ]
+                            }
+                        }
+                    },
+                    "data3": {
+                        "type": "object",
+                        "properties": {
+                            "encoding": {
+                                "type": "string",
+                                "enum": [
+                                    "utf8",
+                                    "gb2312"
+                                ]
+                            },
+                            "compress": {
+                                "type": "string",
+                                "enum": [
+                                    "gzip"
+                                ]
+                            },
+                            "status": {
+                                "type": "integer",
+                                "enum": [
+                                    0,
+                                    1,
+                                    2,
+                                    3
+                                ]
+                            },
+                            "seq": {
+                                "type": "integer"
+                            },
+                            "text": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "schemaoutput": {
+        "type": "object",
+        "properties": {
+            "payload": {
+                "type": "object",
+                "properties": {
+                    "boxes": {
+                        "type": "object",
+                        "properties": {
+                            "encoding": {
+                                "type": "string",
+                                "enum": [
+                                    "utf8",
+                                    "gb2312"
+                                ]
+                            },
+                            "compress": {
+                                "type": "string",
+                                "enum": [
+                                    "gzip"
+                                ]
+                            },
+                            "status": {
+                                "type": "integer",
+                                "enum": [
+                                    0,
+                                    1,
+                                    2,
+                                    3
+                                ]
+                            },
+                            "seq": {
+                                "type": "integer"
+                            },
+                            "text": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "boxes2": {
+                        "type": "object",
+                        "properties": {
+                            "encoding": {
+                                "type": "string",
+                                "enum": [
+                                    "utf8",
+                                    "gb2312"
+                                ]
+                            },
+                            "compress": {
+                                "type": "string",
+                                "enum": [
+                                    "gzip"
+                                ]
+                            },
+                            "status": {
+                                "type": "integer",
+                                "enum": [
+                                    0,
+                                    1,
+                                    2,
+                                    3
+                                ]
+                            },
+                            "seq": {
+                                "type": "integer"
+                            },
+                            "text": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
