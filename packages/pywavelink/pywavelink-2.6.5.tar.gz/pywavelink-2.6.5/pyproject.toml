@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pywavelink"
+version = "2.6.5"
+authors = [
+  { name="Timo"},
+]
+dynamic = ["dependencies"]
+description = "A robust and powerful Lavalink wrapper for py-cord"
+readme = "README.rst"
+requires-python = ">=3.10"
+classifiers = [
+        "License :: OSI Approved :: MIT License",
+        "Intended Audience :: Developers",
+        "Natural Language :: English",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Topic :: Internet",
+        "Topic :: Software Development :: Libraries",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+        "Topic :: Utilities",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/PythonistaGuild/Wavelink"
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
