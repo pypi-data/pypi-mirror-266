@@ -1,0 +1,171 @@
+general:
+  title: Project planning Company
+  color: corporateblauw
+  dayfirst: true
+  reference_date: today
+  scale: daily
+  planning_start: 1-10-2022
+  planning_end: 31-12-2024
+  weeks_margin_left: 4
+  weeks_margin_right: 4
+  output_directories:
+    planning: output_planning
+    resources: output_resources
+    excel: output_excel
+    vacations: output_vacations
+  font_info:
+    fill: black
+    stroke: black
+    stroke_width: 0
+    font_family: Verdana
+  country_code: "nl_NL.UTF-8"  # causes Dutch names for the months. Leave out if you want English
+  custom_colors:
+    # Used in the Excel output below
+    hemelblauw: 5b9bd5
+    zachtgroen: 70ad47
+    terrarood: ed7d31
+    donkergrijs: 808080
+    # Used in the projects
+    # All the webcolors names are already recognised: https://en.wikipedia.org/wiki/Web_colors
+    appelgroen: AFCB05
+    appelgroenvergrijsd: 899D0C
+    codecolor: 585858
+    corporateblauw: 271D6C
+    corporatelichtblauw: 00A1CD
+    donkerblauw: 0058B8
+    donkerblauwvergrijsd: 163A72
+    geel: FFCC00
+    geelvergrijsd: FFB600
+    grasgroen: 53A31D
+    grasgroenvergrijsd: 488225
+    grijs: 666666
+    highchartslichtgrijs: EFEFEF
+    lichtblauw: 00A1CD
+    lichtblauwvergrijsd: 0581A2
+    lichtgrijs: E0E0E0
+    loodgrijs: 929292
+    oranje: F39200
+    oranjevergrijsd: CE7C00
+    rood: E94C0A
+    roodvergrijsd: B23D02
+    roze: AF0E80
+    rozevergrijsd: 82045E
+    violet: AC218E
+project_settings_file_per_employee:
+  emp1: projects_emp1.yml
+  emp2: projects_emp2.yml
+  emp3: projects_emp3.yml
+periods:
+  all:
+    scale: weekly
+    export_vacations: false
+  summer_holiday:
+    planning_start: 1-6-2023
+    planning_end: 10-9-2023
+    weeks_margin_left: 2
+    weeks_margin_right: 2
+    scale: daily
+    export_vacations: true
+  end_of_year:
+    planning_start: 1-8-2023
+    planning_end: 10-9-2023
+    weeks_margin_left: 2
+    weeks_margin_right: 2
+    scale: daily
+vacations: vacations.yml
+employees: employees.yml
+excel:
+  per_project_leader:
+    do_it: false
+    type: leaders
+    column_widths:
+      name: 30
+      task: 50
+      period: 10
+      remark: 30
+    header:
+      what:
+        color: hemelblauw
+        title: What
+        columns:
+          name: Statistics / Project
+          vir: VIR-procescode
+          link: Link to main folder
+          casper_project: CASPER-project
+          casper_task: CASPER-task
+          task: Phase / Activity
+          focal_point: Focal point activities
+      when:
+        color: zachtgroen
+        title: When
+        columns:
+          period: Period
+          start: Start date
+          stop: End date
+          deadline: Deadline
+      who:
+        color: terrarood
+        title: Who
+        columns:
+          # The keys defined her correspond to the keys given in the tasks.
+          # E.g. the key 'cci' corresponds in the file 'project_emp3.yml'  to the task 'request_documents': cci: 'No'
+          # Here we create a column cci with the column title 'CCI' which will get the value 'No' for this task.
+          # You can define you own columns which you can use in your task attributes
+          project_leader.: Project Leader
+          employee_1: Employee 1
+          employee_2: Employee 2
+          employee_3: Employee 3
+          department1: Departement 1
+          cci: CCI
+      other_business:
+        color: donkergrijs
+        title: other_business
+        columns:
+          remark: Remarks
+  per_employee:
+    do_it: false
+    type: contributors
+    column_widths:
+      name: 30
+      task: 50
+      period: 10
+      remark: 30
+    header:
+      what:
+        color: hemelblauw
+        title: What
+        columns:
+          name: Statistics / Project
+          task: Phase / Activity
+      when:
+        color: zachtgroen
+        title: When
+        columns:
+          period: period
+          start: Start date
+          stop: End date
+          hours: Hours
+      other_business:
+        color: donkergrijs
+        title: other_business
+        columns:
+          remark: Remarks
+    summations:
+      total_hours_project:
+        # If this is given, by default, the total hours are added to the column 'hours'
+        # next to that; extra column values can be given as below
+        project_leader_name:
+          variables:
+            # The internal variabele is used for the value, which are replaced with the string
+            name: projects_employee.name
+          value: "Total hours for {{ name }}"
+          column_key: task
+          column_format: left_align_bold
+      total_hours_global:
+        # Defines the total sums per employee. Is based on internal variabele total_hours_global
+        # not that column_key and column_format default to task and align_left_bold
+        employee_name:
+          variables:
+            # The internal variabele is used for the value, which are replaced with the string
+            name: resource.fullname
+          value: "Total hours all tasks for {{ name }}"
