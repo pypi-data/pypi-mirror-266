@@ -1,0 +1,179 @@
+Metadata-Version: 2.1
+Name: pre-commit-hooks-g
+Version: 1.2.0
+Summary: Pre-commit hooks for G
+License: MIT
+Author: Felipe P. Silva
+Author-email: felipefoz@gmail.com
+Requires-Python: >=3.11,<4.0
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Project-URL: Bug Tracker, https://gitlab.com/felipe_public/pre-commit-hooks-g/-/issues
+Project-URL: homepage, https://gitlab.com/felipe_public/pre-commit-hooks-g
+Project-URL: repository, https://gitlab.com/felipe_public/pre-commit-hooks-g
+Description-Content-Type: text/plain
+
+= Pre-Commit Hooks for G
+
+This is the repository for holding the pre-commit hooks for G code (LabVIEW).
+
+The code was developed over the pre-commit platform in python and uses G-CLI to call labview.
+
+== Usage
+
+Setup and usage of pre-commit hooks are well documented in link:https://pre-commit.com/#usage[Pre-Commit website].
+
+Each hook has its own configuration and that is detailed down below in the available hooks section.
+
+The main tool has some options that can be used as arguments in each of the hooks. Use this with caution, as this is not a global configuration, and can cause undesired effects running on multiple hooks at once.
+
+[cols="1,1"]
+|===
+|Argument |description
+
+|--allow-dialogs
+|Allow dialogs option from G-CLI. Check G-CLI documentation.
+
+|--debug
+|Enables debugging of the hook wrapper, it does not close the VI after running.
+
+|--hook-args and \--
+|It is possible to forward args to the hooks. Use this as your last argument and the arguments to the hook as items in the list. Include a \-- at the end to split from the wrapper arguments. Arguments need to use a different leading notation, not - or \--, as they are recognized as python argparse arguments.
+|===
+
+== Available Hooks
+
+The available hooks are mainly listed in the .pre-commit-hooks.yaml.
+
+Here is a small description on the ones available now. For supported file types you may check the .pre-commit-hooks.yaml file.
+
+See example file on how to setup, see link:docs/.pre-commit-config-example.yaml[Config Example]
+
+=== Close LabVIEW
+
+Simple hook to close LabVIEW before starting the other processes. It can be useful for making sure everything is closed in memory.
+
+=== VI Broken
+
+Check if VI/file is in executable state. You may skip using a bookmark "#vi-broken skip". Useful for FPGA VIs for example.
+
+=== VI Description
+
+Check if there is a VI description.
+
+=== Remove Mutation History
+
+Remove mutation history from classes (lvclass) if they are present.
+
+=== Separate Compiled Code from Source
+
+Set to separate compiled code from source in VI, VIM, CTL, LVCLASS, LVLIB.
+
+In projects, it sets to separate compiled from source in new items.
+
+=== Check Missing Items
+
+In projects, lvlibs and lvclass it checks if one of those have missing items. It will fail if it finds missing items.
+
+=== VI Version
+
+Verify if the VI version matches the argument.
+
+To add argument, modify hooks configuration to: 
+
+[source,yaml]
+----
+    - id: vi-version
+      args: [--hook-args, /version, "17.0", --]
+----
+
+Replace by the LabVIEW Version.
+Don't forget trailing dashes (--). This makes python to ignore and forward this part to G-CLI.
+
+In case no argument is provided, the hook is no-op.
+=== Discard No Changes
+
+EXPERIMENTAL. It tests if the VI is equal in matter of LVCompare. This means although they differ in git, they do not have a difference.
+
+The Hook will unstage the file using git, so users can evaluate themselves if the equal comparison is valid.
+
+Known issues with visibility of node in structures, i.e. hidden iteration terminal in a loop. LVCompare shows them both as equal.
+
+Use LVCompare afterwards to make sure the VI is the same before totally discarding the changes.
+
+=== Yellow - G Code formatter
+
+Format the VIs with the current steps (Some steps were borrowed from the Nattify, QD Enthushiasts).
+None of the steps are configurable, not even by INI entries. Name is a reference to the Black, which is a opinionated formatter for Python.
+
+* Arrange Windows - you may skip front panel arrangement with the bookmark '#yellow skip-fp'
+* Terminal as Icons - icon view is false
+* Auto Erro Handling - turn off auto error handling
+* Separate Compiled Code from Source - set flag to keep source only
+
+== Design
+
+Because there is no support for direct G support in the pre-commits, it was decided to create a python wrapper that will call the labview hooks using G-CLI.
+
+The hooks were simplified with a LabVIEW Wrapper, so they do not need to handle all arguments received by the Pre-Commit framework.
+
+Instead it just receive a cluster with the required data.
+
+The Python code handles arguments and calling the G-CLI for the specific hook
+
+The coded iterates over the different files in one call, avoiding performance issues by calling the hook wrapper many times.
+
+== Contributing
+
+You can decide to create new hooks or contribute with the python code.
+
+Either way, make sure to install pre-commit.
+
+=== Python Code
+
+Uses at least Python 3.11, as it was not tested with other versions (to do).
+Requirementes:
+
+* Python 3.11
+* Poetry
+
+To run it use:
+
+* `make setup` - Setup
+
+* `make tests` - Test
+
+* `make format` - Code formatting
+
+* `make all` - Format and test
+
+=== Developing new hooks
+
+New hooks can be developed following the template in docs/hook-template.vit.
+
+Make sure you close the VI reference if you open it.
+
+Create tests accordingly for each of the supported files types and eventually VI types.
+
+Fork, modify the code and submit a merge request back.
+
+=== External hooks
+
+External hooks are not supported yet, although it is under investigation.
+
+This means if you want to develop your own hook you need to submit a MR or create a hook in your own fork.
+
+== Dependencies
+
+- G-CLI
+- Caraya Unit Test Framework
+- Python 3.11 and Poetry
+
+== Author
+
+Felipe Pinheiro Silva - felipefoz@gmail.com
