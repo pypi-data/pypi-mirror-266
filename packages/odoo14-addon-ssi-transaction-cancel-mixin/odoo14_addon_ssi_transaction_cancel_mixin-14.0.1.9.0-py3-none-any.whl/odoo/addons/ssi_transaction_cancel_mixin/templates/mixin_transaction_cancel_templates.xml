@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+<template id="cancel_policy_field">
+    <field name="cancel_ok" />
+</template>
+
+<template id="button_cancel">
+    <button
+            name="%(ssi_transaction_cancel_mixin.base_select_cancel_reason_action)d"
+            string="Cancel"
+            type="action"
+            attrs="{'invisible':[('cancel_ok','!=',True)]}"
+        />
+</template>
+
+<template id="tree_button_cancel">
+    <button
+            name="%(ssi_transaction_cancel_mixin.base_select_cancel_reason_action)d"
+            string="Cancel"
+            type="action"
+        />
+</template>
+
+<template id="cancel_reason">
+    <h2 attrs="{'invisible': [('state', '!=', 'cancel')]}">
+        <label for="cancel_reason_id" string="Cancellation reason:" />
+        <field name="cancel_reason_id" class="oe_inline" />
+    </h2>
+</template>
+
+<template id="cancel_filter">
+    <filter name="dom_cancel" string="Cancel" domain="[('state', '=', 'cancel')]" />
+</template>
+</odoo>
