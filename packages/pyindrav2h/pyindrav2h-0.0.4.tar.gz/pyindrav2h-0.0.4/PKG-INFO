@@ -1,0 +1,123 @@
+Metadata-Version: 2.1
+Name: pyindrav2h
+Version: 0.0.4
+Summary: API client and example CLI to interact with Indra V2H Chargers
+Author-email: Paul Morris <paul@creatingwake.com>
+License: MIT License
+        
+        Copyright (c) 2024 creatingwake
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+Project-URL: Homepage, https://github.com/creatingwake/pyindrav2h
+Keywords: v2h,indra,v2g,v2x
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: httpx
+Requires-Dist: bs4
+Requires-Dist: lxml
+
+
+# pyindrav2h
+
+A basic API client and example CLI to interact with Indra V2H Chargers.  Required by Home Assistant.
+
+This is a very early Alpha release, and functionality may change very rapidly.
+
+NOTE: Indra Renewable Technologies Limited are aware of this integration.  However, this is an unofficial integration and Indra are not able to provide support for direct API integrations.  The Indra API will likely change in future which may result in functionality provided by this integration failing at any time.
+
+
+
+## Installation
+
+Install pyindrav2h with pip.  Using venv is recommended.
+
+```bash
+  pip install pyindrav2h
+```
+to update pyindrav2h
+```bash
+  pip install pyindrav2h -U
+```
+On installation a CLI will become available: ```indracli```
+## Usage/Examples
+
+### CLI
+
+```bash
+usage: indracli [-h] [-u EMAIL] [-p PASSWORD] [-d] {statistics,device,all,loadmatch,idle,exportmatch,charge,discharge,schedule} ...
+
+Indra V2H CLI
+
+positional arguments:
+  {statistics,device,all,loadmatch,idle,exportmatch,charge,discharge,schedule}
+    statistics          show device statistics
+    device              show device info
+    all                 show all info
+    loadmatch           set mode to load matching
+    idle                set mode to IDLE
+    exportmatch         set mode to export matching
+    charge              set mode to CHARGE
+    discharge           set mode to discharge
+    schedule            return to scheuduled mode
+
+options:
+  -h, --help            show this help message and exit
+  -u EMAIL, --email EMAIL
+  -p PASSWORD, --password PASSWORD
+  -d, --debug
+```
+
+It is possible to provide a configuration file to provide Indra Smart Portal credentials.  If no username/email or password is provided it will be retrieved from ```./.indra.cfg``` or ```~/.indra.cfg```
+
+#### Example .indra.cfg Configuration file
+```
+[indra-account]
+email=useremail@email.com
+password=yourindrapassword
+```
+
+### Library Usage
+
+Intended for use with Indra V2H Home Assistant integration.
+Documentation to follow.
+
+## Support
+
+This is a community project that lacks formal support.
+
+
+For support from the community please join the Indra V2H trial support community: https://indra.v2h.zendesk.com/hc/en-gb/community/topics
+
+
+
+For bugs or feature requests please create a GitHub Issue: https://github.com/creatingwake/pyindrav2h/issues
+
+---
+#### NOTE: Please do not contact Indra Support.  Indra are unable to assist with unofficial API integrations.
+
+
+## Acknowledgements
+
+ - [trizmark](https://github.com/trizmark) for help with home assistant API integration examples
+
+
