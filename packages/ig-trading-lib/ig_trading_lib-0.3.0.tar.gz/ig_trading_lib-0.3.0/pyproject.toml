@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "ig-trading-lib"
+version = "0.3.0"
+description = "A Python library for IG Trading."
+authors = ["Evgeny Aleshin"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+requests = "^2.31.0"
+pydantic = "^2.6.3"
+cryptography = "^42.0.5"
+python-dotenv = "^1.0.1"
+
+[tool.poetry.extras]
+trading = []
+markets = []
+account = []
+streaming = []
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.1"
+pytest-mock = "^3.12.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
