@@ -1,0 +1,27 @@
+name: release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  release:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install upload deps
+        run: pip install '.[upload]'
+
+      - name: Upload to PyPi
+        run: |
+          export TWINE_USERNAME=__token__
+          export TWINE_PASSWORD=${{ secrets.PYPI }}
+          python -m build
+          twine upload dist/*
