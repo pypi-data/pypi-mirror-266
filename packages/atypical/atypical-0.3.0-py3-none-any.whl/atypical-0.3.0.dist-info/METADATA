@@ -1,0 +1,106 @@
+Metadata-Version: 2.3
+Name: atypical
+Version: 0.3.0
+Summary: Type handling and normalization for non-standard types like email, phone numbers, money, dates, etc. serializable and deserializable as JSON, JSON Schema, and Pydantic.
+Project-URL: Homepage, https://github.com/goodcleanfun/atypical
+Project-URL: Repository, https://github.com/goodcleanfun/atypical
+Author: Al Barrentine
+License-Expression: MIT
+License-File: LICENSE
+Keywords: atypical,utils
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.8
+Requires-Dist: babel
+Requires-Dist: communal
+Requires-Dist: email-validator>=1.1.3
+Requires-Dist: furl
+Requires-Dist: jinja2>=3.0.1
+Requires-Dist: money
+Requires-Dist: pendulum
+Requires-Dist: phonenumbers
+Requires-Dist: pydantic>2
+Requires-Dist: python-dateutil
+Requires-Dist: pytz>=2022.1
+Requires-Dist: sartorial
+Description-Content-Type: text/markdown
+
+# atypical
+Custom types for things like phone numbers, emails, etc. with normalization, Pydantic handling and JSON Schema serialization
+
+## Examples
+
+```python
+from atypical.email import Email
+from atypical.money import Money
+from atypical.phone import PhoneNumber
+from atypical.url import NormalizedURL
+from sartorial.schema import Schema
+
+
+class MyModel(Schema):
+    email: Email
+    phone_number: PhoneNumber
+    amount: Money
+    website: NormalizedURL
+
+import json
+print(MyModel.model_json_schema())  # or MyModel.to_schema_dict()
+
+# Output
+'''
+{
+    "additionalProperties": true,
+    "properties": {
+        "email": {
+            "format": "email",
+            "type": "string"
+        },
+        "phone_number": {
+            "format": "phone",
+            "type": "string"
+        },
+        "amount": {
+            "format": "money",
+            "type": "string"
+        },
+        "website": {
+            "format": "normalized-url",
+            "type": "string"
+        }
+    },
+    "required": [
+        "email",
+        "phone_number",
+        "amount",
+        "website"
+    ],
+    "title": "MyModel",
+    "type": "object"
+}
+ '''
+
+m = MyModel(email="foo.bar+baz@gmail",
+            phone_number="1 (212) 555-6789",
+            amount="$100",
+            website="example.com")
+
+print(m.model_dump_json(indent=4))  # or m.to_json()
+
+# Output
+'''
+{
+    "email": "foobar@gmail.com",
+    "phone_number": "+12125556789",
+    "amount": "$100.00",
+    "website": "https://example.com/"
+}
+'''
+```
