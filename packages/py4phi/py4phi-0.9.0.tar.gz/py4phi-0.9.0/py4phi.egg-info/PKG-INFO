@@ -1,0 +1,415 @@
+Metadata-Version: 2.1
+Name: py4phi
+Version: 0.9.0
+Summary: A library for encryption/decryption and analysis of sensitive data.
+Author-email: Volodymyr Kiriushyn <zalorderon3331@gmail.com>
+License:                                  Apache License
+                                   Version 2.0, January 2004
+                                http://www.apache.org/licenses/
+        
+           TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+        
+           1. Definitions.
+        
+              "License" shall mean the terms and conditions for use, reproduction,
+              and distribution as defined by Sections 1 through 9 of this document.
+        
+              "Licensor" shall mean the copyright owner or entity authorized by
+              the copyright owner that is granting the License.
+        
+              "Legal Entity" shall mean the union of the acting entity and all
+              other entities that control, are controlled by, or are under common
+              control with that entity. For the purposes of this definition,
+              "control" means (i) the power, direct or indirect, to cause the
+              direction or management of such entity, whether by contract or
+              otherwise, or (ii) ownership of fifty percent (50%) or more of the
+              outstanding shares, or (iii) beneficial ownership of such entity.
+        
+              "You" (or "Your") shall mean an individual or Legal Entity
+              exercising permissions granted by this License.
+        
+              "Source" form shall mean the preferred form for making modifications,
+              including but not limited to software source code, documentation
+              source, and configuration files.
+        
+              "Object" form shall mean any form resulting from mechanical
+              transformation or translation of a Source form, including but
+              not limited to compiled object code, generated documentation,
+              and conversions to other media types.
+        
+              "Work" shall mean the work of authorship, whether in Source or
+              Object form, made available under the License, as indicated by a
+              copyright notice that is included in or attached to the work
+              (an example is provided in the Appendix below).
+        
+              "Derivative Works" shall mean any work, whether in Source or Object
+              form, that is based on (or derived from) the Work and for which the
+              editorial revisions, annotations, elaborations, or other modifications
+              represent, as a whole, an original work of authorship. For the purposes
+              of this License, Derivative Works shall not include works that remain
+              separable from, or merely link (or bind by name) to the interfaces of,
+              the Work and Derivative Works thereof.
+        
+              "Contribution" shall mean any work of authorship, including
+              the original version of the Work and any modifications or additions
+              to that Work or Derivative Works thereof, that is intentionally
+              submitted to Licensor for inclusion in the Work by the copyright owner
+              or by an individual or Legal Entity authorized to submit on behalf of
+              the copyright owner. For the purposes of this definition, "submitted"
+              means any form of electronic, verbal, or written communication sent
+              to the Licensor or its representatives, including but not limited to
+              communication on electronic mailing lists, source code control systems,
+              and issue tracking systems that are managed by, or on behalf of, the
+              Licensor for the purpose of discussing and improving the Work, but
+              excluding communication that is conspicuously marked or otherwise
+              designated in writing by the copyright owner as "Not a Contribution."
+        
+              "Contributor" shall mean Licensor and any individual or Legal Entity
+              on behalf of whom a Contribution has been received by Licensor and
+              subsequently incorporated within the Work.
+        
+           2. Grant of Copyright License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              copyright license to reproduce, prepare Derivative Works of,
+              publicly display, publicly perform, sublicense, and distribute the
+              Work and such Derivative Works in Source or Object form.
+        
+           3. Grant of Patent License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              (except as stated in this section) patent license to make, have made,
+              use, offer to sell, sell, import, and otherwise transfer the Work,
+              where such license applies only to those patent claims licensable
+              by such Contributor that are necessarily infringed by their
+              Contribution(s) alone or by combination of their Contribution(s)
+              with the Work to which such Contribution(s) was submitted. If You
+              institute patent litigation against any entity (including a
+              cross-claim or counterclaim in a lawsuit) alleging that the Work
+              or a Contribution incorporated within the Work constitutes direct
+              or contributory patent infringement, then any patent licenses
+              granted to You under this License for that Work shall terminate
+              as of the date such litigation is filed.
+        
+           4. Redistribution. You may reproduce and distribute copies of the
+              Work or Derivative Works thereof in any medium, with or without
+              modifications, and in Source or Object form, provided that You
+              meet the following conditions:
+        
+              (a) You must give any other recipients of the Work or
+                  Derivative Works a copy of this License; and
+        
+              (b) You must cause any modified files to carry prominent notices
+                  stating that You changed the files; and
+        
+              (c) You must retain, in the Source form of any Derivative Works
+                  that You distribute, all copyright, patent, trademark, and
+                  attribution notices from the Source form of the Work,
+                  excluding those notices that do not pertain to any part of
+                  the Derivative Works; and
+        
+              (d) If the Work includes a "NOTICE" text file as part of its
+                  distribution, then any Derivative Works that You distribute must
+                  include a readable copy of the attribution notices contained
+                  within such NOTICE file, excluding those notices that do not
+                  pertain to any part of the Derivative Works, in at least one
+                  of the following places: within a NOTICE text file distributed
+                  as part of the Derivative Works; within the Source form or
+                  documentation, if provided along with the Derivative Works; or,
+                  within a display generated by the Derivative Works, if and
+                  wherever such third-party notices normally appear. The contents
+                  of the NOTICE file are for informational purposes only and
+                  do not modify the License. You may add Your own attribution
+                  notices within Derivative Works that You distribute, alongside
+                  or as an addendum to the NOTICE text from the Work, provided
+                  that such additional attribution notices cannot be construed
+                  as modifying the License.
+        
+              You may add Your own copyright statement to Your modifications and
+              may provide additional or different license terms and conditions
+              for use, reproduction, or distribution of Your modifications, or
+              for any such Derivative Works as a whole, provided Your use,
+              reproduction, and distribution of the Work otherwise complies with
+              the conditions stated in this License.
+        
+           5. Submission of Contributions. Unless You explicitly state otherwise,
+              any Contribution intentionally submitted for inclusion in the Work
+              by You to the Licensor shall be under the terms and conditions of
+              this License, without any additional terms or conditions.
+              Notwithstanding the above, nothing herein shall supersede or modify
+              the terms of any separate license agreement you may have executed
+              with Licensor regarding such Contributions.
+        
+           6. Trademarks. This License does not grant permission to use the trade
+              names, trademarks, service marks, or product names of the Licensor,
+              except as required for reasonable and customary use in describing the
+              origin of the Work and reproducing the content of the NOTICE file.
+        
+           7. Disclaimer of Warranty. Unless required by applicable law or
+              agreed to in writing, Licensor provides the Work (and each
+              Contributor provides its Contributions) on an "AS IS" BASIS,
+              WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+              implied, including, without limitation, any warranties or conditions
+              of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+              PARTICULAR PURPOSE. You are solely responsible for determining the
+              appropriateness of using or redistributing the Work and assume any
+              risks associated with Your exercise of permissions under this License.
+        
+           8. Limitation of Liability. In no event and under no legal theory,
+              whether in tort (including negligence), contract, or otherwise,
+              unless required by applicable law (such as deliberate and grossly
+              negligent acts) or agreed to in writing, shall any Contributor be
+              liable to You for damages, including any direct, indirect, special,
+              incidental, or consequential damages of any character arising as a
+              result of this License or out of the use or inability to use the
+              Work (including but not limited to damages for loss of goodwill,
+              work stoppage, computer failure or malfunction, or any and all
+              other commercial damages or losses), even if such Contributor
+              has been advised of the possibility of such damages.
+        
+           9. Accepting Warranty or Additional Liability. While redistributing
+              the Work or Derivative Works thereof, You may choose to offer,
+              and charge a fee for, acceptance of support, warranty, indemnity,
+              or other liability obligations and/or rights consistent with this
+              License. However, in accepting such obligations, You may act only
+              on Your own behalf and on Your sole responsibility, not on behalf
+              of any other Contributor, and only if You agree to indemnify,
+              defend, and hold each Contributor harmless for any liability
+              incurred by, or claims asserted against, such Contributor by reason
+              of your accepting any such warranty or additional liability.
+        
+           END OF TERMS AND CONDITIONS
+        
+           APPENDIX: How to apply the Apache License to your work.
+        
+              To apply the Apache License to your work, attach the following
+              boilerplate notice, with the fields enclosed by brackets "[]"
+              replaced with your own identifying information. (Don't include
+              the brackets!)  The text should be enclosed in the appropriate
+              comment syntax for the file format. We also recommend that a
+              file or class name and description of purpose be included on the
+              same "printed page" as the copyright notice for easier
+              identification within third-party archives.
+        
+           Copyright [yyyy] [name of copyright owner]
+        
+           Licensed under the Apache License, Version 2.0 (the "License");
+           you may not use this file except in compliance with the License.
+           You may obtain a copy of the License at
+        
+               http://www.apache.org/licenses/LICENSE-2.0
+        
+           Unless required by applicable law or agreed to in writing, software
+           distributed under the License is distributed on an "AS IS" BASIS,
+           WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+           See the License for the specific language governing permissions and
+           limitations under the License.
+        
+Project-URL: repository, https://github.com/volodymyrkir/py4phi
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+License-File: NOTICE
+Requires-Dist: iniconfig>=2.0.0
+Requires-Dist: packaging>=23.2
+Requires-Dist: pluggy>=1.3.0
+Requires-Dist: py4j>=0.10.9.7
+Requires-Dist: pyspark>=3.5.0
+Requires-Dist: configparser-crypt>=1.1.0
+Requires-Dist: pycryptodome>=3.20.0
+Requires-Dist: pandas>=2.2.0
+Requires-Dist: pyarrow>=15.0.0
+Requires-Dist: polars>=0.20.9
+Requires-Dist: click>=8.1.7
+Requires-Dist: scikit-learn>=1.4.1.post1
+Requires-Dist: scipy>=1.12.0
+Requires-Dist: setuptools>=69.1.0
+Provides-Extra: test
+Requires-Dist: pytest==7.4.4; extra == "test"
+Requires-Dist: pytest-mock==3.12.0; extra == "test"
+Requires-Dist: pytest-cov==4.1.0; extra == "test"
+Requires-Dist: mypy==1.8.0; extra == "test"
+Requires-Dist: ruff==0.1.3; extra == "test"
+
+# Introduction
+**py4phi** is a simple solution for the complex problem of dealing with sensitive data.
+
+In the modern IT world, sharing a dataset with sensitive data is common, especially if a team working on it is wide. It can be used for various purposes, including building a ML/DL model, simple business analysis, etc. Of course, in most companies, different restrictions are applied on the data, including row-level security, column hashing, or encrypting, but this requires at least some knowledge of data engineering libraries and can be  a challenging and time-consuming task. At the same time, employees with access to sensitive parts of the data may not have such expertise, which is where **py4phi** can be helpful.
+
+[![Coverage Status](https://coveralls.io/repos/github/volodymyrkir/py4phi/badge.svg?branch=ci_update)](https://coveralls.io/github/volodymyrkir/py4phi?branch=ci_update)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/py4phi)
+[![image](https://img.shields.io/pypi/v/py4phi.svg)](https://pypi.python.org/pypi/py4phi)
+[![image](https://img.shields.io/pypi/l/py4phi.svg)](https://pypi.python.org/pypi/py4phi)
+[![image](https://img.shields.io/pypi/pyversions/py4phi.svg)](https://pypi.python.org/pypi/py4phi)
+# Functionality
+**py4phi** offers the following functionality to solve the problem mentioned above and more:
+**Encrypt a dataset column-wise.**
+**Decrypt a dataset column-wise.**
+**Encrypt any folder or machine learning model**
+**Decrypt any folder or machine learning model**
+**Perform principal component analysis on a dataset**
+**Perform correlation analysis for feature selection on a dataset**
+You can use **py4phi** both in Python code and through your terminal via the convenient CLI interface.
+#Setup and prerequisites
+In order to install the library [from PyPi](), just run
+```shell
+pip install py4phi
+```
+
+### **py4phi** is compatible with the following engines for data processing and encryption:
+* [Pandas](https://github.com/pandas-dev/pandas)
+* [PySpark](https://spark.apache.org/docs/latest/api/python/index.html)
+* [Polars](https://pola.rs/) 
+
+NOTE: Default engine for CLI is Pandas, whereas for library - PySpark.
+
+Nevertheless, you'll need a JDK installed and a JAVA_HOME environment variable set in order 
+to work with the PySpark engine. 
+However, you can still work with Pandas or Polars without JDK, if you wish.
+# Usage
+You can integrate **py4phi** in your existing pandas/pyspark/polars data pipeline by 
+initializing from a DataFrame or loading from a file. Currently, CSV and Parquet 
+file types are supported. 
+
+Encryption and decryption of the datasets are facilitated by the use of configs.
+Each column gets its own encryption key and a nonce, which are saved in the configs. These resulting files can be further encrypted for even more safety.
+
+Therefore, you can encrypt only sensitive columns, send the outputs, for example, to the data analysis team,
+and keep the data safe. Later, data can be decrypted using configs on-demand.
+Moreover, you do not need deep knowledge of the underlying engines (pandas, etc.)
+and don't need to write long scripts to encrypt data and save the keys. 
+
+The following example showcases the encryption process of a dataset.csv file. \
+(you can find it in the [/examples](https://github.com/volodymyrkir/py4phi/tree/main/examples) folder) \
+The output dataset, along with the decryption configs, is then saved to the "test_folder" directory under CWD,
+
+```python
+from py4phi.core import from_path
+
+controller = from_path(
+    './dataset.csv',
+    'csv',
+    engine='pyspark',
+    log_level='DEBUG',
+    header=True  # pyspark read option
+)
+controller.print_current_df()
+controller.encrypt(columns_to_encrypt=['Staff involved', 'ACF'])
+controller.print_current_df()
+controller.save_encrypted(
+    output_name='my_encrypted_file',
+    save_location='./test_folder/',   # results will be saved under CWD/test_folder/py4phi_encrypted_outputs
+    save_format='PARQUET',
+)
+
+```
+
+To decrypt these outputs, you can use:
+```python
+import pandas as pd
+from py4phi.core import from_dataframe
+
+df = pd.read_parquet('./test_folder/py4phi_encrypted_outputs/my_encrypted_file.parquet')
+controller = from_dataframe(
+    df,
+    log_level='DEBUG'
+)
+controller.print_current_df()
+controller.decrypt(
+    columns_to_decrypt=['Staff involved', 'ACF'],
+    configs_path='./test_folder/py4phi_encrypted_outputs', 
+)
+controller.print_current_df()
+controller.save_decrypted(
+    output_name='my_decrypted_file',
+    save_location='./test_folder',
+    save_format='csv'
+)
+```
+
+This example also shows how to initialize **py4phi** from a (pandas, in this case) DataFrame.
+
+Similar workflow through a terminal can be executed with the following CLI commands:
+```shell
+py4phi encrypt-and-save -i ./dataset.csv -c ACF -c 'Staff involved' -e pyspark -p -o ./ -r header True
+py4phi decrypt-and-save -i ./py4phi_encrypted_outputs/output_dataset.csv -e pyspark -c ACF -c 'Staff involved' -p -o ./ -r header True
+```
+
+To encrypt and decrypt a folder or a ML/DL model, you can use:
+```python
+from py4phi.core import encrypt_model, decrypt_model
+encrypt_model(
+    './test_folder',
+    encrypt_config=False #or True
+)
+
+decrypt_model(
+    './test_folder',
+    config_encrypted=False # or True
+)
+```
+After encryption, all files whithin the specified folder will be not readable.
+This can be used for easy one-line model encryption.
+
+The same actions can be taken in a terminal:
+```shell
+# encrypt model/folder, do not encrypt config. Note that encryption is done inplace. Please save original before encryption.
+py4phi encrypt-model -p ./py4phi_encrypted_outputs/ -d
+
+# decrypt model/folder when config is not encrypted
+py4phi decrypt-model -p ./py4phi_encrypted_outputs/ -c
+```
+# Analytics usage
+Apart from the main encrypt/decrypt functionality, one may be interested in reducing
+the dimensionality of a dataset or performing correlation analysis of the feature (feature selection).
+In a typical scenario, this requires a lot of effort from the data analyst.
+Instead, a person with access to the sensitive data 
+can perform a lightweight **PCA/feature selection** in a couple of code lines or terminal commands.
+
+**NOTE**: This functionality is a quick top-level analysis, diving deeper into a dataset's feature analysis will always bring more profit.
+
+To perform principal component analysis with Python, use: 
+
+```python
+from py4phi.core import from_path
+controller = from_path('Titanic.parquet', file_type='parquet', engine='pyspark')
+controller.perform_pca(
+    target_feature='Survived',
+    ignore_columns=['Name', 'Sex', 'Ticket', 'Cabin', 'Embarked'],
+    save_reduced=False
+)
+```
+
+Via terminal:
+
+```shell
+py4phi perform-pca -i ./dataset.csv  --target 'Staff involved' -c ACF
+```
+
+To perform feature selection with Python, use: 
+
+```python
+from py4phi.core import from_path
+controller = from_path('Titanic.parquet', file_type='parquet', engine='polars')
+controller.perform_feature_selection(
+    target_feature='Survived',
+    target_correlation_threshold=0.2,
+    features_correlation_threshold=0.2,
+    drop_recommended=False
+)
+```
+
+Via terminal:
+
+```shell
+py4phi feature-selection -i ./Titanic.parquet --target Survived --target_corr_threshold 0.3 --feature_corr_threshold 0.55
+```
+
+Please look into the [/examples](https://github.com/volodymyrkir/py4phi/tree/main/examples) folder for more examples.
+It also contains training datasets.
