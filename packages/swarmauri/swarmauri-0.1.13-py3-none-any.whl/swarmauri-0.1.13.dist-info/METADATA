@@ -1,0 +1,98 @@
+Metadata-Version: 2.1
+Name: swarmauri
+Version: 0.1.13
+Summary: A short description of your package
+Home-page: http://github.com/yourusername/your_package_name
+Author: Jacob Stewart
+Author-email: your_email@example.com
+License: MIT
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.10
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: numpy
+Requires-Dist: requests
+Provides-Extra: community
+Requires-Dist: openai ; extra == 'community'
+Requires-Dist: transformers ; extra == 'community'
+Requires-Dist: accelerate ; extra == 'community'
+Requires-Dist: tensorflow ; extra == 'community'
+Requires-Dist: scipy ; extra == 'community'
+Requires-Dist: typing-extensions ; extra == 'community'
+Requires-Dist: redisearch ; extra == 'community'
+Requires-Dist: google-api-python-client ; extra == 'community'
+Requires-Dist: google-auth-httplib2 ; extra == 'community'
+Requires-Dist: google-auth-oauthlib ; extra == 'community'
+Requires-Dist: boto3 ; extra == 'community'
+Provides-Extra: experimental
+Requires-Dist: openai ; extra == 'experimental'
+Requires-Dist: transformers ; extra == 'experimental'
+Requires-Dist: accelerate ; extra == 'experimental'
+Requires-Dist: tensorflow ; extra == 'experimental'
+Requires-Dist: scipy ; extra == 'experimental'
+Requires-Dist: typing-extensions ; extra == 'experimental'
+Requires-Dist: google-api-python-client ; extra == 'experimental'
+Requires-Dist: google-auth-httplib2 ; extra == 'experimental'
+Requires-Dist: google-auth-oauthlib ; extra == 'experimental'
+Requires-Dist: boto3 ; extra == 'experimental'
+Requires-Dist: lightgbm ; extra == 'experimental'
+Provides-Extra: full
+Requires-Dist: openai ; extra == 'full'
+Requires-Dist: transformers ; extra == 'full'
+Requires-Dist: accelerate ; extra == 'full'
+Requires-Dist: tensorflow ; extra == 'full'
+Requires-Dist: scipy ; extra == 'full'
+Requires-Dist: typing-extensions ; extra == 'full'
+Requires-Dist: redisearch ; extra == 'full'
+Requires-Dist: google-api-python-client ; extra == 'full'
+Requires-Dist: google-auth-httplib2 ; extra == 'full'
+Requires-Dist: google-auth-oauthlib ; extra == 'full'
+Requires-Dist: boto3 ; extra == 'full'
+Requires-Dist: yake ; extra == 'full'
+Requires-Dist: torch ; extra == 'full'
+Requires-Dist: scikit-learn ; extra == 'full'
+Requires-Dist: gensim ; extra == 'full'
+Requires-Dist: lightgbm ; extra == 'full'
+Requires-Dist: rdflib ; extra == 'full'
+Requires-Dist: ampligraph ; extra == 'full'
+Provides-Extra: standard
+Requires-Dist: openai ; extra == 'standard'
+Requires-Dist: transformers ; extra == 'standard'
+Requires-Dist: accelerate ; extra == 'standard'
+Requires-Dist: tensorflow ; extra == 'standard'
+Requires-Dist: scipy ; extra == 'standard'
+Requires-Dist: typing-extensions ; extra == 'standard'
+Requires-Dist: scikit-learn ; extra == 'standard'
+Requires-Dist: gensim ; extra == 'standard'
+Requires-Dist: rdflib ; extra == 'standard'
+Requires-Dist: ampligraph ; extra == 'standard'
+
+# SwarmaURI SDK
+This repository includes core interfaces, standard ABCs, and standard concrete references of the SwarmaURI Framework.
+
+## Steps to compile python package from source
+```bash
+git clone https://github.com/cobycloud/swarmauri
+cd swarmauri
+python -m build
+pip install ./dist/swarmauri-0.1.10.tar.gz[full] --force-reinstall
+```
+## ./combined
+This includes convenience outputs to enable conversations with GPTs.
+
+## ./dist
+This includes SwarmaURI python package builds. This will eventually be excluded from this directory in favor of pypi.
+
+## ./scripts
+This includes convenience scripts that are nother included with the SwarmaURI SDK.
+#### /scripts/combine_files.py
+```bash
+#This script generates the convenience outputs found in ./combined
+python ./combine_files.py
+```
+
+## ./swamauri
+This includes the libaries for the SwarmaURI python package.
+
+## ./tests
+This includes test cases for the SwarmaURI python  package.
