@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Masking &mdash; audiometry_trainer 0.0.2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Virtual listener" href="virtual_listener.html" />
+    <link rel="prev" title="Threshold search" href="threshold_search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            audiometry_trainer
+          </a>
+              <div class="version">
+                0.0.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="threshold_search.html">Threshold search</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Masking</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#interaural-attenuation">Interaural attenuation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#occlusion-effect">Occlusion effect</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#measuring-the-occlusion-effect">Measuring the occlusion effect</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="virtual_listener.html">Virtual listener</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generate_case.html">Generating case files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_interface.html">User interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals.html">Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">audiometry_trainer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Masking</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/masking.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="masking">
+<span id="sec-masking"></span><h1>Masking<a class="headerlink" href="#masking" title="Permalink to this heading"></a></h1>
+<p>In order to mask the non-test ear (NTE) during air-conduction audiometry set the <code class="docutils literal notranslate"><span class="pre">Chan.</span> <span class="pre">2</span> <span class="pre">level</span></code> to the desired value and make sure the <code class="docutils literal notranslate"><span class="pre">Chan.</span> <span class="pre">2</span> <span class="pre">ON</span></code> checkbox is checked.</p>
+<p>For masking during bone conduction audiometry, additionnally, the <code class="docutils literal notranslate"><span class="pre">Non-test</span> <span class="pre">ear</span> <span class="pre">status</span></code> has to be set to <code class="docutils literal notranslate"><span class="pre">Earphone</span> <span class="pre">on</span></code> (otherwise the software considers that the noise is being played through the earphone, but the earphone is not on the listener’s ear, so no noise actually arrives at the listener’s ear). <code class="docutils literal notranslate"><span class="pre">audiometry_trainer</span></code> automatically sets the <code class="docutils literal notranslate"><span class="pre">Non-test</span> <span class="pre">ear</span> <span class="pre">status</span></code> to <code class="docutils literal notranslate"><span class="pre">Earphone</span> <span class="pre">on</span></code> when you check the <code class="docutils literal notranslate"><span class="pre">Chan.</span> <span class="pre">2</span> <span class="pre">ON</span></code> checkbox. This small complication for masking in bone conduction audiometry is due to the fact that <code class="docutils literal notranslate"><span class="pre">audiometry_trainer</span></code> lets you test bone conduction thresholds either with the NTE uncovered, or with the NTE covered by the earphone while the earphone is not playing any noise. This is useful to measure the size of the occlusion effect (see <a class="reference internal" href="#subsubsec-measure-oe"><span class="std std-ref">Measuring the occlusion effect</span></a>).</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Lock</span> <span class="pre">channels</span></code> checkbox can be used to “lock” the test ear (TE) and NTE channels so that changing the signal level sent to the TE changes the noise level sent to the NTE by the same amount.</p>
+<section id="interaural-attenuation">
+<h2>Interaural attenuation<a class="headerlink" href="#interaural-attenuation" title="Permalink to this heading"></a></h2>
+<p>Interaural attenuation (IA) values for supra-aural and insert earphones are drawn randomly for each case from a uniform distribution. The upper and lower limits of the distribution are frequency specific and are based on the max and min IA values reported by <a class="reference internal" href="references.html#munroandagnew1999" id="id1"><span>[MunroAndAgnew1999]</span></a>. For frquencies that were not tested in <a class="reference internal" href="references.html#munroandagnew1999" id="id2"><span>[MunroAndAgnew1999]</span></a> the values of an adjacent frequency are used.</p>
+<p>IA values for bone conduction (BC) are drawn for each case from a uniform distribution. The lower and upper values for the uniform distribution as a function of frequency is shown in Table <a class="reference internal" href="#table-ia-bone">table-IA_bone</a>. These values were chosen to reflect the observation that IA for bone conducted stimuli using a mastoid placement is essentially zero at 250 Hz and increases up to ~15 dB at 4000 Hz (<a class="reference internal" href="references.html#studebaker1967" id="id3"><span>[Studebaker1967]</span></a>; <a class="reference internal" href="references.html#gelfand2016" id="id4"><span>[Gelfand2016]</span></a>). More nuanced data on IA for BC are available <a class="reference internal" href="references.html#stenfelt2012" id="id5"><span>[Stenfelt2012]</span></a> and may be integrated to future versions of <code class="docutils literal notranslate"><span class="pre">audiometry_trainer</span></code>.</p>
+<span id="table-ia-bone"></span><table class="docutils align-default" id="id12">
+<caption><span class="caption-text">Lower and upper limits of the uniform distribution for IA for bone conduction.</span><a class="headerlink" href="#id12" title="Permalink to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Freq.</p></th>
+<th class="head"><p>Low</p></th>
+<th class="head"><p>High</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>125 Hz</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>250 Hz</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>500 Hz</p></td>
+<td><p>0</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-odd"><td><p>750 Hz</p></td>
+<td><p>0</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-even"><td><p>1000 Hz</p></td>
+<td><p>0</p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-odd"><td><p>1500 Hz</p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p>2000 Hz</p></td>
+<td><p>0</p></td>
+<td><p>7</p></td>
+</tr>
+<tr class="row-odd"><td><p>3000 Hz</p></td>
+<td><p>0</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-even"><td><p>4000 Hz</p></td>
+<td><p>0</p></td>
+<td><p>15</p></td>
+</tr>
+<tr class="row-odd"><td><p>6000 Hz</p></td>
+<td><p>0</p></td>
+<td><p>15</p></td>
+</tr>
+<tr class="row-even"><td><p>8000 Hz</p></td>
+<td><p>0</p></td>
+<td><p>15</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="occlusion-effect">
+<h2>Occlusion effect<a class="headerlink" href="#occlusion-effect" title="Permalink to this heading"></a></h2>
+<p>For cases without a conductive hearing loss the size of the occlusion effect (OE) is drawn randomly for each case and frequency from a uniform distribution. The lower and upper values for the uniform distribution as a function of frequency is shown in Table <a class="reference internal" href="#table-oe-supra">table-OE_supra</a> for supra-aural headphones and Table <a class="reference internal" href="#table-oe-insert">table-OE_insert</a> for insert earphones. These values were chosen to reflect approximately the range of values found in various studies and summarized in <a class="reference internal" href="references.html#gelfand2016" id="id6"><span>[Gelfand2016]</span></a>.</p>
+<span id="table-oe-supra"></span><table class="docutils align-default" id="id13">
+<caption><span class="caption-text">Lower and upper limits of the uniform distribution for the OE for supra-aural earphones. For frequencies &gt; 1000 Hz the OE is always zero.</span><a class="headerlink" href="#id13" title="Permalink to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Freq.</p></th>
+<th class="head"><p>Low</p></th>
+<th class="head"><p>High</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>125 Hz</p></td>
+<td><p>15</p></td>
+<td><p>30</p></td>
+</tr>
+<tr class="row-odd"><td><p>125 Hz</p></td>
+<td><p>15</p></td>
+<td><p>30</p></td>
+</tr>
+<tr class="row-even"><td><p>500 Hz</p></td>
+<td><p>8</p></td>
+<td><p>26</p></td>
+</tr>
+<tr class="row-odd"><td><p>750 Hz</p></td>
+<td><p>8</p></td>
+<td><p>26</p></td>
+</tr>
+<tr class="row-even"><td><p>1000 Hz</p></td>
+<td><p>4</p></td>
+<td><p>12</p></td>
+</tr>
+</tbody>
+</table>
+<span id="table-oe-insert"></span><table class="docutils align-default" id="id14">
+<caption><span class="caption-text">Lower and upper limits of the uniform distribution for the OE for insert earphones. For frequencies &gt; 1000 Hz the OE is always zero.</span><a class="headerlink" href="#id14" title="Permalink to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Freq.</p></th>
+<th class="head"><p>Low</p></th>
+<th class="head"><p>High</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>125 Hz</p></td>
+<td><p>2</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-odd"><td><p>125 Hz</p></td>
+<td><p>2</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-even"><td><p>500 Hz</p></td>
+<td><p>2</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-odd"><td><p>750 Hz</p></td>
+<td><p>2</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-even"><td><p>1000 Hz</p></td>
+<td><p>2</p></td>
+<td><p>10</p></td>
+</tr>
+</tbody>
+</table>
+<p>The OE is absent when a conductive/mixed hearing with an air-bone gap (ABG) &gt;= 20 dB is present <a class="reference internal" href="references.html#martinetal1974" id="id7"><span>[MartinEtAl1974]</span></a>. For this reason, if there is an ABG &gt;= 20 dB the OE is set to zero. For ABGs between 0 and 20 dB the size of the OE is scaled by the ABG using the following equation:</p>
+<div class="math notranslate nohighlight" id="occlusion-effect-scaling-by-the-air-bone-gap">
+<span id="equation-occlusion-effect-scaling-by-the-air-bone-gap"></span><span class="eqno">(1)<a class="headerlink" href="#occlusion-effect-scaling-by-the-air-bone-gap" title="Permalink to this equation"></a></span>\[OE_{out} = OE_{inp} - OE_{inp} (ABG/20)\]</div>
+<p>where <span class="math notranslate nohighlight">\(OE_{inp}\)</span> is the OE before the scaling and <span class="math notranslate nohighlight">\(OE_{out}\)</span> is the OE after the scaling. This means that the size of the OE is progressively reduced as the ABG increases, reaching zero for an ABG of 20 dB.</p>
+<section id="measuring-the-occlusion-effect">
+<span id="subsubsec-measure-oe"></span><h3>Measuring the occlusion effect<a class="headerlink" href="#measuring-the-occlusion-effect" title="Permalink to this heading"></a></h3>
+<p>Some authors (e.g. <a class="reference internal" href="references.html#gelfand2016" id="id8"><span>[Gelfand2016]</span></a>) recommend measuring the OE in individual listeners to determine the value to be used in masking formulas. This can be done by covering the NTE with the earphone and measuring BC thresholds, without presenting any masking noise to the NTE. The thresholds obtained in this “earphones ON” condition can then be compared to those obtained without covering the NTE to estimate the magnitude of the occlusion effect <a class="reference internal" href="references.html#martinetal1974" id="id9"><span>[MartinEtAl1974]</span></a>. To obtain BC thresholds with the NTE covered by an earphone, but without delivery of masking noise, in <code class="docutils literal notranslate"><span class="pre">audiometry_trainer</span></code> you need to set the <code class="docutils literal notranslate"><span class="pre">Non-test</span> <span class="pre">ear</span> <span class="pre">status</span></code> to <code class="docutils literal notranslate"><span class="pre">Earphones</span> <span class="pre">ON</span></code> and make sure that the <code class="docutils literal notranslate"><span class="pre">Chan.</span> <span class="pre">2</span> <span class="pre">ON</span></code> checkbox is uncheked. The size of the OE measured in this way will depend on the earphones used for <code class="docutils literal notranslate"><span class="pre">Chan.</span> <span class="pre">2</span></code>, so make sure that you select the same earphone type that will be later used to deliver the masking noise.</p>
+<p>A limitation of this technique is that in some cases it can underestimate the size of the OE (<a class="reference internal" href="references.html#fagelsonandmartin1994" id="id10"><span>[FagelsonAndMartin1994]</span></a>; <a class="reference internal" href="references.html#yacullo1997" id="id11"><span>[Yacullo1997]</span></a>). This may happen in the case of a listener with NTE BC thresholds close to the lower output limits of the BC vibrator. For example, if the listener has a BC threshold of 0 dB HL and the BC vibrator has a lower output level limit of -20 dB HL, then OEs larger than 20 dB would be underestimated. This may also happen if the TE BC threshold is lower than the NTE BC threshold. Suppose for example that the TE BC threshold is 20 dB HL, the NTE BC threshold is 30 dB HL, and the NTE OE is 30 dB. The threshold recorded in the unoccluded condition will be 20 dB HL and when the NTE is occluded the threshold recorded will be 0 dB HL; the difference between the two, the estimated OE, will be 20 dB rather than the actual NTE OE of 30 dB. If masking is used only to confirm that the unmasked TE BC threshold is genuine, underestimating the OE will be of no consequence; the TE had the lowest threshold to start with, so undermasking will simply confirm, “in the wrong way”, a correct decision that that threshold was coming from the TE. If the estimated OE is used for a full-blown masked threshold search, the masked TE BC threshold may be lower than the unmasked one because the NTE will be undermasked.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="threshold_search.html" class="btn btn-neutral float-left" title="Threshold search" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="virtual_listener.html" class="btn btn-neutral float-right" title="Virtual listener" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, Samuele Carcagno.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

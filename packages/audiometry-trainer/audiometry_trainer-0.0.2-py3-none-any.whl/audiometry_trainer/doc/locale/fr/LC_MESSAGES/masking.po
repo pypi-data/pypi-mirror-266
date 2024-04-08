@@ -1,0 +1,315 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2024, Samuele Carcagno
+# This file is distributed under the same license as the audiometry_trainer
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: audiometry_trainer 0.0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-04-06 00:08+0200\n"
+"PO-Revision-Date: 2024-04-01 11:30+0200\n"
+"Last-Translator: \n"
+"Language: fr\n"
+"Language-Team: \n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: ../../masking.rst:5
+msgid "Masking"
+msgstr "Masquage"
+
+#: ../../masking.rst:7
+msgid ""
+"In order to mask the non-test ear (NTE) during air-conduction audiometry "
+"set the ``Chan. 2 level`` to the desired value and make sure the ``Chan. "
+"2 ON`` checkbox is checked."
+msgstr ""
+
+#: ../../masking.rst:9
+msgid ""
+"For masking during bone conduction audiometry, additionnally, the ``Non-"
+"test ear status`` has to be set to ``Earphone on`` (otherwise the "
+"software considers that the noise is being played through the earphone, "
+"but the earphone is not on the listener's ear, so no noise actually "
+"arrives at the listener's ear). ``audiometry_trainer`` automatically sets"
+" the ``Non-test ear status`` to ``Earphone on`` when you check the "
+"``Chan. 2 ON`` checkbox. This small complication for masking in bone "
+"conduction audiometry is due to the fact that ``audiometry_trainer`` lets"
+" you test bone conduction thresholds either with the NTE uncovered, or "
+"with the NTE covered by the earphone while the earphone is not playing "
+"any noise. This is useful to measure the size of the occlusion effect "
+"(see :ref:`subsubsec-measure_OE`)."
+msgstr ""
+
+#: ../../masking.rst:11
+msgid ""
+"The ``Lock channels`` checkbox can be used to \"lock\" the test ear (TE) "
+"and NTE channels so that changing the signal level sent to the TE changes"
+" the noise level sent to the NTE by the same amount."
+msgstr ""
+
+#: ../../masking.rst:15
+msgid "Interaural attenuation"
+msgstr ""
+
+#: ../../masking.rst:17
+msgid ""
+"Interaural attenuation (IA) values for supra-aural and insert earphones "
+"are drawn randomly for each case from a uniform distribution. The upper "
+"and lower limits of the distribution are frequency specific and are based"
+" on the max and min IA values reported by [MunroAndAgnew1999]_. For "
+"frquencies that were not tested in [MunroAndAgnew1999]_ the values of an "
+"adjacent frequency are used."
+msgstr ""
+
+#: ../../masking.rst:19
+msgid ""
+"IA values for bone conduction (BC) are drawn for each case from a uniform"
+" distribution. The lower and upper values for the uniform distribution as"
+" a function of frequency is shown in Table table-IA_bone_. These values "
+"were chosen to reflect the observation that IA for bone conducted stimuli"
+" using a mastoid placement is essentially zero at 250 Hz and increases up"
+" to ~15 dB at 4000 Hz ([Studebaker1967]_; [Gelfand2016]_). More nuanced "
+"data on IA for BC are available [Stenfelt2012]_ and may be integrated to "
+"future versions of ``audiometry_trainer``."
+msgstr ""
+
+#: ../../masking.rst:22
+msgid ""
+"Lower and upper limits of the uniform distribution for IA for bone "
+"conduction."
+msgstr ""
+
+#: ../../masking.rst:26 ../../masking.rst:52 ../../masking.rst:66
+msgid "Freq."
+msgstr ""
+
+#: ../../masking.rst:26 ../../masking.rst:52 ../../masking.rst:66
+msgid "Low"
+msgstr ""
+
+#: ../../masking.rst:26 ../../masking.rst:52 ../../masking.rst:66
+msgid "High"
+msgstr ""
+
+#: ../../masking.rst:28 ../../masking.rst:54 ../../masking.rst:55
+#: ../../masking.rst:68 ../../masking.rst:69
+msgid "125 Hz"
+msgstr ""
+
+#: ../../masking.rst:28 ../../masking.rst:29 ../../masking.rst:30
+#: ../../masking.rst:31 ../../masking.rst:32 ../../masking.rst:33
+#: ../../masking.rst:34 ../../masking.rst:35 ../../masking.rst:36
+#: ../../masking.rst:37 ../../masking.rst:38
+msgid "0"
+msgstr ""
+
+#: ../../masking.rst:29
+msgid "250 Hz"
+msgstr ""
+
+#: ../../masking.rst:30 ../../masking.rst:56 ../../masking.rst:70
+msgid "500 Hz"
+msgstr ""
+
+#: ../../masking.rst:30 ../../masking.rst:68 ../../masking.rst:69
+#: ../../masking.rst:70 ../../masking.rst:71 ../../masking.rst:72
+msgid "2"
+msgstr ""
+
+#: ../../masking.rst:31 ../../masking.rst:57 ../../masking.rst:71
+msgid "750 Hz"
+msgstr ""
+
+#: ../../masking.rst:31
+msgid "3"
+msgstr ""
+
+#: ../../masking.rst:32 ../../masking.rst:58 ../../masking.rst:72
+msgid "1000 Hz"
+msgstr ""
+
+#: ../../masking.rst:32 ../../masking.rst:58
+msgid "4"
+msgstr ""
+
+#: ../../masking.rst:33
+msgid "1500 Hz"
+msgstr ""
+
+#: ../../masking.rst:33
+msgid "5"
+msgstr ""
+
+#: ../../masking.rst:34
+msgid "2000 Hz"
+msgstr ""
+
+#: ../../masking.rst:34
+msgid "7"
+msgstr ""
+
+#: ../../masking.rst:35
+msgid "3000 Hz"
+msgstr ""
+
+#: ../../masking.rst:35 ../../masking.rst:68 ../../masking.rst:69
+#: ../../masking.rst:70 ../../masking.rst:71 ../../masking.rst:72
+msgid "10"
+msgstr ""
+
+#: ../../masking.rst:36
+msgid "4000 Hz"
+msgstr ""
+
+#: ../../masking.rst:36 ../../masking.rst:37 ../../masking.rst:38
+#: ../../masking.rst:54 ../../masking.rst:55
+msgid "15"
+msgstr ""
+
+#: ../../masking.rst:37
+msgid "6000 Hz"
+msgstr ""
+
+#: ../../masking.rst:38
+msgid "8000 Hz"
+msgstr ""
+
+#: ../../masking.rst:43
+msgid "Occlusion effect"
+msgstr ""
+
+#: ../../masking.rst:45
+msgid ""
+"For cases without a conductive hearing loss the size of the occlusion "
+"effect (OE) is drawn randomly for each case and frequency from a uniform "
+"distribution. The lower and upper values for the uniform distribution as "
+"a function of frequency is shown in Table table-OE_supra_ for supra-aural"
+" headphones and Table table-OE_insert_ for insert earphones. These values"
+" were chosen to reflect approximately the range of values found in "
+"various studies and summarized in [Gelfand2016]_."
+msgstr ""
+
+#: ../../masking.rst:48
+msgid ""
+"Lower and upper limits of the uniform distribution for the OE for supra-"
+"aural earphones. For frequencies > 1000 Hz the OE is always zero."
+msgstr ""
+
+#: ../../masking.rst:54 ../../masking.rst:55
+msgid "30"
+msgstr ""
+
+#: ../../masking.rst:56 ../../masking.rst:57
+msgid "8"
+msgstr ""
+
+#: ../../masking.rst:56 ../../masking.rst:57
+msgid "26"
+msgstr ""
+
+#: ../../masking.rst:58
+msgid "12"
+msgstr ""
+
+#: ../../masking.rst:62
+msgid ""
+"Lower and upper limits of the uniform distribution for the OE for insert "
+"earphones. For frequencies > 1000 Hz the OE is always zero."
+msgstr ""
+
+#: ../../masking.rst:75
+msgid ""
+"The OE is absent when a conductive/mixed hearing with an air-bone gap "
+"(ABG) >= 20 dB is present [MartinEtAl1974]_. For this reason, if there is"
+" an ABG >= 20 dB the OE is set to zero. For ABGs between 0 and 20 dB the "
+"size of the OE is scaled by the ABG using the following equation:"
+msgstr ""
+
+#: ../../masking.rst:77
+msgid "OE_{out} = OE_{inp} - OE_{inp} (ABG/20)"
+msgstr ""
+
+#: ../../masking.rst:82
+msgid ""
+"where :math:`OE_{inp}` is the OE before the scaling and :math:`OE_{out}` "
+"is the OE after the scaling. This means that the size of the OE is "
+"progressively reduced as the ABG increases, reaching zero for an ABG of "
+"20 dB."
+msgstr ""
+
+#: ../../masking.rst:88
+msgid "Measuring the occlusion effect"
+msgstr ""
+
+#: ../../masking.rst:90
+msgid ""
+"Some authors (e.g. [Gelfand2016]_) recommend measuring the OE in "
+"individual listeners to determine the value to be used in masking "
+"formulas. This can be done by covering the NTE with the earphone and "
+"measuring BC thresholds, without presenting any masking noise to the NTE."
+" The thresholds obtained in this \"earphones ON\" condition can then be "
+"compared to those obtained without covering the NTE to estimate the "
+"magnitude of the occlusion effect [MartinEtAl1974]_. To obtain BC "
+"thresholds with the NTE covered by an earphone, but without delivery of "
+"masking noise, in ``audiometry_trainer`` you need to set the ``Non-test "
+"ear status`` to ``Earphones ON`` and make sure that the ``Chan. 2 ON`` "
+"checkbox is uncheked. The size of the OE measured in this way will depend"
+" on the earphones used for ``Chan. 2``, so make sure that you select the "
+"same earphone type that will be later used to deliver the masking noise."
+msgstr ""
+
+#: ../../masking.rst:92
+msgid ""
+"A limitation of this technique is that in some cases it can underestimate"
+" the size of the OE ([FagelsonAndMartin1994]_; [Yacullo1997]_). This may "
+"happen in the case of a listener with NTE BC thresholds close to the "
+"lower output limits of the BC vibrator. For example, if the listener has "
+"a BC threshold of 0 dB HL and the BC vibrator has a lower output level "
+"limit of -20 dB HL, then OEs larger than 20 dB would be underestimated. "
+"This may also happen if the TE BC threshold is lower than the NTE BC "
+"threshold. Suppose for example that the TE BC threshold is 20 dB HL, the "
+"NTE BC threshold is 30 dB HL, and the NTE OE is 30 dB. The threshold "
+"recorded in the unoccluded condition will be 20 dB HL and when the NTE is"
+" occluded the threshold recorded will be 0 dB HL; the difference between "
+"the two, the estimated OE, will be 20 dB rather than the actual NTE OE of"
+" 30 dB. If masking is used only to confirm that the unmasked TE BC "
+"threshold is genuine, underestimating the OE will be of no consequence; "
+"the TE had the lowest threshold to start with, so undermasking will "
+"simply confirm, \"in the wrong way\", a correct decision that that "
+"threshold was coming from the TE. If the estimated OE is used for a full-"
+"blown masked threshold search, the masked TE BC threshold may be lower "
+"than the unmasked one because the NTE will be undermasked."
+msgstr ""
+
+#~ msgid ""
+#~ "For masking during bone conduction "
+#~ "audiometry, additionnally, the ``Non-test "
+#~ "ear status`` has to be set to "
+#~ "``Earphone on`` (otherwise the software "
+#~ "considers that the noise is being "
+#~ "played through the earphone, but the "
+#~ "earphone is not on the listener's "
+#~ "ear, so no noise actually arrives "
+#~ "at the listener's ear). ``audiometry_trainer``"
+#~ " automatically set the ``Non-test ear"
+#~ " status`` to ``Earphone on`` when you"
+#~ " check the ``Chan. 2 ON`` checkbox."
+#~ " This small complication for masking "
+#~ "in bone conduction audiometry is due "
+#~ "to the fact that ``audiometry_trainer`` "
+#~ "lets you test bone conduction thresholds"
+#~ " either with the NTE uncovered, or"
+#~ " with the NTE covered by the "
+#~ "earphone while the earphone is not "
+#~ "playing any noise. This is useful "
+#~ "to measure the size of the "
+#~ "occlusion effect (see :ref:`subsubsec-"
+#~ "measure_OE`)."
+#~ msgstr ""
+
