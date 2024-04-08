@@ -1,0 +1,27 @@
+[build-system]
+requires = ["hatchling", "scipy"]
+build-backend = "hatchling.build"
+
+[project]
+name = "invexpo"
+version = "0.1.2"
+authors = [
+    { name="Zachary Weaver", email="zacharylweaver00@gmail.com" }
+]
+description = "An implementation of an inverse exponential distribution to fit exponentially ascending data on any continuous interval"
+requires-python = ">=3.8"
+assifiers = [
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent"
+]
+dependencies = [
+    "scipy~=1.13.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/Kiyoshika/inverse-exponential"
+Issues = "https://github.com/Kiyoshika/inverse-exponential/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/invexpo"]
