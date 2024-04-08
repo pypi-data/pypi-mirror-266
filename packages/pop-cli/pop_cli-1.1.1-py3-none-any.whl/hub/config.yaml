@@ -1,0 +1,50 @@
+
+# This is where we put things that USED to be in the conf.py
+config:
+  cli:
+    ref:
+      default: "."
+    cli:
+      default: ""
+    args:
+      default: []
+    interactive:
+      default: False
+    hub_state:
+      default: f"/run/user/{hub.lib.os.getuid()}/pop/hub.pkl"
+
+cli_config:
+  cli:
+    ref:
+      help: The reference on the hub to call
+      positional: True
+      nargs: "?"
+    cli:
+      help: The namespace to use as the authoritative CLI
+    args:
+      help: Any additional arguments to forward to the next cli
+      positional: True
+      nargs: "..."
+    interactive:
+      help: Start a python console that contains a hub and can await functions
+      action: store_true
+      options:
+        - -i
+    hub_state:
+      help: The location of a pickle file that has a re-usable hub object
+
+dyne:
+  cli:
+    - hub
+
+# python imports to put on the hub for this plugin
+import:
+  - aioconsole
+  - asyncio
+  - pickle
+  - pprint
+  - readline
+  - rlcompleter
+  - sys
+  - typing
+  - warnings
