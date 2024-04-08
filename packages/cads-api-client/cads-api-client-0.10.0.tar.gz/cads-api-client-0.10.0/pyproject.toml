@@ -1,0 +1,74 @@
+[build-system]
+requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2"]
+
+[project]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Topic :: Scientific/Engineering"
+]
+dependencies = ["attrs", "multiurl", "requests", "typing-extensions"]
+description = "CADS API Python client"
+dynamic = ["version"]
+license = {file = "LICENSE"}
+name = "cads-api-client"
+readme = "README.md"
+
+[tool.coverage.run]
+branch = true
+
+[tool.mypy]
+strict = true
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = ["cdsapi.*", "multiurl.*", "py.*"]
+
+[tool.ruff]
+# Same as Black.
+indent-width = 4
+line-length = 88
+
+[tool.ruff.lint]
+ignore = [
+  # pydocstyle: Missing Docstrings
+  "D1"
+]
+select = [
+  # pyflakes
+  "F",
+  # pycodestyle
+  "E",
+  "W",
+  # isort
+  "I",
+  # pydocstyle
+  "D"
+]
+
+[tool.ruff.lint.pycodestyle]
+max-line-length = 110
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.setuptools]
+packages = ["cads_api_client"]
+
+[tool.setuptools.package-data]
+"cads_api_client" = ["py.typed"]
+
+[tool.setuptools_scm]
+write_to = "cads_api_client/version.py"
+write_to_template = '''
+# Do not change! Do not track in version control!
+__version__ = "{version}"
+'''
