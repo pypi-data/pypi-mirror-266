@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <title>Blocker插件配置页面</title>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="http://cdn.bootcss.com/jquery/3.7.0/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+    <script type="text/javascript" src="static/main.js"></script>
+    <body>
+        <header>
+            <span>Blocker-WebUI</span>
+        </header>
+        <div class="sidebar column">
+            <div class="row">
+                <nav>
+                    <div>账号选择</div>
+                </nav>
+            </div>
+        </div>
+        <div class="mainpage column" >
+            <div class="row">
+                <form class="blocker_type">
+                    <div class="reply_type">
+                        <span>名单类型：</span>
+                        <select class="blocker_type_select" name="blocker_type" >
+                            <option value="false" selected>黑名单</option>
+                            <option value="true">白名单</option>
+                        </select>
+                </form>
+                <form class="command">
+                    <div class="command_on input_box">
+                        <span>开启命令：</span>
+                        <input type="text" name="command_on">
+                    </div>
+                    <div class="command_off input_box">
+                        <span>关闭命令：</span>
+                        <input type="text" name="command_off">
+                    </div>
+                </form>
+                <form name="reply_on" class="reply_on">
+                    <div class="reply_type">
+                        <span>开启回复类型：</span>
+                        <select class="reply_type_select" name="type">
+                            <option value="text" selected>文本</option>
+                            <option value="image">图片</option>
+                            <option value="record">音频</option>
+                        </select>
+                    </div>
+                    <div class="input_box">
+                        <span>开启回复：</span>
+                        <input type="text" name="data">
+                    </div>
+                </form>
+                <form name="reply_off" class="reply_off">
+                    <div class="reply_type">
+                        <span>关闭回复类型：</span>
+                        <select class="reply_type_select" name="type" >
+                            <option value="text" selected>文本</option>
+                            <option value="image">图片</option>
+                            <option value="record">音频</option>
+                        </select>
+                    <div class="input_box">
+                        <span>关闭回复：</span>
+                        <input type="text" name="data">
+                    </div>
+                </form>
+                <input type="button" value="确认" class="submit">
+                <input type="button" value="删除该配置" class="delete">
+            </div>
+        </div>
+    </body>
+</html>
