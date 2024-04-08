@@ -1,0 +1,27 @@
+### SimplePyTorchUtils
+
+**Description:**
+The PyTorch Helper Script is a versatile tool tailored to streamline Python activities involving PyTorch, a popular open-source machine learning library. This script offers a collection of functions and utilities designed to simplify various tasks related to PyTorch operations.
+
+**Features:**
+
+1. **SeedContext Class:** The script includes a `SeedContext` class, serving as a context manager for controlling randomness and seed during generation. It facilitates specifying a seed for random number generation and provides options for deterministic or random generation modes. Additionally, it supports a customizable stop condition to control the iteration process.
+
+2. **Clear Torch Cache Function:** The `clear_torch_cache()` function clears the cache of PyTorch tensors allocated on the GPU, facilitating efficient memory management and utilization. It performs a series of steps to release unused memory and cached resources, ensuring optimal performance when working with PyTorch on GPU devices.
+
+3. **Truncate Function:** The `truncate()` function truncates a torch tensor to a specified maximum size, enhancing flexibility in handling tensors of varying lengths. This function ensures efficient memory usage and processing by retaining only the required portion of the tensor.
+
+4. **Join Tensors Function:** The `join_tensors()` function concatenates multiple token tensors along a specified dimension and truncates the result if necessary. It provides a convenient way to combine tensors while allowing customization of the concatenation dimension and truncation length.
+
+5. **Ease of Use:** The script prioritizes ease of use, offering intuitive functions and methods to enhance the PyTorch workflow. While the documentation may be superficial, the script's structure is designed to facilitate local activities without the need for extensive documentation or adherence to specific conventions.
+
+6. **Customizable:** Users have the flexibility to customize and extend the script according to their specific needs. The Apache 2.0 license permits modification and redistribution of the code, enabling users to adapt it to their projects or workflows.
+
+**Usage:**
+Users can incorporate the PyTorch Helper Script into their Python projects by importing the necessary modules or classes. The provided functions and utilities enhance various aspects of PyTorch operations, including seed control, memory management, tensor manipulation, and concatenation.
+
+**License:**
+The PyTorch Helper Script is licensed under the Apache 2.0 license, allowing for free use, modification, and distribution of the code. Users are encouraged to leverage the script in their projects, contribute back to the community, and customize it to suit their individual requirements.
+
+**Disclaimer:**
+While the script aims to simplify PyTorch-related tasks, users should exercise caution and verify the functionality of the code for their specific use cases. The documentation provided may be limited, so users are encouraged to explore the script's source code and consult additional resources as needed.
