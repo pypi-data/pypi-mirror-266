@@ -1,0 +1,98 @@
+[build-system]
+requires = ["setuptools>=64", "setuptools_scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lightning-template"
+dynamic = ["version"]
+authors = [{ name = "shenmishajing", email = "shenmishajing@gmail.com" }]
+description = "A template wrapper for pytorch-lightning."
+readme = "README.md"
+license = { text = "MIT License" }
+requires-python = ">=3.8"
+dependencies = [
+    "lightning>=2.0.0",
+    "jsonargparse[signatures,urls,fsspec,ruyaml,argcomplete]",
+    "scikit-learn",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Environment :: GPU :: NVIDIA CUDA",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Natural Language :: English",
+]
+
+[project.optional-dependencies]
+# optional dependencies for project
+optional = ["wandb", "rich", "thop"]
+deps = ["lightning-template[optional]"]
+
+# dependencies for development
+dev-commit = ["pre-commit", "commitizen"]
+dev-doc = [
+    "sphinx",
+    "sphinx-autobuild",
+    "sphinx-book-theme",
+    "sphinx-autoapi",
+    "myst-parser",
+    "sphinx_design",
+]
+dev-build = ["build"]
+dev-test = ["tox", "pytest", "pytest-cov"]
+dev-profile = ["torch_tb_profiler"]
+dev-core = ["lightning-template[dev-commit]"]
+dev = ["lightning-template[dev-core,dev-doc,dev-build,dev-test,dev-profile]"]
+
+# all dependencies
+all = ["lightning-template[deps,dev]"]
+
+[project.urls]
+Homepage = "https://github.com/shenmishajing/lightning_template"
+Repository = "https://github.com/shenmishajing/lightning_template"
+Documentation = "https://lightning-template.readthedocs.io"
+Issues = "https://github.com/shenmishajing/lightning_template/issues"
+Changelog = "https://github.com/shenmishajing/lightning_template/blob/main/docs/get_started/changelog.md"
+
+[project.scripts]
+cli = "lightning_template.tools.cli:main"
+lr_finder = "lightning_template.tools.model.lr_finder:main"
+batch_size_finder = "lightning_template.tools.model.batch_size_finder:main"
+model_statistics = "lightning_template.tools.model.model_statistics:main"
+
+[tool.setuptools_scm]
+version_file = "lightning_template/version.py"
+local_scheme = "dirty-tag"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-q --doctest-modules --doctest-glob='*.md' --doctest-continue-on-failure"
+testpaths = ["tests", "docs"]
+
+[tool.coverage]
+[tool.coverage.run]
+omit = ['__init__.py', 'version.py', 'tests/*', 'docs/*', '.venv/*']
+
+[tool.coverage.report]
+skip_empty = true
+skip_covered = true
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "$version"
+annotated_tag = true
+version_scheme = "pep440"
+version_provider = "scm"
+changelog_file = "docs/get_started/changelog.md"
+update_changelog_on_bump = true
