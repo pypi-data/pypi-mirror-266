@@ -1,0 +1,69 @@
+Metadata-Version: 2.1
+Name: aett-eventstore
+Version: 0.7.0
+Summary: Event store for Python
+Author-email: Jacob Reimers <pypi@reimers.io>
+License: MIT License
+        
+        Copyright (c) 2024 python_eventstore
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/jjrdk/aett
+Keywords: events,event store,event sourcing
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: typing>=3.7.4.3
+Requires-Dist: jsonpickle>=3.0.3
+Provides-Extra: dev
+Requires-Dist: pip-tools; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: behave; extra == "dev"
+
+# Æt (Aett) is an Event Store for Python
+
+[![Downloads](https://static.pepy.tech/badge/aett-eventstore)](https://pepy.tech/project/aett-eventstore)
+
+Provides a framework for managing event streams.
+
+## Usage
+
+To create an event stream to manage events, you can use the `EventStream` class.
+
+```python
+from aett.eventstore.EventStream import EventStream
+
+# Create a new event stream
+event_stream = EventStream.create('bucket_name', 'stream_name')
+
+# Append an event to the stream
+event_stream.add(SomeEvent())
+
+# Load the event stream from the event store
+event_stream = EventStream.load('bucket_name', 'stream_name', [A commit store instance], 0, 100)
+
+```
+
+The example above is high level and does not include the details of the commit store. The commit store is a class that
+implements the `CommitStore` interface and is used to store and retrieve events from the event store. An implementation 
+is provided in the `aett.dynamodb.EventStore` module.
