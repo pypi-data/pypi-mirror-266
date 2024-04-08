@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "robust-extraction"
+version = "0.1.1"
+authors = [
+  {name="Marcel Claramunt", email="marcel@moveread.com"}
+]
+description = "Automatic preprocessing of chess scoresheets"
+dependencies = [
+  "ramda", "numpy", "haskellian", "haskellian-either", "haskellian-iterables", "pure-cv", "pydantic",
+  "networkx", "scipy", "opencv-python", "scikit-learn", "py_jaxtyping", "jaxtyping"
+]
+requires-python = ">=3.10"
+readme = {file="README.md", content-type="text/markdown"}
+
+[project.urls]
+repo = "https://github.com/moveread/REPO.git"
+
+# [project.optional-dependencies]
+# test = [
+#   "pytest < 5.0.0",
+#   "pytest-cov[all]"
+# ]
