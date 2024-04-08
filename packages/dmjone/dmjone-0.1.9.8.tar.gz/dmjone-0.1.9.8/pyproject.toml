@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dmjone"
+version = "0.1.9.8"
+description = "Public Welfare initiatives by dmj.one - Educational Initiative"
+# summary = "A suite of public welfare and educational tools developed by dmj.one, focusing on accessibility and innovation in learning resources."
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Divya Mohan", email = "contact@dmj.one"}
+]
+maintainers = [
+    {name = "Aarushi Sharma", email = "aarushi@dmj.one"},
+    {name = "Kaustuv Sharma", email = "kaustuv@dmj.one"},
+    {name = "Lakshika Tanwar", email = "lakshika@dmj.one"}
+]
+keywords = ["education", "public welfare initiative", "learning resources", "shoolini university", "dmjone"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Web Environment",
+    #"Framework :: Flask",
+    "Intended Audience :: Education",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Topic :: Education",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+requires-python = ">=3.7"
+dependencies = [
+    "mysql-connector-python>=8.0.23",
+    "Faker>=8.1.1",
+    "Flask>=1.1.2",  # Flask is used for web components.
+    "requests>=2.25.1"  # For any HTTP requests to external services or APIs.
+]
+
+[project.optional-dependencies]
+testing = [
+    "pytest>=6.2.4",
+    "coverage>=5.5"
+]
+
+[project.urls]
+homepage = "https://dmj.one"
+repository = "https://github.com/dmjone/dmjone_pypi"
+# documentation = "https://dmj.one/docs"  # Assuming documentation is hosted under a `/docs` path.
+bug_tracker = "https://github.com/dmjone/dmjone_pypi/issues"  # Direct link to your project's issue tracker.
