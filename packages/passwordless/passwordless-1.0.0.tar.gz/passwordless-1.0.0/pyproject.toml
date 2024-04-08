@@ -1,0 +1,91 @@
+[tool.poetry]
+name = "passwordless"
+version = "1.0.0"
+description = "Passwordless.dev Python SDK"
+authors = [
+    "Bitwarden <hello@bitwarden.com>"
+]
+maintainers = [
+    "Maciej Zieniuk <zieniuk.maciej@gmail.com>"
+]
+readme = "README.md"
+license = "Apache-2.0"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Programming Language :: Python :: 3",
+    "Intended Audience :: Developers",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Security",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Communications :: FIDO",
+    "License :: OSI Approved :: Apache Software License"
+]
+keywords = ["passwordless", "bitwarden"]
+homepage = "https://bitwarden.com/products/passwordless"
+documentation = "https://docs.passwordless.dev/guide"
+
+[tool.poetry.dependencies]
+python = "3.8.18"
+requests = "2.31.0"
+marshmallow = "3.21.1"
+python-dateutil = "2.9.0.post0"
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+python-dotenv = "1.0.1"
+flake8 = "5.0.4"
+black = "24.3.0"
+mypy = "1.9.0"
+isort = "5.13.2"
+pre-commit = "3.5.0"
+pre-commit-hooks = "4.5.0"
+types-requests = "2.31.0.20240406"
+docformatter = {extras = ["tomli"], version = "1.7.5"}
+
+[tool.poetry.group.test]
+optional = true
+
+[tool.poetry.group.test.dependencies]
+pytest = "8.0.2"
+pytest-mock = "3.12.0"
+pytest-httpserver = "1.0.10"
+
+[tool.mypy]
+python_version = "3.8"
+files = ["src/passwordless"]
+exclude = ["venv", "tests", "examples"]
+show_error_codes = true
+pretty = true
+strict = true
+
+[[tool.mypy.overrides]]
+module = [
+    "asgiref.*",
+    "dotenv.*",
+    "cryptography.*",
+    "importlib_metadata",
+]
+ignore_missing_imports = true
+
+[tool.black]
+line-length = 79
+target-version = ['py38']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 79
+
+[tool.docformatter]
+black = true
+recursive = true
+wrap-descriptions = 72
+wrap-summaries = 72
+blank = false
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
