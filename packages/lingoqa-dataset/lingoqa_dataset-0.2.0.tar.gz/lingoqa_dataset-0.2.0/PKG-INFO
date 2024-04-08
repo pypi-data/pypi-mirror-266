@@ -1,0 +1,64 @@
+Metadata-Version: 2.1
+Name: lingoqa-dataset
+Version: 0.2.0
+Summary: LingoQA dataset for pytorch
+Home-page: https://github.com/hakuturu583
+Author: Masaya Kataoka
+Author-email: ms.kataoka@gmail.com
+Requires-Python: >=3.10,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: fastparquet (>=2024.2.0,<2025.0.0)
+Requires-Dist: gdown (>=5.1.0,<6.0.0)
+Requires-Dist: pandas (>=2.2.1,<3.0.0)
+Requires-Dist: pyarrow (>=15.0.2,<16.0.0)
+Requires-Dist: torch (>=2.2.2,<3.0.0)
+Requires-Dist: torchvision (>=0.17.2,<0.18.0)
+Requires-Dist: tqdm (>=4.66.2,<5.0.0)
+Requires-Dist: transformers (>=4.39.3,<5.0.0)
+Project-URL: Repository, https://github.com/hakuturu583/lingoqa_dataset
+Description-Content-Type: text/markdown
+
+# LingoQA dataset for pytorch
+
+[![Test](https://github.com/hakuturu583/lingoqa_dataset/actions/workflows/test.yml/badge.svg)](https://github.com/hakuturu583/lingoqa_dataset/actions/workflows/test.yml)
+
+[![codecov](https://codecov.io/gh/hakuturu583/lingoqa_dataset/graph/badge.svg?token=WE0LoxY9g2)](https://codecov.io/gh/hakuturu583/lingoqa_dataset)
+
+## How to use
+
+```python
+from lingoqa_dataset.lingoqa_dataset import LingoQADataset, DatasetType
+import torchvision.transforms as transforms
+from torch.utils.data import DataLoader
+
+dataset = LingoQADataset(
+    DatasetType.EVALUATION, transforms=transforms.Resize((256, 512))
+)
+dataloader = DataLoader(dataset=dataset, batch_size=3, shuffle=True)
+for data, question, answer in dataloader:
+    pass
+```
+
+### data
+
+- type: torch.Tensor
+- size : torch.Size([batch_size, 3 * number_of_images, height, width])
+- description : Images in the target sequences.
+
+### question
+
+- type: torch.Tuple(str)
+- size: batch_size
+- description : Questions in the batch.
+
+### answer
+
+- type: torch.Tuple(str)
+- size: batch_size
+- description : Answers in the batch.
+
+## Special thanks
+
+[LingoQA](https://github.com/wayveai/LingoQA) project from [wayve.](https://wayve.ai/)
