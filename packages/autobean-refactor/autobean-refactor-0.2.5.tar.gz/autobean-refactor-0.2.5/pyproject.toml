@@ -1,0 +1,46 @@
+[project]
+name = "autobean-refactor"
+version = "0.2.5"
+description = "An ergonomic and losess beancount manipulation library"
+authors = [
+    { name = "SEIAROTg", email = "seiarotg@gmail.com" },
+]
+dependencies = [
+    "lark>=1.1.5",
+    "typing-extensions>=4.4.0",
+]
+requires-python = ">=3.10"
+readme = "README.md"
+
+[project.license]
+text = "MIT"
+
+[build-system]
+requires = [
+    "pdm-pep517>=1.0",
+]
+build-backend = "pdm.pep517.api"
+
+[tool.pdm.build]
+includes = [
+    "autobean_refactor/",
+]
+excludes = [
+    "autobean_refactor/tests/",
+    "autobean_refactor/modelgen/",
+    "autobean_refactor/meta_models/",
+]
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "mypy>=0.991",
+    "pytest>=7.2.0",
+    "pytest-cov>=4.0.0",
+    "pytest-benchmark>=4.0.0",
+    "mako>=1.2.4",
+    "stringcase>=1.2.0",
+    "sphinx-book-theme>=0.3.3,<1.0.0",
+    "jupyter-book>=0.14.0,<0.15.0",
+    "docutils>=0.18.1",
+    "types-docutils>=0.20.0.1",
+]
