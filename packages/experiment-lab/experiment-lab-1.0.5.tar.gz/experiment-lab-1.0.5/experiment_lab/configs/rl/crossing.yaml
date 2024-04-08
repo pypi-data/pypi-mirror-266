@@ -1,0 +1,25 @@
+experiment_name: simple_to_lava_crossing_rl_experiment
+n_runs: 10
+n_envs: 4
+n_run_method: series
+seed: 0
+wandb:
+    project: experiments
+    # mode: disabled
+env_config:
+    env_id:
+        - MiniGrid-SimpleCrossingS9N2-v0
+        - MiniGrid-LavaCrossingS9N2-v0
+wrapper_cls_lst:
+    - minigrid.wrappers.ImgObsWrapper
+total_time_steps: 5000000
+transfer_steps:
+    - 2000000
+log: true
+save_model: true
+record_policy_videos: true
+video_freq: 100000
+video_length: 200
+defaults:
+    - rl_config
+    - _self_
