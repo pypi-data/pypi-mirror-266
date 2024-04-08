@@ -1,0 +1,41 @@
+Metadata-Version: 2.1
+Name: ib-core-lite
+Version: 1.0.0
+Summary: Integration Bus fastapi-applications core
+Home-page: https://gitlab.it-psg.com/ib-elp-it-psg/ib_core_lite
+Download-URL: https://gitlab.it-psg.com/ib-elp-it-psg/ib_core_lite.git
+Author: Damir Fatkhullin
+Author-email: damir.f@it-psg.com
+License: MIT
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: fastapi
+Requires-Dist: starlette
+Requires-Dist: requests
+
+# Integration Bus Module Core Lite <img alt="Logo" height="25" src="https://ib-elp-it-psg.com/static/admin/img/root_media/icon_psg.svg" width="25"/>
+
+Used in the FastAPI Applications, it defines the basic models and methods of working with them
+
+## Description of base components and models
+
+### Mixins
+
+#### TokenAuthorizationMixin:
+
+*Uses external authorization, managed by IB Auth Module*
+
+- Supports Base and JsonWeb tokens.
+- Automatically checks authorization headers of request and sends error respones.
+- Converts user info response from *IB Auth Module* to *AuthUser* class object which can be accessed via *self.user* in
+  views.
+
+## Authors
+
+- [DamirF](https://github.com/DamirF)
+- [IT-PSG Solutions](https://it-psg.com)
+
