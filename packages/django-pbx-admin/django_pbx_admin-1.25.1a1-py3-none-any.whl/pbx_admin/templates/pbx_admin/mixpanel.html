@@ -1,0 +1,60 @@
+<script type="text/javascript">
+mixpanel.init("{{ mixpanel.project_token }}");
+
+mixpanel.track("screen_view", {
+  eventCategory: "adminPanel",
+  instanceId: "{{ mixpanel.instance_name }}",
+  screenTitle: document.title,
+  screenType: "{{ page_type }}",
+});
+
+function sendEvent(eventCategory, eventName){
+  let nameValue = "{{ event_object_value }}"
+  if (!nameValue){
+    let nameElement = document.getElementById("id_name")
+    if (nameElement !== null){
+      nameValue = nameElement.value
+    }
+  }
+
+  mixpanel.track(eventName,
+      {
+      eventCategory: eventCategory,
+      instanceId: "{{ mixpanel.instance_name }}",
+      screenTitle: document.title,
+      eventObject: nameValue,
+    }
+  )
+}
+function addButtonListeners(selector, eventCategory) {
+  let buttons = document.querySelectorAll(selector);
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const dataEventName = button.dataset.eventName;
+      const eventName = dataEventName || "{{ action_name }}";
+
+      sendEvent(eventCategory, eventName);
+    });
+  });
+}
+
+// can be more saves buttons e.g. editor translations
+addButtonListeners("button[name='_save']", "adminPanel");
+addButtonListeners("button[name='_continue']", "adminPanel");
+
+// resend button inside modal
+addButtonListeners(".confirm-btn.confirm-again[data-mixpanel='True']", "adminPanel");
+
+// buttons inside action dropdown menu which have mixpanel flag set
+addButtonListeners(".dropdown-menu a[data-mixpanel='True']", "adminPanel");
+
+// "main" edit buttons which have mixpanel flag set
+addButtonListeners(".edit[data-mixpanel='True']", "adminPanel");
+
+// "Add" button inside modals with mixpanel flag set
+addButtonListeners("#modal-add[data-mixpanel='True']", "adminPanel");
+addButtonListeners("#modal-duplicate[data-mixpanel='True']", "adminPanel");
+
+
+
+</script>
