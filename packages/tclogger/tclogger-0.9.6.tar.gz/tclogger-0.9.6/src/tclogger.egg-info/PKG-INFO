@@ -1,0 +1,36 @@
+Metadata-Version: 2.1
+Name: tclogger
+Version: 0.9.6
+Summary: Python terminal colored logger
+Author: Hansimov
+Project-URL: Homepage, https://github.com/Hansimov/tclogger
+Project-URL: Issues, https://github.com/Hansimov/tclogger/issues
+Project-URL: Changelog, https://github.com/Hansimov/tclogger/blob/main/CHANGELOG.md
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests
+Requires-Dist: termcolor
+
+# tclogger
+Python terminal colored logger
+
+![](https://img.shields.io/pypi/v/tclogger?label=tclogger&color=blue&cacheSeconds=60)
+
+## Install
+```sh
+pip install tclogger
+```
+
+## Usage
+```py
+from tclogger import logger, count_digits, Runtimer
+with Runtimer():
+    logger.note("hello world")
+    logger.mesg(count_digits(1234567890))
+
+shell_cmd("ls -l")
+```
