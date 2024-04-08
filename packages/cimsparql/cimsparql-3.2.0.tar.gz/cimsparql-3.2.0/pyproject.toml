@@ -1,0 +1,189 @@
+[tool.poetry]
+name = "cimsparql"
+version = "3.2.0"
+description = "CIM query utilities"
+readme = "README.md"
+authors = ["Statnett Datascience <Datascience.Drift@Statnett.no>"]
+repository = "https://github.com/statnett/cimsparql.git"
+include = ["pkg_data/*"]
+exclude = ["tests/*"]
+
+[tool.poetry.dependencies]
+SPARQLWrapper = "*"
+StrEnum = "*"
+pandera = "*"
+pandas = "*"
+polyfactory = "^2.0.0"
+pydantic = "^2.0.0"
+python = "^3.10"
+httpx = "*"
+tenacity = "*"
+
+[tool.poetry.group.test.dependencies]
+asyncio = "*"
+coverage = { version = "*", extras = ['toml'] }
+mock = "*"
+pytest = ">= 6"
+pytest-asyncio = "*"
+pytest-cov = "*"
+pytest-httpserver = "*"
+pytest-integration = "*"
+pytest-profiling = "*"
+
+[tool.poetry.group.style.dependencies]
+black = "*"
+ruff = "*"
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "*"
+ruff-lsp = "*"
+
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
+sphinx = "*"
+sphinx_autodoc_typehints = "*"
+recommonmark = "*"
+sphinx_rtd_theme = "^1.0.0"
+
+[tool.poetry-dynamic-versioning]
+enable = false
+vcs = "git"
+style = "semver"
+pattern = '^(?P<base>\d+\.\d+\.\d+)(-?((?P<stage>[a-zA-Z]+)\.?(?P<revision>\d+)?))?$'
+
+[tool.ruff]
+select = [
+  "A", # flake8-builtins
+  "ANN", # flake8-annotations
+  "ARG", # flake8-unused-arguments
+  "B", # flake8-bugbear
+  "C4", # flake8-comprehensions
+  "C90", # mccabe
+  "COM", # flake8-commas
+  "DTZ", # flake8-datetimez
+  "E", "W", # pycodestyle
+  "F", # Pyflakes
+  "FLY", # flynt
+  "FURB", # refurb
+  "I", # isort
+  "N", # pep8-nameing
+  "NPY", # numpy specific rules
+  "PERF", # Perflint
+  "PIE", # flake8-pie
+  "RUF", # Ruff specific rules
+  "S", # flake8-bandit
+  "SIM", # flake8-simplify
+  "T20", # flake8-print
+  "TCH001", # flake8-type-checking
+  "TRY", # tryceratops
+  "UP", # pyupgrade
+  "YTT", # flake8-2020
+]
+
+ignore = ['S101', 'COM812', 'ANN101', 'ANN102', 'ANN401', 'TRY003']
+
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+fixable = ["A", "B", "C", "D", "E", "F", "G", "I", "N", "Q", "S", "T", "W", "ANN", "ARG", "BLE", "COM", "DJ", "DTZ", "EM", "ERA", "EXE", "FBT", "ICN", "INP", "ISC", "NPY", "PD", "PGH", "PIE", "PL", "PT", "PTH", "PYI", "RET", "RSE", "RUF", "SIM", "SLF", "TCH", "TID", "TRY", "UP", "YTT"]
+unfixable = []
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+
+# Same as Black.
+line-length = 100
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+# Assume Python 3.10
+target-version = "py310"
+
+[tool.ruff.per-file-ignores]
+"docs/conf.py" = ["A001"]
+"tests/test*.py" = ["ANN201"]
+
+[tool.ruff.pep8-naming]
+# Allow Pydantic's `@validator` decorator to trigger class method treatment.
+classmethod-decorators = ["pandera.dataframe_check"]
+
+[tool.ruff.flake8-import-conventions]
+
+[tool.ruff.flake8-import-conventions.aliases]
+# Declare the default aliases.
+pandas = "pd"
+pandera = "pa"
+
+[tool.black]
+line-length = 100
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+  | profiling
+)/
+'''
+
+[tool.coverage.report]
+# Regexes for lines to exclude from consideration
+exclude_lines = [
+              "pragma: no cover",
+              "raise AssertionError",
+              "raise NotImplementedError",
+              "if verbose:",
+              "if 0:",
+              "if False:",
+              "if TYPE_CHECKING:",
+              ]
+skip_covered = true
+show_missing = true
+precision = 2
+
+[tool.coverage.run]
+branch = true
+source = ["cimsparql",  "conftest", "tests"]
+
+[tool.pytest.ini_options]
+asyncio_mode = 'auto'
+log_file = "pytest.log"
+log_level = "DEBUG"
+log_file_format = "%(asctime)s - %(name)s - %(levelname)s: %(message)s"
+norecursedirs = "_build tmp*  __pycache__ src prof wheel_files tests/t_utils"
+markers = [
+  "integration: Mark test as an integration test",
+  "slow: marks tests as slow (deselect with '-m \"not slow\"')"
+]
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
+build-backend = "poetry_dynamic_versioning.backend"
