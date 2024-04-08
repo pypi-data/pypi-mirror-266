@@ -1,0 +1,50 @@
+Metadata-Version: 2.3
+Name: akello
+Version: 0.0.24
+Summary: FastAPI server akello.io
+Project-URL: Homepage, https://akello.io
+Project-URL: Issues, https://github.com/akello-io/akello/issues
+Author-email: Vijay Selvaraj <vijay@akellohealth.com>
+License-File: LICENSE
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.8
+Requires-Dist: aiofiles
+Requires-Dist: aws-lambda-powertools
+Requires-Dist: boto3
+Requires-Dist: click
+Requires-Dist: faker
+Requires-Dist: fastapi
+Requires-Dist: fastapi-cognito
+Requires-Dist: flatten-json
+Requires-Dist: jsonschema
+Requires-Dist: mangum
+Requires-Dist: ollama
+Requires-Dist: pydantic
+Requires-Dist: pydantic-settings
+Requires-Dist: python-multipart
+Requires-Dist: requests
+Requires-Dist: sendgrid
+Requires-Dist: stripe
+Requires-Dist: uvicorn
+Description-Content-Type: text/markdown
+
+# Akello Fast API Server
+
+This package includes all the backend API services needed for Akello. You can extend from the base server and add new endpoints to override any behavior.
+
+## Run local
+
+Make sure the following dependencies are met with your system
+* Docker is running
+* AWS cli is configured (needed for Cognito and DynamoDB docker containers)
+
+```shell
+pip install akello
+akello start server
+```
+
+After the script completes you will be able to access the API on http://localhost:8000
+
