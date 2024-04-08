@@ -1,0 +1,34 @@
+
+
+
+[project]
+
+name = "encommon"
+description = "Enasis Network Common Library"
+
+readme = "README.md"
+
+license.text = "MIT"
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11"]
+
+requires-python = ">= 3.10"
+
+dynamic = ["version", "dependencies"]
+
+
+
+[tool.setuptools.dynamic]
+
+version.attr = "encommon.__version__"
+
+dependencies.file = ["reqs-install.txt"]
+
+
+
+[tool.setuptools.packages.find]
+
+include = ["encommon", "encommon.*"]
