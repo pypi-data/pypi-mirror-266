@@ -1,0 +1,38 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "biao_maps"
+version = "0.0.1"
+dependencies = [
+  "selenium",
+  "numpy",
+  "pandas",
+  "requests",
+  "eth-account",
+  "web3",
+  "debiaosgs"]
+requires-python = ">=3.5"
+authors = [
+  {name = "BroBiao", email = "brobiao29@gmail.com"}
+]
+maintainers = [
+  {name = "BroBiao", email = "brobiao29@gmail.com"}
+]
+description = "Metamask Automation with Python and Selenium"
+readme = "README.md"
+license = {file = "LICENSE"}
+classifiers = [
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python"
+]
+
+[project.urls]
+Source = "https://github.com/BroBiao/MAPS"
+Repository = "https://github.com/BroBiao/MAPS"
+
+[tool.hatch.build]
+exclude = [
+  "test*",
+]
