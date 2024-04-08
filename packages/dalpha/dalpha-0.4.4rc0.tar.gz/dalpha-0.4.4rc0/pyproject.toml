@@ -1,0 +1,41 @@
+[tool.poetry]
+name = "dalpha"
+version = "0.4.4rc0"
+description = ""
+authors = ["devops <devops@dalpha.so>"]
+readme = "README.md"
+packages = [{include = "dalpha"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+boto3 = "^1.26.137"
+requests = "^2.30.0"
+build = "^0.10.0"
+sentry-sdk = "^1.30.0"
+python-json-logger = "^2.0.7"
+kafka-python = "^2.0.2"
+
+[tool.poetry.group.dev.dependencies]
+twine = "^4.0.2"
+
+[project]
+name = "dalpha"
+version = "0.4.4rc0"
+authors = [
+  { name="Beomseok", email="beomseok.lee@dalpha.so" },
+]
+description = "Dalpha internal sdk"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://dalpha.so"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
