@@ -1,0 +1,736 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "id": "input_config.spec.json",
+  "$id": "input_config.spec.json",
+  "title": "Kafka Overwatch Input Configuration",
+  "description": "Specification for Kafka topics/partitions hunter service",
+  "type": "object",
+  "additionalProperties": false,
+  "patternProperties": {
+    "x-": {}
+  },
+  "properties": {
+    "global": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Global settings. Defines global default values that can be overriden for each cluster.",
+      "required": [
+        "cluster_scan_interval_in_seconds"
+      ],
+      "properties": {
+        "cluster_scan_interval_in_seconds": {
+          "$ref": "#/definitions/ClusterScanIntervalInSeconds",
+          "default": 60,
+          "description": "Default topics & consumer groups scan interval"
+        }
+      }
+    },
+    "clusters": {
+      "type": "object",
+      "description": "Kafka clusters to monitor and report on the partitions usage",
+      "additionalProperties": false,
+      "uniqueItems": true,
+      "patternProperties": {
+        "^[a-zA-Z\\d\\-_]+$": {
+          "$ref": "#/definitions/clusterConfiguration"
+        }
+      }
+    },
+    "providers": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "x-": {}
+      },
+      "description": "Allows to define a Kafka SaaS provider and perform discovery of existing clusters to scan. (Not yet implemented)",
+      "properties": {
+        "aiven": {
+        },
+        "aws_msk": {
+          "$ref": "#/definitions/MskProvider",
+          "description": "AWS MSK Clusters discovery"
+        },
+        "confluent_cloud": {
+          "$ref": "#/definitions/ConfluentProvider",
+          "description": "Confluent Cloud environments & clusters discovery."
+        },
+        "conduktor_gateway": {
+          "type": "object",
+          "description": "Gateways to monitor and import the vClusters from the partitions usage",
+          "additionalProperties": false,
+          "uniqueItems": true,
+          "patternProperties": {
+            "^[a-zA-Z\\d\\-_]+$": {
+              "$ref": "#/definitions/gatewayConfiguration"
+            }
+          }
+        }
+      }
+    },
+    "prometheus": {},
+    "notification_channels": {
+      "$ref": "#/definitions/NotificationChannels",
+      "description": "Allows to define notification channels for reporting (not yet implemented)."
+    },
+    "schema_registries": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^[a-zA-Z\\d\\-_]+$": {
+          "$ref": "#/definitions/SchemaRegistry"
+        },
+        "^x-": {}
+      }
+    },
+    "aws_emf": {
+      "type": "object",
+      "properties": {
+        "log_group_name": {
+          "type": "string",
+          "description": "override log group name to publish metrics to. Importance: High",
+          "default": "kafka/cluster/overwatch/metrics"
+        },
+        "service_name": {
+          "type": "string",
+          "description": "override value for EMF Service name. Importance: Low"
+        },
+        "watcher_config": {
+          "$ref": "#/definitions/aws_emf"
+        }
+      }
+    }
+  },
+  "definitions": {
+    "aws_emf": {
+      "type": "object",
+      "required": [
+        "namespace"
+      ],
+      "properties": {
+        "namespace": {
+          "type": "string"
+        },
+        "high_resolution_metrics": {
+          "type": "boolean",
+          "default": false,
+          "description": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html#high-resolution-metrics"
+        },
+        "dimensions": {
+          "type": "object",
+          "uniqueItems": true,
+          "minProperties": 1,
+          "maxProperties": 25,
+          "description": "Dimension name and value to set in a key/value format.",
+          "patternProperties": {
+            "^\\w+$": {
+              "type": "string",
+              "description": "Value for the given dimension"
+            }
+          }
+        },
+        "enabled": {
+          "type": "boolean"
+        }
+      }
+    },
+    "NotificationChannels": {
+      "type": "object",
+      "id": "ConfigNotificationChannels",
+      "description": "Channels to send notifications to when reports have been generated.",
+      "additionalProperties": false,
+      "properties": {
+        "sns": {
+          "type": "object",
+          "uniqueItems": true,
+          "patternProperties": {
+            "^[a-zA-Z0-9-_]+$": {
+              "$ref": "#/definitions/SnsTopicChannel"
+            }
+          }
+        }
+      }
+    },
+    "SnsTopicChannel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "topic_arn"
+      ],
+      "properties": {
+        "topic_arn": {
+          "type": "string",
+          "description": "ARN of the SNS topic."
+        },
+        "role_arn": {
+          "type": "string",
+          "description": "Optional - Use IAM role to publish messages using another IAM role"
+        },
+        "ignore_errors": {
+          "type": "boolean",
+          "description": "Prevents exception if true when an exception occurs."
+        },
+        "template": {
+          "type": "object",
+          "description": "Allows to set specific templates for email and sms ",
+          "additionalProperties": false,
+          "properties": {
+            "email": {
+              "type": "string",
+              "description": "Optional - Path to a template for SNS Email messages"
+            }
+          }
+        }
+      }
+    },
+    "ClusterMetrics": {
+      "type": "object",
+      "properties": {
+        "prometheus": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            }
+          }
+        },
+        "aws_emf": {
+          "$ref": "#/definitions/aws_emf"
+        }
+      }
+    },
+    "S3Output": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "bucket_name": {
+          "type": "string",
+          "description": "Name of the S3 bucket"
+        },
+        "prefix_key": {
+          "type": "string",
+          "default": "",
+          "description": "Path in the bucket."
+        },
+        "iam_override": {
+          "$ref": "#/definitions/IamOverride"
+        }
+      }
+    },
+    "regexes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ReportingConfig": {
+      "type": "object",
+      "description": "Configure reporting output. Applies to all clusters.",
+      "additionalProperties": false,
+      "properties": {
+        "evaluation_period_in_seconds": {
+          "type": "integer",
+          "minimum": 60,
+          "description": "Interval between reports.",
+          "default": 60
+        },
+        "notification_channels": {
+          "$ref": "#/definitions/cluster_reporting_notification_channels"
+        },
+        "output_formats": {
+          "type": "object",
+          "description": "The different types of outputs to produce.",
+          "properties": {
+            "pandas_dataframe": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "exports": {
+          "type": "object",
+          "description": "Reporting export locations",
+          "properties": {
+            "S3": {
+              "$ref": "#/definitions/S3Output"
+            },
+            "local": {
+              "type": "string",
+              "description": "Local directory to store the reports to.",
+              "default": "/tmp/kafka-overwatch-reports/"
+            },
+            "kafka": {
+              "type": "object",
+              "description": "Configuration to persist reports into Kafka. Not yet implemented."
+            }
+          }
+        }
+      }
+    },
+    "clusterConfiguration": {
+      "type": "object",
+      "title": "KafkaClusterSettings",
+      "required": [
+        "cluster_config",
+        "reporting_config"
+      ],
+      "properties": {
+        "cluster_scan_interval_in_seconds": {
+          "$ref": "#/definitions/ClusterScanIntervalInSeconds",
+          "description": "Overrides the global setting",
+          "default": 60
+        },
+        "cluster_config": {
+          "oneOf": [
+            {
+              "type": "object",
+              "title": "KafkaClusterConfig",
+              "additionalProperties": false,
+              "patternProperties": {
+                "x-": {
+                }
+              },
+              "properties": {
+                "kafka": {
+                  "type": "object",
+                  "description": "Configuration as documented in https://github.com/confluentinc/librdkafka/blob/master/CONFIGURATION.md"
+                },
+                "schema_registry": {
+                  "type": "string",
+                  "description": "Name of the schema registry defined at the top level."
+                },
+                "cluster_config_auth": {
+                  "type": "object",
+                  "description": "Allows to set override configuration for secret values interpolation",
+                  "additionalProperties": false,
+                  "properties": {
+                    "iam_override": {
+                      "$ref": "#/definitions/IamOverride"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "$ref": "#/definitions/MskClusterConfig",
+              "description": "Offloads the MSK settings discovery and uses AWS IAM Authentication.",
+              "title": "MSKClusterConfig"
+            }
+          ]
+        },
+        "governance": {
+          "$ref": "#/definitions/governanceReportingConfig"
+        },
+        "reporting_config": {
+          "$ref": "#/definitions/ReportingConfig"
+        },
+        "topics_backup_config": {
+          "$ref": "#/definitions/ClusterTopicBackupConfig"
+        },
+        "topic_include_regexes": {
+          "$ref": "#/definitions/regexes"
+        },
+        "topic_exclude_regexes": {
+          "$ref": "#/definitions/regexes"
+        },
+        "metrics": {
+          "description": "Configure metrics export for the cluster",
+          "$ref": "#/definitions/ClusterMetrics"
+        }
+      },
+      "additionalItems": false,
+      "patternProperties": {
+        "x-": {
+        }
+      },
+      "uniqueItems": true
+    },
+    "MskClusterConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "x-": {
+        }
+      },
+      "properties": {
+        "cluster_arn": {
+          "type": "string",
+          "description": "The ARN of the MSK Cluster. This will be used to get the cluster details, including bootstrap details."
+        },
+        "schema_registry": {
+          "$ref": "#/definitions/SchemaRegistry"
+        },
+        "iam": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "ProfileName": {
+              "type": "string"
+            },
+            "AssumeRole": {
+              "$ref": "#/definitions/IamOverride/definitions/AssumeRole"
+            }
+          }
+        }
+      }
+    },
+    "gatewayConfiguration": {
+      "type": "object",
+      "properties": {
+        "gateway_config": {
+          "type": "object"
+        },
+        "reporting_config": {
+          "$ref": "#/definitions/ReportingConfig"
+        },
+        "topic_include_regexes": {
+          "$ref": "#/definitions/regexes"
+        },
+        "topic_exclude_regexes": {
+          "$ref": "#/definitions/regexes"
+        },
+        "metrics": {
+          "description": "Configure metrics export for the cluster",
+          "$ref": "#/definitions/ClusterMetrics"
+        }
+      },
+      "additionalItems": false,
+      "patternProperties": {
+        "x-": {
+        }
+      },
+      "uniqueItems": true
+    },
+    "ClusterTopicBackupConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Enable/disable backup of the topics configuration",
+          "default": false
+        },
+        "S3": {
+          "description": "Enables exports to be sent to S3.",
+          "$ref": "#/definitions/S3Output"
+        },
+        "BackupStyles": {
+          "description": "List the types of backups you want to generate.",
+          "default": [
+            "kafka-topics.sh"
+          ],
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "cfn-kafka-admin",
+              "kafka-topics.sh"
+            ]
+          }
+        }
+      }
+    },
+    "IamOverride": {
+      "definitions": {
+        "AssumeRole": {
+          "type": "object",
+          "required": [
+            "RoleArn"
+          ],
+          "properties": {
+            "RoleArn": {
+              "type": "string",
+              "description": "Optional - IAM Role ARN to assume"
+            },
+            "RoleSessionName": {
+              "type": "string",
+              "description": "Optional - Name of the session to use",
+              "default": "kafka-overwatch@aws"
+            },
+            "ExternalId": {
+              "type": "string",
+              "description": "Optional - External ID to use when assuming a role"
+            }
+          }
+        }
+      },
+      "description": "Optional - IAM profile/settings override to use. Defaults to SDK settings.",
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Optional - Use IAM profile to interact with AWS S3"
+        },
+        {
+          "$ref": "#/definitions/IamOverride/definitions/AssumeRole"
+        }
+      ]
+    },
+    "ClusterScanIntervalInSeconds": {
+      "type": "integer",
+      "minimum": 10,
+      "maximum": 3600,
+      "description": "Interval, in seconds, to wait between clusters scan."
+    },
+    "MskProvider": {
+      "type": "object",
+      "properties": {
+        "iam_override": {
+          "$ref": "#/definitions/IamOverride",
+          "description": "Override default session to perform the clusters discovery"
+        },
+        "exclude_regions": {
+          "type": "array",
+          "description": "List of regions not to look for MSK clusters",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          }
+        }
+      }
+    },
+    "ConfluentProvider": {
+      "type": "object",
+      "description": "Confluent Cloud settings to use to perform the discovery",
+      "additionalProperties": false,
+      "patternProperties": {
+        "x-": {}
+      },
+      "properties": {
+        "confluent_cloud_auth": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "api_key": {
+              "type": "string",
+              "description": "The API key to use to perform API calls to Confluent Cloud"
+            },
+            "api_secret": {
+              "type": "string",
+              "description": "The API Secret to perform API calls to Confluent Cloud"
+            }
+          }
+        },
+        "kafka_service_account": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "kafka-overwatch",
+              "description": "Name of the Confluent service account to create"
+            },
+            "description": {
+              "type": "string",
+              "description": "Service account description",
+              "default": "kafka-overwatch"
+            },
+            "allow_create": {
+              "type": "boolean",
+              "default": true,
+              "description": "If the service account with the ServiceAccountName is not found, creates one. If false and cannot find service account, provider will be failed."
+            },
+            "save_credentials": {
+              "type": "object",
+              "description": "Optional - If set, will save the generated credentials for the cluster",
+              "properties": {
+                "aws_secrets_manager": {
+                  "$ref": "#/definitions/SaaSProviderAwsSecretsManager"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "SaaSProviderAwsSecretsManager": {
+      "type": "object",
+      "properties": {
+        "secret_id": {
+          "type": "string",
+          "description": "Name or ARN of secret to use to store the key. If ARN is detected, existing secret content will be updated. If name is provided but not found, creates new secret."
+        },
+        "iam_override": {
+          "$ref": "#/definitions/IamOverride"
+        }
+      }
+    },
+    "governanceReportingConfig": {
+      "type": "object",
+      "description": "Configuration for governance cluster analysis",
+      "properties": {
+        "topic_naming_convention": {
+          "$ref": "#/definitions/naming_convention"
+        },
+        "consumer_groups_naming_convention": {
+          "$ref": "#/definitions/naming_convention"
+        }
+      }
+    },
+    "naming_convention": {
+      "type": "object",
+      "description": "Evaluates topic name against one or more regex and reports non-compliant topics",
+      "required": [
+        "regexes"
+      ],
+      "properties": {
+        "regexes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Regular expression for compliant topic name"
+          }
+        },
+        "ignore_regexes": {
+          "type": "array",
+          "description": "List/Array of regular expression of topic names to ignore for review. Use to ignore internal or stream topics",
+          "items": {
+            "type": "string",
+            "description": "Regular expression for topic to ignore"
+          }
+        }
+      }
+    },
+    "confluentSchemaRegistry": {
+      "type": "object",
+      "$id": "confluentSchemaRegistry",
+      "title": "confluentSchemaRegistry",
+      "description": "Schema registry client configuration. Uses APIs of Confluent Schema Registry",
+      "required": [
+        "schema_registry_url"
+      ],
+      "properties": {
+        "schema_registry_url": {
+          "type": "string"
+        },
+        "basic_auth": {
+          "$id": "httpBasicAuth",
+          "title": "httpBasicAuth",
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "type": "string",
+              "description": "Username & password in the format username:password."
+            }
+          ]
+        }
+      }
+    },
+    "awsGlueSchemaRegistry": {
+      "type": "object",
+      "$id": "awsGlueSchemaRegistry",
+      "title": "awsGlueSchemaRegistry",
+      "description": "AWS Glue Schema Registry configuration.",
+      "properties": {
+        "registry_arn": {
+          "type": "string"
+        },
+        "iam_override": {
+          "$ref": "#/definitions/IamOverride"
+        }
+      },
+      "required": [
+        "registry_arn"
+      ]
+    },
+    "SchemaRegistry": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "x-": {}
+      },
+      "required": [
+        "config"
+      ],
+      "properties": {
+        "config": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/confluentSchemaRegistry"
+            },
+            {
+              "$ref": "#/definitions/awsGlueSchemaRegistry"
+            }
+          ]
+        },
+        "backup_config": {
+          "type": "object",
+          "description": "Configuration for schema registry schemas & subjects backup",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Turn backup on"
+            },
+            "backup_interval_seconds": {
+              "type": "integer",
+              "minimum": 60
+            },
+            "S3": {
+              "$ref": "#/definitions/S3Output"
+            }
+          }
+        },
+        "schema_registry_scan_interval": {
+          "type": "integer",
+          "minimum": 10,
+          "description": "Interval, in seconds, between two scans of the schema registry.",
+          "default": 300
+        }
+      }
+    },
+    "cluster_reporting_notification_channels": {
+      "type": "object",
+      "id": "cluster_reporting_notification_channels",
+      "description": "Channels to send notifications to when reports have been generated.",
+      "additionalProperties": false,
+      "properties": {
+        "sns": {
+          "type": "array",
+          "description": "List of SNS channels defined in notifications_channels",
+          "items": {
+            "$ref": "#/definitions/cluster_report_sns_channel"
+          }
+        }
+      }
+    },
+    "cluster_report_sns_channel": {
+      "type": "object",
+      "id": "cluster_report_sns_channel",
+      "description": "Sns topic to send the messages to",
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ],
+      "patternProperties": {
+        "x-": {}
+      },
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "sign_s3_url": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "number",
+              "minimum": 900,
+              "maximum": 604800,
+              "description": "Maximum lifetime for the signed URL. See AWS docs for valid values."
+            }
+          ]
+        }
+      }
+    }
+  }
+}
