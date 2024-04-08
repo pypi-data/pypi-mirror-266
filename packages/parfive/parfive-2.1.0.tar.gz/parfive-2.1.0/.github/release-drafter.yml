@@ -1,0 +1,27 @@
+exclude-contributors:
+  - 'pre-commit-ci'
+name-template: 'v$NEXT_MINOR_VERSION'
+tag-template: 'v$NEXT_MINOR_VERSION'
+categories:
+  - title: 'Breaking Changes'
+    labels:
+      - 'breaking'
+  - title: 'Enhancements'
+    labels:
+      - 'enhancement'
+  - title: 'Bug Fixes'
+    labels:
+      - 'bug'
+  - title: 'Documentation and code quality'
+    labels:
+      - 'documentation'
+  - title: 'Misc/Internal Changes'
+    labels:
+      - 'misc'
+exclude-labels:
+  - "no changelog entry"
+change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+template: |
+  ## Changes
+
+  $CHANGES
