@@ -1,0 +1,239 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "id": "report_structure.spec.json",
+  "$id": "report_structure.spec.json",
+  "title": "Cluster Usage Report Structure",
+  "description": "Defines the format of the cluster topics report",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "cluster": {
+      "$ref": "#/definitions/ClusterReport"
+    }
+  },
+  "definitions": {
+    "ClusterReport": {
+      "type": "object",
+      "required": [
+        "cluster_name",
+        "metadata"
+      ],
+      "properties": {
+        "cluster_name": {
+          "type": "string"
+        },
+        "metadata": {
+          "type": "object",
+          "required": [
+            "timestamp"
+          ],
+          "properties": {
+            "timestamp": {
+              "type": "string",
+              "description": "Time the report was generated at"
+            }
+          }
+        },
+        "governance": {
+          "type": "object",
+          "description": "Governance report structure",
+          "properties": {
+            "topic_naming_convention": {
+              "$ref": "#/definitions/governance_naming_convention_report"
+            },
+            "consumer_group_naming_convention": {
+              "$ref": "#/definitions/governance_naming_convention_report"
+            }
+          }
+        },
+        "statistics": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "topics"
+          ],
+          "properties": {
+            "topics": {
+              "type": "integer",
+              "description": "Total count of topics counted at the time of generating the report"
+            },
+            "partitions": {
+              "type": "integer",
+              "description": "Sum of partitions for the topics"
+            },
+            "most_active_topics": {
+              "description": "Topics in the 0.75 percentile of number of messages and new_messages which active consumer groups",
+              "oneOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                {
+                  "type": "object"
+                }
+              ]
+            },
+            "consumer_groups": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "total"
+              ],
+              "properties": {
+                "total": {
+                  "type": "integer",
+                  "description": "Total number of consumer groups"
+                },
+                "active": {
+                  "type": "integer",
+                  "description": "Number of active consumer groups (lag = 0) & members > 0"
+                },
+                "inactive": {
+                  "type": "integer",
+                  "description": "Number of inactive consumer groups (lag > 0) or groups without members"
+                }
+              }
+            }
+          }
+        },
+        "estimated_waste": {
+          "type": "object",
+          "properties": {
+            "topics": {
+              "type": "integer"
+            },
+            "partitions": {
+              "type": "integer",
+              "description": "Sum of partitions for the topics"
+            },
+            "topic_categories": {
+              "type": "object",
+              "patternProperties": {
+                "^[a-zA-Z0-9]+": {
+                  "$ref": "#/definitions/topic_waste_category"
+                }
+              }
+            }
+          }
+        },
+        "schema_registry": {
+          "$ref": "#/definitions/schema_registry_report"
+        }
+      }
+    },
+    "schema_registry_report": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "x-": {}
+      },
+      "properties": {
+        "subjects_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "schemas_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "schemas_estimates": {
+          "$ref": "#/definitions/schemas_waste_estimates"
+        }
+      }
+    },
+    "schemas_waste_estimates": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "x-": {}
+      },
+      "properties": {
+        "detected_unused": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "detected_unused_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "topic_waste_category": {
+      "type": "object",
+      "required": [
+        "topics",
+        "topic_partitions_sum",
+        "description"
+      ],
+      "properties": {
+        "topics": {
+          "type": "object",
+          "additionalProperties": false,
+          "patternProperties": {
+            "[a-zA-Z0-9_.\\-]{3,256}": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Topic Name: Partitions count"
+            }
+          }
+        },
+        "topics_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "topic_partitions_sum": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "cluster_percentage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "The percentage of topics fit into that category within the cluster"
+        },
+        "description": {
+          "type": "string",
+          "description": "The description of the category"
+        }
+      }
+    },
+    "governance_naming_convention_report": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "number",
+          "minimum": 1,
+          "description": "Total number of consumer_groups in the cluster"
+        },
+        "total_ignored": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Total number of consumer_groups ignored via regex"
+        },
+        "total_measured": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Total number of consumer_groups measured"
+        },
+        "compliant_percentage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Percentage of compliant consumer_groups, out of total_topic_measured"
+        },
+        "non_compliant_resources": {
+          "type": "array",
+          "description": "List of non-compliant topic names",
+          "items": {
+            "type": "string",
+            "description": "Topic name that is not compliant"
+          }
+        }
+      }
+    }
+  }
+}
