@@ -1,0 +1,63 @@
+Metadata-Version: 2.1
+Name: pyunitconverter
+Version: 0.5.1
+Summary: Library of Python functions to converts units
+Home-page: https://github.com/sdejongh/pyunitconverter
+License: MIT
+Keywords: units,conversion,helper
+Author: Steve De Jongh
+Author-email: dejongh.st@gmail.com
+Requires-Python: >=3.9,<4.0
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Utilities
+Project-URL: Bug Tracker, https://github.com/sdejongh/pyunitconverter/issues
+Project-URL: Repository, https://github.com/sdejongh/pyunitconverter
+Description-Content-Type: text/markdown
+
+# pyunitconverter
+
+## Description
+
+`pyunitconverter` is a Python library of functions for unit conversions.
+
+## Modules
+
+- `pyunitconverter.energy`: conversion of energy units
+- `pyunitconverter.length`: conversion of length units
+- `pyunitconverter.mass`: conversion of mass units
+- `pyunitconverter.prefixes`: prefixes for units of the International System (ie: kilo, mega, ...)
+- `pyunitconverter.speed`: conversion of speed units
+- `pyunitconverter.temperature`: conversion of temperature units
+- `pyunitconverter.time`: conversion of time units
+- `pyunitconverter.volume`: conversion of volume units
+
+## Installation
+
+```bash
+python -m pip install pyunitconverter
+```
+
+## Usage
+Example 1
+```python
+from pyunitconverter.mass import ounces_to_kilograms
+
+mass = 10
+
+print(f"{mass} ounces = {ounces_to_kilograms(mass)} kg")
+```
+
+Example 2
+```python
+from pyunitconverter.prefixes import PREFIX_KILO
+
+length = 5.2
+
+print(f"{length} km = {PREFIX_KILO*length} m")
+```
