@@ -1,0 +1,308 @@
+{
+  "type": "object",
+  "title": "Jupyterlab RISE Metadata Tools",
+  "description": "Settings for Jupyterlab RISE metadata.",
+  "jupyter.lab.metadataforms": [
+    {
+      "id": "@jupyterlabrise/metadata-form:notebook",
+      "label": "RISE Tools",
+      "metadataSchema": {
+        "type": "object",
+        "properties": {
+          "/rise/autolaunch": {
+            "title": "Autolaunch",
+            "type": "boolean"
+          },
+          "/rise/enable_chalkboard": {
+            "title": "Chalkboard",
+            "type": "boolean"
+          },
+          "/rise/start_slideshow_at": {
+            "title": "Start slideshow at",
+            "type": "string",
+            "default": "selected",
+            "oneOf": [
+              {
+                  "const": "beginning",
+                  "Title": "beginning"
+              },
+              {
+                  "const": "selected",
+                  "Title": "selected"
+              }
+            ]
+          },
+          "/rise/auto_select": {
+            "title": "What to select",
+            "type": "string",
+            "default": "code",
+            "oneOf": [
+              {
+                  "const": "none",
+                  "Title": "none"
+              },
+              {
+                  "const": "code",
+                  "Title": "code"
+              }
+            ]
+          },
+          "/rise/show_buttons_on_startup": {
+            "title": "Show buttons",
+            "type": "boolean"
+          },
+          "/rise/header": {
+            "title": "HTML header",
+            "type": "string"
+          },
+          "/rise/footer": {
+            "title": "HTML footer",
+            "type": "string"
+          },
+          "/rise/backimage": {
+            "title": "URL for back image",
+            "type": "string"
+          },
+          "/rise/overlay": {
+            "title": "HTML overlay",
+            "type": "string"
+          },
+          "/rise/theme": {
+            "title": "Theme",
+            "type": "string",
+            "default": "simple",
+            "oneOf": [
+              {
+                  "const": "beige",
+                  "Title": "beige"
+              },
+              {
+                  "const": "black",
+                  "Title": "black"
+              },
+              {
+                  "const": "blood",
+                  "Title": "blood"
+              },
+              {
+                  "const": "league",
+                  "Title": "league"
+              },
+              {
+                  "const": "moon",
+                  "Title": "moon"
+              },
+              {
+                  "const": "night",
+                  "Title": "night"
+              },
+              {
+                  "const": "serif",
+                  "Title": "serif"
+              },
+              {
+                  "const": "simple",
+                  "Title": "simple"
+              },
+              {
+                  "const": "sky",
+                  "Title": "sky"
+              },
+              {
+                  "const": "solarized",
+                  "Title": "solarized"
+              },
+              {
+                  "const": "white",
+                  "Title": "white"
+              }
+            ]
+          },
+          "/rise/transition": {
+            "title": "Reveal Transition",
+            "type": "string",
+            "default": "linear",
+            "oneOf": [
+              {
+                  "const": "none",
+                  "Title": "none"
+              },
+              {
+                  "const": "concave",
+                  "Title": "concave"
+              },
+              {
+                  "const": "convex",
+                  "Title": "convex"
+              },
+              {
+                  "const": "cube",
+                  "Title": "cube"
+              },
+              {
+                  "const": "fade",
+                  "Title": "fade"
+              },
+              {
+                  "const": "linear",
+                  "Title": "linear"
+              },
+              {
+                  "const": "slide",
+                  "Title": "slide"
+              },
+              {
+                  "const": "zoom",
+                  "Title": "zoom"
+              }
+            ]
+          },
+          "/rise/slideNumber": {
+            "title": "Show slide number",
+            "type": "boolean"
+          },
+          "/rise/width": {
+            "title": "Reveal width",
+            "type": "string",
+            "default": "100%"
+          },
+          "/rise/height": {
+            "title": "Reveal height",
+            "type": "string",
+            "default": "100%"
+          },
+          "/rise/controls": {
+            "title": "Controls",
+            "type": "boolean",
+            "default": true
+          },
+          "/rise/progress": {
+            "title": "Show progress bar",
+            "type": "boolean",
+            "default": true
+          },
+          "/rise/history": {
+            "title": "History",
+            "type": "boolean",
+            "default": true
+          },
+          "/rise/scroll": {
+            "title": "Reveal Scroll",
+            "type": "boolean"
+          },
+          "/rise/center": {
+            "title": "Reveal center",
+            "type": "boolean",
+            "default": true
+          },
+          "/rise/auto_select_timeout": {
+            "title": "Timeout before auto-selection",
+            "type": "integer",
+            "default": 450
+          },
+          "/rise/restore_timeout": {
+            "title": "Timeout when restoring focus",
+            "type": "integer",
+            "default": 500
+          },
+          "/rise/async_timeout": {
+            "title": "Timeout between synchronization",
+            "type": "integer",
+            "default": 250
+          }
+        }
+      },
+      "metadataOptions": {
+        "/rise/autolaunch": {
+          "metadataLevel": "notebook",
+          "writeDefault": false
+        },
+        "/rise/enable_chalkboard": {
+          "metadataLevel": "notebook",
+          "writeDefault": false
+        },
+        "/rise/start_slideshow_at": {
+          "metadataLevel": "notebook",
+          "writeDefault": false
+        },
+        "/rise/auto_select": {
+          "metadataLevel": "notebook",
+          "writeDefault": false
+        },
+        "/rise/show_buttons_on_startup": {
+          "metadataLevel": "notebook",
+          "writeDefault": false
+        },
+        "/rise/header": {
+          "metadataLevel": "notebook",
+          "writeDefault": false
+        },
+        "/rise/footer": {
+          "metadataLevel": "notebook",
+          "writeDefault": false
+        },
+        "/rise/backimage": {
+          "metadataLevel": "notebook",
+          "writeDefault": false
+        },
+        "/rise/overlay": {
+          "metadataLevel": "notebook",
+          "writeDefault": false
+        },
+        "/rise/theme": {
+          "metadataLevel": "notebook",
+          "writeDefault": false
+        },
+        "/rise/transition": {
+          "metadataLevel": "notebook",
+          "writeDefault": false
+        },
+        "/rise/slideNumber": {
+          "metadataLevel": "notebook",
+          "writeDefault": false
+        },
+        "/rise/width": {
+          "metadataLevel": "notebook",
+          "writeDefault": false
+        },
+        "/rise/height": {
+          "metadataLevel": "notebook",
+          "writeDefault": false
+        },
+        "/rise/controls": {
+          "metadataLevel": "notebook",
+          "writeDefault": false
+        },
+        "/rise/progress": {
+          "metadataLevel": "notebook",
+          "writeDefault": false
+        },
+        "/rise/history": {
+          "metadataLevel": "notebook",
+          "writeDefault": false
+        },
+        "/rise/scroll": {
+          "metadataLevel": "notebook",
+          "writeDefault": false
+        },
+        "/rise/center": {
+          "metadataLevel": "notebook",
+          "writeDefault": false
+        },
+        "/rise/auto_select_timeout": {
+          "metadataLevel": "notebook",
+          "writeDefault": false
+        },
+        "/rise/restore_timeout": {
+          "metadataLevel": "notebook",
+          "writeDefault": false
+        },
+        "/rise/async_timeout": {
+          "metadataLevel": "notebook",
+          "writeDefault": false
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}
