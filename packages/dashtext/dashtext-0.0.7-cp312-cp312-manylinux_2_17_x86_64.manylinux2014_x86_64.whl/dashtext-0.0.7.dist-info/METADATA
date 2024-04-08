@@ -1,0 +1,228 @@
+Metadata-Version: 2.1
+Name: dashtext
+Version: 0.0.7
+Summary: DashText is a Text Modal Data Library
+Home-page: https://dashscope.aliyun.com/
+Author: Alibaba
+Author-email: dashvector@alibaba-inc.com
+License: Apache 2.0
+Platform: Posix; MacOS X; Windows
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.7.0
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: mmh3
+Requires-Dist: numpy
+
+# DashText Python Library
+
+DashText is a Python package for DashVector's sparse-dense (hybrid) semantic search which contains a series of text utilities and an integrated tool named SparseVectorEncoder.
+
+## Installation
+To install the DashText Client, simply run:
+```shell
+pip install dashtext
+```
+
+## QuickStart
+### SparseVector Encoding
+
+It's easy to convert text corpus to sparse vectors in DashText with default models.
+
+```python
+from dashtext import SparseVectorEncoder
+
+# Initialize a Encoder Instance and Load a Default Model in DashText
+encoder = SparseVectorEncoder.default('zh')
+
+# Encode a new document (for upsert to DashVector)
+document = "向量检索服务DashVector基于达摩院自研的高效向量引擎Proxima内核，提供具备水平拓展能力的云原生、全托管的向量检索服务。"
+print(encoder.encode_documents(document))
+# {380823393: 0.7262431704356519, 414191989: 0.7262431704356519, 565176162: 0.7262431704356519, 904594806: 0.7262431704356519, 1005505802: 0.7262431704356519, 1169440797: 0.8883757984694465, 1240922502: 0.7262431704356519, 1313971048: 0.7262431704356519, 1317077351: 0.7262431704356519, 1490140460: 0.7262431704356519, 1574737055: 0.7262431704356519, 1760434515: 0.7262431704356519, 2045788977: 0.8414146776926797, 2141666983: 0.7262431704356519, 2509543087: 0.7262431704356519, 3180265193: 0.7262431704356519, 3845702398: 0.7262431704356519, 4106887295: 0.7262431704356519}
+
+# Encode a query (for search in DashVector)
+query = "什么是向量检索服务？"
+print(encoder.encode_queries(document))
+# {380823393: 0.08361891359384604, 414191989: 0.09229860190522488, 565176162: 0.04535506923676476, 904594806: 0.020073288360284405, 1005505802: 0.027556881447714194, 1169440797: 0.04022365461249135, 1240922502: 0.050572420319144815, 1313971048: 0.01574978858878569, 1317077351: 0.03899710322573238, 1490140460: 0.03401309416846664, 1574737055: 0.03240084602715354, 1760434515: 0.11848476345398339, 2045788977: 0.09625917015244072, 2141666983: 0.11848476345398339, 2509543087: 0.05570020739487387, 3180265193: 0.023553249869916984, 3845702398: 0.05542717955003807, 4106887295: 0.05123100463915489}
+```
+
+### SparseVector Parameters
+
+The `SparseVectorEncoder` class is based on BM25 Algorithm, so it contains some parameters required for the BM25 algorithm and some text utilities parameters for text processing.
+
+* `b`: Document length normalization required by BM25 (default: 0.75).
+* `k1`: Term frequency saturation required by BM25 (default: 1.2).
+* `tokenize_function`: Tokenization process function, such as SentencePiece or GPTTokenizer in Transformers, outputs may by a string or integer array (default: Jieba, type: `Callable[[str], List[str]]`). 
+* `hash_function`: Hash process function when need to convert text to number after tokenizing (default: mmh3 hash, type: `Callable[[Union[str, int]], int]`).
+* `hash_bucket_function`: Dividing process function when need to dividing hash values into finite buckets (default: None, type: `Callable[[int], int]`).
+
+```python
+from dashtext import SparseVectorEncoder
+from dashtext import TextTokenizer
+
+tokenizer = TextTokenizer().from_pretrained("Jieba", stop_words=True)
+
+encoder = SparseVectorEncoder(b=0.75, k1=1.2, tokenize_function=tokenizer.tokenize)
+```
+
+## Reference
+
+### Encode Documents
+`encode_documents(texts: Union[str, List[str], List[int], List[List[int]]]) -> Union[Dict, List[Dict]]`
+
+| **Parameters** | **Type** | **Required** | **Description** |
+| --- | --- | --- | --- |
+| texts | str<br />List[str]<br />List[int]<br />List[List[int]] | Yes | str : single text<br />List[str]:mutiple texts<br />List[int]:hash representation of a single text<br />List[List[int]]:hash representation of mutiple texts|
+
+Example:
+```python
+# single text
+texts1 = "DashVector将其强大的向量管理、向量查询等多样化能力，通过简洁易用的SDK/API接口透出，方便被上层AI应用迅速集成"
+result = encoder.encode_documents(texts1)
+
+# mutiple texts
+texts2 = ["DashVector将其强大的向量管理、向量查询等多样化能力，通过简洁易用的SDK/API接口透出，方便被上层AI应用迅速集成",
+        "从而为包括大模型生态、多模态AI搜索、分子结构分析在内的多种应用场景，提供所需的高效向量检索能力"]     
+result = encoder.encode_documents(texts2)
+
+# hash representation of a single text
+texts3 = [1218191817, 2673099881, 2982218203, 3422996809]
+result = encoder.encode_documents(texts3)
+
+# hash representation of mutiple texts
+texts4 = [[1218191817, 2673099881, 2982218203, 3422996809], [2673099881, 2982218203, 3422996809, 771291085, 741580288]]
+result = encoder.encode_documents(texts4)
+
+# result example
+# {59256732: 0.7340568742689919, 863271227: 0.7340568742689919, 904594806: 0.7340568742689919, 942054413: 0.7340568742689919, 1169440797: 0.8466352922575744, 1314384716: 0.7340568742689919, 1554119115: 0.7340568742689919, 1736403260: 0.7340568742689919, 2029341792: 0.7340568742689919, 2141666983: 0.7340568742689919, 2367386033: 0.7340568742689919, 2549501804: 0.7340568742689919, 3869223639: 0.7340568742689919, 4130523965: 0.7340568742689919, 4162843804: 0.7340568742689919, 4202556960: 0.7340568742689919}
+```
+
+### Encode Queries
+`encode_queries(texts: Union[str, List[str], List[int], List[List[int]]]) -> Union[Dict, List[Dict]]`<br />The input format is the same as the encode_documents method.
+
+Example:
+```python
+# single text
+texts = "什么是向量检索服务？"
+result = encoder.encode_queries(texts)
+```
+
+### Train / Dump / Load DashText Model
+#### Train
+`train(corpus: Union[str, List[str], List[int], List[List[int]]]) -> None`
+
+| **Parameters** | **Type** | **Required** | **Description** |
+| --- | --- | --- | --- |
+| corpus | str<br />List[str]<br />List[int]<br />List[List[int]] | Yes | str : single text<br />List[str]:mutiple texts<br />List[int]:hash representation of a single text<br />List[List[int]]:hash representation of mutiple texts|
+
+Example:
+```python
+corpus = [
+    "向量检索服务DashVector基于达摩院自研的高效向量引擎Proxima内核，提供具备水平拓展能力的云原生、全托管的向量检索服务",
+    "DashVector将其强大的向量管理、向量查询等多样化能力，通过简洁易用的SDK/API接口透出，方便被上层AI应用迅速集成",
+    "从而为包括大模型生态、多模态AI搜索、分子结构分析在内的多种应用场景，提供所需的高效向量检索能力",
+    "简单灵活、开箱即用的SDK，使用极简代码即可实现向量管理",
+    "自研向量相似性比对算法，快速高效稳定服务",
+    "Schema-free设计，通过Schema实现任意条件下的组合过滤查询"
+]
+
+encoder.train(corpus)
+
+# use dump method to check parameters
+encoder.dump("./dump_paras.json")
+```
+#### Dump and Load
+`dump(path: str) -> None` <br/>
+`load(path: str) -> None`
+
+| **Parameters** | **Type** | **Required** | **Description** |
+| --- | --- | --- | --- |
+| path | str | Yes |Use the dump method to dump the model parameters as a JSON file to the specified `path`;<br /> Use load method to load a model parameters from a JSON file `path` or `URL`|
+> The input path can be either relative or absolute, but it should be specific to the file, Example:`". /test_dump.json"`, URL starts with `"http://"` or `"https://"`
+
+Example:
+```python
+# dump model
+encoder.dump("./model.json")
+
+# load model from path
+encoder.load("./model.json")
+
+# load model from url
+encoder.load("https://example.com/model.json")
+```
+
+### Default DashText Models
+If you want to use the default `BM25` model of `SparseVectorEncoder`, you can call the `default` method.
+
+``` python
+default(name : str = 'zh') -> "SparseVectorEncoder"
+```
+
+| **Parameters** | **Type** | **Required** | **Description** |
+| --- | --- |--------------| --- |
+| name | str | No           | Currently supports both Chinese and English default models,Chinese model `name` is `'zh'`(default), English model `name` is `'en'`.
+
+Example:
+
+``` python
+# default method
+encoder = dashtext.SparseVectorEncoder.default()
+
+# using default model, you can directly encode documents and queries
+encoder.encode_documents("DashVector将其强大的向量管理、向量查询等多样化能力，通过简洁易用的SDK/API接口透出，方便被上层AI应用迅速集成")
+encoder.encode_queries("什么是向量检索服务？")
+```
+
+### Extend Tokenizer
+DashText comes with a built-in Jieba tokenizer that users can readily use (the default SparseVectorEncoder is trained with this Jieba tokenizer). However, in cases requires proprietary corpus, then a customized tokenizer is needed. To solve this problem, DashText offers two flexible options:
+
+- Option 1: Utilize the TextTokenizer.from_pretrained() method to create a customized built-in Jieba tokenizer. Users can effortlessly specify an original dictionary, a user-defined dictionary, and stopwords for quickstart. If the Jieba tokenizer meets the requirements, this option would be more suitable.
+```python
+TextTokenizer.from_pretrained(cls, model_name : str = 'Jieba',
+                              *inputs, **kwargs) -> "BaseTokenizer"
+```
+| **Parameters** | **Type** | **Required** | **Description** |
+| --- | --- | --- | --- |
+| model_name | str | Yes | Currently only supports `Jieba`. |
+| dict | str | No | Dict path. Defaults to [dict.txt.big](https://raw.githubusercontent.com/fxsjy/jieba/master/extra_dict/dict.txt.big). |
+| user_dict | str | No | Extra user dict path. Defaults to `data/jieba/user_dict.txt`(an empty file). |
+| stop_words | Union[bool, Dict[str, Any], List[str], Set[str]] | No | Stop words. Defaults to False. <br />True/False: `True` means using pre-defined stopwords, `False` means not using any stopwords. <br />Dict/List/Set: user defined stopwords. Type [Dict]/[List] will transfer to [Set].
+ |
+- Option 2: Use any customized Tokenizers by providing a callable function in the signature `Callable[[str], List[str]]`. This alternative grants users more freedom to tailor the tokenizer for specific needs. If there is a preferred tokenizer that has already fitted particular requirements, this option would allow users to seamlessly integrate the tokenizer directly into the workflow.
+
+## Combining Sparse and Dense Encodings for Hybrid Search in DashVector
+`combine_dense_and_sparse(dence_vector: Union[List[float], np.ndarray], sparse_vector: Dict[int, float], alpha: float) -> Tuple[Union[List[float], np.ndarray, Dict[int, float]]`
+
+| **Parameters** | **Type** | **Required** | **Description** |
+| --- | --- | --- | --- |
+| dense_vector | Union[List[float], np.ndarray] | Yes | `dense vector`|
+| sparse_vector | Dict[int, float] | Yes | `sparse vector` generated by encode_documents or encode_query method|
+| alpha | float | Yes | `alpha` controls the computational weights of sparse and dense vectors. alpha=0.0 means sparse vector only, alpha=1.0 means dense vector only.|
+
+Example:
+```python
+from dashtext import combine_dense_and_sparse
+
+dense_vector = [0.02428389742874429,0.02036450577918233,0.00758973862139133,-0.060652585776971274,0.03321684423003758,-0.019009049500375488,0.015808212986566556,0.0037662904132509424,-0.0178332320055069]
+sparse_vector = encoder.encode_documents("DashVector将其强大的向量管理、向量查询等多样化能力，通过简洁易用的SDK/API接口透出，方便被上层AI应用迅速集成")
+
+# using convex combination to generate hybrid vector
+scaled_dense_vector, scaled_sparse_vector = combine_dense_and_sparse(dense_vector, sparse_vector, 0.8)
+
+# result example
+# scaled_dense_vector: [0.019427117942995432, 0.016291604623345866, 0.006071790897113065, -0.04852206862157702, 0.026573475384030067, -0.01520723960030039, 0.012646570389253245, 0.003013032330600754, -0.014266585604405522]
+# scaled_sparse_vector: {59256732: 0.14681137485379836, 863271227: 0.14681137485379836, 904594806: 0.14681137485379836, 942054413: 0.14681137485379836, 1169440797: 0.16932705845151483, 1314384716: 0.14681137485379836, 1554119115: 0.14681137485379836, 1736403260: 0.14681137485379836, 2029341792: 0.14681137485379836, 2141666983: 0.14681137485379836, 2367386033: 0.14681137485379836, 2549501804: 0.14681137485379836, 3869223639: 0.14681137485379836, 4130523965: 0.14681137485379836, 4162843804: 0.14681137485379836, 4202556960: 0.14681137485379836}
+```
+
+## License
+This project is licensed under the Apache License (Version 2.0).
