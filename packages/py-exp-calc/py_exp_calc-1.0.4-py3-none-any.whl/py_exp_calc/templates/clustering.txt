@@ -1,0 +1,20 @@
+<div style="width: 90%; background-color:#ecf0f1; margin: 0 auto;"> 
+	<h1 style="text-align: center; background-color:#d6eaf8">Clustering representation</h1>
+		<%
+			clustering = [ i[0] for i in plotter.hash_vars['raw_cls']]
+			def_uniq_cls = []
+			uniq_cls = set(clustering)
+			for i, cl_id in enumerate(uniq_cls):
+				def_uniq_cls.append(i)
+				for j, c_id in enumerate(clustering):
+					if c_id == cl_id: clustering[j] = i
+			lut = dict(zip(def_uniq_cls, plotter.get_color_palette(len(def_uniq_cls))))
+			row_colors = [ lut[i] for i in clustering ]
+		%>
+		${ 
+			plotter.static_plot_main( 
+				id = 'dist', raw = True,
+				plotting_function = lambda data, plotter_list: plotter_list["sns"].clustermap(	data=data, row_linkage=plotter.hash_vars['link'], col_linkage=plotter.hash_vars['link'], row_colors=row_colors ),
+				whole=True)
+		}
+</div>
