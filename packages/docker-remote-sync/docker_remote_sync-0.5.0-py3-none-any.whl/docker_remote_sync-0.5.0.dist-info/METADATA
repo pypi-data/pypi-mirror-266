@@ -1,0 +1,53 @@
+Metadata-Version: 2.1
+Name: docker-remote-sync
+Version: 0.5.0
+Summary: Utility to sync updated docker layers between 2 docker host machines
+Home-page: https://github.com/tanavamsikrishna/docker-remote-sync
+Author: Vamsi Talupula
+Author-email: tanavamsikrishna@outlook.com
+Requires-Python: >=3.9,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: colorama (>=0.4.6,<0.5.0)
+Requires-Dist: fabric (>=3.2.2,<4.0.0)
+Project-URL: Repository, https://github.com/tanavamsikrishna/docker-remote-sync
+Description-Content-Type: text/markdown
+
+A utility to sync docker images between two machines while transferring only the changed layers
+
+# Setup
+### Requirements
+Apart from `docker`, `rsync` is needed on both the machines.
+
+### Installation
+`pipx install docker-remote-sync` or `pip install docker-remote-sync`
+
+
+# Usage
+```
+usage: docker-remote-sync [-h] [--port PORT] [--docker-cmd DOCKER_CMD] image_name remote remote_cache_folder
+
+Utility to sync updated docker layers between two docker host machines
+
+positional arguments:
+  image_name            Docker image on local machine
+  remote                Address of remote
+  remote_cache_folder   Cache folder on remote
+
+options:
+  -h, --help            show this help message and exit
+  --port PORT           Alternate ssh port on remote
+  --docker-cmd DOCKER_CMD
+                        Alternate docker command. Defaults to `docker`. Eg. `colima x - docker` or `podman`
+
+○ Do not delete the cache folder on the remote machine to be able to take advantage of incremental file sync
+○ Example usage: `docker-remote-sync alpine:latest remotehost "~/my_alpine_cache"````
+
+- Do not delete the cache folder on the remote machine to be able to take advantage of incremental file sync
+
+Example:
+`docker-remote-sync myalpine:latest remotehost "~/myalpine_cache"`
+
