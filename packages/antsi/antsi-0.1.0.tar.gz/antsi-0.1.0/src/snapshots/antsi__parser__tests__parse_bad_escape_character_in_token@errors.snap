@@ -1,0 +1,15 @@
+---
+source: src/parser.rs
+description: "[fg:red](before \\a after)"
+---
+[
+    Error {
+        span: Some(
+            16..18,
+        ),
+        at: EscapeCharacter,
+        reason: UnknownEscapeSequence(
+            'a',
+        ),
+    },
+]

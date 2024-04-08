@@ -1,0 +1,47 @@
+[build-system]
+requires = ["maturin>=1.5,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "antsi"
+description = "A quick and user-friendly way to style your text using ANSI codes"
+authors = [
+    { name = "Alex Krantz", email = "alex@krantz.dev" },
+]
+readme = "README.md"
+license = { text = "MIT" }
+
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+]
+dynamic = ["version"]
+
+dependencies = []
+
+[tool.maturin]
+module-name = "antsi._antsi"
+features = ["pyo3/extension-module"]
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "mypy>=1.9.0",
+    "ruff>=0.3.5",
+]
+
+[tool.pdm.scripts]
+stubtest = "stubtest antsi"
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+docstring-code-format = true

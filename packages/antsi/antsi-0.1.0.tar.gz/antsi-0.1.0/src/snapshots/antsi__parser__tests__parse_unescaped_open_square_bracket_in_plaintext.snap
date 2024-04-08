@@ -1,0 +1,30 @@
+---
+source: src/parser.rs
+description: "before [ after"
+---
+[
+    Error {
+        span: Some(
+            8..14,
+        ),
+        at: Text,
+        reason: Expected(
+            [
+                ForegroundSpecifier,
+                BackgroundSpecifier,
+                DecorationSpecifier,
+            ],
+        ),
+    },
+    Error {
+        span: Some(
+            8..14,
+        ),
+        at: Text,
+        reason: Expected(
+            [
+                Eof,
+            ],
+        ),
+    },
+]
