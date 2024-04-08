@@ -1,0 +1,24 @@
+[project]
+name = "uhw"
+description = "Lightweight asynchronous command parsing and serving framework."
+readme = "README.md"
+requires-python = ">=3.11"
+license = {file = "LICENSE"}
+dynamic = ["version"]
+
+[project.urls]
+homepage = "https://github.com/mcpcpc/uhw"
+repository = "https://github.com/mcpcpc/uhw"
+
+[project.optional-dependencies]
+dev = ["black", "coverage"]
+
+[tool.setuptools.dynamic]
+version = {attr = "uhw.__version__"}
+
+[tool.setuptools]
+packages = ["uhw"]
+
+[tool.coverage.run]
+branch = true
+source = ["uhw"]
