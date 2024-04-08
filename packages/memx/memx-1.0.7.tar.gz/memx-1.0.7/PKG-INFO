@@ -1,0 +1,34 @@
+Metadata-Version: 2.1
+Name: memx
+Version: 1.0.7
+Summary: A Python Library to Manipulate macOS Processes.
+Author: Iacob Razvan Mihai
+Author-email: razvan.iacob@protonmail.com
+License: MIT
+Keywords: memory,macos,hacking
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: MacOS :: MacOS X
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: psutil
+
+#  MemX
+## A Python Library to Manipulate macOS Processes.
+---
+### Example usage:
+```
+from memx import *
+
+mx = Process("assaultcube")
+mx.fetch_modules()
+base = Module(mx, "assaultcube").BaseAddress
+
+s = mx.read_longlong(base + 0x1D9EF0)
+healthAddr = mx.read_longlong(s) + 0x418
+
+print(f"Health value: {mx.read_int(healthAddr)}")
+```
+This program reads the health value from a process named `assaultcube`.
