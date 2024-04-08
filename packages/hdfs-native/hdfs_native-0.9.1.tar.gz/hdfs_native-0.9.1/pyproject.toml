@@ -1,0 +1,30 @@
+[build-system]
+requires = ["maturin>=1.1,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "hdfs-native"
+description = "Python bindings for hdfs-native Rust library"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+]
+
+[project.urls]
+repository = "https://github.com/Kimahriman/hdfs-native"
+
+[tool.maturin]
+features = ["pyo3/extension-module"]
+python-source = "python"
+module-name = "hdfs_native._internal"
+manifest-path = "python/Cargo.toml"
+
+[tool.mypy]
+files = [
+    "python/**/*.py",
+    "python/**/*.pyi",
+    "tests/**/*.py"
+]
