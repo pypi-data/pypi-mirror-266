@@ -1,0 +1,57 @@
+Metadata-Version: 2.1
+Name: eosce
+Version: 0.2.0
+Summary: Ersilia Compound Embeddings
+Author: Ersilia
+Author-email: hello@ersilia.io
+Requires-Python: >=3.10,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Provides-Extra: gpu
+Requires-Dist: click (==8.1.7)
+Requires-Dist: joblib (==1.2.0)
+Requires-Dist: onnxruntime (>=1.14.0,<2.0.0)
+Requires-Dist: onnxruntime-gpu (==1.14.0) ; extra == "gpu"
+Requires-Dist: rdkit (==2023.9.5)
+Description-Content-Type: text/markdown
+
+# Ersilia Embeddings
+
+A lite wrapper for Ersilia compound embeddings model.
+
+## Quick start guide
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/ersilia-os/compound-embedding-lite.git
+cd compound-embedding-lite
+```
+
+### 2. Install the package with pip
+
+```bash
+pip install .
+```
+
+or if you have a GPU
+
+```bash
+pip install .[gpu]
+```
+
+### 3. Programatically generate embeddings
+
+```python
+from eosce.models import ErsiliaCompoundEmbeddings
+model = ErsiliaCompoundEmbeddings()
+embeddings = model.transform(["CCOC(=O)C1=CC2=CC(OC)=CC=C2O1"])
+```
+
+### 4. Generate embeddings using the cli
+
+```bash
+eosce embed "CCOC(=O)C1=CC2=CC(OC)=CC=C2O1"
+```
+
