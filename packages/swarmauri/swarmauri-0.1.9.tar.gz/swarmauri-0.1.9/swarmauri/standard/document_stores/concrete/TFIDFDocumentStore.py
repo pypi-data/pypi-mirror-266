@@ -1,0 +1,56 @@
+from typing import List, Union
+from swarmauri.core.documents.IDocument import IDocument
+from swarmauri.core.document_stores.IDocumentStore import IDocumentStore
+from swarmauri.core.retrievers.IRetriever import IRetriever
+from swarmauri.standard.vectorizers.concrete.TFIDFVectorizer import TFIDFVectorizer
+from swarmauri.standard.vector_stores.concrete.CosineDistance import CosineDistance
+
+class TFIDFDocumentStore(IDocumentStore, IRetriever):
+    def __init__(self):
+        self.vectorizer = TFIDFVectorizer()
+        self.metric = CosineDistance()
+        self.documents = []
+        self.tfidf_matrix = None        
+
+    def add_document(self, document: IDocument) -> None:
+        self.documents.append(document)
+        # Recalculate TF-IDF matrix for the current set of documents
+        self.tfidf_matrix = self.vectorizer.fit([doc.content for doc in self.documents])
+
+    def add_documents(self, documents: List[IDocument]) -> None:
+        self.documents.extend(documents)
+        # Recalculate TF-IDF matrix for the current set of documents
+        self.tfidf_matrix = self.vectorizer.fit([doc.content for doc in self.documents])
+
+    def get_document(self, doc_id: str) -> Union[IDocument, None]:
+        for document in self.documents:
+            if document.id == doc_id:
+                return document
+        return None
+
+    def get_all_documents(self) -> List[IDocument]:
+        return self.documents
+
+    def delete_document(self, doc_id: str) -> None:
+        self.documents = [doc for doc in self.documents if doc.id != doc_id]
+        # Recalculate TF-IDF matrix for the current set of documents
+        self.tfidf_matrix = self.vectorizer.fit([doc.content for doc in self.documents])
+
+    def update_document(self, doc_id: str, updated_document: IDocument) -> None:
+        for i, document in enumerate(self.documents):
+            if document.id == doc_id:
+                self.documents[i] = updated_document
+                break
+        # Recalculate TF-IDF matrix for the current set of documents
+        self.tfidf_matrix = self.vectorizer.fit([doc.content for doc in self.documents])
+
+    def retrieve(self, query: str, top_k: int = 5) -> List[IDocument]:
+        documents = [doc.content for doc in self.documents]
+        documents.append(query)
+        tmp_tfidf_matrix = self.vectorizer.transform(documents)
+        query_vector = tmp_tfidf_matrix[-1]
+    
+        distances = self.metric.distances(query_vector, tmp_tfidf_matrix[:-1])  # Calculate similarities
+        # Get the indices of the top_k most similar (least distant) documents
+        top_k_indices = sorted(range(len(distances)), key=lambda i: distances[i])[:top_k]
+        return [self.documents[i] for i in top_k_indices]
