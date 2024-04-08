@@ -1,0 +1,39 @@
+{% macro config(ospf_pid,ospf_vrf,ospf_data,intf_data,bgp={}) %}
+router ospfv3 {{ ospf_pid }}
+ router-id {{ ospf_data.router_id }}
+{% if ospf_data.reference_bandwidth is defined %}
+ auto-cost reference-bandwidth {{ ospf_data.reference_bandwidth }}
+{% endif %}
+{% if ospf_vrf %}
+ address-family ipv6 unicast vrf {{ ospf_vrf }}
+{% else %}
+ address-family ipv6 unicast
+{% endif %}
+{% for l in intf_data if l.ospf.passive|default(False) %}
+  passive-interface {{ l.ifname }}
+{% endfor %}
+{% if ospf_vrf %}
+  redistribute connected
+{%   if bgp.as is defined %}
+  redistribute bgp {{ bgp.as }}
+{%   endif %}
+{% endif %}
+!
+{% for l in intf_data if 'ospf' in l and ('ipv6' in l or 'ipv6' in l.dhcp.client|default({})) %}
+interface {{ l.ifname }}
+! {{ l.name|default("") }}
+ ospfv3 {{ ospf_pid }} ipv6 area {{ l.ospf.area }}
+{%   if l.type == 'loopback' %}
+ ospfv3 network point-to-point
+{%   elif l.ospf.network_type is defined %}
+ ospfv3 network {{ l.ospf.network_type }}
+{%   endif %}
+{%   if l.ospf.cost is defined %}
+ ospfv3 cost {{ l.ospf.cost }}
+{%   endif %}
+{%   if l.ospf.bfd|default(False) %}
+ ospfv3 bfd
+{%   endif %}
+!
+{% endfor %}
+{% endmacro %}

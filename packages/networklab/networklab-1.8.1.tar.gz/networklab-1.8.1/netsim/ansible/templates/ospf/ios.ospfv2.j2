@@ -1,0 +1,38 @@
+{% macro config(ospf_pid,ospf_vrf,ospf_data,intf_data,bgp={}) %}
+{% if ospf_vrf %}
+router ospf {{ ospf_pid }} vrf {{ ospf_vrf }}
+{% else %}
+router ospf {{ ospf_pid }}
+{% endif %}
+{% if ospf_data.router_id|ipv4 %}
+ router-id {{ ospf_data.router_id }}
+{% endif %}
+{% if ospf_data.reference_bandwidth is defined %}
+ auto-cost reference-bandwidth {{ ospf_data.reference_bandwidth }}
+{% endif %}
+{% for l in intf_data if l.ospf.passive|default(False) %}
+ passive-interface {{ l.ifname }}
+{% endfor %}
+{% if ospf_vrf %}
+ redistribute connected
+{%   if bgp.as is defined %}
+ redistribute bgp {{ bgp.as }} subnets
+{%   endif %}
+{% endif %}
+!
+{% for l in intf_data if 'ospf' in l and ('ipv4' in l or 'ipv4' in l.dhcp.client|default({})) %}
+interface {{ l.ifname }}
+! {{ l.name|default("") }}
+ ip ospf {{ ospf_pid }} area {{ l.ospf.area }}
+{%   if l.ospf.network_type is defined %}
+ ip ospf network {{ l.ospf.network_type }}
+{%   endif %}
+{%   if l.ospf.cost is defined %}
+ ip ospf cost {{ l.ospf.cost }}
+{%   endif %}
+{%   if l.ospf.bfd|default(False) %}
+ ip ospf bfd
+{%   endif %}
+!
+{% endfor %}
+{% endmacro %}
