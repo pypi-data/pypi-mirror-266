@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools", "wheel", "cffi>=1.0.0", "setuptools_scm", "cibuildwheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "drawing3d"
+description = "A drawing 3D library for easy visualization"
+authors = [{name = "Tolga Demirdal"}]
+dependencies = ["cffi>=1.0.0", "numpy>=1.0.0"]
+readme = "README.md"
+urls = {Homepage = "https://github.com/shadymeowy/python-drawing3d"}
+dynamic = ["version"]
+
+[tool.setuptools]
+packages = [
+    "drawing3d"
+]
+
+[tool.setuptools_scm]
+write_to = "drawing3d/version.py"
+
+[tool.cibuildwheel]
+# Build on manylinux and macOS
+build = "cp38-* cp39-* cp310-* cp311-* cp312-*"
+skip = "*_i686"
+manylinux-x86_64-image = "manylinux_2_28"
+manylinux-aarch64-image = "manylinux_2_28"
+
+[tool.cibuildwheel.linux]
+archs = "x86_64 aarch64"
+repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel} --exclude libcairo.so.2 --exclude libSDL2-2.0.so.0"
+before-all = """
+    if command -v apt-get; then
+        apt-get update
+        apt-get upgrade -y
+        apt-get search libcairo2
+        apt-get install -y libsdl2-dev libcairo2-dev
+    elif command -v dnf; then
+        dnf install -y SDL2-devel cairo-devel
+    elif command -v yum; then
+        yum install -y SDL2-devel cairo-devel
+    elif command -v apk; then
+        apk add sdl2-dev cairo-dev
+    fi
+"""
+
+[tool.cibuildwheel.macos]
+archs = "x86_64"
+repair-wheel-command = "delocate-wheel --require-archs {delocate_archs} -w {dest_dir} -v {wheel} --exclude libcairo.2.dylib --exclude libSDL2-2.0.0.dylib"
+before-build = """
+    brew install sdl2 cairo
+"""
+environment = { PKG_CONFIG_PATH = "/usr/local/opt/libffi/lib/pkgconfig" }
