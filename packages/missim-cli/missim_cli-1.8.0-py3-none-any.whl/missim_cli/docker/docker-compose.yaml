@@ -1,0 +1,25 @@
+services:
+  missim_core:
+    container_name: missim_core
+    image: ghcr.io/greenroom-robotics/missim_core:${MISSIM_VERSION:-latest}
+    volumes:
+      - /dev/shm:/dev/shm
+    command: platform ros launch missim_bringup missim.launch.py --build --watch
+    environment:
+      ROS_DOMAIN_ID: ${ROS_DOMAIN_ID}
+      MISSIM_CONFIG: ${MISSIM_CONFIG}
+
+  missim_ui:
+    container_name: missim_ui
+    image: ghcr.io/greenroom-robotics/missim_ui:${MISSIM_VERSION:-latest}
+    volumes:
+      - /dev/shm:/dev/shm
+    environment:
+      USE_HTTPS: ${USE_HTTPS:-false}
+    command: yarn dev
+
+  missim_chart_tiler:
+    container_name: missim_chart_tiler
+    image: ghcr.io/greenroom-robotics/gr_chart_tiler:1.1.0
+    ports:
+      - 5003:8080
