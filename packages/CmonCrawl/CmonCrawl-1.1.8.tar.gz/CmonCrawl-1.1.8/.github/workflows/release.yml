@@ -1,0 +1,32 @@
+name: Build & Release
+
+on:
+  release:
+    types:
+      - created
+  workflow_dispatch:
+
+
+env:
+  PYTHON_VERSION: "3.10"
+  TWINE_USERNAME: __token__
+
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install dependencies
+        run: |
+          pip install build twine
+      - name: Build and publish package
+        env:
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+        run: |
+          python -m build .
+          twine upload dist/*

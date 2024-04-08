@@ -1,0 +1,27 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Download",
+            "type": "python",
+            "request": "launch",
+            "module": "cmoncrawl.integrations.commands",
+            "console": "integratedTerminal",
+            "args": ["download", "--limit=4" ,"idnes.cz", "out", "record"]
+        },
+        {
+            "name": "Extract",
+            "type": "python",
+            "request": "launch",
+            "module": "cmoncrawl.integrations.commands",
+            "console": "integratedTerminal",
+            "args": ["extract",
+            "examples/extractor_tutorial/config.json",
+            "out_extr",
+            "out_html/1_file.jsonl",
+            "record"],
+            "justMyCode": false
+        },
+
+    ]
+}
