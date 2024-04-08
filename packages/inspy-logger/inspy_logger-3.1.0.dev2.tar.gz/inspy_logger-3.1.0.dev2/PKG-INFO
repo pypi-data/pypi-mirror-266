@@ -1,0 +1,97 @@
+Metadata-Version: 2.1
+Name: inspy-logger
+Version: 3.1.0.dev2
+Summary: Colorable, scalable logger for CLI
+Home-page: https://github.com/Inspyre-Softworks/inSPy-Logger
+License: MIT
+Keywords: cli,color,logging,log,terminal,console,colorama,colorlog,rich
+Author: Taylor-Jayde Blackstone
+Author-email: tayjaybabee@gmail.com
+Requires-Python: >=3.9,<4.0
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: System :: Logging
+Classifier: Topic :: Utilities
+Requires-Dist: appdirs (>=1.4.4,<2.0.0)
+Requires-Dist: colorama (>=0.4.6,<0.5.0)
+Requires-Dist: colorlog (>=6.8.2,<7.0.0)
+Requires-Dist: humanize (>=4.4.0,<5.0.0)
+Requires-Dist: luddite (>=1.0.4,<2.0.0)
+Requires-Dist: packaging (>=24.0,<25.0)
+Requires-Dist: platformdirs (>=4.2.0,<5.0.0)
+Requires-Dist: pypattyrn (>=1.2,<2.0)
+Requires-Dist: python-box (>=7.1.1,<8.0.0)
+Requires-Dist: requests (>=2.28.1,<3.0.0)
+Requires-Dist: rich (>=13.7.0,<14.0.0)
+Requires-Dist: setuptools-autover (>=1.0.2,<2.0.0)
+Project-URL: Documentation, https://inspy-logger.readthedocs.io/en/latest/
+Project-URL: Repository, https://github.com/Inspyre-Softworks/inSPy-Logger
+Description-Content-Type: text/markdown
+
+# inSPy-Logger
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Inspyre-Softworks/inSPy-Logger/CI?label=CI&logo=github&logoColor=9cf&style=for-the-badge) 
+![Codacy grade](https://img.shields.io/codacy/grade/7171eec682c549a88dee0da9cc9b92b3?logo=codacy&logoColor=9cf&style=for-the-badge) 
+![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/Inspyre-Softworks/inSPy-Logger?color=9cf&include_prereleases&label=Pre-Release&logo=pypi&logoColor=9cf&style=for-the-badge) 
+![PyPI](https://img.shields.io/pypi/v/inspy-logger?color=9cf&label=Latest&logo=pypi&logoColor=9cf&style=for-the-badge) 
+![GitHub issues](https://img.shields.io/github/issues/Inspyre-Softworks/inSPy-Logger?color=9cf&logo=github&logoColor=9cf&style=for-the-badge) 
+![PyPI - Format](https://img.shields.io/pypi/format/inSPy-Logger?logo=PyPi&style=for-the-badge)
+
+## Installation
+
+### Prerequisites:
+
+**Platform/Env**:
+  * **Python**: ^3.6.3
+  * **PIP**: (_If you want to install via PIP, that is_)
+  
+**inSPy-Logger Runtime Dependencies**:
+  I am providing this list of dependencies for transparency and for instances where one would not be able to install inSPy-Logger via PyPi's package manager. It is **highly** recommended you use `python3 -m pip install inspy_logger==<ver>` to install inSPy-Logger 2.0+
+  
+  * [colorlog](https://pypi.org/project/colorlog) (^4.2.1)
+  * [setuptools-autover](https://pypi.org/project/setuptools-autover) = (^1.0.2)
+  * [luddite](https://pypi.org/project/luddite) = (^1.0.1)
+  * [packaging](https://pypi.org/project/packaging) = (^20.4)
+
+### Installation via Pip on Python 3.6.3+ (recommended method):
+
+- `$> python3 -m pip install inspy_logger==<version>`
+
+#### Test out InspyLogger:
+
+```python3
+
+import inspy_logger
+
+# Set up a log device object. The first parameter is the root loggers name, and the second is the debug level
+log_device = inspy_logger.InspyLogger('LogName', 'debug')
+
+# Start a running log from that device
+log = log_device.start()
+
+# Output our own logger lines:
+log.debug('This is a debug log entry')
+log.info('This is an info log entry')
+log.warning('This is a warning log entry!')
+log.error('This is an error log entry!')
+log.exception('This is an exception log entry!')
+
+```
+
+If you run the code above you'll get output similar to this:
+
+![output1](https://github.com/Inspyre-Softworks/inSPy-Logger/blob/v2.0-alpha.6/examples/v2.0/output_screenies/v2.0.0a.6_screenie1.png)
+
+v2.0+ repository for inSPy-Logger
+
