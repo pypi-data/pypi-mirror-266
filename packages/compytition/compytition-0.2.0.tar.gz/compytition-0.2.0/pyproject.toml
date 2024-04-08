@@ -1,0 +1,55 @@
+[tool.poetry]
+name = "compytition"
+version = "0.2.0"
+description = "A library for all sorts of ranking, rating and scoring classes and algorithms"
+authors = ["peaky76 <robertjamespeacock@gmail.com>"]
+license = "GPL-3.0-only"
+readme = "README.md"
+packages = [{ include = "compytition" }]
+
+[tool.mypy]
+exclude = "^docs/"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+peak-utility = "^0.6.0"
+
+[tool.poetry.group.dev.dependencies]
+auto-changelog = "^0.6.0"
+coverage = "^7.4.1"
+mypy = "^1.8.0"
+pre-commit = "^3.6.1"
+pytest = "^8.0.0"
+pytest-cov = ">=4.1,<6.0"
+radon = "^6.0.1"
+ruff = ">=0.2.2,<0.4.0"
+sphinx = "^7.2.6"
+sphinx-rtd-theme = "^2.0.0"
+toml-cli = "^0.6.0"
+
+[tool.ruff.lint]
+select = [
+    "E", # pycodestyle Error
+    "F", # pyflakes
+    "C90", # mccabe
+    "I", # isort
+    "N", # pep8-naming
+    "UP", # pyupgrade
+    "FBT", # flake8-boolean-trap
+    "C4", # flake8-comprehensions
+    "PYI", # flake8-pyi
+    "PT", # flake8-pytest-style
+    "RSE", # flake8-raise
+    "RET", # flake8-return
+    "SIM", # flake8-simplify
+    "PTH", # flake8-use-pathlib
+    "PERF", # perflint
+    "FURB", # refurb
+    "RUF", # ruff specific
+
+]
+ignore = ["E501", "E731"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
