@@ -1,0 +1,66 @@
+[tool.poetry]
+name = "altvmasterlist"
+version = "3.0.10"
+description = "A package to use the alt:V Masterlist api."
+authors = ["Nickwasused <contact.nickwasused.fa6c8@simplelogin.co>"]
+license = "MPL-2.0"
+readme = "README.md"
+repository = "https://github.com/Nickwasused/altv-python-masterlist"
+documentation = "https://nickwasused.github.io/altv-python-masterlist/"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
+    "Operating System :: OS Independent"
+]
+packages = [
+    { include = "altvmasterlist", from = "src" }
+]
+
+[tool.ruff.lint]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+]
+
+[tool.poetry.dependencies]
+python = ">=3.10"
+requests= "^2.31.0"
+
+[tool.poetry.group.test.dependencies]
+pytest = ">=7.3,<9.0"
+
+[tool.poetry.dev-dependencies]
+pdoc = ">=14.4.0"
+
+[build-system]
+requires = ["poetry-core>=1.3.1"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/Nickwasused/altv-python-masterlist/issues"
+"Documentation" = "https://nickwasused.github.io/altv-python-masterlist/"
