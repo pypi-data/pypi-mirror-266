@@ -1,0 +1,233 @@
+Metadata-Version: 2.1
+Name: nettowel
+Version: 0.6.0
+Summary: Network Automation Collection
+Home-page: https://github.com/InfrastructureAsCode-ch/nettowel
+License: Apache 2.0
+Author: ubaumann
+Author-email: github@m.ubaumann.ch
+Requires-Python: >=3.8,<4.0
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: License :: Other/Proprietary License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Provides-Extra: full
+Provides-Extra: jinja
+Provides-Extra: jsonpatch
+Provides-Extra: napalm
+Provides-Extra: netmiko
+Provides-Extra: nornir
+Provides-Extra: pandas
+Provides-Extra: scrapli
+Provides-Extra: textfsm
+Provides-Extra: ttp
+Provides-Extra: tui
+Requires-Dist: Jinja2 (>=3,<4) ; extra == "jinja" or extra == "full"
+Requires-Dist: jinja2schema (>=0.1.4,<0.2.0) ; extra == "jinja" or extra == "full"
+Requires-Dist: jsonpatch (>=1.33,<2.0) ; extra == "jsonpatch" or extra == "full"
+Requires-Dist: napalm (>=4,<5) ; extra == "napalm" or extra == "full"
+Requires-Dist: netmiko (>=4,<5) ; extra == "netmiko" or extra == "full"
+Requires-Dist: nornir (>=3.2,<4.0) ; extra == "nornir" or extra == "full"
+Requires-Dist: nornir-http (>=0.1,<0.2) ; extra == "nornir" or extra == "full"
+Requires-Dist: nornir-jinja2 (>=0.2.0,<0.3.0) ; extra == "nornir" or extra == "full"
+Requires-Dist: nornir-napalm (>=0.4,<0.5) ; extra == "nornir" or extra == "full"
+Requires-Dist: nornir-netmiko (>=1.0.0,<2.0.0) ; extra == "nornir" or extra == "full"
+Requires-Dist: nornir-pyxl (>=1.0.1,<2.0.0) ; extra == "nornir" or extra == "full"
+Requires-Dist: nornir-rich (>=0.1,<0.2) ; extra == "nornir" or extra == "full"
+Requires-Dist: nornir-scrapli (>=2023.1.30,<2024.0.0) ; extra == "nornir" or extra == "full"
+Requires-Dist: nornir-utils (>=0.2.0,<0.3.0) ; extra == "nornir" or extra == "full"
+Requires-Dist: pandas (>=2,<3) ; extra == "pandas" or extra == "full"
+Requires-Dist: python-dotenv (>=1,<2)
+Requires-Dist: qrcode (>=7.3.1,<8.0.0)
+Requires-Dist: requests (>=2.27.1,<3.0.0)
+Requires-Dist: rich (>=12,<14)
+Requires-Dist: ruamel.yaml (>=0.18,<0.19)
+Requires-Dist: scrapli (>=2023.1.30,<2024.0.0) ; extra == "scrapli" or extra == "full"
+Requires-Dist: textfsm (>=1.1,<2.0) ; extra == "textfsm" or extra == "full"
+Requires-Dist: trogon (>=0.5.0,<0.6.0) ; extra == "tui" or extra == "full"
+Requires-Dist: ttp (>=0.9,<0.10) ; extra == "ttp" or extra == "full"
+Requires-Dist: typer (>=0.9,<0.13)
+Project-URL: Repository, https://github.com/InfrastructureAsCode-ch/nettowel
+Description-Content-Type: text/markdown
+
+[![PyPI versions](https://img.shields.io/pypi/pyversions/nettowel.svg)](https://pypi.python.org/pypi/nettowel/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
+[![Downloads](https://pepy.tech/badge/nettowel)](https://pepy.tech/project/nettowel)
+
+# NetTowel
+Collection of useful network automation functions 
+
+
+> ⚠️ `nettowel` is under heavy construction and not production ready. Feedback is highly appreciated.
+
+
+## Install
+It is recommended to install `nettowel` with [pipx](https://pipx.pypa.io/). Therefore you have the dependencies isolated and you can use the `nettowel` or `nt` command.
+
+```bash
+pipx install nettowel[full]
+```
+
+You can also install it directly from pypi
+
+```bash
+pip install nettowel
+```
+
+To reduce the dependencies the extra dependencies are grouped
+
+The following groups are available (more details in the pyproject.toml):
+
+- full
+- jinja
+- ttp
+- textfsm
+- napalm
+- netmiko
+- scrapli
+- nornir
+- pandas
+- jsonpatch
+- tui
+
+```bash
+pip install nettowel[jinja]
+pip install nettowel[full]
+```
+
+## Install from source
+
+```
+git clone ....
+cd nettowel
+poetry install
+poetry run nettowel --help
+```
+
+
+## Help and shell auto-completion
+
+Thanks to the library [typer](https://typer.tiangolo.com/), `nettowel` comes with a nice help and autocompletion install
+
+![help](https://raw.githubusercontent.com/InfrastructureAsCode-ch/nettowel/main/imgs/help.png)
+
+
+## Features
+
+Many features are not implemented yet and many features will come.
+
+
+
+### Jinja2
+
+#### render
+
+![jinja rendering 1](https://raw.githubusercontent.com/InfrastructureAsCode-ch/nettowel/main/imgs/jinja-render-3.png)
+
+![jinja rendering 2](https://raw.githubusercontent.com/InfrastructureAsCode-ch/nettowel/main/imgs/jinja-render-1.png)
+
+#### validate
+
+![jinja validate](https://raw.githubusercontent.com/InfrastructureAsCode-ch/nettowel/main/imgs/jinja-validate.png)
+
+#### variables
+
+![jinja variables](https://raw.githubusercontent.com/InfrastructureAsCode-ch/nettowel/main/imgs/jinja-variables.png)
+
+
+### TTP
+
+#### render
+
+![ttp render](https://raw.githubusercontent.com/InfrastructureAsCode-ch/nettowel/main/imgs/ttp-render.png)
+
+### Netmiko
+
+#### cli
+
+![netmiko cli](https://raw.githubusercontent.com/InfrastructureAsCode-ch/nettowel/main/imgs/netmiko-cli.png)
+
+#### autodetect
+
+![netmiko autodetect](https://raw.githubusercontent.com/InfrastructureAsCode-ch/nettowel/main/imgs/netmiko-autodetect.png)
+
+#### device-types
+
+![netmiko device types](https://raw.githubusercontent.com/InfrastructureAsCode-ch/nettowel/main/imgs/netmiko-device-types.png)
+
+
+### RESTCONF
+
+#### get
+
+![restconf get](https://raw.githubusercontent.com/InfrastructureAsCode-ch/nettowel/main/imgs/restconf-get.png)
+
+#### patch, delete
+
+![restconf patch delete](https://raw.githubusercontent.com/InfrastructureAsCode-ch/nettowel/main/imgs/restconf-patch-delete.png)
+
+#### post, put
+
+![restconf post put](https://raw.githubusercontent.com/InfrastructureAsCode-ch/nettowel/main/imgs/restconf-post-put.png)
+
+### ipaddress
+
+#### ip-info
+
+![ip info](https://raw.githubusercontent.com/InfrastructureAsCode-ch/nettowel/main/imgs/ip-info.png)
+
+#### network-info
+
+![network info](https://raw.githubusercontent.com/InfrastructureAsCode-ch/nettowel/main/imgs/network-info.png)
+
+
+### YAML
+
+#### load
+
+![yaml load](https://raw.githubusercontent.com/InfrastructureAsCode-ch/nettowel/main/imgs/yaml-load.png)
+
+#### dump
+
+![yaml dump](https://raw.githubusercontent.com/InfrastructureAsCode-ch/nettowel/main/imgs/yaml-dump.png)
+
+
+### JSON Patch ([RFC 6902](http://tools.ietf.org/html/rfc6902))
+
+#### create
+
+![JSON Patch create](https://raw.githubusercontent.com/InfrastructureAsCode-ch/nettowel/main/imgs/jsonpatch-create.png)
+
+#### apply
+
+![JSON Patch apply](https://raw.githubusercontent.com/InfrastructureAsCode-ch/nettowel/main/imgs/jsonpatch-apply.png)
+
+
+### Help
+
+![Help QRcode](https://raw.githubusercontent.com/InfrastructureAsCode-ch/nettowel/main/imgs/nettowel-help.png)
+
+
+### Settings
+
+A `dotenv` file can be used as a settings file. The file can also be provided with the option `--dotenv`.
+
+![environment settings](https://raw.githubusercontent.com/InfrastructureAsCode-ch/nettowel/main/imgs/env-settings.png)
+
+
+### Piping
+
+![piping](https://raw.githubusercontent.com/InfrastructureAsCode-ch/nettowel/main/imgs/piping.png)
+
+
+### TUI
+
+Using [Trogon](https://github.com/Textualize/trogon) a TUI (Terminal User Interface) can be generated to edit and run the NetTowel command.
+
+![TUI](https://raw.githubusercontent.com/InfrastructureAsCode-ch/nettowel/main/imgs/trogon.png)
+
