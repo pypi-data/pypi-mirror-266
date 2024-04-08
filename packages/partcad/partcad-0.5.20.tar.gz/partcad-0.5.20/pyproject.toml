@@ -1,0 +1,31 @@
+[project]
+name = "partcad"
+version = "0.5.20"
+description = "Package manager for CAD models and a modelling framework"
+readme = "README.md"
+keywords = ["cadquery", "build123d", "cad", "design", "openscad", "step", "stl"]
+requires-python = ">=3.10"
+license = {file = "LICENSE.txt"}
+authors = [
+  {name = "Roman Kuzmenko", email = "openvmp@proton.me" }
+]
+maintainers = [
+  {name = "Roman Kuzmenko", email = "openvmp@proton.me" }
+]
+dynamic = ["dependencies"]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+
+[tool.setuptools.package-data]
+"partcad.wrappers" = ["*.py"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[project.urls]
+Homepage = "https://github.com/openvmp/partcad"
+Issues = "https://github.com/openvmp/partcad/issues"
