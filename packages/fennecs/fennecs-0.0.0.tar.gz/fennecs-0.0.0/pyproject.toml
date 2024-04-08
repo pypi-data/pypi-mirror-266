@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "fennecs"
+version = "0.0.0"
+description = "Efficient causality tools with hypothesis testing"
+authors = ["Diviyan Kalainathan"]
+license = "Apache License 2.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+numpy = "^1.26.4"
+
+[tool.poetry.group.dev.dependencies]
+maturin = "^1.4.0"
+pytest = "^8.0.1"
+
+[build-system]
+requires = ["maturin>=1.4,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "fennecs"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+]
+dynamic = ["version"]
+
+[tool.maturin]
+features = ["pyo3/extension-module"]
+module_name = "fennecs._engine"
