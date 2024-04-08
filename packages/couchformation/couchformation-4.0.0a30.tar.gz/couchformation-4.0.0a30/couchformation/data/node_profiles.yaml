@@ -1,0 +1,42 @@
+---
+default:
+  - provisioner: remote
+    root: false
+    exclude:
+      - windows
+      - macos
+    commands:
+      - curl -sfL https://raw.githubusercontent.com/couchbaselabs/host-prep-lib/main/bin/setup.sh | sudo -E bash -s - -s -p pyhostprep
+  - provisioner: winrm
+    root: true
+    exclude: []
+    commands:
+      - >-
+        iex "& {$(irm https://raw.githubusercontent.com/couchbaselabs/host-prep-lib/main/bin/bootstrap.ps1)}"
+generic:
+  - provisioner: remote
+    root: true
+    exclude:
+      - windows
+      - macos
+    commands:
+      - bundlemgr -b Base
+cbs:
+  - provisioner: remote
+    root: true
+    commands:
+      - bundlemgr -b CBS -V {{ SOFTWARE_VERSION }}
+      - swmgr cluster create -n {{ SERVICE_NAME }} -s {{ SERVICES }} -g {{ NODE_ZONE }} -D /cbdata -l {{ IP_LIST }} -p '{{ PASSWORD }}' -h {{ HOST_LIST }}
+      - swmgr cluster rebalance -l {{ IP_LIST }} -p '{{ PASSWORD }}'
+  - provisioner: docker
+    root: true
+    commands:
+      - curl -sfL https://raw.githubusercontent.com/couchbaselabs/host-prep-lib/main/bin/setup.sh | bash -s - -s -p pyhostprep
+      - swmgr cluster create -n {{ SERVICE_NAME }} -s {{ SERVICES }}
+sgw:
+  - provisioner: remote
+    root: true
+    commands:
+      - bundlemgr -b InstallSGW -V {{ SOFTWARE_VERSION }}
+      - swmgr gateway configure -l {{ CONNECT_LIST }} -p '{{ PASSWORD }}'
+      - bundlemgr -b EnableSGW
