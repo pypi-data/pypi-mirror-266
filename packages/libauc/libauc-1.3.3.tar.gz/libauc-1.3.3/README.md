@@ -1,0 +1,102 @@
+LibAUC: A Deep Learning for X-Risk Optimization
+---
+
+
+<p align="left">
+  <a href="https://github.com/Optimization-AI/LibAUC">
+    <img alt="Pypi" src="https://img.shields.io/pypi/v/libauc?color=blue&style=flat"/>
+  </a>
+  <a href="https://pepy.tech/project/libauc">
+    <img alt="Downloads" src="https://pepy.tech/badge/libauc"/>
+  </a>
+  <a href="https://github.com/Optimization-AI/LibAUC">
+    <img alt="python" src="https://img.shields.io/pypi/pyversions/libauc"/>
+  </a>
+  <a href="https://github.com/Optimization-AI/LibAUC">
+    <img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-2.0-yellow?color=blue&style=flat"/>
+  </a>
+  <a href="https://github.com/Optimization-AI/LibAUC/blob/main/LICENSE">
+    <img alt="LICENSE" src="https://img.shields.io/badge/License-MIT-yellow.svg"/>
+  </a>
+</p>
+
+
+| [**Documentation**](https://docs.libauc.org)
+| [**Installation**](https://libauc.org/installation/)
+| [**Examples**](https://github.com/Optimization-AI/LibAUC/tree/main/examples)
+| [**Website**](https://libauc.org/)
+| [**Publication**](https://libauc.org/publications/)
+| [**Github**](https://github.com/Optimization-AI/LibAUC/) |
+
+
+Why LibAUC?
+---
+LibAUC offers an easier way to directly optimize commonly-used performance measures and losses with user-friendly API. LibAUC has broad applications in AI for tackling both classic and emerging challenges, such as **Classification of Imbalanced Data (CID)**, **Learning to Rank (LTR)**, and **Contrastive Learning of Representation (CLR)**.
+
+LibAUC provides a unified framework to abstract the optimization of many compositional loss functions, including surrogate losses for AUROC, AUPRC/AP, and partial AUROC that are suitable for CID, surrogate losses for NDCG, top-K NDCG, and listwise losses that are used in LTR, and global contrastive losses for CLR.
+
+
+
+Installation
+--------------
+```
+$ pip install -U libauc
+```
+For more updates, please check the [release note](https://github.com/Optimization-AI/LibAUC/releases/). 
+
+
+Usage
+---
+#### Example training pipline for optimizing X-risk (e.g., AUROC) 
+```python
+>>> #import our loss and optimizer
+>>> from libauc.losses import AUCMLoss 
+>>> from libauc.optimizers import PESG 
+...
+>>> #define loss & optimizer
+>>> Loss = AUCMLoss()
+>>> optimizer = PESG()
+...
+>>> #training
+>>> model.train()    
+>>> for data, targets in trainloader:
+>>>	data, targets  = data.cuda(), targets.cuda()
+        logits = model(data)
+	preds = torch.sigmoid(logits)
+        loss = Loss(preds, targets) 
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+...	
+>>> #update internal parameters
+>>> optimizer.update_regularizer()
+```
+
+Tutorials
+-------
+Please visit https://libauc.org/ and https://docs.libauc.org/ for example and documentation, 
+
+
+Citation
+---------
+If you find LibAUC useful in your work, please cite the following papers:
+```
+@inproceedings{yuan2023libauc,
+	title={LibAUC: A Deep Learning Library for X-risk Optimization},
+	author={Zhuoning Yuan and Dixian Zhu and Zi-Hao Qiu and Gang Li and Xuanhui Wang and Tianbao Yang},
+	booktitle={29th SIGKDD Conference on Knowledge Discovery and Data Mining},
+	year={2023}
+	}
+```
+ ```
+@article{yang2022algorithmic,
+	title={Algorithmic Foundations of Empirical X-Risk Minimization},
+	author={Yang, Tianbao},
+	journal={arXiv preprint arXiv:2206.00439},
+	year={2022}
+}
+ ```
+
+Contact
+----------
+For any technical questions, please open a new issue in the Github. If you have any other questions, please contact us @ [Zhuoning Yuan](https://zhuoning.cc) [yzhuoning@gmail.com] and [Tianbao Yang](http://people.tamu.edu/~tianbao-yang/) [tianbao-yang@tamu.edu]. 
