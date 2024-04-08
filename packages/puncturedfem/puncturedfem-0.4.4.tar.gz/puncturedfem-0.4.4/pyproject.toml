@@ -1,0 +1,69 @@
+[tool.poetry]
+name = "puncturedfem"
+version = "0.4.4"
+authors = ["Sam Reynolds <sreyn@proton.me>"]
+description = "A simple demo of how to structure, use, and publish a Python package."
+readme = "README.md"
+license = "GNU General Public License v3.0"
+packages = [{include = "puncturedfem"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+matplotlib = "^3.8.0"
+numba = "^0.59.1"
+numpy = "^1.26.0"
+scipy = "^1.11.2"
+tqdm = "^4.66.1"
+
+[project]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/samreynoldsmath/PuncturedFEM"
+Issues = "https://github.com/samreynoldsmath/PuncturedFEM/issues"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 80
+
+[tool.pytest.ini_options]
+filterwarnings = ["error"]
+
+[tool.pylint."messages control"]
+max-line-length = 80
+disable = [
+    "fixme", # reenable to find TODO comments
+    "duplicate-code", # mesh/edge libraries have similar code
+    "invalid-name", # use good-names
+    "too-many-branches", # split up functions
+    "too-many-nested-blocks", # split up functions
+    "too-many-arguments",
+    "too-many-locals",
+    "too-many-instance-attributes", # use dataclasses?
+    "too-many-public-methods", # make more private?
+    "too-many-statements"
+    ]
+good-names = [
+    "a","b","c","d","e","f","g","h","i","j","k","l","m",
+    "n","o","p","q","r","s","t","u","v","w","x","y","z",
+    "A","B","C","D","E","F","G","H","I","J","K","L","M",
+    "N","O","P","Q","R","S","T","U","V","W","X","Y","Z",
+    "xi",
+    "x0", "x1", "x2",
+    "y0", "y1", "y2",
+    "z0", "z1", "z2",
+    "Px", "Py", "Qx", "Qy",
+    "TOL",
+    "PHI", "PHI_nd", "PHI_wnd",
+    "ii", "jj", "ij",
+    "dx", "dy", "dz", "xy",
+    "pt",
+    "_"
+    ]
