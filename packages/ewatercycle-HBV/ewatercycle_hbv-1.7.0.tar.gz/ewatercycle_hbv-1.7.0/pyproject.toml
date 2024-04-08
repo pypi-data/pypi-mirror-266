@@ -1,0 +1,39 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "src/ewatercycle_HBV/__init__.py"
+
+[project]
+name = "ewatercycle-HBV"
+description = "Implementation of HBV for eWaterCycle"
+readme = "README.md"
+license = "Apache-2.0"
+version = "1.7.0"
+authors = [
+  { name = "David Haasnoot", email = "davidhaasnoot@gmail.com" },
+]
+keywords = ["ewatercycle", "hydrology"]
+classifiers = [
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Natural Language :: English",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3 :: Only",
+]
+
+# Include here only the dependencies for the eWaterCycle wrapped model
+dependencies = [
+  "ewatercycle",
+]
+
+# This registers the plugin such that it is discoverable by eWaterCycle
+[project.entry-points."ewatercycle.models"]
+HBV = "ewatercycle_HBV.model:HBV"
+[project.entry-points."ewatercycle.forcings"]
+HBVForcing = "ewatercycle_HBV.forcing:HBVForcing"
+
+[project.urls]
+homepage = "https://github.com/Daafip/ewatercycle-hbv"
