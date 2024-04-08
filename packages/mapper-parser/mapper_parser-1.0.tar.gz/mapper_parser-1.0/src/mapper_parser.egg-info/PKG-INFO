@@ -1,0 +1,34 @@
+Metadata-Version: 2.1
+Name: mapper_parser
+Version: 1.0
+Summary: Mybatis mapper xml file parser
+Author-email: Oliver Li <441640312@qq.com>
+Project-URL: Homepage, https://github.com/baikaishuipp/mapper-parser
+Project-URL: Bug Tracker, https://github.com/baikaishuipp/mapper-parser/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.0
+Description-Content-Type: text/markdown
+
+
+### Description
+Mybatis mapper xml file parser in pure python, get result contains:
+
+- namespace
+- resultMaps: contains start_line, end_line, content
+- sqls: contains start_line, end_line, content
+- statements: select/update/insert/delete statement, contains:start_line, end_line, content, statement_tag, result_map, include_sql
+
+#### Installation
+```
+pip install mapper-parser
+```
+
+#### Instructions
+```
+from mapper_parser import mapper_parser
+
+mapper_parser.parse(xml_filepath)
+```
+
