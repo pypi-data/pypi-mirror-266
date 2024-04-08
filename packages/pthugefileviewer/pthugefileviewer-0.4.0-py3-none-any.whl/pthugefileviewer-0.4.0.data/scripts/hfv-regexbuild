@@ -1,0 +1,327 @@
+#!python
+"""
+A console regular expression builder
+"""
+
+import argparse
+import itertools
+import os
+import re
+from typing import Optional
+
+import pthugefileviewer
+from prompt_toolkit import Application
+from prompt_toolkit.application import get_app
+from prompt_toolkit.buffer import Buffer
+from prompt_toolkit.document import Document
+from prompt_toolkit.formatted_text import StyleAndTextTuples
+from prompt_toolkit.key_binding import KeyBindings
+from prompt_toolkit.key_binding.bindings.focus import focus_next
+from prompt_toolkit.key_binding.key_processor import KeyPressEvent
+from prompt_toolkit.layout.containers import Container, HSplit, Window
+from prompt_toolkit.layout.controls import BufferControl, FormattedTextControl
+from prompt_toolkit.layout.layout import Layout
+from prompt_toolkit.layout.processors import (
+    Processor,
+    Transformation,
+    TransformationInput,
+)
+from prompt_toolkit.layout.utils import explode_text_fragments
+from prompt_toolkit.styles import Style
+from prompt_toolkit.widgets import Frame
+
+E = KeyPressEvent
+
+
+class FileviewControl(pthugefileviewer.HugeFileViewerUIControl):
+    def __init__(self, filename: os.PathLike[str]) -> None:
+        self.regex: Optional[re.Pattern[bytes]] = None
+        self.regex_ok: Optional[re.Pattern[bytes]] = None
+        with open(filename, "rb") as fd:
+            pthugefileviewer.HugeFileViewerUIControl.__init__(self, fd=fd)
+
+    def use_regex(self, regex: Optional[re.Pattern[bytes]]) -> None:
+        self.regex = regex
+        self.update_lines()
+
+    def search_down(self) -> None:
+        if self.regex is None:
+            return
+        with self.tmp_offset():
+            self.go_pagedown()
+            offset = self.offset
+        m = self.re_search(self.regex, offset)
+        if m:
+            self.go_line_offset(m.end())
+            self.go_up(self.height - 2)
+        else:
+            self.update_lines()
+
+    def update_lines(self) -> None:
+        contents = b"\n".join(self.get_lines())
+        m = None
+        if self.regex is not None:
+            m = self.regex.search(contents)
+        if m:
+            self.regex_ok = self.regex
+            style = "class:match"
+        elif not m and self.regex_ok is not None:
+            m = self.regex_ok.search(contents)
+            style = "class:oldmatch"
+        if not m:
+            pthugefileviewer.HugeFileViewerUIControl.update_lines(self)
+            return
+        start = m.start()
+        end = m.end()
+        pre, matched, pos = contents[:start], contents[start:end], contents[end:]
+        self._lines = []
+        current: StyleAndTextTuples = []
+        lines = pre.split(b"\n")
+        for i, line in enumerate(lines):
+            current += [("", line.decode("utf-8"))]
+            if i != len(lines) - 1:
+                self._lines.append(current)
+                current = []
+        lines = matched.split(b"\n")
+        for i, line in enumerate(lines):
+            current += [(style, line.decode("utf-8"))]
+            if i != len(lines) - 1:
+                self._lines.append(current)
+                current = []
+        lines = pos.split(b"\n")
+        for i, line in enumerate(lines):
+            current += [("", line.decode("utf-8"))]
+            self._lines.append(current)
+            current = []
+
+
+class FileviewWidget:
+    def __init__(self, filename: os.PathLike[str]):
+        self.filename = filename
+        self.control = FileviewControl(filename)
+        self.window = Window(self.control, style=self.get_style)
+        self.frame = Frame(body=self)
+        self.get_style()
+
+    def get_style(self) -> str:
+        if get_app().layout.has_focus(self.window):
+            self.frame.title = [("class:title.focused", str(self.filename))]
+        else:
+            self.frame.title = [("class:title.unfocused", str(self.filename))]
+        return ""
+
+    def __pt_container__(self) -> Container:
+        return self.window
+
+
+class RegexProcessor(Processor):
+    def apply_transformation(
+        self, transformation_input: TransformationInput
+    ) -> Transformation:
+        (
+            _,
+            document,
+            _,
+            _,
+            fragments,
+            _,
+            _,
+        ) = transformation_input.unpack()
+        regex_str = document.text
+        pos = None
+        try:
+            re.compile(regex_str)
+        except re.error as e:
+            pos = e.pos
+        if pos is None:
+            return Transformation(fragments)
+        fragments = explode_text_fragments(fragments)
+        fragments[pos] = ("class:regex.error", fragments[pos][1])
+        return Transformation(fragments)
+
+
+class RegexWidget:
+    def __init__(
+        self,
+        fileview: FileviewWidget,
+        statuswidget: "StatusWidget",
+        initial_regex_str: str = "",
+    ):
+        self.fileview = fileview
+        self.statuswidget = statuswidget
+        self.regex_str = initial_regex_str
+        self.buffer = Buffer(
+            document=Document(text=self.regex_str),
+            multiline=True,
+            on_text_changed=self.regex_changed,
+        )
+        self.control = BufferControl(
+            buffer=self.buffer, input_processors=[RegexProcessor()]
+        )
+        self.window = Window(self.control)
+        self.frame = Frame(
+            title=[("class:title.focused", "Regular expression")], body=self, height=5
+        )
+        self.regex_changed(self.buffer)
+
+    def get_style(self) -> str:
+        if get_app().layout.has_focus(self.window):
+            self.frame.title = [("class:title.focused", "Regular expression")]
+        else:
+            self.frame.title = [("class:title.unfocused", "Regular expression")]
+        return ""
+
+    def regex_changed(self, buf: Buffer) -> None:
+        try:
+            regex = re.compile(bytes(buf.document.text, "utf-8"), re.S)
+        except re.error as e:
+            self.fileview.control.use_regex(None)
+            self.statuswidget.error(e.msg)
+            return
+        self.statuswidget.reset()
+        self.fileview.control.use_regex(regex)
+
+    def __pt_container__(self) -> Container:
+        return self.window
+
+
+class StatusWidget:
+    def __init__(self) -> None:
+        self.default: StyleAndTextTuples = list(
+            itertools.chain.from_iterable(
+                [
+                    ("class:status.key", f"{key} "),
+                    ("class:status.descr", f"{descr}    "),
+                ]
+                for key, descr in [
+                    (" TAB", "switch panes"),
+                    ("F3", "search next"),
+                    ("^Up", ""),
+                    ("^Dn", ""),
+                    ("^PgUp", ""),
+                    ("^PgDn", ""),
+                    ("^D", "exit"),
+                ]
+            )
+        )
+        self.control = FormattedTextControl(text=self.default)
+        self.window = Window(self.control, height=1, style="class:status.ok")
+
+    def error(self, msg: str) -> None:
+        self.window.style = "class:status.error"
+        self.control.text = f" Regex error: {msg}"
+
+    def reset(self) -> None:
+        self.window.style = "class:status.ok"
+        self.control.text = self.default
+
+
+def regexbuilder_run(
+    filename: os.PathLike[str], initial_regex_str: Optional[str] = None
+) -> None:
+    statuswidget = StatusWidget()
+    fileview = FileviewWidget(filename)
+    regexwidget = RegexWidget(fileview, statuswidget, initial_regex_str or "")
+    root_container = HSplit(
+        [
+            fileview.frame,
+            regexwidget.frame,
+            statuswidget.window,
+        ]
+    )
+    layout = Layout(root_container)
+    layout.focus(regexwidget.window)
+    style = Style.from_dict(
+        {
+            "match": "bold fg:white bg:green",
+            "oldmatch": "fg:gray bg:darkgreen",
+            "title.focused": "reverse",
+            "title.unfocused": "",
+            "regex.error": "fg:white bg:red",
+            "status.ok": "bg:#222222",
+            "status.key": "fg:white",
+            "status.descr": "fg:gray",
+            "status.error": "bg:red fg:white bold",
+        }
+    )
+    kb = KeyBindings()
+    app: Application[None] = Application(
+        layout=layout,
+        key_bindings=kb,
+        full_screen=True,
+        style=style,
+        mouse_support=True,
+    )
+
+    @kb.add("tab")
+    def tab(event: E) -> None:
+        focus_next(event)
+        fileview.get_style()
+        regexwidget.get_style()
+
+    @kb.add("c-up")
+    def c_up(event: E) -> None:
+        fileview.control.go_up()
+
+    @kb.add("c-down")
+    def c_down(event: E) -> None:
+        fileview.control.go_down()
+
+    @kb.add("pageup")
+    def pageup(event: E) -> None:
+        fileview.control.go_pageup()
+
+    @kb.add("pagedown")
+    def pagedown(event: E) -> None:
+        fileview.control.go_pagedown()
+
+    @kb.add("c-pageup")
+    def c_pageup(event: E) -> None:
+        fileview.control.go_pageup()
+
+    @kb.add("c-pagedown")
+    def c_pagedown(event: E) -> None:
+        fileview.control.go_pagedown()
+
+    @kb.add("c-home")
+    def c_home(event: E) -> None:
+        fileview.control.go_top()
+
+    @kb.add("c-end")
+    def c_end(event: E) -> None:
+        fileview.control.go_bottom()
+
+    @kb.add("escape", "j")
+    def search_down(event: E) -> None:
+        fileview.control.search_down()
+
+    @kb.add("c-c")
+    @kb.add("c-d")
+    @kb.add("escape", "q")
+    def close(event: E) -> None:
+        app.exit()
+
+    app.run()
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--regex",
+        "-e",
+        default=None,
+        help="Initial regular expression",
+    )
+    parser.add_argument(
+        "--version",
+        "-V",
+        action="version",
+        version="%(prog)s " + pthugefileviewer.version(),
+    )
+    parser.add_argument("files", type=str, nargs=1, help="Files to match the regex")
+    args = parser.parse_args()
+    regexbuilder_run(args.files[0], initial_regex_str=args.regex)
+
+
+if __name__ == "__main__":
+    main()
