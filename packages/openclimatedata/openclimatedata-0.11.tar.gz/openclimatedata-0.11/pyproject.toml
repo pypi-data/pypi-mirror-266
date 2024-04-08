@@ -1,0 +1,20 @@
+[project]
+name = "openclimatedata"
+version = "0.11"
+description = "Library to help download and locally cache climate data"
+readme = "README.md"
+authors = [{name = "Robert Gieseke"}]
+license = {text = "BSD-2-Clause"}
+requires-python = ">=3.8"
+dependencies = [
+    "openpyxl", "pandas", "pooch", "pyarrow", "tqdm"
+]
+
+[project.urls]
+Homepage = "https://github.com/openclimatedata/openclimatedata"
+Changelog = "https://github.com/openclimatedata/openclimatedata/releases"
+Issues = "https://github.com/openclimatedata/openclimatedata/issues"
+CI = "https://github.com/openclimatedat/openclimatedata/actions"
+
+[project.optional-dependencies]
+test = ["pytest"]
