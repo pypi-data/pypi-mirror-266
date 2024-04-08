@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Semantic search: {{ table }}{% endblock %}
+
+{% block crumbs %}
+{{ crumbs.nav(request=request, database=database, table=table) }}
+{% endblock %}
+
+{% block content %}
+<h1>Semantic search: {{ table }}</h1>
+<form method="POST">
+  <p><label>Search
+    <input type="text" name="q" size="60">
+    <input type="submit" value="Go">
+    <input type="hidden" name="csrftoken" value="{{ csrftoken() }}">
+  </p>
+</form>
+<p>Find rows that are semantically close to your search query.</p>
+{% endblock %}
