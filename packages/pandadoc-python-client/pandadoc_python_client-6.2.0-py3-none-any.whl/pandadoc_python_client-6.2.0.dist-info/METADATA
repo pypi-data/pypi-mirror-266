@@ -1,0 +1,92 @@
+Metadata-Version: 2.1
+Name: pandadoc-python-client
+Version: 6.2.0
+Summary: PandaDoc Public API
+Home-page: https://github.com/PandaDoc/pandadoc-api-python-client
+Author: PandaDoc
+Author-email: 
+License: MIT
+Keywords: OpenAPI,PandaDoc Public API
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: urllib3 >=1.25.3
+Requires-Dist: python-dateutil
+
+    # The Official PandaDoc Python client SDK
+PandaDoc SDK spans a broad range of functionality to help you build incredible documents automation experiences inside your product.
+
+## Docs
+- [Official public API documentation](https://developers.pandadoc.com/reference/about)
+
+## Requirements
+Python >= 3.6
+
+## Installation
+#### pip install
+If the python package is hosted on a repository, you can install directly using:
+```sh
+pip install pandadoc-python-client
+```
+(you may need to run `pip` with root permission: `sudo pip install pandadoc-python-client`)
+
+Then import the package:
+```python
+import pandadoc_client
+```
+
+## Getting Started
+
+```python
+from pprint import pprint
+
+import pandadoc_client
+from pandadoc_client.api import templates_api
+
+# Configure API key authorization: apiKey
+api_key = "YOUR_API_KEY"
+
+# Defining the host is optional and defaults to https://api.pandadoc.com
+# See configuration.py for a list of all supported configuration parameters.
+cfg = pandadoc_client.Configuration(
+    host="https://api.pandadoc.com",
+    api_key={"apiKey": f"API-Key {api_key}"},
+)
+
+# Enter a context with an instance of the API client
+with pandadoc_client.ApiClient(cfg) as api_client:
+    # Create an instance of the API class
+    api_instance = templates_api.TemplatesApi(api_client)
+
+    try:
+        resp = api_instance.list_templates(tag=["doe-inc-proposals"])
+        pprint(resp)
+    except pandadoc_client.ApiException as e:
+        pprint("Exception when calling TemplatesApi->list_templates: %s\n" % e)
+```
+
+## Authorization
+### apiKey
+- **Type**: API key
+- **API key parameter name**: Authorization
+- **Location**: HTTP header
+### oauth2
+- **Type**: OAuth
+- **Flow**: accessCode
+- **Authorization URL**: https://app.pandadoc.com/oauth2/authorize
+- **Scopes**: 
+ - **read+write**: Use `read+write` to create, send, delete, and download documents, and `read` to view templates and document details.
+
+## Examples
+
+- [Create and send document from a template](https://github.com/PandaDoc/pandadoc-api-python-client/blob/main/examples/create_from_template_and_send.py)
+- [Create and send document from the pdf url](https://github.com/PandaDoc/pandadoc-api-python-client/blob/main/examples/create_from_pdf_by_url_and_send.py)
+
+## Docs
+### Official PandaDoc public API docs
+https://developers.pandadoc.com/reference/about
+
+## License
+SDK is licensed under the following [License](https://github.com/PandaDoc/pandadoc-api-python-client/blob/main/LICENSE).
+
+    
