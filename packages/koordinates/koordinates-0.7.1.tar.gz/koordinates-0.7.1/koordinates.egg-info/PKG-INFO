@@ -1,0 +1,71 @@
+Metadata-Version: 2.1
+Name: koordinates
+Version: 0.7.1
+Summary: A Python client library for a number of Koordinates web APIs
+Author-email: Koordinates Limited <support@koordinates.com>
+Project-URL: Source, https://github.com/koordinates/python-client
+Keywords: koordinates,api
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Scientific/Engineering :: GIS
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: python-dateutil<3,>=2
+Requires-Dist: pytz
+Requires-Dist: requests<3,>=2.5
+Requires-Dist: requests-toolbelt
+Requires-Dist: importlib-metadata; python_version < "3.8"
+Provides-Extra: dev
+Requires-Dist: coverage<4,>=3.7; extra == "dev"
+Requires-Dist: pytest>=3.3; extra == "dev"
+Requires-Dist: responses>=0.3; extra == "dev"
+
+# Koordinates Python API Client
+
+A BSD-licensed Python client library for a number of [Koordinates](https://koordinates.com) web APIs.
+
+The library provides easy access to Koordinates web services, particularly the [Publisher Admin APIs](https://help.koordinates.com/api/publisher-admin-api/).
+
+[![Build status](https://badge.buildkite.com/5ce9ace71272791038722b9443fd4bb23620aec8041c10ea46.svg?branch=master)](https://buildkite.com/koordinates/python-client)
+
+## Installation
+
+To install the latest stable release of the library, simply:
+
+```
+pip install -U koordinates
+```
+
+The library is compatible with Python 3.7+.
+
+
+## Documentation
+
+* [Documentation for the Python library](http://koordinates-python.readthedocs.org)
+* [Documentation on the APIs and available actions](https://help.koordinates.com/api/publisher-admin-api/)
+
+
+## Support & Contributions
+
+Please report bugs as [Github issues](https://github.com/koordinates/python-client/issues). For general technical support for the APIs and libraries, please contact us via [support.koordinates.com](https://support.koordinates.com).
+
+We welcome contributions as pull requests - please open a new issue to start a discussion around a feature idea or bug. See the [Contributing notes](http://koordinates-python.readthedocs.org/en/latest/user/contributing.html) for more details.
+
+## Code formatting
+
+We use [Black](https://github.com/psf/black) to ensure consistent code formatting. We recommend integrating black with your editor:
+
+* Sublime Text: install [sublack](https://packagecontrol.io/packages/sublack) via Package Control
+* VSCode [instructions](https://code.visualstudio.com/docs/python/editing#_formatting)
+
+We use the default settings.
+
+One easy solution is to install [pre-commit](https://pre-commit.com), run `pre-commit install --install-hooks` and it'll automatically validate your changes code as a git pre-commit hook.
