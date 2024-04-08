@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "meds_etl_cpp"
+dynamic = ["version"]
+description = "Optimized algorithms for meds_etl implemented in C++."
+readme = "README.md"
+requires-python=">3.9"
+license = {text = "Apache-2.0"}
+
+[tool.setuptools_scm]
+
+[tool.setuptools.packages.find]
+where = ["."]  # list of folders that contain the packages (["."] by default)
+include = ["meds_etl_cpp"]  # package names should match these glob patterns (["*"] by default)
+exclude = []  # exclude packages matching these glob patterns (empty by default)
+namespaces = false  # to disable scanning PEP 420 namespaces (true by default)

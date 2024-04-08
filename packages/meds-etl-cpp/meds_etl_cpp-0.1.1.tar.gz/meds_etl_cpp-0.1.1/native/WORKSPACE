@@ -1,0 +1,92 @@
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository", "new_git_repository")
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+  name = "com_google_absl",
+  urls = ["https://github.com/abseil/abseil-cpp/archive/2f9e432cce407ce0ae50676696666f33a77d42ac.zip"],
+  strip_prefix = "abseil-cpp-2f9e432cce407ce0ae50676696666f33a77d42ac",
+  sha256 = "efa465b26da194f82320b4e39e2ca637ebe3129d7f3732ee71d9942099e3c773",
+)
+
+new_git_repository(
+    name = "concurrentqueue",
+    remote = "https://github.com/cameron314/concurrentqueue.git",
+    commit = "79cec4c3bf1ca23ea4a03adfcd3c2c3659684dd2",
+    shallow_since = "1580387311 -0500",
+    build_file_content = """
+
+cc_library(
+    name = "concurrentqueue",
+    hdrs = ["concurrentqueue.h", "blockingconcurrentqueue.h", "lightweightsemaphore.h"],
+    visibility = ["//visibility:public"],
+)
+""",
+)
+
+http_archive(
+    name = "readerwriterqueue",
+    url = "https://github.com/cameron314/readerwriterqueue/archive/refs/tags/v1.0.6.tar.gz",
+    strip_prefix = "readerwriterqueue-1.0.6",
+    sha256 = "fc68f55bbd49a8b646462695e1777fb8f2c0b4f342d5e6574135211312ba56c1",
+    build_file_content = """
+
+cc_library(
+    name = "readerwriterqueue",
+    hdrs = ["readerwritercircularbuffer.h", "readerwriterqueue.h", "atomicops.h"],
+    visibility = ["//visibility:public"],
+)
+""",
+)
+
+pybind11_bazel_version = "5a8209f6ddcc848272e27a36a5fc2b79e7438374"
+
+http_archive(
+  name = "pybind11_bazel",
+  strip_prefix = "pybind11_bazel-" + pybind11_bazel_version,
+  urls = ["https://github.com/Lalaland/pybind11_bazel/archive/" + pybind11_bazel_version + ".tar.gz"],
+  sha256 = "cc9bd704ec128049f6b0c7a64313a690a3f53dac2f040e9d00d87cf33d45d9c1",
+)
+
+pybind11_version = 'fab1eebe2c4c52e0abac249f3d058787bc83b5ec'
+
+# We still require the pybind library.
+http_archive(
+  name = "pybind11",
+  build_file = "@pybind11_bazel//:pybind11.BUILD",
+  strip_prefix = "pybind11-" + pybind11_version,
+  urls = ["https://github.com/pybind/pybind11/archive/" + pybind11_version + ".tar.gz"],
+  sha256 = "69cd45ac4a0237a53ca56c1dd50431c564affe0006c5be4d9d1a1d4c7c51a9ee"
+)
+
+load("@pybind11_bazel//:python_configure.bzl", "python_configure")
+python_configure(name = "local_config_python")
+
+http_archive(
+    name = "rules_foreign_cc",
+    strip_prefix = "rules_foreign_cc-0.10.1",
+    url = "https://github.com/bazelbuild/rules_foreign_cc/archive/refs/tags/0.10.1.tar.gz",
+    sha256 = "476303bd0f1b04cc311fc258f1708a5f6ef82d3091e53fd1977fa20383425a6a",
+)
+
+load("@rules_foreign_cc//foreign_cc:repositories.bzl", "rules_foreign_cc_dependencies")
+rules_foreign_cc_dependencies()
+
+
+# Group the sources of the library so that CMake rule have access to it
+all_content = """filegroup(name = "all", srcs = glob(["**"]), visibility = ["//visibility:public"])"""
+
+http_archive(
+    name="arrow",
+    strip_prefix="arrow-apache-arrow-15.0.2",
+    urls = ["https://github.com/apache/arrow/archive/refs/tags/apache-arrow-15.0.2.zip"],
+    build_file_content = all_content,
+    sha256 = "c0ebc13e9bc428c0c9f617444dcd161140e2bf9a7c65c5ae6bf239e5567175fd",
+    patches = ["//patches:ThirdpartyToolchain.cmake.patch"],
+)
+
+http_archive(
+    name="zstd",
+    strip_prefix="zstd-1.5.6",
+    urls = ["https://github.com/facebook/zstd/archive/refs/tags/v1.5.6.zip"],
+    build_file_content = all_content,
+)
