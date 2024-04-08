@@ -1,0 +1,47 @@
+Metadata-Version: 2.1
+Name: check_params_by_swagger
+Version: 1.0.0
+Summary: check param by swagger
+Home-page: 
+Author: Qredsun
+Author-email: 1410672725@qq.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+
+# api 参数校验
+
+代码功能：
+
+从swagger文档中获取接口的入参，从必填项、数据类型、数据范围对API进行校验，完成校验后将结果保存到指定表格。
+
+功能实现步骤:
+
+1. 从指定的swagger地址中，获取接口数据
+2. 对接口数据使用`swagger_spec_validator.validator20.validate_spec`进行规范行校验
+3. 使用`swagger_parser.SwaggerParser`对接口数据进行解析
+4. 遍历`SwaggerParser.paths`，实现对每个接口的每个参数，从必填项、数据类型、取值范围进行验证
+   * 必填项：如果是必填参数，即`required=True`，调用接口时，将该参数中请求体中删除
+   * 数据类型：如果参数类型为`String`，则调用接口时，设置该参数为`非String`类型的值...
+   * 取值范围：如果参数取值范围为`[2，3]`，则调用接口时，该参数的取值为 `1`,`4`分别进行验证
+
+代码使用示例：
+```python
+from check_params_by_swagger.check import NecessaryParamMissExpected
+from check_params_by_swagger.check import CheckApiParam
+
+# 1. 修改必填项、数据类型、取值范围异常时，接口返回的错误码
+NecessaryParamMissExpected.CODES = [110]
+# 2. 指定测试的swagger文档地址
+c = CheckApiParam(swagger_doc_url="http://localhost:")
+# 2.1 对地址中所有的接口进行检查
+c.check_api_parameter()
+# 2.2 对指定的url进行检查
+c.check_api_parameter(urls=['/user/add'])
+# 2.3 只检查必填参数
+c.check_api_parameter(urls=[], check_required=True, check_type=False, check_range=False)
+c.save_result()
+```
