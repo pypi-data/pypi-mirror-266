@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cpymake"
+version = "0.2.0"
+readme = "README.rst"
+description = "Allows building of CMake defined Python Extension modules"
+requires-python = ">=3.11"
+license = {file = "LICENSE"}
+authors = [
+    {name = "James Calo", email = "jamesafcalo@gmail.com"},
+]
+
+classifiers = [
+  #"Programming Language :: Python :: 3.6",
+  "Development Status :: 3 - Alpha",
+  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+  "Operating System :: OS Independent",
+  "Framework :: Setuptools Plugin",
+  "Topic :: System :: Installation/Setup",
+]
+
+[project.urls]
+#Homepage = "https://example.com"
+#Documentation = "https://readthedocs.org"
+Repository = "https://github.com/SagaraBattousai/cpymake.git"
+#Changelog = "https://github.com/me/spam/blob/master/CHANGELOG.md"
+
+[project.entry-points."distutils.commands"]
+cpymake = "cpymake.command.build_ext:build_ext"
+
+[tool.setuptools.packages.find]
+exclude = ["docs_build"] # temp
+
+[tool.black]
+preview = true
