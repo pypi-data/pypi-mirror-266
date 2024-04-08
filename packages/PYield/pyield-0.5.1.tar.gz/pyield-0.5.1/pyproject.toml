@@ -1,0 +1,54 @@
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[project]
+name = "PYield"
+authors = [
+    { name = "Carlos Carvalho", email = "cr.cj@outlook.com" },
+]
+description = "A Python library for analysis of fixed income instruments in Brazil"
+readme = "README.md"
+requires-python = ">=3.11"
+keywords = [
+    "fixed-income, brazil, finance, analysis, bonds",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Topic :: Office/Business :: Financial :: Investment",
+]
+dependencies = [
+    "requests",
+    "pandas>=2.0.0",
+    "numpy",
+    "beautifulsoup4",
+    "html5lib",
+    "lxml",
+]
+dynamic = []
+version = "0.5.1"
+
+[project.license]
+file = "LICENSE"
+
+[project.urls]
+Source = "https://github.com/crdcj/PYield"
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.version]
+source = "file"
+path = "pyield/__about__.py"
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "ipykernel",
+    "pytest",
+    "mypy",
+]
