@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>event package &#8212; ReactiveReference  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="reference package" href="reference.html" />
+    <link rel="prev" title="event" href="modules.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="event-package">
+<h1>event package<a class="headerlink" href="#event-package" title="Link to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-event.Constants">
+<span id="event-constants-module"></span><h2>event.Constants module<a class="headerlink" href="#module-event.Constants" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="event.Constants.Constants">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">event.Constants.</span></span><span class="sig-name descname"><span class="pre">Constants</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">StreamMaxLimit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#event.Constants.Constants" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.Constants.Constants.DefaultDomain">
+<span class="sig-name descname"><span class="pre">DefaultDomain</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Domain(name:</span> <span class="pre">Default)</span></em><a class="headerlink" href="#event.Constants.Constants.DefaultDomain" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.Constants.Constants.LifecycleDomain">
+<span class="sig-name descname"><span class="pre">LifecycleDomain</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Domain(name:</span> <span class="pre">Lifecycle)</span></em><a class="headerlink" href="#event.Constants.Constants.LifecycleDomain" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.Constants.Constants.StreamMaxLimit">
+<span class="sig-name descname"><span class="pre">StreamMaxLimit</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#event.Constants.Constants.StreamMaxLimit" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-event.EventStream">
+<span id="event-eventstream-module"></span><h2>event.EventStream module<a class="headerlink" href="#module-event.EventStream" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="event.EventStream.EventStream">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">event.EventStream.</span></span><span class="sig-name descname"><span class="pre">EventStream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#event.EventStream.EventStream" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#event.IEventStream" title="reactive_reference.event.interfaces.IEventStream.IEventStream"><code class="xref py py-class docutils literal notranslate"><span class="pre">IEventStream</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Singleton</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="event.EventStream.EventStream.emit">
+<span class="sig-name descname"><span class="pre">emit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity:</span> <span class="pre">~reactive_reference.event.data.Entity.Entity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data:</span> <span class="pre">~typing.Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain:</span> <span class="pre">~reactive_reference.event.data.Domain.Domain</span> <span class="pre">=</span> <span class="pre">Domain(name:</span> <span class="pre">Default)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclusive:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NoReturn</span></span></span><a class="headerlink" href="#event.EventStream.EventStream.emit" title="Link to this definition">¶</a></dt>
+<dd><p>Sends data to the Event Stream, triggering <cite>on_event_receive</cite> for all subscribers.
+:param entity: Entity from which the emit was called from
+:param data: Structured payload for the Event Stream
+:param domain: Domain to which the data is binded to
+:param exclusive: Set the mode of the message to exclusive. If True, will only notify those of the same domain
+:return: None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.EventStream.EventStream.follow">
+<span class="sig-name descname"><span class="pre">follow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#event.Entity" title="reactive_reference.event.data.Entity.Entity"><span class="pre">Entity</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#event.Domain" title="reactive_reference.event.data.Domain.Domain"><span class="pre">Domain</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#event.EventStream.EventStream.follow" title="Link to this definition">¶</a></dt>
+<dd><p>Adds the ability to Subscribers to receive notifications from other Domains
+:param entity: Entity object which specifies the subscriber
+:param domain: Domain to register to stream
+:return: True if was correctly subscribed, False otherwise or if already subscribed</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.EventStream.EventStream.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_filter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#event.Event" title="reactive_reference.event.data.Event.Event"><span class="pre">Event</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#event.EventStream.EventStream.get" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieve all events
+:param _filter: Function to allow filtering of events
+:return: List with all applicable Events</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="event.EventStream.EventStream.latest">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">latest</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#event.Event" title="reactive_reference.event.data.Event.Event"><span class="pre">Event</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#event.EventStream.EventStream.latest" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.EventStream.EventStream.register">
+<span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance:</span> <span class="pre">~reactive_reference.event.interfaces.IEventSubscriber.IEventSubscriber</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain:</span> <span class="pre">~reactive_reference.event.data.Domain.Domain</span> <span class="pre">=</span> <span class="pre">Domain(name:</span> <span class="pre">Default)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#event.Entity" title="reactive_reference.event.data.Entity.Entity"><span class="pre">Entity</span></a></span></span><a class="headerlink" href="#event.EventStream.EventStream.register" title="Link to this definition">¶</a></dt>
+<dd><p>Register class for Event updates
+:param instance: Class instance that extends from EventSubscriber
+:param domain: Domain to subscribe for updates. If no domain is given class will subscribe to every update
+:return: Entity object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.EventStream.EventStream.restart">
+<span class="sig-name descname"><span class="pre">restart</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NoReturn</span></span></span><a class="headerlink" href="#event.EventStream.EventStream.restart" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="event.EventStream.EventStream.subscribers">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">subscribers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#event.EventStream.EventStream.subscribers" title="Link to this definition">¶</a></dt>
+<dd><p>Number of connected subscribers</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.EventStream.EventStream.unfollow">
+<span class="sig-name descname"><span class="pre">unfollow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#event.Entity" title="reactive_reference.event.data.Entity.Entity"><span class="pre">Entity</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#event.Domain" title="reactive_reference.event.data.Domain.Domain"><span class="pre">Domain</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#event.EventStream.EventStream.unfollow" title="Link to this definition">¶</a></dt>
+<dd><p>Removes the Subscribers from receiving notifications from other Domains
+:param entity: Entity object which specifies the subscriber
+:param domain: Domain to unfollow from the stream
+:return: True if was correctly unfollowed, False otherwise or if already unfollowed</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.EventStream.EventStream.unregister">
+<span class="sig-name descname"><span class="pre">unregister</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#event.Entity" title="reactive_reference.event.data.Entity.Entity"><span class="pre">Entity</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#event.EventStream.EventStream.unregister" title="Link to this definition">¶</a></dt>
+<dd><p>Unregisters the class from the Stream, therefore won’t receive any other updates
+:param entity: Entity object created on register
+:return: True if unregistered successfully, False otherwise</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="event.EventStream.EventStreamThreaded">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">event.EventStream.</span></span><span class="sig-name descname"><span class="pre">EventStreamThreaded</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exclusive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#event.EventStream.EventStreamThreaded" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Thread</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="event.EventStream.EventStreamThreaded.kill_stream">
+<span class="sig-name descname"><span class="pre">kill_stream</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#event.EventStream.EventStreamThreaded.kill_stream" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.EventStream.EventStreamThreaded.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#event.EventStream.EventStreamThreaded.run" title="Link to this definition">¶</a></dt>
+<dd><p>Method representing the thread’s activity.</p>
+<p>You may override this method in a subclass. The standard run() method
+invokes the callable object passed to the object’s constructor as the
+target argument, if any, with sequential and keyword arguments taken
+from the args and kwargs arguments, respectively.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-event.EventSubscriber">
+<span id="event-eventsubscriber-module"></span><h2>event.EventSubscriber module<a class="headerlink" href="#module-event.EventSubscriber" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="event.EventSubscriber.EventSubscriber">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">event.EventSubscriber.</span></span><span class="sig-name descname"><span class="pre">EventSubscriber</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream:</span> <span class="pre">~reactive_reference.event.interfaces.IEventStream.IEventStream</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain:</span> <span class="pre">~reactive_reference.event.data.Domain.Domain</span> <span class="pre">=</span> <span class="pre">Domain(name:</span> <span class="pre">Default)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replay_strategy:</span> <span class="pre">~reactive_reference.event.data.ReplayStrategy.ReplayStrategy</span> <span class="pre">=</span> <span class="pre">ReplayStrategy.DISABLED</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#event.EventSubscriber.EventSubscriber" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#event.IEventSubscriber" title="reactive_reference.event.interfaces.IEventSubscriber.IEventSubscriber"><code class="xref py py-class docutils literal notranslate"><span class="pre">IEventSubscriber</span></code></a></p>
+<dl class="py property">
+<dt class="sig sig-object py" id="event.EventSubscriber.EventSubscriber.domain">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">domain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#event.Domain" title="reactive_reference.event.data.Domain.Domain"><span class="pre">Domain</span></a></em><a class="headerlink" href="#event.EventSubscriber.EventSubscriber.domain" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.EventSubscriber.EventSubscriber.emit">
+<span class="sig-name descname"><span class="pre">emit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclusive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NoReturn</span></span></span><a class="headerlink" href="#event.EventSubscriber.EventSubscriber.emit" title="Link to this definition">¶</a></dt>
+<dd><p>Sends data to the Event Stream
+:param data: Structured payload for the Event Stream
+:param exclusive: Set the mode of the message to exclusive. If True, will only notify those of the same domain
+:return: None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.EventSubscriber.EventSubscriber.follow">
+<span class="sig-name descname"><span class="pre">follow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#event.Domain" title="reactive_reference.event.data.Domain.Domain"><span class="pre">Domain</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#event.EventSubscriber.EventSubscriber.follow" title="Link to this definition">¶</a></dt>
+<dd><p>Adds the ability to Subscribers to receive notifications from other Domains
+:param domain: Domain to register to stream
+:return: True if was correctly subscribed, False otherwise or if already subscribed</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.EventSubscriber.EventSubscriber.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_filter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#event.Event" title="reactive_reference.event.data.Event.Event"><span class="pre">Event</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#event.EventSubscriber.EventSubscriber.get" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieve all events
+:param _filter: Function to allow filtering of events
+:return: List with all applicable Events</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="event.EventSubscriber.EventSubscriber.latest">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">latest</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#event.Event" title="reactive_reference.event.data.Event.Event"><span class="pre">Event</span></a></em><a class="headerlink" href="#event.EventSubscriber.EventSubscriber.latest" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.EventSubscriber.EventSubscriber.on_event_receive">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">on_event_receive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#event.Event" title="reactive_reference.event.data.Event.Event"><span class="pre">Event</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NoReturn</span></span></span><a class="headerlink" href="#event.EventSubscriber.EventSubscriber.on_event_receive" title="Link to this definition">¶</a></dt>
+<dd><p>Triggered by the event stream when new Events are posted in the Stream
+:param data: Event sent by the stream
+:return: None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.EventSubscriber.EventSubscriber.on_lifecycle_event">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">on_lifecycle_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">LifecycleEvent</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NoReturn</span></span></span><a class="headerlink" href="#event.EventSubscriber.EventSubscriber.on_lifecycle_event" title="Link to this definition">¶</a></dt>
+<dd><p>Triggered by the event stream when new Events are posted in the Stream
+:param event: Lifecycle event sent by the stream
+:return: None</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="event.EventSubscriber.EventSubscriber.strategy">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">strategy</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ReplayStrategy</span></em><a class="headerlink" href="#event.EventSubscriber.EventSubscriber.strategy" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.EventSubscriber.EventSubscriber.unfollow">
+<span class="sig-name descname"><span class="pre">unfollow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#event.Domain" title="reactive_reference.event.data.Domain.Domain"><span class="pre">Domain</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#event.EventSubscriber.EventSubscriber.unfollow" title="Link to this definition">¶</a></dt>
+<dd><p>Removes the Subscribers from receiving notifications from other Domains
+:param domain: Domain to register to stream
+:return: True if was correctly unfollowed, False otherwise or if already unfollowed</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.EventSubscriber.EventSubscriber.unregister">
+<span class="sig-name descname"><span class="pre">unregister</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#event.EventSubscriber.EventSubscriber.unregister" title="Link to this definition">¶</a></dt>
+<dd><p>Unregisters the class from the Stream, therefore won’t receive any other updates
+:return: True if unregistered successfully, False otherwhise</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-event">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-event" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="event.Domain">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">event.</span></span><span class="sig-name descname"><span class="pre">Domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#event.Domain" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.Domain.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#event.Domain.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="event.Entity">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">event.</span></span><span class="sig-name descname"><span class="pre">Entity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#event.IEventSubscriber" title="reactive_reference.event.interfaces.IEventSubscriber.IEventSubscriber"><span class="pre">reactive_reference.event.interfaces.IEventSubscriber.IEventSubscriber</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#event.Domain" title="reactive_reference.event.data.Domain.Domain"><span class="pre">reactive_reference.event.data.Domain.Domain</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#event.Entity" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.Entity.domain">
+<span class="sig-name descname"><span class="pre">domain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#event.Domain" title="reactive_reference.event.data.Domain.Domain"><span class="pre">Domain</span></a></em><a class="headerlink" href="#event.Entity.domain" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.Entity.id">
+<span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#event.Entity.id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.Entity.instance">
+<span class="sig-name descname"><span class="pre">instance</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#event.IEventSubscriber" title="reactive_reference.event.interfaces.IEventSubscriber.IEventSubscriber"><span class="pre">IEventSubscriber</span></a></em><a class="headerlink" href="#event.Entity.instance" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="event.Event">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">event.</span></span><span class="sig-name descname"><span class="pre">Event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#event.Payload" title="reactive_reference.event.data.Payload.Payload"><span class="pre">reactive_reference.event.data.Payload.Payload</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#event.Domain" title="reactive_reference.event.data.Domain.Domain"><span class="pre">reactive_reference.event.data.Domain.Domain</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#event.Event" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.Event.domain">
+<span class="sig-name descname"><span class="pre">domain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#event.Domain" title="reactive_reference.event.data.Domain.Domain"><span class="pre">Domain</span></a></em><a class="headerlink" href="#event.Event.domain" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.Event.id">
+<span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#event.Event.id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.Event.payload">
+<span class="sig-name descname"><span class="pre">payload</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#event.Payload" title="reactive_reference.event.data.Payload.Payload"><span class="pre">Payload</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#event.Event.payload" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.Event.timestamp">
+<span class="sig-name descname"><span class="pre">timestamp</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#event.Event.timestamp" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="event.IEventStream">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">event.</span></span><span class="sig-name descname"><span class="pre">IEventStream</span></span><a class="headerlink" href="#event.IEventStream" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="event.IEventStream.emit">
+<span class="sig-name descname"><span class="pre">emit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity:</span> <span class="pre">~reactive_reference.event.data.Entity.Entity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data:</span> <span class="pre">~typing.Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain:</span> <span class="pre">~reactive_reference.event.data.Domain.Domain</span> <span class="pre">=</span> <span class="pre">Domain(name:</span> <span class="pre">Default)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclusive:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NoReturn</span></span></span><a class="headerlink" href="#event.IEventStream.emit" title="Link to this definition">¶</a></dt>
+<dd><p>Sends data to the Event Stream, triggering <cite>on_event_receive</cite> for all subscribers.
+:param entity: Entity from which the emit was called from
+:param data: Structured payload for the Event Stream
+:param domain: Domain to which the data is binded to
+:param exclusive: Set the mode of the message to exclusive. If True, will only notify those of the same domain
+:return: None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.IEventStream.follow">
+<span class="sig-name descname"><span class="pre">follow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#event.Entity" title="reactive_reference.event.data.Entity.Entity"><span class="pre">Entity</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#event.Domain" title="reactive_reference.event.data.Domain.Domain"><span class="pre">Domain</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#event.IEventStream.follow" title="Link to this definition">¶</a></dt>
+<dd><p>Adds the ability to Subscribers to receive notifications from other Domains
+:param entity: Entity object which specifies the subscriber
+:param domain: Domain to register to stream
+:return: True if was correctly subscribed, False otherwise or if already subscribed</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.IEventStream.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_filter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#event.Event" title="reactive_reference.event.data.Event.Event"><span class="pre">Event</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#event.IEventStream.get" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieve all events
+:param _filter: Function to allow filtering of events
+:return: List with all applicable Events</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.IEventStream.latest">
+<span class="sig-name descname"><span class="pre">latest</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#event.Event" title="reactive_reference.event.data.Event.Event"><span class="pre">Event</span></a></em><a class="headerlink" href="#event.IEventStream.latest" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.IEventStream.register">
+<span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance:</span> <span class="pre">~reactive_reference.event.interfaces.IEventSubscriber.IEventSubscriber</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain:</span> <span class="pre">~reactive_reference.event.data.Domain.Domain</span> <span class="pre">=</span> <span class="pre">Domain(name:</span> <span class="pre">Default)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#event.Entity" title="reactive_reference.event.data.Entity.Entity"><span class="pre">Entity</span></a></span></span><a class="headerlink" href="#event.IEventStream.register" title="Link to this definition">¶</a></dt>
+<dd><p>Register class for Event updates
+:param instance: Class instance that extends from EventSubscriber
+:param domain: Domain to subscribe for updates. If no domain is given class will subscribe to every update
+:return: Entity object</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.IEventStream.subscribers">
+<span class="sig-name descname"><span class="pre">subscribers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#event.IEventStream.subscribers" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.IEventStream.unfollow">
+<span class="sig-name descname"><span class="pre">unfollow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#event.Entity" title="reactive_reference.event.data.Entity.Entity"><span class="pre">Entity</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#event.Domain" title="reactive_reference.event.data.Domain.Domain"><span class="pre">Domain</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#event.IEventStream.unfollow" title="Link to this definition">¶</a></dt>
+<dd><p>Removes the Subscribers from receiving notifications from other Domains
+:param entity: Entity object which specifies the subscriber
+:param domain: Domain to unfollow from the stream
+:return: True if was correctly unfollowed, False otherwise or if already unfollowed</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.IEventStream.unregister">
+<span class="sig-name descname"><span class="pre">unregister</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#event.Entity" title="reactive_reference.event.data.Entity.Entity"><span class="pre">Entity</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#event.IEventStream.unregister" title="Link to this definition">¶</a></dt>
+<dd><p>Unregisters the class from the Stream, therefore won’t receive any other updates
+:param entity: Entity object created on register
+:return: True if unregistered successfully, False otherwise</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="event.IEventSubscriber">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">event.</span></span><span class="sig-name descname"><span class="pre">IEventSubscriber</span></span><a class="headerlink" href="#event.IEventSubscriber" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.IEventSubscriber.domain">
+<span class="sig-name descname"><span class="pre">domain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#event.Domain" title="reactive_reference.event.data.Domain.Domain"><span class="pre">Domain</span></a></em><a class="headerlink" href="#event.IEventSubscriber.domain" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.IEventSubscriber.emit">
+<span class="sig-name descname"><span class="pre">emit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclusive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NoReturn</span></span></span><a class="headerlink" href="#event.IEventSubscriber.emit" title="Link to this definition">¶</a></dt>
+<dd><p>Sends data to the Event Stream
+:param data: Structured payload for the Event Stream
+:param exclusive: Set the mode of the message to exclusive. If True, will only notify those of the same domain
+:return: None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.IEventSubscriber.follow">
+<span class="sig-name descname"><span class="pre">follow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#event.Domain" title="reactive_reference.event.data.Domain.Domain"><span class="pre">Domain</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#event.IEventSubscriber.follow" title="Link to this definition">¶</a></dt>
+<dd><p>Adds the ability to Subscribers to receive notifications from other Domains
+:param domain: Domain to register to stream
+:return: True if was correctly subscribed, False otherwise or if already subscribed</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.IEventSubscriber.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_filter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#event.Event" title="reactive_reference.event.data.Event.Event"><span class="pre">Event</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#event.IEventSubscriber.get" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieve all events
+:param _filter: Function to allow filtering of events
+:return: List with all applicable Events</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.IEventSubscriber.latest">
+<span class="sig-name descname"><span class="pre">latest</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#event.Event" title="reactive_reference.event.data.Event.Event"><span class="pre">Event</span></a></em><a class="headerlink" href="#event.IEventSubscriber.latest" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.IEventSubscriber.on_event_receive">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">on_event_receive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#event.Event" title="reactive_reference.event.data.Event.Event"><span class="pre">Event</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NoReturn</span></span></span><a class="headerlink" href="#event.IEventSubscriber.on_event_receive" title="Link to this definition">¶</a></dt>
+<dd><p>Triggered by the event stream when new Events are posted in the Stream
+:param data: Event sent by the stream
+:return: None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.IEventSubscriber.on_lifecycle_event">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">on_lifecycle_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">LifecycleEvent</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NoReturn</span></span></span><a class="headerlink" href="#event.IEventSubscriber.on_lifecycle_event" title="Link to this definition">¶</a></dt>
+<dd><p>Triggered by the event stream when new Events are posted in the Stream
+:param event: Lifecycle event sent by the stream
+:return: None</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.IEventSubscriber.strategy">
+<span class="sig-name descname"><span class="pre">strategy</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ReplayStrategy</span></em><a class="headerlink" href="#event.IEventSubscriber.strategy" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.IEventSubscriber.unfollow">
+<span class="sig-name descname"><span class="pre">unfollow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#event.Domain" title="reactive_reference.event.data.Domain.Domain"><span class="pre">Domain</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#event.IEventSubscriber.unfollow" title="Link to this definition">¶</a></dt>
+<dd><p>Removes the Subscribers from receiving notifications from other Domains
+:param domain: Domain to register to stream
+:return: True if was correctly unfollowed, False otherwise or if already unfollowed</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.IEventSubscriber.unregister">
+<span class="sig-name descname"><span class="pre">unregister</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#event.IEventSubscriber.unregister" title="Link to this definition">¶</a></dt>
+<dd><p>Unregisters the class from the Stream, therefore won’t receive any other updates
+:return: True if unregistered successfully, False otherwhise</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="event.Payload">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">event.</span></span><span class="sig-name descname"><span class="pre">Payload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#event.Payload" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.Payload.value">
+<span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Any</span></em><a class="headerlink" href="#event.Payload.value" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">ReactiveReference</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">event</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">event package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html#reference">reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">event</a><ul>
+      <li>Previous: <a href="modules.html" title="previous chapter">event</a></li>
+      <li>Next: <a href="reference.html" title="next chapter">reference package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2024, Carlos Silva.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/event.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
