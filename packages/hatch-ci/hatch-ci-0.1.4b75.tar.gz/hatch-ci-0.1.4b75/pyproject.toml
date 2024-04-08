@@ -1,0 +1,152 @@
+__version__ = "0.1.4b75"
+__hash__ = "a4ff965e8349e70ec79d6abc9a426ca10e8b86b3"
+build-backend = "hatchling.build"
+
+[project]
+name = "hatch-ci"
+version = "0.1.4b75"
+description = "Hatch plugin for ci system versioning"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">= 3.8"
+keywords = [
+  "git",
+  "hatch",
+  "plugin",
+  "scm",
+  "version",
+]
+authors = [
+  { name = "Antonio Cavallo", email = "a.cavallo@cavallinux.eu" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+  "hatchling>=1.1.0",
+  "typing-extensions",
+  "jinja2",
+]
+
+[project.scripts]
+hatch-ci = "hatch_ci:script.main"
+
+[project.urls]
+Issues = "https://github.com/cav71/hatch-ci/issues"
+Source = "https://github.com/cav71/hatch-ci"
+
+#[project.entry-points.hatch]
+#ci = "hatch_ci.hooks"
+#
+#[tool.hatch.version]
+#source = "ci"
+#version-file = "src/hatch_ci/__init__.py"
+#
+#[tool.hatch.build.hooks.ci]
+#version-file = "src/hatch_ci/__init__.py"
+#process-replace = [
+#    # for the github actions
+#    [ 're:(https://github.com/.+/actions/workflows/)(master)(.yml/badge.svg)',
+#        '\1{{ ctx.workflow }}\3' ],
+#    [ 're:(https://github.com/.+/actions)/(workflows/)(master.yml)(?!/)',
+#        '\1/runs/{{ ctx.runid }}' ],
+#
+#    # for the codecov part
+#    [ 're:(https://codecov.io/gh/.+/branch)/master(/graph/badge.svg[?]token=.+)',
+#        '\1/{{ ctx.branch|urlquote }}\2' ],
+#    [ 're:(https://codecov.io/gh/.+/branch)/master(?!/)',
+#        '\1/{{ ctx.branch|urlquote }}' ]
+#]
+#
+#process-paths = [
+#  "README.md",
+#  "TEMPLATE.md"
+#]
+
+
+[tool.ruff]
+target-version = "py38"
+line-length = 88
+
+[tool.ruff.lint]
+select = [
+  "A",
+  "B",
+  "C",
+  "E",
+  "F",
+  "FBT",
+  "I",
+  "N",
+  "Q",
+  "RUF",
+  "S",
+  "T",
+  "UP",
+  "W",
+  "YTT",
+]
+ignore = [
+  # Allow non-abstract empty methods in abstract base classes
+  "B027",
+  # Ignore McCabe complexity
+  "C901",
+  # Allow boolean positional values in function calls, like `dict.get(... True)`
+  "FBT001", "FBT002", "FBT003",
+  # Ignore checks for possible passwords
+  "S105", "S106", "S107",
+]
+unfixable = [
+  # Don't touch unused imports
+  "F401",
+]
+
+[tool.ruff.lint.flake8-quotes]
+inline-quotes = "double"
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.lint.isort]
+known-first-party = ["hatch_ci"]
+
+[tool.ruff.lint.per-file-ignores]
+# Tests can use relative imports and assertions
+"tests/**/*" = ["TID252", "S101"]
+
+[tool.mypy]
+disallow_untyped_defs = false
+follow_imports = "normal"
+ignore_missing_imports = true
+pretty = true
+show_column_numbers = true
+show_error_codes = true
+warn_no_return = false
+warn_unused_ignores = true
+
+[tool.coverage.run]
+source_pkgs = ["hatch_ci", "tests"]
+branch = true
+parallel = true
+omit = [
+  "hatch_ci/__about__.py",
+]
+
+[tool.coverage.paths]
+hatch_ci = ["hatch_ci", "*/hatch-ci/hatch_ci"]
+tests = ["tests", "*/hatch-ci/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
