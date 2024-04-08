@@ -1,0 +1,51 @@
+Metadata-Version: 2.1
+Name: evcc
+Version: 0.0.1
+Summary: "evcc access via API"
+Home-page: https://github.com/rustydust/python_evcc
+Author: RustyDust
+License: MIT
+Project-URL: Issue Tracker, https://github.com/rustydust/python_evcc/issues
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Operating System :: OS Independent
+Classifier: Environment :: Console
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests
+
+# SonnenCharger
+
+## Purpose
+
+Read status information from [evcc's API](https://docs.evcc.io/docs/reference/api)
+
+## Installation
+
+### Using `pip`
+
+``` bash
+pip3 install evcc
+```
+
+### Manual installation
+[Download the archive from pypi.org](https://pypi.org/project/evcc/#files) and unpack where needed ;)
+
+## Usage
+
+``` python
+from evcc import evcc
+
+evcc_host = '192.168.1.2'
+evcc_port = 502  # optional, default=502
+
+# Init class, establish connection
+evcc_info = evcc(sc_host, sc_port)
+
+print(evcc.get_state())	    # retrieve general wallbox information
+```
+
+## Results (examples)
+
