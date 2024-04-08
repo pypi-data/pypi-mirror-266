@@ -1,0 +1,154 @@
+[project]
+name = "pysuso"
+dynamic = ["version"]
+description = "Sudoku sovler written in Python"
+authors = [
+    {name = "Robert Schmidt", email = "allthingscoding21th@gmail.com"},
+]
+dependencies = []
+requires-python = ">=3.12"
+readme = "README.md"
+license = {text = "MIT"}
+
+[project.urls]
+Home="https://mcneall.github.io/PySuSo/"
+Repository="https://github.com/McNeall/PySuSo"
+Documentation="https://mcneall.github.io/PySuSo/"
+pypi = "https://pypi.org/project/pysuso"
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.0.2",
+]
+docs = [
+    "mkdocs>=1.5.3",
+    "mkdocs-material>=9.5.13",
+    "mkdocstrings[python]>=0.24.1",
+    "mike>=2.0.0",
+    "versioningit>=3.0.0",
+    "black>=24.3.0",
+]
+
+[build-system]
+requires = ["hatchling", "versioningit"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pysuso"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/*.py"]
+
+[tool.hatch.version]
+source = "versioningit"
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "src"
+]
+
+[tool.ruff]
+line-length = 120
+indent-width = 4
+target-version = "py312"
+include = ["pyproject.toml", "src/**/*.py", "tests/**/*.py", "docs/hooks/**/*.py"]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "D203", # Checks for blank line between class and docstring. Incompatible with D211.
+    "D213",  # docstring summary on second line of docstring.
+    "COM812", # Conflicts with formatter.
+    "ISC001",
+    "ANN101", # Deprecated
+    "ANN102", # Deprecated
+    "N818" # Rule seems to give false positives for Exceptions that do not have Error as suffix.
+]
+fixable = ["ALL"]
+unfixable = [
+    "F401" # Do not autofix unused imports.
+]
+extend-safe-fixes = [
+    "D400" # Add periods at end of docstring summary.
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "lf"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = [
+    "S101", # Allow assert in tests
+]
+
+[tool.pyright]
+typeCheckingMode = "strict"
+include = ['src/**/*.py', "tests/**/*.py"]
+
+[tool.versioningit.format]
+distance = "{base_version}+d{build_date:%Y%m%d%S}.{rev}"
+dirty = "{base_version}+d{build_date:%Y%m%d%S}.{rev}.dirty"
+distance-dirty = "{base_version}+d{build_date:%Y%m%d%S}.{rev}.dirty"
+
+
+[tool.versioningit.vcs]
+method = "git"
+match = ["v*"]
+default-tag= "0.1.0"
+
+
+[tool.versioningit.tag2version]
+method = "basic"
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.scripts]
+format-check = "ruff format --check --quiet"
+lint-check = "ruff check --quiet"
+type-check = "pyright"
+tests = "coverage run -m pytest"
+coverage-summary = "coverage report --skip-empty --skip-covered --show-missing"
+coverage-xml = "coverage xml -q --data-file=.coverage -o coverage.xml"
+coverage-report = {composite = ["tests", "coverage-xml"]}
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "ruff>=0.3.2",
+    "pyright>=1.1.353",
+    "coverage>=7.4.4",
+]
+
