@@ -1,0 +1,388 @@
+{
+  "actions": {
+    "ApplyConcurrent": {
+      "document": "This API is used to request a concurrency. The timeout period of the API is 20 seconds.",
+      "input": "ApplyConcurrentRequest",
+      "name": "Requests concurrency quota",
+      "output": "ApplyConcurrentResponse",
+      "status": "online"
+    },
+    "CreateSession": {
+      "document": "This API is used to create a session. The timeout period of the API is 5 seconds.",
+      "input": "CreateSessionRequest",
+      "name": "Creates a session",
+      "output": "CreateSessionResponse",
+      "status": "online"
+    },
+    "DescribeConcurrentCount": {
+      "document": "Obtain the concurrency count.",
+      "input": "DescribeConcurrentCountRequest",
+      "name": "Obtain the concurrency count.",
+      "output": "DescribeConcurrentCountResponse",
+      "status": "online"
+    },
+    "DestroySession": {
+      "document": "Terminate the session. If stream push has been initiated in this session, then the stream push will end upon session termination.",
+      "input": "DestroySessionRequest",
+      "name": "Terminates a session",
+      "output": "DestroySessionResponse",
+      "status": "online"
+    },
+    "StartPublishStream": {
+      "document": "Initiate stream push. The codec for the stream push is automatically adjusted based on the client's (SDK) capabilities, with a default order of H265, H264, VP8, and VP9.",
+      "input": "StartPublishStreamRequest",
+      "name": "Starts stream push",
+      "output": "StartPublishStreamResponse",
+      "status": "online"
+    },
+    "StartPublishStreamWithURL": {
+      "document": "Initiate stream push to the specified URL. The codec for the stream push is automatically adjusted based on the client's (SDK) capabilities, with a default order of H265, H264, VP8, and VP9. This stream push method will be charged separately. For details about the charging method, see [Charging for Stream Push to Specified URL](https://intl.cloud.tencent.com/document/product/1547/72168?from_cn_redirect=1#98ac188a-d122-4caf-88be-05268ecefdf6).",
+      "input": "StartPublishStreamWithURLRequest",
+      "name": "Starts stream push to the specified URL",
+      "output": "StartPublishStreamWithURLResponse",
+      "status": "online"
+    },
+    "StopPublishStream": {
+      "document": "This API is used to stop stream push.",
+      "input": "StopPublishStreamRequest",
+      "name": "Stops stream push",
+      "output": "StopPublishStreamResponse",
+      "status": "online"
+    }
+  },
+  "metadata": {
+    "apiVersion": "2022-01-10",
+    "serviceNameCN": "应用云渲染",
+    "serviceShortName": "car"
+  },
+  "objects": {
+    "ApplyConcurrentRequest": {
+      "document": "ApplyConcurrent request structure.",
+      "members": [
+        {
+          "disabled": false,
+          "document": "The user’s unique ID. Tencent Cloud does not parse the ID. You need to manage your own user IDs. Based on your needs, you can either define unique IDs for users or use timestamps to generate random IDs. Make sure the same ID is used when a user reconnects to your application.",
+          "example": "cg_user",
+          "member": "string",
+          "name": "UserId",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "disabled": false,
+          "document": "Public IP of user’s application client, which is used for nearby scheduling.",
+          "example": "125.127.178.228",
+          "member": "string",
+          "name": "UserIp",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "disabled": false,
+          "document": "The project ID.",
+          "example": "cap-abcdefgh",
+          "member": "string",
+          "name": "ProjectId",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "disabled": false,
+          "document": "Application version ID. If the application of the current version is requested, you do not need to fill in this field. If the application of other versions is requested, you need to specify the version through this field.",
+          "example": "ver-1a2b3c4d",
+          "member": "string",
+          "name": "ApplicationVersionId",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "disabled": false,
+          "document": "Application ID, which is used only by the multi-application project to specify applications. For a single-application project, this parameter is ignored, and the application bound to the project will be used.",
+          "example": "app-a1b2c3d4",
+          "member": "string",
+          "name": "ApplicationId",
+          "required": false,
+          "type": "string"
+        }
+      ],
+      "type": "object"
+    },
+    "ApplyConcurrentResponse": {
+      "document": "ApplyConcurrent response structure.",
+      "members": [
+        {
+          "document": "The unique request ID, which is returned for each request. RequestId is required for locating a problem.",
+          "member": "string",
+          "name": "RequestId",
+          "type": "string"
+        }
+      ],
+      "type": "object"
+    },
+    "CreateSessionRequest": {
+      "document": "CreateSession request structure.",
+      "members": [
+        {
+          "disabled": false,
+          "document": "The user’s unique ID. Tencent Cloud does not parse the ID. You need to manage your own user IDs. Based on your needs, you can either define unique IDs for users or use timestamps to generate random IDs. Make sure the same ID is used when a user reconnects to your application.",
+          "example": "cg_user",
+          "member": "string",
+          "name": "UserId",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "disabled": false,
+          "document": "Public IP of user’s application client, which is used for nearby scheduling.",
+          "example": "125.127.178.228",
+          "member": "string",
+          "name": "UserIp",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "disabled": false,
+          "document": "The client-side session data, which is obtained from the SDK. If `RunMode` is `RunWithoutClient`, this parameter can be null.",
+          "example": "eyJhYmMiOjEyM30=",
+          "member": "string",
+          "name": "ClientSession",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "disabled": false,
+          "document": "The on-cloud running mode.\n`RunWithoutClient`: Keep the application running on the cloud even when there are no client connections.\nEmpty string (default): Keep the application running on the cloud only when there are client connections.",
+          "example": "RunWithoutClient",
+          "member": "string",
+          "name": "RunMode",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "disabled": false,
+          "document": "Application startup parameter.\nIf the user requests a multi-application project or a prelaunch-disabled single-application project, this parameter takes effect.\n \nIf the user requests a prelaunch-enabled single-application project, this parameter is invalid.\n\nNote: When this parameter takes effect, the `ApplicationParameters` parameter will be appended to the end of the application startup parameter. The application startup parameter is set in the application or project configuration in the console.\nFor example, for a prelaunch-disabled single-application project, if its application startup parameter `bar` is `0` and the `ApplicationParameters` parameter `foo` is `1`, the actual application startup parameters will be `bar=0 foo=1`.",
+          "example": "StartFor=1",
+          "member": "string",
+          "name": "ApplicationParameters",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "disabled": false,
+          "document": "The user ID of the host in **multi-person interaction** scenarios, which is required.\nIf the current user is the host, `HostUserId` must be the same as their `UserId`; otherwise, `HostUserId` should be the host's `UserId`.",
+          "example": "host_user_id",
+          "member": "string",
+          "name": "HostUserId",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "disabled": false,
+          "document": "The role in **multi-person interaction** scenarios. Valid values:\n`Player`: A user who can operate an application by using a keyboard and mouse\n`Viewer`: A user who can only watch the video in the room but cannot operate the application",
+          "example": "Player",
+          "member": "string",
+          "name": "Role",
+          "required": false,
+          "type": "string"
+        }
+      ],
+      "type": "object"
+    },
+    "CreateSessionResponse": {
+      "document": "CreateSession response structure.",
+      "members": [
+        {
+          "disabled": false,
+          "document": "The server-side session data, which is returned to the SDK.",
+          "example": "eyJhYmMiOjEyM30=",
+          "member": "string",
+          "name": "ServerSession",
+          "required": true,
+          "type": "string",
+          "value_allowed_null": false
+        },
+        {
+          "document": "The unique request ID, which is returned for each request. RequestId is required for locating a problem.",
+          "member": "string",
+          "name": "RequestId",
+          "type": "string"
+        }
+      ],
+      "type": "object"
+    },
+    "DescribeConcurrentCountRequest": {
+      "document": "DescribeConcurrentCount request structure.",
+      "members": [
+        {
+          "disabled": false,
+          "document": "Project ID",
+          "example": "cap-abcdefgh",
+          "member": "string",
+          "name": "ProjectId",
+          "required": false,
+          "type": "string"
+        }
+      ],
+      "type": "object"
+    },
+    "DescribeConcurrentCountResponse": {
+      "document": "DescribeConcurrentCount response structure.",
+      "members": [
+        {
+          "disabled": false,
+          "document": "Total Concurrency Count",
+          "example": "10",
+          "member": "uint64",
+          "name": "Total",
+          "output_required": true,
+          "type": "int",
+          "value_allowed_null": false
+        },
+        {
+          "disabled": false,
+          "document": "The number of concurrent executions, including those in pre-launch, connected, waiting for reconnection, to be cleaned up or recovered, and all non-idle concurrent executions. Therefore, refreshing projects or disconnecting user connections with concurrency packages will affect this value.",
+          "example": "6",
+          "member": "uint64",
+          "name": "Running",
+          "output_required": true,
+          "type": "int",
+          "value_allowed_null": false
+        },
+        {
+          "document": "The unique request ID, which is returned for each request. RequestId is required for locating a problem.",
+          "member": "string",
+          "name": "RequestId",
+          "type": "string"
+        }
+      ],
+      "type": "object"
+    },
+    "DestroySessionRequest": {
+      "document": "DestroySession request structure.",
+      "members": [
+        {
+          "disabled": false,
+          "document": "The user’s unique ID. Tencent Cloud does not parse the ID. You need to manage your own user IDs. Based on your needs, you can either define unique IDs for users or use timestamps to generate random IDs. Make sure the same ID is used when a user reconnects to your application.",
+          "example": "cg_user",
+          "member": "string",
+          "name": "UserId",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "type": "object"
+    },
+    "DestroySessionResponse": {
+      "document": "DestroySession response structure.",
+      "members": [
+        {
+          "document": "The unique request ID, which is returned for each request. RequestId is required for locating a problem.",
+          "member": "string",
+          "name": "RequestId",
+          "type": "string"
+        }
+      ],
+      "type": "object"
+    },
+    "StartPublishStreamRequest": {
+      "document": "StartPublishStream request structure.",
+      "members": [
+        {
+          "disabled": false,
+          "document": "Unique user ID, which is customized by you and is not understood by CAR. It will be used as the `StreamId` for pushing streams. For example, if the bound push domain is **abc.livepush.myqcloud.com**, the push address will be **rtmp://abc.livepush.myqcloud.com/live/UserId?txSecret=xxx&txTime=xxx**.",
+          "example": "abc123",
+          "member": "string",
+          "name": "UserId",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "disabled": false,
+          "document": "Push parameter, which is a custom parameter carried during stream pushing.",
+          "example": "bar=1&foo=2",
+          "member": "string",
+          "name": "PublishStreamArgs",
+          "required": false,
+          "type": "string"
+        }
+      ],
+      "type": "object"
+    },
+    "StartPublishStreamResponse": {
+      "document": "StartPublishStream response structure.",
+      "members": [
+        {
+          "document": "The unique request ID, which is returned for each request. RequestId is required for locating a problem.",
+          "member": "string",
+          "name": "RequestId",
+          "type": "string"
+        }
+      ],
+      "type": "object"
+    },
+    "StartPublishStreamWithURLRequest": {
+      "document": "StartPublishStreamWithURL request structure.",
+      "members": [
+        {
+          "disabled": false,
+          "document": "Unique user ID, which is customized by you and is not understood by CAR.",
+          "example": "abc123",
+          "member": "string",
+          "name": "UserId",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "disabled": false,
+          "document": "Push address. Only RTMP is supported for push currently.",
+          "example": "rtmp://live.stream.com/publish",
+          "member": "string",
+          "name": "PublishStreamURL",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "type": "object"
+    },
+    "StartPublishStreamWithURLResponse": {
+      "document": "StartPublishStreamWithURL response structure.",
+      "members": [
+        {
+          "document": "The unique request ID, which is returned for each request. RequestId is required for locating a problem.",
+          "member": "string",
+          "name": "RequestId",
+          "type": "string"
+        }
+      ],
+      "type": "object"
+    },
+    "StopPublishStreamRequest": {
+      "document": "StopPublishStream request structure.",
+      "members": [
+        {
+          "disabled": false,
+          "document": "Unique user ID, which is customized by you and is not understood by CAR. It can also be randomly generated using the timestamp and should be kept unchanged during user reconnection.",
+          "example": "abc123",
+          "member": "string",
+          "name": "UserId",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "type": "object"
+    },
+    "StopPublishStreamResponse": {
+      "document": "StopPublishStream response structure.",
+      "members": [
+        {
+          "document": "The unique request ID, which is returned for each request. RequestId is required for locating a problem.",
+          "member": "string",
+          "name": "RequestId",
+          "type": "string"
+        }
+      ],
+      "type": "object"
+    }
+  },
+  "version": "1.0"
+}
