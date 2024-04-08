@@ -1,0 +1,47 @@
+Metadata-Version: 2.1
+Name: allanms
+Version: 0.1.1
+Summary: Una biblioteca para consultar cursos de la plataforma hack4u
+Home-page: https://hack4u.io
+Author: Allan Murillo
+Description-Content-Type: text/markdown
+
+# Hack4u Academy Courses Library
+
+Una biblioteca Python para consultar cursos de la academia Hack4u, replicado por allanms 
+
+## Cursos disponibles: 
+
+Instala el paquete usando `pip3`: 
+
+```python3
+pip3 install allanms 
+```
+
+## Uso básico 
+
+### Listar todos los cursos 
+
+```python
+from allanms import list_courses 
+
+for course in list_courses():
+    print(course)
+```
+
+### Obtener un curso por nombre 
+
+```python 
+from allanms import get_course_by_name 
+
+course = get_course_by_name("Python Ofensivo")
+print(course)
+```
+
+### Calcular duración total de los cursos 
+
+```python3 
+from allanms.utils import total_duration 
+
+print(f"Duración total: {total_duration()} horas")
+```
