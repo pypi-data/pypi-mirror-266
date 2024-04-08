@@ -1,0 +1,135 @@
+Metadata-Version: 2.1
+Name: llmsh
+Version: 0.1
+Summary: Command-line tool to use Large Language Models in your shell,including OpenAI, Anthropic, PalM, Mistral, Cohere, and more.
+Home-page: https://github.com/vduseev/llmsh
+License: Apache-2.0
+Keywords: cli,llm,openai,ai,shell,console,command-line
+Author: Vagiz Duseev
+Author-email: vagiz@duseev.com
+Maintainer: Vagiz Duseev
+Maintainer-email: vagiz@duseev.com
+Requires-Python: >=3.9,<4.0
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Console
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Communications :: Chat
+Requires-Dist: inquirer (>=3.2.4,<4.0.0)
+Requires-Dist: litellm (>=1.34.18,<2.0.0)
+Requires-Dist: prompt-toolkit (>=3.0.43,<4.0.0)
+Requires-Dist: pydantic (>=2.6.4,<3.0.0)
+Requires-Dist: rich (>=13.7.1,<14.0.0)
+Requires-Dist: typer (>=0.12.1,<0.13.0)
+Project-URL: Documentation, https://github.com/vduseev/llmsh
+Project-URL: Repository, https://github.com/vduseev/llmsh
+Description-Content-Type: text/markdown
+
+# LLMsh
+
+[![PyPI](https://img.shields.io/pypi/v/llmsh.svg)](https://pypi.org/project/llmsh/)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/vduseev/llmsh/blob/main/LICENSE)
+
+Command-line tool to use Large Language Models in your shell.
+Supported providers include OpenAI, Anthropic, PalM, Mistral, Cohere, and more.
+
+**Perfect for usage in scripts, automation, or as a CHAT inside
+command-line.**
+
+*This is an alpha version and a work in progress.*
+
+## Installation
+
+```shell
+pip install llmsh
+```
+
+## Configure
+
+```shell
+# Set your OpenAI key in the current shell
+export OPENAI_API_KEY="sk-xxxxxx"
+```
+
+## Usage
+
+### Prompt mode
+
+```shell
+$ llmsh "Translate to Polish: What a good day"
+Jaki dobry dzień
+```
+
+#### Pipe output to LLM
+
+```shell
+$ echo "Translate to Polish: What a good day" | llmsh
+Jaki dobry dzień
+```
+
+#### Combine pipe and prompt
+
+```shell
+$ echo "Translate to Polish:" | llmsh "What a good day"
+Jaki dobry dzień
+```
+
+#### Use a file as a prompt
+
+```shell
+$ echo "Who is Dora?" > prompt.txt
+$ llmsh "@prompt.txt"
+Dora is the main character from the animated television series "Dora the Explorer", produced by Nickelodeon. Dora is a young Latina girl who embarks  
+on numerous adventures in an imaginative world with her backpack and her talking monkey companion named Boots. 
+```
+
+#### Specify a system prompt
+
+```shell
+$ llmsh "@prompt.txt" -s "You are Dora the Explorer. Help me learn Spanish"
+¡Hola! I'm Dora. I help kids to learn Spanish through fun       
+adventures. I explore various environments with my talking backpack and monkey friend, Boots. Do you want to learn some Spanish words with me today? 
+```
+
+*System prompt can also be a file: `-s @system.txt`.*
+
+### Interactive chat mode
+
+```shell
+$ llmsh -i
+> What is the time difference between New York and Gdansk?
+New York is typically 6 hours behind Gdansk. However, due to daylight saving
+changes, this can occasionally vary.
+
+> It is April. 
+In April, Daylight Saving Time is active in both locations. The time
+difference remains the same. New York is 6 hours behind Gdansk.
+
+>
+# Press Ctrl+D (Ctrl+Z on Windows), or type exit or quit to quit the chat.
+```
+
+*You can also use a file as a prompt: `-i @prompt.txt`.*
+*As well as a system prompt: `-i -s "You are a helpful assistant."`, which can also be sourced from a file.*
+
+*Piping is not supported in interactive mode.*
+
+## Roadmap
+
+https://github.com/vduseev/llmsh/labels/feature
+
+## License
+
+Copyright 2024 Vagiz Duseev
+
+Apache 2.0 License.
+
