@@ -1,0 +1,132 @@
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[tool.ruff]
+select = [
+    "E",
+    "F",
+]
+ignore = [
+    "E402",
+    "E501",
+]
+fixable = [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "I",
+    "N",
+    "Q",
+    "S",
+    "T",
+    "W",
+    "ANN",
+    "ARG",
+    "BLE",
+    "COM",
+    "DJ",
+    "DTZ",
+    "EM",
+    "ERA",
+    "EXE",
+    "FBT",
+    "ICN",
+    "INP",
+    "ISC",
+    "NPY",
+    "PD",
+    "PGH",
+    "PIE",
+    "PL",
+    "PT",
+    "PTH",
+    "PYI",
+    "RET",
+    "RSE",
+    "RUF",
+    "SIM",
+    "SLF",
+    "TCH",
+    "TID",
+    "TRY",
+    "UP",
+    "YTT",
+]
+unfixable = []
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".github",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+line-length = 128
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+target-version = "py310"
+namespace-packages = [
+    "plugins",
+]
+
+[tool.ruff.mccabe]
+max-complexity = 10
+
+[tool.pdm]
+distribution = true
+
+[project]
+name = "equivalent_llm"
+version = "0.1.0"
+description = "Validation tool to compare a generated context by sLLM to reference context"
+authors = [
+    { name = "Sung Gon Yi", email = "skonmeme@sk.com" },
+]
+dependencies = [
+    "langchain-core~=0.1.30",
+    "langchain>=0.1.11",
+    "langchain-community>=0.0.27",
+    "langchain-openai>=0.0.8",
+    "openai>=1.13.3",
+    "pydantic>=2.6.3",
+    "pytest>=8.1.1",
+    "pytest-mock>=3.12.0",
+    "ruff>=0.3.2",
+    "tqdm>=4.66.2",
+]
+requires-python = ">=3.10"
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+]
+
+[project.license]
+text = "BSD-3"
+
+[project.urls]
+Homepage = "https://github.com/sktaiflow/equivalent_llm"
+Issues = "https://github.com/sktaiflow/equivalent_llm/issues"
