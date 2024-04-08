@@ -1,0 +1,20 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+[project]
+name = "html_text_color"
+dynamic = ["version"]
+dependencies = [
+    "numpy",
+    "matplotlib"
+]
+requires-python = ">= 3.6"
+authors = [
+  {name = "Yannik Keller", email = "yannik@kelnet.de"},
+]
+description = "Visualize number vector on text using colored html"
+readme = "README.md"
+license = {text = "MIT License"}
+keywords = ["HTML", "Language Model", "color", "text", "visualization"]
+[tool.hatch.version]
+path = "html_text_color/__init__.py"
