@@ -1,0 +1,207 @@
+Metadata-Version: 2.3
+Name: whitebox_workflows
+Version: 1.2.6
+Classifier: Programming Language :: Rust
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+License-File: LICENSE.txt
+Summary: whitebox_workflows is a Python library for advanced spatial analysis.
+Keywords: spatial analysis,GIS,remote sensing
+Author: Whitebox Geospatial Inc.
+Author-email: support@whiteboxgeo.com
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown; charset=UTF-8; variant=GFM
+
+# Whitebox Workflows for Python
+
+
+## What is Whitebox Workflows?
+
+Whitebox Workflows (WbW) is a Python library for advanced geoprocessing, including [more than 400 functions](https://www.whiteboxgeo.com/manual/wbw-user-manual/book/tool_help.html) for GIS and remote sensing analysis operations and for for manipulating common types of raster, vector and LiDAR geospatial data.
+
+> For more details about the project, see [the User Manual](https://www.whiteboxgeo.com/manual/wbw-user-manual/book/introduction.html).
+
+
+## Why Whitebox Workflows when there already is WhiteboxTools Open Core?
+
+**Whitebox Workflows** (WbW) is based on the **WhiteboxTools Open Core** (WbOC) open-source codebase. While the two products share many characteristics and functionality, there are important differences.
+
+The WhiteboxTools Open Core is a command line back-end program that interfaces with various front-end applications, such as QGIS, ArcGIS and the R and Python scripting languages. Front-end/back-end communication is very limited. Front-ends can only communicate with WbOC by passing text-based commands and receive text-based outputs. Data files are provided as file names and are read into memory during tool operation and output data are written to disc. This design allows WbOC to be readily integrated into other projects. However, it doesn't allow front-ends to directly interact with Whitebox data,  and it isn't well suited to longer geoprocessing workflows. Tools in a WbOC based geoprocessing script are essentially run independently of other tools in the same workflow.
+
+By comparison, **Whitebox Workflows is a native Python extension library**; it has been designed to work with Python, providing a geoprocessing scripting environment. Like the open-core, WbW is developed using the fast programming language Rust, but is compiled to a shared library that can be directly imported into Python scripts, much like NumPy and other common Python scientific libraries. 
+
+**Each of the more than 400 geoprocessing tools that users love about the WbOC are also found in WbW.** The library design of WbW affords a much more intimate level of communication between it and your Python geoprocessing script. For instance, with WbW **you can directly manipulate raster, vector, and lidar data objects**, to perform low-level geoprocessing in a way that is impossible with the open-core. For example, below we manipulate raster data directly in Python using WbW:
+
+```python
+import whitebox_workflows as wbw
+
+wbe = wbw.WbEnvironment()
+dem = wbe.read_raster('/path/to/data/dem.tif')
+high_areas = wbe.new_raster(dem.configs)
+
+print("Finding high elevations")
+
+for row in range(dem.configs.rows):
+  for col in range(dem.configs.columns):
+    elev = dem[row, col]
+    if elev != dem.configs.nodata and elev > 1000.0:
+      high_areas[row, col] = 1.0
+    else:
+      high_areas[row, col] = 0.0
+
+wbe.write_raster(high_areas, 'high_areas.tif', compress=True)
+```
+
+Where tools in the open-core take file name strings as inputs, the WbW equivalent functions take in-memory geospatial objects as input parameters. WbW functions also return output objects. This means that for a typical geoprocessing workflow there is significantly less reading/writing of data to the disc. **There is no performance cost incurred by read/write operations during the intermediate processing.** WbW has been designed to meet enterprise-scale geoprocessing workflow needs. 
+
+The following example Python script interpolates a lidar file to a digital elevation model (DEM), performs some common pre-processing steps on the DEM, and then runs a flow accumulation operation, before outputting the flow accumulation grid to file:
+
+```python
+import whitebox_workflows as wbw
+
+wbe = wbw.WbEnvironment()
+
+lidar = wbe.read_lidar('/path/to/data/myfile.laz')
+dem = wbe.lidar_tin_gridding(input_lidar=lidar, returns_included='last', cell_size=1.0)
+dem_nodata_filled = wbe.fill_missing_data(dem, filter_size=21)
+dem_breached = wbe.breach_depressions_least_cost(dem_nodata_filled, fill_deps=True)
+dem_smoothed = wbe.feature_preserving_smoothing(dem_breached, filter_size=15)
+flow_accum = wbe.dinf_flow_accum(dem_smoothed, log_transform=True)
+wbe.write_raster(flow_accum, "flow_accumulation_grid.tif", compress=True)
+```
+
+Notice how each of the five tool functions return data objects that then serve as the inputs for later operations. While there's only one read operation and one write operation in the script, an equivalent WbOC workflow would result in 10 individual read/write operations. This characteristic **can result in significant gains in overall workflow performance**. It is often the case that read/write operations can be the bottle-neck in geoprocessing performance. Fewer read/write operations also means significantly **less wear on your hardware**.
+
+The design of WbW also allows for **more natural geoprocessing of data objects**. For example, rather than using individual raster math tools (e.g. ``Add``, ``Divide``, ``Sin`` etc.), with WbW, you can often treat raster objects like any other numerical variables in scripts--with WbW, Python becomes your raster calculator!
+
+```python
+new_raster = 1.0 - (raster1 - raster2) / (raster1 + raster2)
+new_raster = dem > 1000.0   # Note: This single line is equivalent to one of the example Python scripts above
+new_raster = raster.sin().to_degrees()
+new_raster = raster1.max(raster2)   # You can use a number instead of a raster as the parameter, e.g. raster.max(100.0)
+```
+
+**Overall, if you're using the Whitebox platform to develop Python scripts for geoprocessing tasks, Whitebox Workflows is the clear winner.** It provides easier-to-write and faster-running scripting with less strain on your expensive hardware. Simply put, **it's a more productive geoprocessing environment**. 
+
+There is, however, one small downside to using WbW over WbOC. Developing WbW was not a matter of simply compiling the existing WbOC codebase as a library; it took a substantial development effort to create this great product. Whitebox Workflows is not free. **You need to [purchase a valid license activation code](https://www.whiteboxgeo.com/whitebox-workflows-for-python/) to use WbW**. The good news is, annual licenses for WbW are very reasonably priced--only about $10. We want as many people using this wonderful product as possible!
+
+
+## Installation
+
+If you have Python installed on your machine, simply type ``pip install whitebox-workflows`` at the command prompt. Windows (64-bit), Mac (Intel and ARM), and Linux (x86_64) operating systems are supported.
+
+If you have installed whitebox-workflows Python package before and want to upgrade to the latest version, you can use the following command:
+
+```pip install whitebox-workflows -U```
+
+It is recommended that you use a Python virtual environment to test the whitebox-workflows package.
+
+
+## Usage
+
+```python
+import whitebox_workflows as wbw
+
+##########################
+# Set up the environment #
+##########################
+wbe = wbw.WbEnvironment() # A WbEnvironment object is needed to read/write data and run tools.
+wbe.verbose = True # Determines if tools output to std::out
+wbe.max_procs = -1
+wbe.working_directory = '/path/to/my/data'
+
+############################
+# Read some data from disc #
+############################
+dem = wbe.read_raster('DEM_5m.tif')
+points = wbe.read_vector('points.shp')
+lidar = wbe.read_lidar('my_lidar_tile.laz')
+
+######################
+# Run some functions #
+#######################
+hillshade_raster = wbe.hillshade(dem, azimuth=270.0)
+pointer = wbe.d8_pointer(dem)
+watersheds = wbe.watershed(pointer, points)
+
+###########################
+# Write some data to disc #
+###########################
+wbe.write_raster(hillshade_raster, 'hillshade.tif', compress=True)
+wbe.write_raster(watersheds, 'watersheds.tif', compress=True)
+
+######################
+# Raster map algebra #
+######################
+elev_in_ft = dem * 3.28084
+high_in_watershed = (dem > 500.0) * (watersheds == 1.0)
+tan_elev = dem.tan()
+dem += 10.0 
+raster3 = raster1 / raster2
+
+###############################
+# Manipulate lidar point data #
+###############################
+lidar = wbe.read_lidar('/path/to/data/lidar_tile.laz')
+lidar_out = wbe.new_lidar(lidar.header) # Create a new file
+
+print('Filtering point data...')
+for a in range(lidar.header.number_of_points):
+    (point_data, time, colour, waveform) = lidar.get_point_record(a)
+    if point_data.is_first_return() or point_data.is_intermediate_return():
+        lidar_out.add_point(point_data, time)
+
+wbe.write_lidar(lidar_out, "new_lidar.laz")
+```
+
+## Release history
+
+## Version 1.2.6 (April 4, 2024)
+- Added the sieve and nibble functions for class map generalization.
+- Added the ridge_and_valley_vectors function for extracting ridge and valley
+  lines from digital elevation models.
+- Added the skyline_analysis tool for performing local landscape visibility
+  analysis.
+- Fixed a bug with the RandomForestRegressionPredict tool, where output
+  rasters had an integer data type.
+
+## Version 1.2.4 (March 17, 2024)
+- Fixed an issue with the stub file (pyi) being saved in the wrong location for
+  a mixed Rust/Python PyO3 project. This issue resulted in WbW not having correct
+  type hinting in Python coding environments since we migrated to a mixed project
+  format. 
+
+## Version 1.2.3 (March 17, 2024)
+- Added the average_horizon_distance, horizon_area, and sky_view_factor functions.
+- Added the standard_deviation_overlay tool.
+- Split the random_forest_regression and random_forest_classification tools into
+  model fitting and prediction stages, e.g. random_forest_regression_fit and
+  random_forest_regression_prediction.
+
+### Version 1.2.1 (February 25, 2024)
+- Added the horton_ratios function for calculating the laws of drainage network composition.
+- Fixed a bug with the depth_to_water function, where it threw an error that the input
+  stream network was not of the correct shape type, even when it was.
+
+### Version 1.1.2 (October 2, 2023)
+- Added the ability to use the string 'value' as the TRUE and FALSE parameters of a raster 
+  con statement (conditional evaluation). Previously these statements had to be either a
+  raster object, a numerical constant, or the strings 'null' or 'nodata'.
+- Fixed an issue with the aspect function that had previously been fixed in WbTools, but no
+  ported to Workflows.
+
+### Version 1.1.1 (September 10, 2023)
+- Made several minor bug fixes, including one important one that affected the mosaic function.
+
+### Version 1.1 (June 17, 2023)
+- Added ability to read COPC lidar files.
+- Added the extract_by_attribute tool to filter out vector features by attribute characteristics.
+- Added the deviation_from_regional_direction tool.
+- Added the otsu_thresholding tool, which uses Ostu's method for optimal binary thresholding,
+  transforming the input image into background and foreground pixels.
+- Added the topographic_hachures tool.
+- Fixed a bug with polygon holes in the raster_to_vector_polygons tool.
+- Fixed a bug with the individual_tree_detection tool that prevented use of the min_height parameter
+  when applied in batch mode.
+- Fixed a bug with the breakline_mapping tool in WbW-Pro.
+
