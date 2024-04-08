@@ -1,0 +1,335 @@
+{% extends 'base.html' %} {% block title %}
+<title>Create aup page</title>
+{% endblock %} {% block content %}
+<div class="d-flex flex-column mt-5">
+  <h1 class="align-self-center">List Of AUPs</h1>
+</div>
+<div class="container col-10 mt-5 mb-5">
+  <div class="d-flex align-items-center">
+    <a
+      id="list_aups_back"
+      class="col-1 btn btn-primary btn-sm rounded-pill"
+      href="{{ url_for('aup_overview') }}"
+      role="button"
+    >
+      BACK
+    </a>
+    <input
+      id="search_input"
+      class="form-control ms-2"
+      type="search"
+      placeholder="Search"
+      aria-label="Search"
+      onchange="search_aups(this)"
+    />
+  </div>
+  <script type="text/javascript">
+    const aups_dict = {{ aups_dict|tojson }};
+    const entities = {{ entities|safe }};
+  </script>
+  <div id="aup_list" class="list-group mt-2">
+    <span id="aup_list_enabled">
+      {% for ent_i in range(aups_dict.enabled|length) %}
+      <a
+        id="item_aup{{ ent_i }}"
+        class="list-group-item list-group-item-action text-center"
+        data-bs-toggle="collapse"
+        onclick="aup_list_click(this)"
+        href="#aup{{ ent_i }}"
+      >
+        {{ aups_dict.enabled[ent_i].name }} v{{ aups_dict.enabled[ent_i].version
+        }}
+        <i class="fa-solid fa-caret-down float-end"></i>
+      </a>
+      <div class="collapse" id="aup{{ ent_i }}">
+        <div class="card card-body container">
+          <div class="container">
+            <div
+              id="aup{{ ent_i }}_edit_msg"
+              class="row text-center {% if not aups_dict.enabled[ent_i].actual_aup_id %} d-none {% endif %}"
+            >
+              <span class="fs-5 text-danger"
+                >Old version, can not be edited</span
+              >
+            </div>
+            <div class="row">
+              <div class="col">
+                <span class="fs-5">Conditions</span>
+                <div id="aup{{ ent_i }}_con_box" class="d-flex flex-row gap-2">
+                  {% for outer in
+                  range(aups_dict.enabled[ent_i].conditions|length) %} {% for
+                  inner in
+                  range(aups_dict.enabled[ent_i].conditions[outer]|length) %}
+                  <div id="aup{{ ent_i }}_con{{ outer }}_{{ inner }}">
+                    <div
+                      id="aup{{ ent_i }}_con{{ outer }}_{{ inner }}_text"
+                      class="fs-6"
+                    >
+                      {% if inner == 0 and
+                      aups_dict.enabled[ent_i].conditions|length != 1 %} ( {%
+                      endif %} {{
+                      aups_dict.enabled[ent_i].conditions[outer][inner].type }}
+                      {{ aups_dict.enabled[ent_i].conditions[outer][inner].name
+                      }} {% if inner ==
+                      (aups_dict.enabled[ent_i].conditions[outer]|length - 1)
+                      and aups_dict.enabled[ent_i].conditions|length != 1 %} )
+                      {% endif %}
+                    </div>
+                  </div>
+                  {% if inner <
+                  (aups_dict.enabled[ent_i].conditions[outer]|length - 1) %}
+                  <p
+                    id="aup{{ ent_i }}_con{{ outer }}_{{ inner + 1 }}_AND"
+                    class="fs-6 fw-bold"
+                  >
+                    AND
+                  </p>
+                  {% endif %} {% endfor %} {% if outer <
+                  (aups_dict.enabled[ent_i].conditions|length - 1) %}
+                  <p
+                    id="aup{{ ent_i }}_con{{ outer + 1 }}_OR"
+                    class="fs-6 fw-bold"
+                  >
+                    OR
+                  </p>
+                  {% endif %} {% endfor %}
+                </div>
+              </div>
+              <div class="col d-flex flex-column col-2 gap-1">
+                <a
+                  id="aup{{ ent_i }}_edit_name"
+                  class="row btn btn-primary btn-sm align-middle rounded-pill float-end {% if aups_dict.enabled[ent_i].actual_aup_id %} d-none {% endif %}"
+                  onclick="edit_name_click(this)"
+                  role="button"
+                >
+                  Edit Name
+                </a>
+                <a
+                  id="aup{{ ent_i }}_edit_content"
+                  class="row btn btn-primary btn-sm align-middle rounded-pill float-end {% if aups_dict.enabled[ent_i].actual_aup_id %} d-none {% endif %}"
+                  onclick="edit_content_click(this)"
+                  role="button"
+                >
+                  Edit Content
+                </a>
+                <a
+                  id="aup{{ ent_i }}_edit_conditions"
+                  class="row btn btn-primary btn-sm align-middle rounded-pill float-end {% if aups_dict.enabled[ent_i].actual_aup_id %} d-none {% endif %}"
+                  onclick="edit_conditions_click(this)"
+                  role="button"
+                >
+                  Edit Conditions
+                </a>
+                <a
+                  id="delete_aup"
+                  class="row btn btn-danger btn-sm align-middle rounded-pill float-end mb-2"
+                  onclick="delete_aup_click(this)"
+                  role="button"
+                >
+                  Delete AUP
+                </a>
+              </div>
+            </div>
+            <div class="row fs-5 mt-1 ms-0">Content</div>
+            <div class="row card card-body">
+              {{ aups_dict.enabled[ent_i].html|safe }}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </span>
+    {% for ent_i in range(aups_dict.disabled|length) %}
+    <a
+      id="item_aup{{ ent_i }}_disabled"
+      class="list-group-item list-group-item-action text-center disabled"
+    >
+      {{ aups_dict.disabled[ent_i].name }} v{{ aups_dict.disabled[ent_i].version
+      }}
+    </a>
+    {% endfor %}
+  </div>
+</div>
+<!-- Modal HTML -->
+<div id="edit_name_modal" aup_index="" class="modal fade" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit name</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <label id="edit_name_cur_name" class="mb-1" for="edit_name_input"
+          >Current name:
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          id="edit_name_input"
+          placeholder="New name"
+        />
+        <div class="invalid-feedback">Please choose new name</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          onclick="edit_name_save()"
+        >
+          Save changes
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal HTML -->
+<div id="edit_content_modal" aup_index="" class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          Edit content
+          <span class="text-danger">(creates new version of AUP)</span>
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div id="editor"></div>
+        <div id="edit_content_modal_empty" class="text-danger mt-1 d-none">
+          Please fill AUP content
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          onclick="edit_content_save()"
+        >
+          Save changes
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal HTML -->
+<div id="edit_conditions_modal" aup_index="" class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit conditions</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div id="conditions_box">
+          <div id="conditions_grid" class="container"></div>
+          <div class="d-flex flex-row gap-2 mt-5">
+            <select
+              id="select_condition"
+              class="form-select"
+              aria-label="Default select example"
+            >
+              <option selected value="0">Select condition</option>
+              <option value="1">Condition1</option>
+            </select>
+            <select
+              id="select_type"
+              class="form-select"
+              aria-label="Default select example"
+            >
+              <option selected value="0">Select entity type</option>
+              {% if entity_types|length != 0 %} {% for i in
+              range(entity_types|length) %}
+              <option value="{{ i + 1 }}">{{ entity_types[i] }}</option>
+              {% endfor %} {% endif %}
+            </select>
+            <select
+              id="select_entity"
+              class="form-select"
+              aria-label="Default select example"
+              disabled
+            >
+              <option selected value="0">Select entity</option>
+            </select>
+          </div>
+          <div class="d-flex flex-row gap-2 mt-3 mb-4 justify-content-center">
+            <a
+              id="stepper_add_condition"
+              class="col-4 btn btn-success btn-sm align-middle rounded-pill disabled"
+              role="button"
+            >
+              ADD ENTITY TO CONDITION
+            </a>
+          </div>
+          <div id="empty_conditions" class="text-danger d-none">
+            Please select conditions
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          onclick="edit_save_conditions()"
+        >
+          Save changes
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal HTML -->
+<div id="delete_aup_modal" aup_index="" class="modal fade" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete aup</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <label id="delete_aup_msg" class="mb-1" for="edit_name_input"></label>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          onclick="delete_aup_perform()"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

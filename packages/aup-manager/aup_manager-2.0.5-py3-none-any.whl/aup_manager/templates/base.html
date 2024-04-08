@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="initial-scale=1.0" />
+    {% block title %} {% endblock %}
+    <meta name="robots" content="noindex, nofollow" />
+    {% block preload %}
+    <link href="/static/assets/css/custom.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="/static/node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+    />
+
+    {% endblock %}
+  </head>
+  <body>
+    {% block content %}{% endblock %}
+    <script src="/static/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+    <script src="/static/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/static/index.js"></script>
+  </body>
+</html>

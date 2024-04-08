@@ -1,0 +1,70 @@
+{% extends 'base.html' %} {% block title %}
+<title>Accept aups page</title>
+{% endblock %} {% block content %}
+<div class="container col-10">
+  <div id="accept_aup_message_box" class="d-flex flex-column mt-10">
+    <div
+      class="alert alert-warning align-self-center fs-4 rounded-5"
+      role="alert"
+    >
+      {{ accept_aups_message }}
+    </div>
+  </div>
+  <div id="accept_aup_box" class="d-flex flex-column mt-5 mb-5">
+    {% if aups|length != 1 %}
+    <div class="d-fex flex-row">
+      <div class="stepper d-flex justify-content-center gap-1">
+        {% for index in range(aups|length) %}
+        <div
+          id="accept_aup_stepper_{{ index }}"
+          class="rounded-circle py-2 px-3 text-white mb-1 {% if index == 0 %}bg-primary{% else %}bg-secondary{% endif %}"
+        >
+          {{ index + 1 }}
+        </div>
+        {% if index != aups|length - 1 %}
+        <div class="h-line w-100 align-self-center"></div>
+        {% endif %} {% endfor %}
+      </div>
+    </div>
+    {% endif %} {% for index in range(aups|length) %}
+    <div
+      id="accept_aup_{{ index }}"
+      class="{% if index != 0 %}d-none{% endif %} mt-5"
+    >
+      <h3 class="text-nowrap">{{ aups[index].name }}</h3>
+      <div class="card card-body">{{ aups[index].html|safe }}</div>
+      <div class="d-flex flex-row gap-2 mt-2">
+        {% if index != (aups|length - 1) %}
+        <a
+          id="accept_aup_cont_{{ index }}"
+          class="col-2 btn btn-primary btn-sm align-middle rounded-pill"
+          onclick="accept_aup_continue(this)"
+          role="button"
+        >
+          CONTINUE
+        </a>
+        {% else %}
+        <a
+          id="accept_aup_finish_{{ index }}"
+          class="col-2 btn btn-primary btn-sm align-middle rounded-pill"
+          href="{{ url_for('save_acceptances') }}"
+          role="button"
+        >
+          ACCEPT AUP{% if aups|length != 1 %}s{% endif %}
+        </a>
+        {% endif %} {% if index != 0 %}
+        <a
+          id="accept_aup_back_{{ index }}"
+          class="col-2 btn btn-danger btn-sm align-middle rounded-pill"
+          onclick="accept_aup_back(this)"
+          role="button"
+        >
+          BACK
+        </a>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

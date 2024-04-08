@@ -1,0 +1,170 @@
+{% extends 'base.html' %} {% block title %}
+<title>Create aup page</title>
+{% endblock %} {% block content %}
+<div class="d-flex flex-column mt-15">
+  <h1 class="align-self-center">Create AUP</h1>
+</div>
+<div class="container col-6">
+  <div class="stepper d-flex flex-column mt-5 justify-content-center">
+    <div class="d-flex mb-1">
+      <div class="d-flex flex-column align-items-center">
+        <div
+          id="stepper_but_1"
+          class="rounded-circle py-2 px-3 bg-primary text-white mb-1"
+        >
+          1
+        </div>
+        <div class="w-line h-100"></div>
+      </div>
+      <form class="container">
+        <label id="sel_name_text" class="mb-3 fs-4" for="aupNameForm"
+          >Select name</label
+        >
+        <div id="select_name_box">
+          <input
+            type="text"
+            class="form-control"
+            id="aupNameForm"
+            placeholder="AUP name"
+          />
+          <div class="invalid-feedback">Please choose AUP name</div>
+          <div class="d-flex flex-row gap-2 mt-2 mb-3">
+            <a
+              id="stepper_name_continue"
+              class="col-2 btn btn-primary btn-sm align-middle rounded-pill"
+              onclick="stepper_name_continue()"
+              role="button"
+            >
+              CONTINUE
+            </a>
+            <a
+              id="stepper_cancel"
+              class="col-2 btn btn-danger btn-sm align-middle rounded-pill"
+              href="{{ url_for('aup_overview') }}"
+              role="button"
+            >
+              CANCEL
+            </a>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="d-flex mb-1">
+      <div class="d-flex flex-column align-items-center">
+        <div
+          id="stepper_but_2"
+          class="rounded-circle py-2 px-3 bg-secondary text-white mb-1"
+        >
+          2
+        </div>
+        <div class="w-line h-100"></div>
+      </div>
+      <div class="container">
+        <p id="fill_cont_text" class="fs-4 text-secondary">Fill content</p>
+        <div id="fill_content_box" class="d-none">
+          <div id="editor"></div>
+          <div id="empty_content" class="text-danger mt-1 d-none">
+            Please fill AUP content
+          </div>
+          <div class="d-flex flex-row gap-2 mt-2 mb-3">
+            <a
+              id="stepper_content_continue"
+              class="col-2 btn btn-primary btn-sm align-middle rounded-pill"
+              onclick="stepper_content_continue()"
+              role="button"
+            >
+              CONTINUE
+            </a>
+            <a
+              id="stepper_content_back"
+              class="col-2 btn btn-danger btn-sm align-middle rounded-pill"
+              onclick="stepper_content_back()"
+              role="button"
+            >
+              BACK
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex mb-1">
+      <div class="d-flex flex-column align-items-center">
+        <div
+          id="stepper_but_3"
+          class="rounded-circle py-2 px-3 bg-secondary text-white mb-1"
+        >
+          3
+        </div>
+        <div class="w-line h-100 d-none"></div>
+      </div>
+      <div class="container mt-1">
+        <p id="sel_con_text" class="fs-4 text-secondary">Select conditions</p>
+        <div id="conditions_box" class="d-none">
+          <script type="text/javascript">
+            const entities = {{ entities|safe }};
+          </script>
+          <div id="conditions_grid" class="container"></div>
+          <div class="d-flex flex-row gap-2 mt-5">
+            <select
+              id="select_condition"
+              class="form-select"
+              aria-label="Default select example"
+            >
+              <option selected value="0">Select condition</option>
+              <option value="1">Condition1</option>
+            </select>
+            <select
+              id="select_type"
+              class="form-select"
+              aria-label="Default select example"
+            >
+              <option selected value="0">Select entity type</option>
+              {% if entity_types|length != 0 %} {% for i in
+              range(entity_types|length) %}
+              <option value="{{ i + 1 }}">{{ entity_types[i] }}</option>
+              {% endfor %} {% endif %}
+            </select>
+            <select
+              id="select_entity"
+              class="form-select"
+              aria-label="Default select example"
+              disabled
+            >
+              <option selected value="0">Select entity</option>
+            </select>
+          </div>
+          <div class="d-flex flex-row gap-2 mt-3 mb-4 justify-content-center">
+            <a
+              id="stepper_add_condition"
+              class="col-3 btn btn-success btn-sm align-middle rounded-pill disabled"
+              role="button"
+            >
+              ADD ENTITY TO CONDITION
+            </a>
+          </div>
+          <div id="empty_conditions" class="text-danger d-none">
+            Please select conditions
+          </div>
+          <div class="d-flex flex-row gap-2 mt-4 mb-3">
+            <a
+              id="stepper_finish"
+              class="col-2 btn btn-primary btn-sm align-middle rounded-pill"
+              role="button"
+            >
+              FINISH
+            </a>
+            <a
+              id="stepper_cond_back"
+              class="col-2 btn btn-danger btn-sm align-middle rounded-pill"
+              onclick="stepper_cond_back()"
+              role="button"
+            >
+              BACK
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

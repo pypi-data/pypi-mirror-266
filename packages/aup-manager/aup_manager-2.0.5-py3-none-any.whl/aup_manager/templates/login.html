@@ -1,0 +1,17 @@
+{% extends 'base.html' %} {% block title %}
+<title>Login Page</title>
+{% endblock %} {% block content %}
+<div class="d-flex flex-column mt-20">
+  <h1 class="align-self-center">AUP MANAGER</h1>
+  <div class="d-grid gap-3 col-1 mx-auto">
+    <a
+      class="btn btn-primary btn-lg align-middle rounded-pill"
+      href="{{ url_for('aup_overview') }}"
+      role="button"
+    >
+      LOGIN
+    </a>
+  </div>
+</div>
+
+{% endblock %}
