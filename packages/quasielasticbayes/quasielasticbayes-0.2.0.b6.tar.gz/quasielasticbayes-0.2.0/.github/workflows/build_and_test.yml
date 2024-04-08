@@ -1,0 +1,28 @@
+name: Build and Test - Python 3.10
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Setup Build Env
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          miniforge-variant: Mambaforge
+          environment-file: conda/conda-build-py310.yml
+          activate-environment: qeb-conda-build-py310
+      - name: Build & Test
+        run: |
+          conda build conda/recipe/
