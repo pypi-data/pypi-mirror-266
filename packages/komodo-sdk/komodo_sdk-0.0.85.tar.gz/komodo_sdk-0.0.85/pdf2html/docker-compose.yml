@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  pdf2html:
+    build:
+      context: ..
+      dockerfile: pdf2html/Dockerfile
+    ports: [ "8050:8050" ]
+    volumes: [ "./data:/data/komodo" ]
+    entrypoint: [ "uvicorn", "server:app", "--host", "127.0.0.1", "--port", "8050" ]
