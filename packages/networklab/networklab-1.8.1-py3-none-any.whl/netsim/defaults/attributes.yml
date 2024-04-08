@@ -1,0 +1,136 @@
+# Core _netlab_ attributes: global, link, interface, node, VLAN, VRF...
+# 
+---
+global:
+  addressing:
+  defaults:
+  groups:
+  links:
+  module:
+  name: id
+  nodes:
+  plugin:
+    type: list
+    _subtype: str
+  provider: id
+  tools:
+    type: dict
+    _subtype:
+      type: dict
+      create_empty: True
+  validate:
+    type: dict
+    _keytype: id
+    _subtype: _v_entry
+  version:
+internal:
+  input:
+  pools: dict
+  Provider:
+  Plugin:
+  message: str
+can_be_false: [ link,interface ]
+link:
+  bandwidth: int
+  bridge: id
+  disable: bool
+  name: str
+  prefix:
+    type: dict
+    _alt_types: [ bool, prefix_str ]
+  role: id
+  pool: id
+  type: { type: str, valid_values: [ lan, p2p, stub, loopback, tunnel, vlan_member ] }
+  unnumbered: bool
+  interfaces:
+  mtu: { type: int, min_value: 64, max_value: 65535 }
+  vlan_name: id
+link_internal:
+  linkindex: int
+  parentindex: int
+link_no_propagate: [ prefix,interfaces,gateway ]
+# Do not propagate VLAN attributes to node interfaces -- see #575
+# Also: do not propagate DHCP attributes from links to interfaces
+link_module_no_propagate: [ vlan, dhcp ]
+interface:
+  node: id
+  ipv4: { type: ipv4, use: interface }
+  ipv6: { type: ipv6, use: interface }
+  ifindex: int
+  ifname: str
+node:
+  name: str                                         # Validity of node name is checked in the nodes module
+  interfaces: list
+  module:
+    type: list
+    _subtype: id
+  device: device
+  box: str
+  id: { type: int, min_value: 1, max_value: 150 }
+  config: list
+  group: list
+  role: id
+  mgmt:
+    ipv4: { type: ipv4, use: id }
+    ipv6: { type: ipv6, use: id }
+    mac: str
+    ifname: str
+  mtu: { type: int, min_value: 64, max_value: 65535 }
+  loopback:
+    ipv4: { type: ipv4, use: prefix }
+    ipv6: { type: ipv6, use: prefix }
+  provider: id
+  cpu:
+  memory: int
+  unmanaged: bool
+pool:
+  ipv4: { type: ipv4, use: prefix }
+  ipv6: { type: ipv6, use: prefix }
+  start: { type: int, min_value: 1 }
+  prefix: { type: int, min_value: 1, max_value: 32 }
+  prefix6: { type: int, min_value: 1, max_value: 128 }
+  allocation: { type: str, valid_values: [ p2p, sequential, id_based ] }
+  mac: mac
+  unnumbered: bool
+pool_no_copy: [ start, prefix, mac ]
+prefix:
+  ipv4: { type: ipv4, use: prefix }
+  ipv6: { type: ipv6, use: prefix }
+  allocation: { type: str, valid_values: [ p2p, sequential, id_based ] }
+group:
+  members:
+    type: list
+    _subtype: id
+  vars: dict
+  config: list
+  node_data: 
+    type: dict
+    true_value: {}
+  device: device
+  module: list
+_v_entry:                  # Validation entry
+  _description: Single network validation test (an entry in the validate dictionary)
+  description: str
+  fail: str
+  pass: str
+  wait: int
+  wait_msg: str
+  nodes:
+    type: list
+    _subtype: node_id
+  devices:
+    type: list
+    _subtype: device
+  exec: _v_option
+  show: _v_option
+  valid: _v_option
+  plugin: str
+  stop_on_error: bool
+_v_option:
+  _description: |
+    A "show", "exec" or "valid" parameter in a network validation test. It's a
+    dictionary of device types with each value being a command to execute or
+    expression to evaluate.
+  type: dict
+  _alt_types: [ str ]
+  _keytype: device
