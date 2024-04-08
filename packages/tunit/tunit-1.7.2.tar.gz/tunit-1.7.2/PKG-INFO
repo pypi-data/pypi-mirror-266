@@ -1,0 +1,160 @@
+Metadata-Version: 2.1
+Name: tunit
+Version: 1.7.2
+Summary: Time unit types. For transparency safety and readability.
+Author-email: "P.J. Grochowski" <pawel.grochowski.dev@gmail.com>
+License: MIT
+Project-URL: Repository, https://bitbucket.org/massultidev/tunit/
+Keywords: time,units,timestamp,chrono,seconds,milliseconds
+Classifier: Programming Language :: Python :: 3.7
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: Developers
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Provides-Extra: all
+Provides-Extra: json
+Provides-Extra: yaml
+License-File: LICENSE.txt
+
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/tunit.svg)](https://pypi.python.org/pypi/tunit)
+[![PyPI version shields.io](https://img.shields.io/pypi/v/tunit.svg)](https://pypi.python.org/pypi/tunit)
+[![PyPI license](https://img.shields.io/pypi/l/tunit.svg)](https://pypi.python.org/pypi/tunit)
+[![Downloads](https://static.pepy.tech/badge/tunit)](https://pepy.tech/project/tunit)
+
+# TUnit
+---
+Time unit types. For transparency, safety and readability.
+
+## Installation:
+
+```bash
+pip install tunit # Install just the base package
+pip install tunit[json] # Install with extra JSON serialization/deserialization support
+pip install tunit[yaml] # Install with extra YAML serialization/deserialization support
+pip install tunit[all] # Install with all extras
+```
+
+## Examples:
+
+Type conversions:
+```python
+from tunit.unit import Days, Hours, Minutes, Seconds, Milliseconds
+
+# Type annotations:
+def timestamp() -> Milliseconds:
+    # Time unit conversions:
+    return Milliseconds(Seconds(1))  # 1_000 ms
+
+# Converting to smaller units:
+assert Hours(Days(1)) == Hours(24) == 24
+
+# Converting to bigger units:
+assert Minutes(Seconds(65)) == Minutes(1) == 1
+
+# Converting floats to time units:
+assert Seconds(Minutes(0.5)) == Seconds(0) == 0  # Time units hold integers!
+assert Seconds.fromRawUnit(Minutes, 0.5) == Seconds(500) == 500  # Better approach when fractions matter!
+
+# Converting time units to floats:
+assert float(Seconds(Milliseconds(1_500))) == 1.0  # Loses precision!
+assert Milliseconds(1_500).toRawUnit(Seconds) == 1.5  # Converts to float representing different time unit with precision.
+```
+
+JSON serialization:
+```python
+import json
+from tunit.config import TUnitConfig
+from tunit.core import SerializationMode
+from tunit.unit import Seconds
+
+TUnitConfig.registerJsonHandler() # Enable JSON serialization/deserialization
+
+# JSON serialization:
+messageDto = {
+    "message": "Some message!",
+    "delay": Seconds(10)
+}
+messageJson = json.dumps(messageDto)
+print(messageJson) # Prints: '{"message": "Some message!", "delay": "10s"}'
+
+# JSON deserialization:
+messageJson = '{"message": "Some message!", "delay": "10s"}'
+messageDto = json.loads(messageJson)
+from pprint import pprint
+pprint(messageDto, width=30)
+# Prints:
+# {'delay': Seconds(10),
+# 'message': 'Some message!'}
+
+# JSON serialization modes:
+TUnitConfig.setSerializationMode(mode=SerializationMode.Symbol)
+print(json.dumps(messageDto)) # Prints: '{"message": "Some message!", "delay": "10s"}'
+TUnitConfig.setSerializationMode(mode=SerializationMode.ClassName)
+print(json.dumps(messageDto)) # Prints: '{"message": "Some message!", "delay": "Seconds(10)"}'
+TUnitConfig.resetSerializationMode() # Restores default mode, which is: SerializationMode.Symbol
+
+# JSON deserialization vs serialization modes:
+TUnitConfig.setSerializationMode(mode=SerializationMode.Symbol)
+pprint(json.loads(messageDto))
+TUnitConfig.setSerializationMode(mode=SerializationMode.ClassName)
+pprint(json.loads(messageDto))
+TUnitConfig.resetSerializationMode()
+pprint(json.loads(messageDto))
+# All three print: {'delay': Seconds(10), 'message': 'Some message!'}
+```
+
+YAML serialization:
+```python
+import yaml
+from yaml import Loader
+from tunit.config import TUnitConfig
+from tunit.unit import Seconds
+
+TUnitConfig.registerYamlHandler() # Enable YAML serialization/deserialization
+
+# YAML serialization:
+configDict = {
+    "dispatcher": {
+        "name": "queuePublisher",
+        "delay": Seconds(10)
+    }
+}
+configYaml = yaml.dump(configDict)
+print(configYaml)
+# Prints:
+# dispatcher:
+#     name: queuePublisher
+#     delay: 10s
+
+# YAML deserialization:
+configYaml = """
+dispatcher:
+    name: queuePublisher
+    delay: 10s
+"""
+configDict = yaml.load(configYaml, Loader)
+from pprint import pprint
+pprint(configYaml, width=30)
+# Prints:
+# {'dispatcher': {'delay': Seconds(10),
+#                 'name': 'queuePublisher'}}
+```
+
+## Changelog:
+- Version: 1.7.0
+    - Made markup serialization/deserialization into installable extras.
+    - Added support for YAML markup.
+- Version: 1.6.0
+    - Using `json-handler-registry` for JSON serialization/deserialization.
+- Version: 1.5.1
+    - Deep JSON serialization/deserialization fix.
+- Version: 1.5.0
+    - JSON serialization/deserialization support.
+- Version: 1.4.0
+    - MyPy static analysis support.
+- Version: 1.2.0
+    - Float conversions.
+
+## License
+MIT
