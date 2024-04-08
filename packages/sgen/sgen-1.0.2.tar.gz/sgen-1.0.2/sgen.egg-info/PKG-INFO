@@ -1,0 +1,102 @@
+Metadata-Version: 2.1
+Name: sgen
+Version: 1.0.2
+Summary: Generating test data structures
+Home-page: https://github.com/Apels1nA/sgen/
+Author: Ilya Verner
+License: MIT
+Project-URL: Repo, https://github.com/Apels1nA/sgen
+Project-URL: Docs, https://sgen.readthedocs.io/en/latest/index.html
+Project-URL: Changelog, https://sgen.readthedocs.io/en/latest/changelog.html
+Project-URL: Issues, https://github.com/Apels1nA/sgen/issues
+Keywords: generate,data,json,test,schema,structure
+Requires-Python: >=3.8
+Requires-Dist: packaging>=17.0
+Provides-Extra: tests
+Requires-Dist: pytest; extra == "tests"
+Provides-Extra: docs
+Requires-Dist: sphinx==7.2.6; extra == "docs"
+Requires-Dist: sphinx-issues==3.0.1; extra == "docs"
+Requires-Dist: alabaster==0.7.13; extra == "docs"
+
+SGen
+======
+
+Your welcome <3
+
+Description
+-----------
+
+Sgen is a tool for generating test data structures in Python.
+
+.. code-block:: python
+
+    from pprint import pprint
+
+    from sgen import Sgen, fields
+
+
+    class Pet(SGen):
+        name = fields.String()
+
+
+    class User(SGen):
+        name = fields.String()
+        pet = fields.Nested(Pet(), required=True)
+
+
+    def main():
+        datasets = list(User().positive())
+
+        pprint(datasets, indent=2)
+
+
+    if __name__ == '__main__':
+        main()
+
+    # [ {'name': None, 'pet': {'name': None}},
+    #   {'name': None, 'pet': {}},
+    #   {'name': None, 'pet': {'name': 'fszxSnf'}},
+    #   {'pet': {'name': None}},
+    #   {'pet': {}},
+    #   {'pet': {'name': 'RzGTdNzhr'}},
+    #   {'name': 'ttr', 'pet': {'name': None}},
+    #   {'name': 'ttr', 'pet': {}},
+    #   {'name': 'ttr', 'pet': {'name': 'ZpvMOyR'}}]
+
+
+In short, SGen can be used to:
+
+* Generating positive data structures
+* Generating negative data structures
+* Checking the functionality of data validation at the application input
+
+Get It Now
+----------
+
+.. code-block:: console
+
+    pip install sgen
+
+Documentation
+-------------
+
+Full documentation is available at `here <https://sgen.readthedocs.io/>`_
+
+Requirements
+------------
+
+- Python >= 3.8
+
+Project Links
+-------------
+
+* `Repo <https://github.com/Apels1nA/sgen>`_
+* `Docs <https://sgen.readthedocs.io/en/latest/index.html>`_
+* `Changelog <https://sgen.readthedocs.io/en/latest/changelog.html>`_
+* `Issues <https://github.com/Apels1nA/sgen/issues>`_
+
+License
+-------
+
+* ``MIT`` licensed.
