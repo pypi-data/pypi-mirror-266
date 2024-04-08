@@ -1,0 +1,115 @@
+Metadata-Version: 2.1
+Name: Canaille
+Version: 0.0.47
+Summary: Lightweight identity and autorization management software
+Home-page: https://canaille.yaal.coop
+License: MIT
+Keywords: oidc,oauth,oauth2,openid,identity
+Author: Yaal Coop
+Author-email: contact@yaal.coop
+Maintainer: Éloi Rivard
+Maintainer-email: eloi@yaal.coop
+Requires-Python: >=3.8,<4.0
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Topic :: System :: Systems Administration :: Authentication/Directory
+Classifier: Topic :: System :: Systems Administration :: Authentication/Directory :: LDAP
+Provides-Extra: all
+Provides-Extra: front
+Provides-Extra: ldap
+Provides-Extra: oidc
+Provides-Extra: sentry
+Provides-Extra: sql
+Requires-Dist: authlib (>=1.2.1,<2.0.0) ; extra == "oidc" or extra == "all"
+Requires-Dist: email_validator (>=2.0.0,<3.0.0) ; extra == "front" or extra == "all"
+Requires-Dist: flask (>=3.0.0,<4.0.0)
+Requires-Dist: flask-babel (>=4.0.0,<5.0.0) ; extra == "front" or extra == "all"
+Requires-Dist: flask-themer (>=2.0.0,<3.0.0) ; extra == "front" or extra == "all"
+Requires-Dist: flask-wtf (>=1.2.1,<2.0.0)
+Requires-Dist: passlib (>=1.7.4,<2.0.0) ; extra == "sql" or extra == "all"
+Requires-Dist: pycountry (>=22.1.10) ; extra == "front" or extra == "all"
+Requires-Dist: pydantic-settings (>=2.0.3,<3.0.0)
+Requires-Dist: python-ldap (>=3.4.0,<4.0.0) ; extra == "ldap" or extra == "all"
+Requires-Dist: pytz (>=2022.7) ; extra == "front" or extra == "all"
+Requires-Dist: sentry-sdk[flask] (<2) ; extra == "sentry" or extra == "all"
+Requires-Dist: sqlalchemy (>=2.0.23,<3.0.0) ; extra == "sql" or extra == "all"
+Requires-Dist: sqlalchemy-json (>=0.7.0,<0.8.0) ; extra == "sql" or extra == "all"
+Requires-Dist: sqlalchemy-utils (>=0.41.1,<0.42.0) ; extra == "sql" or extra == "all"
+Requires-Dist: toml (>=0.10.0,<0.11.0) ; (python_version < "3.11") and (extra == "front" or extra == "all")
+Requires-Dist: wtforms (>=3.1.1,<4.0.0)
+Project-URL: Documentation, https://canaille.readthedocs.io/en/latest/
+Project-URL: Repository, https://gitlab.com/yaal/canaille
+Description-Content-Type: text/markdown
+
+<div align="center">
+    <img src="canaille/static/img/canaille-full.webp" height="200" alt="Canaille" />
+</div>
+
+**Canaille** is a French word meaning *rascal*. It is roughly pronounced **Can I?**,
+as in *Can I access your data?* Canaille is a lightweight identity and authorization management software.
+
+It aims to be very light, simple to install and simple to maintain. Its main features are :
+- User profile and groups management;
+- Authentication, registration, email confirmation, "I forgot my password" emails;
+- OpenID Connect identity provider;
+- postgresql, mariadb and OpenLDAP first-class citizenship;
+- Customizable, themable;
+- The code is easy to read and easy to edit!
+
+# Screenshots
+
+<div align="center">
+    <img src="doc/_static/login.webp" width="225" alt="Canaille login page" />
+    <img src="doc/_static/profile.webp" width="225" alt="Canaille profile page" />
+    <img src="doc/_static/consent.webp" width="225" alt="Canaille consent page" />
+</div>
+
+# Try it!
+
+## Locally
+
+```bash
+cd demo
+# Either run the demo locally
+./run.sh
+# or run the demo in docker
+docker compose up
+```
+
+## [Online](https://demo.canaille.yaal.coop)!
+
+You have access to:
+- a canaille server at [https://demo.canaille.yaal.coop](https://demo.canaille.yaal.coop)
+- a dummy client at [https://demo.client1.yaal.coop](https://demo.client1.yaal.coop)
+- another dummy client at [https://demo.client2.yaal.coop](https://demo.client2.yaal.coop)
+
+The canaille server has some default users:
+- A regular user which login and password are **user**
+- A moderator user which login and password are **moderator**
+- An admin user which login and password are **admin**
+
+Online demo data are reset every night at 02:00 CEST.
+
+# Documentation
+
+⚠ Canaille is under heavy development and may not fit a production environment yet. However, [contributions](CONTRIBUTING.rst) are welcome! ⚠
+
+- Please have a look on our [documentation](https://canaille.readthedocs.io);
+- To **install** canaille, just follow the [installation guide](https://canaille.readthedocs.io/en/latest/install.html);
+- To **contribute** to canaille, please read the [contribution guide](https://canaille.readthedocs.io/en/latest/contributing.html).
+
+## Translation status
+
+[![Translation status for each language](https://hosted.weblate.org/widgets/canaille/-/canaille/multi-blue.svg)](https://hosted.weblate.org/engage/canaille/?utm_source=widget)
+
