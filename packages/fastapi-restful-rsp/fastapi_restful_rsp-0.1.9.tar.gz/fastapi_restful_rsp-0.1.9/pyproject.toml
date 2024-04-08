@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "fastapi-restful-rsp"
+version = "0.1.9"
+description = ""
+authors = ["paleneutron <paleneutron@outlook.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.110.0"
+
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^7.0.0"
+pytest = "^8.0.2"
+pytest-asyncio = "^0.23.6"
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
+build-backend = "poetry_dynamic_versioning.backend"
+
+[tool.poetry-dynamic-versioning]
+enable = false
+
+
+[tool.black]
+line-length = 120
+
+[tool.isort]
+profile = "black"
+
+[tool.flake8]
+exclude = ".venv"
+
+[tool.pytest.ini_options]
+asyncio_mode="auto"
