@@ -1,0 +1,100 @@
+[workspace]
+members = ["bindings/*"]
+
+[workspace.package]
+version = "0.10.0"
+authors = ["Ben Brandt <benjamin.j.brandt@gmail.com>"]
+edition = "2021"
+description = "Split text into semantic chunks, up to a desired chunk size. Supports calculating length by characters and tokens, and is callable from Rust and Python."
+repository = "https://github.com/benbrandt/text-splitter"
+license = "MIT"
+keywords = ["text", "split", "tokenizer", "nlp", "ai"]
+categories = ["text-processing"]
+
+[package]
+name = "text-splitter"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+description.workspace = true
+repository.workspace = true
+license.workspace = true
+keywords.workspace = true
+categories.workspace = true
+exclude = [
+    ".github/**",
+    ".vscode/**",
+    "/bindings/**",
+    "/benches/output.txt",
+    # Rely on large test files
+    "/tests/snapshots/**",
+    "/tests/text_splitter_snapshots.rs",
+    "/tests/inputs/**",
+    "/tests/tokenizers/**",
+    "*.yml",
+    "*.yaml",
+]
+rust-version = "1.75.0"
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+ahash = "0.8.11"
+auto_enums = "0.8.5"
+either = "1.10.0"
+itertools = "0.12.1"
+once_cell = "1.19.0"
+pulldown-cmark = { version = "0.10.2", default-features = false, optional = true }
+regex = "1.10.4"
+tiktoken-rs = { version = "0.5.8", optional = true }
+tokenizers = { version = "0.15.2", default_features = false, features = [
+    "onig",
+], optional = true }
+unicode-segmentation = "1.11.0"
+
+[dev-dependencies]
+divan = "0.1.14"
+fake = "2.9.2"
+insta = { version = "1.38.0", features = ["glob", "yaml"] }
+more-asserts = "0.3.1"
+tokenizers = { version = "0.15.2", default-features = false, features = [
+    "onig",
+    "http",
+] }
+
+[[bench]]
+name = "chunk_size"
+harness = false
+
+[features]
+markdown = ["dep:pulldown-cmark"]
+tokenizers = ["dep:tokenizers"]
+tiktoken-rs = ["dep:tiktoken-rs"]
+
+[lints.rust]
+future_incompatible = "warn"
+missing_debug_implementations = "warn"
+missing_docs = "warn"
+nonstandard_style = "warn"
+rust_2018_compatibility = "warn"
+rust_2018_idioms = "warn"
+rust_2021_compatibility = "warn"
+unused = "warn"
+
+[lints.clippy]
+cargo = "warn"
+pedantic = "warn"
+
+# Tokenizers and indirect deps can cause slow runtime
+[profile.dev.package."*"]
+opt-level = 1
+
+[profile.dev.package.insta]
+opt-level = 3
+
+[profile.dev.package.similar]
+opt-level = 3
