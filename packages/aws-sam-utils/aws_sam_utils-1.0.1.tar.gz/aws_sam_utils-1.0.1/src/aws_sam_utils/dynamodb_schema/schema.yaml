@@ -1,0 +1,42 @@
+ProvisionedThroughput:
+    ReadCapacityUnits: 10
+    WriteCapacityUnits: 10
+
+Tables:
+    Account:
+        UniqueFields:
+            - AttributeName: accountName
+              AttributeType: S
+    Session:
+        ForeignTables:
+            - Account
+        TimeToLiveField: expiredAt
+    Course:
+        UniqueFields:
+            - AttributeName: courseName
+              AttributeType: S
+    RegisterClass:
+        UniqueFields:
+            - AttributeName: className
+              AttributeType: S
+    Teacher:
+    Student:
+        UniqueFields:
+            - AttributeName: registerId
+              AttributeType: S
+        ForeignTables:
+            - RegisterClass
+    User2Account:
+        ForeignTables:
+            - Account
+            - Student
+            - Teacher
+    ClassRoom:
+        ForeignTables:
+            - Course
+            - RegisterClass
+            - Teacher
+    Student2ClassRoom:
+        ForeignTables:
+            - ClassRoom
+            - Student

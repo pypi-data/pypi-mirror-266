@@ -1,0 +1,77 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  ACFS3 - S3 Static site with CF and ACM (uksb-1qnk6ni7b) (version:v0.5)
+
+Parameters:
+  SubDomain:
+    Description: The part of a website address before your DomainName - e.g. www or img
+    Type: String
+    Default: www
+    AllowedPattern: ^[^.]*$
+  DomainName:
+    Description: The part of a website address after your SubDomain - e.g. example.com
+    Type: String
+  CreateApex:
+    Description: Create an Apex Alias in CloudFront distribution - yes/no
+    Type: String
+    Default: 'no'
+    AllowedValues: ['yes','no']
+  HostedZoneId:
+    Description: HostedZoneId for the domain e.g. Z23ABC4XYZL05B
+    Type: String
+
+Resources:
+  S3BucketStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: ./s3-bucket.yaml
+
+  AcmCertificateStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: ./acm-certificate.yaml
+      Parameters:
+        SubDomain: !Ref SubDomain
+        DomainName: !Ref DomainName
+        CreateApex: !Ref CreateApex
+        HostedZoneId: !Ref HostedZoneId
+
+  CloudFrontStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: ./cloudfront-site.yaml
+      Parameters:
+        CertificateArn: !GetAtt AcmCertificateStack.Outputs.CertificateArn
+        DomainName: !Ref DomainName
+        SubDomain: !Ref SubDomain
+        CreateApex: !Ref CreateApex
+        S3BucketRoot: !GetAtt S3BucketStack.Outputs.S3BucketRoot
+        S3BucketRootName: !GetAtt S3BucketStack.Outputs.S3BucketRootName
+        S3BucketRootArn: !GetAtt S3BucketStack.Outputs.S3BucketRootArn
+        S3BucketLogs: !GetAtt S3BucketStack.Outputs.S3BucketLogs
+        S3BucketLogsName: !GetAtt S3BucketStack.Outputs.S3BucketLogsName
+
+Outputs:
+  S3BucketLogs:
+    Description: Logging bucket
+    Value: !GetAtt S3BucketStack.Outputs.S3BucketLogs
+  S3BucketRoot:
+    Description: Website bucket
+    Value: !GetAtt S3BucketStack.Outputs.S3BucketRoot
+  S3BucketLogsName:
+    Description: Logging bucket name
+    Value: !GetAtt S3BucketStack.Outputs.S3BucketLogsName
+  S3BucketRootName:
+    Description: Website bucket name
+    Value: !GetAtt S3BucketStack.Outputs.S3BucketRootName
+  CFDistributionId:
+    Description: CloudFront distribution
+    Value: !GetAtt CloudFrontStack.Outputs.CloudFrontDistributionId
+  CloudFrontDomainName:
+    Description: Website address
+    Value: !GetAtt CloudFrontStack.Outputs.CloudFrontDomainName
+  CertificateArn:
+    Description: Issued certificate
+    Value: !GetAtt AcmCertificateStack.Outputs.CertificateArn
+

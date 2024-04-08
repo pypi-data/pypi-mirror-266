@@ -1,0 +1,26 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+    S3BucketRoot:
+        Type: AWS::S3::Bucket
+        DeletionPolicy: Delete # will NOT work on non-empty bucket
+        Properties:
+            BucketEncryption:
+                ServerSideEncryptionConfiguration:
+                    - ServerSideEncryptionByDefault:
+                          SSEAlgorithm: AES256
+            OwnershipControls:
+                Rules:
+                - ObjectOwnership: ObjectWriter
+
+Outputs:
+    S3BucketRoot:
+        Description: Website bucket
+        Value: !Ref S3BucketRoot
+    S3BucketRootName:
+        Description: Website bucket name
+        Value: !GetAtt S3BucketRoot.DomainName
+    S3BucketRootArn:
+        Description: Website bucket locator
+        Value: !GetAtt S3BucketRoot.Arn

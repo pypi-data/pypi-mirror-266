@@ -1,0 +1,21 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Parameters:
+    DefaultGitBranch:
+        Type: String
+        Default: master
+    ConcurrentBuildLimit:
+        Type: Number
+        Default: 1
+    CodeBuildImage:
+        Type: String
+        Default: aws/codebuild/standard:5.0
+        Description: >-
+            See https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-available.html
+Globals:
+    Function:
+        Timeout: 3
+        MemorySize: 128
+Resources:
+{%+ include './include/codecommit-repo.yaml' +%}
+{%+ include './include/codebuild-integrate.yaml' +%}

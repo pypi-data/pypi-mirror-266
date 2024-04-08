@@ -1,0 +1,125 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Cognito User Pool Substack
+
+Parameters:
+  RootStackName:
+    Description: root stack domain name
+    Type: String
+  DomainName:
+    Description: domain name
+    Type: String
+  AuthSubdomain:
+    Default: auth
+    Description: user pool domain name
+    Type: String
+  DefaultCallbackUrl:
+    Default: /signin/
+    Type: String
+
+Outputs:
+  CognitoHostedUiUrl:
+    Value: !Sub 'https://${AuthSubdomain}.${DomainName}/oauth2/authorize?client_id=${UserPoolClient}&response_type=code&scope=email+openid&redirect_uri=https://${DomainName}/redirect'
+    Description: The hosted UI URL
+  Certificate:
+    Description: "domain certificate"
+    Value: !Ref Certificate
+    Export:
+      Name: !Sub 'Certificate-UserPoolSubstack-${RootStackName}'
+  UserPoolClientId:
+    Description: "ID of the Cognito User Pool Client"
+    Value: !Ref UserPoolClient
+    Export:
+      Name: !Sub 'UserPoolClientId-UserPoolSubstack-${RootStackName}'
+  UserPoolId:
+    Description: "ID of the Cognito User Pool"
+    Value: !Ref UserPool
+    Export:
+      Name: !Sub 'UserPoolId-UserPoolSubstack-${RootStackName}'
+  UserPoolDomain:
+    Description: "ID of the Cognito User Pool"
+    Value: !Sub '${AuthSubdomain}.${DomainName}'
+    Export:
+      Name: !Sub 'UserPoolDomain-UserPoolSubstack-${RootStackName}'
+  UserPoolArn:
+    Description: "Arn of the Cognito User Pool"
+    Value: !GetAtt UserPool.Arn
+    Export:
+      Name: !Sub 'UserPoolArn-UserPoolSubstack-${RootStackName}'
+  UserPoolClientSecret:
+    Value: !GetAtt UserPoolClient.ClientSecret
+    Export:
+      Name: !Sub 'UserPoolClientSecret-UserPoolSubstack-${RootStackName}'
+  UserPoolClientDefaultCallbackUrl:
+    Value: !Sub 'https://${DomainName}${DefaultCallbackUrl}'
+    Export:
+      Name: !Sub 'UserPoolClientDefaultCallbackUrl-UserPoolSubstack-${RootStackName}'
+
+Resources:
+  Certificate: 
+    Type: "AWS::CertificateManager::Certificate"
+    Properties: 
+      DomainName: !Sub '*.${DomainName}'
+      ValidationMethod: DNS
+  UserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: !Sub 'UserPool-UserPoolSubstack-${RootStackName}'
+      UsernameConfiguration: 
+        CaseSensitive: false
+      AutoVerifiedAttributes:
+        - email
+      UsernameAttributes:
+        - email
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+      Schema:
+        - AttributeDataType: String
+          Name: email
+          Required: false
+  UserPoolDomain:
+    DependsOn:
+      - Certificate
+      - UserPool
+    Type: AWS::Cognito::UserPoolDomain
+    Properties:
+      UserPoolId: !Ref UserPool
+      Domain: !Sub '${AuthSubdomain}.${DomainName}'
+      CustomDomainConfig: 
+        CertificateArn: !Ref Certificate
+  UserPoolDNS:
+    DependsOn: UserPoolDomain
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneName: !Sub "${DomainName}."
+      Name: !Sub "${AuthSubdomain}.${DomainName}."
+      Type: A
+      AliasTarget:
+        HostedZoneId: Z2FDTNDATAQYW2
+        DNSName: !GetAtt UserPoolDomain.CloudFrontDistribution
+        EvaluateTargetHealth: false
+  UserPoolClient:
+    DependsOn: UserPool
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref UserPool
+      GenerateSecret: true
+      ExplicitAuthFlows:
+        - ALLOW_USER_PASSWORD_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+      AllowedOAuthFlowsUserPoolClient: true
+      DefaultRedirectURI: !Sub 'https://${DomainName}${DefaultCallbackUrl}'
+      CallbackURLs:
+        - !Sub 'https://${DomainName}${DefaultCallbackUrl}'
+        - 'http://localhost:8080/'
+        - 'http://localhost:8000/'
+        - 'http://localhost/'
+      AllowedOAuthFlows:
+        - code
+        - implicit
+      AllowedOAuthScopes:
+        - email
+        - openid
+      SupportedIdentityProviders:
+        - COGNITO

@@ -1,0 +1,48 @@
+[project]
+name = "aws_sam_utils"
+version = "1.0.1"
+authors = [
+  { name="Bryt", email="bryt.xin.li@gmail.com" },
+]
+description = "AWS SAM Template Utilities"
+readme = "README.md"
+requires-python = ">=3.6"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  'setuptools',
+  'python-dotenv',
+  'Jinja2',
+  'termcolor',
+  'boto3',
+  'pyyaml'
+]
+
+[project.scripts]
+aws_sam_template = "aws_sam_utils.cli:aws_sam_template"
+aws_sam_get_stack_output_value = "aws_sam_utils.cli:get_stack_output_value"
+create_dynamodb_cf_resource_yaml = "aws_sam_utils.dynamodb_schema.create_dynamodb_cf_template:main"
+create_dynamodb_local_resource_json = "aws_sam_utils.dynamodb_schema.create_dynamodb_local_json:main"
+create_sam_template = "aws_sam_utils.sam_template.create_template:main"
+project_devops_stack = "aws_sam_utils.project_devops_stack.entry:main"
+sam_jinja = "aws_sam_utils.sam_jinja.entry:main"
+
+[project.urls]
+Homepage = "https://github.com/xin-at-marathon/makefile"
+Issues = "https://github.com/xin-at-marathon/makefile/issues"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"aws_sam_utils" = ['**/*']
