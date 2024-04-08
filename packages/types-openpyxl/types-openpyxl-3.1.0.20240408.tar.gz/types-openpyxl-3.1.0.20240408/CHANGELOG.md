@@ -1,0 +1,270 @@
+## 3.1.0.20240408 (2024-04-08)
+
+openpyxl: Reduce false-positives in `Worksheet.__getitem__` (#11717)
+
+## 3.1.0.20240402 (2024-04-02)
+
+`openpyxl`: Add `_WorkbookChild` / `ReadOnlyWorksheet` / `Workbook` annotations (#11677)
+
+## 3.1.0.20240331 (2024-03-31)
+
+Remove bare Incomplete annotations in third-party stubs (#11671)
+
+## 3.1.0.20240311 (2024-03-11)
+
+Use PEP 570 syntax in third party stubs (#11554)
+
+## 3.1.0.20240308 (2024-03-08)
+
+`openpyxl`: Simpler leftover changes from the `microsoft/python-type-stubs` merge (#11534)
+
+Add `@deprecated` decorator to `openpyxl` (#11535)
+
+## 3.1.0.20240301 (2024-03-01)
+
+Update `pyright` version to 1.1.350 (#11501)
+
+If you're reading about this commit in an auto-generated changelog: this is an internal change that should have no impact on how these stubs are understood by static-analysis tools such as type checkers or IDEs
+
+Fix invalid noqa comments and poorly formatted type ignores (#11497)
+
+## 3.1.0.20240220 (2024-02-20)
+
+openpyxl: Add stubtest allowlist entry (#11449)
+
+Fixes #11448
+
+## 3.1.0.20240205 (2024-02-05)
+
+A new shade of Black (#11362)
+
+## 3.1.0.20240106 (2024-01-06)
+
+Bump various test dependencies (#11249)
+
+Update typing_extensions imports in third-party stubs (#11245)
+
+Remove Python 3.7 branches (#11238)
+
+## 3.1.0.32 (2023-12-06)
+
+openpyxl: Type styleable descriptors (#11103)
+
+## 3.1.0.31 (2023-12-05)
+
+Openpyxl: Various improvements (#11092)
+
+## 3.1.0.30 (2023-12-02)
+
+openpyxl: type `to_tree` methods (#10967)
+
+## 3.1.0.29 (2023-11-30)
+
+Use `ConvertibleToInt`/`ConvertibleToFloat` in many third-party stubs (#11022)
+
+Note: this may make the latest version of certain stubs packages incompatible with older versions of mypy and pyright.
+
+## 3.1.0.28 (2023-11-24)
+
+Fix typos in docs and comments (#11064)
+
+Third-party stubs: remove unused `type: ignore`s (#11063)
+
+## 3.1.0.27 (2023-11-09)
+
+Bump flake8-pyi to 23.11.0 (#10997)
+
+## 3.1.0.26 (2023-11-04)
+
+xml.etree: Fix `tag` param in `__init__` (#10968)
+
+## 3.1.0.25 (2023-11-03)
+
+openpyxl TypeGuards and comparison dunders (#10962)
+
+openpyxl: Type usages of `PIL` and `zipfile` (#10706)
+
+## 3.1.0.24 (2023-10-17)
+
+openpyxl: Various minor improvements / previous PR fixes (#10896)
+
+openpyxl: type `__iter__` dunders (#10883)
+
+## 3.1.0.23 (2023-10-16)
+
+Typed openpyxl colors descriptors (#10882)
+
+## 3.1.0.22 (2023-10-04)
+
+Type all `@property` in openpyxl (#10787)
+
+## 3.1.0.21 (2023-10-02)
+
+Remove redundant `NoReturn` union in openpyxl (#10819)
+
+## 3.1.0.20 (2023-09-23)
+
+Complete openpyxl metaclasses (#10736)
+
+## 3.1.0.19 (2023-09-11)
+
+openpyxl: Typed `from_tree` methods (#10602)
+
+## 3.1.0.18 (2023-09-10)
+
+openpyxl: CellRange: title should not be required (#10688)
+
+Fixes #10682
+
+## 3.1.0.17 (2023-08-15)
+
+openpyxl: Class attributes set explicitly as another class' (#10549)
+
+openpyxl: Make common alias for visibility literal string union (#10562)
+
+Complete openpyxl title type annotations (#10563)
+
+## 3.1.0.16 (2023-08-14)
+
+Make `openpyxl` stubtest-complete (#10570)
+
+## 3.1.0.15 (2023-07-20)
+
+Add a few more upstream_repository URLs (#10489)
+
+## 3.1.0.14 (2023-07-19)
+
+Type openpyxl `functions` module and its usages (#10322)
+
+## 3.1.0.13 (2023-06-24)
+
+Bump pyright to 1.1.315 and fix openpyxl tests (#10356)
+
+## 3.1.0.12 (2023-06-15)
+
+Type openpyxl incomplete dunders (#10313)
+
+## 3.1.0.11 (2023-06-14)
+
+`openpyxl`: type `tagname`, `namespace` and `__doc__` ClassVar and params (#10308)
+
+## 3.1.0.10 (2023-06-13)
+
+Type all openpyxl constants (#10312)
+
+## 3.1.0.9 (2023-06-12)
+
+Complete openpyxl's nested descriptors (#10298)
+
+## 3.1.0.8 (2023-05-15)
+
+openpyxl: Type MetaSerialisable dunders (#10170)
+
+Typed `Serialisable.__attrs__`, `Serialisable.__nested__`, `Serialisable.__elements__`, and `Serialisable.__namespaced__` ClassVars.
+
+## 3.1.0.7 (2023-05-10)
+
+Add `partial_stub` metadata field (#10157)
+
+## 3.1.0.6 (2023-05-10)
+
+[openpyxl] Complete base descriptors (#10001)
+
+## 3.1.0.5 (2023-05-01)
+
+Remove unnecessary F821 noqas (#10123)
+
+## 3.1.0.4 (2023-04-13)
+
+[openpyxl] Annotate _WorkbookChild.title property (#10043)
+
+## 3.1.0.3 (2023-03-26)
+
+Ran stubdefaulter for `stubs/openpyxl` (#9946)
+
+## 3.1.0.2 (2023-03-24)
+
+openpyxl: add baseline stubs for new modules (#9921)
+
+## 3.1.0.1 (2023-03-24)
+
+[openpyxl] Annotate Worksheet and other items (#9892)
+
+Co-authored-by: Alex Waygood <Alex.Waygood@Gmail.com>
+
+## 3.1.0.0 (2023-03-15)
+
+[openpyxl] Update to 3.1, add more annotations (#9875)
+
+Closes: #9644
+
+## 3.0.4.7 (2023-02-21)
+
+Improve `openpyxl` annotations (#9764)
+
+Co-authored-by: ArnabRollin <iamarnab.phukan@gmail.com>
+Co-authored-by: ArnabRollin <106329283+ArnabRollin@users.noreply.github.com>
+Co-authored-by: Alex Waygood <Alex.Waygood@Gmail.com>
+
+## 3.0.4.6 (2023-02-21)
+
+Stubtest settings: change `ignore_missing_stub` default to `false` (#9779)
+
+If you're reading about this commit from an autogenerated changelog entry, this should have no user-visible impact on how the stubs are interpreted by a type checker; it's just an internal change to how typeshed's tests work.
+
+## 3.0.4.5 (2023-01-18)
+
+Improve pre-commit config (#9563)
+
+- Add a few more hooks. These are all very fast, and I've found them useful in other projects:
+  - Autofixes:
+    - `trailing-whitespace`: fixes trailing whitespace
+    - `requirements-txt-fixer`: alphabetises items in `requirements.txt` files
+    - `end-of-file-fixer`: makes sure every file ends with a single newline character
+    - `mixed-line-ending`: Makes sure Windows users don't accidentally introduce CRLF line endings into a file that uses LF line endings
+  - None-autofixes:
+    - `check-yaml`: loads YAML files to validate syntax
+    - `check-toml`: loads TOML files to validate syntax
+    - `check-merge-conflict`: detects merge-conflict strings in files and blocks them from accidentally being committed
+    - `check-case-conflict`: checks for files with names that would conflict on a case-insensitive filesystem like MacOS HFS+ or Windows FAT; blocks them from being committed.
+  - Change the bot schedule to quarterly, to reduce noisy PRs
+  - Change the `black` language target-version to Python 3.10, synching the setting here with the changes that were made to our `pyproject.toml` file in #7538
+
+## 3.0.4.4 (2023-01-10)
+
+openpyxl: Use "Incomplete" instead of "Any" (#9488)
+
+## 3.0.4.3 (2022-12-03)
+
+openpyxl stub: add open as an alias for load_workbook (#9324)
+
+## 3.0.4.2 (2022-11-23)
+
+Mark first argument of `__[get|set|del]attr__` as `str` (#9245)
+
+## 3.0.4.1 (2022-11-09)
+
+Annotate known magic-method return types (#9131)
+
+## 3.0.4 (2022-06-06)
+
+Always use `TypeAlias` when assigning to `Any` (#8021)
+
+## 3.0.3 (2022-05-27)
+
+`openpyxl`: annotate openpyxl.utils.cell stubs (#7969)
+
+## 3.0.2 (2022-04-05)
+
+Mark many attributes as read-only properties (#7591)
+
+## 3.0.1 (2022-03-19)
+
+Add mypy error codes to `type: ignore`s, remove unused ignores (#7504)
+
+Co-authored-by: Jelle Zijlstra <jelle.zijlstra@gmail.com>
+
+## 3.0.0 (2022-03-07)
+
+Add openpyxl stubs (#6801)
+
