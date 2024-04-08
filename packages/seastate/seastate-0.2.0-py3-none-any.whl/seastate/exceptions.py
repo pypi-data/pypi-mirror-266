@@ -1,0 +1,2 @@
+class SeaStateException(Exception):
+    pass
