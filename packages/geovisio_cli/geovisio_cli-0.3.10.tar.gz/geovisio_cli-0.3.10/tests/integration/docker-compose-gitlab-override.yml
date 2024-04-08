@@ -1,0 +1,18 @@
+# Docker-compose used in gitlab-ci to run a container having access to all the other containers
+services:
+  integration-test-runner:
+    image: python:3.8
+    volumes:
+     - $PROJECT_DIR:/src
+    command: >
+      sh -c "cd ./src && ls && apt install gcc && pip install .[dev] && pytest -s -vv --external-geovisio-url=http://api.geovisio.localtest.me:5000"
+    depends_on:
+      geovisio-api:
+        condition: service_healthy
+      auth:
+        condition: service_healthy
+    networks:
+      db: {}
+      keycloak: {}
+      geovisio: {}
+
