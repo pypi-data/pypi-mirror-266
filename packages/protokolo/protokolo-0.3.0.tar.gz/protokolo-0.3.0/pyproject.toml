@@ -1,0 +1,121 @@
+# SPDX-FileCopyrightText: 2023 Carmen Bianca BAKKER <carmen@carmenbianca.eu>
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+[tool.poetry]
+name = "protokolo"
+version = "0.3.0"
+description = "Protokolo is a change log generator."
+authors = [
+    "Carmen Bianca BAKKER <carmen@carmenbianca.eu>"
+]
+maintainers = [
+    "Carmen Bianca BAKKER <carmen@carmenbianca.eu>"
+]
+license = "GPL-3.0-or-later"
+readme = "README.md"
+
+packages = [
+    { include = "protokolo", from = "src" }
+]
+include = [
+    { path = "tests", format = "sdist" },
+    { path = "README.md", format = "sdist" },
+    { path = "CHANGELOG.md", format = "sdist" },
+    { path = "LICENSES", format = "sdist" },
+]
+
+[tool.poetry.scripts]
+protokolo = 'protokolo.cli:main'
+
+[tool.poetry.dependencies]
+python = "^3.11"
+click = ">=8.0"
+attrs = ">=22.1.0"
+
+[tool.poetry.group.test.dependencies]
+pytest = ">=6.0.0"
+pytest-cov = ">=2.10.0"
+freezegun = "^1.0"
+
+[tool.poetry.group.dev.dependencies]
+black = ">=20"
+isort = "^5.0.0"
+pre-commit = "^2.9.0"
+bumpver = ">=2023.1129"
+pylint = "^3.0"
+mypy = "^1.0"
+reuse = "^3.0"
+
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
+Sphinx = ">=7.0.0"
+sphinxcontrib-apidoc = "^0.3.0"
+myst-parser = "^2.0.0"
+furo = ">=2023.3.27"
+
+[tool.poetry.group.lsp]
+optional = true
+
+[tool.poetry.group.lsp.dependencies]
+python-lsp-server = "*"
+pylsp-mypy = "*"
+pyls-isort = "*"
+python-lsp-black = "*"
+
+[build-system]
+requires = ["poetry-core>=1.1.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.protokolo]
+changelog = "CHANGELOG.md"
+markup = "markdown"
+directory = "changelog.d"
+
+[bumpver]
+current_version = "0.3.0"
+version_pattern = "MAJOR.MINOR.PATCH"
+commit_message = "Bump version to {new_version}"
+tag_message = "{new_version}"
+tag_scope = "default"
+pre_commit_hook = ""
+post_commit_hook = ""
+commit = true
+tag = false
+push = false
+
+[bumpver.file_patterns]
+"pyproject.toml" = [
+    '^version = "{version}"$',
+    '^current_version = "{version}"$',
+]
+"src/protokolo/__init__.py" = [
+    '^__version__ = "{version}"$',
+]
+
+[tool.black]
+line-length = 80
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+line_length = 80
+
+[tool.pytest.ini_options]
+addopts = "--doctest-modules"
+
+[tool.mypy]
+files = [
+    "src/protokolo/**.py",
+    "tests/**.py",
+]
+check_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = "protokolo.*"
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
