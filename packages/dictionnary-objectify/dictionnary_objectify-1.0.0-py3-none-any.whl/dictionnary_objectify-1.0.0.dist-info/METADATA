@@ -1,0 +1,37 @@
+Metadata-Version: 2.1
+Name: dictionnary-objectify
+Version: 1.0.0
+Summary: A small packages who allows you to create object from dictionnarys
+Author-email: moyonenzo <moyon_e@etna-alternance.net>
+Project-URL: Homepage, https://github.com/moyonenzo/py-dictionnary-object
+Project-URL: Issues, https://github.com/moyonenzo/py-dictionnary-object/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: forbiddenfruit
+
+# Objectify
+
+### Common Usage
+
+```py
+from objectify import to_object
+
+dictionnary = {
+    "some_key": "some_value",
+    "some_other_key": {
+        "some_sub_key": "some_sub_value"
+    }
+}
+
+object = dictionnary.to_object()
+
+print(object.some_key)
+# output : "some_value"
+
+print(object.some_other_key.some_sub_key)
+# output : "some_sub_value"
+```
