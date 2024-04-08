@@ -1,0 +1,35 @@
+Metadata-Version: 2.1
+Name: leancloud
+Version: 3.0.0
+Summary: LeanCloud Python SDK
+Home-page: https://leancloud.cn/
+Author: asaka
+Author-email: lan@leancloud.rocks
+License: LGPL
+Keywords: Leancloud SDK
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.9
+License-File: LICENSE
+Requires-Dist: arrow<1.0.0,>=0.17.0; python_version < "3.6"
+Requires-Dist: arrow<2.0.0,>=1.0.0; python_version >= "3.6"
+Requires-Dist: iso8601>=0.1.14
+Requires-Dist: six>=1.11.0
+Requires-Dist: qiniu==7.3.1
+Requires-Dist: requests>=2.25.1
+Requires-Dist: Werkzeug<2.0.0,>=0.16.0
+Requires-Dist: secure-cookie<1.0.0,>=0.1.0
+Requires-Dist: gevent<23.0.0,>=22.10.2
+Requires-Dist: typing; python_version < "3.5"
+Requires-Dist: markupsafe<=2.0.1
+Provides-Extra: dev
+Requires-Dist: sphinx; extra == "dev"
+Requires-Dist: sphinx_rtd_theme; extra == "dev"
+Provides-Extra: test
+Requires-Dist: nose; extra == "test"
+Requires-Dist: wsgi_intercept; extra == "test"
+Requires-Dist: flask; extra == "test"
