@@ -1,0 +1,1 @@
+STUCENT_BASE_URL="https://api.uccode.io/craft4me"
