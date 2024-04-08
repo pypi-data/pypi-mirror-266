@@ -1,0 +1,53 @@
+site_name: Narwhals
+repo_url: https://github.com/MarcoGorelli/narwhals.git
+nav:
+  - Home: index.md
+  - Why: why.md
+  - Installation: installation.md
+  - Quick start: quick_start.md
+  - Tutorial:
+    - basics/dataframe.md
+    - basics/column.md
+    - basics/complete_example.md
+  - Extending: extending.md
+  - Roadmap: roadmap.md
+  - Related projects: related.md
+  - API Reference:
+    - api-reference/index.md
+    - api-reference/narwhals.md
+    - api-reference/dataframe.md
+    - api-reference/lazyframe.md
+    - api-reference/series.md
+    - api-reference/series_dt.md
+    - api-reference/series_str.md
+    - api-reference/expressions.md
+    - api-reference/expressions_dt.md
+    - api-reference/expressions_str.md
+    - api-reference/dtypes.md
+theme:
+  name: material
+  font: false
+  features:
+    - content.code.copy
+    - content.code.annotate
+    - navigation.footer
+    - navigation.indexes
+plugins:
+- search
+- mkdocstrings:
+    handlers:
+      python:
+        import:
+        - https://installer.readthedocs.io/en/stable/objects.inv
+        rendering:
+          show_signature_annotations: true
+markdown_extensions:
+- md_in_html
+- pymdownx.tabbed:
+    alternate_style: true
+- pymdownx.superfences:
+    custom_fences:
+    - name: python
+      class: python
+      validator: !!python/name:markdown_exec.validator
+      format: !!python/name:markdown_exec.formatter
