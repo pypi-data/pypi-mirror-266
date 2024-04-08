@@ -1,0 +1,55 @@
+[project]
+name = "launchflow"
+version = "0.3.9.dev6"
+description = "Python-native infrastructure for the cloud: LaunchFlow provides a Python SDK that automatically creates and connects to production-ready infrastructure (such as Postgres, Redis, etc..) in your own cloud account. LaunchFlow completely removes the need for DevOps allowing you to focus on your application logic."
+authors = [
+    { name = "CalebTVanDyke", email = "caleb@launchflow.com" },
+    { name = "Josh Tanke", email = "josh@launchflow.com" },
+]
+readme = "README.md"
+license = { file = "LICENSE" }
+classifiers = ["Operating System :: OS Independent"]
+dependencies = [
+    "beaupy",
+    "rich",
+    "toml",
+    "pyyaml",
+    "pathspec",
+    "pydantic>=2.0",
+    "deepdiff",
+    "typer",
+    "requests",
+    "s3fs",
+    "gcsfs",
+    "fsspec",
+    "httpx",
+    "uvloop",
+    "Jinja2",
+]
+requires-python = ">=3.8"
+
+[project.optional-dependencies]
+gcp = [
+    "cloud-sql-python-connector",
+    "google-cloud-storage",
+    "google-cloud-resource-manager",
+    "google-api-python-client",
+]
+aws = ["boto3"]
+dev = [
+    "pytest>=7.4.4",
+    "pytest-asyncio",
+    "sqlalchemy[asyncio]>=2.0.27",
+    "pytest-httpx",
+]
+
+[project.scripts]
+launchflow = "launchflow.cli.main:app"
+lf = "launchflow.cli.main:app"
+
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.package-data]
+launchflow = ["*.jinja"]
