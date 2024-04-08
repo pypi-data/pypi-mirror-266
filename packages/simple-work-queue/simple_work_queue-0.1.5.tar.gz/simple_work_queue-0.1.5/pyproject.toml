@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "simple-work-queue"
+version = "0.1.5"
+description = "Publish to and consume from work queues"
+authors = ["Jason Luther <jason@ixid.net>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+[[tool.poetry.packages]]
+include = "simple_work_queue"
+from = "src"
+
+[tool.poetry.group.dev.dependencies]
+poetry = "^1.8.2"
+pylance = "^0.10.9"
+flake8 = "^7.0.0"
+pytest = "^8.1.1"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.1.1"
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "src"
+]
+
+[project]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Development Status :: 4 - Beta"
+]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
