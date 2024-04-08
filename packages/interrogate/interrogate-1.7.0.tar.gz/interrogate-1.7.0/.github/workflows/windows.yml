@@ -1,0 +1,29 @@
+name: Windows-CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  # Allow rebuilds via API.
+  repository_dispatch:
+    types: rebuild
+
+jobs:
+  windows-tests:
+    name: "Python ${{ matrix.python-version }} on Windows"
+    runs-on: "windows-latest"
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+    steps:
+      - uses: "actions/checkout@v3"
+      - uses: "actions/setup-python@v4"
+        with:
+          python-version: "${{ matrix.python-version }}"
+          allow-prereleases: true
+          cache: pip
+      - run: python -Im pip install --upgrade tox
+
+      - name: Run tests on ${{ matrix.python-version }} sans PNG
+        run: python -Im tox -e py$(echo ${{ matrix.python-version }} | tr -d .)

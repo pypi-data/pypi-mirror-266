@@ -1,0 +1,87 @@
+------------------------------ Detailed Coverage ------------------------------
+| Name                                                            |    Status |
+|-----------------------------------------------------------------|-----------|
+| full.py                                                         |           |
+|   Foo (L8)                                                      |   COVERED |
+|     Foo.__init__ (L11)                                          |   COVERED |
+|     Foo.__str__ (L15)                                           |   COVERED |
+|     Foo._semiprivate (L19)                                      |   COVERED |
+|     Foo.__private (L23)                                         |   COVERED |
+|     Foo.method_foo (L27)                                        |   COVERED |
+|     Foo.get (L31)                                               |   COVERED |
+|     Foo.get (L35)                                               |   COVERED |
+|     Foo.prop (L40)                                              |   COVERED |
+|     Foo.prop (L45)                                              |   COVERED |
+|     Foo.prop (L50)                                              |   COVERED |
+|     Foo.module_overload (L55)                                   |   COVERED |
+|     Foo.module_overload (L60)                                   |   COVERED |
+|     Foo.module_overload (L64)                                   |   COVERED |
+|     Foo.simple_overload (L69)                                   |   COVERED |
+|     Foo.simple_overload (L74)                                   |   COVERED |
+|     Foo.simple_overload (L78)                                   |   COVERED |
+|   top_level_func (L83)                                          |   COVERED |
+|     top_level_func.inner_func (L86)                             |   COVERED |
+|   Bar (L91)                                                     |   COVERED |
+|     Bar.method_bar (L94)                                        |   COVERED |
+|       Bar.method_bar.InnerBar (L97)                             |   COVERED |
+|   _SemiprivateClass (L103)                                      |   COVERED |
+|   __PrivateClass (L109)                                         |   COVERED |
+|   InitDocs (L116)                                               |   COVERED |
+|     InitDocs.__init__ (L117)                                    |   COVERED |
+|   ClassDocs (L123)                                              |   COVERED |
+|     ClassDocs.__init__ (L126)                                   |   COVERED |
+|-----------------------------------------------------------------|-----------|
+| partial.py                                                      |           |
+|   Foo (L8)                                                      |   COVERED |
+|     Foo.__init__ (L11)                                          |   COVERED |
+|     Foo.__str__ (L15)                                           |   COVERED |
+|     Foo.__repr__ (L19)                                          |    MISSED |
+|     Foo._semiprivate_documented (L22)                           |   COVERED |
+|     Foo._semiprivate_undocumented (L26)                         |    MISSED |
+|     Foo.__private (L29)                                         |    MISSED |
+|     Foo.method_foo (L32)                                        |    MISSED |
+|     Foo.get (L35)                                               |    MISSED |
+|     Foo.get (L38)                                               |    MISSED |
+|     Foo.a_prop (L42)                                            |    MISSED |
+|     Foo.a_prop (L46)                                            |    MISSED |
+|     Foo.a_prop (L50)                                            |   COVERED |
+|     Foo.module_overload (L54)                                   |    MISSED |
+|     Foo.module_overload (L57)                                   |    MISSED |
+|     Foo.module_overload (L59)                                   |   COVERED |
+|     Foo.simple_overload (L64)                                   |    MISSED |
+|     Foo.simple_overload (L67)                                   |    MISSED |
+|     Foo.simple_overload (L69)                                   |   COVERED |
+|   documented_top_level_func (L74)                               |   COVERED |
+|     documented_top_level_func.documented_inner_func (L77)       |   COVERED |
+|   undocumented_top_level_func (L82)                             |    MISSED |
+|     undocumented_top_level_func.undocumented_inner_func (L83)   |    MISSED |
+|   Bar (L87)                                                     |    MISSED |
+|     Bar.method_bar (L88)                                        |    MISSED |
+|       Bar.method_bar.InnerBar (L89)                             |    MISSED |
+|   _SemiprivateClass (L93)                                       |    MISSED |
+|   __PrivateClass (L97)                                          |    MISSED |
+|-----------------------------------------------------------------|-----------|
+| child_sample\child_sample_module.py                             |           |
+|   ChildFoo (L5)                                                 |    MISSED |
+|     ChildFoo.__init__ (L6)                                      |    MISSED |
+|     ChildFoo.__str__ (L9)                                       |    MISSED |
+|     ChildFoo._ignore_me (L12)                                   |    MISSED |
+|     ChildFoo.__ignore_me_too (L15)                              |    MISSED |
+|     ChildFoo.method_foo (L18)                                   |    MISSED |
+|   a_child_func (L22)                                            |    MISSED |
+|   ChildBar (L26)                                                |    MISSED |
+|     ChildBar.method_bar (L27)                                   |    MISSED |
+|       ChildBar.method_bar.InnerBar (L28)                        |    MISSED |
+|   _ChildBaz (L34)                                               |    MISSED |
+|   __ChildBla (L38)                                              |    MISSED |
+|-----------------------------------------------------------------|-----------|
+
+----------------------------------- Summary -----------------------------------
+| Name                                    |  Total |  Miss |  Cover |  Cover% |
+|-----------------------------------------|--------|-------|--------|---------|
+| full.py                                 |     28 |     0 |     28 |    100% |
+| partial.py                              |     28 |    19 |      9 |     32% |
+| child_sample\child_sample_module.py     |     12 |    12 |      0 |      0% |
+|-----------------------------------------|--------|-------|--------|---------|
+| TOTAL                                   |     68 |    31 |     37 |   54.4% |
+--------------- RESULT: FAILED (minimum: 80.0%, actual: 54.4%) ----------------
