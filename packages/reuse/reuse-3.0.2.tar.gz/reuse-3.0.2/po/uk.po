@@ -1,0 +1,1070 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-19 11:28+0000\n"
+"PO-Revision-Date: 2023-11-04 14:36+0000\n"
+"Last-Translator: Ihor Hordiichuk <igor_ck@outlook.com>\n"
+"Language-Team: Ukrainian <https://hosted.weblate.org/projects/fsfe/reuse-"
+"tool/uk/>\n"
+"Language: uk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 5.2-dev\n"
+
+#: src/reuse/_main.py:38
+msgid ""
+"reuse is a tool for compliance with the REUSE recommendations. See <https://"
+"reuse.software/> for more information, and <https://reuse.readthedocs.io/> "
+"for the online documentation."
+msgstr ""
+"reuse — це засіб для дотримання порад REUSE. Перегляньте <https://reuse."
+"software/> для отримання додаткових відомостей і <https://reuse.readthedocs."
+"io/> перегляду онлайн-документації."
+
+#: src/reuse/_main.py:44
+msgid ""
+"This version of reuse is compatible with version {} of the REUSE "
+"Specification."
+msgstr "Ця версія reuse сумісна з версією {} специфікації REUSE."
+
+#: src/reuse/_main.py:47
+msgid "Support the FSFE's work:"
+msgstr "Підтримати роботу FSFE:"
+
+#: src/reuse/_main.py:51
+msgid ""
+"Donations are critical to our strength and autonomy. They enable us to "
+"continue working for Free Software wherever necessary. Please consider "
+"making a donation at <https://fsfe.org/donate/>."
+msgstr ""
+"Внески мають вирішальне значення для нашої стійкості й незалежності. Вони "
+"дають нам змогу продовжувати працювати над вільним програмним забезпеченням, "
+"де це необхідно. Будь ласка, розгляньте можливість підтримати нас на "
+"<https://fsfe.org/donate/>."
+
+#: src/reuse/_main.py:74
+msgid "enable debug statements"
+msgstr "увімкнути інструкції налагодження"
+
+#: src/reuse/_main.py:79
+msgid "hide deprecation warnings"
+msgstr "сховати попередження про застарілість"
+
+#: src/reuse/_main.py:84
+msgid "do not skip over Git submodules"
+msgstr "не пропускати підмодулі Git"
+
+#: src/reuse/_main.py:89
+msgid "do not skip over Meson subprojects"
+msgstr "не пропускати підпроєкти Meson"
+
+#: src/reuse/_main.py:94
+msgid "do not use multiprocessing"
+msgstr "не використовувати багатопроцесорність"
+
+#: src/reuse/_main.py:101
+msgid "define root of project"
+msgstr "визначити кореневий каталог проєкту"
+
+#: src/reuse/_main.py:106
+msgid "show program's version number and exit"
+msgstr "показати номер версії програми та вийти"
+
+#: src/reuse/_main.py:110
+msgid "subcommands"
+msgstr "підкоманди"
+
+#: src/reuse/_main.py:117
+msgid "add copyright and licensing into the header of files"
+msgstr "додати авторські права та ліцензії в заголовок файлів"
+
+#: src/reuse/_main.py:120
+msgid ""
+"Add copyright and licensing into the header of one or more files.\n"
+"\n"
+"By using --copyright and --license, you can specify which copyright holders "
+"and licenses to add to the headers of the given files.\n"
+"\n"
+"By using --contributor, you can specify people or entity that contributed "
+"but are not copyright holder of the given files.\n"
+"The first comment is replaced with a new header containing the new copyright "
+"and licensing information and its former copyright and licensing. If you "
+"want to keep the first comment intact, use --no-replace.\n"
+"\n"
+"The comment style should be auto-detected for your files. If a comment style "
+"could not be detected and --skip-unrecognised is not specified, the process "
+"aborts. Use --style to specify or override the comment style to use.\n"
+"\n"
+"A single-line comment style is used when it is available. If no single-line "
+"comment style is available, a multi-line comment style is used. You can "
+"force a certain comment style using --single-line or --multi-line.\n"
+"\n"
+"You can change the template of the header comment by using --template. Place "
+"a Jinja2 template in .reuse/templates/mytemplate.jinja2. You can use the "
+"template by specifying '--template mytemplate'. Read the online "
+"documentation on how to use this feature.\n"
+"\n"
+"If a binary file is detected, or if --force-dot-license is specified, the "
+"header is placed in a .license file."
+msgstr ""
+"Додайте відомості про авторські права та ліцензування в заголовок одного або "
+"кількох файлів.\n"
+"\n"
+"За допомогою --copyright і --license ви можете вказати, яких власників "
+"авторських прав і ліцензій слід додати до заголовків цих файлів.\n"
+"\n"
+"Використовуючи --contributor, ви можете вказати людей або організацію, які "
+"зробили внесок, але не є власниками авторських прав на дані файли.\n"
+"Перший коментар замінено новим заголовком, що містить нову інформацію про "
+"авторське право та ліцензування, а також попередні авторські права та "
+"ліцензування. Якщо ви хочете залишити перший коментар недоторканим, "
+"використовуйте --no-replace.\n"
+"\n"
+"Стиль коментарів має бути визначено автоматично для ваших файлів. Якщо стиль "
+"коментаря не вдалося визначити й не вказано --skip-unrecognised, процес буде "
+"перервано. Використовуйте --style, щоб вказати або перевизначити стиль "
+"коментування.\n"
+"\n"
+"Стиль однорядкового коментаря буде використано, якщо він доступний. Якщо "
+"стиль однорядкового коментаря недоступний, використовується стиль "
+"багаторядкового коментаря. Ви можете примусово застосувати певний стиль "
+"коментарів за ljlfdib --single-line або --multi-line.\n"
+"\n"
+"Ви можете змінити шаблон заголовка коментаря за допомогою --template. "
+"Помістіть шаблон Jinja2 до теки .reuse/templates/mytemplate.jinja2. Ви "
+"можете використовувати шаблон, вказавши '--template mytemplate'. Прочитайте "
+"онлайн-документацію про те, як користуватися цією функцією.\n"
+"\n"
+"Якщо виявлено двійковий файл або якщо вказано --force-dot-license, заголовок "
+"буде розміщено у файлі .license."
+
+#: src/reuse/_main.py:163
+msgid "download a license and place it in the LICENSES/ directory"
+msgstr "завантажити ліцензію та розмістити її в каталозі LICENSES/"
+
+#: src/reuse/_main.py:166
+msgid ""
+"Download a license and place it in the LICENSES/ directory.\n"
+"\n"
+"The LICENSES/ directory is automatically found in the following order:\n"
+"\n"
+"- The LICENSES/ directory in the root of the VCS repository.\n"
+"\n"
+"- The current directory if its name is LICENSES.\n"
+"\n"
+"- The LICENSES/ directory in the current directory.\n"
+"\n"
+"If the LICENSES/ directory cannot be found, one is simply created."
+msgstr ""
+"Завантажте ліцензію та розмістіть її в каталозі LICENSES/.\n"
+"\n"
+"Каталог LICENSES/ автоматично розміщено в такому порядку:\n"
+"\n"
+"- Каталог LICENSES/ в корені репозиторію VCS.\n"
+"\n"
+"- Поточний каталог, якщо його назва - LICENSES.\n"
+"\n"
+"- Каталог LICENSES/ в поточному каталозі.\n"
+"\n"
+"Якщо каталог LICENSES/ не вдається знайти, він просто створюється."
+
+#: src/reuse/_main.py:189
+msgid "initialize REUSE project"
+msgstr "ініціалізувати проєкт REUSE"
+
+#: src/reuse/_main.py:197
+msgid "list all non-compliant files"
+msgstr "список усіх несумісних файлів"
+
+#: src/reuse/_main.py:200
+#, python-brace-format
+msgid ""
+"Lint the project directory for compliance with version {reuse_version} of "
+"the REUSE Specification. You can find the latest version of the "
+"specification at <https://reuse.software/spec/>.\n"
+"\n"
+"Specifically, the following criteria are checked:\n"
+"\n"
+"- Are there any bad (unrecognised, not compliant with SPDX) licenses in the "
+"project?\n"
+"\n"
+"- Are any licenses referred to inside of the project, but not included in "
+"the LICENSES/ directory?\n"
+"\n"
+"- Are any licenses included in the LICENSES/ directory that are not used "
+"inside of the project?\n"
+"\n"
+"- Do all files have valid copyright and licensing information?"
+msgstr ""
+"Перевірте каталог проєкту на відповідність версії {reuse_version} "
+"специфікації REUSE. Ви можете знайти останню версію специфікації за адресою "
+"<https://reuse.software/spec/>.\n"
+"\n"
+"Зокрема, перевіряються такі критерії:\n"
+"\n"
+"- Чи є в проєкті погані (нерозпізнані, несумісні з SPDX) ліцензії?\n"
+"\n"
+"- Чи є ліцензії, які згадуються всередині проєкту, але не включені в каталог "
+"LICENSES/?\n"
+"\n"
+"- Чи включені будь-які ліцензії в каталог LICENSES/, які не використовуються "
+"всередині проєкту?\n"
+"\n"
+"- Чи всі файли мають дійсні відомості про авторські права та ліцензії?"
+
+#: src/reuse/_main.py:227
+msgid "print the project's bill of materials in SPDX format"
+msgstr "друкувати опис матеріалів проєкту у форматі SPDX"
+
+#: src/reuse/_main.py:235
+msgid "list all supported SPDX licenses"
+msgstr "список всіх підтримуваних ліцензій SPDX"
+
+#: src/reuse/_main.py:295
+#, python-brace-format
+msgid "'{dep5}' could not be decoded as UTF-8."
+msgstr "Не вдалося розшифрувати '{dep5}' як utf-8."
+
+#: src/reuse/_main.py:302
+#, python-brace-format
+msgid ""
+"'{dep5}' could not be parsed. We received the following error message: "
+"{message}"
+msgstr ""
+"'{dep5}' не вдалося розібрати. Ми отримали таке повідомлення про помилку: "
+"{message}"
+
+#: src/reuse/_util.py:261
+msgid "no '{}' file, or could not read it"
+msgstr "немає файлу '{}', або неможливо його прочитати"
+
+#: src/reuse/_util.py:413
+#, python-brace-format
+msgid "Could not parse '{expression}'"
+msgstr "Не вдалося проаналізувати '{expression}'"
+
+#: src/reuse/_util.py:547
+msgid "'{}' is not a file"
+msgstr "'{}' не є файлом"
+
+#: src/reuse/_util.py:550
+msgid "'{}' is not a directory"
+msgstr "'{}' не є каталогом"
+
+#: src/reuse/_util.py:553
+msgid "can't open '{}'"
+msgstr "не вдалося відкрити '{}'"
+
+#: src/reuse/_util.py:558
+msgid "can't write to directory '{}'"
+msgstr "неможливо записати в каталог '{}'"
+
+#: src/reuse/_util.py:564
+msgid "can't write to '{}'"
+msgstr "неможливо записати в '{}'"
+
+#: src/reuse/_util.py:577
+msgid "can't read or write '{}'"
+msgstr "неможливо прочитати чи записати '{}'"
+
+#: src/reuse/_util.py:587
+msgid "'{}' is not a valid SPDX expression, aborting"
+msgstr "'{}' не є дійсним виразом SPDX, переривання"
+
+#: src/reuse/_util.py:615
+msgid "'{}' is not a valid SPDX License Identifier."
+msgstr "'{}' не є дійсним ідентифікатором ліцензії SPDX."
+
+#: src/reuse/_util.py:622
+msgid "Did you mean:"
+msgstr "Ви мали на увазі:"
+
+#: src/reuse/_util.py:629
+msgid ""
+"See <https://spdx.org/licenses/> for a list of valid SPDX License "
+"Identifiers."
+msgstr ""
+"Перегляньте <https://spdx.org/licenses/> список дійсних ідентифікаторів "
+"ліцензії SPDX."
+
+#: src/reuse/download.py:122
+msgid "SPDX License Identifier of license"
+msgstr "Ідентифікатор ліцензії SPDX"
+
+#: src/reuse/download.py:127
+msgid "download all missing licenses detected in the project"
+msgstr "завантажити всі відсутні ліцензії, виявлені в проєкті"
+
+#: src/reuse/download.py:137
+msgid ""
+"source from which to copy custom LicenseRef- licenses, either a directory "
+"that contains the file or the file itself"
+msgstr ""
+"джерело, з якого можна скопіювати користувацькі ліцензії LicenseRef-, або "
+"каталог, який містить файл, або сам файл"
+
+#: src/reuse/download.py:148
+#, python-brace-format
+msgid "Error: {spdx_identifier} already exists."
+msgstr "Помилка: {spdx_identifier} вже існує."
+
+#: src/reuse/download.py:155
+#, python-brace-format
+msgid "Error: {path} does not exist."
+msgstr "Помилка: {path} не існує."
+
+#: src/reuse/download.py:158
+msgid "Error: Failed to download license."
+msgstr "Помилка: не вдалося завантажити ліцензію."
+
+#: src/reuse/download.py:163
+msgid "Is your internet connection working?"
+msgstr "Чи працює ваше інтернет-з'єднання?"
+
+#: src/reuse/download.py:168
+#, python-brace-format
+msgid "Successfully downloaded {spdx_identifier}."
+msgstr "Успішно завантажено {spdx_identifier}."
+
+#: src/reuse/download.py:180
+msgid "--output has no effect when used together with --all"
+msgstr "--output не працює разом з --all"
+
+#: src/reuse/download.py:184
+msgid "the following arguments are required: license"
+msgstr "необхідні такі аргументи: license"
+
+#: src/reuse/download.py:186
+msgid "cannot use --output with more than one license"
+msgstr "не можна використовувати --output з кількома ліцензіями"
+
+#: src/reuse/header.py:99
+msgid "generated comment is missing copyright lines or license expressions"
+msgstr ""
+"у згенерованому коментарі відсутні рядки про авторські права або вирази "
+"ліцензії"
+
+#: src/reuse/init.py:30
+msgid ""
+"What license is your project under? Provide the SPDX License Identifier. See "
+"<https://spdx.org/licenses/> for the list."
+msgstr ""
+"Якою ліцензією захищено ваш проєкт? Надайте ідентифікатор ліцензії SPDX. "
+"Перегляньте список <https://spdx.org/licenses/>."
+
+#: src/reuse/init.py:35
+msgid ""
+"What other license is your project under? Provide the SPDX License "
+"Identifier."
+msgstr ""
+"Якою ліцензією захищено ваш проєкт? Надайте ідентифікатор ліцензії SPDX."
+
+#: src/reuse/init.py:46
+msgid "To stop adding licenses, hit RETURN."
+msgstr "Щоб припинити додавання ліцензій, натисніть RETURN."
+
+#: src/reuse/init.py:86
+msgid "Project already initialized"
+msgstr "Проєкт уже ініціалізовано"
+
+#: src/reuse/init.py:90
+msgid "Initializing project for REUSE."
+msgstr "Ініціалізація проєкту для REUSE."
+
+#: src/reuse/init.py:95
+msgid "What is the name of the project?"
+msgstr "Як називається проєкт?"
+
+#: src/reuse/init.py:101
+msgid "What is the internet address of the project?"
+msgstr "Яка інтернет-адреса проєкту?"
+
+#: src/reuse/init.py:107
+msgid "What is the name of the maintainer?"
+msgstr "Як звуть супроводжувача?"
+
+#: src/reuse/init.py:113
+msgid "What is the e-mail address of the maintainer?"
+msgstr "Яка адреса електронної пошти супровідника?"
+
+#: src/reuse/init.py:119
+msgid "All done! Initializing now."
+msgstr "Усе готово! Відбувається ініціалізація."
+
+#: src/reuse/init.py:128
+msgid "Retrieving {}"
+msgstr "Витягнення {}"
+
+#: src/reuse/init.py:133
+msgid "{} already exists"
+msgstr "{} вже існує"
+
+#: src/reuse/init.py:136
+msgid "Could not download {}"
+msgstr "Не вдалося завантажити {}"
+
+#: src/reuse/init.py:141
+#, python-brace-format
+msgid ""
+"Error: Could not copy {path}, please add {lic}.txt manually in the LICENCES/ "
+"directory."
+msgstr ""
+"Помилка: Не вдалося скопіювати {path}. Додайте {lic}.txt вручну до "
+"директорії LICENCES/."
+
+#: src/reuse/init.py:149
+msgid "Creating .reuse/dep5"
+msgstr "Створення .reuse/dep5"
+
+#: src/reuse/init.py:172
+msgid "Initialization complete."
+msgstr "Ініціалізація завершена."
+
+#: src/reuse/lint.py:29
+msgid "prevents output"
+msgstr "запобігає виводу"
+
+#: src/reuse/lint.py:32
+msgid "formats output as JSON"
+msgstr "форматує вивід як JSON"
+
+#: src/reuse/lint.py:38
+msgid "formats output as plain text"
+msgstr "форматує вивід як звичайний текст"
+
+#: src/reuse/lint.py:57
+msgid "BAD LICENSES"
+msgstr "ПОГАНІ ЛІЦЕНЗІЇ"
+
+#: src/reuse/lint.py:59 src/reuse/lint.py:88
+msgid "'{}' found in:"
+msgstr "'{}' знайдено в:"
+
+#: src/reuse/lint.py:66
+msgid "DEPRECATED LICENSES"
+msgstr "ЗАСТАРІЛІ ЛІЦЕНЗІЇ"
+
+#: src/reuse/lint.py:68
+msgid "The following licenses are deprecated by SPDX:"
+msgstr "У SPDX застаріли такі ліцензії:"
+
+#: src/reuse/lint.py:76
+msgid "LICENSES WITHOUT FILE EXTENSION"
+msgstr "ЛІЦЕНЗІЇ БЕЗ РОЗШИРЕННЯ ФАЙЛУ"
+
+#: src/reuse/lint.py:78
+msgid "The following licenses have no file extension:"
+msgstr "Ці ліцензії не мають розширення файлу:"
+
+#: src/reuse/lint.py:86
+msgid "MISSING LICENSES"
+msgstr "ВІДСУТНІ ЛІЦЕНЗІЇ"
+
+#: src/reuse/lint.py:95
+msgid "UNUSED LICENSES"
+msgstr "НЕВИКОРИСТАНІ ЛІЦЕНЗІЇ"
+
+#: src/reuse/lint.py:96
+msgid "The following licenses are not used:"
+msgstr "Не використовуються такі ліцензії:"
+
+#: src/reuse/lint.py:103
+msgid "READ ERRORS"
+msgstr "ПОМИЛКИ ЧИТАННЯ"
+
+#: src/reuse/lint.py:104
+msgid "Could not read:"
+msgstr "Не вдалося прочитати:"
+
+#: src/reuse/lint.py:125
+msgid "MISSING COPYRIGHT AND LICENSING INFORMATION"
+msgstr "ВІДСУТНІ ВІДОМОСТІ ПРО АВТОРСЬКІ ПРАВА ТА ЛІЦЕНЗУВАННЯ"
+
+#: src/reuse/lint.py:131
+msgid "The following files have no copyright and licensing information:"
+msgstr "Ці файли не містять відомостей про авторські права та ліцензії:"
+
+#: src/reuse/lint.py:142
+msgid "The following files have no copyright information:"
+msgstr "Такі файли не містять відомостей про авторські права:"
+
+#: src/reuse/lint.py:151
+msgid "The following files have no licensing information:"
+msgstr "Такі файли не мають відомостей про ліцензування:"
+
+#: src/reuse/lint.py:159
+msgid "SUMMARY"
+msgstr "ПІДСУМОК"
+
+#: src/reuse/lint.py:164
+msgid "Bad licenses:"
+msgstr "Погані ліцензії:"
+
+#: src/reuse/lint.py:165
+msgid "Deprecated licenses:"
+msgstr "Застарілі ліцензії:"
+
+#: src/reuse/lint.py:166
+msgid "Licenses without file extension:"
+msgstr "Ліцензії без розширення файлу:"
+
+#: src/reuse/lint.py:169
+msgid "Missing licenses:"
+msgstr "Відсутні ліцензії:"
+
+#: src/reuse/lint.py:170
+msgid "Unused licenses:"
+msgstr "Невикористані ліцензії:"
+
+#: src/reuse/lint.py:171
+msgid "Used licenses:"
+msgstr "Використані ліцензії:"
+
+#: src/reuse/lint.py:172
+msgid "Read errors:"
+msgstr "Помилки читання:"
+
+#: src/reuse/lint.py:174
+msgid "files with copyright information:"
+msgstr "файли з відомостями про авторські права:"
+
+#: src/reuse/lint.py:178
+msgid "files with license information:"
+msgstr "файли з відомостями про ліцензію:"
+
+#: src/reuse/lint.py:195
+msgid ""
+"Congratulations! Your project is compliant with version {} of the REUSE "
+"Specification :-)"
+msgstr "Вітаємо! Ваш проєкт відповідає версії {} специфікації REUSE :-)"
+
+#: src/reuse/lint.py:202
+msgid ""
+"Unfortunately, your project is not compliant with version {} of the REUSE "
+"Specification :-("
+msgstr "На жаль, ваш проєкт не сумісний із версією {} специфікації REUSE :-("
+
+#: src/reuse/lint.py:209
+msgid "RECOMMENDATIONS"
+msgstr "РЕКОМЕНДАЦІЇ"
+
+#: src/reuse/project.py:233
+#, python-brace-format
+msgid "'{path}' covered by .reuse/dep5"
+msgstr "'{path}' охоплюється .reuse/dep5"
+
+#: src/reuse/project.py:239
+#, fuzzy, python-brace-format
+msgid ""
+"'{path}' was detected as a binary file; not searching its contents for REUSE "
+"information."
+msgstr ""
+"'{path}' виявлено як двійковий файл або його розширення позначено таким, що "
+"не коментується; не виконується пошук інформації у його вмісті для REUSE."
+
+#: src/reuse/project.py:279
+#, python-brace-format
+msgid ""
+"'{path}' holds an SPDX expression that cannot be parsed, skipping the file"
+msgstr ""
+"'{path}' містить вираз SPDX, який неможливо проаналізувати, пропуск файлу"
+
+#: src/reuse/project.py:288
+#, python-brace-format
+msgid ""
+"Copyright and licensing information for '{original_path}' has been found in "
+"both '{path}' and in the DEP5 file located at '{dep5_path}'. The information "
+"for these two sources has been aggregated. In the future this behaviour will "
+"change, and you will need to explicitly enable aggregation. See <https://"
+"github.com/fsfe/reuse-tool/issues/779>. You need do nothing yet. Run with `--"
+"suppress-deprecation` to hide this warning."
+msgstr ""
+"Інформацію про авторське право та ліцензування для '{original_path}' можна "
+"знайти як у '{path}', так і у файлі DEP5, розташованому за адресою "
+"'{dep5_path}'. Інформація для цих двох джерел була агрегована. У майбутньому "
+"ця поведінка зміниться, і вам потрібно буде явно увімкнути агрегування. "
+"Перегляньте <https://github.com/fsfe/reuse-tool/issues/779>. Наразі вам не "
+"потрібно нічого робити. Запустіть програму з `--suppress-deprecation`, щоб "
+"сховати це попередження."
+
+#: src/reuse/project.py:384
+#, python-brace-format
+msgid "determining identifier of '{path}'"
+msgstr "визначення ідентифікатора '{path}'"
+
+#: src/reuse/project.py:392
+#, python-brace-format
+msgid "{path} does not have a file extension"
+msgstr "{path} не має розширення файлу"
+
+#: src/reuse/project.py:402
+#, python-brace-format
+msgid ""
+"Could not resolve SPDX License Identifier of {path}, resolving to "
+"{identifier}. Make sure the license is in the license list found at <https://"
+"spdx.org/licenses/> or that it starts with 'LicenseRef-', and that it has a "
+"file extension."
+msgstr ""
+"Не вдалося розпізнати ідентифікатор ліцензії SPDX {path}. Його розв'язано як "
+"{identifier}. Переконайтеся, що ліцензія є у списку ліцензій на <https://"
+"spdx.org/licenses/> або що вона починається з 'LicenseRef-' і має розширення "
+"файлу."
+
+#: src/reuse/project.py:414
+#, python-brace-format
+msgid ""
+"{identifier} is the SPDX License Identifier of both {path} and {other_path}"
+msgstr ""
+"{identifier} — це ідентифікатор ліцензії SPDX для {path} і {other_path}"
+
+#: src/reuse/project.py:453
+msgid ""
+"project '{}' is not a VCS repository or required VCS software is not "
+"installed"
+msgstr ""
+"проєкт '{}' не є репозиторієм VCS або потрібне програмне забезпечення VCS не "
+"встановлено"
+
+#: src/reuse/report.py:308
+#, python-brace-format
+msgid "Could not read '{path}'"
+msgstr "Не вдалося прочитати '{path}'"
+
+#: src/reuse/report.py:315
+#, python-brace-format
+msgid "Unexpected error occurred while parsing '{path}'"
+msgstr "Під час аналізу '{path}' сталася неочікувана помилка"
+
+#: src/reuse/report.py:436
+msgid ""
+"Fix bad licenses: At least one license in the LICENSES directory and/or "
+"provided by 'SPDX-License-Identifier' tags is invalid. They are either not "
+"valid SPDX License Identifiers or do not start with 'LicenseRef-'. FAQ about "
+"custom licenses: https://reuse.software/faq/#custom-license"
+msgstr ""
+"Виправте недійсні ліцензії: Принаймні одна ліцензія в директорії LICENSES та/"
+"або вказана у тегах 'SPDX-License-Identifier' недійсна. Вони або не мають "
+"дійсних ідентифікаторів ліцензій SPDX, або не починаються з 'LicenseRef-'. "
+"Часті запитання про користувацькі ліцензії: https://reuse.software/faq/"
+"#custom-license"
+
+#: src/reuse/report.py:447
+msgid ""
+"Fix deprecated licenses: At least one of the licenses in the LICENSES "
+"directory and/or provided by an 'SPDX-License-Identifier' tag or in '.reuse/"
+"dep5' has been deprecated by SPDX. The current list and their respective "
+"recommended  new identifiers can be found here: <https://spdx.org/licenses/"
+"#deprecated>"
+msgstr ""
+"Виправте застарілі ліцензії: Принаймні одна з ліцензій у каталозі LICENSES "
+"та/або зазначена у тезі 'SPDX-License-Identifier' або у файлі '.reuse/dep5' "
+"застаріла для SPDX. Поточний список і відповідні рекомендовані нові "
+"ідентифікатори можна знайти тут: <https://spdx.org/licenses/#deprecated>"
+
+#: src/reuse/report.py:458
+msgid ""
+"Fix licenses without file extension: At least one license text file in the "
+"'LICENSES' directory does not have a '.txt' file extension. Please rename "
+"the file(s) accordingly."
+msgstr ""
+"Виправте ліцензії без розширення файлів: Принаймні один текстовий файл "
+"ліцензії в директорії 'LICENSES' не має розширення '.txt'. Перейменуйте "
+"файл(и) відповідно."
+
+#: src/reuse/report.py:467
+msgid ""
+"Fix missing licenses: For at least one of the license identifiers provided "
+"by the 'SPDX-License-Identifier' tags, there is no corresponding license "
+"text file in the 'LICENSES' directory. For SPDX license identifiers, you can "
+"simply run 'reuse download --all' to get any missing ones. For custom "
+"licenses (starting with 'LicenseRef-'), you need to add these files yourself."
+msgstr ""
+"Виправте відсутні ліцензії: Принаймні для одного з ідентифікаторів ліцензій, "
+"зазначених у тегах 'SPDX-License-Identifier', у директорії 'LICENSES' "
+"відсутній відповідний текстовий файл ліцензії. Для ідентифікаторів ліцензій "
+"SPDX ви можете просто виконати команду 'reuse download --all', щоб отримати "
+"будь-які відсутні ідентифікатори. Для користувацьких ліцензій (починаючи з "
+"'LicenseRef-') вам потрібно додати ці файли самостійно."
+
+#: src/reuse/report.py:479
+msgid ""
+"Fix unused licenses: At least one of the license text files in 'LICENSES' is "
+"not referenced by any file, e.g. by an 'SPDX-License-Identifier' tag. Please "
+"make sure that you either tag the accordingly licensed files properly, or "
+"delete the unused license text if you are sure that no file or code snippet "
+"is licensed as such."
+msgstr ""
+"Виправте невикористані ліцензії: Принаймні на один з файлів з текстом "
+"ліцензії у 'LICENSES' немає жодного посилання, наприклад, за допомогою тегу "
+"'SPDX-License-Identifier'. Переконайтеся, що ви або правильно позначили "
+"відповідні ліцензовані файли, або видаліть невикористаний текст ліцензії, "
+"якщо ви впевнені, що жоден файл або фрагмент коду не ліцензований як такий."
+
+#: src/reuse/report.py:490
+msgid ""
+"Fix read errors: At least one of the files in your directory cannot be read "
+"by the tool. Please check the file permissions. You will find the affected "
+"files at the top of the output as part of the logged error messages."
+msgstr ""
+"Виправте помилки читання: Принаймні один з файлів у вашій директорії не може "
+"бути прочитаний інструментом. Перевірте права доступу до файлів. Ви знайдете "
+"відповідні файли у верхній частині виводу як частину зареєстрованих "
+"повідомлень про помилки."
+
+#: src/reuse/report.py:499
+msgid ""
+"Fix missing copyright/licensing information: For one or more files, the tool "
+"cannot find copyright and/or licensing information. You typically do this by "
+"adding 'SPDX-FileCopyrightText' and 'SPDX-License-Identifer' tags to each "
+"file. The tutorial explains additional ways to do this: <https://reuse."
+"software/tutorial/>"
+msgstr ""
+"Виправте відсутню інформацію про авторські права/ліцензування: Для одного "
+"або кількох файлів інструмент не може знайти інформацію про авторські права "
+"та/або ліцензування. Зазвичай це можна зробити, додавши до кожного файлу "
+"теги 'SPDX-FileCopyrightText' і 'SPDX-License-Identifer'. У довіднику "
+"описано інші способи зробити це: <https://reuse.software/tutorial/>"
+
+#: src/reuse/spdx.py:32
+msgid ""
+"populate the LicenseConcluded field; note that reuse cannot guarantee the "
+"field is accurate"
+msgstr ""
+"заповніть поле LicenseConcluded; зауважте, що повторне використання не може "
+"гарантувати точність поля"
+
+#: src/reuse/spdx.py:39
+msgid "name of the person signing off on the SPDX report"
+msgstr "ім'я особи, яка підписує звіт SPDX"
+
+#: src/reuse/spdx.py:44
+msgid "name of the organization signing off on the SPDX report"
+msgstr "назва організації, яка підписує звіт SPDX"
+
+#: src/reuse/spdx.py:60
+msgid ""
+"error: --creator-person=NAME or --creator-organization=NAME required when --"
+"add-license-concluded is provided"
+msgstr ""
+"помилка: --creator-person=NAME або --creator-organization=NAME вимагається, "
+"якщо надається --add-license-concluded"
+
+#: src/reuse/spdx.py:75
+#, python-brace-format
+msgid ""
+"'{path}' does not match a common SPDX file pattern. Find the suggested "
+"naming conventions here: https://spdx.github.io/spdx-spec/conformance/#44-"
+"standard-data-format-requirements"
+msgstr ""
+"'{path}' не відповідає загальному шаблону файлу SPDX. Знайдіть запропоновані "
+"правила іменування тут: https://spdx.github.io/spdx-spec/conformance/#44-"
+"standard-data-format-requirements"
+
+#: /usr/lib/python3.10/argparse.py:308
+msgid "usage: "
+msgstr "використання: "
+
+#: /usr/lib/python3.10/argparse.py:880
+msgid ".__call__() not defined"
+msgstr ".__call__() не визначено"
+
+#: /usr/lib/python3.10/argparse.py:1223
+#, python-format
+msgid "unknown parser %(parser_name)r (choices: %(choices)s)"
+msgstr "невідомий парсер %(parser_name)r (варто вибрати: %(choices)s)"
+
+#: /usr/lib/python3.10/argparse.py:1283
+#, python-format
+msgid "argument \"-\" with mode %r"
+msgstr "аргумент \"-\" з режимом %r"
+
+#: /usr/lib/python3.10/argparse.py:1292
+#, python-format
+msgid "can't open '%(filename)s': %(error)s"
+msgstr "не вдалося відкрити '%(filename)s': %(error)s"
+
+#: /usr/lib/python3.10/argparse.py:1501
+#, python-format
+msgid "cannot merge actions - two groups are named %r"
+msgstr "не вдалося об'єднати дії - дві групи називаються %r"
+
+#: /usr/lib/python3.10/argparse.py:1539
+msgid "'required' is an invalid argument for positionals"
+msgstr "'required' — неприпустимий аргумент для позиційних значень"
+
+#: /usr/lib/python3.10/argparse.py:1561
+#, python-format
+msgid ""
+"invalid option string %(option)r: must start with a character "
+"%(prefix_chars)r"
+msgstr ""
+"недійсний рядок опцій %(option)r: має починатися з символу %(prefix_chars)r"
+
+#: /usr/lib/python3.10/argparse.py:1579
+#, python-format
+msgid "dest= is required for options like %r"
+msgstr "dest= потрібен для таких опцій, як %r"
+
+#: /usr/lib/python3.10/argparse.py:1596
+#, python-format
+msgid "invalid conflict_resolution value: %r"
+msgstr "недійсне значення conflict_resolution: %r"
+
+#: /usr/lib/python3.10/argparse.py:1614
+#, python-format
+msgid "conflicting option string: %s"
+msgid_plural "conflicting option strings: %s"
+msgstr[0] "конфліктний рядок опцій: %s"
+msgstr[1] "конфліктні рядки опцій: %s"
+msgstr[2] "конфліктні рядки опцій: %s"
+
+#: /usr/lib/python3.10/argparse.py:1680
+msgid "mutually exclusive arguments must be optional"
+msgstr "взаємозаперечні аргументи повинні бути необов'язковими"
+
+#: /usr/lib/python3.10/argparse.py:1748
+msgid "positional arguments"
+msgstr "позиційні аргументи"
+
+#: /usr/lib/python3.10/argparse.py:1749
+msgid "options"
+msgstr "параметри"
+
+#: /usr/lib/python3.10/argparse.py:1764
+msgid "show this help message and exit"
+msgstr "показати це повідомлення та вийти"
+
+#: /usr/lib/python3.10/argparse.py:1795
+msgid "cannot have multiple subparser arguments"
+msgstr "не може мати кілька аргументів підпарсера"
+
+#: /usr/lib/python3.10/argparse.py:1847 /usr/lib/python3.10/argparse.py:2362
+#, python-format
+msgid "unrecognized arguments: %s"
+msgstr "нерозпізнані аргументи: %s"
+
+#: /usr/lib/python3.10/argparse.py:1948
+#, python-format
+msgid "not allowed with argument %s"
+msgstr "не дозволено з аргументом %s"
+
+#: /usr/lib/python3.10/argparse.py:1998 /usr/lib/python3.10/argparse.py:2012
+#, python-format
+msgid "ignored explicit argument %r"
+msgstr "нехтується явний аргумент %r"
+
+#: /usr/lib/python3.10/argparse.py:2119
+#, python-format
+msgid "the following arguments are required: %s"
+msgstr "такі аргументи обов'язкові: %s"
+
+#: /usr/lib/python3.10/argparse.py:2134
+#, python-format
+msgid "one of the arguments %s is required"
+msgstr "один з аргументів %s обов'язковий"
+
+#: /usr/lib/python3.10/argparse.py:2177
+msgid "expected one argument"
+msgstr "очікується один аргумент"
+
+#: /usr/lib/python3.10/argparse.py:2178
+msgid "expected at most one argument"
+msgstr "очікується щонайбільше один аргумент"
+
+#: /usr/lib/python3.10/argparse.py:2179
+msgid "expected at least one argument"
+msgstr "очікується хоча б один аргумент"
+
+#: /usr/lib/python3.10/argparse.py:2183
+#, python-format
+msgid "expected %s argument"
+msgid_plural "expected %s arguments"
+msgstr[0] "очікується %s аргумент"
+msgstr[1] "очікується %s аргументи"
+msgstr[2] "очікується %s аргументів"
+
+#: /usr/lib/python3.10/argparse.py:2241
+#, python-format
+msgid "ambiguous option: %(option)s could match %(matches)s"
+msgstr "неоднозначний параметр: %(option)s може відповідати %(matches)s"
+
+#: /usr/lib/python3.10/argparse.py:2305
+#, python-format
+msgid "unexpected option string: %s"
+msgstr "неочікуваний рядок параметрів: %s"
+
+#: /usr/lib/python3.10/argparse.py:2502
+#, python-format
+msgid "%r is not callable"
+msgstr "%r не можна викликати"
+
+#: /usr/lib/python3.10/argparse.py:2519
+#, python-format
+msgid "invalid %(type)s value: %(value)r"
+msgstr "недійсне значення %(type)s: %(value)r"
+
+#: /usr/lib/python3.10/argparse.py:2530
+#, python-format
+msgid "invalid choice: %(value)r (choose from %(choices)s)"
+msgstr "неприпустимий вибір: %(value)r (варто обрати з %(choices)s)"
+
+#: /usr/lib/python3.10/argparse.py:2606
+#, python-format
+msgid "%(prog)s: error: %(message)s\n"
+msgstr "%(prog)s: помилка: %(message)s\n"
+
+#~ msgid ".reuse/dep5 has syntax errors"
+#~ msgstr ".reuse/dep5 має синтаксичні помилки"
+
+#~ msgid "optional arguments"
+#~ msgstr "необов'язкові аргументи"
+
+#~ msgid "deprecated in favor of annotate"
+#~ msgstr "вилучено на користь анотації"
+
+#~ msgid ""
+#~ "'{path}' does not support single-line comments, please do not use --"
+#~ "single-line"
+#~ msgstr ""
+#~ "'{path}' не підтримує однорядкові коментарі, не використовуйте --single-"
+#~ "line"
+
+#~ msgid ""
+#~ "'{path}' does not support multi-line comments, please do not use --multi-"
+#~ "line"
+#~ msgstr ""
+#~ "'{path}' не підтримує багаторядкові коментарі, не використовуйте --multi-"
+#~ "line"
+
+#~ msgid ""
+#~ "The following files do not have a recognised file extension. Please use --"
+#~ "style, --force-dot-license or --skip-unrecognised:"
+#~ msgstr ""
+#~ "Ці файли не мають розпізнаного розширення файлу. Використовуйте --style, "
+#~ "--force-dot-license або --skip-unrecognised:"
+
+#~ msgid "Skipped unrecognised file {path}"
+#~ msgstr "Пропущений нерозпізнаний файл {path}"
+
+#~ msgid "Skipped file '{path}' already containing REUSE information"
+#~ msgstr "Пропущений файл '{path}' вже містить інформацію REUSE"
+
+#~ msgid "Error: Could not create comment for '{path}'"
+#~ msgstr "Помилка: не вдалося створити коментар для '{path}'"
+
+#~ msgid ""
+#~ "Error: Generated comment header for '{path}' is missing copyright lines "
+#~ "or license expressions. The template is probably incorrect. Did not write "
+#~ "new header."
+#~ msgstr ""
+#~ "Помилка: у згенерованому заголовку коментаря для '{path}' відсутні рядки "
+#~ "авторських прав або вирази ліцензії. Шаблон, ймовірно, неправильний. Не "
+#~ "записано новий заголовок."
+
+#~ msgid "Successfully changed header of {path}"
+#~ msgstr "Успішно змінено заголовок {path}"
+
+#~ msgid "copyright statement, repeatable"
+#~ msgstr "оголошення авторського права, повторюване"
+
+#~ msgid "SPDX Identifier, repeatable"
+#~ msgstr "Ідентифікатор SPDX, повторюваний"
+
+#~ msgid "file contributor, repeatable"
+#~ msgstr "співавтор файлу, повторюваний"
+
+#~ msgid "year of copyright statement, optional"
+#~ msgstr "рік оголошення авторського права, необов'язково"
+
+#~ msgid "comment style to use, optional"
+#~ msgstr "використовуваний стиль коментарів, необов'язковий"
+
+#~ msgid "copyright style to use, optional"
+#~ msgstr "використовуваний стиль авторського права, необов'язковий"
+
+#~ msgid "name of template to use, optional"
+#~ msgstr "використовувана назва шаблону, необов'язково"
+
+#~ msgid "do not include year in statement"
+#~ msgstr "не включати рік в оголошення"
+
+#~ msgid "merge copyright lines if copyright statements are identical"
+#~ msgstr ""
+#~ "об’єднувати рядки авторських прав, якщо оголошення авторських прав "
+#~ "ідентичні"
+
+#~ msgid "force single-line comment style, optional"
+#~ msgstr "примусовий однорядковий стиль коментаря, необов'язково"
+
+#~ msgid "force multi-line comment style, optional"
+#~ msgstr "примусовий багаторядковий стиль коментарів, необов'язково"
+
+#~ msgid "write a .license file instead of a header inside the file"
+#~ msgstr "записувати файл .license замість заголовка всередині файлу"
+
+#~ msgid "add headers to all files under specified directories recursively"
+#~ msgstr "рекурсивно додавати заголовки до всіх файлів у вказаних каталогах"
+
+#~ msgid "do not replace the first header in the file; just add a new one"
+#~ msgstr "не замінювати перший заголовок у файлі; просто додавати новий"
+
+#~ msgid "skip files with unrecognised comment styles"
+#~ msgstr "пропускати файли з нерозпізнаними стилями коментарів"
+
+#~ msgid "skip files that already contain REUSE information"
+#~ msgstr "пропускати файли, які вже містять інформацію REUSE"
+
+#~ msgid "'reuse addheader' has been deprecated in favour of 'reuse annotate'"
+#~ msgstr "'reuse addheader' застаріло й замінено на 'reuse annotate'"
+
+#~ msgid "option --contributor, --copyright or --license is required"
+#~ msgstr "потрібен параметр --contributor, --copyright або --license"
+
+#~ msgid "option --exclude-year and --year are mutually exclusive"
+#~ msgstr "параметр --exclude-year і --year взаємосуперечливі"
+
+#~ msgid "option --single-line and --multi-line are mutually exclusive"
+#~ msgstr "параметр --single-line і --multi-line взаємосуперечливі"
+
+#~ msgid "--skip-unrecognised has no effect when used together with --style"
+#~ msgstr "--skip-unrecognised не працює разом із --style"
+
+#~ msgid ""
+#~ "--explicit-license has been deprecated in favour of --force-dot-license"
+#~ msgstr "--explicit-license замінено на --force-dot-license"
+
+#~ msgid "template {template} could not be found"
+#~ msgstr "не вдалося знайти шаблон {template}"
+
+#~ msgid "'{path}' is a binary, therefore using '{new_path}' for the header"
+#~ msgstr ""
+#~ "'{path}' — це двійковий файл, тому для заголовка використовується "
+#~ "'{new_path}'"
+
+#~ msgid "Downloading {}"
+#~ msgstr "Завантаження {}"
+
+#~ msgid "argument %(argument_name)s: %(message)s"
+#~ msgstr "аргумент %(argument_name)s: %(message)s"
+
+#~ msgid "conflicting subparser: %s"
+#~ msgstr "конфліктний субпарсер: %s"
+
+#~ msgid "conflicting subparser alias: %s"
+#~ msgstr "конфліктний псевдонім субпарсера: %s"
+
+#~ msgid "can't open '%s': %s"
+#~ msgstr "не вдалося відкрити '%s': %s"
+
+#~ msgid "could not find supported VCS"
+#~ msgstr "не вдалося знайти підтримуваний VCS"
