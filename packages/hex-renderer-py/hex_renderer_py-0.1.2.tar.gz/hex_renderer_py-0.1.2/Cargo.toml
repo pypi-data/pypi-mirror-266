@@ -1,0 +1,18 @@
+[package]
+name = "hex_renderer_py"
+version = "0.1.2"
+edition = "2021"
+readme = "README.md"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+name = "hex_renderer_py"
+crate-type = ["cdylib"]
+
+[dependencies]
+hex_renderer = "0.2.3"
+pyo3 = { version = "0.20.0", features = ["multiple-pymethods"] }
+interface_macros = {path = "./interface_macros"}
+
+#[package.metadata.maturin]
+#python-source = "types"

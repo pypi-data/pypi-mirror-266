@@ -1,0 +1,59 @@
+name: Deploy docs
+
+on:
+  push:
+    branches: main
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Setup VirtualEnv
+        run: python -m venv venv
+        
+      - name: Install Dependencies
+        run: |
+          source venv/bin/activate
+          pip install -e '.[dev]'
+
+      - name: Generate API Docs
+        run: cargo test
+
+      - name: Compile Renderer
+        run: |
+          source venv/bin/activate
+          pip install maturin
+          maturin develop --release
+
+      - name: Build Website
+        run: |
+          source venv/bin/activate
+          cd docs
+          make clean
+          make html
+      
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/_build/html
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy-pages.outputs.page_url }}
+    steps:
+      - id: deploy-pages
+        uses: actions/deploy-pages@v4

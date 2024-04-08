@@ -1,0 +1,29 @@
+[build-system]
+requires = ["maturin>=1.4,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "hex_renderer_py"
+requires-python = ">=3.8"
+authors = [
+    { name="JohnDog3112" }
+]
+keywords = ["hexrenderer, hex_renderer"]
+classifiers = [
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+]
+dynamic = ["version"]
+
+[project.urls]
+source = "https://github.com/JohnDog3112/hex_renderer_python"
+
+[project.optional-dependencies]
+dev = [
+    "Sphinx",
+    "sphinx-rtd-theme",
+    "myst_nb"
+]
+[tool.maturin]
+features = ["pyo3/extension-module"]
