@@ -1,0 +1,39 @@
+[tool.poetry]
+name = "wellets_cli"
+version = "1.9.5"
+description = "wellets-cli is the command line interface for Wellets, a crypto-oriented financial management tool that allows you to keep your money under control."
+authors = ["lparolari"]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+python-dotenv = "^1"
+requests = "^2"
+pydantic = "^2"
+click = "^8"
+tabulate = "^0.9"
+python-dateutil = "^2"
+inquirerpy = "^0.3"
+numpy = "^1.26"
+matplotlib = "^3.8"
+
+[tool.poetry.group.dev.dependencies]
+coverage = "^6"
+pytest = "^8"
+flake8 = "^7"
+black = "^24"
+isort = "^5"
+pytest-cov = "^4"
+codecov = "^2"
+mypy = "^1"
+gitchangelog = "^3"
+mkdocs = "^1"
+types-python-dateutil = "^2"
+types-tabulate = "^0.9"
+types-requests = "^2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+wellets_cli = 'wellets_cli.__main__:main'
