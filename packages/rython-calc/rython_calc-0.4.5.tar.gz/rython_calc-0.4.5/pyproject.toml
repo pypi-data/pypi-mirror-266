@@ -1,0 +1,57 @@
+[build-system]
+requires = ["maturin>=1.5,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "rython_calc"
+requires-python = ">=3.12"
+version = "0.4.5"
+description = "Small project developed by me to learn PyO3 library."
+authors = [
+    {name = "Krystian Krakowski", email = "kkrakowski22@gmail.com"}
+]
+maintainers = [
+    {name = "Krystian Krakowski", email = "kkrakowski22@gmail.com"}
+]
+readme = {file = "README.md", content-type = "text/markdown"}
+license = {file = "LICENSE"}
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+]
+
+[project.urls]
+Homepage = "https://github.com/fawq/Rython"
+Source = "https://github.com/fawq/Rython"
+
+[tool.maturin]
+features = ["pyo3/extension-module"]
+python-source = "python"
+bindings = "pyo3"
+module-name = "rython.rython_calc"
+strip = true
+
+[tool.poetry]
+name = "rython_calc"
+version = "0.4.5"
+description = "Small project developed by me to learn PyO3 library."
+authors = ["Krystian Krakowski <kkrakowski22@gmail.com>"]
+maintainers = ["Krystian Krakowski <kkrakowski22@gmail.com>"]
+readme = "README.md"
+license = "MIT"
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+[tool.poetry.group.dev.dependencies]
+maturin = "^1.5.1"
+pytest = "^8.1.1"
+mypy = "^1.9.0"
