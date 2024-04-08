@@ -1,0 +1,420 @@
+Metadata-Version: 2.1
+Name: easymaker
+Version: 1.1.5b0
+Summary: AI EasyMaker SDK for Python.
+Home-page: https://www.nhncloud.com
+Author: NHN Cloud AI EasyMaker Services
+License: Apache License 2.0
+Keywords: NHN Cloud AI EasyMaker
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3.8
+Description-Content-Type: text/markdown
+Requires-Dist: pytest ==7.1.1
+Requires-Dist: setuptools ==57.0.0
+Requires-Dist: requests ==2.27.1
+Requires-Dist: importlib-metadata ==4.11.3
+Requires-Dist: argparse ==1.4.0
+Requires-Dist: docker ==5.0.3
+Requires-Dist: pytz ==2022.2.1
+
+# NHN AI EasyMaker SDK
+
+```
+# Initialize EasyMaker SDK
+import easymaker
+
+easymaker.init(
+    appkey='EASYMAKER_APPKEY',
+    region='kr1',
+    secret_key='EASYMAKER_SECRET_KEY',
+)
+
+# Create Experiment
+experiment_id = easymaker.Experiment().create(
+    experiment_name='experiment_name',
+    experiment_description='experiment_description',
+    # wait=False
+)
+
+# Delete Experiment
+easymaker.Experiment().delete(experiment_id)
+
+# Create Training
+training_id = easymaker.Training().run(
+    experiment_id=experiment_id,
+    training_name='training_name',
+    training_description='training_description',
+    train_image_name='Ubuntu 22.04 CPU TensorFlow Training',
+    train_instance_name='m2.c4m8',
+    distributed_node_count=1,
+    data_storage_size=300,  # minimum size : 300G
+    source_dir_uri='obs://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_{tenant_id}/{container_name}/{soucre_download_path}',
+    entry_point='training_start.py',
+    hyperparameter_list=[
+        {
+            "hyperparameterKey": "epochs",
+            "hyperparameterValue": "10",
+        },
+        {
+            "hyperparameterKey": "batch-size",
+            "hyperparameterValue": "30",
+        }
+    ],
+    timeout_hours=100, # 1~720
+    model_upload_uri='obs://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_{tenant_id}/{container_name}/{model_upload_path}',
+    check_point_input_uri='obs://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_{tenant_id}/{container_name}/{checkpoint_input_path}',
+    check_point_upload_uri='obs://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_{tenant_id}/{container_name}/{checkpoint_upload_path}',
+    dataset_list=[
+        {
+            "datasetName": "train",
+            "dataUri": "obs://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_{tenant_id}/{container_name}/{train_data_download_path}"
+        },
+        {
+            "datasetName": "test",
+            "dataUri": "obs://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_{tenant_id}/{container_name}/{test_data_download_path}"
+        }
+    ],
+    tag_list=[  # maximum 10
+        {
+            "tagKey": "tag1",
+            "tagValue": "test_tag_1",
+        },
+        {
+            "tagKey": "tag2",
+            "tagValue": "test_tag_2",
+        }
+    ],
+    use_log=True,
+    # wait=False
+)
+
+# Create Training By Algorithm (Image Classification)
+training_id = easymaker.Training().run(
+    experiment_id=experiment_id,
+    training_name='image_classification',
+    training_description='easymaker sdk test training',
+    train_image_name='Ubuntu 22.04 CPU PyTorch Training',
+    train_instance_name='m2.c4m8',
+    distributed_node_count=1,
+    algorithm_name='Image Classification',
+    data_storage_size=300,  # minimum size : 300G
+    hyperparameter_list=[
+        {
+            "hyperparameterKey": "input_size",
+            "hyperparameterValue": "28",
+        },
+        {
+            "hyperparameterKey": "learning_rate",
+            "hyperparameterValue": "0.1",
+        },
+        {
+            "hyperparameterKey": "per_device_train_batch_size",
+            "hyperparameterValue": "16",
+        },
+        {
+            "hyperparameterKey": "per_device_eval_batch_size",
+            "hyperparameterValue": "16",
+        },
+        {
+            "hyperparameterKey": "num_train_epochs",
+            "hyperparameterValue": "3",
+        }
+    ],
+    timeout_hours=1,
+    model_upload_uri='obs://api-storage.cloud.toast.com/v1/AUTH_{tenant_id}/{container_name}/{model_upload_path}',
+    check_point_upload_uri='obs://api-storage.cloud.toast.com/v1/AUTH_{tenant_id}/{container_name}/{checkpoint_upload_path}',
+    dataset_list=[
+        {
+            "datasetName": "train",
+            "dataUri": "obs://api-storage.cloud.toast.com/v1/AUTH_{tenant_id}/{container_name}/{train_data_download_path}"
+        },
+        {
+            "datasetName": "validation",
+            "dataUri": "obs://api-storage.cloud.toast.com/v1/AUTH_{tenant_id}/{container_name}/{validation_data_download_path}"
+        }
+    ],
+    tag_list=[  # 최대 10개
+        {
+            "tagKey": "tag1",
+            "tagValue": "test_tag_1",
+        },
+        {
+            "tagKey": "tag2",
+            "tagValue": "test_tag_2",
+        }
+    ],
+    use_log=True,
+    # wait=False
+)
+
+# Delete Training
+easymaker.Training().delete(training_id)
+
+# Create Hyperparameter Tuning
+hyperparameter_tuning_id = easymaker.HyperparameterTuning().run(
+    experiment_id=experiment_id,
+    hyperparameter_tuning_name='hyperparameter_tuning_name',
+    hyperparameter_tuning_description='hyperparameter_tuning_description',
+    image_name='Ubuntu 22.04 CPU TensorFlow Training',
+    instance_name='m2.c8m16',
+    distributed_node_count=1,
+    parallel_trial_count=1,
+    data_storage_size=300,
+    source_dir_uri='obs://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_{tenant_id}/{container_name}/{soucre_download_path}',
+    entry_point='training_start.py',
+    hyperparameter_spec_list=[
+        {
+            "hyperparameterName": "learning_rate",
+            "hyperparameterTypeCode": easymaker.HYPERPARAMETER_TYPE_CODE.DOUBLE,
+            "hyperparameterMinValue": "0.01",
+            "hyperparameterMaxValue": "0.05",
+        },
+         {
+            "hyperparameterName": "epochs",
+            "hyperparameterTypeCode": easymaker.HYPERPARAMETER_TYPE_CODE.INT,
+            "hyperparameterMinValue": "100",
+            "hyperparameterMaxValue": "1000",
+        }
+    ],
+    timeout_hours=10,
+    model_upload_uri='obs://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_{tenant_id}/{container_name}/{model_upload_path}',
+    check_point_input_uri='obs://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_{tenant_id}/{container_name}/{checkpoint_input_path}',
+    check_point_upload_uri='obs://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_{tenant_id}/{container_name}/{checkpoint_upload_path}',
+    dataset_list=[
+        {
+            "datasetName": "train",
+            "dataUri": "obs://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_{tenant_id}/{container_name}/{train_data_download_path}"
+        },
+        {
+            "datasetName": "test",
+            "dataUri": "obs://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_{tenant_id}/{container_name}/{test_data_download_path}"
+        }
+    ],
+    metric_list=["val_loss", "loss", "accuracy"}],
+    metric_regex='([\w|-]+)\s*:\s*([+-]?\d*(\.\d+)?([Ee][+-]?\d+)?)',
+    objective_metric_name="val_loss",
+    objective_type_code=easymaker.OBJECTIVE_TYPE_CODE.MINIMIZE,
+    objective_goal=0.01,
+    max_failed_trial_count=3,
+    max_trial_count=10,
+    tuning_strategy_name=easymaker.TUNING_STRATEGY.BAYESIAN_OPTIMIZATION,
+    tuning_strategy_random_state=1,
+    early_stopping_algorithm=easymaker.EARLY_STOPPING_ALGORITHM.MEDIAN,
+    early_stopping_min_trial_count=3,
+    early_stopping_start_step=4,
+    tag_list=[
+        {
+            "tagKey": "tag1",
+            "tagValue": "test_tag_1",
+        }
+    ],
+    use_log=True,
+    # wait=False,
+)
+
+# Create Hyperparameter Tuning By Algorithm (Image Classification)
+hyperparameter_tuning_id = easymaker.HyperparameterTuning().run(
+    experiment_id=experiment_id,
+    hyperparameter_tuning_name='hyperparameter_tuning_name',
+    algorithm_name='Image Classification',
+    image_name='Ubuntu 22.04 CPU PyTorch Training',
+    instance_name='m2.c2m4',
+    distributed_node_count=1,
+    parallel_trial_count=1,
+    data_storage_size=300,
+    hyperparameter_spec_list=[
+        {
+            "hyperparameterName": "input_size",
+            "hyperparameterTypeCode": easymaker.HYPERPARAMETER_TYPE_CODE.DOUBLE,
+            "hyperparameterMinValue": "4",
+            "hyperparameterMaxValue": "6",
+            "hyperparameterStep": "1",
+        },
+        {
+            "hyperparameterName": "learning_rate",
+            "hyperparameterTypeCode": easymaker.HYPERPARAMETER_TYPE_CODE.DOUBLE,
+            "hyperparameterMinValue": "0",
+            "hyperparameterMaxValue": "0.5",
+            "hyperparameterStep": "0.1",
+        },
+        {
+            "hyperparameterName": "per_device_train_batch_size",
+            "hyperparameterTypeCode": easymaker.HYPERPARAMETER_TYPE_CODE.INT,
+            "hyperparameterMinValue": "2",
+            "hyperparameterMaxValue": "5",
+            "hyperparameterStep": "1",
+        },
+        {
+            "hyperparameterName": "per_device_eval_batch_size",
+            "hyperparameterTypeCode": easymaker.HYPERPARAMETER_TYPE_CODE.INT,
+            "hyperparameterMinValue": "2",
+            "hyperparameterMaxValue": "5",
+            "hyperparameterStep": "1",
+        },
+        {
+            "hyperparameterName": "num_train_epochs",
+            "hyperparameterTypeCode": easymaker.HYPERPARAMETER_TYPE_CODE.INT,
+            "hyperparameterMinValue": "2",
+            "hyperparameterMaxValue": "5",
+            "hyperparameterStep": "1",
+        },
+        {
+            "hyperparameterName": "save_steps",
+            "hyperparameterTypeCode": easymaker.HYPERPARAMETER_TYPE_CODE.INT,
+            "hyperparameterMinValue": "1",
+            "hyperparameterMaxValue": "1",
+            "hyperparameterStep": "1",
+        },
+        {
+            "hyperparameterName": "logging_steps",
+            "hyperparameterTypeCode": easymaker.HYPERPARAMETER_TYPE_CODE.INT,
+            "hyperparameterMinValue": "1",
+            "hyperparameterMaxValue": "1",
+            "hyperparameterStep": "1",
+        }
+    ],
+    timeout_hours=1,
+    model_upload_uri='obs://api-storage.cloud.toast.com/v1/AUTH_{tenant_id}/{container_name}/{model_upload_path}',
+    check_point_upload_uri='obs://api-storage.cloud.toast.com/v1/AUTH_{tenant_id}/{container_name}/{checkpoint_upload_path}',
+    dataset_list=[
+        {
+            "datasetName": "train",
+            "dataUri": "obs://api-storage.cloud.toast.com/v1/AUTH_{tenant_id}/{container_name}/{train_data_download_path}"
+        },
+        {
+            "datasetName": "validation",
+            "dataUri": "obs://api-storage.cloud.toast.com/v1/AUTH_{tenant_id}/{container_name}/{validation_data_download_path}"
+        }
+    ],
+    tag_list=[
+        {
+            "tagKey": "tag1",
+            "tagValue": "test_tag_1",
+        }
+    ],
+    objective_goal=1,
+    max_failed_trial_count=2,
+    max_trial_count=3,
+    tuning_strategy_name=easymaker.TUNING_STRATEGY.GRID,
+    tuning_strategy_random_state=1,
+    early_stopping_algorithm=easymaker.EARLY_STOPPING_ALGORITHM.MEDIAN,
+    early_stopping_min_trial_count=3,
+    early_stopping_start_step=4,
+    use_log=True,
+    # wait=False,
+)
+
+# Delete Hyperparameter Tuning
+easymaker.HyperparameterTuning().delete(hyperparameter_tuning_id)
+
+# Create Model
+model_id = easymaker.Model().create(
+    training_id=training_id,  # or hyperparameter_tuning_id=hyperparameter_tuning_id,
+    model_name='model_name',
+    model_description='model_description',
+)
+model_id2 = easymaker.Model().create_by_model_uri(
+    framework_code=easymaker.TENSORFLOW,
+    model_uri='obs://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_{tenant_id}/{container_name}/{model_upload_path}',
+    model_name='model_name',
+    model_description='model_description',
+)
+
+# Delete Model
+easymaker.Model().delete(model_id)
+
+# Create Endpoint
+endpoint = easymaker.Endpoint()
+endpoint_id = endpoint.create(
+    model_id=model_id,
+    endpoint_name='endpoint_name',
+    endpoint_description='endpoint_description',
+    endpoint_instance_name='c2.c16m16',
+    apigw_resource_uri='/api-path',
+    endpoint_instance_count=1,
+    use_log=True,
+    # wait=False,
+    # autoscaler_enable=True,  # default False
+    # autoscaler_min_node_count=1,
+    # autoscaler_max_node_count=10,
+    # autoscaler_scale_down_enable=True,
+    # autoscaler_scale_down_util_threshold=50,
+    # autoscaler_scale_down_unneeded_time=10,
+    # autoscaler_scale_down_delay_after_add=10,
+)
+
+# Delete Endpoint
+endpoint.Endpoint().delete_endpoint(endpoint_id)
+
+# Create Endpoint Stage
+stage_id = endpoint.create_stage(
+    model_id=model_id,
+    stage_name='stage01',
+    stage_description='test endpoint',
+    endpoint_instance_name='c2.c16m16',
+    apigw_resource_uri='/test-api',
+    endpoint_instance_count=1,
+    # wait=False,
+    # autoscaler_enable=True,  # default False
+    # autoscaler_min_node_count=1,
+    # autoscaler_max_node_count=10,
+    # autoscaler_scale_down_enable=True,
+    # autoscaler_scale_down_util_threshold=50,
+    # autoscaler_scale_down_unneeded_time=10,
+    # autoscaler_scale_down_delay_after_add=10,
+)
+
+# Delete Endpoint Stage
+endpoint.Endpoint().delete_endpoint_stage(stage_id)
+
+# Get an endpoint that already exists
+endpoint = easymaker.Endpoint(endpoint_id)
+
+# get endpoint stage info
+endpoint_stage_info = endpoint.get_endpoint_stage_by_id(endpoint_stage_id=stage_id)
+
+# Inference
+endpoint.predict(endpoint_stage_info=endpoint_stage_info, model_id=model_id, json={'instances': [[6.8, 2.8, 4.8, 1.4]]})
+
+# Log (Log & Crash)
+easymaker_logger = easymaker.logger(logncrash_appkey='log&crash_product_app_key')
+easymaker_logger.send('test log meassage')  # Output to stdout & send log to log&crash product
+easymaker_logger.send(log_message='log meassage',
+                      log_level='INFO',  # default: INFO
+                      project_version='1.0.0',  # default: 1.0.0
+                      parameters={'serviceType': 'EasyMakerSample'})  # Add custom parameters
+
+
+# NHN Cloud ObjectStorage download, upload, delete
+easymaker_obs = easymaker.ObjectStorage(
+    easymaker_region='kr1',
+    username='username@nhn.com',
+    password='nhn_object_storage_api_password'
+)
+
+easymaker_obs.download(
+    easymaker_obs_uri='obs://api-storage.cloud.toast.com/v1/AUTH_{tenant_id}/{container_name}/{source_dir}',
+    download_dir_path='./source_dir',
+)
+
+easymaker_obs.upload(
+    easymaker_obs_uri='obs://api-storage.cloud.toast.com/v1/AUTH_{tenant_id}/{container_name}/{upload_path}',
+    local_path='./local_dir',
+)
+
+easymaker_obs.delete(
+    easymaker_obs_uri='obs://api-storage.cloud.toast.com/v1/AUTH_{tenant_id}/{container_name}/{object_path}',
+    # file_extension='.json',  # Delete files with specific extensions
+)
+
+
+```
+
+## CLI Command
+- instance type list : `python -m easymaker -instance --region kr1 --appkey EM_APPKEY --secret_key EM_SECRET_KEY`
+- image list : `python -m easymaker -image --region kr1 --appkey EM_APPKEY --secret_key EM_SECRET_KEY`
+- experiment list : `python -m easymaker -experiment --region kr1 --appkey EM_APPKEY --secret_key EM_SECRET_KEY`
+- training list : `python -m easymaker -training --region kr1 --appkey EM_APPKEY --secret_key EM_SECRET_KEY`
+- hyperparameter tuning list : `python -m easymaker -tuning --region kr1 --appkey EM_APPKEY --secret_key EM_SECRET_KEY`
+- model list : `python -m easymaker -model --region kr1 --appkey EM_APPKEY --secret_key EM_SECRET_KEY`
+- endpoint list : `python -m easymaker -endpoint --region kr1 --appkey EM_APPKEY --secret_key EM_SECRET_KEY`
