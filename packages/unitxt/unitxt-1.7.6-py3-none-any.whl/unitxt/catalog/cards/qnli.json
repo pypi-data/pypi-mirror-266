@@ -1,0 +1,41 @@
+{
+    "type": "task_card",
+    "loader": {
+        "type": "load_hf",
+        "path": "glue",
+        "name": "qnli"
+    },
+    "preprocess_steps": [
+        "splitters.large_no_test",
+        {
+            "type": "map_instance_values",
+            "mappers": {
+                "label": {
+                    "0": "entailment",
+                    "1": "not entailment"
+                }
+            }
+        },
+        {
+            "type": "add_fields",
+            "fields": {
+                "classes": [
+                    "entailment",
+                    "not entailment"
+                ],
+                "type_of_relation": "entailment",
+                "text_a_type": "question",
+                "text_b_type": "sentence"
+            }
+        },
+        {
+            "type": "rename_fields",
+            "field_to_field": {
+                "question": "text_a",
+                "sentence": "text_b"
+            }
+        }
+    ],
+    "task": "tasks.classification.multi_class.relation",
+    "templates": "templates.classification.multi_class.relation.all"
+}
