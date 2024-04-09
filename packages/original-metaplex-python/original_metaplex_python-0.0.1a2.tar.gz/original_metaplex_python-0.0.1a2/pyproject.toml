@@ -1,0 +1,55 @@
+[tool.poetry]
+name = "original-metaplex-python"
+version = "0.0.1-alpha"
+description = "Python library for interacting with the Metaplex protocol"
+authors = ["Original"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+aiohttp = "^3.9.3"
+aiosignal = "^1.3.1"
+anchorpy-core = "^0.2.0"
+anyio = "^4.3.0"
+async-timeout = "^4.0.3"
+attrs = "^23.2.0"
+solana = "^0.32.0"
+anchorpy = "^0.19.1"
+construct = "^2.10.68"
+borsh-construct = "^0.1.0"
+construct-typing = "^0.5.6"
+ed25519 = "^1.5"
+jsonrpcclient = "^4.0.3"
+pynacl = "^1.5.0"
+requests = "^2.31.0"
+types-requests = "^2.31.0.20240218"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.2.0"
+flake8 = "^7.0.0"
+isort = "^5.13.2"
+mypy = "^1.8.0"
+pre-commit = "^3.6.2"
+pytest-mock = "^3.12.0"
+pytest = "7.4.4"
+pytest-asyncio = "^0.23.6"
+
+[tool.black]
+line-length = 88 # that's the black default value but we are explicit
+target-version = ['py310']
+include = '\.pyi?$'
+exclude = '/(\\.venv|venv)/'
+
+[tool.isort]
+profile = "black"
+skip = ["venv", ".venv"]
+
+[tool.mypy]
+python_version = "3.10"
+follow_imports = "silent"
+ignore_missing_imports = true
+exclude = '^(\.venv|venv)/'
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
