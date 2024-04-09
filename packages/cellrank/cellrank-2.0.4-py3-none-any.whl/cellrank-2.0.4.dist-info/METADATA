@@ -1,0 +1,172 @@
+Metadata-Version: 2.1
+Name: cellrank
+Version: 2.0.4
+Summary: CellRank: dynamics from multi-view single-cell data
+Author: Marius Lange, Michal Klein, Philipp Weiler
+Maintainer-email: Michal Klein <info@cellrank.org>
+License: BSD 3-Clause License
+        
+        Copyright (c) 2019, Theis Lab
+        All rights reserved.
+        
+        Redistribution and use in source and binary forms, with or without
+        modification, are permitted provided that the following conditions are met:
+        
+        1. Redistributions of source code must retain the above copyright notice, this
+           list of conditions and the following disclaimer.
+        
+        2. Redistributions in binary form must reproduce the above copyright notice,
+           this list of conditions and the following disclaimer in the documentation
+           and/or other materials provided with the distribution.
+        
+        3. Neither the name of the copyright holder nor the names of its
+           contributors may be used to endorse or promote products derived from
+           this software without specific prior written permission.
+        
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+        AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+        IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+        DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+        FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+        DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+        SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+        CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+        OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+        OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+        
+Project-URL: Homepage, https://github.com/theislab/cellrank
+Project-URL: Download, https://cellrank.readthedocs.io/en/latest/installation.html
+Project-URL: Bug Tracker, https://github.com/theislab/cellrank/issues
+Project-URL: Documentation, https://cellrank.readthedocs.io
+Project-URL: Source Code, https://github.com/theislab/cellrank
+Keywords: single-cell,bio-informatics,RNA velocity,Markov chain,GPCCA
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Natural Language :: English
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Typing :: Typed
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Topic :: Scientific/Engineering :: Visualization
+Requires-Python: >=3.8
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+Requires-Dist: anndata >=0.9
+Requires-Dist: docrep >=0.3.0
+Requires-Dist: joblib >=0.13.1
+Requires-Dist: matplotlib >=3.5.0
+Requires-Dist: networkx >=2.2
+Requires-Dist: numba !=0.57.0,>=0.51.0
+Requires-Dist: numpy >=1.22.0
+Requires-Dist: pandas >=1.5.0
+Requires-Dist: pygam >=0.8.0
+Requires-Dist: pygpcca >=1.0.4
+Requires-Dist: scanpy >=1.7.2
+Requires-Dist: scikit-learn >=0.24.0
+Requires-Dist: scipy >=1.2.0
+Requires-Dist: scvelo >=0.2.5
+Requires-Dist: seaborn >=0.10.0
+Requires-Dist: wrapt >=1.12.1
+Provides-Extra: dev
+Requires-Dist: pre-commit >=3.0.0 ; extra == 'dev'
+Requires-Dist: tox >=4 ; extra == 'dev'
+Provides-Extra: docs
+Requires-Dist: sphinx >=5.1.1 ; extra == 'docs'
+Requires-Dist: furo >=2022.09.29 ; extra == 'docs'
+Requires-Dist: myst-nb >=0.17.1 ; extra == 'docs'
+Requires-Dist: sphinx-tippy >=0.4.1 ; extra == 'docs'
+Requires-Dist: sphinx-autodoc-typehints >=1.10.3 ; extra == 'docs'
+Requires-Dist: sphinx-copybutton >=0.5.0 ; extra == 'docs'
+Requires-Dist: sphinx-design >=0.3.0 ; extra == 'docs'
+Requires-Dist: sphinxcontrib-bibtex >=2.3.0 ; extra == 'docs'
+Requires-Dist: sphinxcontrib-spelling >=7.6.2 ; extra == 'docs'
+Provides-Extra: test
+Requires-Dist: pytest <8.1.0,>=7 ; extra == 'test'
+Requires-Dist: pytest-xdist >=3 ; extra == 'test'
+Requires-Dist: pytest-mock >=3.5.0 ; extra == 'test'
+Requires-Dist: pytest-cov >=4 ; extra == 'test'
+Requires-Dist: coverage[toml] >=7 ; extra == 'test'
+Requires-Dist: zarr ; extra == 'test'
+Requires-Dist: igraph ; extra == 'test'
+Requires-Dist: leidenalg ; extra == 'test'
+Requires-Dist: Pillow ; extra == 'test'
+Requires-Dist: jax ; extra == 'test'
+
+|PyPI| |Downloads| |CI| |Docs| |Codecov| |Discourse|
+
+CellRank 2: Unified fate mapping in multiview single-cell data
+==============================================================
+.. image:: docs/_static/img/light_mode_overview.png#gh-light-mode-only
+    :width: 600px
+    :align: center
+    :class: only-light
+
+.. image:: docs/_static/img/dark_mode_overview.png#gh-dark-mode-only
+    :width: 600px
+    :align: center
+
+**CellRank** is a modular framework to study cellular dynamics based on Markov state modeling of
+multi-view single-cell data. See our `documentation`_, and the `CellRank 1`_ and `CellRank 2 manuscript`_ to learn more.
+See `here <https://github.com/theislab/cellrank/blob/main/docs/about/cite.rst>`_ for how to properly cite our work.
+
+CellRank scales to large cell numbers, is fully compatible with the `scverse`_ ecosystem, and easy to use.
+In the backend, it is powered by `pyGPCCA`_ (`Reuter et al. (2018)`_). Feel
+free to open an `issue`_ or send us an `email`_ if you encounter a bug, need our help or just
+want to make a comment/suggestion.
+
+CellRank's key applications
+---------------------------
+- Estimate differentiation direction based on a varied number of biological priors, including RNA velocity
+  (`La Manno et al. (2018)`_, `Bergen et al. (2020)`_), any pseudotime or developmental potential,
+  experimental time points, metabolic labels, and more.
+- Compute initial, terminal and intermediate macrostates.
+- Infer fate probabilities and driver genes.
+- Visualize and cluster gene expression trends.
+- ... and much more, check out our `documentation`_.
+
+.. |PyPI| image:: https://img.shields.io/pypi/v/cellrank.svg
+    :target: https://pypi.org/project/cellrank
+    :alt: PyPI
+
+.. |Downloads| image:: https://static.pepy.tech/badge/cellrank
+    :target: https://pepy.tech/project/cellrank
+    :alt: Downloads
+
+.. |Discourse| image:: https://img.shields.io/discourse/posts?color=yellow&logo=discourse&server=https%3A%2F%2Fdiscourse.scverse.org
+    :target: https://discourse.scverse.org/c/ecosystem/cellrank/
+    :alt: Discourse
+
+.. |CI| image:: https://img.shields.io/github/actions/workflow/status/theislab/cellrank/test.yml?branch=main
+    :target: https://github.com/theislab/cellrank/actions
+    :alt: CI
+
+.. |Docs|  image:: https://img.shields.io/readthedocs/cellrank
+    :target: https://cellrank.readthedocs.io/
+    :alt: Documentation
+
+.. |Codecov| image:: https://codecov.io/gh/theislab/cellrank/branch/main/graph/badge.svg
+    :target: https://codecov.io/gh/theislab/cellrank
+    :alt: Coverage
+
+
+.. _La Manno et al. (2018): https://doi.org/10.1038/s41586-018-0414-6
+.. _Bergen et al. (2020): https://doi.org/10.1038/s41587-020-0591-3
+.. _Reuter et al. (2018): https://doi.org/10.1021/acs.jctc.8b00079
+
+.. _scverse: https://scverse.org/
+.. _pyGPCCA: https://github.com/msmdev/pyGPCCA
+
+.. _CellRank 1: https://www.nature.com/articles/s41592-021-01346-6
+.. _CellRank 2 manuscript: https://doi.org/10.1101/2023.07.19.549685
+.. _documentation: https://cellrank.org
+
+.. _email: mailto:info@cellrank.org
+.. _issue: https://github.com/theislab/cellrank/issues/new/choose
