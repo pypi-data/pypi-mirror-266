@@ -1,0 +1,48 @@
+Metadata-Version: 2.1
+Name: pcl-python
+Version: 0.0.3
+Summary: Point Cloud Library for Python
+License: Apatch License 2.0
+Author: emanuere
+Author-email: smtn10hryk28@gmail.com
+Requires-Python: >=3.11,<4.0
+Classifier: License :: Other/Proprietary License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: cmake (>=3.29.0.1,<4.0.0.0)
+Requires-Dist: cython (>=3.0.9,<4.0.0)
+Requires-Dist: ninja (>=1.11.1.1,<2.0.0.0)
+Requires-Dist: numpy (>=1.26.4,<2.0.0)
+Requires-Dist: scikit-build (>=0.17.6,<0.18.0)
+Requires-Dist: setuptools (>=69.2.0,<70.0.0)
+Requires-Dist: tqdm (>=4.66.2,<5.0.0)
+Description-Content-Type: text/markdown
+
+# Point Cloud Library for Python
+
+## How to install
+
+```bash
+pip install git+https://github.com/turingmotors/PyPcl.git
+```
+
+## How to build [WIP]
+
+依存パッケージをインストール
+
+```bash
+sudo apt install libpcl-dev
+```
+
+wheel ファイルの作成
+
+```bash
+git clone https://github.com/turingmotors/PyPcl.git
+cd PyPcl
+poetry install
+poetry run python setup.py bdist_wheel
+```
+
+`/dist` 下の whl ファイルを pip でインストールできる。
+
