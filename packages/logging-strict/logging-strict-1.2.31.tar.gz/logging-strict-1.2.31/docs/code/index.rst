@@ -1,0 +1,4 @@
+Code Manual
+=============
+
+.. tableofcontents::
