@@ -1,0 +1,23 @@
+Metadata-Version: 2.1
+Name: neon-phal-plugin-switches
+Version: 0.0.5a2
+Summary: Hardware Switch Interface
+Home-page: https://github.com/NeonGeckoCom/neon-phal-plugin-switches
+Author: Neongecko
+Author-email: developers@neon.ai
+License: BSD-3
+Description-Content-Type: text/markdown
+License-File: LICENSE.md
+
+# PHAL Switches Plugin
+Enables switch inputs for volume, mute, and action button. Current implementation
+assumes switches match the SJ201 configuration of pull-up momentary switches (GND activated)
+and a mute toggle where GND == unmuted.
+
+## Default Pin Configuration
+| Pin | Connection    |
+|-----|---------------|
+| 22  | Volume Up     |
+| 23  | Volume Down   |
+| 24  | Action Button |
+| 25  | Mute Switch   |
