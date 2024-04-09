@@ -1,0 +1,67 @@
+{%- macro render_logo(src, classname) -%}
+  {%- if src and src.startswith(('https://', 'http://')) -%}
+    <img class="{{ classname }}" src="{{ src }}" alt="{{ project }}" height="28" />
+  {%- elif src -%}
+    <img class="{{ classname }}" src="{{ pathto(src, 1) }}" alt="{{ project }}" height="28" />
+  {%- elif logo_url -%}
+    <img class="{{ classname }}" src="{{ logo_url }}" alt="{{ project }}" height="28" />
+  {%- endif -%}
+{%- endmacro -%}
+
+<div class="sy-head">
+  <div class="sy-head-blur"></div>
+  <div class="sy-head-inner sy-container mx-auto">
+    <a class="sy-head-brand mr-4" href="{% if theme_logo_target %}{{ theme_logo_target }}{% else %}{{ pathto(root_doc) }}{% endif %}">
+      {{ render_logo(theme_light_logo, 'light-logo') }}
+      {{ render_logo(theme_dark_logo, 'dark-logo') }}
+      <strong>{{ project }}</strong>
+    </a>
+    <div class="sy-head-links" id="NavLinks">
+      <nav class="sy-head-nav">
+        {%- if theme_nav_links -%}
+          {% include "components/nav-links.html" %}
+        {%- endif -%}
+      </nav>
+      <div class="sy-head-extra flex items-center print:hidden">
+        {% include "components/searchbox.html" %}
+        {% include "components/nav-versions.html" %}
+        {% include "components/nav-languages.html" %}
+        <div class="sy-head-social flex items-center">
+          {%- if theme_github_url %}
+            <a class="flex items-center" href="{{ theme_github_url }}" aria-label="GitHub">
+              <i class="i-icon github"></i>
+            </a>
+          {%- elif theme_gitlab_url %}
+            <a class="flex items-center" href="{{ theme_gitlab_url }}" aria-label="Gitlab">
+              <i class="i-icon gitlab"></i>
+            </a>
+          {%- elif theme_bitbucket_url %}
+            <a class="flex items-center" href="{{ theme_bitbucket_url }}" aria-label="Bitbucket">
+              <i class="i-icon bitbucket"></i>
+            </a>
+          {%- endif %}
+          {%- if theme_discord_url %}
+            <a class="flex items-center" href="{{ theme_discord_url }}" aria-label="Discord">
+              <i class="i-icon discord"></i>
+            </a>
+          {%- endif %}
+        </div>
+      </div>
+    </div>
+    <div class="sy-head-actions flex items-center shrink-0 print:hidden">
+      <button class="js-theme theme-switch flex items-center"
+        data-aria-auto="{{ _('Switch to light color mode') }}"
+        data-aria-light="{{ _('Switch to dark color mode') }}"
+        data-aria-dark="{{ _('Switch to auto color mode') }}">
+        <i class="i-icon theme-icon"></i>
+      </button>
+      <button class="md:hidden flex items-center js-menu" aria-label="Menu" type="button" aria-controls="NavLinks" aria-expanded="false">
+        <div class="hamburger">
+          <span class="hamburger_1"></span>
+          <span class="hamburger_2 -translate-x-2"></span>
+          <span class="hamburger_3 -translate-x-1"></span>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
