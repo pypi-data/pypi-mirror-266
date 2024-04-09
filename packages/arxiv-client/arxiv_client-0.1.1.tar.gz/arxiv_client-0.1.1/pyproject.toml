@@ -1,0 +1,93 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "arxiv-client"
+dynamic = ["version"]
+description = 'Python3 client for the arXiv API'
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+keywords = []
+authors = [{ name = "Jerry Lin" }]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+  "feedparser>=6.0.11",
+  "requests>=2.31.0",
+]
+
+[project.urls]
+Source = "https://github.com/linjer/arxiv-client"
+
+[tool.hatch.envs.default]
+type = "virtual"
+path = ".venv"
+dependencies = [
+  "coverage[toml]>=6.5",
+  "mypy",
+  "pytest",
+]
+
+[tool.hatch.envs.default.scripts]
+test = "pytest {args:tests}"
+test-cov = "coverage run -m pytest {args:tests}"
+cov-report = [
+  "- coverage combine",
+  "coverage report",
+]
+cov = [
+  "test-cov",
+  "cov-report",
+]
+typecheck = "mypy --install-types --non-interactive {args:src/arxiv_client tests}"
+
+[[tool.hatch.envs.all.matrix]]
+python = ["3.11", "3.12"]
+
+[tool.hatch.version]
+path = "src/arxiv_client/__about__.py"
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+  ".github",
+  "dist"
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/arxiv_client"]
+
+[tool.mypy]
+follow_imports = "normal"
+pretty = true
+show_column_numbers = true
+show_error_context = true
+
+[tool.coverage.run]
+source_pkgs = ["arxiv_client", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/arxiv_client/__about__.py",
+]
+
+[tool.coverage.paths]
+arxiv_client = ["src/arxiv_client"]
+tests = ["tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
+[tool.ruff]
+force-exclude = true
+line-length = 120
+extend-exclude = ["src/arxiv_client/__init__.py"]
