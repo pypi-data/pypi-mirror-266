@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "fabryc"
+version = "0.1.1rc1"
+description = "Python API for Microsoft Fabric (Semantic Models, Reports...)"
+authors = ["Léo Grosjean <leo.grosjean@servier.com>"]
+readme = "README.md"
+license = "MIT"
+packages = [{ include = "fabryc", from = "src" }]
+repository = "https://github.com/lgrosjean/fabryc"
+
+
+[tool.poetry.dependencies]
+python = "<3.13,>=3.9"
+pythonnet = "^3.0.3"
+azure-identity = "^1.15.0"
+requests = "^2.31.0"
+pandas = "^2.2.1"
+
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.29.4"
+
+
+[tool.poetry.group.test.dependencies]
+pylint = "^3.1.0"
+pytest = "^8.1.1"
+black = "^24.3.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
