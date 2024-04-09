@@ -1,0 +1,1 @@
+Package che permette di anonimizzare il contenuto di documenti NLPGate 
