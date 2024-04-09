@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "openprotein_python"
+packages = [{include = "openprotein"}]
+version = "0.4.0"
+description = "OpenProtein Python interface."
+license = "MIT"
+readme = "README.md"
+homepage = "https://docs.openprotein.ai/"
+authors = ["OpenProtein <info@ne47.bio>"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+requests = ">=2"
+pydantic = ">=1"
+tqdm = ">=4"
+pandas = ">=1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
