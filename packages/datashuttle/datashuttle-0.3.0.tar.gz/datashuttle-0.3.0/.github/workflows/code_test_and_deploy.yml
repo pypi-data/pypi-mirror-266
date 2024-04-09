@@ -1,0 +1,67 @@
+name: tests
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '*'
+  pull_request:
+
+jobs:
+  linting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: neuroinformatics-unit/actions/lint@v2
+
+  test:
+    needs: [linting]
+    name: ${{ matrix.os }} py${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, macos-14, ubuntu-latest]
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Conda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+          auto-update-conda: true
+          channels: conda-forge
+          activate-environment: "true"
+      - name: Install RClone
+        run: |
+          conda activate true
+          conda install -c conda-forge rclone
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .[dev]
+      - name: Test
+        run: pytest
+
+  build_sdist_wheels:
+    name: Build source distribution
+    needs: [test]
+    if: github.event_name == 'push' && github.ref_type == 'tag'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: neuroinformatics-unit/actions/build_sdist_wheels@v2
+
+
+  upload_all:
+    name: Publish build distributions
+    needs: [build_sdist_wheels]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: neuroinformatics-unit/actions/upload_pypi@v2
+      with:
+        secret-pypi-key: ${{ secrets.TWINE_API_KEY }}
