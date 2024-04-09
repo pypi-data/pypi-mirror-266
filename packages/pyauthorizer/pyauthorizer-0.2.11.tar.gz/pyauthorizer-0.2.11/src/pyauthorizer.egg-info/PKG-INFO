@@ -1,0 +1,95 @@
+Metadata-Version: 2.1
+Name: pyauthorizer
+Version: 0.2.11
+Summary: A simple authorizer for python project.
+Author-email: msclock <msclock@126.com>
+License: Apache 2.0
+Project-URL: Homepage, https://github.com/msclock/pyauthorizer
+Project-URL: Tracker, https://github.com/msclock/pyauthorizer/issues
+Project-URL: Documentation, https://github.com/msclock/pyauthorizer.git
+Project-URL: Source, https://github.com/msclock/pyauthorizer.git
+Project-URL: Changelog, https://github.com/msclock/pyauthorizer/releases
+Keywords: license,license-generator
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Education
+Classifier: Topic :: Scientific/Engineering
+Classifier: Typing :: Typed
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: loguru
+Requires-Dist: click
+Requires-Dist: cryptography>=41.0.0
+Requires-Dist: entrypoints
+Requires-Dist: types-entrypoints
+Provides-Extra: test
+Requires-Dist: pytest>=6; extra == "test"
+Requires-Dist: pytest-cov>=3; extra == "test"
+Provides-Extra: docs
+Requires-Dist: sphinx>=7.0; extra == "docs"
+Requires-Dist: furo>=2023.08.17; extra == "docs"
+Requires-Dist: myst_parser>=0.13; extra == "docs"
+Requires-Dist: sphinx_copybutton; extra == "docs"
+Requires-Dist: sphinx_autodoc_typehints; extra == "docs"
+Requires-Dist: sphinx-inline-tabs; extra == "docs"
+Provides-Extra: dev
+Requires-Dist: pyauthorizer[docs,test]; extra == "dev"
+Requires-Dist: build; extra == "dev"
+Requires-Dist: wheel; extra == "dev"
+
+# pyauthorizer
+
+<!-- SPHINX-START -->
+
+[![Actions Status][actions-badge]][actions-link]
+[![PyPI version][pypi-version]][pypi-link]
+[![PyPI platforms][pypi-platforms]][pypi-link]
+
+<!-- prettier-ignore-start -->
+[actions-badge]:            https://github.com/msclock/pyauthorizer/actions/workflows/ci.yml/badge.svg
+[actions-link]:             https://github.com/msclock/pyauthorizer/actions/workflows/ci.yml
+[pypi-link]:                https://pypi.org/project/pyauthorizer/
+[pypi-platforms]:           https://img.shields.io/pypi/pyversions/pyauthorizer
+[pypi-version]:             https://img.shields.io/pypi/v/pyauthorizer?color
+<!-- prettier-ignore-end -->
+
+A simple authorizer for python project.
+
+In some cases, even for a scripting language like Python, it may be necessary to
+generate and validate tokens for specific use cases. The `pyauthorizer` provides
+a simple way to generate and validate licenses. Additionally, the built-in
+plugins make it easy to customize encryptors and decryptors. There is also a
+simple command-line tool available.
+
+## Install
+
+Package-built has uploaded to pypi and just install with the command:
+
+```bash
+pip install pyauthorizer
+```
+
+## Usage
+
+To generate and validate a license, use the command:
+
+```bash
+pyauthorizer create -f simple -C password=1234567890  -O /tmp/license.json
+pyauthorizer validate -f simple -C password=1234567890  -I /tmp/license.json
+```
+
+More command options can be listed by using `pyauthorizer --help`.
+
+<!-- SPHINX-END -->
