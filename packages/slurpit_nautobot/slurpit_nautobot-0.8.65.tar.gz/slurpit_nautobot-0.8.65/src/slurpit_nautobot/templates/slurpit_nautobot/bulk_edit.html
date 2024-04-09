@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load helpers %}
+{% load form_helpers %}
+{% load render_table from django_tables2 %}
+{% load i18n %}2
+
+{% block title %}
+  Onboard Devices
+{% endblock %}
+
+
+{% block content %}
+    <div id="content-title">
+        
+            {% include "slurpit_nautobot/logo.html" %}
+            {# Center-align title in object-edit views #}
+            <h1 class="w-100" style="margin-top: 0px">{% trans "Onboarding" %} {{ table.rows|length }} {{ model|meta:"verbose_name_plural"|bettertitle }}</h1>
+            <style>
+            h1:before {
+                content: '';
+            }
+            </style>
+        
+    </div>
+        {% if form.errors %}
+        <div class="panel panel-danger">
+            <div class="panel-heading"><strong>Errors</strong></div>
+            <div class="panel-body">
+                {{ form.non_field_errors }}
+                {% for field in form %}
+                    {% if field.errors %}
+                        <strong class="panel-title">{{ field.label }}</strong>: {{ field.errors }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% block tabs %}
+       
+        <ul class="nav nav-tabs px-3">    
+            <li class="nav-item active" role="presentation">
+              <a class="nav-tab nav-link" id="edit-form-tab" data-toggle="tab" href="#edit-form" >
+                {% trans "Bulk Edit" %}
+              </a>
+            </li>
+        
+            <li class="nav-item " role="presentation">
+              <a class="nav-tab nav-link" id="object-list-tab" data-toggle="tab" href="#object-list" >
+                {% trans "Selected Objects" %}
+                {% badge table.rows|length %}
+              </a>
+            </li>
+        
+          </ul>
+
+        {% endblock tabs %}
+
+        <div class="tab-content">
+        
+            <div class="tab-pane active" id="edit-form" >
+                <form action="" method="post" class="form form-horizontal">
+
+                {% csrf_token %}
+                {% if request.POST.return_url %}
+                    <input type="hidden" name="return_url" value="{{ request.POST.return_url }}" />
+                {% endif %}
+                {% for field in form.hidden_fields %}
+                    {{ field }}
+                {% endfor %}
+
+                <div class="row">
+                    <div class="col col-md-12 col-lg-10 offset-lg-1">
+                    <div class="card">
+                        <div class="card-body">
+                    
+                            {# Render all fields #}
+                            {% for field in form.visible_fields %}
+                            {% if field.name in form.nullable_fields %}
+                                {% render_field field bulk_nullable=True %}
+                            {% else %}
+                                {% render_field field %}
+                            {% endif %}
+                            {% endfor %}
+
+                        
+                        </div>
+                    </div>
+
+                    <div class="navbar-right">
+                        <button type="submit" name="_apply" class="btn btn-primary">{% trans "Apply" %}</button>
+                        <a href="{{ return_url }}" class="btn btn-sm btn-outline-danger">{% trans "Cancel" %}</a>
+                    </div>
+                    </div>
+                </div>
+
+                </form>
+            </div>
+
+            {# Selected objects list #}
+            
+            <div class="tab-pane" id="object-list" >
+                <div class="card">
+                <div class="card-body table-responsive">
+                    {% render_table table 'inc/table.html' %}
+                </div>
+                </div>
+            </div>
+
+        </div>
+
+  {% endblock content %}

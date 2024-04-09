@@ -1,0 +1,97 @@
+{% extends 'generic/object_list.html' %}
+{% load buttons %}
+{% load i18n %}
+{% load helpers %}
+{% load static %}
+{% load perms %}
+
+{% block title %}
+  Logging
+{% endblock %}
+
+{% block header %}
+  <div class="title-container px-3 pb-3">
+
+    {# Title #}
+    
+    <div id="content-title">
+      {% include "slurpit_nautobot/logo.html" %}
+      {# Center-align title in object-edit views #}
+      <h1 class="w-100" style="margin-top: 0px">Logging</h1>
+      <style>
+        h1:before {
+          content: '';
+        }
+      </style>
+      {% block subtitle %}{% endblock %}
+
+      {# Controls #}
+      {% block controls %}{% endblock controls %}
+
+    </div>
+    
+  </div>
+{% endblock header %}
+
+{% block content %}
+<div class="show {% if request.GET.tab == 'onboarded' %}active{% endif %}" id="onboarded-device-list" role="tabpanel" aria-labelledby="onboarded-device-list-tab">
+  <div class="form form-horizontal">
+    <div class="card">
+      <div class="card-body htmx-container table-responsive" id="object_list">
+        <div class="col-md-12">
+          <div class="pull-left noprint">
+            <div class="controls">
+              <div class="control-group pull-right" style="margin-bottom: 10px;">
+                <a type="submit" class="btn btn-danger" href="?clear=true">
+                  <i class="mdi mdi-trash-can-outline" aria-hidden="true"></i> Clear all logging
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% block table %}
+          {% include "slurpit_nautobot/table.html" %}
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+ </div>
+ <style>
+  .bg-danger{
+    background-color: #e01f1f!important;
+  }
+  .bg-success{
+    background-color: #198754!important;
+  }
+  .bg-primary{
+    background-color: #007dff!important;
+  }
+</style>
+{% endblock content %}
+
+
+<footer class="footer container-fluid">
+    {% block footer %}
+      <div class="row align-items-center justify-content-between mx-0">
+  
+        <div class="col-sm-12 col-md-auto fs-4 noprint">
+          <nav class="nav justify-content-center justify-content-lg-start">
+            {% block footer_links %}
+              <a type="button" class="nav-link h6" href="https://slurpit.io" target="_blank">
+                https://slurpit.io
+              </a>
+            {% endblock footer_links %}
+          </nav>
+        </div>
+  
+        <div class="col-sm-12 col-md-auto text-center text-lg-end text-muted"  >
+          <span class="d-block d-md-inline">
+            {% now 'T' %}
+          </span>
+          <span class="ms-md-3 d-block d-md-inline">{{ settings.HOSTNAME }} (v{{ settings.VERSION }})</span>
+          <span class="ms-md-3 d-block d-md-inline">Slurpit(v{{ settings.PLUGINS_CONFIG.slurpit_nautobot.version }})</span>
+        </div>
+  
+      </div>
+    {% endblock footer %}
+  </footer>
