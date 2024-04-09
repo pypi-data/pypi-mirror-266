@@ -1,0 +1,112 @@
+Metadata-Version: 2.1
+Name: titanq
+Version: 0.8.0
+Summary: The TitanQ SDK for python
+Maintainer-email: InfinityQ <support@infinityq.tech>
+License: Apache 2.0
+Project-URL: Homepage, https://www.infinityq.tech
+Project-URL: Documentation, https://docs.titanq.infinityq.io/quickstart/category/python-sdk
+Project-URL: Examples, https://github.com/infinityq-tech/titanq-examples
+Keywords: titan,titanq,optimization,platform,infinity,infinityq
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Scientific/Engineering
+Classifier: License :: OSI Approved :: Apache Software License 
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: requests>=2.31.0
+Requires-Dist: boto3>=1.28.46
+Requires-Dist: numpy>=1.23.4
+Requires-Dist: pydantic>=2.5.3
+
+# The TitanQ SDK for Python
+
+![Python](https://img.shields.io/badge/python-3.9%20|%203.10%20|%203.11-blue) ![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)
+
+TitanQ is the InfinityQ Software Development Kit (SDK) for Python. The SDK facilitates and opens the way for faster implementation
+of the TitanQ solver without having to deal directly with the [TitanQ API](https://docs.titanq.infinityq.io).
+
+This TitanQ package is maintained and published by [InfinityQ](https://www.infinityq.tech/)
+
+
+## API Key
+
+In order to use the TitanQ service, a user needs an API key.
+The API key can be obtained by contacting [InfinityQ support](mailto:support@infinityq.tech)
+
+
+## Installation
+
+The following steps assume that you have:
+
+- A **valid** and **active** API Key
+- A supported Python version installed
+
+
+## Setting up an environment
+
+``` bash
+python -m venv .venv
+.venv/bin/activate
+```
+
+
+## Install TitanQ
+
+``` bash
+pip install titanq
+```
+
+
+## Using TitanQ
+
+The TitanQ solver is designed to support very large problems and therefore very large files. To simplify the user experience, TitanQ will instead use cloud storage set up and managed by the end users.
+
+Currently, the SDK only supports two types of storage
+
+| Storage options                | Vector variables limit           |
+|--------------------------------|----------------------------------|
+| S3 Buckets                     | ✅ Up to 100k vector variables   |
+| Managed storage                | ⚠️ Up to 10k vector variables     |
+
+Both options are documented with examples at the TitanQ's [Quickstart documentation](https://docs.titanq.infinityq.io/quickstart/category/python-sdk)
+
+## Problem construction
+
+> **_NOTE:_**  The weights matrix must be symmetrical.
+
+The QUBO problem is defined as finding the minimal energy configuration (the state $\mathbf{x}$ which results in the minimal $E(\mathbf{x})$).
+Each state $\mathbf{x}$ is a vector of $n$ binary elements $x_i$ which can take the values of 0 or 1 (binary values).
+This model formulation is given in the equation below
+
+[![\\ argmin_{\mathbf{x}} \,\,\,\, E(\mathbf{x}) = \sum_{i=1}^n\sum_{i \leq j}^n Q_{i,j} x_i x_j \,\,\,\,\,\,\,\, \mathbf{x}=(x_i)\in \{0,1\}^{n} \\](https://latex.codecogs.com/svg.latex?%5C%5C%20argmin_%7B%5Cmathbf%7Bx%7D%7D%20%5C%2C%5C%2C%5C%2C%5C%2C%20E(%5Cmathbf%7Bx%7D)%20%3D%20%5Csum_%7Bi%3D1%7D%5En%5Csum_%7Bi%20%5Cleq%20j%7D%5En%20Q_%7Bi%2Cj%7D%20x_i%20x_j%20%5C%2C%5C%2C%5C%2C%5C%2C%5C%2C%5C%2C%5C%2C%5C%2C%20%5Cmathbf%7Bx%7D%3D(x_i)%5Cin%20%5C%7B0%2C1%5C%7D%5E%7Bn%7D%20%5C%5C)](#_)
+
+The bias terms of a QUBO model are stored along the diagonal of the $\mathbf{Q}$ matrix. However, to simplify converting between Ising and QUBO models,
+we assume that the diagonals of the $\mathbf{Q}$  matrix are 0, and take in an additional bias vector instead. To avoid confusion, the modified $\mathbf{Q}$  matrix with 0s
+along its diagonal is referred to as the *weights* matrix, denoted by
+
+[![\\ \mathbf{W}=(W_{i,j})\in \mathbb{R}^{n \times n}, ~ where ~ \mathbf{Q} = \mathbf{W} + \mathbf{b}^{\intercal}\boldsymbol{I}, ~ and ~ \mathbf{b} = (b_i) \in \mathbb{R}^{n}](https://latex.codecogs.com/svg.latex?%5C%5C%20%5Cmathbf%7BW%7D%3D(W_%7Bi%2Cj%7D)%5Cin%20%5Cmathbb%7BR%7D%5E%7Bn%20%5Ctimes%20n%7D%2C%20~%20where%20~%20%5Cmathbf%7BQ%7D%20%3D%20%5Cmathbf%7BW%7D%20%2B%20%5Cmathbf%7Bb%7D%5E%7B%5Cintercal%7D%5Cboldsymbol%7BI%7D%2C%20~%20and%20~%20%5Cmathbf%7Bb%7D%20%3D%20(b_i)%20%5Cin%20%5Cmathbb%7BR%7D%5E%7Bn%7D)](#_)
+
+denotes the *biases*, which are used in the final model formulation described below
+
+[![\\ \begin{align} \notag \\ argmin_{\mathbf{x}} \, \, \, \, E(\mathbf{x}) & = \sum_{i=1}^n \sum_{i < j}^n W_{i,j}x_i x_j + \sum_i^n b_i x_i \notag \\ & = \frac{1}{2}\sum_{i=1}^n\sum_{j=1}^n W_{i,j}x_{i}x_{j} + \sum_{i=1}^{n} b_{i}x_{i} \notag \\ & = \frac{1}{2}(\mathbf{x}^{\intercal}\mathbf{W}\mathbf{x}) + \mathbf{b}^{\intercal}\mathbf{x} \notag \end{align}](https://latex.codecogs.com/svg.latex?%5C%5C%20%5Cbegin%7Balign%7D%20%5Cnotag%20%5C%5C%20argmin_%7B%5Cmathbf%7Bx%7D%7D%20%5C%2C%20%5C%2C%20%5C%2C%20%5C%2C%20E(%5Cmathbf%7Bx%7D)%20%26%20%3D%20%5Csum_%7Bi%3D1%7D%5En%20%5Csum_%7Bi%20%3C%20j%7D%5En%20W_%7Bi%2Cj%7Dx_i%20x_j%20%2B%20%5Csum_i%5En%20b_i%20x_i%20%5Cnotag%20%5C%5C%20%26%20%3D%20%5Cfrac%7B1%7D%7B2%7D%5Csum_%7Bi%3D1%7D%5En%5Csum_%7Bj%3D1%7D%5En%20W_%7Bi%2Cj%7Dx_%7Bi%7Dx_%7Bj%7D%20%2B%20%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%20b_%7Bi%7Dx_%7Bi%7D%20%5Cnotag%20%5C%5C%20%26%20%3D%20%5Cfrac%7B1%7D%7B2%7D(%5Cmathbf%7Bx%7D%5E%7B%5Cintercal%7D%5Cmathbf%7BW%7D%5Cmathbf%7Bx%7D)%20%2B%20%5Cmathbf%7Bb%7D%5E%7B%5Cintercal%7D%5Cmathbf%7Bx%7D%20%5Cnotag%20%5Cend%7Balign%7D)](#_)
+
+
+Additional parameters are avialble to tune the problem:
+- beta
+- coupling_mult
+- num_chains
+- num_engines
+
+For more informations how to use theses parameters, please refer to the [API documentation](https://docs.titanq.infinityq.io)
+
+
+## Getting support or help
+
+
+Further help can be obtained by contacting [InfinityQ support](mailto:support@infinityq.tech)
