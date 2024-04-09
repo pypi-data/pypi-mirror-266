@@ -1,0 +1,17 @@
+include *.txt
+include *.md
+include *.cfg
+include *.pkl
+recursive-include ./cnn_model_package/*.py
+
+
+include cnn_model_package/trained_models/*.keras
+include cnn_model_package/VERSION
+include cnn_model_package/datasets/kitchenware-classification
+include cnn_model_package/datasets/test_data/0193.jpg
+
+include ./requirements.txt
+exclude *.log
+
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
