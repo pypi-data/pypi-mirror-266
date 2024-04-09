@@ -1,0 +1,88 @@
+[tool.poetry]
+name = "slidge"
+version = "0.1.0"
+description = "XMPP bridging framework"
+authors = ["Nicolas Cedilnik <nicoco@nicoco.fr>"]
+readme = "README.md"
+license = "AGPL-3.0-or-later"
+homepage = "https://sr.ht/~nicoco/slidge/"
+include = ["slidge/util/schema.sql"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+qrcode = "^7.4.1"
+Pillow = "^10"
+aiohttp = {version = "^3.8.3", extras = ["speedups"]}
+ConfigArgParse = "^1.5.3"
+pickle-secure = "^0.99.9"
+python-magic = "^0.4.27"
+slixmpp = "^1.8.5"
+blurhash-python = "^1.2.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.2.0"
+pytest-asyncio = "*"
+black = { version = "*", extras = ["d"] }
+Sphinx = "^7"
+Pygments = "^2.8.0"
+sphinx-argparse = "^0.4.0"
+sphinx-autoapi = "^3.0.0"
+furo = "^2023.03.27"
+mypy = "^1.2"
+isort = "^5.11.4"
+ruff = "^0.0.259"
+xmldiff = "^2.5"
+types-pillow = "^9.5.0.0"
+pre-commit = "^3.3.0"
+coverage = "^7.2.7"
+
+[tool.poetry.group.dev.dependencies.slidge-dev-helpers]
+git = "https://git.sr.ht/~nicoco/slidge-dev-helpers"
+branch = "master"
+
+[tool.poetry.scripts]
+slidge = 'slidge.__main__:main'
+
+[tool.mypy]
+check_untyped_defs = true
+files = ["slidge", "superduper"]
+exclude = ["tests", "slidge.slixfix.*"]
+
+[[tool.mypy.overrides]]
+module = [
+    "blurhash",
+    "configargparse",
+    "qrcode",
+]
+ignore_missing_imports = true
+
+[tool.ruff]
+line-length = 120
+exclude = ["xep_*", "tests"]
+
+[tool.isort]
+profile = "black"
+
+[tool.coverage.run]
+source = ["slidge"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "if .*TYPE_CHECKING:",
+    "raise NotImplementedError"
+]
+
+[tool.pytest.ini_options]
+log_cli = true
+log_level = "DEBUG"
+asyncio_mode = "strict"
+filterwarnings = [
+    "ignore:The object should be created within an async function:DeprecationWarning:aiohttp",
+    "ignore:.*pkg_resources.*:DeprecationWarning",
+    "ignore::UserWarning:slidge",
+    "ignore:coroutine 'XMLStream._end_stream_wait' was never awaited.*:RuntimeWarning"
+]
