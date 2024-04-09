@@ -1,0 +1,9 @@
+__version__ = "1.0.18"
+__description__ = ""
+__title__ = "ranchcomputing"
+__url__ = "https://ranchcomputing.com"
+__build__ = 0x023100
+__author__ = "ranchcomputing"
+__author_email__ = "dev@ranchcomputing.com"
+__license__ = "Apache-2.0"
+__copyright__ = "Copyright RanchComputing"
