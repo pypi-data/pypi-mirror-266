@@ -1,0 +1,1043 @@
+{
+    "farm": {
+        "postgres": {
+            "farm_id": "bigserial NOT NULL",
+            "farmname": "varchar(255) UNIQUE NOT NULL",
+            "latitude": "real",
+            "longitude": "real",
+            "altitude": "real",
+            "created_on": "date",
+            "updated_on": "date",
+            "milking_system_type": "varchar(255)",
+            "number_of_milking_stations": "integer"
+        },
+        "mysql": {
+            "farm_id": "bigint NOT NULL AUTO_INCREMENT",
+            "farmname": "varchar(255) UNIQUE NOT NULL",
+            "latitude": "real",
+            "longitude": "real",
+            "altitude": "real",
+            "created_on": "date",
+            "updated_on": "date",
+            "milking_system_type": "varchar(255)",
+            "number_of_milking_stations": "integer"
+        },
+        "sqlite": {
+            "farm_id": "integer NOT NULL",
+            "farmname": "varchar(255) UNIQUE NOT NULL",
+            "latitude": "real",
+            "longitude": "real",
+            "altitude": "real",
+            "created_on": "date",
+            "updated_on": "date",
+            "milking_system_type": "varchar(255)",
+            "number_of_milking_stations": "integer"
+        },
+        "p_key": [
+            "farm_id"
+        ],
+        "f_keys": {},
+        "unique": [
+            "farmname"
+        ],
+        "d_datetime": [],
+        "l_datetime": [],
+        "not_null_read": [],
+        "not_null_write": [
+            "farmname"
+        ]
+    },
+    "animal": {
+        "postgres": {
+            "animal_id": "bigserial NOT NULL",
+            "farm_id": " bigint NOT NULL",
+            "animal_oid": "bigint NOT NULL",
+            "official_registration_number": "varchar(255)",
+            "animal_number": "real",
+            "name": "varchar(255)",
+            "breed": "real",
+            "birth_date": "date",
+            "exit_date": "date",
+            "updated_on": "date"
+        },
+        "mysql": {
+            "animal_id": "bigint NOT NULL AUTO_INCREMENT",
+            "farm_id": " bigint NOT NULL",
+            "animal_oid": "bigint NOT NULL",
+            "official_registration_number": "varchar(255)",
+            "animal_number": "real",
+            "name": "varchar(255)",
+            "breed": "real",
+            "birth_date": "date",
+            "exit_date": "date",
+            "updated_on": "date"
+        },
+        "sqlite": {
+            "animal_id": "integer NOT NULL",
+            "farm_id": " bigint NOT NULL",
+            "animal_oid": "bigint NOT NULL",
+            "official_registration_number": "varchar(255)",
+            "animal_number": "real",
+            "name": "varchar(255)",
+            "breed": "real",
+            "birth_date": "date",
+            "exit_date": "date",
+            "updated_on": "date"
+        },
+        "p_key": [
+            "animal_id"
+        ],
+        "f_keys": {
+            "farm_id": "farm (farm_id)"
+        },
+        "unique": [
+            "farm_id",
+            "animal_oid"
+        ],
+        "d_datetime": [
+            "birth_date",
+            "exit_date"
+        ],
+        "l_datetime": [
+            "birth_date"
+        ],
+        "not_null_read": [
+            "animal_oid"
+        ],
+        "not_null_write": [
+            "farm_id",
+            "animal_oid"
+        ]
+    },
+    "lactation": {
+        "postgres": {
+            "lactation_id": "bigserial NOT NULL",
+            "farm_id": "bigint NOT NULL",
+            "animal_id": "bigint NOT NULL",
+            "lactation_oid": "bigint NOT NULL",
+            "breed": "integer",
+            "parity": "integer",
+            "calving": "date",
+            "dry_off": "date",
+            "first_milking_rec": "date",
+            "last_milking_rec": "date",
+            "updated_on": "date",
+            "start_dim": "real",
+            "end_dim": "real"
+        },
+        "mysql": {
+            "lactation_id": "bigint NOT NULL AUTO_INCREMENT",
+            "farm_id": "bigint NOT NULL",
+            "animal_id": "bigint NOT NULL",
+            "lactation_oid": "bigint NOT NULL",
+            "breed": "integer",
+            "parity": "integer",
+            "calving": "date",
+            "dry_off": "date",
+            "first_milking_rec": "date",
+            "last_milking_rec": "date",
+            "updated_on": "date",
+            "start_dim": "real",
+            "end_dim": "real"
+        },
+        "sqlite": {
+            "lactation_id": "integer NOT NULL",
+            "farm_id": "bigint NOT NULL",
+            "animal_id": "bigint NOT NULL",
+            "lactation_oid": "bigint NOT NULL",
+            "breed": "integer",
+            "parity": "integer",
+            "calving": "date",
+            "dry_off": "date",
+            "first_milking_rec": "date",
+            "last_milking_rec": "date",
+            "updated_on": "date",
+            "start_dim": "real",
+            "end_dim": "real"
+        },
+        "p_key": [
+            "lactation_id"
+        ],
+        "f_keys": {
+            "farm_id": "farm (farm_id)",
+            "animal_id": "animal (animal_id)"
+        },
+        "unique": [
+            "farm_id",
+            "lactation_oid"
+        ],
+        "d_datetime": [
+            "calving",
+            "dry_off"
+        ],
+        "l_datetime": [
+            "calving",
+            "dry_off"
+        ],
+        "not_null_read": [
+            "lactation_oid"
+        ],
+        "not_null_write": [
+            "farm_id",
+            "animal_id",
+            "lactation_oid"
+        ]
+    },
+    "milking_system": {
+        "postgres": {
+            "milking_system_id": "bigserial NOT NULL",
+            "farm_id": "bigint NOT NULL",
+            "milking_system_oid": "integer NOT NULL",
+            "type": "varchar(255)",
+            "model": "varchar(255)",
+            "installation_date": "date",
+            "updated_on": "date"
+        },
+        "mysql": {
+            "milking_system_id": "bigint NOT NULL AUTO_INCREMENT",
+            "farm_id": "bigint NOT NULL",
+            "milking_system_oid": "integer NOT NULL",
+            "type": "varchar(255)",
+            "model": "varchar(255)",
+            "installation_date": "date",
+            "updated_on": "date"
+        },
+        "sqlite": {
+            "milking_system_id": "integer NOT NULL",
+            "farm_id": "bigint NOT NULL",
+            "milking_system_oid": "integer NOT NULL",
+            "type": "varchar(255)",
+            "model": "varchar(255)",
+            "installation_date": "date",
+            "updated_on": "date"
+        },
+        "p_key": [
+            "milking_system_id"
+        ],
+        "f_keys": {
+            "farm_id": "farm (farm_id)"
+        },
+        "unique": [
+            "farm_id",
+            "milking_system_oid"
+        ],
+        "d_datetime": [],
+        "l_datetime": [],
+        "not_null_read": [],
+        "not_null_write": [
+            "farm_id",
+            "milking_system_oid"
+        ]
+    },
+    "milking": {
+        "postgres": {
+            "milking_id": "bigserial NOT NULL",
+            "farm_id": "bigint NOT NULL",
+            "animal_id": "bigint NOT NULL",
+            "lactation_id": "bigint NOT NULL",
+            "milking_system_id": "bigint",
+            "milking_oid": "bigint",
+            "parity": "integer",
+            "started_at": "timestamp",
+            "ended_at": "timestamp",
+            "previously_ended_at": "timestamp",
+            "mi": "real",
+            "dim": "real",
+            "session_number": "integer",
+            "destination": "integer",
+            "incomplete": "integer",
+            "kickoff": "integer",
+            "not_milked_teats": "integer",
+            "milk_type": "integer",
+            "mdi_delaval": "real",
+            "tmy": "real",
+            "mylf": "real",
+            "myrf": "real",
+            "mylr": "real",
+            "myrr": "real",
+            "pflf": "real",
+            "pfrf": "real",
+            "pflr": "real",
+            "pfrr": "real",
+            "mflf": "real",
+            "mfrf": "real",
+            "mflr": "real",
+            "mfrr": "real",
+            "eclf": "real",
+            "ecrf": "real",
+            "eclr": "real",
+            "ecrr": "real",
+            "eclf_lely": "real",
+            "ecrf_lely": "real",
+            "eclr_lely": "real",
+            "ecrr_lely": "real",
+            "bloodlf": "real",
+            "bloodrf": "real",
+            "bloodlr": "real",
+            "bloodrr": "real",
+            "sample_tube": "integer",
+            "sample_tube_rack": "integer",
+            "sample_tube_position": "integer",
+            "occ": "real",
+            "speed": "real",
+            "dur": "real",
+            "weight": "real",
+            "milk_t": "real",
+            "milk_time": "real",
+            "redreflf": "real",
+            "redrefrf": "real",
+            "redreflr": "real",
+            "redrefrr": "real",
+            "greenreflf": "real",
+            "greenrefrf": "real",
+            "greenreflr": "real",
+            "greenrefrr": "real",
+            "bluereflf": "real",
+            "bluerefrf": "real",
+            "bluereflr": "real",
+            "bluerefrr": "real",
+            "backgroundcolorlf": "real",
+            "backgroundcolorrf": "real",
+            "backgroundcolorlr": "real",
+            "backgroundcolorrr": "real",
+            "updated_on": "date"
+        },
+        "mysql": {
+            "milking_id": "bigint NOT NULL AUTO_INCREMENT",
+            "farm_id": "bigint NOT NULL",
+            "animal_id": "bigint NOT NULL",
+            "lactation_id": "bigint NOT NULL",
+            "milking_system_id": "bigint",
+            "milking_oid": "bigint",
+            "parity": "integer",
+            "started_at": "timestamp",
+            "ended_at": "timestamp",
+            "previously_ended_at": "timestamp",
+            "mi": "real",
+            "dim": "real",
+            "session_number": "integer",
+            "destination": "integer",
+            "incomplete": "integer",
+            "kickoff": "integer",
+            "not_milked_teats": "integer",
+            "milk_type": "integer",
+            "mdi_delaval": "real",
+            "tmy": "real",
+            "mylf": "real",
+            "myrf": "real",
+            "mylr": "real",
+            "myrr": "real",
+            "pflf": "real",
+            "pfrf": "real",
+            "pflr": "real",
+            "pfrr": "real",
+            "mflf": "real",
+            "mfrf": "real",
+            "mflr": "real",
+            "mfrr": "real",
+            "eclf": "real",
+            "ecrf": "real",
+            "eclr": "real",
+            "ecrr": "real",
+            "eclf_lely": "real",
+            "ecrf_lely": "real",
+            "eclr_lely": "real",
+            "ecrr_lely": "real",
+            "bloodlf": "real",
+            "bloodrf": "real",
+            "bloodlr": "real",
+            "bloodrr": "real",
+            "sample_tube": "integer",
+            "sample_tube_rack": "integer",
+            "sample_tube_position": "integer",
+            "occ": "real",
+            "speed": "real",
+            "dur": "real",
+            "weight": "real",
+            "milk_t": "real",
+            "milk_time": "real",
+            "redreflf": "real",
+            "redrefrf": "real",
+            "redreflr": "real",
+            "redrefrr": "real",
+            "greenreflf": "real",
+            "greenrefrf": "real",
+            "greenreflr": "real",
+            "greenrefrr": "real",
+            "bluereflf": "real",
+            "bluerefrf": "real",
+            "bluereflr": "real",
+            "bluerefrr": "real",
+            "backgroundcolorlf": "real",
+            "backgroundcolorrf": "real",
+            "backgroundcolorlr": "real",
+            "backgroundcolorrr": "real",
+            "updated_on": "date"
+        },
+        "sqlite": {
+            "milking_id": "integer NOT NULL",
+            "farm_id": "bigint NOT NULL",
+            "animal_id": "bigint NOT NULL",
+            "lactation_id": "bigint NOT NULL",
+            "milking_system_id": "bigint",
+            "milking_oid": "bigint",
+            "parity": "integer",
+            "started_at": "timestamp",
+            "ended_at": "timestamp",
+            "previously_ended_at": "timestamp",
+            "mi": "real",
+            "dim": "real",
+            "session_number": "integer",
+            "destination": "integer",
+            "incomplete": "integer",
+            "kickoff": "integer",
+            "not_milked_teats": "integer",
+            "milk_type": "integer",
+            "mdi_delaval": "real",
+            "tmy": "real",
+            "mylf": "real",
+            "myrf": "real",
+            "mylr": "real",
+            "myrr": "real",
+            "pflf": "real",
+            "pfrf": "real",
+            "pflr": "real",
+            "pfrr": "real",
+            "mflf": "real",
+            "mfrf": "real",
+            "mflr": "real",
+            "mfrr": "real",
+            "eclf": "real",
+            "ecrf": "real",
+            "eclr": "real",
+            "ecrr": "real",
+            "eclf_lely": "real",
+            "ecrf_lely": "real",
+            "eclr_lely": "real",
+            "ecrr_lely": "real",
+            "bloodlf": "real",
+            "bloodrf": "real",
+            "bloodlr": "real",
+            "bloodrr": "real",
+            "sample_tube": "integer",
+            "sample_tube_rack": "integer",
+            "sample_tube_position": "integer",
+            "occ": "real",
+            "speed": "real",
+            "dur": "real",
+            "weight": "real",
+            "milk_t": "real",
+            "milk_time": "real",
+            "redreflf": "real",
+            "redrefrf": "real",
+            "redreflr": "real",
+            "redrefrr": "real",
+            "greenreflf": "real",
+            "greenrefrf": "real",
+            "greenreflr": "real",
+            "greenrefrr": "real",
+            "bluereflf": "real",
+            "bluerefrf": "real",
+            "bluereflr": "real",
+            "bluerefrr": "real",
+            "backgroundcolorlf": "real",
+            "backgroundcolorrf": "real",
+            "backgroundcolorlr": "real",
+            "backgroundcolorrr": "real",
+            "updated_on": "date"
+        },
+        "p_key": [
+            "milking_id"
+        ],
+        "f_keys": {
+            "farm_id": "farm (farm_id)",
+            "animal_id": "animal (animal_id)",
+            "lactation_id": "lactation (lactation_id)",
+            "milking_system_id": "milking_system (milking_system_id)"
+        },
+        "unique": [
+            "farm_id",
+            "milking_oid"
+        ],
+        "d_datetime": [
+            "started_at",
+            "ended_at",
+            "previously_ended_at"
+        ],
+        "l_datetime": [
+            "started_at",
+            "ended_at",
+            "previously_ended_at"
+        ],
+        "not_null_read": [
+            "milking_oid",
+            "animal_oid"
+        ],
+        "not_null_write": [
+            "farm_id",
+            "animal_id",
+            "lactation_id"
+        ]
+    },
+    "cleaning": {
+        "postgres": {
+            "cleaning_id": "bigserial NOT NULL",
+            "cleaning_oid": "bigint NOT NULL",
+            "milking_system_id": "bigint NOT NULL",
+            "farm_id": "bigint NOT NULL",
+            "start_time": "timestamp",
+            "end_time": "timestamp",
+            "cleaning_type_id": "integer",
+            "reason": "real",
+            "updated_on": "date"
+        },
+        "mysql": {
+            "cleaning_id": "bigint NOT NULL AUTO_INCREMENT",
+            "cleaning_oid": "bigint NOT NULL",
+            "milking_system_id": "bigint NOT NULL",
+            "farm_id": "bigint NOT NULL",
+            "start_time": "timestamp",
+            "end_time": "timestamp",
+            "cleaning_type_id": "integer",
+            "reason": "real",
+            "updated_on": "date"
+        },
+        "sqlite": {
+            "cleaning_id": "integer NOT NULL",
+            "cleaning_oid": "bigint NOT NULL",
+            "milking_system_id": "bigint NOT NULL",
+            "farm_id": "bigint NOT NULL",
+            "start_time": "timestamp",
+            "end_time": "timestamp",
+            "cleaning_type_id": "integer",
+            "reason": "real",
+            "updated_on": "date"
+        },
+        "p_key": [
+            "cleaning_id"
+        ],
+        "f_keys": {
+            "farm_id": "farm (farm_id)",
+            "milking_system_id": "milking_system (milking_system_id)"
+        },
+        "unique": [
+            "farm_id",
+            "cleaning_oid"
+        ],
+        "d_datetime": [
+            "start_time",
+            "end_time"
+        ],
+        "l_datetime": [],
+        "not_null_read": [
+            "milking_system_oid"
+        ],
+        "not_null_write": [
+            "farm_id",
+            "milking_system_id",
+            "cleaning_oid"
+        ]
+    },
+    "bcs": {
+        "postgres": {
+            "bcs_id": "bigserial NOT NULL",
+            "farm_id": "bigint NOT NULL",
+            "animal_id": "bigint NOT NULL",
+            "lactation_id": "bigint",
+            "bcs_oid": "bigint NOT NULL",
+            "parity": "int",
+            "measured_on": "timestamp",
+            "dim": "real",
+            "bcs_value": "real",
+            "updated_on": "date"
+        },
+        "mysql": {
+            "bcs_id": "bigint NOT NULL AUTO_INCREMENT",
+            "farm_id": "bigint NOT NULL",
+            "animal_id": "bigint NOT NULL",
+            "lactation_id": "bigint",
+            "bcs_oid": "bigint NOT NULL",
+            "parity": "int",
+            "measured_on": "timestamp",
+            "dim": "real",
+            "bcs_value": "real",
+            "updated_on": "date"
+        },
+        "sqlite": {
+            "bcs_id": "integer NOT NULL",
+            "farm_id": "bigint NOT NULL",
+            "animal_id": "bigint NOT NULL",
+            "lactation_id": "bigint",
+            "bcs_oid": "bigint NOT NULL",
+            "parity": "int",
+            "measured_on": "timestamp",
+            "dim": "real",
+            "bcs_value": "real",
+            "updated_on": "date"
+        },
+        "p_key": [
+            "bcs_id"
+        ],
+        "f_keys": {
+            "farm_id": "farm (farm_id)",
+            "animal_id": "animal (animal_id)",
+            "lactation_id": "lactation (lactation_id)"
+        },
+        "unique": [
+            "farm_id",
+            "bcs_oid"
+        ],
+        "d_datetime": [
+            "measured_on"
+        ],
+        "l_datetime": [],
+        "not_null_read": [
+            "bcs_oid",
+            "animal_oid"
+        ],
+        "not_null_write": [
+            "farm_id",
+            "animal_id",
+            "bcs_oid"
+        ]
+    },
+    "activity": {
+        "postgres": {
+            "activity_id": "bigserial NOT NULL",
+            "farm_id": "bigint NOT NULL",
+            "animal_id": "bigint NOT NULL",
+            "lactation_id": "bigint",
+            "activity_oid": "bigint NOT NULL",
+            "parity": "integer",
+            "measured_on": "timestamp",
+            "dim": "real",
+            "activity_total": "real",
+            "rumination_acc": "real",
+            "rumination_time": "real",
+            "updated_on": "date"
+        },
+        "mysql": {
+            "activity_id": "bigint NOT NULL AUTO_INCREMENT",
+            "farm_id": "bigint NOT NULL",
+            "animal_id": "bigint NOT NULL",
+            "lactation_id": "bigint",
+            "activity_oid": "bigint NOT NULL",
+            "parity": "integer",
+            "measured_on": "timestamp",
+            "dim": "real",
+            "activity_total": "real",
+            "rumination_acc": "real",
+            "rumination_time": "real",
+            "updated_on": "date"
+        },
+        "sqlite": {
+            "activity_id": "integer NOT NULL",
+            "farm_id": "bigint NOT NULL",
+            "animal_id": "bigint NOT NULL",
+            "lactation_id": "bigint",
+            "activity_oid": "bigint NOT NULL",
+            "parity": "integer",
+            "measured_on": "timestamp",
+            "dim": "real",
+            "activity_total": "real",
+            "rumination_acc": "real",
+            "rumination_time": "real",
+            "updated_on": "date"
+        },
+        "p_key": [
+            "activity_id"
+        ],
+        "f_keys": {
+            "farm_id": "farm (farm_id)",
+            "animal_id": "animal (animal_id)",
+            "lactation_id": "lactation (lactation_id)"
+        },
+        "unique": [
+            "farm_id",
+            "activity_oid"
+        ],
+        "d_datetime": [
+            "measured_on"
+        ],
+        "l_datetime": [
+            "measured_on"
+        ],
+        "not_null_read": [
+            "activity_oid"
+        ],
+        "not_null_write": [
+            "farm_id",
+            "animal_id",
+            "activity_oid"
+        ]
+    },
+    "herdnavigator": {
+        "postgres": {
+            "herdnavigator_id": "bigserial NOT NULL",
+            "farm_id": "bigint NOT NULL",
+            "animal_id": "bigint NOT NULL",
+            "lactation_id": "bigint",
+            "herdnavigator_oid": "bigint NOT NULL",
+            "calvingdate": "date",
+            "parity": "integer",
+            "measured_on": "timestamp",
+            "dim": "real",
+            "type_measurement": "integer",
+            "raw": "real",
+            "smooth": "real",
+            "diagnosis_type": "integer",
+            "risk": "real",
+            "alarm": "integer",
+            "reliability": "real",
+            "trend": "integer",
+            "time_low_p4": "timestamp",
+            "predicted_insemination_time": "timestamp",
+            "likelihood": "real",
+            "pd_likelihood": "real",
+            "updated_on": "date"
+        },
+        "mysql": {
+            "herdnavigator_id": "bigint NOT NULL AUTO_INCREMENT",
+            "farm_id": "bigint NOT NULL",
+            "animal_id": "bigint NOT NULL",
+            "lactation_id": "bigint",
+            "herdnavigator_oid": "bigint NOT NULL",
+            "calvingdate": "date",
+            "parity": "integer",
+            "measured_on": "timestamp",
+            "dim": "real",
+            "type_measurement": "integer",
+            "raw": "real",
+            "smooth": "real",
+            "diagnosis_type": "integer",
+            "risk": "real",
+            "alarm": "integer",
+            "reliability": "real",
+            "trend": "integer",
+            "time_low_p4": "timestamp",
+            "predicted_insemination_time": "timestamp",
+            "likelihood": "real",
+            "pd_likelihood": "real",
+            "updated_on": "date"
+        },
+        "sqlite": {
+            "herdnavigator_id": "integer NOT NULL",
+            "farm_id": "bigint NOT NULL",
+            "animal_id": "bigint NOT NULL",
+            "lactation_id": "bigint",
+            "herdnavigator_oid": "bigint NOT NULL",
+            "calvingdate": "date",
+            "parity": "integer",
+            "measured_on": "timestamp",
+            "dim": "real",
+            "type_measurement": "integer",
+            "raw": "real",
+            "smooth": "real",
+            "diagnosis_type": "integer",
+            "risk": "real",
+            "alarm": "integer",
+            "reliability": "real",
+            "trend": "integer",
+            "time_low_p4": "timestamp",
+            "predicted_insemination_time": "timestamp",
+            "likelihood": "real",
+            "pd_likelihood": "real",
+            "updated_on": "date"
+        },
+        "p_key": [
+            "herdnavigator_id"
+        ],
+        "f_keys": {
+            "farm_id": "farm (farm_id)",
+            "animal_id": "animal (animal_id)",
+            "lactation_id": "lactation (lactation_id)"
+        },
+        "unique": [
+            "farm_id",
+            "herdnavigator_oid"
+        ],
+        "d_datetime": [
+            "measured_on",
+            "time_low_p4",
+            "predicted_insemination_time"
+        ],
+        "l_datetime": [],
+        "not_null_read": [
+            "herdnavigator_oid",
+            "animal_oid"
+        ],
+        "not_null_write": [
+            "farm_id",
+            "animal_id",
+            "herdnavigator_oid"
+        ]
+    },
+    "insemination": {
+        "postgres": {
+            "insemination_id": "bigserial NOT NULL",
+            "farm_id": "bigint NOT NULL",
+            "animal_id": "bigint NOT NULL",
+            "lactation_id": "bigint",
+            "insemination_oid": "bigint NOT NULL",
+            "calvingdate": "date",
+            "parity": "integer",
+            "measured_on": "timestamp",
+            "dim": "real",
+            "insemination_method": "integer",
+            "semen": "integer",
+            "insemination_number": "integer",
+            "updated_on": "date"
+        },
+        "mysql": {
+            "insemination_id": "bigint NOT NULL AUTO_INCREMENT",
+            "farm_id": "bigint NOT NULL",
+            "animal_id": "bigint NOT NULL",
+            "lactation_id": "bigint",
+            "insemination_oid": "bigint NOT NULL",
+            "calvingdate": "date",
+            "parity": "integer",
+            "measured_on": "timestamp",
+            "dim": "real",
+            "insemination_method": "integer",
+            "semen": "integer",
+            "insemination_number": "integer",
+            "updated_on": "date"
+        },
+        "sqlite": {
+            "insemination_id": "integer NOT NULL",
+            "farm_id": "bigint NOT NULL",
+            "animal_id": "bigint NOT NULL",
+            "lactation_id": "bigint",
+            "insemination_oid": "bigint NOT NULL",
+            "calvingdate": "date",
+            "parity": "integer",
+            "measured_on": "timestamp",
+            "dim": "real",
+            "insemination_method": "integer",
+            "semen": "integer",
+            "insemination_number": "integer",
+            "updated_on": "date"
+        },
+        "p_key": [
+            "insemination_id"
+        ],
+        "f_keys": {
+            "farm_id": "farm (farm_id)",
+            "animal_id": "animal (animal_id)",
+            "lactation_id": "lactation (lactation_id)"
+        },
+        "unique": [
+            "farm_id",
+            "insemination_oid"
+        ],
+        "d_datetime": [
+            "measured_on"
+        ],
+        "l_datetime": [],
+        "not_null_read": [
+            "insemination_oid",
+            "animal_oid"
+        ],
+        "not_null_write": [
+            "farm_id",
+            "animal_id",
+            "insemination_oid"
+        ]
+    },
+    "aws": {
+        "postgres": {
+            "aws_id": "bigserial NOT NULL",
+            "name": "varchar(255)",
+            "country": "varchar(255)",
+            "region": "varchar(255)",
+            "wmo": "int",
+            "icao": "varchar(255)",
+            "latitude": "real",
+            "longitude": "real",
+            "elevation": "real",
+            "timezone": "varchar(255)",
+            "hourly_start": "date",
+            "hourly_end": "date",
+            "daily_start": "date",
+            "daily_end": "date",
+            "monthly_start": "date",
+            "monthly_end": "date",
+            "updated_on": "date"
+        },
+        "mysql": {
+            "aws_id": "bigint NOT NULL AUTO_INCREMENT",
+            "name": "varchar(255)",
+            "country": "varchar(255)",
+            "region": "varchar(255)",
+            "wmo": "int",
+            "icao": "varchar(255)",
+            "latitude": "real",
+            "longitude": "real",
+            "elevation": "real",
+            "timezone": "varchar(255)",
+            "hourly_start": "date",
+            "hourly_end": "date",
+            "daily_start": "date",
+            "daily_end": "date",
+            "monthly_start": "date",
+            "monthly_end": "date",
+            "updated_on": "date"
+        },
+        "sqlite": {
+            "aws_id": "integer NOT NULL",
+            "name": "varchar(255)",
+            "country": "varchar(255)",
+            "region": "varchar(255)",
+            "wmo": "int",
+            "icao": "varchar(255)",
+            "latitude": "real",
+            "longitude": "real",
+            "elevation": "real",
+            "timezone": "varchar(255)",
+            "hourly_start": "date",
+            "hourly_end": "date",
+            "daily_start": "date",
+            "daily_end": "date",
+            "monthly_start": "date",
+            "monthly_end": "date",
+            "updated_on": "date"
+        },
+        "p_key": [
+            "aws_id"
+        ],
+        "f_keys": {},
+        "unique": [
+            "wmo"
+        ],
+        "d_datetime": [],
+        "l_datetime": [],
+        "not_null_read": [],
+        "not_null_write": []
+    },
+    "aws_weights": {
+        "postgres": {
+            "farm_id": "bigint NOT NULL",
+            "aws_id_1": "int",
+            "distance_1": "real",
+            "aws_id_2": "int",
+            "distance_2": "real",
+            "aws_id_3": "int",
+            "distance_3": "real",
+            "aws_id_4": "int",
+            "distance_4": "real",
+            "updated_on": "date"
+        },
+        "mysql": {
+            "farm_id": "bigint NOT NULL",
+            "aws_id_1": "int",
+            "distance_1": "real",
+            "aws_id_2": "int",
+            "distance_2": "real",
+            "aws_id_3": "int",
+            "distance_3": "real",
+            "aws_id_4": "int",
+            "distance_4": "real",
+            "updated_on": "date"
+        },
+        "sqlite": {
+            "farm_id": "bigint NOT NULL",
+            "aws_id_1": "int",
+            "distance_1": "real",
+            "aws_id_2": "int",
+            "distance_2": "real",
+            "aws_id_3": "int",
+            "distance_3": "real",
+            "aws_id_4": "int",
+            "distance_4": "real",
+            "updated_on": "date"
+        },
+        "p_key": [
+            "farm_id"
+        ],
+        "f_keys": {
+            "farm_id": "farm (farm_id)"
+        },
+        "unique": [
+            "farm_id"
+        ],
+        "d_datetime": [],
+        "l_datetime": [],
+        "not_null_read": [],
+        "not_null_write": [
+            "farm_id"
+        ]
+    },
+    "weather": {
+        "postgres": {
+            "weather_id": "bigserial NOT NULL",
+            "farm_id": "bigint NOT NULL",
+            "datetime": "timestamp",
+            "temperature": "real",
+            "dew_point": "real",
+            "humidity": "real",
+            "precipitation": "real",
+            "snow": "real",
+            "wind_direction": "real",
+            "windspeed": "real",
+            "peak_wind_gust": "real",
+            "air_pressure": "real",
+            "total_sunshine_duration": "real",
+            "weather_condition_code": "real",
+            "updated_on": "date"
+        },
+        "mysql": {
+            "weather_id": "bigint NOT NULL AUTO_INCREMENT",
+            "farm_id": "bigint NOT NULL",
+            "datetime": "timestamp",
+            "temperature": "real",
+            "dew_point": "real",
+            "humidity": "real",
+            "precipitation": "real",
+            "snow": "real",
+            "wind_direction": "real",
+            "windspeed": "real",
+            "peak_wind_gust": "real",
+            "air_pressure": "real",
+            "total_sunshine_duration": "real",
+            "weather_condition_code": "real",
+            "updated_on": "date"
+        },
+        "sqlite": {
+            "weather_id": "integer NOT NULL",
+            "farm_id": "bigint NOT NULL",
+            "datetime": "timestamp",
+            "temperature": "real",
+            "dew_point": "real",
+            "humidity": "real",
+            "precipitation": "real",
+            "snow": "real",
+            "wind_direction": "real",
+            "windspeed": "real",
+            "peak_wind_gust": "real",
+            "air_pressure": "real",
+            "total_sunshine_duration": "real",
+            "weather_condition_code": "real",
+            "updated_on": "date"
+        },
+        "p_key": [
+            "weather_id"
+        ],
+        "f_keys": {
+            "farm_id": "farm (farm_id)"
+        },
+        "unique": [
+            "farm_id",
+            "datetime"
+        ],
+        "d_datetime": [
+            "datetime"
+        ],
+        "l_datetime": [
+            "datetime"
+        ],
+        "not_null_read": [],
+        "not_null_write": [
+            "farm_id"
+        ]
+    }
+}

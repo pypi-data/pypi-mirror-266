@@ -1,0 +1,792 @@
+{
+    "d": {
+        "animal": {
+            "data": {
+                "BasicAnimal": {
+                    "columns": [
+                        "OID",
+                        "Number",
+                        "OfficialRegNo",
+                        "Name",
+                        "Breed",
+                        "BirthDate",
+                        "ExitDate"
+                    ]
+                }
+            },
+            "rename": {
+                "OID": "animal_oid",
+                "Number": "animal_number",
+                "OfficialRegNo": "official_registration_number",
+                "Name": "name",
+                "Breed": "breed",
+                "BirthDate": "birth_date",
+                "ExitDate": "exit_date"
+            },
+            "drop_duplicates": [
+                "animal_oid"
+            ]
+        },
+        "lactation": {
+            "data": {
+                "AnimalLactationSummary": {
+                    "columns": [
+                        "OID",
+                        "Animal",
+                        "LactationNumber",
+                        "StartDate",
+                        "EndDate"
+                    ]
+                }
+            },
+            "rename": {
+                "OID": "lactation_oid",
+                "Animal": "animal_oid",
+                "LactationNumber": "parity",
+                "StartDate": "calving",
+                "EndDate": "dry_off"
+            },
+            "drop_duplicates": [
+                "lactation_oid"
+            ]
+        },
+        "milking": {
+            "data": {
+                "SessionMilkYield": {
+                    "columns": [
+                        "OID",
+                        "BasicAnimal",
+                        "MilkingDevice",
+                        "BeginTime",
+                        "EndTime",
+                        "PreviousEndTime",
+                        "TotalYield",
+                        "Destination",
+                        "SessionNo",
+                        "SampleTube",
+                        "SampleTubeRack",
+                        "SampleTubePosition"
+                    ]
+                },
+                "VoluntarySessionMilkYield": {
+                    "columns": [
+                        "OID",
+                        "QuarterLFYield",
+                        "QuarterRFYield",
+                        "QuarterLRYield",
+                        "QuarterRRYield",
+                        "ConductivityLF",
+                        "ConductivityRF",
+                        "ConductivityLR",
+                        "ConductivityRR",
+                        "BloodLF",
+                        "BloodRF",
+                        "BloodLR",
+                        "BloodRR",
+                        "PeakFlowLF",
+                        "PeakFlowRF",
+                        "PeakFlowLR",
+                        "PeakFlowRR",
+                        "MeanFlowLF",
+                        "MeanFlowRF",
+                        "MeanFlowLR",
+                        "MeanFlowRR",
+                        "Mdi",
+                        "NotMilkedTeats",
+                        "Incomplete",
+                        "Kickoff",
+                        "MilkType",
+                        "Occ"
+                    ],
+                    "on": [
+                        "OID"
+                    ],
+                    "how": "outer"
+                }
+            },
+            "rename": {
+                "OID": "milking_oid",
+                "BasicAnimal": "animal_oid",
+                "MilkingDevice": "milking_system_oid",
+                "BeginTime": "started_at",
+                "EndTime": "ended_at",
+                "PreviousEndTime": "previously_ended_at",
+                "TotalYield": "tmy",
+                "Destination": "destination",
+                "SessionNo": "session_number",
+                "SampleTube": "sample_tube",
+                "SampleTubeRack": "sample_tube_rack",
+                "SampleTubePosition": "sample_tube_position",
+                "QuarterLFYield": "mylf",
+                "QuarterRFYield": "myrf",
+                "QuarterLRYield": "mylr",
+                "QuarterRRYield": "myrr",
+                "ConductivityLF": "eclf",
+                "ConductivityRF": "ecrf",
+                "ConductivityLR": "eclr",
+                "ConductivityRR": "ecrr",
+                "BloodLF": "bloodlf",
+                "BloodRF": "bloodrf",
+                "BloodLR": "bloodlr",
+                "BloodRR": "bloodrr",
+                "PeakFlowLF": "pflf",
+                "PeakFlowRF": "pfrf",
+                "PeakFlowLR": "pflr",
+                "PeakFlowRR": "pfrr",
+                "MeanFlowLF": "mflf",
+                "MeanFlowRF": "mfrf",
+                "MeanFlowLR": "mflr",
+                "MeanFlowRR": "mfrr",
+                "Mdi": "mdi_delaval",
+                "NotMilkedTeats": "not_milked_teats",
+                "Incomplete": "incomplete",
+                "Kickoff": "kickoff",
+                "MilkType": "milk_type",
+                "Occ": "occ"
+            },
+            "drop_duplicates": [
+                "milking_oid"
+            ]
+        },
+        "cleaning": {
+            "data": {
+                "Cleaning": {
+                    "columns": [
+                        "OID",
+                        "MilkingStationDevice",
+                        "StartCleaningTime",
+                        "EndCleaningTime",
+                        "CleaningProgramNumber",
+                        "SupportingData2"
+                    ]
+                }
+            },
+            "rename": {
+                "OID": "cleaning_oid",
+                "MilkingStationDevice": "milking_system_oid",
+                "StartCleaningTime": "start_time",
+                "EndCleaningTime": "end_time",
+                "CleaningProgramNumber": "cleaning_type_id",
+                "SupportingData2": "reason"
+            },
+            "drop_duplicates": [
+                "cleaning_oid"
+            ]
+        },
+        "herdnavigator": {
+            "data": {
+                "HNBiometricData": {
+                    "columns": [
+                        "HNBiometricMeasurement",
+                        "BiometricType",
+                        "RawLevel",
+                        "SmoothedLevel"
+                    ]
+                },
+                "HNDiagnose": {
+                    "columns": [
+                        "HNBiometricMeasurement",
+                        "DateAndTime",
+                        "DiagnoseType",
+                        "Risk",
+                        "Alarm",
+                        "Reliability",
+                        "Trend"
+                    ],
+                    "on": [
+                        "HNBiometricMeasurement"
+                    ],
+                    "how": "outer"
+                },
+                "HNHeatDetection": {
+                    "columns": [
+                        "HNBiometricMeasurement",
+                        "TimeLowProg",
+                        "InseminationTime",
+                        "Likelihood"
+                    ],
+                    "on": [
+                        "HNBiometricMeasurement"
+                    ],
+                    "how": "outer"
+                },
+                "AnimalHistoricalData": {
+                    "columns": [
+                        "OID",
+                        "BasicAnimal",
+                        "DateAndTime"
+                    ],
+                    "prerename": {
+                        "OID": "HNBiometricMeasurement"
+                    },
+                    "on": [
+                        "HNBiometricMeasurement",
+                        "DateAndTime"
+                    ],
+                    "how": "left"
+                }
+            },
+            "rename": {
+                "BasicAnimal": "animal_oid",
+                "HNBiometricMeasurement": "herdnavigator_oid",
+                "DateAndTime": "measured_on",
+                "BiometricType": "type_measurement",
+                "RawLevel": "raw",
+                "SmoothedLevel": "smooth",
+                "DiagnoseType": "diagnosis_type",
+                "Risk": "risk",
+                "Alarm": "alarm",
+                "Reliability": "reliability",
+                "Trend": "trend",
+                "TimeLowProg": "time_low_p4",
+                "InseminationTime": "predicted_insemination_time",
+                "Likelihood": "likelihood"
+            },
+            "drop_duplicates": [
+                "herdnavigator_oid"
+            ]
+        },
+        "insemination": {
+            "data": {
+                "EventInsemination": {
+                    "columns": [
+                        "OID",
+                        "InsemMethod",
+                        "Semen",
+                        "InseminationNo"
+                    ]
+                },
+                "AbstractAnimalEvent": {
+                    "columns": [
+                        "BasicAnimal",
+                        "DateAndTime",
+                        "OID"
+                    ],
+                    "on": [
+                        "OID"
+                    ],
+                    "how": "left"
+                }
+            },
+            "rename": {
+                "BasicAnimal": "animal_oid",
+                "OID": "insemination_oid",
+                "DateAndTime": "measured_on",
+                "InsemMethod": "insemination_method",
+                "Semen": "semen",
+                "InseminationNo": "insemination_number"
+            },
+            "drop_duplicates": [
+                "insemination_oid"
+            ]
+        },
+        "bcs": {
+            "data": {
+                "BcsDailyData": {
+                    "columns": [
+                        "OID",
+                        "Animal",
+                        "DateAndTime",
+                        "BcsValue"
+                    ]
+                }
+            },
+            "rename": {
+                "OID": "bcs_oid",
+                "Animal": "animal_oid",
+                "DateAndTime": "measured_on",
+                "BcsValue": "bcs_value"
+            },
+            "drop_duplicates": [
+                "bcs_oid"
+            ]
+        }
+    },
+    "d_37": {
+        "animal": {
+            "data": {
+                "BasicAnimal": {
+                    "columns": [
+                        "OID",
+                        "Number",
+                        "OfficialRegNo",
+                        "Name",
+                        "Breed",
+                        "BirthDate",
+                        "ExitDate"
+                    ]
+                }
+            },
+            "rename": {
+                "OID": "animal_oid",
+                "Number": "animal_number",
+                "OfficialRegNo": "official_registration_number",
+                "Name": "name",
+                "Breed": "breed",
+                "BirthDate": "birth_date",
+                "ExitDate": "exit_date"
+            },
+            "drop_duplicates": [
+                "animal_oid"
+            ]
+        },
+        "lactation": {
+            "data": {
+                "AnimalLactationSummary": {
+                    "columns": [
+                        "OID",
+                        "Animal",
+                        "LactationNumber",
+                        "StartDate",
+                        "EndDate"
+                    ]
+                }
+            },
+            "rename": {
+                "OID": "lactation_oid",
+                "Animal": "animal_oid",
+                "LactationNumber": "parity",
+                "StartDate": "calving",
+                "EndDate": "dry_off"
+            },
+            "drop_duplicates": [
+                "lactation_oid"
+            ]
+        },
+        "milking": {
+            "data": {
+                "SessionMilkYield": {
+                    "columns": [
+                        "OID",
+                        "TotalYield",
+                        "Destination",
+                        "SessionNo"
+                    ]
+                },
+                "VoluntarySessionMilkYield": {
+                    "columns": [
+                        "OID",
+                        "QuarterLFYield",
+                        "QuarterRFYield",
+                        "QuarterLRYield",
+                        "QuarterRRYield",
+                        "ConductivityLF",
+                        "ConductivityRF",
+                        "ConductivityLR",
+                        "ConductivityRR",
+                        "BloodLF",
+                        "BloodRF",
+                        "BloodLR",
+                        "BloodRR",
+                        "PeakFlowLF",
+                        "PeakFlowRF",
+                        "PeakFlowLR",
+                        "PeakFlowRR",
+                        "MeanFlowLF",
+                        "MeanFlowRF",
+                        "MeanFlowLR",
+                        "MeanFlowRR",
+                        "Mdi",
+                        "NotMilkedTeats",
+                        "Incomplete",
+                        "Kickoff",
+                        "MilkType",
+                        "Occ",
+                        "SampleTube",
+                        "SampleTubeRack",
+                        "SampleTubePosition"
+                    ],
+                    "on": [
+                        "OID"
+                    ],
+                    "how": "outer"
+                },
+                "AnimalHistoricalData": {
+                    "columns": [
+                        "OID",
+                        "BasicAnimal",
+                        "DateAndTime",
+                        "Device",
+                        "EndTime",
+                        "PreviousEndTime"
+                    ],
+                    "on": [
+                        "OID"
+                    ],
+                    "how": "left"
+                }
+            },
+            "rename": {
+                "OID": "milking_oid",
+                "BasicAnimal": "animal_oid",
+                "Device": "milking_system_oid",
+                "DateAndTime": "started_at",
+                "EndTime": "ended_at",
+                "PreviousEndTime": "previously_ended_at",
+                "TotalYield": "tmy",
+                "Destination": "destination",
+                "SessionNo": "session_number",
+                "SampleTube": "sample_tube",
+                "SampleTubeRack": "sample_tube_rack",
+                "SampleTubePosition": "sample_tube_position",
+                "QuarterLFYield": "mylf",
+                "QuarterRFYield": "myrf",
+                "QuarterLRYield": "mylr",
+                "QuarterRRYield": "myrr",
+                "ConductivityLF": "eclf",
+                "ConductivityRF": "ecrf",
+                "ConductivityLR": "eclr",
+                "ConductivityRR": "ecrr",
+                "BloodLF": "bloodlf",
+                "BloodRF": "bloodrf",
+                "BloodLR": "bloodlr",
+                "BloodRR": "bloodrr",
+                "PeakFlowLF": "pflf",
+                "PeakFlowRF": "pfrf",
+                "PeakFlowLR": "pflr",
+                "PeakFlowRR": "pfrr",
+                "MeanFlowLF": "mflf",
+                "MeanFlowRF": "mfrf",
+                "MeanFlowLR": "mflr",
+                "MeanFlowRR": "mfrr",
+                "Mdi": "mdi_delaval",
+                "NotMilkedTeats": "not_milked_teats",
+                "Incomplete": "incomplete",
+                "Kickoff": "kickoff",
+                "MilkType": "milk_type",
+                "Occ": "occ"
+            },
+            "drop_duplicates": [
+                "milking_oid"
+            ]
+        },
+        "cleaning": {
+            "data": {
+                "Cleaning": {
+                    "columns": [
+                        "OID",
+                        "MilkingStationDevice",
+                        "StartCleaningTime",
+                        "EndCleaningTime",
+                        "CleaningProgramNumber",
+                        "SupportingData2"
+                    ]
+                }
+            },
+            "rename": {
+                "OID": "cleaning_oid",
+                "MilkingStationDevice": "milking_system_oid",
+                "StartCleaningTime": "start_time",
+                "EndCleaningTime": "end_time",
+                "CleaningProgramNumber": "cleaning_type_id",
+                "SupportingData2": "reason"
+            },
+            "drop_duplicates": [
+                "cleaning_oid"
+            ]
+        },
+        "herdnavigator": {
+            "data": {
+                "HNBiometricData": {
+                    "columns": [
+                        "HNBiometricMeasurement",
+                        "BiometricType",
+                        "RawLevel",
+                        "SmoothedLevel"
+                    ]
+                },
+                "HNDiagnose": {
+                    "columns": [
+                        "HNBiometricMeasurement",
+                        "DateAndTime",
+                        "DiagnoseType",
+                        "Risk",
+                        "Alarm",
+                        "Reliability",
+                        "Trend"
+                    ],
+                    "on": [
+                        "HNBiometricMeasurement"
+                    ],
+                    "how": "outer"
+                },
+                "HNHeatDetection": {
+                    "columns": [
+                        "HNBiometricMeasurement",
+                        "TimeLowProg",
+                        "InseminationTime",
+                        "Likelihood"
+                    ],
+                    "on": [
+                        "HNBiometricMeasurement"
+                    ],
+                    "how": "outer"
+                },
+                "AnimalHistoricalData": {
+                    "columns": [
+                        "OID",
+                        "BasicAnimal",
+                        "DateAndTime"
+                    ],
+                    "prerename": {
+                        "OID": "HNBiometricMeasurement"
+                    },
+                    "on": [
+                        "HNBiometricMeasurement",
+                        "DateAndTime"
+                    ],
+                    "how": "left"
+                }
+            },
+            "rename": {
+                "BasicAnimal": "animal_oid",
+                "HNBiometricMeasurement": "herdnavigator_oid",
+                "DateAndTime": "measured_on",
+                "BiometricType": "type_measurement",
+                "RawLevel": "raw",
+                "SmoothedLevel": "smooth",
+                "DiagnoseType": "diagnosis_type",
+                "Risk": "risk",
+                "Alarm": "alarm",
+                "Reliability": "reliability",
+                "Trend": "trend",
+                "TimeLowProg": "time_low_p4",
+                "InseminationTime": "predicted_insemination_time",
+                "Likelihood": "likelihood"
+            },
+            "drop_duplicates": [
+                "herdnavigator_oid"
+            ]
+        },
+        "insemination": {
+            "data": {
+                "EventInsemination": {
+                    "columns": [
+                        "OID",
+                        "InsemMethod",
+                        "Semen",
+                        "InseminationNo"
+                    ]
+                },
+                "AbstractAnimalEvent": {
+                    "columns": [
+                        "BasicAnimal",
+                        "DateAndTime",
+                        "OID"
+                    ],
+                    "on": [
+                        "OID"
+                    ],
+                    "how": "left"
+                }
+            },
+            "rename": {
+                "BasicAnimal": "animal_oid",
+                "OID": "insemination_oid",
+                "DateAndTime": "measured_on",
+                "InsemMethod": "insemination_method",
+                "Semen": "semen",
+                "InseminationNo": "insemination_number"
+            },
+            "drop_duplicates": [
+                "insemination_oid"
+            ]
+        },
+        "bcs": {
+            "data": {
+                "BcsDailyData": {
+                    "columns": [
+                        "OID",
+                        "Animal",
+                        "DateAndTime",
+                        "BcsValue"
+                    ]
+                }
+            },
+            "rename": {
+                "OID": "bcs_oid",
+                "Animal": "animal_oid",
+                "DateAndTime": "measured_on",
+                "BcsValue": "bcs_value"
+            },
+            "drop_duplicates": [
+                "bcs_oid"
+            ]
+        }
+    },
+    "l": {
+        "animal": {
+            "data": {
+                "HemAnimal": {
+                    "columns": [
+                        "AniId",
+                        "AniUserNumber",
+                        "AniLifeNumber",
+                        "AniName",
+                        "AniBirthday"
+                    ]
+                }
+            },
+            "rename": {
+                "AniId": "animal_oid",
+                "AniUserNumber": "animal_number",
+                "AniLifeNumber": "official_registration_number",
+                "AniName": "name",
+                "AniBirthday": "birth_date"
+            },
+            "drop_duplicates": [
+                "animal_oid"
+            ]
+        },
+        "lactation": {
+            "data": {
+                "RemLactation": {
+                    "columns": [
+                        "LacId",
+                        "LacAniId",
+                        "LacNumber",
+                        "LacCalvingDate",
+                        "LacDryOffDate",
+                        "LacBreId"
+                    ]
+                }
+            },
+            "rename": {
+                "LacId": "lactation_oid",
+                "LacAniId": "animal_oid",
+                "LacNumber": "parity",
+                "LacCalvingDate": "calving",
+                "LacDryOffDate": "dry_off",
+                "LacBreId": "breed"
+            },
+            "drop_duplicates": [
+                "lactation_oid"
+            ]
+        },
+        "milking": {
+            "data": {
+                "PrmDeviceVisit": {
+                    "columns": [
+                        "DviId",
+                        "DviAniId",
+                        "DviDevId",
+                        "DviStartTime",
+                        "DviEndTime",
+                        "DviIntervalTime"
+                    ]
+                },
+                "PrmMilkVisit": {
+                    "columns": [
+                        "MviId",
+                        "MviDviId",
+                        "MviMilkYield",
+                        "MviMilkDuration",
+                        "MviMilkSpeedMax",
+                        "MviWeight",
+                        "MviMilkTemperature",
+                        "MviMilkDestination",
+                        "MviMilkTime",
+                        "MviLFMilkYield",
+                        "MviRFMilkYield",
+                        "MviLRMilkYield",
+                        "MviRRMilkYield",
+                        "MviLFConductivity",
+                        "MviRFConductivity",
+                        "MviLRConductivity",
+                        "MviRRConductivity",
+                        "MviLFRedReflection",
+                        "MviRFRedReflection",
+                        "MviLRRedReflection",
+                        "MviRRRedReflection",
+                        "MviLFGreenReflection",
+                        "MviRFGreenReflection",
+                        "MviLRGreenReflection",
+                        "MviRRGreenReflection",
+                        "MviLFiBlueReflection",
+                        "MviRFiBlueReflection",
+                        "MviLRiBlueReflection",
+                        "MviRRiBlueReflection",
+                        "MviLFBackgroundColour",
+                        "MviRFBackgroundColour",
+                        "MviLRBackgroundColour",
+                        "MviRRBackgroundColour"
+                    ],
+                    "prerename": {
+                        "MviDviId": "DviId"
+                    },
+                    "on": [
+                        "DviId"
+                    ],
+                    "how": "right"
+                }
+            },
+            "rename": {
+                "DviId": "milking_oid",
+                "DviAniId": "animal_oid",
+                "DviDevId": "milking_system_oid",
+                "DviStartTime": "started_at",
+                "DviEndTime": "ended_at",
+                "DviIntervalTime": "mi",
+                "MviMilkYield": "tmy",
+                "MviMilkDuration": "dur",
+                "MviMilkSpeedMax": "speed",
+                "MviWeight": "weight",
+                "MviMilkTemperature": "milk_t",
+                "MviMilkDestination": "destination",
+                "MviMilkTime": "milk_time",
+                "MviLFMilkYield": "mylf",
+                "MviRFMilkYield": "myrf",
+                "MviLRMilkYield": "mylr",
+                "MviRRMilkYield": "myrr",
+                "MviLFRedReflection": "redreflf",
+                "MviRFRedReflection": "redrefrf",
+                "MviLRRedReflection": "redreflr",
+                "MviRRRedReflection": "redrefrr",
+                "MviLFGreenReflection": "greenreflf",
+                "MviRFGreenReflection": "greenrefrf",
+                "MviLRGreenReflection": "greenreflr",
+                "MviRRGreenReflection": "greenrefrr",
+                "MviLFiBlueReflection": "bluereflf",
+                "MviRFiBlueReflection": "bluerefrf",
+                "MviLRiBlueReflection": "bluereflr",
+                "MviRRiBlueReflection": "bluerefrr",
+                "MviLFBackgroundColour": "backgroundcolorlf",
+                "MviRFBackgroundColour": "backgroundcolorrf",
+                "MviLRBackgroundColour": "backgroundcolorlr",
+                "MviRRBackgroundColour": "backgroundcolorrr",
+                "MviLFConductivity": "eclf_lely",
+                "MviRFConductivity": "ecrf_lely",
+                "MviLRConductivity": "eclr_lely",
+                "MviRRConductivity": "ecrr_lely"
+            },
+            "drop_duplicates": [
+                "milking_oid"
+            ]
+        },
+        "activity": {
+            "data": {
+                "PrmActivityScr": {
+                    "columns": [
+                        "AscId",
+                        "AscAniId",
+                        "AscCellTime",
+                        "AscActivity",
+                        "AscTotalRuminationTime",
+                        "AscRuminationMinutes"
+                    ]
+                }
+            },
+            "rename": {
+                "AscId": "activity_oid",
+                "AscAniId": "animal_oid",
+                "AscCellTime": "measured_on",
+                "AscActivity": "activity_total",
+                "AscTotalRuminationTime": "rumination_acc",
+                "AscRuminationMinutes": "rumination_time"
+            },
+            "drop_duplicates": [
+                "activity_oid"
+            ]
+        }
+    }
+}

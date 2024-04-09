@@ -1,0 +1,306 @@
+{
+    "d": {
+        "BasicAnimal": {
+            "columns": [
+                "OID",
+                "Number",
+                "OfficialRegNo",
+                "Name",
+                "Breed",
+                "BirthDate",
+                "ExitDate"
+            ],
+            "extracttype": [
+                "full"
+            ]
+        },
+        "AnimalLactationSummary": {
+            "columns": [
+                "OID",
+                "Animal",
+                "LactationNumber",
+                "StartDate",
+                "EndDate"
+            ],
+            "extracttype": [
+                "full"
+            ]
+        },
+        "HNBiometricData": {
+            "columns": [
+                "HNBiometricMeasurement",
+                "BiometricType",
+                "RawLevel",
+                "SmoothedLevel"
+            ],
+            "extracttype": [
+                "full"
+            ]
+        },
+        "HNHeatDetection": {
+            "columns": [
+                "HNBiometricMeasurement",
+                "TimeLowProg",
+                "InseminationTime",
+                "Likelihood"
+            ],
+            "extracttype": [
+                "full"
+            ]
+        },
+        "HNPregnancyDetection": {
+            "columns": [
+                "OID",
+                "Likelihood"
+            ],
+            "extracttype": [
+                "full"
+            ]
+        },
+        "EventInsemination": {
+            "columns": [
+                "OID",
+                "InsemMethod",
+                "Semen",
+                "InseminationNo"
+            ],
+            "extracttype": [
+                "full"
+            ]
+        },
+        "AnimalHistoricalData": {
+            "columns": [
+                "OID",
+                "BasicAnimal",
+                "DateAndTime"
+            ],
+            "restrictID": [
+                "DateAndTime"
+            ],
+            "extracttype": [
+                "datetime"
+            ]
+        },
+        "Cleaning": {
+            "columns": [
+                "OID",
+                "MilkingStationDevice",
+                "StartCleaningTime",
+                "EndCleaningTime",
+                "CleaningProgramNumber",
+                "SupportingData2"
+            ],
+            "restrictID": [
+                "EndCleaningTime"
+            ],
+            "extracttype": [
+                "datetime"
+            ]
+        },
+        "HNDiagnose": {
+            "columns": [
+                "HNBiometricMeasurement",
+                "DateAndTime",
+                "DiagnoseType",
+                "Risk",
+                "Alarm",
+                "Reliability",
+                "Trend"
+            ],
+            "restrictID": [
+                "DateAndTime"
+            ],
+            "extracttype": [
+                "datetime"
+            ]
+        },
+        "AbstractAnimalEvent": {
+            "columns": [
+                "BasicAnimal",
+                "DateAndTime",
+                "OID"
+            ],
+            "restrictID": [
+                "DateAndTime"
+            ],
+            "extracttype": [
+                "datetime"
+            ]
+        },
+        "BcsDailyData": {
+            "columns": [
+                "OID",
+                "Animal",
+                "DateAndTime",
+                "BcsValue"
+            ],
+            "restrictID": [
+                "DateAndTime"
+            ],
+            "extracttype": [
+                "datetime"
+            ]
+        },
+        "SessionMilkYield": {
+            "columns": [
+                "OID",
+                "BasicAnimal",
+                "MilkingDevice",
+                "BeginTime",
+                "EndTime",
+                "PreviousEndTime",
+                "TotalYield",
+                "Destination",
+                "SessionNo",
+                "SampleTube",
+                "SampleTubeRack",
+                "SampleTubePosition"
+            ],
+            "restrictID": [
+                "OID"
+            ],
+            "extracttype": [
+                "moid"
+            ]
+        },
+        "VoluntarySessionMilkYield": {
+            "columns": [
+                "OID",
+                "QuarterLFYield",
+                "QuarterRFYield",
+                "QuarterLRYield",
+                "QuarterRRYield",
+                "ConductivityLF",
+                "ConductivityRF",
+                "ConductivityLR",
+                "ConductivityRR",
+                "BloodLF",
+                "BloodRF",
+                "BloodLR",
+                "BloodRR",
+                "PeakFlowLF",
+                "PeakFlowRF",
+                "PeakFlowLR",
+                "PeakFlowRR",
+                "MeanFlowLF",
+                "MeanFlowRF",
+                "MeanFlowLR",
+                "MeanFlowRR",
+                "Mdi",
+                "NotMilkedTeats",
+                "Incomplete",
+                "Kickoff",
+                "MilkType",
+                "Occ"
+            ],
+            "restrictID": [
+                "OID"
+            ],
+            "extracttype": [
+                "moid"
+            ]
+        }
+    },
+    "l": {
+        "HemAnimal": {
+            "columns": [
+                "AniId",
+                "AniUserNumber",
+                "AniLifeNumber",
+                "AniName",
+                "AniBirthday"
+            ],
+            "extracttype": [
+                "full"
+            ]
+        },
+        "RemLactation": {
+            "columns": [
+                "LacId",
+                "LacAniId",
+                "LacNumber",
+                "LacCalvingDate",
+                "LacDryOffDate",
+                "LacBreId"
+            ],
+            "extracttype": [
+                "full"
+            ]
+        },
+        "PrmActivityScr": {
+            "columns": [
+                "AscId",
+                "AscAniId",
+                "AscCellTime",
+                "AscActivity",
+                "AscTotalRuminationTime",
+                "AscRuminationMinutes"
+            ],
+            "restrictID": [
+                "AscCellTime"
+            ],
+            "extracttype": [
+                "datetime"
+            ]
+        },
+        "PrmDeviceVisit": {
+            "columns": [
+                "DviId",
+                "DviAniId",
+                "DviDevId",
+                "DviStartTime",
+                "DviEndTime",
+                "DviIntervalTime"
+            ],
+            "restrictID": [
+                "DviId"
+            ],
+            "extracttype": [
+                "moid"
+            ]
+        },
+        "PrmMilkVisit": {
+            "columns": [
+                "MviId",
+                "MviDviId",
+                "MviMilkYield",
+                "MviMilkDuration",
+                "MviMilkSpeedMax",
+                "MviWeight",
+                "MviMilkTemperature",
+                "MviMilkDestination",
+                "MviMilkTime",
+                "MviLFMilkYield",
+                "MviRFMilkYield",
+                "MviLRMilkYield",
+                "MviRRMilkYield",
+                "MviLFConductivity",
+                "MviRFConductivity",
+                "MviLRConductivity",
+                "MviRRConductivity",
+                "MviLFRedReflection",
+                "MviRFRedReflection",
+                "MviLRRedReflection",
+                "MviRRRedReflection",
+                "MviLFGreenReflection",
+                "MviRFGreenReflection",
+                "MviLRGreenReflection",
+                "MviRRGreenReflection",
+                "MviLFiBlueReflection",
+                "MviRFiBlueReflection",
+                "MviLRiBlueReflection",
+                "MviRRiBlueReflection",
+                "MviLFBackgroundColour",
+                "MviRFBackgroundColour",
+                "MviLRBackgroundColour",
+                "MviRRBackgroundColour"
+            ],
+            "restrictID": [
+                "MviDviId"
+            ],
+            "extracttype": [
+                "moid"
+            ]
+        }
+    }
+}
