@@ -1,0 +1,63 @@
+Metadata-Version: 2.1
+Name: numeratorpy
+Version: 0.0.3
+Summary: Python SDK for Numerator Feature Management Platform
+Author: Amos Zhang
+Classifier: Programming Language :: Python :: 3
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: certifi ==2024.2.2
+Requires-Dist: charset-normalizer ==3.3.2
+Requires-Dist: idna ==3.6
+Requires-Dist: requests ==2.31.0
+Requires-Dist: urllib3 ==2.2.1
+
+# Numerator Python SDK
+
+## Quickstart
+
+1. Create a subclass of `NumeratorFeatureFlagProvider` and define feature flags:
+
+```python
+from numerator.config import NumeratorConfig
+from numerator.context import SimpleContextProvider
+from numerator.feature_flags import NumeratorFeatureFlagProvider
+
+
+class ExampleFeatureFlagProvider(NumeratorFeatureFlagProvider):
+
+    def __init__(self, config: NumeratorConfig):
+        self.config = config
+        self.context_provider = SimpleContextProvider()
+
+        super().__init__(self.config, self.context_provider)
+
+        self.init_feature_flag('basic_boolean_flag', False)
+        self.init_feature_flag('basic_string_flag', 'Hello World')
+
+    def is_basic_feature_enabled(self) -> bool:
+        return self.get_feature_flag('basic_boolean_flag').value()
+
+    def get_string_value_for_context(self, context: dict) -> str:
+        return self.get_feature_flag('basic_string_flag').value(context)
+```
+
+2. Use the above feature flag accessors in code:
+
+```python
+feature_flags = ExampleFeatureFlagProvider(config)
+
+if feature_flags.is_basic_feature_enabled():
+    # feature enabled logic
+    text = feature_flags.get_string_value_for_context({ 'user': '...' })
+else:
+    # feature disabled logic
+```
+
+## Advanced Usage
+
+*TODO*
