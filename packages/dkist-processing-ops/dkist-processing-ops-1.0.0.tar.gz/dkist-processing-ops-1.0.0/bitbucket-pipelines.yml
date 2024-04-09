@@ -1,0 +1,84 @@
+#Build Configuration for docker deployment to artifactory
+image: python:3.11
+
+definitions:
+  services:
+    redis:
+      image: redis
+  steps:
+    - step: &lint
+        caches:
+          - pip
+        name: Lint
+        script:
+          - pip install -U pip
+          - pip install pre-commit
+          - pre-commit install
+          - pre-commit run --all-files
+    - step: &scan
+        caches:
+          - pip
+        name: Scan
+        script:
+          - pip install -U pip
+          - pip install .
+          - pip freeze | grep -v @ > requirements.txt
+          - cat requirements.txt
+          - echo $SNYK_VERSION
+          - curl -L -o snyk https://github.com/snyk/snyk/releases/download/$SNYK_VERSION/snyk-linux
+          - chmod 755 snyk
+          - ./snyk -d auth $SNYK_TOKEN
+          - echo $SNYK_CLI_COMMAND
+          - $SNYK_CLI_COMMAND
+    - step: &test
+        caches:
+          - pip
+        name: Test
+        script:
+          - pip install -U pip
+          - pip install .[test]
+          - pytest -v -n auto -m "not development" --pyargs dkist_processing_ops --cov dkist_processing_ops --cov-report xml:coverage.xml
+        services:
+          - redis
+    - step: &push_workflow
+        caches:
+          - pip
+        name: Push Workflow
+        script:
+          - pip install -U pip
+          - pip install .
+          - export BUILD_VERSION="${BITBUCKET_TAG:1}"
+          - export ARTIFACT_FOLDER="${BITBUCKET_REPO_SLUG}_${BUILD_VERSION}/"
+          - python -c "from dkist_processing_core.build_utils import export_dags; import dkist_processing_ops.workflows as workflow_package; export_dags(workflow_package, '${ARTIFACT_FOLDER}')"
+          - python -c "from dkist_processing_ops.dags.scale import export_scale_dags; export_scale_dags('${ARTIFACT_FOLDER}')"
+          - export SOURCE_PATH="workflow_${BUILD_VERSION}.gz"
+          - tar --exclude="bitbucket-pipelines.yml" -cvzf ${SOURCE_PATH} ${ARTIFACT_FOLDER}
+          - export TARGET_PATH="generic-packages/dkist-processing-ops/${BUILD_VERSION}/"
+          - curl -fL https://getcli.jfrog.io | sh
+          - ./jfrog rt u --url $ARTIFACTORY_URL --user $ARTIFACTORY_USER --password $ARTIFACTORY_PASSWORD ${SOURCE_PATH} ${TARGET_PATH}
+    - step: &push_code
+        caches:
+          - pip
+        name: Push Code
+        script:
+          - pip install -U pip
+          - pip install twine build
+          - python -m build --outdir wheelhouse .
+          - python -m twine upload --skip-existing wheelhouse/*
+
+
+
+pipelines:
+  default:
+    - step: *lint
+    - parallel:
+        - step: *scan
+        - step: *test
+  tags:
+    'v*':
+      - parallel:
+          - step: *lint
+          - step: *scan
+          - step: *test
+      - step: *push_workflow
+      - step: *push_code

@@ -1,0 +1,80 @@
+[build-system]
+
+requires = [
+    "setuptools>=62.1",
+    "setuptools_scm[toml]>=6.2",
+]
+
+build-backend = 'setuptools.build_meta'
+
+[project]
+name = "dkist-processing-ops"
+description = "Automated Processing smoke test and operations workflows"
+readme = "README.rst"
+requires-python = ">=3.11"
+classifiers = [
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+]
+license = { text = "BSD 3-Clause" }
+authors = [
+  { name = "NSO / AURA", email = "dkistdc@nso.edu" },
+]
+
+dependencies = [
+    "dkist-processing-common==6.1.0",
+    "dkist-service-configuration==1.1.0",
+]
+dynamic = ["version"]
+
+# tox is not required to run the tests, but simplifies IDE integration
+# Pygments is solely to support README.rst rendering
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-cov",
+    "pytest-xdist",
+]
+
+[project.urls]
+repository = "https://bitbucket.org/dkistdc/dkist-processing-ops"
+
+[tool.setuptools]
+zip-safe = false
+include-package-data = true
+
+[tool.setuptools.packages.find]
+
+[tool.setuptools.package-data]
+# include .ttf files from any directory
+"*" = ["*.ttf"]
+
+[tool.setuptools_scm]
+write_to = "dkist_processing_ops/_version.py"
+
+[tool.pytest.ini_options]
+testpaths = [
+  "dkist_processing_ops",
+]
+markers = [
+  "development: For tests that can only be  run while developing with a sidecar proxy (as opposed to in bitbucket pipelines)"
+]
+
+[tool.coverage.run]
+omit = [
+ "dkist_processing_ops/__init*",
+ "dkist_processing_ops/conftest.py",
+ "dkist_processing_ops/*setup_package*",
+ "dkist_processing_ops/tests/*",
+ "dkist_processing_ops/*/tests/*",
+ "dkist_processing_ops/extern/*",
+ "dkist_processing_ops/version*",
+ "*/dkist_processing_ops/__init*",
+ "*/dkist_processing_ops/conftest.py",
+ "*/dkist_processing_ops/*setup_package*",
+ "*/dkist_processing_ops/tests/*",
+ "*/dkist_processing_ops/*/tests/*",
+ "*/dkist_processing_ops/extern/*",
+ "*/dkist_processing_ops/version*",
+]
