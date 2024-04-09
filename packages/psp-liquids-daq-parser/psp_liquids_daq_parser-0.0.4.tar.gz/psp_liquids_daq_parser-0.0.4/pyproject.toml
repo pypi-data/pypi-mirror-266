@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "psp_liquids_daq_parser"
+dynamic = ["version"]
+authors = [{ name = "Rajan Phadnis", email = "rajansd28@gmail.com" }]
+description = "Used to parse, convert, pickle, and pre-process TDMS files from BCLS or other NI daq boxes."
+readme = "README.md"
+requires-python = ">=3.11.0"
+classifiers = [
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "npTDMS[hdf,pandas,thermocouple_scaling]>=1.9.0",
+    "numpy>=1.26.4",
+]
+
+[tool.setuptools.dynamic]
+version = {attr = "__init__.__version__"}
+
+[project.urls]
+Homepage = "https://github.com/Purdue-Space-Program/daq_parser"
+Issues = "https://github.com/Purdue-Space-Program/daq_parser/issues"
