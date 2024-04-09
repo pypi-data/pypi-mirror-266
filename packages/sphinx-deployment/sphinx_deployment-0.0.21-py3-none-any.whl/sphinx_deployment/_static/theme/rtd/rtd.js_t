@@ -1,0 +1,149 @@
+/**
+ * Change the version of the root URL to the specified version.
+ *
+ * @param {string} rootUrl - The root URL.
+ * @param {string} currentVersion - The current version.
+ * @param {string} currentVersionPath - The path to the current version.
+ * @param {object} ver - The version object containing the name of the new version.
+ * @return {void} This function does not return a value.
+ */
+function changeVersion(rootUrl, currentVersion, currentVersionPath, ver) {
+  const newVersionPath = currentVersionPath.replace(currentVersion, ver.name);
+  const newUrl = window.location.href.replace(currentVersionPath, newVersionPath)
+  if (newUrl != window.location.href) {
+    fetch(newUrl)
+      .then((response) => {
+        if (response.ok) {
+          window.location.href = newUrl;
+        } else {
+          throw new Error(`${response.status} ${response.statusText}`);
+        }
+      })
+      .catch((_) => {
+        window.location.href = rootUrl + "/" + ver.name + "/";
+      });
+  }
+};
+
+window.addEventListener("DOMContentLoaded", async function () {
+  if (!sphinx_deployment_versions_file || !sphinx_deployment_current_version) {
+    console.error("sphinx_deployment_versions_file or sphinx_deployment_current_version is not set");
+    return;
+  }
+
+  var rootUrl = sphinx_deployment_versions_file.slice(0, sphinx_deployment_versions_file.lastIndexOf("/"));
+  var currentVersionPath = "/" + sphinx_deployment_current_version + "/";
+  var currentVersion = sphinx_deployment_current_version;
+
+  const response = await fetch(sphinx_deployment_versions_file);
+  if (!response.ok) {
+    throw new Error("Failed to fetch versions.json");
+  }
+  const versionsJson = await response.json();
+
+  if (!(currentVersion in versionsJson.versions)) {
+    console.error("Current version not found in versions.json");
+    return;
+  }
+
+  // Create injected div
+  var injectedDiv = document.createElement("div");
+  injectedDiv.setAttribute("id", "injected");
+  document.body.appendChild(injectedDiv);
+
+  // Add style
+  const link1 = document.createElement("link");
+  link1.setAttribute("rel", "stylesheet");
+  link1.setAttribute(
+    "href",
+    "https://www.w3schools.cn/cdnjs/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css",
+  );
+  injectedDiv.appendChild(link1);
+
+  // Create and append the rstVersionsDiv
+  const rstVersionsDiv = document.createElement("div");
+  rstVersionsDiv.setAttribute("class", "rst-versions rst-badge");
+  injectedDiv.appendChild(rstVersionsDiv);
+
+  // Current version
+  const rstCurrentVersionSpan = document.createElement("span");
+  rstCurrentVersionSpan.setAttribute("class", "rst-current-version");
+  rstCurrentVersionSpan.addEventListener("click", (e) => {
+    e.currentTarget.parentNode.classList.toggle("shift-up");
+  });
+  rstVersionsDiv.appendChild(rstCurrentVersionSpan);
+
+  // Append a book icon
+  const bookIconSpan = document.createElement("span");
+  bookIconSpan.setAttribute("class", "fa fa-book");
+  bookIconSpan.appendChild(document.createTextNode("\u00A0"));
+  rstCurrentVersionSpan.appendChild(bookIconSpan);
+
+  // Add a space
+  rstCurrentVersionSpan.appendChild(document.createTextNode("\u00A0"));
+
+  // Current version
+  const versionText = document.createTextNode(currentVersion);
+  rstCurrentVersionSpan.appendChild(versionText);
+
+  // Add a space
+  rstCurrentVersionSpan.appendChild(document.createTextNode("\u00A0"));
+
+  // Append a caret icon
+  const caretSpan = document.createElement("span");
+  caretSpan.setAttribute("class", "fa fa-caret-down");
+  rstCurrentVersionSpan.appendChild(caretSpan);
+
+  // Other versions
+  const rstOtherVersionsDiv = document.createElement("div");
+  rstOtherVersionsDiv.setAttribute("class", "rst-other-versions");
+  rstVersionsDiv.appendChild(rstOtherVersionsDiv);
+
+  // Append a dl element in rstOtherVersionsDiv
+  const dl = document.createElement("dl");
+  rstOtherVersionsDiv.appendChild(dl);
+
+  // Append a dt element in dl
+  const dt = document.createElement("dt");
+  dt.appendChild(document.createTextNode("Versions"));
+  dl.appendChild(dt);
+
+  // Iterate over versions and append dd elements to dl
+  Object.entries(versionsJson.versions).forEach(([_, ver]) => {
+    const dd = document.createElement("dd");
+    dd.setAttribute("class", "rtd-current-item");
+    const link = document.createElement("a");
+    link.setAttribute("href", "javascript:void(0)");
+    link.setAttribute("onclick", `changeVersion('${rootUrl}', '${currentVersion}', '${currentVersionPath}', ${JSON.stringify(ver)})`);
+    link.appendChild(document.createTextNode(ver.name));
+    dd.appendChild(link);
+    dl.appendChild(dd);
+  });
+
+  // Append customized items to Versions
+  var customizedItems = `{{ customizedItems }}`;
+
+  if (customizedItems) {
+    rstOtherVersionsDiv.innerHTML =
+      rstOtherVersionsDiv.innerHTML + customizedItems;
+  }
+
+  // Append an hr element as a separator
+  rstOtherVersionsDiv.appendChild(document.createElement("hr"));
+
+  // Append a small element
+  const small = document.createElement("small");
+  rstOtherVersionsDiv.appendChild(small);
+
+  // Generator info
+  const generatorSpan = document.createElement("span");
+  small.appendChild(generatorSpan);
+  generatorSpan.appendChild(document.createTextNode("Generated by "));
+  const generatorLink = document.createElement("a");
+  generatorSpan.appendChild(generatorLink);
+  generatorLink.setAttribute(
+    "href",
+    "https://github.com/msclock/sphinx-deployment",
+  );
+  generatorLink.appendChild(document.createTextNode("sphinx-deployment"));
+});

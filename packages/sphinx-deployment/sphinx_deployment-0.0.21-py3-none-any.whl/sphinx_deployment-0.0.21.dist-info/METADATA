@@ -1,0 +1,86 @@
+Metadata-Version: 2.1
+Name: sphinx-deployment
+Version: 0.0.21
+Summary: A versioned documentation deployment tool for sphinx.
+Author-email: msclock <msclock@126.com>
+License: Apache 2.0
+Project-URL: Homepage, https://github.com/msclock/sphinx-deployment
+Project-URL: Bug Tracker, https://github.com/msclock/sphinx-deployment/issues
+Project-URL: Discussions, https://github.com/msclock/sphinx-deployment/discussions
+Project-URL: Changelog, https://github.com/msclock/sphinx-deployment/releases
+Classifier: Development Status :: 1 - Planning
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Framework :: Sphinx :: Extension
+Classifier: Topic :: Scientific/Engineering
+Classifier: Typing :: Typed
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: click
+Requires-Dist: loguru
+Requires-Dist: sphinx
+Requires-Dist: gitpython
+Requires-Dist: jinja2
+Requires-Dist: importlib-metadata ; python_version < "3.8"
+Requires-Dist: importlib-resources >=1.3 ; python_version < "3.9"
+Requires-Dist: typing-extensions >=3.10.0 ; python_version < "3.9"
+Provides-Extra: dev
+Requires-Dist: sphinx-deployment[docs,test] ; extra == 'dev'
+Requires-Dist: build ; extra == 'dev'
+Requires-Dist: wheel ; extra == 'dev'
+Provides-Extra: docs
+Requires-Dist: sphinx ; extra == 'docs'
+Requires-Dist: furo ; extra == 'docs'
+Requires-Dist: myst-parser >=0.13 ; extra == 'docs'
+Requires-Dist: sphinx-copybutton ; extra == 'docs'
+Requires-Dist: sphinx-autodoc-typehints ; extra == 'docs'
+Requires-Dist: sphinx-inline-tabs ; extra == 'docs'
+Provides-Extra: test
+Requires-Dist: pytest >=6 ; extra == 'test'
+Requires-Dist: pytest-cov >=3 ; extra == 'test'
+
+# sphinx-deployment
+
+[![Actions Status][actions-badge]][actions-link]
+[![PyPI version][pypi-version]][pypi-link]
+[![PyPI platforms][pypi-platforms]][pypi-link]
+
+<!-- prettier-ignore-start -->
+[actions-badge]:            https://github.com/msclock/sphinx-deployment/actions/workflows/ci.yml/badge.svg
+[actions-link]:             https://github.com/msclock/sphinx-deployment/actions
+[pypi-link]:                https://pypi.org/project/sphinx-deployment/
+[pypi-platforms]:           https://img.shields.io/pypi/pyversions/sphinx-deployment
+[pypi-version]:             https://img.shields.io/pypi/v/sphinx_deployment?color
+<!-- prettier-ignore-end -->
+
+<!-- SPHINX-START -->
+
+A Sphinx plugin for deployment documentation. It provides a command
+`sphinx-deployment` to manage and facilitate versioned and customizable
+documentation deployment.
+
+## Features
+
+- Versioned documentation deployment management.
+- Customizable list of deployment view.
+- Deployments are managed based on Git.
+
+## License
+
+Apache License, for more details, see the
+[LICENSE](https://github.com/msclock/sphinx-deployment/blob/master/LICENSE)
+file.
+
+<!-- SPHINX-END -->

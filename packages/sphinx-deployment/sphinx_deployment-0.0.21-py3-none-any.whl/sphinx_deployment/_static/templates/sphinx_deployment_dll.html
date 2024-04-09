@@ -1,0 +1,12 @@
+{% if sphinx_deployment_dll %}
+<!-- customizedItems to be replaced in rtd.js_t -->
+{% for dll_key, dll in sphinx_deployment_dll.items() %}
+<dl>
+  <dt>{{ dll_key }}</dt>
+  {% for dll_item_key, dll_item in dll.items() %}
+  <dd class="rtd-current-item">
+    <a href="{{ dll_item }}">{{ dll_item_key }}</a>
+  </dd>
+  {% endfor %}
+</dl>
+{% endfor %} {% endif %}
