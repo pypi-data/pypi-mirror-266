@@ -1,0 +1,48 @@
+SixDofSuctionCup is SuctionCup:
+    .doc: """
+A flexible suction cup modeled with one RigidBody and six degrees of freedom
+for modeling the elasto dynamics.
+There are elasto dynamic parameters defined for both the collapsed and the resting state.
+"""
+    #body becomes Physics3D.Bodies.RigidBody
+
+    geometry is Physics3D.Charges.ExternalTriMeshGeometry
+
+    local_geometry_axis is Math.Vec3: Math.Vec3.fromXYZ(0,0,1)
+    holder_relative_position is Math.Vec3: gripper_connector.position
+
+    collapsed_elasto_dynamics is SuctionCupElastoDynamics
+    resting_elasto_dynamics is SuctionCupElastoDynamics
+
+    collapsed_joint is SixDofSuctionCupJoint:
+        enable_snap: false
+        charges: [gripper_connector, collapsed_mounting_connector]
+        deformation.along_main.stiffness: resting_elasto_dynamics.lip_normal_elasticity.stiffness
+        deformation.along_normal.stiffness: resting_elasto_dynamics.radial_axis_elasticity.stiffness
+        deformation.along_cross.stiffness: resting_elasto_dynamics.radial_axis_elasticity.stiffness
+        deformation.around_main.stiffness: resting_elasto_dynamics.around_lip_normal_elasticity.stiffness
+        deformation.around_normal.stiffness: resting_elasto_dynamics.around_radial_axis_elasticity.stiffness
+        deformation.around_cross.stiffness: resting_elasto_dynamics.around_radial_axis_elasticity.stiffness
+
+        damping.along_main.damping: resting_elasto_dynamics.lip_normal_damping.damping
+        damping.along_normal.damping: resting_elasto_dynamics.radial_axis_damping.damping
+        damping.along_cross.damping: resting_elasto_dynamics.radial_axis_damping.damping
+        damping.around_main.damping: resting_elasto_dynamics.around_lip_normal_damping.damping
+        damping.around_normal.damping: resting_elasto_dynamics.around_radial_axis_damping.damping
+        damping.around_cross.damping: resting_elasto_dynamics.around_radial_axis_damping.damping
+
+    resting_joint is SixDofSuctionCupJoint:
+        charges: [gripper_connector, resting_mounting_connector]
+        deformation.along_main.stiffness: resting_elasto_dynamics.lip_normal_elasticity.stiffness
+        deformation.along_normal.stiffness: resting_elasto_dynamics.radial_axis_elasticity.stiffness
+        deformation.along_cross.stiffness: resting_elasto_dynamics.radial_axis_elasticity.stiffness
+        deformation.around_main.stiffness: resting_elasto_dynamics.around_lip_normal_elasticity.stiffness
+        deformation.around_normal.stiffness: resting_elasto_dynamics.around_radial_axis_elasticity.stiffness
+        deformation.around_cross.stiffness: resting_elasto_dynamics.around_radial_axis_elasticity.stiffness
+
+        damping.along_main.damping: resting_elasto_dynamics.lip_normal_damping.damping
+        damping.along_normal.damping: resting_elasto_dynamics.radial_axis_damping.damping
+        damping.along_cross.damping: resting_elasto_dynamics.radial_axis_damping.damping
+        damping.around_main.damping: resting_elasto_dynamics.around_lip_normal_damping.damping
+        damping.around_normal.damping: resting_elasto_dynamics.around_radial_axis_damping.damping
+        damping.around_cross.damping: resting_elasto_dynamics.around_radial_axis_damping.damping

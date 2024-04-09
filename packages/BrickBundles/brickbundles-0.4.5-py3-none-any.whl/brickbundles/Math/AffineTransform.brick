@@ -1,0 +1,13 @@
+AffineTransform:
+    position is Vec3
+    rotation is Quat
+
+    static fn create() -> AffineTransform
+    static fn from(p: Vec3, r: Quat) -> AffineTransform
+    static fn inverseOf(p: Vec3, r: Quat) -> AffineTransform
+
+    fn inverse() -> AffineTransform
+    fn transformVec3Point(in: Vec3) -> Vec3
+    fn transformVec3Vector(in: Vec3) -> Vec3
+
+operator *(lhs: AffineTransform, rhs: AffineTransform) -> AffineTransform
