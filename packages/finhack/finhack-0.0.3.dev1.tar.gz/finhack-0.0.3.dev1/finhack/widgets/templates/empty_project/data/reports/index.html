@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Finhack回测概览</title>
+    <script src="/static/js/jquery-3.5.1.js"></script>
+    <script src="/static/js/jquery.dataTables-1.10.21.min.js"></script>
+    <link rel="stylesheet" href="/static/css/jquery.dataTables.min.css">
+    <script>
+        $(document).ready(function() {
+            $('#instanceTable').DataTable({"pageLength": 100});
+        });
+    </script>
+    <style>
+        td{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <table id="instanceTable" class="display">
+        <thead>
+            <tr>
+                <th>回测ID</th>
+                <th>模型id</th>
+                <th>策略名称</th>
+                <th>初始资金</th>
+                <th>夏普1</th>
+                <th>夏普2</th>
+                <!--<th>索提诺</th>-->
+                <th>年化</th>
+                <th>预览</th>
+                <th>最大回撤</th>
+                <th>交易次数</th>
+                <th>胜率</th>
+                <th>详情</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in data %}
+            <tr>
+                <td width="10%"><a href="/static/trader/bt_{{ item.instance_id }}.html" target="_blank">{{ item.instance_id[0:16] }}...</td>
+                <td>{{item.model[:16]}}...</td>
+                <td>{{item.strategy}}</td>
+                <td>{{ item.init_cash  }}</td>
+                <!-- <td>{{ item.alpha  | round(2)}}</td> -->
+                <td>{{ item.sharpe2 | round(2)}}</td>
+                <td>{{ item.sharpe | round(2)}}</td>
+                <!--<td>{{ item.sortino | round(2)}}</td>-->
+                <td>{{  (item.annual_return * 100)  | round(2) }}%</td>
+                <td width="10%"><img src="/static/images/bt_{{ item.instance_id }}.png"  width="150" /></td>
+                <td>{{ (item.max_down * 100)  | round(2) }}%</td>
+                <td>{{ item.trade_num }}</td>
+                <td>{{ (item.win/item.trade_num*100) | round(2)}}%</td>
+                <td><a href="/detail?id={{ item.instance_id }}" target="_blank">详情</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
