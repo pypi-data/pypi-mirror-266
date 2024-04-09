@@ -1,0 +1,23 @@
+
+[:python_version < "3.10"]
+typing_extensions
+
+[:python_version < "3.8"]
+importlib_metadata
+
+[dev]
+conan-check-updates[tests,tools]
+
+[tests]
+conan>=1.5
+coverage[toml]>=5
+pytest>=6
+pytest-asyncio
+pytest-rerunfailures
+
+[tools]
+cogapp>=3
+mypy>=0.9
+pre-commit
+ruff
+tox>=3.4

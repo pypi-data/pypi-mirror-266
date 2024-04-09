@@ -1,0 +1,173 @@
+[build-system]
+requires = ["setuptools>=61", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "conan-check-updates"
+version = "0.3.0"
+description = "Check for updates of your conanfile.txt/conanfile.py requirements."
+authors = [{ name = "Lukas Berbuer", email = "lukas.berbuer@gmail.com" }]
+readme = "README.md"
+license = { text = "MIT License" }
+requires-python = ">=3.7"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: C",
+    "Programming Language :: C++",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries",
+]
+keywords = ["conan", "update", "upgrade", "package", "requirements", "node-check-updates"]
+dependencies = [
+    "importlib_metadata; python_version<'3.8'",
+    "typing_extensions; python_version<'3.10'",
+]
+
+[project.optional-dependencies]
+tests = [
+    "conan>=1.5", # for e2e tests, >=1.5 due to new [tool_requires] section in conanfile
+    "coverage[toml]>=5", # pyproject.toml support
+    "pytest>=6", # pyproject.toml support
+    "pytest-asyncio",
+    "pytest-rerunfailures",
+]
+tools = [
+    "cogapp>=3",
+    "mypy>=0.9", # pyproject.toml support
+    "pre-commit",
+    "ruff",
+    "tox>=3.4", # pyproject.toml support
+]
+dev = [
+    "conan-check-updates[tests,tools]", # recursive dependency since pip 21.2
+]
+
+[project.scripts]
+conan-check-updates = "conan_check_updates.cli:main"
+
+[project.urls]
+Changelog = "https://github.com/lukasberbuer/conan-check-updates/blob/master/CHANGELOG.md"
+Source = "https://github.com/lukasberbuer/conan-check-updates"
+Issues = "https://github.com/lukasberbuer/conan-check-updates/issues"
+
+
+[tool.black]
+line-length = 100
+
+
+[tool.ruff]
+line-length = 100
+lint.select = [
+    "F", # pyflakes
+    "E", "W", # pycodestyle
+    "I", # isort
+    "N", # pep8 naming
+    "B", # flake8 bugbear
+    "A", # flake8 builtins
+    "C4", # flake8 comprehensions
+    "G", # flake8 logging format
+    "PIE", # flake8 pie
+    "RET", # flake8 return
+    "SIM", # flake8 simplify
+    "PT", # flake8 pytest style
+    "PL", # pylint
+    "RUF", # ruff specific rules
+]
+lint.ignore = [
+    "PLR0911", # too many return statements
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "PLR0913", # too many arguments
+    "PLR2004", # magic value
+]
+
+
+[tool.mypy]
+ignore_missing_imports = true
+
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q" # test summary for (a)ll except passed
+testpaths = ["tests"]
+log_cli = true
+log_cli_level = "WARNING"
+
+
+[tool.coverage.run]
+branch = true
+source = ["conan_check_updates"]
+
+[tool.coverage.paths]
+source = ["src", "*/site-packages"]
+
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist =
+    ruff-format
+    ruff
+    mypy
+    py{37, 38, 39, 310, 311, 312}-{v1, v2}
+    coverage-report
+
+[testenv:ruff-format]
+skip_install = true
+deps = ruff
+commands =
+    ruff format --diff .
+    ruff format --check .
+
+[testenv:ruff]
+skip_install = true
+deps = ruff
+commands =
+    ruff check .
+
+[testenv:mypy]
+skip_install = true
+deps = mypy>=0.9
+commands =
+    mypy ./src/
+
+[testenv]
+extras = tests
+deps =
+    v1: conan<2.0.0
+    v2: conan>=2.0.0
+commands =
+    coverage run --parallel -m pytest
+
+[testenv:coverage-report]
+skip_install = true
+deps = coverage[toml]>=5
+commands =
+    - coverage combine
+    coverage report
+
+[testenv:coveralls]
+skip_install = true
+deps = coveralls
+passenv = GITHUB_*
+commands =
+    - coverage combine
+    coverage report
+    coveralls --service=github
+"""

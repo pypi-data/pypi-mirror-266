@@ -1,0 +1,137 @@
+Metadata-Version: 2.1
+Name: conan-check-updates
+Version: 0.3.0
+Summary: Check for updates of your conanfile.txt/conanfile.py requirements.
+Author-email: Lukas Berbuer <lukas.berbuer@gmail.com>
+License: MIT License
+Project-URL: Changelog, https://github.com/lukasberbuer/conan-check-updates/blob/master/CHANGELOG.md
+Project-URL: Source, https://github.com/lukasberbuer/conan-check-updates
+Project-URL: Issues, https://github.com/lukasberbuer/conan-check-updates/issues
+Keywords: conan,update,upgrade,package,requirements,node-check-updates
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: C
+Classifier: Programming Language :: C++
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Libraries
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: importlib_metadata; python_version < "3.8"
+Requires-Dist: typing_extensions; python_version < "3.10"
+Provides-Extra: tests
+Requires-Dist: conan>=1.5; extra == "tests"
+Requires-Dist: coverage[toml]>=5; extra == "tests"
+Requires-Dist: pytest>=6; extra == "tests"
+Requires-Dist: pytest-asyncio; extra == "tests"
+Requires-Dist: pytest-rerunfailures; extra == "tests"
+Provides-Extra: tools
+Requires-Dist: cogapp>=3; extra == "tools"
+Requires-Dist: mypy>=0.9; extra == "tools"
+Requires-Dist: pre-commit; extra == "tools"
+Requires-Dist: ruff; extra == "tools"
+Requires-Dist: tox>=3.4; extra == "tools"
+Provides-Extra: dev
+Requires-Dist: conan-check-updates[tests,tools]; extra == "dev"
+
+# conan-check-updates
+
+[![CI](https://github.com/lukasberbuer/conan-check-updates/workflows/CI/badge.svg)](https://github.com/lukasberbuer/conan-check-updates/actions)
+[![Coverage Status](https://coveralls.io/repos/github/lukasberbuer/conan-check-updates/badge.svg?branch=master)](https://coveralls.io/github/lukasberbuer/conan-check-updates?branch=master)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PyPI](https://img.shields.io/pypi/v/conan-check-updates)](https://pypi.org/project/conan-check-updates)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/conan-check-updates)](https://pypi.org/project/conan-check-updates)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+
+Check for updates of your `conanfile.txt` / `conanfile.py` requirements.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/lukasberbuer/conan-check-updates/master/docs/screenshot.png" alt="Screenshot" width="600">
+</p>
+
+This application is heavily inspired by [npm-check-updates](https://github.com/raineorshine/npm-check-updates).
+
+## Installation
+
+Install the latest version from PyPI:
+
+```
+pip install -U conan-check-updates
+```
+
+## Usage
+
+<!-- [[[cog
+from subprocess import check_output
+import cog
+
+usage = check_output(("conan-check-updates", "--help")).decode()
+cog.outl("```")
+for line in usage.splitlines():
+    cog.outl(line)
+cog.outl("```")
+]]] -->
+
+```
+usage: conan-check-updates [--cwd CWD] [--target {major,minor,patch}]
+                           [--timeout TIMEOUT] [-u] [-V] [-h]
+                           [filter ...]
+
+Check for updates of your conanfile.txt/conanfile.py requirements.
+
+positional arguments:
+  filter                Include only package names matching any of the given
+                        strings or patterns. Wildcards (*, ?) are allowed.
+                        Patterns can be inverted with a prepended !, e.g.
+                        !boost*. (default: None)
+
+options:
+  --cwd CWD             Path to a folder containing a recipe or to a recipe
+                        file directly (conanfile.py or conanfile.txt).
+                        (default: .)
+  --target {major,minor,patch}
+                        Limit update level: major, minor or patch. (default:
+                        major)
+  --timeout TIMEOUT     Timeout for `conan search` in seconds. (default: 30)
+  -u, --upgrade         Overwrite conanfile with upgraded versions. (default:
+                        False)
+  -V, --version         Show the version and exit.
+  -h, --help            Show this message and exit.
+```
+
+<!-- [[[end]]] -->
+
+## Contributing
+
+Contributions are happily accepted.
+Just [create an issue](https://github.com/lukasberbuer/conan-check-updates/issues/new) or make a pull-request.
+
+### Development setup
+
+```sh
+# Clone repository
+git clone https://github.com/lukasberbuer/conan-check-updates.git
+cd conan-check-updates
+
+# Install package and development tools
+pip install -e .[dev]
+
+# Install the git hook scripts
+pre-commit install
+
+# Run checks & tests with tox
+tox
+```
