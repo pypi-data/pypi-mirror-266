@@ -1,0 +1,231 @@
+{% extends 'punkweb_bb/base.html' %}
+{% load static %}
+
+{% block title_prefix %}{{thread.title}} | {% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'punkweb_bb/css/post-form.css' %}" />
+<link rel="stylesheet" href="{% static 'punkweb_bb/css/thread.css' %}" />
+<link rel="stylesheet" href="{% static 'punkweb_bb/css/thread-form.css' %}" />
+{{post_form.media.css}}
+{% endblock %}
+
+{% block extra_script %}
+{{post_form.media.js}}
+{% endblock %}
+
+{% block content %}
+
+<nav>
+  <ul class="pw-breadcrumb">
+    <li class="pw-breadcrumb-item">
+      <a href="{% url 'punkweb_bb:index' %}">Home</a>
+    </li>
+    <li class="pw-breadcrumb-item">
+      <a href="{{thread.subcategory.get_absolute_url}}">{{thread.subcategory.name}}</a>
+    </li>
+    <li class="pw-breadcrumb-item active">
+      {{thread.title}}
+    </li>
+  </ul>
+</nav>
+
+{% if posts.number == 1 %}
+<h1>{{thread.title}}</h1>
+
+<div class="pw-card fluid margin">
+  <div class="pw-card-header">
+    <div class="thread__date">{{thread.created_at|date:'M d, Y'}}</div>
+  </div>
+  <div class="thread">
+    <div class="thread__user">
+      {% if thread.user.profile.image %}
+      <img class="pw-avatar" src="{{thread.user.profile.image.url}}" alt="{{thread.user.username}}" />
+      {% else %}
+      <img class="pw-avatar" src="{% static 'punkweb_bb/img/default-profile-image.png' %}" alt="{{thread.user.username}}" />
+      {% endif %}
+      <div class="thread__user__usernameContainer">
+        {% if thread.user.profile.is_online %}
+        <div class="onlineIndicator"></div>
+        {% endif %}
+        <a href="{% url 'punkweb_bb:profile' thread.user.id %}">
+          {{thread.user.username}}
+        </a>
+      </div>
+      <div class="thread__user__info">
+        <div class="thread__user__info__row">
+          <div class="thread__user__info__label">Joined:</div>
+          <div class="thread__user__info__value">
+            {{thread.user.profile.created_at|date:"M d, Y"}}
+          </div>
+        </div>
+        <div class="thread__user__info__row">
+          <div class="thread__user__info__label">Posts:</div>
+          <div class="thread__user__info__value">{{thread.user.profile.post_count}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="thread__main">
+      <div class="thread__content">
+        {{thread.content.rendered}}
+      </div>
+      {% if thread.user.profile.signature.rendered %}
+      <div class="thread__signature">
+        {{thread.user.profile.signature.rendered}}
+      </div>
+      {% endif %}
+      {% if thread.user == request.user %}
+      <div class="thread__actions">
+        <a class="pw-button ghost sm" href="{% url 'punkweb_bb:thread_update' thread.id %}">Edit</a>
+        <a class="pw-button ghost danger sm" hx-get="{% url 'punkweb_bb:thread_delete' thread.id %}"
+          hx-target="#modal-portal">
+          Delete
+        </a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% for post in posts %}
+<div id="post-{{post.id}}" class="pw-card fluid margin">
+  <div class="pw-card-header thread__header">
+    <div class="thread__date">{{post.created_at|date:'M d, Y'}}</div>
+    <a class="thread__index" href="{{post.get_absolute_url}}">#{{post.index}}</a>
+  </div>
+  <div class="thread">
+    <div class="thread__user">
+      {% if post.user.profile.image %}
+      <div class="thread__user__image">
+        <img class="pw-avatar" src="{{post.user.profile.image.url}}" alt="{{post.user.username}}" />
+      </div>
+      {% else %}
+      <div class="thread__user__image">
+        <img class="pw-avatar" src="{% static 'punkweb_bb/img/default-profile-image.png' %}" alt="{{post.user.username}}" />
+      </div>
+      {% endif %}
+      <div class="thread__user__usernameContainer">
+        {% if post.user.profile.is_online %}
+        <div class="onlineIndicator"></div>
+        {% endif %}
+        <a href="{% url 'punkweb_bb:profile' post.user.id %}">
+          {{post.user.username}}
+        </a>
+      </div>
+      <div class="thread__user__info">
+        <div class="thread__user__info__row">
+          <div class="thread__user__info__label">Joined:</div>
+          <div class="thread__user__info__value">
+            {{post.user.profile.created_at|date:"M d, Y"}}
+          </div>
+        </div>
+        <div class="thread__user__info__row">
+          <div class="thread__user__info__label">Posts:</div>
+          <div class="thread__user__info__value">{{post.user.profile.post_count}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="thread__main">
+      <div class="thread__content">
+        {{post.content.rendered}}
+      </div>
+      {% if post.user.profile.signature.rendered %}
+      <div class="thread__signature">
+        {{post.user.profile.signature.rendered}}
+      </div>
+      {% endif %}
+      {% if post.user == request.user %}
+      <div class="thread__actions">
+        <a class="pw-button ghost sm" hx-get="{% url 'punkweb_bb:post_update' post.id %}" hx-target="#modal-portal">Edit</a>
+        <a class="pw-button ghost danger sm" hx-get="{% url 'punkweb_bb:post_delete' post.id %}"
+          hx-target="#modal-portal">
+          Delete
+        </a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+{% if posts.has_other_pages %}
+<nav>
+  <ul class="pw-pagination">
+    {% if posts.has_previous %}
+    <li class="pw-pagination-item">
+      <a class="pw-pagination-link" href="{{ post.thread.get_absolute_url }}?page={{posts.previous_page_number}}">
+        Prev
+      </a>
+    </li>
+    {% else %}
+    <li class="pw-pagination-item disabled">
+      <a class="pw-pagination-link" href="#">
+        Prev
+      </a>
+    </li>
+    {% endif %}
+    {% for i in posts.paginator.page_range %}
+    {% if posts.number == i %}
+    <li class="pw-pagination-item active">
+      <a class="pw-pagination-link" href="#">
+        {{i}}
+      </a>
+    </li>
+    {% else %}
+    <li class="pw-pagination-item">
+      <a class="pw-pagination-link" href="{{ post.thread.get_absolute_url }}?page={{i}}">
+        {{i}}
+      </a>
+    </li>
+    {% endif %}
+    {% endfor %}
+    {% if posts.has_next %}
+    <li class="pw-pagination-item">
+      <a class="pw-pagination-link" href="{{ post.thread.get_absolute_url }}?page={{posts.next_page_number}}">
+        Next
+      </a>
+    </li>
+    {% else %}
+    <li class="pw-pagination-item disabled">
+      <a class="pw-pagination-link" href="#">Next</a>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}
+
+{% if request.user.is_authenticated %}
+{% if not thread.is_closed %}
+<div class="pw-card fluid margin">
+  <div class="pw-card-header">Reply to thread</div>
+  <div class="pw-card-content">
+    <div class="thread__reply__content">
+      <form class="postForm" action="{% url 'punkweb_bb:post_create' thread.id %}" method="post">
+        {% csrf_token %}
+        {% for field in post_form %}
+        <div class="postForm__field">
+          {{ field }}
+        </div>
+        {% endfor %}
+        {% if post_form.non_field_errors %}
+        {{ post_form.non_field_errors }}
+        {% endif %}
+        <div class="postForm__actions">
+          <button class="pw-button raised primary" type="submit">Post reply</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% else %}
+<div class="pw-card fluid margin">
+  <div class="pw-card-header">Thread closed</div>
+  <div class="pw-card-content">
+    <p>This thread is closed and you cannot reply to it.</p>
+  </div>
+</div>
+{% endif %}
+{% endif %}
+
+{% endblock %}
