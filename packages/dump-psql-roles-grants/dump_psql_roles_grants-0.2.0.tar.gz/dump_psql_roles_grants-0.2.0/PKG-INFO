@@ -1,0 +1,62 @@
+Metadata-Version: 2.1
+Name: dump-psql-roles-grants
+Version: 0.2.0
+Summary: Dump Postgres Roles Grants
+Author: Roman Geraskin
+Author-email: roman.n.geraskin@gmail.com
+Requires-Python: >=3.12,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: PyYAML (>=6.0.1,<7.0.0)
+Requires-Dist: click (>=8.1.7,<9.0.0)
+Requires-Dist: icecream (>=2.1.3,<3.0.0)
+Requires-Dist: psycopg-binary (>=3.1.18,<4.0.0)
+Requires-Dist: psycopg-infdate (>=1.0.3,<2.0.0)
+Requires-Dist: pytablewriter (>=1.2.0,<2.0.0)
+Requires-Dist: rich (>=13.7.1,<14.0.0)
+Description-Content-Type: text/markdown
+
+# Dump Postgres Roles and Grants
+
+## Build
+
+```shell
+docker buildx build -t dump_psql_roles_grants .
+```
+
+## Usage
+
+1. Place instances connection info to `_inputs` dir
+
+   ```shell
+   _inputs/
+   ├── dev.yaml
+   ├── prod.yaml
+   ├── stage.yaml
+   └── test.yaml
+   ```
+
+   File format: yaml or json
+
+   ```yaml
+   <INSTANCE NAME 1>:
+     dbname: <DB TO CONNECT>
+     host: <INSTANCE HOSTNAME>
+     password: <PASSWORD>
+     user: <USER NAME>
+
+   <INSTANCE NAME X>:
+     dbname: <DB TO CONNECT>
+     host: <INSTANCE HOSTNAME>
+     password: <PASSWORD>
+     user: <USER NAME>
+   ```
+
+1. Review `config.yaml`
+
+1. Run
+
+   ```shell
+   docker run -it --rm -v ${PWD}/_inputs:/app/_inputs -v ${PWD}/_results:/app/_results dump_psql_roles_grants -- --help
+   ```
+
