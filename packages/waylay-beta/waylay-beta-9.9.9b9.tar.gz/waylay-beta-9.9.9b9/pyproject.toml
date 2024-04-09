@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "waylay-beta"
+version = "9.9.9b9"
+description = "(DISABLED) Waylay Python SDK-beta (sunset)."
+readme = "README.md"
+authors = [{name = "Waylay", email = "info@waylay.io"}]
+license={file = "LICENSE.txt"}
+dependencies = []
+
+[project.urls]
+Homepage = "https://www.waylay.io/"
+Documentation = "https://docs.waylay.io/#/"
+Repository = "https://github.com/waylayio/waylay-py.git"
+
+[tool.setuptools.packages.find]
+include = ["waylay*"]
+exclude = []
+namespaces = true
+
+[project.optional-dependencies]
+dev = []
