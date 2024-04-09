@@ -1,0 +1,91 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "radix_tree"
+dynamic = ["version"]
+description = 'Generic pure python radix tree implementation'
+readme = "README.md"
+requires-python = ">=3.5"
+license = "MIT"
+keywords = ['radix', 'tree',]
+authors = [
+  { name = "Nicolas Jeudy", email = "nicola.jeudy@gmail.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.5",
+  "Programming Language :: Python :: 3.6",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = []
+
+[project.urls]
+Documentation = "https://github.com/Nicola-31/radix-tree#readme"
+Issues = "https://github.com/Nicola-31/radix-tree/issues"
+Source = "https://github.com/Nicola-31/radix-tree"
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+  "/.git",
+  "/.gitignore",
+  "/.idea", 
+]
+
+[tool.hatch.version]
+path = "src/radix_tree/__about__.py"
+
+[tool.hatch.envs.default]
+dependencies = [
+  "coverage[toml]>=6.5",
+  "pytest",
+]
+[tool.hatch.envs.default.scripts]
+test = "pytest {args:tests}"
+test-cov = "coverage run -m pytest {args:tests}"
+cov-report = [
+  "- coverage combine",
+  "coverage report",
+]
+cov = [
+  "test-cov",
+  "cov-report",
+]
+
+[[tool.hatch.envs.all.matrix]]
+python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
+
+[tool.hatch.envs.types]
+dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/radix_tree tests}"
+
+[tool.coverage.run]
+source_pkgs = ["radix_tree", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/radix_tree/__about__.py",
+]
+
+[tool.coverage.paths]
+radix_tree = ["src/radix_tree", "*/radix-tree/src/radix_tree"]
+tests = ["tests", "*/radix-tree/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
