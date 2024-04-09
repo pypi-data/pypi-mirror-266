@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mkdocs-translate"
+authors = [
+    {name = "Jody Garnett", email = "jody.garnett@gmail.com"},
+]
+description = "Translate from sphinx-build to mkdocs-material compatible markdown"
+readme = {file = "README.md", content-type = "text/markdown"}
+requires-python = ">=3.9"
+keywords = ["mkdocs", "markdown", "pandoc", "sphinx-build", "sphinx", "rst", "reStructuredText", "translate"]
+license = {text = "MIT-License"}
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Topic :: Utilities",
+    "Environment :: Console",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License"
+]
+dependencies = [
+    "pyyaml",
+    "requests",
+    "typer",
+    "deepl"
+]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://jodygarnett.github.io/translate/"
+Documentation = "https://jodygarnett.github.io/translate/setup/"
+Repository = "https://github.com/jodygarnett/translate.git"
+Changelog = "https://github.com/jodygarnett/translate/blob/main/CHANGES"
+
+[project.scripts]
+mkdocs_translate = "mkdocs_translate.cli:app"
+
+[tool.setuptools.dynamic]
+version = {attr = "mkdocs_translate.__version__"}
+
+[tool.distutils.bdist_wheel]
+universal = true
