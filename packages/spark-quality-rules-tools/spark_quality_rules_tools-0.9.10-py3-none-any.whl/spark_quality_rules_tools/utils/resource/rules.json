@@ -1,0 +1,627 @@
+{
+  "rules_common_properties": [
+        {
+          "id":["String", "True", ""]
+        }
+  ],
+  "rules_config": {
+    "availability": {
+      "DateRangeFileRule": [
+        {
+          "rules_version": "1.1",
+          "rules_name": "Date file value within range",
+          "rules_class": "com.datio.hammurabi.rules.availability.DateRangeFileRule",
+          "rules_columns": [
+            {
+              "column":["String", "True", ""],
+              "value":["Timestamp", "True", ""],
+              "acceptanceMin":["Double", "False", "100"],
+              "minThreshold":["Double", "False", "100"],
+              "targetThreshold":["Double", "False", "100"],
+              "isCritical":["Boolean", "False", "False"],
+              "drillDown":["Array[String]", "False", "None"],
+              "withRefusals":["Boolean", "False", "False"],
+              "subset":["String", "False", "None"]
+            }
+          ],
+          "apply_rules_common": true
+        }
+      ],
+      "DateValidationRule": [
+        {
+          "rules_version": "1.2",
+          "rules_name": "Updating the value of the data on the required date",
+          "rules_class": "com.datio.hammurabi.rules.availability.DateValidationRule",
+          "rules_columns": [
+            {
+              "column":["String", "True", ""],
+              "value":["String", "True", ""],
+              "format":["String", "False", "yyyy-MM-dd"],
+              "acceptanceMin":["Double", "False", "100"],
+              "minThreshold":["Double", "False", "100"],
+              "targetThreshold":["Double", "False", "100"],
+              "isCritical":["Boolean", "False", "False"],
+              "drillDown":["Array[String]", "False", "None"],
+              "withRefusals":["Boolean", "False", "False"],
+              "subset":["String", "False", "None"]
+            }
+          ],
+          "apply_rules_common": true
+        }
+      ]
+    },
+    "completeness": {
+      "CompletenessRule": [
+        {
+          "rules_version": "2.1",
+          "rules_name": "Records Completeness",
+          "rules_class": "com.datio.hammurabi.rules.completeness.CompletenessRule",
+          "rules_columns": [
+            {
+              "acceptanceMin":["Double", "False", "100"],
+              "minThreshold":["Double", "False", "100"],
+              "targetThreshold":["Double", "False", "100"],
+              "isCritical":["Boolean", "False", "True"],
+              "withRefusals":["Boolean", "False", "False"],
+              "drillDown":["Array[String]", "False", "None"]
+            }
+          ],
+          "apply_rules_common": true
+        }
+      ],
+      "BasicPerimeterCompletenessRule": [
+        {
+          "rules_version": "2.2-1",
+          "rules_name": "Perimeter Completeness",
+          "rules_class": "com.datio.hammurabi.rules.completeness.BasicPerimeterCompletenessRule",
+          "rules_columns": [
+            {
+              "dataValues":["Dict", "True", ""],
+              "acceptanceMin":["Double", "False", "100"],
+              "minThreshold":["Double", "False", "100"],
+              "targetThreshold":["Double", "False", "100"],
+              "isCritical":["Boolean", "False", "False"],
+              "withRefusals":["Boolean", "False", "False"],
+              "drillDown":["Array[String]", "False", "None"],
+              "subset":["String", "False", "None"]
+            }
+          ],
+          "apply_rules_common": true
+        }
+      ],
+      "BasicPerimeterVariationCompletenessRule": [
+        {
+          "rules_version": "2.2-2",
+          "rules_name": "Perimeter Completeness",
+          "rules_class": "com.datio.hammurabi.rules.completeness.BasicPerimeterVariationCompletenessRule",
+          "rules_columns": [
+            {
+              "dataValues":["Dict", "True", ""],
+              "acceptanceMin":["Double", "False", "100"],
+              "minThreshold":["Double", "False", "100"],
+              "targetThreshold":["Double", "False", "100"],
+              "isCritical":["Boolean", "False", "False"],
+              "withRefusals":["Boolean", "False", "False"],
+              "drillDown":["Array[String]", "False", "None"],
+              "subset":["String", "False", "None"]
+            }
+          ],
+          "apply_rules_common": true
+        }
+      ],
+      "ConditionalPerimeterCompletenessRule": [
+        {
+          "rules_version": "2.3-1",
+          "rules_name": "Perimeter completeness with a filter",
+          "rules_class": "com.datio.hammurabi.rules.completeness.ConditionalPerimeterCompletenessRule",
+           "rules_columns": [
+            {
+              "dataValues":["Dict", "True", ""],
+              "condition":["String", "True", ""],
+              "acceptanceMin":["Double", "False", "100"],
+              "minThreshold":["Double", "False", "100"],
+              "targetThreshold":["Double", "False", "100"],
+              "isCritical":["Boolean", "False", "True"],
+              "withRefusals":["Boolean", "False", "False"],
+              "drillDown":["Array[String]", "False", "None"],
+              "subset":["String", "False", "None"]
+            }
+          ],
+          "apply_rules_common": true
+        }
+      ],
+      "MetadataCompletenessRule": [
+        {
+          "rules_version": "2.4",
+          "rules_name": "Metadata completeness",
+          "rules_class": "com.datio.hammurabi.rules.completeness.MetadataCompletenessRule",
+          "rules_columns": [
+            {
+              "dataValues":["Dict", "True", ""],
+              "acceptanceMin":["Double", "False", "100"],
+              "minThreshold":["Double", "False", "100"],
+              "targetThreshold":["Double", "False", "100"],
+              "isCritical":["Boolean", "False", "True"],
+              "withRefusals":["Boolean", "False", "False"],
+              "drillDown":["Array[String]", "False", "None"],
+              "subset":["String", "False", "None"]
+            }
+          ],
+          "apply_rules_common": true
+        }
+      ]
+    },
+    "validity": {
+      "NotNullValidationRule": [
+        {
+          "rules_version": "3.1",
+          "rules_name": "Not null or empty values",
+          "rules_class": "com.datio.hammurabi.rules.validity.NotNullValidationRule",
+          "rules_columns": [
+            {
+              "columns":["Array[String]", "True", ""],
+              "acceptanceMin":["Double", "False", "100"],
+              "minThreshold":["Double", "False", "100"],
+              "targetThreshold":["Double", "False", "100"],
+              "isCritical":["Boolean", "False", "True"],
+              "drillDown":["Array[String]", "False", "None"],
+              "withRefusals":["Boolean", "False", "False"],
+              "subset":["String", "False", "None"],
+              "acceptanceMinBalance":["Double", "False", "100"],
+              "balanceIds":["Array[String]", "False", "None"]
+            }
+          ],
+          "apply_rules_common": true
+        }
+      ],
+      "FormatValidationRule": [
+        {
+          "rules_version": "3.2",
+          "rules_name": "Check the format",
+          "rules_class": "com.datio.hammurabi.rules.validity.FormatValidationRule",
+           "rules_columns": [
+            {
+              "columns":["Array[String]", "True", ""],
+              "format":["String", "True", ""],
+              "acceptanceMin":["Double", "False", "100"],
+              "minThreshold":["Double", "False", "100"],
+              "targetThreshold":["Double", "False", "100"],
+              "isCritical":["Boolean", "False", "True"],
+              "drillDown":["Array[String]", "False", "None"],
+              "withRefusals":["Boolean", "False", "False"],
+              "subset":["String", "False", "None"]
+            }
+          ],
+          "apply_rules_common": true
+        }
+      ],
+      "StaticForbiddenValuesRule": [
+        {
+          "rules_version": "3.3",
+          "rules_name": "Check whether the data is not in a specific static forbidden values catalog",
+          "rules_class": "com.datio.hammurabi.rules.validity.StaticForbiddenValuesRule",
+          "rules_columns": [
+            {
+              "columns":["Array[String]", "True", ""],
+              "values":["Array[String]", "True", ""],
+              "acceptanceMin":["Double", "False", "100"],
+              "minThreshold":["Double", "False", "100"],
+              "targetThreshold":["Double", "False", "100"],
+              "isCritical":["Boolean", "False", "False"],
+              "drillDown":["Array[String]", "False", "None"],
+              "withRefusals":["Boolean", "False", "False"],
+              "subset":["String", "False", "None"]
+
+            }
+          ],
+          "apply_rules_common": true
+        }
+      ],
+      "NumericRangeRule": [
+        {
+          "rules_version": "3.4",
+          "rules_name": "Numeric values within range",
+          "rules_class": "com.datio.hammurabi.rules.validity.NumericRangeRule",
+           "rules_columns": [
+            {
+              "columns":["Array[String]", "True", ""],
+              "lowerBound":["Double", "True", ""],
+              "upperBound":["Double", "True", ""],
+              "acceptanceMin":["Double", "False", "100"],
+              "minThreshold":["Double", "False", "100"],
+              "targetThreshold":["Double", "False", "100"],
+              "isCritical":["Boolean", "False", "True"],
+              "drillDown":["Array[String]", "False", "None"],
+              "withRefusals":["Boolean", "False", "False"],
+              "subset":["String", "False", "None"],
+              "acceptanceMinBalance":["Double", "False", "100"],
+              "balanceIds":["Array[String]", "False", "None"]
+            }
+          ],
+          "apply_rules_common": true
+        }
+      ],
+      "StaticCatalogRule": [
+        {
+          "rules_version": "3.5-1",
+          "rules_name": "Check whether the data is in a specific static catalog",
+          "rules_class": "com.datio.hammurabi.rules.validity.StaticCatalogRule",
+           "rules_columns": [
+            {
+              "columns":["Array[String]", "True", ""],
+              "values":["Array[String]", "True", ""],
+              "acceptanceMin":["Double", "False", "100"],
+              "minThreshold":["Double", "False", "100"],
+              "targetThreshold":["Double", "False", "100"],
+              "isCritical":["Boolean", "False", "True"],
+              "drillDown":["Array[String]", "False", "None"],
+              "withRefusals":["Boolean", "False", "False"],
+              "subset":["String", "False", "None"],
+              "acceptanceMinBalance":["Double", "False", "100"],
+              "balanceIds":["Array[String]", "False", "None"]
+
+
+            }
+          ],
+          "apply_rules_common": true
+        }
+      ],
+      "DynamicCatalogRule": [
+        {
+          "rules_version": "3.5-2",
+          "rules_name": "Check whether the data is in a specific dynamic catalog",
+          "rules_class": "com.datio.hammurabi.rules.validity.DynamicCatalogRule",
+           "rules_columns": [
+            {
+              "columns":["Array[String]", "True", ""],
+              "dataValues":["Dict", "True", ""],
+              "dataValuesColumn":["String", "True", ""],
+              "dataValuesSubset":["String", "True", ""],
+              "acceptanceMin":["Double", "False", "100"],
+              "minThreshold":["Double", "False", "100"],
+              "targetThreshold":["Double", "False", "100"],
+              "isCritical":["Boolean", "False", "True"],
+              "drillDown":["Array[String]", "False", "None"],
+              "withRefusals":["Boolean", "False", "False"],
+              "subset":["String", "False", "None"],
+              "acceptanceMinBalance":["Double", "False", "100"],
+              "balanceIds":["Array[String]", "False", "None"]
+
+            }
+          ],
+          "apply_rules_common": true
+
+        }
+      ]
+    },
+    "consistence": {
+      "DuplicateRule": [
+        {
+          "rules_version": "4.2",
+          "rules_name": "No duplicate values",
+          "rules_class": "com.datio.hammurabi.rules.consistence.DuplicateRule",
+          "rules_columns": [
+            {
+              "columns":["Array[String]", "True", ""],
+              "acceptanceMin":["Double", "False", "100"],
+              "minThreshold":["Double", "False", "100"],
+              "targetThreshold":["Double", "False", "100"],
+              "isCritical":["Boolean", "False", "True"],
+              "drillDown":["Array[String]", "False", "None"],
+              "withRefusals":["Boolean", "False", "False"],
+              "subset":["String", "False", "None"]
+            }
+          ],
+          "apply_rules_common": true
+        }
+      ],
+      "ValueConciliationRule": [
+        {
+          "rules_version": "4.3",
+          "rules_name": "Reconciliation of the same/different data between different tables / repositories in the same moment of tim",
+          "rules_class": "com.datio.hammurabi.rules.consistence.ValueConciliationRule",
+          "rules_columns": [
+            {
+              "column":["String", "True", ""],
+              "keyColumns":["Array[Dict]", "True", ""],
+              "dataValuesSubset":["String", "True", ""],
+              "dataValues":["Dict", "True", ""],
+              "dataSystemId":["String", "False", ""],
+              "acceptanceMin":["Double", "False", "100"],
+              "minThreshold":["Double", "False", "100"],
+              "targetThreshold":["Double", "False", "100"],
+              "isCritical":["Boolean", "False", "False"],
+              "drillDown":["Array[String]", "False", "None"],
+              "withRefusals":["Boolean", "False", "False"],
+              "subset":["String", "False", "None"],
+              "acceptanceMinBalance":["Double", "False", "100"],
+              "balanceIds":["Array[String]", "False", "None"]
+
+            }
+          ],
+          "apply_rules_common": true
+        }
+      ]
+    },
+    "integrity": {
+      "ValueComparisonRule": [
+        {
+          "rules_version": "5.2",
+          "rules_name": "Comparison of related data values that must fulfill a condition",
+          "rules_class": "com.datio.hammurabi.rules.integrity.ValueComparisonRule",
+          "rules_columns": [
+            {
+              "column":["String", "True", ""],
+              "keyColumns":["Array[Dict]", "True", ""],
+              "condition":["String", "True", ""],
+              "comparison":["String", "True", ""],
+              "dataValues":["Dict", "True", ""],
+              "dataValuesSubset":["String", "True", ""],
+              "acceptanceMin":["Double", "False", "100"],
+              "minThreshold":["Double", "True", "100"],
+              "targetThreshold":["Double", "True", "100"],
+              "isCritical":["Boolean", "False", "False"],
+              "drillDown":["Array[String]", "False", "None"],
+              "withRefusals":["Boolean", "False", "False"],
+              "subset":["String", "False", "None"],
+              "acceptanceMinBalance":["Double", "False", "100"],
+              "balanceIds":["Array[String]", "False", "None"]
+            }
+          ],
+          "apply_rules_common": true
+        }
+      ],
+      "SameValueComparisonRule": [
+        {
+          "rules_version": "5.3",
+          "rules_name": "Comparison of data values that must fulfill a condition",
+          "rules_class": "com.datio.hammurabi.rules.integrity.SameValueComparisonRule",
+          "rules_columns": [
+            {
+              "column":["Array[String], ", "True", ""],
+              "keyColumns":["Array[Dict]", "True", ""],
+              "condition":["String", "True", ""],
+              "acceptanceMin":["Double", "False", "100"],
+              "minThreshold":["Double", "True", "100"],
+              "targetThreshold":["Double", "True", "100"],
+              "isCritical":["Boolean", "False", "False"],
+              "drillDown":["Array[String]", "False", "None"],
+              "withRefusals":["Boolean", "False", "False"],
+              "subset":["String", "False", "None"]
+            }
+          ],
+          "apply_rules_common": true
+        }
+      ],
+      "ConditionalExpressionObjectRule": [
+        {
+          "rules_version": "5.4",
+          "rules_name": "Conditional Expression Object Rule",
+          "rules_class": "com.datio.hammurabi.rules.integrity.ConditionalExpressionObjectRule",
+          "rules_columns": [
+            {
+              "condition":["String", "True", ""],
+              "minThreshold":["Double", "False", "100"],
+              "targetThreshold":["Double", "False", "100"],
+              "isCritical":["Boolean", "False", "False"],
+              "drillDown":["Array[String]", "False", "None"],
+              "subset":["String", "False", "None"]
+            }
+          ],
+          "apply_rules_common": true
+        }
+      ],
+      "ConditionalExpressionObjectsRule": [
+        {
+          "rules_version": "5.5",
+          "rules_name": "Conditional Expression Objects Rule",
+          "rules_class": "com.datio.hammurabi.rules.integrity.ConditionalExpressionObjectsRule",
+          "rules_columns": [
+            {
+              "keyColumns":["Array[Dict]", "True", ""],
+              "dataValues":["Dict", "True", ""],
+              "dataValuesSubset":["String", "True", ""],
+              "condition":["String", "True", ""],
+              "minThreshold":["Double", "False", "100"],
+              "targetThreshold":["Double", "False", "100"],
+              "isCritical":["Boolean", "False", "False"],
+              "drillDown":["Array[String]", "False", "None"],
+              "subset":["String", "False", "None"]
+            }
+          ],
+          "apply_rules_common": true
+        }
+      ],
+      "ConcatRule": [
+        {
+          "rules_version": "5.6-1",
+          "rules_name": "Concat Object Rule",
+          "rules_class": "com.datio.hammurabi.rules.integrity.ConcatRule",
+
+          "rules_columns": [
+            {
+              "columns":["Array[String]", "True", ""],
+              "delimiter":["String", "True", ""],
+              "referenceColumn":["String", "True", ""]
+            }
+          ],
+          "apply_rules_common": true
+        }
+      ],
+      "ConcatRuleByColumn": [
+        {
+          "rules_version": "5.6-2",
+          "rules_name": "ConcatByColumn Object Rule",
+          "rules_class": "com.datio.hammurabi.rules.integrity.ConcatRuleByColumn",
+          "rules_columns": [
+            {
+              "columns":["Array[String]", "True", ""],
+              "delimiter":["String", "True", ""],
+              "value":["String", "True", ""],
+              "acceptanceMin":["Double", "False", "100"],
+              "minThreshold":["Double", "False", "100"],
+              "targetThreshold":["Double", "False", "100"],
+              "isCritical":["Boolean", "False", "False"],
+              "drillDown":["Array[String]", "False", "None"],
+              "withRefusals":["Boolean", "False", "False"],
+              "subset":["String", "False", "None"]
+            }
+          ],
+          "apply_rules_common": true
+        }
+      ]
+    },
+    "accuracy": {
+      "StaticGatheringRule": [
+        {
+          "rules_version": "6.1",
+          "rules_name": "Check gathering of values for a static catalog",
+          "rules_class": "com.datio.hammurabi.rules.accuracy.StaticGatheringRule",
+          "rules_columns": [
+            {
+              "column":["String", "True", ""],
+              "keyColumns":["Array", "True", ""],
+              "lowerBound":["String", "False", ""],
+              "upperBound":["String", "False", ""],
+              "values":["Array[String]", "True", ""],
+              "minThreshold":["Double", "False", "100"],
+              "targetThreshold":["Double", "False", "100"],
+              "isCritical":["Boolean", "False", "False"],
+              "drillDown":["Array[String]", "False", "None"],
+              "withRefusals":["Boolean", "False", "False"],
+              "subset":["String", "False", "None"],
+              "acceptanceMinBalance":["Double", "False", "100"],
+              "balanceIds":["Array[String]", "False", "None"]
+            }
+          ],
+          "apply_rules_common": true
+        }
+      ],
+      "ValueSensitivityThresholdRule": [
+        {
+          "rules_version": "6.2",
+          "rules_name": "Check the sensitivity of a value to a given threshold",
+          "rules_class": "com.datio.hammurabi.rules.accuracy.ValueSensitivityThresholdRule",
+          "rules_columns": [
+            {
+              "column":["String", "True", ""],
+              "aggregation":["Array", "True", ""],
+              "keyColumns":["Array[String]", "True", ""],
+              "lowerBound":["Long", "False", ""],
+              "upperBound":["Long", "False", ""],
+              "acceptanceMin":["Double", "False", "100"],
+              "minThreshold":["Double", "True", "100"],
+              "targetThreshold":["Double", "True", "100"],
+              "isCritical":["Boolean", "False", "False"],
+              "drillDown":["Array[String]", "False", "None"],
+              "withRefusals":["Boolean", "False", "False"],
+              "subset":["String", "False", "None"]
+            }
+          ],
+          "apply_rules_common": true
+        }
+      ],
+      "ValueVariationRule": [
+        {
+          "rules_version": "6.4",
+          "rules_name": "Check the variation of a value between periods",
+          "rules_class": "com.datio.hammurabi.rules.accuracy.ValueVariationRule",
+          "rules_columns": [
+            {
+              "column":["String", "True", ""],
+              "aggregation":["String", "True", ""],
+              "keyColumns":["Array[String]", "True", ""],
+              "variationAllowed":["Double", "True", ""],
+              "dataValuesSubset":["String", "True", ""],
+              "dataValues":["Dict", "True", ""],
+              "acceptanceMin":["Double", "False", "100"],
+              "minThreshold":["Double", "True", "100"],
+              "targetThreshold":["Double", "True", "100"],
+              "isCritical":["Boolean", "False", "False"],
+              "drillDown":["Array[String]", "False", "None"],
+              "withRefusals":["Boolean", "False", "False"],
+              "subset":["String", "False", "None"],
+              "acceptanceMinBalance":["Double", "False", "100"],
+              "balanceIds":["Array[String]", "False", "None"]
+            }
+          ],
+          "apply_rules_common": true
+        }
+      ],
+      "VolumetricTrendRule": [
+        {
+          "rules_version": "6.9",
+          "rules_name": "Check volumetric trend",
+          "rules_class": "com.datio.hammurabi.rules.accuracy.VolumetricTrendRule",
+
+          "rules_columns": [
+            {
+              "dataValues":["Dict", "True", ""],
+              "lowerBound":["Double", "False", ""],
+              "upperBound":["Double", "False", ""],
+              "minValue":["Double", "False", ""],
+              "maxValue":["Double", "False", ""],
+              "dataValuesSubset":["String", "True", ""],
+              "acceptanceMin":["Double", "False", "100"],
+              "minThreshold":["Double", "True", "100"],
+              "targetThreshold":["Double", "True", "100"],
+              "isCritical":["Boolean", "False", "False"],
+              "drillDown":["Array[String]", "False", "None"],
+              "withRefusals":["Boolean", "False", "False"],
+              "subset":["String", "False", "None"]
+            }
+          ],
+          "apply_rules_common": true
+        }
+      ],
+      "DynamicRatingVariationRule": [
+        {
+          "rules_version": "6.10",
+          "rules_name": "Comparison of the value of the same data between periods, with the maximum variation referred to a dynamic catalogue",
+          "rules_class": "com.datio.hammurabi.rules.accuracy.DynamicRatingVariationRule",
+          "rules_columns": [
+            {
+              "column":["String", "True", ""],
+              "dataValues":["Dict", "True", ""],
+              "dataValuesSubset":["String", "True", ""],
+              "notchesColumn":["String", "True", ""],
+              "notches":["Integer", "True", ""],
+              "keyColumns":["Array[Dict]", "True", ""],
+              "notchesColumnValues":["String", "True", ""],
+              "ratings":["Dict", "True", ""],
+              "acceptanceMin":["Double", "False", "100"],
+              "minThreshold":["Double", "True", "100"],
+              "targetThreshold":["Double", "True", "100"],
+              "isCritical":["Boolean", "False", "False"],
+              "drillDown":["Array[String]", "False", "None"],
+              "withRefusals":["Boolean", "False", "False"]
+            }
+          ],
+          "apply_rules_common": true
+        }
+      ],
+      "HerfindahlRule": [
+        {
+          "rules_version": "6.11",
+          "rules_name": "Herfindahl",
+          "rules_class": "com.datio.hammurabi.rules.accuracy.HerfindahlRule",
+          "rules_columns": [
+            {
+              "column":["String", "True", ""],
+               "minValue":["Double", "False", ""],
+              "maxValue":["Double", "False", ""],
+              "dataValues":["Dict", "True", ""],
+              "dataValuesSubset":["String", "True", ""],
+              "acceptanceMin":["Double", "False", "100"],
+              "minThreshold":["Double", "False", "100"],
+              "targetThreshold":["Double", "False", "100"],
+              "isCritical":["Boolean", "False", "True"],
+              "drillDown":["Array[String]", "False", "None"]
+            }
+          ],
+          "apply_rules_common": true
+        }
+      ]
+    }
+  }
+}
