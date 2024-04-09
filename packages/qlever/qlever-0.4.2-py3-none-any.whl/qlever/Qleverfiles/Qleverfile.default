@@ -1,0 +1,47 @@
+# Automatically created by the "qlever" script
+#
+# Modify as you see fit. Beware that some of the values below are executed as
+# commands  by the script.
+#
+# If you have never seen a Qleverfile before, we recommend that you look at the
+# pre-filled Qleverfiles on http://qlever.cs.uni-freiburg.de/qlever-control/
+# Qleverfiles first to get some inspiration. Or execute `qlever setup-config
+# <config name>` with a config name of your choice.
+
+# As a minimum, each dataset needs a name. If you want `qlever get-data` to do
+# something meaningful, you need to define GET_DATA_CMD. If you want to use the
+# QLever UI, you should define DESCRIPTION (and if you have a text index,
+# also TEXT_DESCRIPTION).
+[data]
+NAME              =
+# GET_DATA_CMD      =
+# DESCRIPTION = 
+# TEXT_DESCRIPTION  =
+
+# CAT_INPUT_FILES produces the data that is piped into QLever's index builder.
+# Use SETTINGS_JSON for more advanced configuration settings (see the other
+# Qleverfiles for examples).
+[index]
+# INPUT_FILES     = 
+# CAT_INPUT_FILES = cat ${INPUT_FILES}
+# SETTINGS_JSON   = {}
+
+# As a minimum, you need to specify the PORT, where QLever will listen for
+# SPARQL queries. If you want to send priviledged commands to the server, you
+# need to specify an ACCESS_TOKEN (modify the random number below).
+[server]
+PORT = 7001
+# ACCESS_TOKEN = ${data:NAME}_1234567890
+
+# With USE_DOCKER = true, the qlever script will download the docker image for
+# you and run QLever inside docker containers. With USE_DOCKER = false, you need 
+# the QLever binaries in the PATH of your sheel.
+[runtime]
+SYSTEM = true
+IMAGE  = docker.io/adfreiburg/qlever:latest
+
+# The UI_CONFIG must be one of the slugs from http://qlever.cs.uni-freiburg.de
+# (see the dropdown menu on the top right, the slug is the last part of the URL).
+# In partiular, this determines the example queries.
+[ui]
+UI_CONFIG = default

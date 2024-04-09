@@ -1,0 +1,34 @@
+# Qleverfile for DBLP, use with https://github.com/ad-freiburg/qlever-control
+#
+# qlever get-data  # downloads .gz file of size ~3 GB (as of 31.07.2022)
+# qlever index     # takes ~30 minutes and ~20 GB RAM (on an AMD Ryzen 9 5900X)
+# qlever start     # starts the server (takes around 2 minutes)
+#
+# Also builds a text index for fast kewyword search in literals. Without that
+# (WITH_TEXT_INDEX = false), the index build takes only ~10 minutes.
+
+[data]
+NAME              = dblp
+GET_DATA_URL      = https://dblp.org/rdf/${index:INPUT_FILES}
+GET_DATA_CMD      = curl -LO -C - ${GET_DATA_URL}
+DESCRIPTION       = DBLP computer science bibliography, data from ${GET_DATA_URL}
+TEXT_DESCRIPTION  = All literals, search with FILTER KEYWORDS(?text, "...")
+
+[index]
+INPUT_FILES     = dblp.ttl.gz
+CAT_INPUT_FILES = zcat ${INPUT_FILES}
+SETTINGS_JSON   = { "ascii-prefixes-only": false, "num-triples-per-batch": 1000000 }
+TEXT_INDEX      = from_literals
+
+[server]
+PORT               = 7015
+ACCESS_TOKEN       = ${data:NAME}_7643543846
+MEMORY_FOR_QUERIES = 30G
+CACHE_MAX_SIZE     = 5G
+
+[runtime]
+SYSTEM = docker
+IMAGE  = docker.io/adfreiburg/qlever:latest
+
+[ui]
+UI_CONFIG = dblp
