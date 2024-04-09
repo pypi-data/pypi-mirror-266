@@ -1,0 +1,92 @@
+/*! SCEditor | (C) 2011-2013, Sam Clarke | sceditor.com/license */
+html,
+body {
+  color: #212529;
+  font-family: Arial, Helvetica sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  overflow: visible;
+}
+html {
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+.ios {
+  /* Needed for iOS scrolling bug fix */
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.ios body {
+  /* Needed for iOS scrolling bug fix */
+  position: relative;
+  overflow: auto;
+}
+body {
+  /* Needed to make sure body covers the whole editor and that
+		long lines don't cause horizontal scrolling */
+  min-height: 100%;
+  word-wrap: break-word;
+}
+
+body.placeholder::before {
+  content: attr(placeholder);
+  color: #555;
+  font-style: italic;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #ced4da;
+  margin: 1rem 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul,
+ol {
+  padding-inline-start: 2rem;
+}
+
+code {
+  display: block;
+  background: #f5f2f0;
+  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  white-space: pre;
+  padding: 1em;
+  text-align: left;
+  margin: 0.5em 0;
+  direction: ltr;
+}
+
+blockquote {
+  background: #f1f3f5;
+  margin: 0.25rem 0;
+  border-left: 2px solid #ced4da;
+  padding: 0.5rem 1rem;
+}
+
+blockquote cite {
+  font-weight: 700;
+  display: block;
+  font-size: 1rem;
+}
+
+/* Prevent empty paragraphs from collapsing */
+div,
+p {
+  min-height: 1.25em;
+}
