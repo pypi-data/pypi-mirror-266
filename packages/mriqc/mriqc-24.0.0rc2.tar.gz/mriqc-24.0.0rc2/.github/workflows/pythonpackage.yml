@@ -1,0 +1,90 @@
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Python package
+
+on:
+  push:
+    branches: [ '*' ]
+    tags: [ '*' ]
+  pull_request:
+    branches: [ master, 'maint/*' ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    if: "!startsWith(github.ref, 'refs/tags/') && !contains(github.event.head_commit.message, '[skip ci]')"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Build and check package
+      run: |
+        pipx run build
+        pipx run twine check dist/mriqc-*
+    - name: Interpolate version
+      run: |
+        # Interpolate version
+        if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+          TAG=${GITHUB_REF##*/}
+        fi
+        THISVERSION=$( pipx run hatch version | tail -n1 | xargs )
+        THISVERSION=${TAG:-$THISVERSION}
+        echo "Expected VERSION: \"${THISVERSION}\""
+        echo "THISVERSION=${THISVERSION}" >> $GITHUB_ENV
+    - name: Install in confined environment [pip]
+      run: |
+        python -m venv /tmp/pip
+        source /tmp/pip/bin/activate
+        python -m pip install .
+        INSTALLED_VERSION=$(python -c 'import mriqc as qc; print(qc.__version__, end="")')
+        echo "INSTALLED: \"${INSTALLED_VERSION}\""
+        test "${INSTALLED_VERSION}" = "${THISVERSION}"
+        rm -r /tmp/pip
+    - name: Install in confined environment [sdist]
+      run: |
+        python -m venv /tmp/install_sdist
+        source /tmp/install_sdist/bin/activate
+        python -m pip install dist/mriqc*.tar.gz
+        INSTALLED_VERSION=$(python -c 'import mriqc as qc; print(qc.__version__, end="")')
+        echo "INSTALLED: \"${INSTALLED_VERSION}\""
+        test "${INSTALLED_VERSION}" = "${THISVERSION}"
+        rm -r /tmp/install_sdist
+    - name: Install in confined environment [wheel]
+      run: |
+        python -m venv /tmp/install_wheel
+        source /tmp/install_wheel/bin/activate
+        python -m pip install dist/mriqc*.whl
+        INSTALLED_VERSION=$(python -c 'import mriqc as qc; print(qc.__version__, end="")')
+        echo "INSTALLED: \"${INSTALLED_VERSION}\""
+        test "${INSTALLED_VERSION}" = "${THISVERSION}"
+        rm -r /tmp/install_wheel
+
+  ruff:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+    - run: pipx run ruff check mriqc/
+
+  codespell:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: codespell-project/actions-codespell@v2
