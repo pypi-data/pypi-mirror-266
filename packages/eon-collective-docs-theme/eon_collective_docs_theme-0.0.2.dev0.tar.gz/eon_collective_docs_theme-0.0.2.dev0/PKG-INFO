@@ -1,0 +1,60 @@
+Metadata-Version: 2.1
+Name: eon_collective_docs_theme
+Version: 0.0.2.dev0
+Summary: The theme used to render documentation
+Home-page: https://github.com/janerose-njogu/eon-collective-docs-theme
+Author: Janerose Njogu
+Author-email: janerose.njogu@eoncllective.com
+Classifier: Framework :: Sphinx
+Classifier: Framework :: Sphinx :: Theme
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Documentation
+Classifier: Topic :: Software Development :: Documentation
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# [Eon Collective Documentation theme](https://github.com/janerose-njogu/eon-collective-docs-theme)
+
+The Eon Collective Documentation theme contains all files required to build a Sphinx extension that provides the theme.
+
+> 📘 FYI
+> 
+> Supports Python >= 3.8
+
+
+## Assumptions
+This guide assumes that you have set up Sphinx in your project. All you need to do is install this theme and include it within your conf.py file.
+
+It is also assumed that you understand Sphinx.
+
+## Installation
+
+```sh
+pip install eon-collective-docs-theme
+```
+
+## Usage
+
+In your conf.py file of a Sphinx documentation, specify the "Eon Collective Documentation theme" as an extension.
+
+```python
+# include the theme in the list of extensions to be loaded
+extensions = ['eon_collective_docs_theme', …]
+
+# select the theme
+html_theme = 'eon_collective_docs_theme'
+```
+
+## Credits
+
+The Eon Collective Documentation theme is based on the [Sphinx Wagtail theme](https://github.com/wagtail/sphinx_wagtail_theme). 
+
+Read more about Sphinx Wagtail theme in their [documentation](https://sphinx-wagtail-theme.readthedocs.io/en/latest/).
