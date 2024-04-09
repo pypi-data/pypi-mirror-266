@@ -1,0 +1,61 @@
+Metadata-Version: 2.1
+Name: pyegeria
+Version: 0.3.1
+Summary: A python client for Egeria
+Home-page: https://egeria-project.org/egeria-python
+Author: Dan Wolfson
+Author-email: Dan Wolfson <dan.wolfson@pdr-associates.com>
+Project-URL: Homepage, https://github.com/odpi/egeria-python
+Project-URL: Issues, https://github.com/odpi/egeria-python/issues
+Keywords: egeria,metadata,governance
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests ~=2.31.0
+Requires-Dist: validators ~=0.22.0
+Requires-Dist: pytest ~=7.4.2
+Requires-Dist: urllib3 ~=1.26.15
+Requires-Dist: tabulate ~=0.9.0
+Requires-Dist: pandas ~=2.2.0
+Requires-Dist: rich ~=13.7.1
+Requires-Dist: httpx ~=0.26.0
+Provides-Extra: tests
+Requires-Dist: pytest ; extra == 'tests'
+
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
+
+![Egeria Logo](https://egeria-project.org/assets/images/egeria-header.png)
+
+[![GitHub](https://img.shields.io/github/license/odpi/egeria)](LICENSE)
+
+
+# pyegeria: a python client for Egeria
+
+This is an experimental package for easily using the Egeria
+open metadata environment from python. Details about the
+open source Egeria project can be found at [Egeria Project](https://egeria-project.org).
+
+This package is in active development. There is initial
+support for many of Egeria's services including configuraiton, operation, and use.  This client depends on 
+Egeria 4.4 Snapshot and above - although most of the functions may work on earlier versions of Egeria as well. 
+
+The code is organized to mimic the existing Egeria Java Client structure.
+
+A new examples folder holds some useful text widgets that help to visualize the status of an Egeria deployment.
+
+All feedback is welcome. Please engage via our [community](http://egeria-project.org/guides/community/), 
+team calls, or via github issues in this repo. If interested in contributing,
+you can engage via the community or directly reach out to
+[dan.wolfson\@pdr-associates.com](mailto:dan.wolfson@pdr-associates.com?subject=pyegeria).
+
+This is a learning experience.
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
