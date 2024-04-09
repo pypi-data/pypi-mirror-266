@@ -1,0 +1,58 @@
+[tool.poetry]
+name = "fitrequest"
+version = "0.7.0"
+description = "Python class that allow to create client for REST API with dynamic code generation"
+homepage = "https://skillcorner.com/"
+repository = "https://gitlab.com/public-corner/fitrequest"
+documentation = "https://fitrequest.readthedocs.io/en/latest/"
+authors = ["Skillcorner"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+boto3 = { version = "^1.27.0", optional = true }
+defusedxml = "^0.7.1"
+makefun = "^1.15"
+orjson = "^3.9.10"
+pydantic = "^2.5.2"
+requests = "^2.9"
+strenum = { version = "^0.4.15", optional = true }
+
+[tool.poetry.extras]
+aws_credentials = ["boto3", "strenum"]
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.4"
+coverage = "^7.3"
+moto = "^4.0.12"
+requests-mock = "^1.11.0"
+strenum = "^0.4.15"
+
+[tool.poetry.group.docs.dependencies]
+sphinx = "^7.1"
+sphinx-book-theme = "*"
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.3.0"
+pre-commit = ">=2.21.0,<2.22.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.lint.ruff]
+fix = true
+line-length = 120
+select = ["B", "E", "F", "I001", "Q", "SIM", "UP", "W"]
+target-version = "py38"
+
+[tool.ruff.lint.flake8-quotes]
+inline-quotes = "single"
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-wrap-aliases = true
