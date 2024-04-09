@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "poonia"
+authors = [
+    {name = "proteus"},
+]
+version = "0.1.41"
+description = "Collection of small utilities"
+requires-python = ">=3.8"
+license = {file = "LICENSE.txt"}
+classifiers = [
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+    "Programming Language :: Python",
+    "Development Status :: 4 - Beta",
+    "Topic :: Utilities"
+]
+dependencies = [
+    'Click',
+    'Pillow',
+    'jinja2',
+    'importlib-metadata; python_version<"3.10"',
+]
+
+[project.scripts]
+p = "poonia.__main__:main"
+p-io = "poonia.commands.io:io"
+p-fs = "poonia.commands.fs:fs"
+p-ff = "poonia.commands.ff:ff"
