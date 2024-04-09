@@ -1,0 +1,37 @@
+{
+    "config": {
+        "abort": {
+            "single_instance_allowed": "Sudah dikonfigurasi. Hanya satu konfigurasi yang diizinkan."
+        }
+    },
+    "issues": {
+        "directory_does_not_exist": {
+            "description": "Integrasi {integration_title} gagal mengimpor karena direktori yang dikonfigurasi tidak ada.\n\nPastikan direktori tersebut ada dan mulai ulang Home Assistant untuk mencoba lagi atau hapus konfigurasi {integration_title} dari file configuration.yaml dan lanjutkan ke [menyiapkan integrasi]({url}) secara manual.",
+            "title": "{integration_title} gagal diimpor"
+        }
+    },
+    "services": {
+        "download_file": {
+            "description": "Mengunduh file ke lokasi pengunduhan.",
+            "fields": {
+                "filename": {
+                    "description": "Tentukan nama file.",
+                    "name": "Nama file"
+                },
+                "overwrite": {
+                    "description": "Apakah akan menimpa file atau tidak.",
+                    "name": "Timpa"
+                },
+                "subdir": {
+                    "description": "Unduh ke dalam subdirektori.",
+                    "name": "Subdirektori"
+                },
+                "url": {
+                    "description": "URL file yang akan diunduh.",
+                    "name": "URL"
+                }
+            },
+            "name": "Unduh file"
+        }
+    }
+}
