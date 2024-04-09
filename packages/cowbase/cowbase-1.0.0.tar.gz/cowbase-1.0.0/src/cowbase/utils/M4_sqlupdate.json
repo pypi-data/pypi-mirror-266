@@ -1,0 +1,228 @@
+{
+    "sql_update": {
+        "farm": {
+            "table": "farm",
+            "insert": [
+                "farmname",
+                "created_on",
+                "milking_system_type",
+                "updated_on"
+            ],
+            "conflict": [
+                "farmname"
+            ],
+            "update": [
+                "updated_on"
+            ]
+        },
+        "farm_upd": {
+            "table": "farm",
+            "update": [
+                "updated_on"
+            ],
+            "where": [
+                "farmname"
+            ]
+        },
+        "animal": {
+            "table": "animal",
+            "insert": [
+                "farm_id",
+                "animal_oid",
+                "official_registration_number",
+                "official_registration_number_alias1",
+                "official_registration_number_alias2",
+                "official_registration_number_alias3",
+                "official_registration_number_alias4",
+                "animal_number",
+                "animal_number_alias1",
+                "animal_number_alias2",
+                "name",
+                "name_alias1",
+                "breed",
+                "breed_alias1",
+                "birth_date",
+                "birth_date_alias1",
+                "birth_date_alias2",
+                "birth_date_alias3",
+                "exit_date",
+                "exit_date_alias1",
+                "updated_on"
+            ],
+            "conflict": [
+                "farm_id",
+                "animal_oid"
+            ],
+            "update": [
+                "official_registration_number",
+                "official_registration_number_alias1",
+                "official_registration_number_alias2",
+                "official_registration_number_alias3",
+                "official_registration_number_alias4",
+                "animal_number",
+                "animal_number_alias1",
+                "animal_number_alias2",
+                "name",
+                "name_alias1",
+                "breed",
+                "breed_alias1",
+                "birth_date",
+                "birth_date_alias1",
+                "birth_date_alias2",
+                "birth_date_alias3",
+                "exit_date",
+                "exit_date_alias1",
+                "updated_on"
+            ]
+        },
+        "animal_table": {
+            "table": "animal",
+            "insert": [
+                "farm_id",
+                "animal_oid",
+                "updated_on"
+            ],
+            "conflict": [
+                "farm_id",
+                "animal_oid"
+            ],
+            "update": [
+                "updated_on"
+            ]
+        },
+        "milking_lactation_table": {
+            "table": "lactation",
+            "insert": [
+                "farm_id",
+                "animal_id",
+                "lactation_oid",
+                "parity",
+                "calving",
+                "updated_on"
+            ],
+            "conflict": [
+                "farm_id",
+                "lactation_oid"
+            ],
+            "update": [
+                "parity",
+                "calving",
+                "updated_on"
+            ]
+        },
+        "milking_system_milking_table": {
+            "table": "milking_system",
+            "insert": [
+                "farm_id",
+                "milking_system_oid",
+                "updated_on"
+            ],
+            "conflict": [
+                "farm_id",
+                "milking_system_oid"
+            ],
+            "update": [
+                "updated_on"
+            ]
+        },
+        "milking_milking_table": {
+            "table": "milking",
+            "update": [
+                "lactation_id",
+                "parity",
+                "dim"
+            ],
+            "where": [
+                "farm_id",
+                "milking_oid"
+            ]
+        },
+        "farm_location": {
+            "table": "farm",
+            "update": [
+                "latitude",
+                "longitude",
+                "altitude",
+                "updated_on"
+            ],
+            "where": [
+                "farm_id"
+            ]
+        },
+        "aws": {
+            "table": "aws",
+            "insert": [
+                "aws_id",
+                "name",
+                "country",
+                "region",
+                "wmo",
+                "icao",
+                "latitude",
+                "longitude",
+                "elevation",
+                "timezone",
+                "hourly_start",
+                "hourly_end",
+                "daily_start",
+                "daily_end",
+                "monthly_start",
+                "monthly_end",
+                "updated_on"
+            ],
+            "conflict": [
+                "aws_id"
+            ],
+            "update": [
+                "hourly_start",
+                "hourly_end",
+                "daily_start",
+                "daily_end",
+                "monthly_start",
+                "monthly_end",
+                "updated_on"
+            ]
+        },
+        "aws_weights": {
+            "table": "aws_weights",
+            "insert": [
+                "farm_id",
+                "aws_id_1",
+                "distance_1",
+                "aws_id_2",
+                "distance_2",
+                "aws_id_3",
+                "distance_3",
+                "aws_id_4",
+                "distance_4",
+                "updated_on"
+            ],
+            "conflict": [
+                "farm_id"
+            ],
+            "update": [
+                "aws_id_1",
+                "distance_1",
+                "aws_id_2",
+                "distance_2",
+                "aws_id_3",
+                "distance_3",
+                "aws_id_4",
+                "distance_4",
+                "updated_on"
+            ]
+        }
+    },
+    "farminfo": {
+        "lacgapstart": {
+            "testfarm": "01-01-2014"
+        },
+        "farm_location": {
+            "test": [
+                50.321, 
+                -2.789,
+                20
+            ]
+        }
+    }
+}
