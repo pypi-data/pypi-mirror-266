@@ -1,0 +1,12 @@
+stages:
+ - test
+
+unittest: # Name of the job
+  stage: test
+  image: sphiredevel/cryolo-ut:ubuntu # Image that should be used
+  script:
+     - source activate cryolo; which python; pip uninstall cryolo -y; pip uninstall numpy -y; python setup.py sdist; pip install dist/*.tar.gz; pip install tensorflow==1.15.4; pip install coverage pytest pytest-cov; python -m pytest --cov=cryolo/; coverage xml --ignore-errors;
+     #--cov=cryolo/; coverage xml --ignore-errors;
+     #coverage run -m unittest discover
+     #python -m unittest discover
+     #python -m pytest --cov=cryolo/; coverage xml --ignore-errors
