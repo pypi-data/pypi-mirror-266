@@ -1,0 +1,108 @@
+Metadata-Version: 2.1
+Name: tad_libcint
+Version: 0.0.0
+Summary: "Torch Autodiff Libcint Interface"
+Home-page: https://github.com/tad-mctc/tad-libcint/
+Author: "Marvin Friede"
+Author-email: friede@thch.uni-bonn.de
+License: Apache-2.0
+Project-URL: Documentation, https://github.com/tad-mctc/tad-libcint
+Project-URL: Tracker, https://github.com/tad-mctc/tad-libcint/issues
+Project-URL: Source Code, https://github.com/tad-mctc/tad-libcint
+Keywords: tight-binding,quantum-chemistry,integrals,library
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Chemistry
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Topic :: Scientific/Engineering :: Physics
+Classifier: Typing :: Typed
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: tad-mctc
+Requires-Dist: torch >=1.11
+Provides-Extra: dev
+Requires-Dist: black ; extra == 'dev'
+Requires-Dist: covdefaults ; extra == 'dev'
+Requires-Dist: mypy ; extra == 'dev'
+Requires-Dist: pre-commit ; extra == 'dev'
+Requires-Dist: pylint ; extra == 'dev'
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: pytest-cov ; extra == 'dev'
+Requires-Dist: pytest-random-order ; extra == 'dev'
+Requires-Dist: pytest-xdist ; extra == 'dev'
+Requires-Dist: tox ; extra == 'dev'
+Provides-Extra: tox
+Requires-Dist: covdefaults ; extra == 'tox'
+Requires-Dist: pytest ; extra == 'tox'
+Requires-Dist: pytest-cov ; extra == 'tox'
+Requires-Dist: pytest-random-order ; extra == 'tox'
+Requires-Dist: pytest-xdist ; extra == 'tox'
+
+# dxtb's libcint interface
+
+## Content
+
+This package contains an interface to and extended version of `libcint` for the calculation of integrals within `dxtb`.
+
+It is based on [PySCF's lib directory](https://github.com/pyscf/pyscf/tree/master/pyscf/lib). Modifications include
+
+- removal of unnecessary code
+- minor adaptation of build instructions (CMakeLists.txt)
+
+## Installation
+
+### pip
+
+The `tad-libcint` package can be obtained from pip.
+
+```console
+pip install tad-libcint
+```
+
+### Build from source
+
+You can also build the Python wheels from source.
+
+1. Get the repository (including libcint submodule)
+
+```console
+git clone --recursive git@github.com:grimme-lab/tad-libcint.git
+cd tad-libcint
+```
+
+The [libcint fork](https://github.com/marvinfriede/libcint/tree/dxtb) contains some additional integrals required for `dxtb`. Therefore, downloading from our fork is recommended.
+
+If you already have the repository, you can update the submodule with
+
+```console
+git submodule update --remote
+```
+
+2. Create an environment (`conda`) for building the wheels. The example here uses Python 3.10, but we support 3.8-3.11.
+
+```console
+mamba create -n wheel-310 --yes python=3.10 auditwheel c-compiler cmake fortran-compiler numpy python pip python-build pkgconfig patchelf unzip wheel
+```
+
+3. Build the wheel on your system
+
+```console
+python -m build --wheel
+```
+
+4. Repair the wheels for cross-distribution packaging.
+
+```console
+auditwheel repair -w wheel --plat manylinux_2_12_x86_64 dist/tad-libcint-*-cp310-cp310-linux_x86_64.whl
+```
