@@ -1,0 +1,19 @@
+{% load i18n %}
+
+<div class="xprez {{ form.xprez_admin.xprez_ui_css_class }}">
+    <div class="xprez-top"><span class="xprez-option-btn js-collapse_all">Collapse All Boxes</span></div>
+    <div class="js-contents-container">
+        {% for content in form.xprez_contents %}
+            {{ content.render_admin }}
+        {% endfor %}
+    </div>
+    {% with allowed_contents=form.xprez_get_allowed_contents %}
+        {% if allowed_contents %}
+            <div class="js-xprez-add xprez-add">
+                <h2>+ Add new piece of content +</h2>
+                {% include "./includes/add_list.html" with xprez_admin=form.xprez_admin container=form.instance %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    </div>
+</div>

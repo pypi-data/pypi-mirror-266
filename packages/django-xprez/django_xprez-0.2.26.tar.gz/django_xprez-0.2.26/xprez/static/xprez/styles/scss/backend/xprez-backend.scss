@@ -1,0 +1,208 @@
+// SCSS imports
+@import "../config";
+@import "../css_variables";
+@import "../library/mixins";
+@import "variables";
+
+@import "icons";
+@import "photo-gallery";
+@import "messaging";
+@import "form-elements";
+@import "image-text";
+@import "grid-boxes";
+@import "add-module";
+@import "ck-editor";
+@import "medium-editor";
+@import "text-content";
+@import "admin-buttons";
+
+@import "../frontend/layout";
+@import "../frontend/typography";
+@import "../frontend/editor_media";
+@import "../frontend/button";
+@import "../frontend/grid_boxes";
+
+
+// GENERAL LAYOUT
+.xprez {
+	box-sizing: border-box;
+	@include sans($font-b);
+	font-size: $basefont-b;
+	font-weight: 400;
+	width: 100%;
+	min-width: $xprez-min-width;
+	max-width: $xprez-max-width;
+	padding: 0 40px 0 0;
+	margin: 1rem auto 3rem;
+}
+
+.xprez-module {
+	border: 1px solid $b-gray-4;
+	margin: $g 0;
+
+	&.collapsed .xprez-module__collapse-cont {
+		display: none;
+	}
+}
+
+.xprez-module__title {
+	background: $b-gray-2;
+	text-align: center;
+	overflow: hidden;
+	position: relative;
+	padding-bottom: 3px;
+
+	h2 {
+		@include type-b(12px);
+		color: darken($b-gray-7, 15%);
+		cursor: move;
+		position: absolute;
+		top: 0;
+		right: 120px;
+		left: 120px;
+		margin: 0;
+		font-weight: normal;
+
+		i {
+			font-style: normal;
+			opacity: 0.9;
+			margin-left: .5rem;
+		}
+	}
+
+	.xprez-icon-btn-collapse {
+		float: left;
+		margin-top: 2px;
+		margin-left: 2px;
+	}
+
+	.xprez-icon-btn-remove,
+	.xprez-icon-btn-copy,
+	.xprez-icon-btn-eye,
+	.xprez-icon-btn-dots-horizontal-triple {
+		float: right;
+		margin-top: 2px;
+		margin-right: 2px;
+	}
+}
+
+.xprez-module__options {
+	background: $b-gray-2;
+	text-align: center;
+	padding: 2px;
+	line-height: 28px;
+
+	&.hidden {
+		display: none;
+	}
+
+	li {
+		margin: .5rem 0;
+	}
+}
+
+.xprez-module__common-options {
+	background: rgba(0, 0, 0, 0.02);
+}
+
+.xprez-module__content {
+	--x-link-color: #{$b-blue-high};
+
+	background: white;
+	border-top: 1px solid $b-gray-4;
+	padding: 15px;
+	overflow: hidden;
+}
+
+.xprez-module .xprez-module__options-group {
+	list-style: none;
+	display: inline-block;
+	padding: 0 10px;
+	border-left: 1px solid $b-gray-5;
+	margin: 0;
+
+	&:first-child {
+		border-left: none;
+	}
+
+	li {
+		display: inline-block;
+		vertical-align: middle;
+		font-size: 12px;
+	}
+}
+
+//
+
+.xprez-add {
+	text-align: center;
+
+	h2 {
+		@include type-b(13px, 2, 2, 2);
+		color: $b-gray-7;
+		font-weight: normal;
+	}
+}
+
+.xprez-add__list {
+	padding-left: 0;
+	list-style: none;
+
+	li {
+		display: inline-block;
+		cursor: pointer;
+		width: 60px;
+		padding: 0 5px;
+		vertical-align: top;
+
+		&:hover {
+			.xprez-add__label {
+				color: $b-blue-high;
+			}
+
+			[class^="xprez-icon-btn-add"], [class*=" xprez-icon-btn-add"] {
+				background: $b-blue-high;
+			}
+		}
+	}
+}
+
+.xprez-add__label {
+	@include type-b(12px, 0.9, .5, 1);
+	display: inline-block;
+	color: $b-gray-7;
+}
+
+// Option forms
+
+.xprez-option-label {
+	@include type-b(12px, 28px);
+	display: inline-block;
+	color: $b-gray-7;
+	letter-spacing: 0.02em;
+}
+
+.xprez .xprez-option-input {
+	@include sans($font-b);
+	border-radius: 2px;
+	box-shadow: none;
+	box-sizing: border-box;
+	@include type-b(12px, 20px);
+	height: auto;
+	width: 110px !important;
+	vertical-align: middle;
+	padding: 3px 5px;
+	border: 1px solid $b-gray-4;
+
+	&--s {
+		width: 50px !important;
+	}
+
+	&--m {
+		width: 80px !important;
+	}
+
+	&--l {
+		width: 140px !important;
+	}
+}
