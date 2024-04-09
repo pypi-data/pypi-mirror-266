@@ -1,0 +1,68 @@
+[tool.poetry]
+name = "notdiamond"
+version = "0.1.0-beta"
+description = "Not Diamond Python Library"
+authors = ["Not Diamond <t5@notdiamond.ai>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9.0"
+langchain = ">=0.1.10"
+anthropic = "^0.20.0"
+langchain-google-genai = ">=0.0.2"
+litellm = "^1.32.4"
+langchain-openai = "^0.0.5"
+python-dotenv = "^1.0.1"
+openai = ">=1.0.0"
+ppdeep = "^20200505"
+langchain-anthropic = "^0.1.4"
+langchain-community = "^0.0.28"
+cohere = "^4.56"
+langchain-mistralai = "^0.0.5"
+together = "^0.2.11"
+langchain-together = "^0.0.2.post1"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.0.0"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.3.1"
+pydantic = "^2.5.3"
+pre-commit = "^3.7.0"
+black = "^24.3.0"
+flake8 = "^7.0.0"
+poetry-pre-commit-plugin = "^0.1.2"
+isort = "^5.13.2"
+nox = "^2024.3.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+markers = ["longrun"]
+
+[tool.black]
+line-length = 79
+target-version = ['py39']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+| \.mypy_cache
+| \.venv
+| _build
+)/
+'''
+
+[tool.flake8]
+max-line-length = 130
+extend-ignore = ["D203", "E203", "E251", "E266", "E302", "E305", "E401", "E402", "E501", "F401", "F403", "W503"]
+exclude = [".git", "__pycache__", "dist", "cookbooks"]
+max-complexity = 10
+
+[tool.isort]
+atomic = true
+profile = "black"
+line_length = 79
+skip_gitignore = true
