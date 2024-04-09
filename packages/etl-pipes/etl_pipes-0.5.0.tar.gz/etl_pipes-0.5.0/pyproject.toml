@@ -1,0 +1,56 @@
+[build-system]
+requires = [ "poetry-core",]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "etl-pipes"
+version = "0.5.0"
+description = ""
+authors = [ "Tikhon Zaikin <th@thevhs.club>",]
+readme = "README.md"
+
+[tool.ruff]
+select = [ "E", "F", "UP", "W", "I", "N", "PL", "RUF", "PTH",]
+
+[tool.black]
+line-length = 88
+target-version = [ "py3.11",]
+include = "\\.pyi?$"
+
+[tool.mypy]
+plugins = []
+follow_imports = "silent"
+warn_redundant_casts = true
+warn_unused_ignores = true
+disallow_any_generics = true
+check_untyped_defs = true
+no_implicit_reexport = true
+disallow_untyped_defs = true
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pip = "^23.2"
+
+[tool.ruff.pylint]
+max-returns = 10
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.0.277"
+black = "^23.3.0"
+mypy = "^1.4.1"
+pytest = "^7.4.0"
+pre-commit = "^3.4.0"
+coverage = "^7.3.1"
+pytest-asyncio = "^0.21.1"
+fastapi = "^0.103.1"
+uvicorn = "^0.23.2"
+typer = "^0.12.2"
+toml = "^0.10.2"
+
+[tool.poetry.group.dev.dependencies.unicorn]
+extras = [ "standard",]
+version = "^2.0.1.post1"
+
+[tool.poetry.group.dev.dependencies.sqlalchemy]
+version = "^2.0.21"
+extras = [ "mypy",]
