@@ -1,0 +1,25 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "QIDLearningLib_sanchosimoes"
+version = "0.0.1"
+authors = [
+  { name="Sancho Amaral Simões", email="sanchoamaralsimoes@gmail.com" },
+]
+description = "A Python library that provides various metrics that may be used in the quasi-identification recognition process. These metrics measure data privacy, data utility, performance of the QID recognition and others."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/smartlord7/QIDLearningLib"
+Issues = "https://github.com/smartlord7/QIDLearningLib/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/QIDLearningLib_sanchosimoes"]
