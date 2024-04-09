@@ -1,0 +1,14 @@
+{%- extends "layout.html" -%}
+
+{%- block extrahead %}
+  {% include "partials/opengraph.html" %}
+  {% include "components/alternate-links.html" %}
+{%- endblock %}
+
+{% block body %}{{ body }}{% endblock %}
+
+{% block afterarticle %}
+{% include "components/back-to-top.html" %}
+{% include "partials/article-bottom.html" %}
+{% include "partials/page-bottom.html" %}
+{% endblock %}
