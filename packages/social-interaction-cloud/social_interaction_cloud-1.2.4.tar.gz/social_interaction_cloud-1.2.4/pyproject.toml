@@ -1,0 +1,27 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "social_interaction_cloud"
+version = "1.2.4"
+authors = [
+  { name="Mike Ligthart", email="m.e.u.ligthart@vu.nl" },
+]
+description = "Connector to the Social Interaction Cloud"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+"redis~=4.1",
+"protobuf~=3.19",
+"simplejson~=3.17",
+]
+
+[project.urls]
+"Source" = "https://bitbucket.org/socialroboticshub/connectors/src/master/python/sic/"
+"Wiki" = "https://socialrobotics.atlassian.net/wiki/spaces/CBSR/overview"
