@@ -1,0 +1,79 @@
+Metadata-Version: 2.1
+Name: email-auth-remote
+Version: 1.1.0
+Summary: Django app for an endpoint authentication.
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3 :: Only
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: Django>=4.2
+Requires-Dist: requests>=2.31
+Requires-Dist: djangorestframework>=3.14
+
+# Email Auth Remote
+
+Проект для интеграции МС авторизации с другими Django МС.
+
+## Как пользоваться
+
+Добавить проект в INSTALLED_APPS
+
+```python
+# File: settings.py
+
+INSTALLED_APPS = [
+    ...
+    "email_auth_remote",
+]
+```
+
+Установить переменную AUTH_ENDPOINT_URL
+
+```python
+# File: settings.py
+
+AUTH_ENDPOINT_URL = "http://localhost:8000/api/v1/auth/user/"  # Как пример
+```
+
+Добавить класс аутентификации
+
+```python
+# File: settings.py
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "email_auth_remote.authentication.EndpointAuthentication",
+    ],
+}
+```
+
+**Важная информация:**
+При использовании библиотеки модель EmailUser, полученная через request.user не будет сохранена в
+БД. На эту модель невозможно ссылаться через ForeignKey и тд. Сохранение в БД также невозможно.
+
+## Сборка
+
+***Необходимо только для сборки, для интеграции не надо.***
+
+Как собрать проект локально
+
+```bash
+python3 -m pip install build
+python3 -m build 
+```
+
+### Проверка собранного пакета
+
+```bash
+python3 -m pip install twine
+twine check dist/*
+```
+
+### Выкладывание проекта в PYPI
+
+```bash
+twine upload dist/*
+```
