@@ -1,0 +1,99 @@
+Metadata-Version: 2.1
+Name: inboard
+Version: 0.66.1
+Summary: Docker images and utilities to power your Python APIs and help you ship faster.
+Project-URL: Docker, https://github.com/br3ndonland/inboard/pkgs/container/inboard
+Project-URL: Documentation, https://inboard.bws.bio
+Project-URL: Homepage, https://github.com/br3ndonland/inboard
+Project-URL: Repository, https://github.com/br3ndonland/inboard
+Author-email: Brendon Smith <bws@bws.bio>
+License-Expression: MIT
+License-File: LICENSE
+Keywords: asgi,docker,fastapi,gunicorn,uvicorn
+Classifier: Framework :: FastAPI
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Internet :: Log Analysis
+Classifier: Topic :: Internet :: WWW/HTTP :: HTTP Servers
+Classifier: Topic :: Internet :: WWW/HTTP :: WSGI
+Classifier: Topic :: Software Development :: Libraries :: Application Frameworks
+Classifier: Topic :: System :: Software Distribution
+Classifier: Topic :: Utilities
+Classifier: Typing :: Typed
+Requires-Python: <4,>=3.8.1
+Requires-Dist: gunicorn==21.2.0
+Requires-Dist: uvicorn==0.25.0
+Provides-Extra: checks
+Requires-Dist: mypy==1.9.0; extra == 'checks'
+Requires-Dist: ruff<0.4,>=0.3; extra == 'checks'
+Provides-Extra: docs
+Requires-Dist: mkdocs-material<10,>=9; extra == 'docs'
+Provides-Extra: fastapi
+Requires-Dist: fastapi<0.111,>=0.110.1; extra == 'fastapi'
+Provides-Extra: starlette
+Requires-Dist: starlette<0.38.0,>=0.37.2; extra == 'starlette'
+Provides-Extra: tests
+Requires-Dist: coverage[toml]<8,>=7; extra == 'tests'
+Requires-Dist: httpx<1,>=0.23; extra == 'tests'
+Requires-Dist: pytest-mock<4,>=3; extra == 'tests'
+Requires-Dist: pytest-timeout<3,>=2; extra == 'tests'
+Requires-Dist: pytest<8,>=7; extra == 'tests'
+Provides-Extra: uvicorn-fast
+Requires-Dist: httptools>=0.5.0; extra == 'uvicorn-fast'
+Requires-Dist: uvloop!=0.15.0,!=0.15.1,>=0.14.0; (sys_platform != 'win32' and (sys_platform != 'cygwin' and platform_python_implementation != 'PyPy')) and extra == 'uvicorn-fast'
+Requires-Dist: websockets>=10.4; extra == 'uvicorn-fast'
+Provides-Extra: uvicorn-standard
+Requires-Dist: uvicorn[standard]==0.25.0; extra == 'uvicorn-standard'
+Description-Content-Type: text/markdown
+
+# 🚢 inboard 🐳
+
+<img src="https://raw.githubusercontent.com/br3ndonland/inboard/develop/docs/assets/images/inboard-logo.svg" alt="inboard logo" width="90%" />
+
+_Docker images and utilities to power your Python APIs and help you ship faster._
+
+[![PyPI](https://img.shields.io/pypi/v/inboard?color=success)](https://pypi.org/project/inboard/)
+[![GitHub Container Registry](https://img.shields.io/badge/github%20container%20registry-inboard-success)](https://github.com/br3ndonland/inboard/pkgs/container/inboard)
+[![coverage](https://img.shields.io/badge/coverage-100%25-brightgreen?logo=pytest&logoColor=white)](https://coverage.readthedocs.io/en/latest/)
+[![builds](https://github.com/br3ndonland/inboard/workflows/builds/badge.svg)](https://github.com/br3ndonland/inboard/actions)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/ef2798f758e03fa659d1ba2973ddd59515400978/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+
+[![Mentioned in Awesome FastAPI](https://awesome.re/mentioned-badge-flat.svg)](https://github.com/mjhea0/awesome-fastapi)
+
+## Description
+
+This repository provides [Docker images](https://github.com/br3ndonland/inboard/pkgs/container/inboard) and a [PyPI package](https://pypi.org/project/inboard/) with useful utilities for Python web servers. It runs [Uvicorn with Gunicorn](https://www.uvicorn.org/), and can be used to build applications with [Starlette](https://www.starlette.io/) and [FastAPI](https://fastapi.tiangolo.com/).
+
+## Justification
+
+_Why use this project?_ You might want to try out inboard because it:
+
+- **Offers a Python package and Docker images that work together**. Python packages and Docker images don't automatically share the same versioning systems, but inboard can help with this. You might install the Python package with a minor version constraint. You can also pull the corresponding Docker image by specifying the minor version in the Docker tag (`FROM ghcr.io/br3ndonland/inboard:<version>`).
+- **Tests everything**. inboard performs unit testing of 100% of the Python code, and also runs smoke tests of the Docker images each time they are built.
+- **Sets sane defaults, but allows configuration**. Configure a variety of settings with environment variables. Or run it as-is and it just works.
+- **Configures logging extensibly**. inboard simplifies logging by handling all its Python log streams with a single logging config. It also offers the ability to filter health check endpoints out of the access logs. Don't like it? No problem. You can easily extend or override the logging behavior.
+
+## Quickstart
+
+[Get started with Docker](https://www.docker.com/get-started), pull and run an image, and try an API endpoint.
+
+```sh
+docker pull ghcr.io/br3ndonland/inboard
+docker run -d -p 80:80 ghcr.io/br3ndonland/inboard
+http :80  # HTTPie: https://httpie.io/
+```
+
+## Documentation
+
+Documentation is built with [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/), deployed on [Vercel](https://vercel.com/), and available at [inboard.bws.bio](https://inboard.bws.bio) and [inboard.vercel.app](https://inboard.vercel.app).
+
+[Vercel build configuration](https://vercel.com/docs/build-step):
+
+- Build command: `python3 -m pip install mkdocs-material && mkdocs build --site-dir public`
+- Output directory: `public` (default)
+
+[Vercel site configuration](https://vercel.com/docs/configuration) is specified in _vercel.json_.
