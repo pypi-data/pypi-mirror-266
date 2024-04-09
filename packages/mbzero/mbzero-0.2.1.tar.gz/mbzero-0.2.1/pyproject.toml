@@ -1,0 +1,41 @@
+[build-system]
+requires  = [
+    "setuptools", "requests", "requests_oauthlib"
+]
+
+[project]
+name = "mbzero"
+version = "0.2.1"
+description = "Python bindings for the MusicBrainz and the Cover Art Archive webservices"
+readme = "README.md"
+authors = [
+    {name = "Louis Rannou", email = "louson@gresille.org"},
+]
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+]
+dependencies = [
+    "pytest",
+    "requests",
+    "requests_oauthlib"
+]
+
+[project.urls]
+Homepage = "https://gitlab.com/Louson-public/personal/python-mbzero"
+
+[project.optional-dependencies]
+lint = [
+    "flake8>=3.5.0",
+    "flake8-simplify",
+]
+test = [
+    "pytest>=4.6"
+]
+docs = [
+    "Sphinx>=7.2.6",
+    "sphinx-rtd-theme>=2.0.0"
+]
