@@ -1,0 +1,52 @@
+Metadata-Version: 2.1
+Name: PyCBA
+Version: 0.5.1
+Summary: Python Continuous Beam Analysis
+Author-email: Colin Caprani <colin.caprani@monash.edu>
+License: Apache 2.0
+Project-URL: Homepage, https://ccaprani.github.io/pycba/
+Project-URL: Documentation, https://ccaprani.github.io/pycba/
+Project-URL: Source, https://github.com/ccaprani/pycba/
+Project-URL: Tracker, https://github.com/ccaprani/pycba/issues/
+Keywords: beam,bridge,vehicle
+Platform: any
+Classifier: Development Status :: 4 - Beta
+Classifier: Topic :: Scientific/Engineering
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Science/Research
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Natural Language :: English
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: matplotlib
+Requires-Dist: numpy
+Requires-Dist: scipy
+Provides-Extra: test
+Requires-Dist: pytest >=6.2.2 ; extra == 'test'
+
+# PyCBA - Python Continuous Beam Analysis
+
+![PyCBA logo](https://raw.githubusercontent.com/ccaprani/pycba/main/docs/source/images/pycba_logo.png)
+
+`PyCBA` is a python implementation of the Continuous Beam Analysis program, [originally coded in Matlab](http://www.colincaprani.com/programming/matlab/) and subsequently [ported to C++](http://cbeam.sourceforge.net/) (by Pierrot).
+
+`PyCBA` is for fast linear elastic analysis of general beam configurations. It uses the matrix stiffness method to determine the displacements at each node. These are then used to determine the member end forces. Exact expressions are then used to determine the distribution of shear, moment, and rotation along each member. Cumulative trapezoidal integration is then used to determine the rotations and deflections along each member. The program features:
+
+- Multiple load types: point load; uniformly distributed load; patch load, and; moment load;
+- Spring supports, both vertical and rotational, enabling it to be used as part of a subframe analysis;
+- Results are output at 100 (user can change) positions along each span, enable accurate deflection estimation.
+
+One of the main functions of `PyCBA` is that the basic analysis engine forms the basis for higher-level analysis. Current `PyCBA` includes modules for:
+
+- Influence line generation
+- Moving load analysis for bridges, targeted at bridge access assessments
+- Load patterning and enveloping
