@@ -1,0 +1,35 @@
+Metadata-Version: 2.1
+Name: meldrx-fhir-client
+Version: 0.0.8
+Summary: A simple FHIR client for MeldRX.
+Home-page: https://github.com/darena-solutions/meldrx-client-py
+Author: EM
+Author-email: eric@darenasolutions.com
+License: MIT
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Description-Content-Type: text/markdown
+
+# meldrx-client-py
+MeldRx Python Client
+
+## Setup/Installation
+- Create `config.py` (use `config.example.py` as an example)
+
+## Unit Tests
+`python3 -m unittest`
+
+## Publish (on test registry)
+1. Update version in `setup.py`
+2. `python3 setup.py sdist bdist_wheel`
+3. `twine upload --repository testpypi dist/*`
+
+## Publish (on main registry)
+1. Update version in `setup.py`
+2. `python3 setup.py sdist bdist_wheel`
+3. `twine upload dist/*`
