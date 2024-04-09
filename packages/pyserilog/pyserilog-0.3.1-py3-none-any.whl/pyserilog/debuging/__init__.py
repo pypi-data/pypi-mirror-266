@@ -1,0 +1,1 @@
+from pyserilog.debuging.self_log import SelfLog
