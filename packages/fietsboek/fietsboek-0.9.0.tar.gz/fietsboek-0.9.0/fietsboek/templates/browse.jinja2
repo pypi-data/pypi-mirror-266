@@ -1,0 +1,212 @@
+{% extends "layout.jinja2" %}
+{% block content %}
+<div class="container">
+  <h1>{{ _("page.browse.title") }}</h1>
+  <div class="mb-3">
+    <form id="browseFilter">
+      <div class="row g-3 mb-3">
+        <div class="col-12">
+          <div class="input-group">
+            <button type="button" class="btn btn-outline-secondary button-clear-input"><i class="bi bi-eraser-fill"></i></button>
+            <input name="search-terms" type="text" class="form-control" placeholder="{{ _("page.browse.filter.search_terms") }}" value="{{ request.params.get('search-terms', '') }}">
+          </div>
+        </div>
+      </div>
+
+      <div class="collapse row g-3 mb-3" id="advancedSearch">
+        <div class="col-md-6">
+          <div class="input-group">
+            <button type="button" class="btn btn-outline-secondary button-clear-input"><i class="bi bi-eraser-fill"></i></button>
+            <input name="tags" type="text" class="form-control" placeholder="{{ _("page.browse.filter.tags") }}" value="{{ request.params.get('tags', '') }}">
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="input-group">
+            <button type="button" class="btn btn-outline-secondary button-clear-input"><i class="bi bi-eraser-fill"></i></button>
+            <input name="tagged-person" type="text" class="form-control" placeholder="{{ _("page.browse.filter.tagged_person") }}" value="{{ request.params.get('tagged-person', '') }}">
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="input-group">
+            <button type="button" class="btn btn-outline-secondary button-clear-input"><i class="bi bi-eraser-fill"></i></button>
+            <input name="min-length" type="number" class="form-control" placeholder="{{ _("page.browse.filter.length_minimum") }}" value="{{ request.params.get('min-length', '') }}">
+            <span class="input-group-text">km</span>
+          </div>
+        </div>
+
+        <div class="col-md-4 fs-5 d-flex align-items-center justify-content-center">
+            {{ _("page.browse.filter.length_boundaries") }}
+        </div>
+
+        <div class="col-md-4">
+          <div class="input-group">
+            <button type="button" class="btn btn-outline-secondary button-clear-input"><i class="bi bi-eraser-fill"></i></button>
+            <input name="max-length" type="number" class="form-control" placeholder="{{ _("page.browse.filter.length_maximum") }}" value="{{ request.params.get('max-length', '') }}">
+            <span class="input-group-text">km</span>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="input-group">
+            <button type="button" class="btn btn-outline-secondary button-clear-input"><i class="bi bi-eraser-fill"></i></button>
+            <input name="min-date" type="date" class="form-control" value="{{ request.params.get('min-date', '') }}">
+          </div>
+        </div>
+
+        <div class="col-md-4 fs-5 d-flex align-items-center justify-content-center">
+          {{ _("page.browse.filter.date_boundaries") }}
+        </div>
+
+        <div class="col-md-4">
+          <div class="input-group">
+            <button type="button" class="btn btn-outline-secondary button-clear-input"><i class="bi bi-eraser-fill"></i></button>
+            <input name="max-date" type="date" class="form-control" value="{{ request.params.get('max-date', '') }}">
+          </div>
+        </div>
+
+      <div class="col-md-6">
+        <div class="input-group">
+          <button type="button" class="btn btn-outline-secondary button-clear-input"><i class="bi bi-eraser-fill"></i></button>
+          <select class="form-select" size="2" name="type[]" multiple>
+            <option value="ORGANIC"{% if "ORGANIC" in request.params.getall("type[]") %} selected{% endif %}>{{ _("page.browse.filter.type.organic") }}</option>
+            <option value="SYNTHETIC"{% if "SYNTHETIC" in request.params.getall("type[]") %} selected{% endif %}>{{ _("page.browse.filter.type.synthetic") }}</option>
+          </select>
+        </div>
+
+        {% if request.identity %}
+        <div class="input-group mt-2">
+          <button type="button" class="btn btn-outline-secondary button-clear-input"><i class="bi bi-eraser-fill"></i></button>
+          <select class="form-select" name="favourite">
+            <option value="">{{ _("page.browse.filter.favourite.all") }}</option>
+            <option value="true"{% if request.params.get("favourite") == "true" %} selected{% endif %}>{{ _("page.browse.filter.favourite.yes") }}</option>
+            <option value="false"{% if request.params.get("favourite") == "false" %} selected{% endif %}>{{ _("page.browse.filter.favourite.no") }}</option>
+          </select>
+        </div>
+        {% endif %}
+      </div>
+      <div class="col-md-6">
+        {% if request.identity %}
+        {% macro render_switch(id, name, value, text) %}
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="{{ id }}" name="{{ name }}" value="{{ value }}" {% if value in request.params.getall(name) %}checked{% endif %}>
+          <label class="form-check-label" for="{{ id }}">{{ text }}</label>
+        </div>
+        {% endmacro %}
+        {{ render_switch("switchOnlyMyTracks", "show-only[]", "mine", _("page.browse.filter.my_tracks.only")) }}
+        {{ render_switch("switchOnlyFriendsTracks", "show-only[]", "friends", _("page.browse.filter.friends_tracks_only")) }}
+        {{ render_switch("switchOnlyMeTagged", "show-only[]", "user-tagged", _("page.browse.filter.me_tagged_only")) }}
+        {% endif %}
+      </div>
+
+      </div>
+
+      <div class="row g-3 mb-3">
+        <div class="col">
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-funnel-fill"></i>
+            {{ _("page.browse.filters.apply") }}
+          </button>
+          <a class="btn btn-info" href="{{ request.route_path('browse') }}">
+            <i class="bi bi-x-octagon"></i>
+            {{ _("page.browse.filters.clear_all") }}
+          </a>
+          <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#advancedSearch" aria-expanded="false" aria-controls="advancedSearch">
+            {{ _("page.browse.filters.expand_advanced") }}
+          </button>
+        </div>
+        <div class="col">
+          <select class="form-select" name="sort">
+            <option value="DATE_DESC" {% if request.params.get("sort") == "DATE_DESC" %}selected{% endif %}>{{ _("page.browse.sort.date") }} &ShortDownArrow;</option>
+            <option value="DATE_ASC" {% if request.params.get("sort") == "DATE_ASC" %}selected{% endif %}>{{ _("page.browse.sort.date") }} &ShortUpArrow;</option>
+            <option value="LENGTH_DESC" {% if request.params.get("sort") == "LENGTH_DESC" %}selected{% endif %}>{{ _("page.browse.sort.length") }} &ShortDownArrow;</option>
+            <option value="LENGTH_ASC" {% if request.params.get("sort") == "LENGTH_ASC" %}selected{% endif %}>{{ _("page.browse.sort.length") }} &ShortUpArrow;</option>
+            <option value="DURATION_DESC" {% if request.params.get("sort") == "DURATION_DESC" %}selected{% endif %}>{{ _("page.browse.sort.duration") }} &ShortDownArrow;</option>
+            <option value="DURATION_ASC" {% if request.params.get("sort") == "DURATION_ASC" %}selected{% endif %}>{{ _("page.browse.sort.duration") }} &ShortUpArrow;</option>
+          </select>
+        </div>
+      </div>
+    </form>
+  </div>
+  {% if tracks %}
+  {% for track in tracks %}
+  <div class="card mb-3">
+    <h5 class="card-header">
+      <input type="checkbox" class="form-check-input archive-checkbox" name="track_id[]" value="{{ track.id }}">
+      {% if request.identity and request.identity in track.favourees %}
+      <i class="bi bi-star-fill favourite-star" data-track-id="{{ track.id }}"></i>
+      {% else %}
+      <i class="bi bi-star favourite-star" data-track-id="{{ track.id }}"></i>
+      {% endif %}
+      <a href="{{ request.route_url('details', track_id=track.id) }}">{{ track.title | default(track.date, true) }}</a>
+      {% if track.text_tags() %}
+      {% for tag in track.tags %}<span class="badge bg-info text-dark">{{ tag.tag }}</span> {% endfor %}
+      {% endif %}
+      <span class="float-end">
+        {% if track.show_organic_data() %}
+        <i class="bi bi-cassette" title="{{ _("page.browse.organic_tooltip") }}"></i>
+        {% else %}
+        <i class="bi bi-sign-turn-slight-right" title="{{ _("page.browse.synthetic_tooltip") }}"></i>
+        {% endif %}
+      </span>
+    </h5>
+    <div class="card-body">
+      <table class="table table-hover table-sm browse-summary">
+        <tbody>
+          <tr>
+            <th scope="row">{{ _("page.details.date") }}</th>
+            <td>{{ track.date | format_datetime }}</td>
+            <th scope="row">{{ _("page.details.length") }}</th>
+            <td>{{ (track.length / 1000) | round(2) | format_decimal }} km</td>
+          </tr>
+          {% if track.show_organic_data() %}
+          <tr>
+            <th scope="row">{{ _("page.details.start_time") }}</th>
+            <td>{{ track.start_time | format_datetime }}</td>
+            <th scope="row">{{ _("page.details.end_time") }}</th>
+            <td>{{ track.end_time | format_datetime }}</td>
+          </tr>
+          {% endif %}
+          <tr>
+            <th scope="row">{{ _("page.details.uphill") }}</th>
+            <td>{{ track.uphill | round(2) | format_decimal }} m</td>
+            <th scope="row">{{ _("page.details.downhill") }}</th>
+            <td>{{ track.downhill | round(2) | format_decimal }} m</td>
+          </tr>
+          {% if track.show_organic_data() %}
+          <tr>
+            <th scope="row">{{ _("page.details.moving_time") }}</th>
+            <td>{{ track.moving_time }}</td>
+            <th scope="row">{{ _("page.details.stopped_time") }}</th>
+            <td>{{ track.stopped_time }}</td>
+          </tr>
+          <tr>
+            <th scope="row">{{ _("page.details.max_speed") }}</th>
+            <td>{{ mps_to_kph(track.max_speed) | round(2) | format_decimal }} km/h</td>
+            <th scope="row">{{ _("page.details.avg_speed") }}</th>
+            <td>{{ mps_to_kph(track.avg_speed) | round(2) | format_decimal }} km/h</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+
+      {% if track.show_organic_data() %}
+      <ul>
+        <li>{{ track.owner.name }}</li>
+        {% for user in track.tagged_people %}
+        <li>{{ user.name }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+  <button type="button" class="btn btn-primary" id="archiveDownloadButton" disabled><i class="bi bi-file-earmark-zip"></i> {{ _("page.browse.download_multiple") }}</button>
+  {% elif used_filters %}
+  <p>{{ _("page.browse.no_results") }}</p>
+  {% else %}
+  <p>{{ _("page.browse.no_tracks") }}</p>
+  {% endif %}
+</div>
+{% endblock %}

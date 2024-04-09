@@ -1,0 +1,50 @@
+{% extends "layout.jinja2" %}
+
+{% import "util.jinja2" as util with context %}
+
+{% block content %}
+<div class="container">
+  <h1>{{ _("page.login.title") }}</h1>
+  <form method="POST" action="{{ request.route_path('login') }}">
+    <div class="row justify-content-center">
+      <div class="col-lg-5 mb-3">
+        <div class="form-floating">
+          <input type="email" class="form-control" id="loginEmail" name="email" placeholder="x">
+          <label for="loginEmail" class="form-label">{{ _("page.login.email") }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-lg-5 mb-3">
+        <div class="form-floating">
+          <input type="password" class="form-control" id="loginPassword" name="password" placeholder="x">
+          <label for="loginPassword" class="form-label">{{ _("page.login.password") }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-lg-5 mb-3">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="remember-me" id="rememberMe" value="on">
+          <label class="form-check-label" for="rememberMe">
+            {{ _("page.login.remember-me") }}
+          </label>
+        </div>
+      </div>
+    </div>
+    {{ util.hidden_csrf_input() }}
+    <div class="row justify-content-center">
+      <div class="col-auto mb-3">
+        <button type="submit" class="btn btn-primary"><i class="bi bi-door-open"></i> {{ _("page.login.submit") }}</button>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-auto mb-3">
+        <a href="{{ request.route_url("password-reset") }}">{{ _("page.login.forgot_password") }}</a>
+        &bull;
+        <a href="{{ request.route_url("resend-verification") }}">{{ _("page.login.resend_verification") }}</a>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock content %}

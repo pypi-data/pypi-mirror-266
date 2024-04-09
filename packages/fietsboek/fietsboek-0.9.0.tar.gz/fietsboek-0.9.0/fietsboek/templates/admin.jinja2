@@ -1,0 +1,48 @@
+{% extends "layout.jinja2" %}
+{% import "util.jinja2" as util with context %}
+{% block content %}
+<div class="container">
+  <h1>{{ _("page.admin.title") }}</h1>
+
+  <h2>{{ _("page.admin.badges") }}</h2>
+
+  <div class="list-group">
+    {% for badge in badges %}
+    <span href="#" class="list-group-item list-group-item-action d-flex admin-badge-list">
+      {{ util.render_badge(badge) }}
+      <form method="POST" enctype="multipart/form-data" action="{{ request.route_path('admin-badge-edit') }}">
+        <input type="hidden" name="badge-edit-id" value="{{ badge.id }}">
+        <div class="mb-3">
+          <input type="text" class="form-control" name="badge-title" value="{{ badge.title }}">
+        </div>
+        <div class="mb-3">
+          <input class="form-control" type="file" name="badge-image">
+        </div>
+        {{ util.hidden_csrf_input() }}
+        <div class="mb-3">
+          <button class="btn btn-primary">{{ _("page.admin.badge.edit") }}</button>
+        </div>
+      </form>
+      <form method="POST" action="{{ request.route_path('admin-badge-delete') }}">
+        <input type="hidden" name="badge-delete-id" value="{{ badge.id }}">
+        {{ util.hidden_csrf_input() }}
+        <button class="btn btn-danger"><i class="bi bi-trash"></i> {{ _("page.admin.badge.delete_badge") }}</button>
+      </form>
+    </span>
+    {% endfor %}
+  </div>
+
+  <form method="POST" enctype="multipart/form-data" action="{{ request.route_path('admin-badge-add') }}">
+    <div class="mb-3">
+      <label for="badge-title" class="form-label">{{ _("page.admin.badges.badge_title") }}</label>
+      <input type="text" class="form-control" id="badge-title" name="badge-title">
+    </div>
+    <div class="mb-3">
+      <label for="badge-image" class="form-label">{{ _("page.admin.badges.badge_image") }}</label>
+      <input class="form-control" type="file" name="badge-image">
+    </div>
+    {{ util.hidden_csrf_input() }}
+    <button type="submit" class="btn btn-primary">{{ _("page.admin.badges.add_badge") }}</button>
+  </form>
+</div>
+{% endblock %}

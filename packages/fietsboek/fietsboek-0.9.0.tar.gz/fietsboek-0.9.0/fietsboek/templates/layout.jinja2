@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="{{request.locale_name}}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Fietslog Tour Diary">
+    <link rel="shortcut icon" href="{{ request.static_url('fietsboek:static/favicon.png') }}">
+
+    <title>{% block title %}Fietsboek{% endblock %}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="{{request.static_url('fietsboek:static/bootstrap.css')}}">
+    <!-- Bootstrap icons -->
+    <link rel="stylesheet" href="{{request.static_url('fietsboek:static/bootstrap-icons.css')}}">
+
+    <!-- Custom styles for this scaffold -->
+    <link href="{{request.static_url('fietsboek:static/fonts.css')}}" rel="stylesheet">
+    <link href="{{request.static_url('fietsboek:static/theme.css')}}" rel="stylesheet">
+    <!-- Pre-load leaflet CSS -->
+    <link href="{{request.static_url('fietsboek:static/GM_Utils/leaflet/leaflet.css')}}" rel="stylesheet">
+
+    <script>
+const FRIENDS_URL = {{ request.route_url('json-friends') | tojson }};
+const TILE_LAYERS = {{ embed_tile_layers(request) }};
+const BASE_URL = {{ request.route_url('home') | tojson }};
+const LOCALE = {{ request.localizer.locale_name.replace('_', '-') | tojson }};
+
+// Settings for GPX Viewer. Check GPX2GM_Defs.js for a full list.
+const Bestaetigung = false;
+const Fullscreenbutton = true;
+const Legende = false;
+    </script>
+
+  </head>
+
+  <body>
+    <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+      <div class="container-fluid">
+        <a href="{{ request.route_url('home') }}" class="brand-link">
+          <span class="navbar-brand mb-0 h1"><i class="bi bi-bicycle"></i> Fietsboek</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="{{ _('page.navbar.toggle') }}">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbar">
+          <ul class="navbar-nav w-100 mb-2 mb-lg-0">
+            {% for page in request.pages.pre_menu_items(request) %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ request.route_url('static-page', slug=page.slug) }}">{{ page.link_name }}</a>
+            </li>
+            {% endfor %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ request.route_url('home') }}">{{ _("page.navbar.home") }}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ request.route_url('browse') }}">{{ _("page.navbar.browse") }}</a>
+            </li>
+            {% if request.identity is not none %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ request.route_url('upload') }}">{{ _("page.navbar.upload") }}</a>
+            </li>
+            {% endif %}
+            {% for page in request.pages.post_menu_items(request) %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ request.route_url('static-page', slug=page.slug) }}">{{ page.link_name }}</a>
+            </li>
+            {% endfor %}
+            <li class="nav-item ms-lg-auto dropdown">
+              <a class="nav-link dropdown-toggle" id="navbarUserMenu" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ _("page.navbar.user") }}</a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarUserMenu">
+                {% if request.identity %}
+                {# Items shown to logged in users #}
+                <li><h6 class="dropdown-header">{{ _("page.navbar.welcome_user").format(request.identity.name) }}</h6></li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                  <a class="dropdown-item" href="{{ request.route_url('logout') }}">{{ _("page.navbar.logout") }}</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{{ request.route_url('profile', user_id=request.identity.id) }}">{{ _("page.navbar.profile") }}</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{{ request.route_url('user-data') }}">{{ _("page.navbar.user_data") }}</a>
+                </li>
+                {% if request.identity.is_admin %}
+                <li>
+                  <a class="dropdown-item" href="{{ request.route_url('admin') }}">{{ _("page.navbar.admin") }}</a>
+                </li>
+                {% endif %}
+                {% else %}
+                {# Items shown to not-logged-in users #}
+                <li>
+                  <a class="dropdown-item" href="{{ request.route_url('login') }}">{{ _("page.navbar.login") }}</a>
+                </li>
+                {% if request.config.enable_account_registration %}
+                <li>
+                  <a class="dropdown-item" href="{{ request.route_url('create-account') }}">{{ _("page.navbar.create_account") }}</a>
+                </li>
+                {% endif %}
+                {% endif %}
+              </ul>
+
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    {% for message in request.session.pop_flash() %}
+    <div class="alert alert-primary" role="alert">
+      {{message}}
+    </div>
+    {% endfor %}
+
+    <div id="mainContent">
+    {% block content %}
+    {% endblock %}
+    </div>
+
+    <footer id="siteFooter">
+      <div class="container">
+        <hr>
+        <div id="languageChooser">
+          {% for lang_code, display_name in list_languages(request) %}
+          <a href="#" class="language-choice" data-langcode="{{ lang_code }}">{{ display_name }}</a>
+          {% endfor %}
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{{request.static_url('fietsboek:static/bootstrap.bundle.min.js')}}"></script>
+    <!-- Pre-load leaflet Javascript. This lets us use Leaflet on any page, without relying on GPXViewer to load it -->
+    <script src="{{request.static_url('fietsboek:static/GM_Utils/leaflet/leaflet.js')}}"></script>
+    <!-- Our patch to the GPX viewer, load before the actual GPX viewer -->
+    <script src="{{request.static_url('fietsboek:static/osm-monkeypatch.js')}}"></script>
+    <!-- Jürgen Berkemeier's GPX viewer -->
+    <script src="{{request.static_url('fietsboek:static/GM_Utils/GPX2GM.js')}}"></script>
+    <!-- Chart.JS -->
+    <script src="{{request.static_url('fietsboek:static/chart.umd.js')}}"></script>
+
+    <script src="{{request.static_url('fietsboek:static/fietsboek.js')}}"></script>
+    {% block latescripts %}
+    {% endblock %}
+  </body>
+</html>

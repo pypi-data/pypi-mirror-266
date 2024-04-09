@@ -1,0 +1,59 @@
+{% extends "layout.jinja2" %}
+{% import "util.jinja2" as util with context %}
+{% block content %}
+<div class="container">
+  <h1>{{ _("page.create_account.title") }}</h1>
+  <form method="POST" action="{{ request.route_path('create-account') }}" class="needs-validation" novalidate>
+    {{ util.hidden_csrf_input() }}
+    <div class="row mb-3 justify-content-center">
+      <div class="col-lg-5">
+        <div class="form-floating">
+          <input type="email" class="form-control" id="inputEmail" name="email" required placeholder="x">
+          <div class="invalid-feedback">
+            {{ _("page.create_account.email_invalid") }}
+          </div>
+          <label for="inputName">{{ _("page.create_account.email") }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-3 justify-content-center">
+      <div class="col-lg-5">
+        <div class="form-floating">
+          <input type="text" class="form-control" id="inputName" name="name" onchange="checkNameValidity('#inputName')" required placeholder="x">
+          <div class="invalid-feedback">
+            {{ _("page.create_account.name_invalid") }}
+          </div>
+          <label for="inputName">{{ _("page.create_account.name") }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-3 justify-content-center">
+      <div class="col-lg-5">
+        <div class="form-floating">
+          <input type="password" class="form-control" id="inputPassword" name="password" onchange="checkPasswordValidity('#inputPassword', '#repeatPassword')" required placeholder="x">
+          <div class="invalid-feedback">
+            {{ _("page.create_account.password_invalid") }}
+          </div>
+          <label for="inputPassword">{{ _("page.create_account.password") }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-3 justify-content-center">
+      <div class="col-lg-5">
+        <div class="form-floating">
+          <input type="password" class="form-control" id="repeatPassword" name="repeat-password" onchange="checkPasswordValidity('#inputPassword', '#repeatPassword')" required placeholder="x">
+          <div class="invalid-feedback">
+            {{ _("page.create_account.password_must_match") }}
+          </div>
+          <label for="repeatPassword">{{ _("page.create_account.repeat_password") }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-auto">
+        <button type="submit" class="btn btn-primary"><i class="bi bi-person-plus"></i> {{ _("page.create_account.create") }}</button>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}

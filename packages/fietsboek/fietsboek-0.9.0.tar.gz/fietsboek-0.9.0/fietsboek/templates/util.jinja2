@@ -1,0 +1,7 @@
+{% macro render_badge(badge) -%}
+<div class="badge-container"><img src="{{ request.route_url('badge', badge_id=badge.id) }}" data-bs-toggle="tooltip" title="{{ badge.title }}"></div>
+{%- endmacro %}
+
+{% macro hidden_csrf_input() %}
+<input type="hidden" name="csrf_token" value="{{ get_csrf_token() }}">
+{% endmacro %}

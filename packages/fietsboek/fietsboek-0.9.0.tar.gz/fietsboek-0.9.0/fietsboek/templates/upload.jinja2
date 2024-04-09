@@ -1,0 +1,16 @@
+{% extends "layout.jinja2" %}
+{% import "util.jinja2" as util with context %}
+
+{% block content %}
+<div class="container">
+  <h1>{{ _("page.upload.title") }}</h1>
+  <form method="POST" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label for="uploadFile" class="form-label">{{ _("page.upload.form.gpx") }}</label>
+      <input class="form-control" type="file" id="uploadFile" name="gpx">
+    </div>
+    {{ util.hidden_csrf_input() }}
+    <button type="submit" class="btn btn-primary"><i class="bi bi-upload"></i> {{ _("page.upload.form.submit") }}</button>
+  </form>
+</div>
+{% endblock %}

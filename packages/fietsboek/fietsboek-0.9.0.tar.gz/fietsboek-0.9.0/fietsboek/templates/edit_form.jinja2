@@ -1,0 +1,202 @@
+{% macro edit_track(title, date, date_tz, visibility, type, description, tags, badges, friends, images) %}
+<div class="mb-3">
+  <label for="formTitle" class="form-label">{{ _("page.track.form.title") }}</label>
+  <input class="form-control" type="text" id="formTitle" name="title" value="{{ title | default("", true) }}">
+</div>
+<div class="mb-3">
+  <label for="formDate" class="form-label">{{ _("page.track.form.date") }}</label>
+  <input class="form-control" type="datetime-local" id="formDate" name="date" value="{{ date.strftime('%Y-%m-%dT%H:%M') }}">
+  <input type="hidden" name="date-tz" value="{{ date_tz }}">
+</div>
+<div class="mb-3">
+  <label for="formVisibility" class="form-label">{{ _("page.track.form.visibility") }}</label>
+  <select class="form-select" id="formVisibility" name="visibility">
+      <option value="PRIVATE"{% if visibility.name == "PRIVATE" %} selected{% endif %}>{{ _("page.track.form.visibility.private") }}</option>
+      <option value="FRIENDS"{% if visibility.name == "FRIENDS" %} selected{% endif %}>{{ _("page.track.form.visibility.friends") }}</option>
+      <option value="FRIENDS_TAGGED"{% if visibility.name == "FRIENDS_TAGGED" %} selected{% endif %}>{{ _("page.track.form.visibility.friends_tagged") }}</option>
+      <option value="LOGGED_IN"{% if visibility.name == "LOGGED_IN" %} selected{% endif %}>{{ _("page.track.form.visibility.logged_in") }}</option>
+      <option value="PUBLIC"{% if visibility.name == "PUBLIC" %} selected{% endif %}>{{ _("page.track.form.visibility.public") }}</option>
+  </select>
+  <p class="text-secondary">
+    {{ _("page.track.form.visibility.info") }}
+  </p>
+</div>
+<div class="mb-3">
+  <label for="formType" class="form-label">{{ _("page.track.form.type") }}</label>
+  <select class="form-select" id="formType" name="type">
+    <option value="ORGANIC"{% if type.name == "ORGANIC" %} selected{% endif%}>{{ _("page.track.form.type.organic") }}</option>
+    <option value="SYNTHETIC"{% if type.name == "SYNTHETIC" %} selected{% endif%}>{{ _("page.track.form.type.synthetic") }}</option>
+  </select>
+</div>
+<div class="mb-3">
+  <label for="new-tag" class="form-label">{{ _("page.track.form.tags") }}</label>
+  <div id="formTags" class="mb-1">
+    {% for tag in tags %}
+    <span class="tag-badge badge rounded-pill bg-info text-dark">{{ tag }} <i class="bi bi-x"></i><input type="hidden" value="{{ tag }}" name="tag[]"></span>
+    {% endfor %}
+  </div>
+  <div class="row">
+    <div class="col-lg-3">
+      <input type="text" id="new-tag" class="form-control" list="user-tags">
+      <datalist id="user-tags">
+        {% if request.identity %}
+        {% for tag in request.identity.autocomplete_tags() | sort %}
+        <option value="{{ tag }}">
+        {% endfor %}
+        {% endif %}
+      </datalist>
+    </div>
+    <div class="col-lg-3">
+      <button type="button" class="btn btn-primary" id="add-tag-btn">{{ _("page.track.form.add_tag") }}</buttton>
+    </div>
+  </div>
+</div>
+<div class="mb-3">
+  <div>{{ _("page.track.form.tagged_people") }}</div>
+  <ul class="list-group" id="taggedFriends">
+    {% for friend in friends %}
+    <li class="list-group-item friendlist-control">
+      <button type="button" class="btn btn-danger remove-friend-button"><i class="bi bi-x-square-fill"></i></button>
+      <input name="tagged-friend[]" value="{{ friend.id }}" type="hidden">
+      <span class="friend-name">{{ friend.name }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+  <div class="row my-2">
+    <div class="col-lg-3">
+      <input type="text" id="friendSearchQuery" class="form-control">
+    </div>
+    <div class="col-lg-3">
+      <button type="button" class="btn btn-primary" id="add-friend-btn"><i class="bi bi-search"></i> {{ _("page.track.form.add_friend") }}</buttton>
+    </div>
+  </div>
+  <!-- Hidden templates for Javascript to use -->
+  <template id="friendSearchBlueprint">
+    <li class="list-group-item friendlist-control">
+      <button type="button" class="btn btn-success"><i class="bi bi-plus-square-fill"></i></button>
+      <span class="friend-name"></span>
+    </li>
+  </template>
+  <template id="friendAddedBlueprint">
+    <li class="list-group-item friendlist-control">
+      <button type="button" class="btn btn-danger remove-friend-button"><i class="bi bi-x-square-fill"></i></button>
+      <input name="tagged-friend[]" type="hidden" disabled>
+      <span class="friend-name"></span>
+    </li>
+  </template>
+  <!-- End of templates -->
+  <ul class="list-group" id="friendSearch">
+  </ul>
+</div>
+<div class="mb-3">
+  <div>{{ _("page.track.form.badges") }}</div>
+  {% for (state, badge) in badges %}
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" value="{{ badge.id }}" id="badge-{{ badge.id }}" name="badge[]"{% if state %} checked{% endif %}>
+    <label class="form-check-label" for="badge-{{ badge.id }}">
+      {{ badge.title }}
+    </label>
+  </div>
+  {% endfor %}
+</div>
+<div class="mb-3">
+  <label for="formDesc" class="form-label">{{ _("page.track.form.description") }}</label>
+  <textarea class="form-control" id="formDesc" name="description" rows="5">{{ description | default("", true) }}</textarea>
+</div>
+<div class="mb-3">
+  <div id="trackImageList">
+    {% for image in images %}
+    <div class="track-image-preview">
+      <button type="button" class="btn-close delete-image" aria-label="{{ _("page.track.form.remove_image") }}"></button>
+      <button type="button" class="edit-image-description"><i class="bi bi-cursor-text"></i></button>
+      <input type="hidden" class="image-description-input" name="image-description[{{ image.name }}]" value="{{ image.description }}">
+      <input type="hidden" class="image-deleter-input" name="delete-image[]" value="{{ image.name }}" disabled>
+      <img src="{{ image.url }}" title="{{ image.description }}">
+    </div>
+    {% endfor %}
+  </div>
+  <input type="file" name="image[]" id="imageSelector" class="form-control" accept="image/*" style="display:none;" multiple>
+  <button type="button" onclick="document.querySelector('#imageSelector').click()" class="btn btn-primary" id="selectImagesButton" {% if not request.config.enable_image_uploads %}disabled{% endif %}>
+      <i class="bi bi-images"></i> {{ _("page.track.form.select_images") }}
+  </button>
+  {% if not request.config.enable_image_uploads %}
+  <span class="text-info">
+      <i class="bi bi-info-circle-fill"></i> {{ _("page.track.form.image_uploads_disabled") }}
+  </span>
+  {% endif %}
+</div>
+<!-- Mode hidden templates -->
+<template id="trackImagePreviewBlueprint">
+  <div class="track-image-preview">
+    <button type="button" class="btn-close delete-image" aria-label="{{ _("page.track.form.remove_image") }}"></button>
+    <button type="button" class="edit-image-description"><i class="bi bi-cursor-text"></i></button>
+    <input type="hidden" class="image-description-input" name="image-description[]" value="">
+    <img>
+  </div>
+</template>
+<!-- Edit image description modal -->
+<div class="modal" tabindex="-1" id="imageDescriptionModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ _("page.track.form.image_description_modal") }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <textarea class="form-control"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success">{{ _("page.track.form.image_description_modal.save") }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mb-3">
+  <div class="accordion accordion-flush">
+    {% for transformer in list_transformers() %}
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="transformer-heading-{{ loop.index }}">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#transformer-{{ loop.index }}" aria-expanded="true" aria-controls="transformer-{{ loop.index }}">
+        {{ _(transformer.name()) }}
+        </button>
+      </h2>
+    </div>
+    <div id="transformer-{{ loop.index}}" class="accordion-collapse collapse" aria-labelledby="transformer-heading-{{ loop.index }}">
+      <div class="accordion-body">
+        {% set params = track.transformer_params_for(transformer.identifier()) if track else None %}
+        <!-- Short transformer description -->
+        <p>{{ _(transformer.description()) }}</p>
+
+        <!-- Checkbox to enable the transformer -->
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="on" id="transformer-enabled-{{ loop.index }}" name="transformer[{{ transformer.identifier() }}]"{% if params is not none %} checked{% endif %}>
+          <label class="form-check-label" for="transformer-enabled-{{ loop.index }}">
+            {{ _("page.track.form.transformer.enable") }}
+          </label>
+        </div>
+
+        <!-- Parameters as defined by the transformer -->
+        {% if params is not none %}
+        {{ render_parameters(transformer.identifier(), transformer.parameter_model().parse_obj(params).html_ui()) }}
+        {% else %}
+        {{ render_parameters(transformer.identifier(), transformer().parameters.html_ui()) }}
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endmacro %}
+
+{% macro render_parameters(identifier, params) %}
+{% for param in params %}
+{% if param.type == "int" %}
+<label for="transformer[{{ identifier }}][{{ param.name }}" class="form-label">{{ _(param.label) }}</label>
+<input id="transformer[{{ identifier }}][{{ param.name }}]" name="transformer[{{ identifier }}][{{ param.name }}]" type="number" value="{{ param.value }}" class="form-control" />
+{% elif param.type == "str" %}
+<label for="transformer[{{ identifier }}][{{ param.name }}" class="form-label">{{ _(param.label) }}</label>
+<input id="transformer[{{ identifier }}][{{ param.name }}]" name="transformer[{{ identifier }}][{{ param.name }}]" type="text" value="{{ param.value }}" class="form-control" />
+{% endif %}
+{% endfor %}
+{% endmacro %}

@@ -1,0 +1,206 @@
+{% extends "layout.jinja2" %}
+
+{% macro render_track_card(track) %}
+  <div class="card mb-3">
+    <h5 class="card-header">
+      <a href="{{ request.route_url('details', track_id=track.id) }}">{{ track.title | default(track.date, true) }}</a>
+      {% if track.text_tags() %}
+      {% for tag in track.tags %}<span class="badge bg-info text-dark">{{ tag.tag }}</span> {% endfor %}
+      {% endif %}
+    </h5>
+    <div class="card-body">
+      <table class="table table-hover table-sm browse-summary">
+        <tbody>
+          <tr>
+            <th scope="row">{{ _("page.details.date") }}</th>
+            <td>{{ track.date | format_datetime }}</td>
+            <th scope="row">{{ _("page.details.length") }}</th>
+            <td>{{ (track.length / 1000) | round(2) | format_decimal }} km</td>
+          </tr>
+          <tr>
+            <th scope="row">{{ _("page.details.start_time") }}</th>
+            <td>{{ track.start_time | format_datetime }}</td>
+            <th scope="row">{{ _("page.details.end_time") }}</th>
+            <td>{{ track.end_time | format_datetime }}</td>
+          </tr>
+          <tr>
+            <th scope="row">{{ _("page.details.uphill") }}</th>
+            <td>{{ track.uphill | round(2) | format_decimal }} m</td>
+            <th scope="row">{{ _("page.details.downhill") }}</th>
+            <td>{{ track.downhill | round(2) | format_decimal }} m</td>
+          </tr>
+          <tr>
+            <th scope="row">{{ _("page.details.moving_time") }}</th>
+            <td>{{ track.moving_time }}</td>
+            <th scope="row">{{ _("page.details.stopped_time") }}</th>
+            <td>{{ track.stopped_time }}</td>
+          </tr>
+          <tr>
+            <th scope="row">{{ _("page.details.max_speed") }}</th>
+            <td>{{ mps_to_kph(track.max_speed) | round(2) | format_decimal }} km/h</td>
+            <th scope="row">{{ _("page.details.avg_speed") }}</th>
+            <td>{{ mps_to_kph(track.avg_speed) | round(2) | format_decimal }} km/h</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <ul>
+        <li>{{ track.owner.name }}</li>
+        {% for user in track.tagged_people %}
+        <li>{{ user.name }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+{% endmacro %}
+
+{% block content %}
+<div class="container">
+  <h1>{{ user.name }}</h1>
+
+  <ul class="nav nav-tabs" id="profileTabbar" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="tabOverviewButton" data-bs-toggle="tab" data-bs-target="#tabOverviewPane" type="button" role="tab" aria-controls="tabOverviewPane" aria-selected="true">
+        {{ _("page.profile.tabbar.overview") }}
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="tabGraphsButton" data-bs-toggle="tab" data-bs-target="#tabGraphsPane" type="button" role="tab" aria-controls="tabGraphsPane" aria-selected="false">
+        {{ _("page.profile.tabbar.graphs") }}
+      </button>
+    </li>
+  </ul>
+
+  <div class="tab-content">
+    <!-- First tab -->
+    <div class="tab-pane fade show active" id="tabOverviewPane" role="tabpanel" aria-labelledby="tabOverviewButton">
+      {% if heatmap_url or tilehunt_url %}
+      <div id="userMap" style="height: 600px; width: 100%;"></div>
+      {% endif %}
+
+      <table class="table table-hover table-sm">
+        <tr>
+          <th scope="row">{{ _("page.profile.length") }}</th>
+          <td id="profileLength">{{ (total.length / 1000) | round(2) | format_decimal }} km</td>
+        </tr>
+        <tr>
+          <th scope="row">{{ _("page.profile.avg_length") }}</th>
+          <td id="profileAvgLength">{{ (total.avg_length / 1000) | round(2) | format_decimal }} km</td>
+        </tr>
+        <tr>
+          <th scope="row">{{ _("page.profile.uphill") }}</th>
+          <td id="profileUphill">{{ total.uphill | round(2) | format_decimal }} m</td>
+        </tr>
+        <tr>
+          <th scope="row">{{ _("page.profile.downhill") }}</th>
+          <td id="profileDownhill">{{ total.downhill | round(2) | format_decimal }} m</td>
+        </tr>
+        <tr>
+          <th scope="row">{{ _("page.profile.moving_time") }}</th>
+          <td id="profileMovingTime">{{ total.moving_time }}</td>
+        </tr>
+        <tr>
+          <th scope="row">{{ _("page.profile.stopped_time") }}</th>
+          <td id="profileStoppedTime">{{ total.stopped_time }}</td>
+        </tr>
+        <tr>
+          <th scope="row">{{ _("page.profile.avg_duration") }}</th>
+          <td id="profileAvgDuration">{{ total.avg_duration }}</td>
+        </tr>
+        <tr>
+          <th scope="row">{{ _("page.profile.max_speed") }}</th>
+          <td id="profileMaxSpeed">{{ mps_to_kph(total.max_speed) | round(2) | format_decimal }} km/h</td>
+        </tr>
+        <tr>
+          <th scope="row">{{ _("page.profile.avg_speed") }}</th>
+          <td id="profileAvgSpeed">{{ mps_to_kph(total.avg_speed) | round(2) | format_decimal }} km/h</td>
+        </tr>
+        <tr>
+          <th scope="row">{{ _("page.profile.number_of_tracks") }}</th>
+          <td id="profileNumberOfTracks">{{ total.count }}</td>
+        </tr>
+      </table>
+
+      {% if total.longest_distance_track %}
+      <h2>{{ _("page.profile.longest_distance_track") }}</h2>
+      {{ render_track_card(total.longest_distance_track) }}
+      {% endif %}
+
+      {% if total.shortest_distance_track %}
+      <h2>{{ _("page.profile.shortest_distance_track") }}</h2>
+      {{ render_track_card(total.shortest_distance_track) }}
+      {% endif %}
+
+      {% if total.longest_duration_track %}
+      <h2>{{ _("page.profile.longest_duration_track") }}</h2>
+      {{ render_track_card(total.longest_duration_track) }}
+      {% endif %}
+
+      {% if total.shortest_duration_track %}
+      <h2>{{ _("page.profile.shortest_duration_track") }}</h2>
+      {{ render_track_card(total.shortest_duration_track) }}
+      {% endif %}
+    </div>
+
+    <!-- Second tab -->
+    <div class="tab-pane fade" id="tabGraphsPane" role="tabpanel" aria-labelledby="tabGraphsButton">
+      <h2 class="chart-title">{{ _("page.profile.graph.km_per_month") }}</h2>
+      <div style="position: relative; height: 500px; width: 75%; margin: auto;"><canvas id="graph-month-summary"></canvas></div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block latescripts %}
+<script>
+  (function() {
+    loadProfileStats();
+
+    const renderMap = document.getElementById("userMap") !== null;
+    if (!renderMap) {
+      return;
+    }
+
+    const map = L.map("userMap").setView([52.520008, 13.404954], 2);
+
+    baseLayers = {};
+    overlayLayers = {};
+
+    {% if heatmap_url %}
+    overlayLayers[{{ _("page.profile.heatmap") | tojson }}] = L.tileLayer({{ heatmap_url | tojson }}, {
+      maxZoom: 19,
+    });
+    {% endif %}
+    {% if tilehunt_url %}
+    overlayLayers[{{ _("page.profile.tilehunt") | tojson }}] = L.tileLayer({{ tilehunt_url | tojson }}, {
+      maxZoom: 19,
+    });
+    {% endif %}
+
+    let defaultLayer = null;
+
+    for (let layer of TILE_LAYERS) {
+        if (layer.type === "base") {
+            baseLayers[layer.name] = L.tileLayer(layer.url, {
+                maxZoom: layer.zoom,
+                attribution: layer.attribution,
+            });
+            if (defaultLayer === null) {
+                defaultLayer = baseLayers[layer.name];
+            }
+        } else if (layer.type === "overlay") {
+            overlayLayers[layer.name] = L.tileLayer(layer.url, {
+                attribution: layer.attribution,
+            });
+        }
+    }
+
+
+    // Add the default layer via .addTo directly, otherwise it will not be
+    // selected at the start.
+    defaultLayer.addTo(map);
+    L.control.layers(baseLayers, overlayLayers).addTo(map);
+  })();
+</script>
+{% endblock %}
