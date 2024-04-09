@@ -1,0 +1,28 @@
+# Include licence and other text files
+include LICENSE.md
+include README_PYPI.md
+
+# Include input test files
+include sonicparanoid/example/test_input/*
+include sonicparanoid/example/test_output/*
+
+# Include mmseqs2, dmnd, mcl, and blast binaries
+include sonicparanoid/software_packages/*
+exclude sonicparanoid/software_packages/mcl_src_slim.tar.xz
+include sonicparanoid/bin/README.md
+
+# Include Adaboost model
+include sonicparanoid/bin/guess_fast_pair.pckl
+
+# Include PFamA clans
+include sonicparanoid/pfam_files/Pfam-A.hmm.dat.gz
+include sonicparanoid/pfam_files/pfama-mmseqs.tar.gz
+include sonicparanoid/pfam_files/pfam_db.info.md
+
+# Include C source code for multi-species orthology
+# include sonicparanoid/quick_multi_paranoid/*
+
+# Include all python source files
+include sonicparanoid/*.py
+exclude sonicparanoid/*.c
+include sonicparanoid/*.pyx
