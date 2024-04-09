@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "bin-package-manager"
+version = "2.2.4"
+description = "Bin package manager, a package manager based on Github release"
+authors = ["lxl66566 <lxl66566@gmail.com>"]
+license = "MIT"
+readme = ["README.md"]
+keywords = ["binary", "packaging", "release"]
+repository = "https://github.com/lxl66566/bpm"
+homepage = "https://github.com/lxl66566/bpm"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+packages = [{ include = "bpm" }]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+py7zr = { version = "^0.20.8", markers = "sys_platform == 'win32'" }
+requests = "^2.31.0"
+tqdm = "^4.66.2"
+pylnk3 = { version = "^0.4.2", markers = "sys_platform == 'win32'" }
+simpleufcs = "^1.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+bpm = 'bpm.cli:main'
+
+[[tool.poetry.source]]
+name = "tsinghua-pypi"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+priority = "default"
