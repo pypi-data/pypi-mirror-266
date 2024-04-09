@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "pytest-initry"
+version = "0.1.0"
+description = ""
+authors = ["Andrejs Smirnovs <and.inbx@gmail.com>"]
+readme = "README.md"
+classifiers = [
+    "Framework :: Pytest",
+]
+
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pytest = "^8.1.1"
+grpcio = "^1.62.1"
+protobuf = "^5.26.1"
+
+
+[tool.poetry.plugins.pytest11]
+pytest_initry  = "pytest_initry"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
