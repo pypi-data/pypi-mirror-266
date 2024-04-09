@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "toolcore"
+version = "0.1.0"
+description = "Core utilities for AI agent tools"
+authors = ["pbarker <patrickbarkerco@gmail.com>"]
+readme = "README.md"
+homepage = "https://github.com/pbarker/toolcore"
+documentation = "https://github.com/pbarker/toolcore"
+keywords = ["llm", "ai", "agents"]
+license = "MIT"
+packages = [{include = "toolcore"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+docstring-parser = "^0.15"
+typing-extensions = "^4.6.3"
+
+
+[tool.poetry.group.dev.dependencies]
+tox-poetry-installer = {extras = ["poetry"], version = "^0.10.3"}
+pytest = "^7.4.0"
+pytest-cov = "^4.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
