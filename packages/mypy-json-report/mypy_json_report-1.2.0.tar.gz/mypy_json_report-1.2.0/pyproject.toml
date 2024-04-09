@@ -1,0 +1,64 @@
+[tool.poetry]
+name = "mypy-json-report"
+version = "1.2.0"
+description = "Generate a JSON report from your mypy output"
+authors = ["Charlie Denton <charlie@meshy.co.uk>"]
+license = "Apache-2.0"
+repository = "https://github.com/memrise/mypy-json-report"
+readme = "README.md"
+classifiers = [
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development",
+    "Topic :: Utilities",
+]
+
+[project.urls]
+Source = "https://github.com/memrise/mypy-json-report"
+
+[tool.poetry.dependencies]
+python = "~=3.8"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "*"
+pytest = "*"
+tox = "*"
+tox-gh-actions = "*"
+
+[tool.poetry.scripts]
+mypy-json-report = "mypy_json_report.cli:main"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+target-version = "py38"
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle
+    "F",  # Pyflakes
+    "I",  # isort
+    "PL",  # Pylint
+    "UP",  # pyupgrade
+]
+ignore = [
+    "E501",  # Line too long
+]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+lines-after-imports = 2
+split-on-trailing-comma = false
+
+[tool.ruff.format]
+skip-magic-trailing-comma = true
