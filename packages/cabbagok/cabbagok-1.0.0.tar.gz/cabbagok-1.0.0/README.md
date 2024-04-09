@@ -1,0 +1,1 @@
+# cabbagok: RPC over AMQP
