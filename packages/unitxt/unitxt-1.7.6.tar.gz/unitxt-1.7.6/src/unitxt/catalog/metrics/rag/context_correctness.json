@@ -1,0 +1,25 @@
+{
+    "type": "metric_pipeline",
+    "main_score": "score",
+    "preprocess_steps": [
+        {
+            "type": "copy_fields",
+            "field_to_field": [
+                [
+                    "context_ids",
+                    "prediction"
+                ]
+            ]
+        },
+        {
+            "type": "copy_fields",
+            "field_to_field": [
+                [
+                    "ground_truths_context_ids",
+                    "references"
+                ]
+            ]
+        }
+    ],
+    "metric": "metrics.mrr"
+}

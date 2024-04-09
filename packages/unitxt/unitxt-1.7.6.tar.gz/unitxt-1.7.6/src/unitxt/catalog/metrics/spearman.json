@@ -1,0 +1,29 @@
+{
+    "type": "metric_pipeline",
+    "main_score": "spearmanr",
+    "preprocess_steps": [
+        {
+            "type": "copy_fields",
+            "field_to_field": [
+                [
+                    "references/0",
+                    "references"
+                ]
+            ]
+        },
+        {
+            "type": "cast_fields",
+            "fields": {
+                "prediction": "float",
+                "references": "float"
+            },
+            "failure_defaults": {
+                "prediction": 0.0
+            },
+            "use_nested_query": true
+        }
+    ],
+    "metric": {
+        "type": "spearmanr"
+    }
+}

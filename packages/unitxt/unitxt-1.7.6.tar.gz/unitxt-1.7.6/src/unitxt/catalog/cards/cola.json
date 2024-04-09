@@ -1,0 +1,39 @@
+{
+    "type": "task_card",
+    "loader": {
+        "type": "load_hf",
+        "path": "glue",
+        "name": "cola"
+    },
+    "preprocess_steps": [
+        "splitters.small_no_test",
+        {
+            "type": "map_instance_values",
+            "mappers": {
+                "label": {
+                    "0": "unacceptable",
+                    "1": "acceptable"
+                }
+            }
+        },
+        {
+            "type": "rename_fields",
+            "field_to_field": {
+                "sentence": "text"
+            }
+        },
+        {
+            "type": "add_fields",
+            "fields": {
+                "classes": [
+                    "unacceptable",
+                    "acceptable"
+                ],
+                "text_type": "text",
+                "type_of_class": "grammatical acceptability"
+            }
+        }
+    ],
+    "task": "tasks.classification.multi_class[metrics=[metrics.matthews_correlation]]",
+    "templates": "templates.classification.multi_class.all"
+}

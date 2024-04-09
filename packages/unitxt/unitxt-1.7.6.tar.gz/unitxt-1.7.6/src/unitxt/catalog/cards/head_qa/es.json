@@ -1,0 +1,34 @@
+{
+    "type": "task_card",
+    "loader": {
+        "type": "load_hf",
+        "path": "head_qa",
+        "name": "es"
+    },
+    "preprocess_steps": [
+        {
+            "type": "rename_fields",
+            "field_to_field": {
+                "qtext": "text",
+                "category": "label"
+            }
+        },
+        {
+            "type": "add_fields",
+            "fields": {
+                "classes": [
+                    "biology",
+                    "chemistry",
+                    "medicine",
+                    "nursery",
+                    "pharmacology",
+                    "psychology"
+                ],
+                "text_type": "question",
+                "type_of_class": "topic"
+            }
+        }
+    ],
+    "task": "tasks.classification.multi_class",
+    "templates": "templates.classification.multi_class.all"
+}

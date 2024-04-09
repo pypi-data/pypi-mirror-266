@@ -1,0 +1,32 @@
+{
+    "type": "metric_pipeline",
+    "main_score": "score",
+    "preprocess_steps": [
+        {
+            "type": "copy_fields",
+            "field_to_field": [
+                [
+                    "question",
+                    "references"
+                ]
+            ]
+        },
+        {
+            "type": "copy_fields",
+            "field_to_field": [
+                [
+                    "answer",
+                    "prediction"
+                ]
+            ]
+        },
+        {
+            "type": "list_field_values",
+            "fields": [
+                "references"
+            ],
+            "to_field": "references"
+        }
+    ],
+    "metric": "metrics.reward.deberta_v3_large_v2"
+}
