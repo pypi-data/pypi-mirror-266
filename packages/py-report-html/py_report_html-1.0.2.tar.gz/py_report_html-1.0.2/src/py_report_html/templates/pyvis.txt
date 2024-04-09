@@ -1,0 +1,93 @@
+
+<div class="card" style="width: 90%">     
+    <div id="select-menu" class="card-header">
+        <div class="row no-gutters">
+            <div class="col-2 pb-2">
+                ${ plotter.create_autocomplete_box('nodeSearch', node_names, "selectNode([document.getElementById('nodeSearch').value])")}
+                <button type="button" class="btn btn-primary btn-block" onclick="neighbourhoodHighlight({nodes: []});">Reset Selection</button>
+            </div>
+        </div>
+    </div>
+    <div id="mynetwork" class="card-body"></div>
+</div>
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var allNodes;
+    var allEdges;
+    var nodeColors;
+    var originalNodes;
+    var network;
+    var container;
+    var options, data;
+    var filter = {
+        item : '',
+        property : '',
+        value : []
+    };
+
+    
+              
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+
+        let model_${count_objects} = ${plotter.decompress_code(network)};
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet(model_${count_objects}["nodes"]);
+        edges = new vis.DataSet(model_${count_objects}["edges"]);
+
+        nodeColors = {};
+        allNodes = nodes.get({ returnType: "Object" });
+        for (nodeId in allNodes) {
+        nodeColors[nodeId] = allNodes[nodeId].color;
+        }
+        allEdges = edges.get({ returnType: "Object" });
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+            "configure": {
+                "enabled": false
+            },
+            "edges": {
+                "color": {
+                    "inherit": true
+                },
+                "smooth": {
+                    "enabled": true,
+                    "type": "dynamic"
+                }
+            },
+            "interaction": {
+                "dragNodes": true,
+                "hideEdgesOnDrag": false,
+                "hideNodesOnDrag": false
+            },
+            "layout":{
+                "improvedLayout": false
+            },
+            "physics": {
+                "enabled": true,
+                "minVelocity": 1,
+                "stabilization": {
+                    "enabled": true,
+                    "fit": true,
+                    "iterations": 100,
+                    "onlyDynamicEdges": false,
+                    "updateInterval": 100
+                }
+            }
+        };
+
+        network = new vis.Network(container, data, options);
+        network.on("selectNode", neighbourhoodHighlight);
+        return network;
+    }
+
+    drawGraph();
+</script>
