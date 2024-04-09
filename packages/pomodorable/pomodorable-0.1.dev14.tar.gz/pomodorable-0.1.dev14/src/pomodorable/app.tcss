@@ -1,0 +1,265 @@
+
+/* Make the header icon character invisible. Clicking it opens
+   the Command Palette, which is disabled in this app.
+*/
+HeaderIcon {
+    text-opacity: 0;
+}
+
+Header {
+    background: darkolivegreen;
+}
+
+Horizontal {
+    height: 3;
+}
+
+Label {
+    padding: 1;
+}
+
+CountdownDisplay, TimeDisplay {
+    border: solid gray;
+    content-align: center middle;
+    margin: 0 1;
+    max-width: 12;
+}
+
+CountdownDisplay {
+    color: greenyellow;
+    text-style: bold;
+}
+
+TimeDisplay {
+    color: darkgoldenrod;
+}
+
+#frm-times {
+    content-align-vertical: middle;
+}
+
+Button {
+    border: solid gray;
+}
+
+.updn {
+    max-width: 6;
+}
+
+#btn-reset {
+    margin: 0 3;
+}
+
+#btn-about {
+    color: darkcyan;
+    max-width: 5;
+    margin-left: 3;
+}
+
+#btn-settings {
+    color: darkseagreen;
+    /* dock: right; */
+    margin: 0 3;
+}
+
+#btn-start {
+    color: green;
+    margin: 0 3;
+}
+
+#btn-pause {
+    color: yellow;
+    margin: 0 3;
+}
+
+.paused #btn-pause {
+    color: gray;
+}
+
+#btn-resume {
+    color: darkgoldenrod;
+    margin: 0 3;
+}
+
+#btn-extend {
+    color: green;
+    margin: 0 3;
+}
+
+#btn-stop {
+    color: red;
+    margin: 0 3;
+}
+
+#input-task, #input-reason {
+    border: solid gray;
+    margin: 0;
+    width: 1fr;
+}
+
+#frm-set {
+    display: block;
+}
+
+.running #frm-set {
+    display: none;
+}
+
+#frm-start {
+    display: block;
+}
+
+.running #frm-start {
+    display: none;
+}
+
+#frm-pause {
+    display: none;
+}
+
+.running #frm-pause {
+    display: block;
+}
+
+#frm-paused {
+    display: none;
+}
+
+.paused #frm-paused {
+    display: block;
+}
+
+SettingsScreen {
+    ScrollableContainer {
+        border: solid gray;
+
+        Input {
+            width: 4fr;
+        }
+
+        Button {
+            max-width: 10;
+        }
+    }
+    #frm-buttons {
+        align: center middle;
+    }
+}
+
+SettingInput, SettingSwitch {
+    border-bottom: solid olive;
+    margin: 0;
+
+    #lbl-setting {
+        padding: 0 1;
+        text-align: left;
+    }
+
+    #lbl-warn {
+        color: yellow;
+        display: none;
+        padding: 0 3;
+        text-align: center;
+    }
+
+    #lbl-warn.show-warnings {
+        display: block;
+    }
+
+    #btn-undo {
+        visibility: hidden;
+    }
+    #btn-undo.data-changed {
+        visibility: visible;
+    }
+}
+
+SettingSwitch {
+    #swt-setting {
+        margin: 0 2;
+    }
+}
+
+TimerBar {
+    align: center bottom;
+    content-align: center middle;
+    height: 3;
+    padding: 0;
+    background: darkred;
+    color: white;
+    width: 1fr;
+
+    #numbers {
+        content-align: center middle;
+        opacity: 80%;
+        text-style: bold;
+    }
+    #scale {
+        content-align: center middle;
+        width: 1fr;
+    }
+}
+
+#log {
+    background: brown;
+    scrollbar-background: darkred;
+    scrollbar-color: red;
+    scrollbar-corner-color: firebrick;
+}
+
+MRUScreen {
+
+    align: center middle;
+
+    Select {
+        margin: 0 1;
+        max-width: 58;
+    }
+
+    #btn-back {
+        margin: 0 1;
+    }
+
+    #dialog {
+        height: 16;
+        width: 60;
+    }
+}
+
+AboutScreen {
+    align: center middle;
+}
+
+#about-dialog {
+    height: 19;
+    width: 70;
+}
+
+#about-about {
+    background: green;
+    color: white;
+    text-align: center;
+    text-style: bold;
+}
+
+#about-title {
+    color: #FFFF00;
+    margin: 1;
+    text-align: center;
+    text-style: bold;
+}
+
+#about-version {
+    color: cyan;
+    margin: 1;
+    text-align: center;
+}
+
+#about-buttons {
+    align: center middle;
+}
+
+.about-info {
+    color: silver;
+    margin: 1;
+}

@@ -1,0 +1,121 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pomodorable"
+dynamic = ["version"]
+description = 'A pomodoro timer implemented as a Textual app'
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = ["pomodoro", "Textual"]
+authors = [
+  { name = "Bill Melvin", email = "bill@billmelvin.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+  "textual",
+  "plyer",
+  "click",
+  "platformdirs",
+  "python-dotenv",
+  "tomlkit",
+]
+
+[project.urls]
+Source = "https://github.com/wmelvin/pomodorable"
+Documentation = "https://github.com/wmelvin/pomodorable#readme"
+# Issues = "https://github.com/wmelvin/pomodorable/issues"
+
+[project.scripts]
+pomodorable = "pomodorable.cli:cli"
+
+[tool.hatch.version]
+path = "src/pomodorable/__about__.py"
+
+[tool.hatch.envs.default]
+dependencies = [
+  "coverage[toml]>=6.5",
+  "pytest",
+  "pytest-asyncio",
+  "textual-dev",
+  "pytest-textual-snapshot",
+]
+[tool.hatch.envs.default.scripts]
+test = "pytest {args:tests}"
+test-cov = "coverage run -m pytest {args:tests}"
+cov-report = [
+  "- coverage combine",
+  "coverage report",
+]
+cov = [
+  "test-cov",
+  "cov-report",
+]
+
+[[tool.hatch.envs.test.matrix]]
+python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
+
+[[tool.hatch.envs.all.matrix]]
+python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
+
+[tool.hatch.envs.types]
+dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/pomodorable tests}"
+
+[tool.coverage.run]
+source_pkgs = ["pomodorable", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/pomodorable/__about__.py",
+]
+
+[tool.coverage.paths]
+pomodorable = ["src/pomodorable", "*/pomodorable/src/pomodorable"]
+tests = ["tests", "*/pomodorable/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+
+# See: https://hatch.pypa.io/latest/config/static-analysis/#pyprojecttoml_2
+[tool.hatch.envs.hatch-static-analysis]
+config-path = "ruff_defaults.toml"
+
+[tool.ruff]
+extend = "ruff_defaults.toml"
+
+[tool.ruff.lint]
+extend-ignore = [
+  "RUF012",  # typing.ClassVar annotation
+  "DTZ005",  # datetime.now() w/o tz
+  "FBT001",  # boolean-typed arg
+  "FBT002",  # boolean arg default
+  "TCH003",  # move import to type-checking block
+]
+
+[tool.ruff.extend-per-file-ignores]
+"test*.py" = [
+  "DTZ001",  # datetime.now() w/o tz
+]
