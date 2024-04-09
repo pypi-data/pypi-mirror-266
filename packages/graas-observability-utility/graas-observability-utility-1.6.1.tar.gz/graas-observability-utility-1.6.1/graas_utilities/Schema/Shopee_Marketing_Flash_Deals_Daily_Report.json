@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Marketing Flash Deals Daily Report",
+  "description": "Daily report for marketing flash deals",
+  "type": "object",
+  "properties": {
+    "Date_Period": {
+      "type": "string",
+      "description": "The time period during which the report is generated (format: DD-MM-YYYY HH:mm - DD-MM-YYYY HH:mm)"
+    },
+    "Sales": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Total sales with amount and currency"
+    },
+    "Orders": {
+      "type": "integer",
+      "description": "Total number of orders for flash deals"
+    },
+    "Buyers": {
+      "type": "integer",
+      "description": "Total number of unique buyers for flash deals"
+    },
+    "Click_Through_Rate_CTR": {
+      "type": "number",
+      "description": "Percentage of users who clicked on a flash deal compared to the total number of users who viewed it"
+    },
+    "Product_Impression": {
+      "type": "integer",
+      "description": "Total number of times flash deal products were displayed"
+    },
+    "Product_Clicks": {
+      "type": "integer",
+      "description": "Total number of clicks on flash deal products"
+    },
+    "Sales_Per_Buyer": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Sales per buyer with amount and currency"
+    },
+    "Date": {
+      "type": "string",
+      "description": "Date of the report (format: DD-MM-YYYY)",
+      "format": "dd-MM-yyyy",
+      "pattern": "[0-9]{2}-[0-9]{2}-[1-2][0-9]{3}"
+    }
+  },
+  "required": [
+    "Date"
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "type": "object",
+  "title": "Shopee Product Overview Daily Monthly Report",
+  "description": "Daily monthly report providing an overview of product-related metrics on Shopee",
+  "properties": {
+    "Date": {
+      "type": "string",
+      "description": "Date of the report in the format 'MM-DD-YYYY'",
+      "format": "dd-MM-yyyy",
+      "pattern": "[0-9]{2}-[0-9]{2}-[1-2][0-9]{3}"
+    },
+    "Product_Visitors_Visit": {
+      "type": "integer",
+      "description": "Total number of visitors who visited the product"
+    },
+    "Product_Page_Views": {
+      "type": "integer",
+      "description": "Total number of page views for the product"
+    },
+    "Items_Visited": {
+      "type": "integer",
+      "description": "Total number of items visited"
+    },
+    "Product_Bounce_Visitors": {
+      "type": "integer",
+      "description": "Total number of visitors who bounced from the product page"
+    },
+    "Product_Bounce_Rate": {
+      "type": "number",
+      "description": "Bounce rate for the product page as a percentage"
+    },
+    "Search_Clicks": {
+      "type": "integer",
+      "description": "Total number of clicks from search results to the product"
+    },
+    "Likes": {
+      "type": "integer",
+      "description": "Total number of likes received for the product"
+    },
+    "Product_Visitors_Add_to_Cart": {
+      "type": "integer",
+      "description": "Total number of visitors who added the product to the cart"
+    },
+    "Units_Add_to_Cart": {
+      "type": "integer",
+      "description": "Total number of units added to the cart for the product"
+    },
+    "Conversion_Rate_Add_to_Cart": {
+      "type": "number",
+      "description": "Conversion rate from product view to adding to cart as a percentage"
+    },
+    "Buyers_Placed_Order": {
+      "type": "integer",
+      "description": "Total number of buyers who placed an order"
+    },
+    "Units_Placed_Order": {
+      "type": "integer",
+      "description": "Total number of units placed in orders"
+    },
+    "Items_Placed": {
+      "type": "integer",
+      "description": "Total number of items placed in orders"
+    },
+    "Sales_Placed_Order": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Sales amount information for placed orders"
+    },
+    "Conversion_Rate_Placed_Order": {
+      "type": "number",
+      "description": "Conversion rate from adding to cart to placing an order as a percentage"
+    },
+    "Buyers_Paid_Order": {
+      "type": "string",
+      "description": "Number of buyers who paid for the order"
+    },
+    "Units_Paid_Order": {
+      "type": "string",
+      "description": "Number of units paid for in the order"
+    },
+    "Items_Paid": {
+      "type": "string",
+      "description": "Number of items paid for in the order"
+    },
+    "Sales_Paid_Order": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Sales amount information for paid orders"
+    },
+    "Conversion_Rate_Paid_Order": {
+      "type": "number",
+      "description": "Conversion rate from placing an order to paying for the order as a percentage"
+    },
+    "Conversion_Rate_Placed_to_Confirmed": {
+      "type": "number",
+      "description": "Conversion rate from placing an order to order confirmation as a percentage"
+    }
+  },
+  "required": [
+    "Date"
+  ]
+}

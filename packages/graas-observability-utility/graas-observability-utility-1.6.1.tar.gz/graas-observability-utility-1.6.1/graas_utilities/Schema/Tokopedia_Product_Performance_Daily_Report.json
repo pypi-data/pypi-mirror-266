@@ -1,0 +1,58 @@
+{
+  "type": "object",
+  "title": "Tokopedia Product Performance Daily Report",
+  "description": "Daily report presenting the performance metrics for a specific product on Tokopedia",
+  "properties": {
+    "Product_name": {
+      "type": "string",
+      "description": "Name of the product being analyzed"
+    },
+    "SKU": {
+      "type": "string",
+      "description": "Stock Keeping Unit (SKU) of the product"
+    },
+    "Category": {
+      "type": "string",
+      "description": "Category to which the product belongs"
+    },
+    "New_Net_Income": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "New net income information for the product"
+    },
+    "Sold_Products": {
+      "type": "integer",
+      "description": "Total number of units sold for the product"
+    },
+    "Product_Viewed": {
+      "type": "integer",
+      "description": "Total number of times the product was viewed"
+    },
+    "Basket": {
+      "type": "integer",
+      "description": "Total number of times the product was added to the shopping basket"
+    },
+    "Wishlist": {
+      "type": "integer",
+      "description": "Total number of times the product was added to the wishlist"
+    },
+    "Conversion": {
+      "type": "number",
+      "description": "Conversion rate of the product as a decimal"
+    },
+    "Order": {
+      "type": "integer",
+      "description": "Total number of orders placed for the product"
+    },
+    "Date": {
+      "type": "string",
+      "description": "Date of the report in the format 'MM-DD-YYYY'",
+      "format": "dd-MM-yyyy",
+      "pattern": "[0-9]{2}-[0-9]{2}-[1-2][0-9]{3}"
+    }
+  },
+  "required": [
+    "SKU",
+    "Date"
+  ]
+}

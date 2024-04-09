@@ -1,0 +1,111 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Lazada Offsite Campaign Report",
+    "description": "Schema for Lazada's offsite campaign report.",
+    "type": "object",
+    "properties": {
+        "Date": {
+            "type": "string",
+            "description": "The date of the campaign report in the format 'dd-MM-yyyy'.",
+            "format": "dd-MM-yyyy",
+            "pattern": "[0-9]{2}-[0-9]{2}-[1-2][0-9]{3}"
+        },
+        "Campaign_ID": {
+            "type": "number",
+            "description": "The unique identifier for the campaign."
+        },
+        "Campaign_Name": {
+            "type": "string",
+            "description": "The name of the campaign."
+        },
+        "Funding_Type": {
+            "type": "string",
+            "description": "The type of funding for the campaign (e.g., 'Partnership Assisted')."
+        },
+        "Seller_ID": {
+            "type": "number",
+            "description": "The unique identifier for the seller."
+        },
+        "Shop_Name": {
+            "type": "string",
+            "description": "The name of the seller's shop."
+        },
+        "Channel_Name": {
+            "type": "string",
+            "description": "The marketing channel name (e.g., 'Facebook')."
+        },
+        "Site": {
+            "type": "string",
+            "description": "The site where the campaign is hosted (e.g., 'Mix')."
+        },
+        "Placement": {
+            "type": "string",
+            "description": "The placement of the campaign (e.g., 'Mix')."
+        },
+        "Offer_ID": {
+            "type": "number",
+            "description": "The unique identifier for the campaign offer."
+        },
+        "Ad_Content": {
+            "type": "string",
+            "description": "The content of the campaign advertisement (e.g., 'RL_1111')."
+        },
+        "Platform": {
+            "type": "string",
+            "description": "The platform where the campaign is running (e.g., 'iPhone OS')."
+        },
+        "Visits": {
+            "type": "number",
+            "description": "The total number of visits to the campaign."
+        },
+        "Unique_Visitors": {
+            "type": "number",
+            "description": "The total number of unique visitors to the campaign."
+        },
+        "PDP_PV": {
+            "type": "number",
+            "description": "The total page views on the product display page (PDP)."
+        },
+        "A2C_PV": {
+            "type": "number",
+            "description": "The total page views on the 'Add to Cart' page (A2C)."
+        },
+        "Units_Sold": {
+            "type": "number",
+            "description": "The total number of units sold during the campaign."
+        },
+        "Orders": {
+            "type": "number",
+            "description": "The total number of orders placed during the campaign."
+        },
+        "Sales_Local_currency": {
+            "type": "object",
+            "$ref": "../Schema/amount_currency_code_object.json",
+            "description": "Sales in the local currency."
+        },
+        "Item_Conversion_Rate": {
+            "type": "number",
+            "description": "The item conversion rate, represented as a decimal (e.g., 0.4292)."
+        },
+        "Avg_revenue_per_visit": {
+            "type": "object",
+            "$ref": "../Schema/amount_currency_code_object.json",
+            "description": "Average revenue per visit."
+        },
+        "Avg_value_per_item_sold": {
+            "type": "object",
+            "$ref": "../Schema/amount_currency_code_object.json",
+            "description": "Average value per item sold."
+        },
+        "Campaign_Info_In_Parameter": {
+            "type": "string",
+            "description": ""
+        }
+    },
+    "required": [
+        "Date",
+        "Campaign_ID",
+        "Ad_Content",
+        "Platform"
+    ]
+}

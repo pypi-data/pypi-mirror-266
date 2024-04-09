@@ -1,0 +1,37 @@
+{
+  "type": "object",
+  "title": "Tokopedia Product Overview Daily Report",
+  "description": "Daily report providing an overview of product-related metrics on Tokopedia",
+  "properties": {
+    "New_Net_Income": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Information about new net income"
+    },
+    "Sold_Products": {
+      "type": "integer",
+      "description": "Total number of products sold"
+    },
+    "Product_Viewed": {
+      "type": "integer",
+      "description": "Total number of product views"
+    },
+    "Basket": {
+      "type": "integer",
+      "description": "Total number of items added to the basket"
+    },
+    "Conversion": {
+      "type": "number",
+      "description": "Conversion rate as a decimal"
+    },
+    "Date": {
+      "type": "string",
+      "description": "Date of the report in the format 'MM-DD-YYYY'",
+      "format": "dd-MM-yyyy",
+      "pattern": "[0-9]{2}-[0-9]{2}-[1-2][0-9]{3}"
+    }
+  },
+  "required": [
+    "Date"
+  ]
+}

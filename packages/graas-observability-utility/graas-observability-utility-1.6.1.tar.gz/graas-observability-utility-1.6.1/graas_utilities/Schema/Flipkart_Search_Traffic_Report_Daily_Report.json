@@ -1,0 +1,74 @@
+{
+  "type": "object",
+  "title": "Flipkart Search Traffic Report Daily Report",
+  "description": "Daily report for search traffic on Flipkart for a specific product",
+  "properties": {
+    "Listing_Id": {
+      "type": "string",
+      "description": "Unique identifier for the product listing on Flipkart"
+    },
+    "SKU_Id": {
+      "type": "string",
+      "description": "Stock Keeping Unit (SKU) identifier for the product"
+    },
+    "Product_Title": {
+      "type": "string",
+      "description": "Title or name of the product"
+    },
+    "Category": {
+      "type": "string",
+      "description": "Category of the product on Flipkart, e.g., 'CookingAndCookware'"
+    },
+    "Brand": {
+      "type": "string",
+      "description": "Brand of the product"
+    },
+    "Vertical": {
+      "type": "string",
+      "description": "Vertical or product type, e.g., 'PressureCooker'"
+    },
+    "Impression_Date": {
+      "type": "string",
+      "description": "Date when the impressions were recorded in the format 'DD-MM-YYYY'"
+    },
+    "Revenue": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Details of the total revenue"
+    },
+    "Product_Views": {
+      "type": "integer",
+      "description": "Number of views or impressions of the product"
+    },
+    "Product_Clicks": {
+      "type": "integer",
+      "description": "Number of clicks on the product"
+    },
+    "Units_Sold": {
+      "type": "integer",
+      "description": "Number of units of the product sold"
+    },
+    "Click_Through_Rate": {
+      "type": "number",
+      "description": "Click-through rate (CTR) for the product"
+    },
+    "Conversion_Rate": {
+      "type": "number",
+      "description": "Conversion rate for the product"
+    },
+    "Average_Selling_Price": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Details of the average selling price"
+    },
+    "Date": {
+      "type": "string",
+      "description": "Date of the report in the format 'DD-MM-YYYY'",
+      "format": "dd-MM-yyyy",
+      "pattern": "[0-9]{2}-[0-9]{2}-[1-2][0-9]{3}"
+    }
+  },
+  "required": [
+    "Date"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "type": "object",
+  "title": "Amazon Store Key Metrics Hourly Daily Report",
+  "description": "Hourly daily report presenting key metrics for an Amazon store",
+  "properties": {
+    "Time": {
+      "type": "string",
+      "description": "Time of the report in the format 'MM-DD-YYYY HH:mm'",
+      "format": "dd-MM-yyyy HH:mm"
+    },
+    "Selected_date_range_Ordered_product_sales": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Ordered product sales amount for the selected date range"
+    },
+    "Selected_date_range_Units_ordered": {
+      "type": "integer",
+      "description": "Total number of units ordered for the selected date range"
+    },
+    "Same_date_range_one_year_ago_Ordered_product_sales": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Ordered product sales amount for the same date range one year ago"
+    },
+    "Same_date_range_one_year_ago_Units_ordered": {
+      "type": "integer",
+      "description": "Total number of units ordered for the same date range one year ago"
+    }
+  },
+  "required": [
+    "Time"
+  ]
+}

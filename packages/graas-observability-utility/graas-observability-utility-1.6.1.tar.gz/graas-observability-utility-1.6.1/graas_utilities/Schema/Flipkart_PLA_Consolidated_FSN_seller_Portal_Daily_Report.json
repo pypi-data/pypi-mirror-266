@@ -1,0 +1,73 @@
+{
+  "type": "object",
+  "title": "Flipkart PLA Consolidated FSN Seller Portal Daily Report",
+  "description": "Daily consolidated performance report for Flipkart PLA Campaign with FSN on Seller Portal",
+  "properties": {
+    "Campaign_ID": {
+      "type": "string",
+      "description": "Unique identifier for the campaign, e.g., 'O0UIUOOHM1U2'"
+    },
+    "Campaign_Name": {
+      "type": "string",
+      "description": "Name of the campaign, e.g., 'Kadhai Oct'"
+    },
+    "AdGroup_ID": {
+      "type": "string",
+      "description": "Unique identifier for the ad group, e.g., 'QJC0ZTFEOXEF'"
+    },
+    "AdGroup_Name": {
+      "type": "string",
+      "description": "Name of the ad group, e.g., 'Kitchen, Cookware & Serveware'"
+    },
+    "Sku_Id": {
+      "type": "number",
+      "description": "Stock Keeping Unit (SKU) identifier, e.g., 6320"
+    },
+    "Product_Name": {
+      "type": "string",
+      "description": "Name of the product, e.g., 'Stahl Triply Stainless Steel Artisan Hybrid 6320, 20cm, 1.6 Liters Kadhai 20 cm diameter with Lid 1.6 L capacity'"
+    },
+    "Views": {
+      "type": "number",
+      "description": "Number of views for the product"
+    },
+    "Clicks": {
+      "type": "number",
+      "description": "Number of clicks for the product"
+    },
+    "Units_Sold_Direct": {
+      "type": "number",
+      "description": "Number of units sold through direct sales"
+    },
+    "Units_Sold_Indirect": {
+      "type": "number",
+      "description": "Number of units sold through indirect sales"
+    },
+    "Total_Revenue": {
+      "type": "object",
+      "$ref": "../Schema/amount_currency_code_object.json",
+      "description": "Total revenue details"
+    },
+    "Conversion_Rate": {
+      "type": "number",
+      "description": "Conversion rate for the product"
+    },
+    "ROI": {
+      "type": "number",
+      "description": "Return on investment for the product"
+    },
+    "Date": {
+      "type": "string",
+      "description": "Date of the report in the format 'DD-MM-YYYY', e.g., '08-11-2023'",
+      "format": "dd-MM-yyyy",
+      "pattern": "[0-9]{2}-[0-9]{2}-[1-2][0-9]{3}"
+    }
+  },
+  "required": [
+    "Campaign_ID",
+    "Campaign_Name",
+    "AdGroup_ID",
+    "Sku_Id",
+    "Date"
+  ]
+}

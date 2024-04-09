@@ -1,0 +1,54 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Product Campaign Performance Report",
+    "description": "A JSON object representing a Product Campaign Performance Report",
+    "type": "object",
+    "properties": {
+        "merchantID": {
+            "type": "string",
+            "description": "A unique merchant code for GRAAS clients"
+        },
+        "siteNickNameId": {
+            "type": "string",
+            "description": "A unique merchant's store code for GRAAS clients"
+        },
+        "countryCode": {
+            "type": "string",
+            "description": "The country code, e.g., 'SG', 'MY'."
+        },
+        "currencyCode": {
+            "type": "string",
+            "description": "The currency code, e.g., 'SGD', 'USD'."
+        },
+        "result": {
+            "type": "array",
+            "items": {
+                "anyOf": [
+                    {
+                        "$ref": "../graas_utilities/Schema/Flipkart_PLA_Consolidated_FSN_seller_Portal_Daily_Report.json",
+                        "description": "Flipkart PLA Consolidated FSN seller Portal Daily Report"
+                    },
+                    {
+                        "$ref": "../graas_utilities/Schema/Amazon_Sponsored_Display_Advertised_Product_Daily_Report.json",
+                        "description": "Amazon Sponsored Display Advertised Product Daily Report"
+                    },
+                    {
+                        "$ref": "../graas_utilities/Schema/Amazon_Sponsored_Brands_Attributed_Purchases_Daily_Report.json",
+                        "description": "Amazon Sponsored Brands Attributed Purchases Daily Report"
+                    },
+                    {
+                        "$ref": "../graas_utilities/Schema/Amazon_Sponsored_Products_Advertised_Product_Daily_Report.json",
+                        "description": "Amazon Sponsored Products Advertised Product Daily Report"
+                    }
+                ]
+            }
+        }
+    },
+    "required": [
+        "merchantID",
+        "siteNickNameId",
+        "countryCode",
+        "currencyCode",
+        "result"
+    ]
+}

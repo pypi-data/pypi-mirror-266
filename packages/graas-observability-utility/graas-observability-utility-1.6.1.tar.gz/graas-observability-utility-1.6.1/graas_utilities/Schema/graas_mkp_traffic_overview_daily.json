@@ -1,0 +1,62 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Traffic Overview Daily Report",
+    "description": "A JSON object representing a Traffic Overview Daily Report",
+    "type": "object",
+    "properties": {
+        "merchantID": {
+            "type": "string",
+            "description": "A unique merchant code for GRAAS clients"
+        },
+        "siteNickNameId": {
+            "type": "string",
+            "description": "A unique merchant's store code for GRAAS clients"
+        },
+        "countryCode": {
+            "type": "string",
+            "description": "The country code, e.g., 'SG', 'MY'."
+        },
+        "currencyCode": {
+            "type": "string",
+            "description": "The currency code, e.g., 'SGD', 'USD'."
+        },
+        "result": {
+            "type": "array",
+            "items": {
+                "anyOf": [
+                    {
+                        "$ref": "../graas_utilities/Schema/Shopee_Traffic_Overview_Daily_Monthly_Report.json",
+                        "description": "Shopee Traffic Overview Daily Monthly Report"
+                    },
+                    {
+                        "$ref": "../graas_utilities/Schema/Lazada_Store_Key_Metrics_monthly_Report.json",
+                        "description": "Lazada Store Key Metrics Monthly Report"
+                    },
+                    {
+                        "$ref": "../graas_utilities/Schema/Amazon_Traffic_Metrics_Daily_Report.json",
+                        "description": "Amazon Traffic Metrics Daily Report"
+                    },
+                    {
+                        "$ref": "../graas_utilities/Schema/Tokopedia_Customer_Insight_Daily_Report.json",
+                        "description": "Tokopedia Customer Insight Daily Report"
+                    },
+                    {
+                        "$ref": "../graas_utilities/Schema/Flipkart_Search_Traffic_Report_Daily_Report.json",
+                        "description": "Amazon Traffic Metrics Daily Report"
+                    },
+                    {
+                        "$ref": "../graas_utilities/Schema/Tokopedia_Store_Key_Metrics_Monthly_Report.json",
+                        "description": "Amazon Traffic Metrics Daily Report"
+                    }
+                ]
+            }
+        }
+    },
+    "required": [
+        "merchantID",
+        "siteNickNameId",
+        "countryCode",
+        "currencyCode",
+        "result"
+    ]
+}

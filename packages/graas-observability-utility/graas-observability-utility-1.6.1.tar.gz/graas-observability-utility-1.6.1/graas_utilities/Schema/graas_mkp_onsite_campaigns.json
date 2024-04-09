@@ -1,0 +1,46 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Onsite Campaign Report",
+    "description": "A JSON object representing a Onsite campaign report for a specific campaign.",
+    "type": "object",
+    "properties": {
+        "merchantID": {
+            "type": "string",
+            "description": "A unique merchant code for GRAAS clients"
+        },
+        "siteNickNameId": {
+            "type": "string",
+            "description": "A unique merchant's store code for GRAAS clients"
+        },
+        "countryCode": {
+            "type": "string",
+            "description": "The country code, e.g., 'SG', 'MY'."
+        },
+        "currencyCode": {
+            "type": "string",
+            "description": "The currency code, e.g., 'SGD', 'USD'."
+        },
+        "result": {
+            "type": "array",
+            "items": {
+                "anyOf": [
+                    {
+                        "$ref": "../graas_utilities/Schema/Lazada_onsite_campaign_monthly_Report.json",
+                        "description": "Lazada Onsite Campaign Report"
+                    },
+                    {
+                        "$ref": "../graas_utilities/Schema/Shopee_onsite_campaign_daily_Report.json",
+                        "description": "Shopee Onsite Campaign Report"
+                    }
+                ]
+            }
+        }
+    },
+    "required": [
+        "merchantID",
+        "siteNickNameId",
+        "countryCode",
+        "currencyCode",
+        "result"
+    ]
+}
