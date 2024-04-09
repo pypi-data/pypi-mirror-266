@@ -1,0 +1,126 @@
+[tool.poetry]
+name = "changelog_gen"
+version = "0.9.7"
+description = "Changelog generation tool"
+authors = ["Daniel Edgecombe <edgy.edgemond@gmail.com>"]
+license = "Apache-2.0"
+repository="https://github.com/EdgyEdgemond/changelog-gen/"
+homepage="https://github.com/EdgyEdgemond/changelog-gen/"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+typer = "^0"
+httpx = "^0.25"
+rtoml = ">=0.9"
+bump-my-version = { version = "^0.18.3", optional = true }
+bump2version = { version = "^1.0.1", optional = true }
+rich = "^13.7.1"
+
+[tool.poetry.extras]
+bump-my-version = ["bump-my-version"]
+bump2version = ["bump2version"]
+
+[tool.poetry.dev-dependencies]
+
+# Tests
+freezegun = "^1.2.1"
+pytest = "~7.4.3"
+pytest-cov = "^4.1.0"
+pytest-random-order = "^1.0.4"
+pytest-httpx = "^0.27.0"
+pytest-git = "^1.7.0"
+
+# Style
+ruff = "^0.3.0"
+pre-commit = "^3.0.2"
+
+[tool.bumpversion]
+current_version = "0.9.7"
+commit = true
+tag = true
+
+[[tool.bumpversion.files]]
+filename = "README.md"
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+search = 'version = "{current_version}"'
+replace = 'version = "{new_version}"'
+
+[tool.changelog_gen]
+release = true
+commit = true
+reject_empty = true
+allowed_branches = [
+    "main",
+]
+date_format = "- %Y-%m-%d"
+issue_link = "https://github.com/EdgyEdgemond/changelog-gen/issues/::issue_ref::"
+commit_link = "https://github.com/EdgyEdgemond/changelog-gen/commit/::commit_hash::"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = [
+    "--random-order",
+    "-p no:logging",
+]
+filterwarnings = [
+    "ignore::FutureWarning:changelog_gen.cli.command:140",
+    "ignore::FutureWarning:changelog_gen.cli.command:141",
+]
+markers = [
+    "backwards_compat: marks tests as part of backwards compatibility checks.",
+]
+
+[tool.coverage.report]
+sort = "cover"
+fail_under = 95
+show_missing = true
+skip_covered = true
+exclude_lines = [
+    "pragma: no cover",
+    "if typing.TYPE_CHECKING:",
+    "bump_library",
+    'warn',
+]
+
+[tool.coverage.run]
+branch = true
+source = ["changelog_gen"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "D100",
+    "D104",
+    "D107",
+    "ANN002",  # ParamSpec not available in 3.9
+    "ANN003",  # ParamSpec not available in 3.9
+    "FIX",  # allow TODO
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tasks.py" = ["ANN", "E501", "INP001"]
+"changelog_gen/cli/command.py" = ["UP007", "B008"]
+"tests/*" = ["ANN", "D", "S105", "S106", "SLF001", "S101", "PLR0913"]
+
+[tool.ruff.lint.flake8-quotes]
+docstring-quotes = "double"
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.poetry.scripts]
+changelog = "changelog_gen.cli.command:app"
+changelog-gen = "changelog_gen.cli.command:gen_app"
+changelog-init = "changelog_gen.cli.command:init_app"
+
+[build-system]
+requires = ["poetry-core>=1.0"]
+build-backend = "poetry.core.masonry.api"
