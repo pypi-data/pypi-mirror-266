@@ -1,0 +1,41 @@
+Metadata-Version: 2.1
+Name: commonsearchai
+Version: 0.1.0
+Summary: Fundamentals functions for azure search ai
+Home-page: https://www.pomiager.com/commonsearchai
+Author: Sandro Vecchiarelli
+Author-email: sandro.vecchiarelli@pomiager.com
+License: The Unlicense
+Project-URL: Documentation, https://pomiagerbo@dev.azure.com/pomiagerbo/AI_CommonSearchLib/_git/AI_CommonSearchLib
+Project-URL: Source, https://pomiagerbo@dev.azure.com/pomiagerbo/AI_CommonSearchLib/_git/AI_CommonSearchLib
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Utilities
+Requires-Python: >=3.10, <3.12
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+Requires-Dist: pandas >=2.0
+Requires-Dist: azure-search
+Requires-Dist: azure-search-documents
+
+# CommonSearchAI
+
+package containing common function for using Azure Search AI
+
+This package contains the following functions:
+
+-   create_search_index this function create an index with the following SearchFields
+    -   chunk_id
+    -   parent_id
+    -   chunk
+    -   title
+    -   vector
+
+-   create_search_datasource this function create a datasource from a blob container
+
+-   create_search_skillset this function create a skillset to manage a chunked file
+
+-   create_search_indexer this function create an indexer to be launched using a blob
+    datasource to fill the index
+
