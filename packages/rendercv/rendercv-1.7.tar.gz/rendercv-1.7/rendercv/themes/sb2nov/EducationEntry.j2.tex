@@ -1,0 +1,12 @@
+\resumeSubheading
+    {\textbf{<<entry.institution>>}}{\textit{<<entry.location>>}}
+    {\textit{((* if entry.degree *))<<entry.degree>> in ((* endif *))<<entry.area>>}}{\textit{<<entry.date_string>>}}
+((* for item in entry.highlights *))
+    ((* if loop.first *))
+    \resumeItemListStart
+    ((* endif *))
+        \resumeItem{}{<<item>>}
+    ((* if loop.last *))
+    \resumeItemListEnd
+    ((* endif *))
+((* endfor *))

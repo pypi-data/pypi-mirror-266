@@ -1,0 +1,12 @@
+\resumeSubheading
+    {\textbf{<<entry.company>>}}{\textit{<<entry.location>>}}
+    {\textit{<<entry.position>>}}{\textit{<<entry.date_string>>}}
+((* for item in entry.highlights *))
+    ((* if loop.first *))
+    \resumeItemListStart
+    ((* endif *))
+        \resumeItem{}{<<item>>}
+    ((* if loop.last *))
+    \resumeItemListEnd
+    ((* endif *))
+((* endfor *))
