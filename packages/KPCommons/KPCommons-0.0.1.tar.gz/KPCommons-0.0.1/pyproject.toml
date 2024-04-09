@@ -1,0 +1,33 @@
+[build-system]
+requires = [
+    "setuptools>=42",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "KPCommons"
+version = "0.0.1"
+authors = [
+    { name = "Frederik Arnold", email = "frederik.arnold@hu-berlin.de"}
+]
+description = "A collection of reusable methods."
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3.9"
+keywords = []
+dependencies = [
+]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["kpcommons*"]
+
+[project.urls]
+"Homepage" = "https://scm.cms.hu-berlin.de/schluesselstellen/commons"
