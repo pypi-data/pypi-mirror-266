@@ -1,0 +1,91 @@
+Metadata-Version: 2.1
+Name: Jetski
+Version: 0.0.3
+Summary: Jetski Rental System by Tarid Suwansri
+Home-page: https://github.com/TaridSuwansri/Jetski
+Download-URL: https://github.com/TaridSuwansri/Jetski/archive/v0.0.3.zip
+Author: Tarid Suwansri
+Author-email: taridsuwansri@gmail.com
+License: MIT
+Keywords: Jetski,Mathematics,Tarid,Suwansri
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Education
+Classifier: Topic :: Utilities
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+License-File: LICENSE.txt
+
+Package_name : Jetski
+=====================
+
+Jetski is a Python library for dealing with Jetski Rental System.
+
+Installation
+------------
+
+Use the package manager `pip <https://pip.pypa.io/en/stable/>`__ to
+install Jetski.
+
+.. code:: bash
+
+   pip install Jetski
+
+Usage
+-----
+
+Start by importing both classes and datetime module.
+
+.. code:: python
+
+   from Jetski import JetskiRental, Customer
+   import datetime
+
+Then, create JetskiRental and Customer objects and test example of rent.
+
+.. code:: python
+
+   shop = JetskiRental(10)
+   customer = Customer()
+
+   jetskis = customer.requestJetski()
+
+   customer.rentalBasis = 1
+
+   customer.rentalTime = datetime.datetime.now() + datetime.timedelta(hours=-2)
+
+   request = customer.returnJetski()
+
+   shop.displaystock()
+
+   shop.rentJetskiOnHourlyBasis(jetskis)
+
+   shop.displaystock()
+
+   bill = shop.returnJetski(request)
+
+   print(f"Your bill is {bill}.")
+
+Contributing
+------------
+
+Pull requests are welcome. For major changes, please open an issue first
+to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+Author
+------
+
+Tarid Suwansri
+
+License
+-------
+
+`MIT <https://choosealicense.com/licenses/mit/>`__
