@@ -1,0 +1,14 @@
+{% load buttons %}
+{% load i18n %}
+
+<div class="show {% if request.GET.tab == 'onboarded' %}active{% endif %}" id="onboarded-device-list" role="tabpanel" aria-labelledby="onboarded-device-list-tab">
+  <div class="form form-horizontal">
+    <div class="card">
+      <div class="card-body htmx-container table-responsive" id="object_list">
+      {% block table %}
+        {% include "slurpit_nautobot/table.html" %}
+      {% endblock %}
+      </div>
+    </div>
+  </div>
+ </div>

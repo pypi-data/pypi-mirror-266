@@ -1,0 +1,12 @@
+{% load buttons %}
+{% load i18n %}
+{% load helpers %}
+{% load static %}
+<div class="col-md-12" >
+              
+    <div style="margin-top: 10px;">
+      {% include table_template|default:'panel_table.html' %}
+      {% include 'inc/paginator.html' with paginator=table.paginator page=table.page %}
+    </div>
+    <div class="clearfix"></div>
+  </div>
