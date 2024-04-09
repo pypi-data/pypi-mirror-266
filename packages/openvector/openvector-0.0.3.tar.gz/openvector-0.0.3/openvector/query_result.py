@@ -1,0 +1,2 @@
+class QueryResult:
+    documents: list
