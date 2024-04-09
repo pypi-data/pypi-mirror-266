@@ -1,0 +1,86 @@
+Metadata-Version: 2.1
+Name: magic-list
+Version: 2.0.1
+Summary: Magic List is a module that extends the built-in list type.
+Author-email: Qexat <contact@qexat.com>
+License: MIT License
+        
+        Copyright (c) 2024 Qexat
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: repository, https://github.com/qexat/magic-list
+Keywords: collections,list,built-in,extension
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Provides-Extra: dev
+Requires-Dist: pytest >=7.4 ; extra == 'dev'
+Requires-Dist: coverage >=7.4 ; extra == 'dev'
+Requires-Dist: pyright >=1.1 ; extra == 'dev'
+Requires-Dist: build ; extra == 'dev'
+Requires-Dist: twine ; extra == 'dev'
+
+<!-- markdownlint-disable MD028 -->
+
+# Magic List
+
+[![Palestine support banner](https://raw.githubusercontent.com/Safouene1/support-palestine-banner/master/banner-support.svg)](https://irusa.org/middle-east/palestine/)
+
+Magic List is a module that extends the built-in list type.
+
+> [!NOTE]
+> Its development is entirely test-driven: it is battery-tested and requires a
+> test coverage of 100%. It also provides typing stub files.
+
+User-friendly documentation is hopefully coming soon.
+
+## Examples
+
+### Fibonacci sequence
+
+In the functional programming spirit, let's write a function that given an integer `n`, returns the fibonacci sequence up to the `n`-th member.
+
+For example, `fibonacci_sequence(10)` would return `[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]`.
+
+```py
+import operator
+
+from magic_list import L, list
+
+def fibonacci_sequence(n: int) -> list[int]:
+    # let's start by creating a list with the first two members, 0 and 1.
+    base = L[0, 1]
+
+    # we define a function that we will use to generate the next members of
+    # the sequence
+    def next_member(current: list[int]) -> int:
+        return current.take_right(2).sum()
+
+    return base.fill_right(next_member, n - 1)
+```
+
+> [!NOTE]\
+> The `L[0, 1]` notation is a way to construct magic lists nicely.
+
+### Fibonacci n-th member
+
+Wanted to define a function that returns the `n`-th member of the Fibonacci sequence for a laugh? We have that: it is called [`fibonacci_sequence(n)`](#fibonacci-sequence)`.last`!
