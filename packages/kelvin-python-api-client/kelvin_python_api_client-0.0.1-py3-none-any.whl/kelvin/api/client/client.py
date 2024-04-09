@@ -1,0 +1,181 @@
+"""
+Kelvin API Client.
+"""
+
+from __future__ import annotations
+
+from functools import wraps
+from types import FunctionType, MethodType
+from typing import Any, Generic, List, Mapping, Type, TypeVar
+
+from .api.app_manager import AppManager
+from .api.app_registry import AppRegistry
+from .api.asset import Asset
+from .api.asset_insights import AssetInsights
+from .api.bridge import Bridge
+from .api.control_change import ControlChange
+from .api.data_tag import DataTag
+from .api.datastreams import Datastreams
+from .api.filestorage import Filestorage
+from .api.instance import Instance
+from .api.orchestration import Orchestration
+from .api.parameters import Parameters
+from .api.recommendation import Recommendation
+from .api.secret import Secret
+from .api.thread import Thread
+from .api.timeseries import Timeseries
+from .api.user import User
+from .api.workload import Workload
+from .base_client import BaseClient
+from .data_model import DataModel
+
+MODELS: Mapping[str, Type[DataModel]] = {
+    "app_manager": AppManager,  # type: ignore
+    "app_registry": AppRegistry,  # type: ignore
+    "asset": Asset,  # type: ignore
+    "asset_insights": AssetInsights,  # type: ignore
+    "bridge": Bridge,  # type: ignore
+    "control_change": ControlChange,  # type: ignore
+    "data_tag": DataTag,  # type: ignore
+    "datastreams": Datastreams,  # type: ignore
+    "filestorage": Filestorage,  # type: ignore
+    "instance": Instance,  # type: ignore
+    "orchestration": Orchestration,  # type: ignore
+    "parameters": Parameters,  # type: ignore
+    "recommendation": Recommendation,  # type: ignore
+    "secret": Secret,  # type: ignore
+    "thread": Thread,  # type: ignore
+    "timeseries": Timeseries,  # type: ignore
+    "user": User,  # type: ignore
+    "workload": Workload,  # type: ignore
+}
+
+
+T = TypeVar("T", bound=DataModel)
+
+
+class DataModelProxy(Generic[T]):
+    """Proxy client to data models."""
+
+    def __init__(self, model: Type[T], client: Client) -> None:
+        """Initialise resource adaptor."""
+
+        self._model = model
+        self._client = client
+
+    def new(self, **kwargs: Any) -> T:
+        """New instance."""
+
+        return self._model(self._client, **kwargs)
+
+    def __getattr__(self, name: str) -> Any:
+        """Map name to method."""
+
+        if name.startswith("_"):
+            return super().__getattribute__(name)
+
+        try:
+            f = getattr(self._model, name)
+        except AttributeError:
+            return super().__getattribute__(name)
+
+        if isinstance(f, (FunctionType, MethodType)):
+
+            @wraps(f)
+            def wrapper(*args: Any, **kwargs: Any) -> Any:
+                return f(*args, **kwargs, _client=self._client)
+
+            return wrapper
+
+        return super().__getattribute__(name)
+
+    def __dir__(self) -> List[str]:
+        """List methods for model."""
+
+        return sorted(
+            k
+            for k in vars(self._model)
+            if not k.startswith("_") and isinstance(getattr(self._model, k), (FunctionType, MethodType))
+        )
+
+    def __str__(self) -> str:
+        """Return str(self)."""
+
+        return str(self._model)
+
+    def __repr__(self) -> str:
+        """Return repr(self)."""
+
+        return repr(self._model)
+
+
+class Client(BaseClient):
+    """
+    Kelvin API Client.
+
+    Parameters
+    ----------
+    config : :obj:`ClientConfiguration`, optional
+        Configuration object
+    password : :obj:`str`, optional
+        Password for obtaining access token
+    totp : :obj:`str`, optional
+        Time-based one-time password
+    verbose : :obj:`bool`, optional
+        Log requests/responses
+    use_keychain : :obj:`bool`, optional
+        Store credentials securely in system keychain
+    store_token : :obj:`bool`, optional
+        Store access token
+    login : :obj:`bool`, optional
+        Login to API
+    mirror : :obj:`str`, optional
+        Directory to use for caching mirrored responses (created if not existing)
+    mirror_mode : :obj:`MirrorMode`, :obj:`str` or :obj:`list`, optional
+        Mode of response mirroring:
+            - ``dump``: Save responses in mirror cache
+            - ``load``: Load responses from mirror cache (if available)
+            - ``both``: Both dump and load
+            - ``none``: Do not dump or load
+    _adapter : :obj:`requests.adapters.BaseAdapter`, optional
+        Optional requests adapter instance (e.g. :obj:`requests.adapters.HTTPAdapter`).
+        Useful for testing.
+
+    """
+
+    app_manager: Type[AppManager]
+    app_registry: Type[AppRegistry]
+    asset: Type[Asset]
+    asset_insights: Type[AssetInsights]
+    bridge: Type[Bridge]
+    control_change: Type[ControlChange]
+    data_tag: Type[DataTag]
+    datastreams: Type[Datastreams]
+    filestorage: Type[Filestorage]
+    instance: Type[Instance]
+    orchestration: Type[Orchestration]
+    parameters: Type[Parameters]
+    recommendation: Type[Recommendation]
+    secret: Type[Secret]
+    thread: Type[Thread]
+    timeseries: Type[Timeseries]
+    user: Type[User]
+    workload: Type[Workload]
+
+    def __dir__(self) -> List[str]:
+        """Return list of names of the object items/attributes."""
+
+        return [*super().__dir__(), *MODELS]
+
+    def __getattr__(self, name: str) -> Any:
+        """Get attribute."""
+
+        if name.startswith("_") or name in super().__dir__():
+            return super().__getattribute__(name)  # pragma: no cover
+
+        try:
+            model = MODELS[name]
+        except KeyError:
+            return super().__getattribute__(name)
+
+        return DataModelProxy(model, self)
