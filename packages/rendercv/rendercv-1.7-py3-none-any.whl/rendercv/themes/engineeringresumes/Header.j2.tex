@@ -1,0 +1,28 @@
+\makeatletter
+\newcommand{\test}{%
+  \@ifnextchar\par{A}{B}%
+}
+\makeatother
+
+((* if design.show_last_updated_date *))
+\placelastupdatedtext
+((* endif *))
+((* if cv.name is not none *))
+\begin{header}
+    \fontsize{<<design.header_font_size>>}{<<design.header_font_size>>}\selectfont <<cv.name>>
+
+    \vspace{<<design.margins.header.vertical_between_name_and_connections>>}
+
+    \normalsize
+    ((* for connection in cv.connections *))
+    \mbox{\href{<<connection["url"]>>}{<<connection["clean_url"]>>}}
+    \hspace*{<<design.margins.header.horizontal_between_connections|divide_length_by(2)>>}
+    ((* if not loop.last *))
+    $|$
+    ((* endif *))
+    \hspace*{<<design.margins.header.horizontal_between_connections|divide_length_by(2)>>}
+    ((* endfor *))
+\end{header}
+
+\vspace{<<design.margins.header.bottom>> - <<design.margins.section_title.top>>}
+((* endif *))

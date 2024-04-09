@@ -1,0 +1,11 @@
+\resumeNormalSubheading
+    {<<entry.name>>}{<<entry.location>>((* if entry.date_string and entry.location *)), ((* endif *))<<entry.date_string>>}
+((* for item in entry.highlights *))
+    ((* if loop.first *))
+    \resumeItemListStart
+    ((* endif *))
+        \resumeItem{}{<<item>>}
+    ((* if loop.last *))
+    \resumeItemListEnd
+    ((* endif *))
+((* endfor *))
