@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["vloc"]
+
+[project]
+name = "vloc"
+version = "0.1.13"
+urls = { GitHub = "https://github.com/linyeh1129/vloc" }
+authors = [{ name = 'Lin Yeh', email = 'lin_yeh@outlook.com' }]
+description = "An UI antomation tool based by YOLO"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+keywords = ['ui aumomation', 'computer vision']
+classifiers = ['Programming Language :: Python :: 3']
+dependencies = [
+    'opencv-python >= 4.9.0.80',
+    "ultralytics >= 8.1.1",
+    "pytesseract >= 0.3.10",
+]
