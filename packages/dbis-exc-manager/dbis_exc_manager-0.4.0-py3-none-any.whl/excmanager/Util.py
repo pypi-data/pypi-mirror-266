@@ -1,0 +1,270 @@
+import os, requests
+import typing
+from functools import reduce
+from IPython.display import Markdown, display
+import sqlite3
+from tabulate import tabulate
+from Levenshtein import ratio
+
+
+class Util:
+    """
+    Utilities
+    """
+
+    # https://stackoverflow.com/a/16696317/3151250
+    @staticmethod
+    def download_file(url, folder):
+        local_filename = url.split("/")[-1]
+        full_path = os.path.join(folder, local_filename)
+        with requests.get(url, stream=True) as r:
+            r.raise_for_status()
+            with open(full_path, "wb") as f:
+                for chunk in r.iter_content(chunk_size=8192):
+                    f.write(chunk)
+        print(f"Lade herunter und speichere unter {full_path}")
+        return local_filename
+
+    @staticmethod
+    def evaluate_sql(path_to_db, query, display_table=True):
+        if not os.path.exists(path_to_db):
+            raise FileNotFoundError()
+        conn = sqlite3.connect(path_to_db)
+        cursor = conn.execute(query)
+        attributes = [description[0] for description in cursor.description]
+        tuples = [list(x) for x in cursor.fetchall()]
+        table = tabulate(tuples, attributes, tablefmt="github")
+        if display_table:
+            display(Markdown(table))
+        conn.close()
+        return attributes, tuples
+
+    @staticmethod
+    def transform_pgsql_resultset_to_list_of_lists(result):
+        result_list = []
+        for row_dicts in result.dicts():
+            row_list = []
+            for attribute, value in row_dicts.items():
+                row_list.append(str(value))
+            result_list.append(row_list)
+        attributes = result.field_names
+        return attributes, result_list
+
+    # check sql solution
+    @staticmethod
+    def check_sql_solution(
+        query_text,
+        student_dict,
+        solution,
+        no_of_points,
+        partial_score_exact,
+        partial_score_keywords,
+        partial_score_points,
+    ):
+        score = 0
+        try:
+            solution = {Util.str_sanitize(k): v for k, v in solution.items()}
+            student_dict = {Util.str_sanitize(k): v for k, v in student_dict.items()}
+            # check for exact match
+            for x in solution:
+                print("Überprüfe Spalte: ", x, " | ", solution[x])
+                for y in range(len(solution[x])):
+                    print("   Überprüfe Zelle:", y, " | ", solution[x][y])
+                    check = Util.levenshtein_str_callback(
+                        solution[x][y], student_dict[x][y]
+                    )
+                    if 0.8 <= check:
+                        score += partial_score_exact
+                    print("    > ", check, ", score: ", round(score, 4))
+        except Exception as e:
+            print("Exception festgestellt")
+            print(f"  {type(e).__name__} {e} ")
+            if type(e).__name__ == "KeyError":
+                print(
+                    "  ... diese Errormeldung bedeutet wahrscheinlich, dass eine Spalte fehlerhaft benannt wurde oder nicht gefunden wurde."
+                )
+            pass  # catch, return
+        else:
+            # if the solution isn't exact, apply other rules
+            # = check for keywords in SQL.
+            if round(score, 2) < no_of_points:
+                score = 0
+                print("Teilpunkte")
+                for i in partial_score_keywords:
+                    if i in query_text.upper():
+                        score += partial_score_points
+        return score
+
+    # count solution cells in result array
+    @staticmethod
+    def get_solution_count(solution):
+        count = 0
+        for x in solution:
+            for y in range(len(solution[x])):
+                count += 1
+        if count == 0:
+            count = 1
+        return count
+
+    ###############################################################################################################
+    # CHECK TABLE & HELPER FUNCTIONS
+    ###############################################################################################################
+
+    @staticmethod
+    def custom_list_ratio(a: typing.List[str], b: typing.List[str]) -> int:
+        # empty lists have the ratio of 1
+        if len(a) == len(b) == 0:
+            return 1
+        h = [ratio(i, j) for (i, j) in zip(a, b)]
+        n = len(h)
+        return reduce(lambda x, y: x + (y / n), h, 0)
+
+    # Mapping: Index of new list -> Index of old list
+    @staticmethod
+    def permute_list(list, mapping):
+        """
+        Returns a list which is permutated according to the list mapping.
+        Mapping needs to be a list of length len(list), which contains the new order of indices of the list l
+        """
+        l = list.copy()
+        for i in range(0, len(list)):
+            list[i] = l[mapping[i]]
+
+    # Returns mapping as list or None
+    @staticmethod
+    def get_permutation(
+        list_student: typing.List[typing.Any],
+        list_solution: typing.List[typing.Any],
+        elem_name: str,
+        levenshtein_callback,
+        levenshtein_threshold: int,
+        quiet: bool,
+    ) -> typing.Optional[typing.List[str]]:
+        """
+        Find approximate matches between elements in the student's list and the solution list using Levenshtein distance.
+
+        Parameters:
+            - list_student (list): The list representing the student's solution.
+            - list_solution (list): The list representing the correct solution.
+            - elem_name (str): A string describing the type of elements in the list, used for output only
+            - levenshtein_callback (callable): A function that calculates the Levenshtein distance or a similar metric between two strings.
+            - levenshtein_threshold (float): The numerical threshold for considering a match valid.
+            - quiet (bool): If True, suppresses print statements; if False, prints information about matching and mismatching elements.
+
+        Returns:
+            - list or None: A list length len(list_student), containing for each element the index of the best match in list_solution
+                            Returns None if there is an element in the list_student having no match partner in the list_solution.
+
+        The method compares each element in list_student to elements in list_solution using levenshtein_callback.
+        Mismatches and missing elements are reported, and the method returns None if any errors are detected.
+
+        """
+        res = len(list_student) * []
+        a = list_student.copy()
+        b: typing.List[typing.Optional[str]] = list_solution.copy()
+        error = False
+        for i in range(0, len(a)):
+            best = -1
+            best_ratio = -1
+            for j in range(0, len(b)):
+                if b[j] is None:  # Skip elements that were already matched
+                    continue
+                new_ratio = levenshtein_callback(a[i], b[j])
+                if new_ratio >= best_ratio:
+                    best_ratio = new_ratio
+                    best = j
+            if best_ratio >= levenshtein_threshold:
+                res.insert(i, best)
+                if best_ratio < 1 and not quiet:
+                    print(
+                        f"Gefunden wurde {elem_name} '{a[i]}', verwendet wird '{b[best]}'?"
+                    )
+                b[best] = None  # Mark as matched
+            else:
+                if not quiet:
+                    print(f"Fehlerhaft: {elem_name} '{a[i]}'")
+                error = True
+
+        # Check if all items have been used, if not, it was missing in student's solution
+        for j in range(0, len(b)):
+            if b[j] != None:
+                if not quiet:
+                    print(f"Fehlend: {elem_name} '{b[j]}'")
+                error = True
+        if error:
+            return None
+        return res
+
+    @staticmethod
+    def str_sanitize(s: str) -> str:
+        """Sanitizes the string. Replaces umlaute and makes it lowercase"""
+        return (
+            str(s)
+            .lower()
+            .strip()
+            .replace("ä", "ae")
+            .replace("ö", "oe")
+            .replace("ü", "ue")
+        )
+
+    @staticmethod
+    def levenshtein_str_callback(a, b):
+        r = ratio(Util.str_sanitize(a), Util.str_sanitize(b))
+        return r
+
+    @staticmethod
+    def levenshtein_list_callback(a, b):
+        return Util.custom_list_ratio(
+            list(map(Util.str_sanitize, list(a))), list(map(Util.str_sanitize, list(b)))
+        )
+
+    @staticmethod
+    def check_table(
+        attributes_solution: typing.List[str],
+        tuples_solution: typing.List[typing.List[str]],
+        attributes_student: typing.List[str],
+        tuples_student: typing.List[typing.List[str]],
+        levenshtein_threshold: int = 1,
+        quiet: bool = False,
+    ):
+        """
+        Fuzzy compares two 'tables' considering the given levenshtein threshold.
+        Parameters:
+            - attributes_solutions: The attributes/column names of the correct table
+            - tuples solution: The tuples of the correct table
+            - attributes_student: The attributes of the student table
+            - tuples_student: THe tuples of the student table
+            - Levenshtein_threshold: The threshold used for comparing
+            - quiet: Whether to produces output regarding matches
+        """
+        # Get permutation according to attributes
+        attribute_mapping = Util.get_permutation(
+            attributes_student,
+            attributes_solution,
+            "attribute",
+            Util.levenshtein_str_callback,
+            levenshtein_threshold,
+            quiet,
+        )
+        if attribute_mapping == None:
+            return False
+
+        # Permute solution tuples with found mapping
+        # Student's solutions are not changed to explain wrong answers
+        Util.permute_list(attributes_solution, attribute_mapping)
+        for tuple in tuples_solution:
+            Util.permute_list(tuple, attribute_mapping)
+
+        # Check if permutation on tuples can be found
+        # If not, some tuples are wrong or missing
+        tuple_mapping = Util.get_permutation(
+            tuples_student,
+            tuples_solution,
+            "tuple",
+            Util.levenshtein_list_callback,
+            levenshtein_threshold,
+            quiet,
+        )
+        if tuple_mapping == None:
+            return False
+        return True
