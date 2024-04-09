@@ -1,0 +1,33 @@
+<div class="literate-git-node" data-commit-sha1="{{ node.commit.oid }}">
+{% if node.seqnum_path | length == 1 %}
+  <h2 class="nav prev">&lt;</h2>
+  <h2 class="nav next">&gt;</h2>
+{% endif %}
+<h2><span class="sec-num">{{ node.seqnum_path | section_path }}</span>
+    {{ node.title | markdown_inner_only }}</h2>
+
+<div class="message-body">{{ node.message_body | markdown }}</div>
+
+<p class="links">
+{%- if has_results %}
+  <a target="LiterateGitResult"
+     href="{{ node.commit.oid | result_url | e }}"><span>RESULT</span></a>
+{%- endif %}
+  <a target="LiterateGitSource"
+     href="{{ node.commit.oid | source_url | e }}"><span>SOURCE</span></a>
+</p>
+
+<div class="diff-or-children">
+{% if node.children %}
+<h2 class="nav expand">+</h2>
+<h2 class="nav collapse">-</h2>
+{% endif %}
+<div class="diff">{{ node.diff | as_html_fragment }}</div>
+
+{% if node.children %}
+<div class="children">
+{% for ch in node.children %}{{ ch | as_html_fragment }}{% endfor %}
+</div>
+{% endif %}
+</div>
+</div>
