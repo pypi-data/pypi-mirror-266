@@ -1,0 +1,793 @@
+{
+    "type": "object",
+    "title": "R3XA: Remember, Reuse and Replicate eXperiments and Analyses",
+    "description": "This is the specs for the R3XA experiments and analysis meta data template.",
+    "properties": {
+        "title": {
+            "title": "Title",
+            "description": "The title of the data sets",
+            "type": "string",
+            "example": [
+                "DICComposite2.0",
+                "My awesome data sets"
+            ]
+        },
+        "description": {
+            "title": "Description",
+            "description": "The description of the data sets",
+            "type": "string"
+        },
+        "version": {
+            "title": "Version",
+            "description": "Version of the schema used",
+            "type": "string",
+            "const": "2024.4.8"
+        },
+        "authors": {
+            "title": "Author",
+            "description": "Authors of the data sets",
+            "type": "string",
+            "examples": [
+                "M. Palin, J. Cleese",
+                "ORCID",
+                "HAL-ID"
+            ]
+        },
+        "date": {
+            "title": "Date",
+            "description": "Global date of the experiment (YYYY-MM-DD)",
+            "type": "string",
+            "pattern": "^[1-2]{1}[0-9]{3}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$",
+            "examples": [
+                "2020-03-17"
+            ]
+        },
+        "repository": {
+            "title": "Repository",
+            "description": "URL to the repository where the data sets are stored",
+            "$ref": "#/$defs/types/uri",
+            "examples": [
+                "https://zenodo.org/records/42"
+            ]
+        },
+        "documentation": {
+            "title": "Documentation",
+            "description": "URI to the documentation (pdf)",
+            "$ref": "#/$defs/types/uri",
+            "examples": [
+                "./doc/my_doc.pdf",
+                "https://zenodo.org/records/42/doc/my_doc.pdf"
+            ]
+        },
+        "license": {
+            "title": "License",
+            "description": "License of the data sets",
+            "type": "string",
+            "examples": [
+                "Creative common"
+            ]
+        },
+        "settings": {
+            "title": "Settings",
+            "description": "List of parameters, devices or software that don't explicitly interact with the data sets",
+            "type": "array",
+            "items": {
+                "anyOf": [
+                    {
+                        "$ref": "#/$defs/setting/generic"
+                    },
+                    {
+                        "$ref": "#/$defs/setting/specimen"
+                    }
+                ]
+            }
+        },
+        "data_sources": {
+            "title": "Data sources",
+            "description": "The sources of the data (sensor or analysis)",
+            "type": "array",
+            "items": {
+                "anyOf": [
+                    {
+                        "$ref": "#/$defs/data_source/generic"
+                    },
+                    {
+                        "$ref": "#/$defs/data_source/camera"
+                    },
+                    {
+                        "$ref": "#/$defs/data_source/tomograph"
+                    }
+                ]
+            }
+        },
+        "data_sets": {
+            "title": "Data sets",
+            "description": "The data sets :)",
+            "type": "array",
+            "items": {
+                "anyOf": [
+                    {
+                        "$ref": "#/$defs/data_set/file"
+                    },
+                    {
+                        "$ref": "#/$defs/data_set/list"
+                    }
+                ]
+            }
+        }
+    },
+    "required": [
+        "title",
+        "description",
+        "version",
+        "authors",
+        "date"
+    ],
+    "additionalProperties": false,
+    "$defs": {
+        "setting": {
+            "generic": {
+                "title": "Generic setting",
+                "description": "A generic setting with minimal number of fields",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID of the setting",
+                        "type": "string"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "description": "The title of setting",
+                        "type": "string"
+                    },
+                    "description": {
+                        "title": "Description",
+                        "description": "The description of your setting",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "title",
+                    "description"
+                ],
+                "additionalProperties": false
+            },
+            "specimen": {
+                "title": "Specimen",
+                "description": "A specimen",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID of the setting",
+                        "type": "string"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "description": "The title of setting",
+                        "type": "string"
+                    },
+                    "description": {
+                        "title": "Description",
+                        "description": "The description of your setting",
+                        "type": "string"
+                    },
+                    "cad": {
+                        "title": "CAD",
+                        "description": "File of the CAD",
+                        "type": "string"
+                    },
+                    "size": {
+                        "title": "Size",
+                        "description": "The size of the specimen",
+                        "type": "string"
+                    },
+                    "patterning_technique": {
+                        "title": "Patterning technique",
+                        "description": "The patterning technique",
+                        "type": "string",
+                        "examples": [
+                            "Base coat of white spray paint with ink stamped speckles"
+                        ]
+                    },
+                    "patterning_feature_size": {
+                        "title": "Patterning feature size",
+                        "description": "The patterning feature size",
+                        "$ref": "#/$defs/types/unit"
+                    }
+                },
+                "required": [
+                    "id",
+                    "title",
+                    "description"
+                ],
+                "additionalProperties": false
+            }
+        },
+        "data_source": {
+            "generic": {
+                "title": "Generic data source",
+                "description": "A data_source is a procedure or a system that generates a data_set. If it is a sensor then his parameters must be specified. If it is an analysis specifies his parameters are specified along with the input parameters. It also indicates the dimension, the number of components and the unit of the output data.",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID of the data_source (should start at 0)",
+                        "type": "string"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "description": "The title of your data source",
+                        "type": "string"
+                    },
+                    "description": {
+                        "title": "Description",
+                        "description": "The description of your data source",
+                        "type": "string"
+                    },
+                    "output_components": {
+                        "title": "Output components",
+                        "description": "Number of componants / channels of the ouput data",
+                        "$ref": "#/$defs/types/uint"
+                    },
+                    "output_dimension": {
+                        "title": "Output dimension",
+                        "description": "Dimension of the output data",
+                        "type": "string",
+                        "enum": [
+                            "point",
+                            "curve",
+                            "surface",
+                            "volume"
+                        ]
+                    },
+                    "output_units": {
+                        "title": "Output units",
+                        "description": "Unit of the output data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/$defs/types/unit"
+                        }
+                    },
+                    "manufacturer": {
+                        "title": "Manufacturer",
+                        "description": "Manufacturer / vendor / software editor",
+                        "type": "string"
+                    },
+                    "input_data_set": {
+                        "title": "Input data set",
+                        "description": "The data set ID serving as an input source",
+                        "type": "string"
+                    },
+                    "model": {
+                        "title": "Model",
+                        "description": "Model or software version",
+                        "type": "string"
+                    },
+                    "documentation": {
+                        "title": "Documentation",
+                        "description": "Name, path or ULR of the documentation (no spaces, no accents)",
+                        "$ref": "#/$defs/types/uri"
+                    }
+                },
+                "required": [
+                    "id",
+                    "title",
+                    "description",
+                    "output_dimension",
+                    "output_components"
+                ],
+                "additionalProperties": false
+            },
+            "camera": {
+                "title": "Camera",
+                "description": "A generic camera (visible).",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID of the data_source (should start at 0)",
+                        "type": "string"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "description": "The title of your data source",
+                        "type": "string"
+                    },
+                    "description": {
+                        "title": "Description",
+                        "description": "The description of your data source",
+                        "type": "string"
+                    },
+                    "output_components": {
+                        "title": "Output components",
+                        "description": "Number of componants / channels of the ouput data",
+                        "$ref": "#/$defs/types/uint"
+                    },
+                    "output_dimension": {
+                        "title": "Output dimension",
+                        "description": "Dimension of the output data",
+                        "type": "string",
+                        "enum": [
+                            "point",
+                            "curve",
+                            "surface",
+                            "volume"
+                        ]
+                    },
+                    "output_units": {
+                        "title": "Output units",
+                        "description": "Unit of the output data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/$defs/types/unit"
+                        }
+                    },
+                    "manufacturer": {
+                        "title": "Manufacturer",
+                        "description": "Manufacturer / vendor / software editor",
+                        "type": "string"
+                    },
+                    "input_data_set": {
+                        "title": "Input data set",
+                        "description": "The data set ID serving as an input source",
+                        "$ref": "#/$defs/types/uint"
+                    },
+                    "model": {
+                        "title": "Model",
+                        "description": "Model or software version",
+                        "type": "string"
+                    },
+                    "documentation": {
+                        "title": "Documentation",
+                        "description": "Name, path or ULR of the documentation (no spaces, no accents)",
+                        "$ref": "#/$defs/types/uri"
+                    },
+                    "image_size": {
+                        "title": "Image size",
+                        "description": "Size of the image in pix times pix",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/$defs/types/unit"
+                        },
+                        "minItems": 2,
+                        "maxItems": 2
+                    },
+                    "field_of_view": {
+                        "title": "Field of view",
+                        "description": "Size of the field of view in m times m",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/$defs/types/unit"
+                        },
+                        "minItems": 2,
+                        "maxItems": 2
+                    },
+                    "image_scale": {
+                        "title": "Image scale",
+                        "description": "Scale of the image in pix / m",
+                        "$ref": "#/$defs/types/unit"
+                    },
+                    "focal_length": {
+                        "title": "Focal length",
+                        "description": "Focal length of the lens in mm",
+                        "$ref": "#/$defs/types/unit"
+                    },
+                    "lens": {
+                        "title": "Camera lens",
+                        "description": "Camera lens manufacturer and model",
+                        "type": "string"
+                    },
+                    "filter": {
+                        "title": "Camera or lens filter",
+                        "description": "Filter type, manufacturer and model",
+                        "type": "string"
+                    },
+                    "aperture": {
+                        "title": "Aperture of the lens",
+                        "description": "Aperture value",
+                        "type": "string",
+                        "examples": "f/8"
+                    },
+                    "exposure": {
+                        "title": "Exposure time",
+                        "description": "Exposure time in ms",
+                        "$ref": "#/$defs/types/unit"
+                    },
+                    "standoff_distance": {
+                        "title": "Standoff distance",
+                        "description": "Standoff distance between the camera and the sample, in m",
+                        "$ref": "#/$defs/types/unit"
+                    },
+                    "noise": {
+                        "title": "Noise level",
+                        "description": "Quantity of noise of the camera",
+                        "$ref": "#/$defs/types/unit"
+                    }
+                },
+                "required": [
+                    "id",
+                    "title",
+                    "description",
+                    "output_dimension",
+                    "output_components",
+                    "image_size",
+                    "field_of_view",
+                    "image_size"
+                ],
+                "additionalProperties": false
+            },
+            "tomograph": {
+                "title": "Tomograph",
+                "description": "A tomograph daaah",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID of the data_source (should start at 0)",
+                        "type": "string"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "description": "The title of your data source",
+                        "type": "string"
+                    },
+                    "description": {
+                        "title": "Description",
+                        "description": "The description of your data source",
+                        "type": "string"
+                    },
+                    "output_components": {
+                        "title": "Output components",
+                        "description": "Number of componants / channels of the ouput data",
+                        "$ref": "#/$defs/types/uint"
+                    },
+                    "output_dimension": {
+                        "title": "Output dimension",
+                        "description": "Dimension of the output data",
+                        "type": "string",
+                        "enum": [
+                            "point",
+                            "curve",
+                            "surface",
+                            "volume"
+                        ]
+                    },
+                    "output_units": {
+                        "title": "Output units",
+                        "description": "Unit of the output data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/$defs/types/unit"
+                        }
+                    },
+                    "manufacturer": {
+                        "title": "Manufacturer",
+                        "description": "Manufacturer / vendor / software editor",
+                        "type": "string"
+                    },
+                    "input_data_set": {
+                        "title": "Input data set",
+                        "description": "The data set ID serving as an input source",
+                        "$ref": "#/$defs/types/uint"
+                    },
+                    "model": {
+                        "title": "Model",
+                        "description": "Model or software version",
+                        "type": "string"
+                    },
+                    "documentation": {
+                        "title": "Documentation",
+                        "description": "Name, path or ULR of the documentation (no spaces, no accents)",
+                        "$ref": "#/$defs/types/uri"
+                    },
+                    "image_size": {
+                        "title": "Image size",
+                        "description": "Size of the image in vox times vox times vox",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/$defs/types/unit"
+                        },
+                        "minItems": 3,
+                        "maxItems": 3
+                    },
+                    "field_of_view": {
+                        "title": "Field of view",
+                        "description": "Size of the field of view in m times m",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/$defs/types/unit"
+                        },
+                        "minItems": 2,
+                        "maxItems": 2
+                    },
+                    "image_scale": {
+                        "title": "Image scale",
+                        "description": "Scale of the image in vox / m",
+                        "$ref": "#/$defs/types/unit"
+                    },
+                    "voltage": {
+                        "title": "Voltage",
+                        "description": "Source voltage in kV",
+                        "$ref": "#/$defs/types/unit"
+                    },
+                    "current": {
+                        "title": "Current",
+                        "description": "Source current in \u03bcA",
+                        "$ref": "#/$defs/types/unit"
+                    },
+                    "number_of_projections": {
+                        "title": "Number of projections",
+                        "description": "Number of projection",
+                        "$ref": "#/$defs/types/uint"
+                    },
+                    "angular_amplitude": {
+                        "title": "Angular amplitude",
+                        "description": "Angular amplitude in degrees",
+                        "$ref": "#/$defs/types/unit"
+                    }
+                },
+                "required": [
+                    "id",
+                    "title",
+                    "description",
+                    "output_dimension",
+                    "output_components",
+                    "image_size",
+                    "field_of_view",
+                    "image_scale"
+                ],
+                "additionalProperties": false
+            }
+        },
+        "data_set": {
+            "file": {
+                "title": "Data set (file)",
+                "description": "When all the data is stored in a single table like file (csv, txt)",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID of data set",
+                        "type": "string"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "description": "The title of the data set",
+                        "type": "string"
+                    },
+                    "description": {
+                        "title": "Description",
+                        "description": "The description of the data set",
+                        "type": "string"
+                    },
+                    "path": {
+                        "title": "Path",
+                        "type": "string",
+                        "description": "relative path to the data folder",
+                        "examples": [
+                            "..",
+                            "my_folder"
+                        ]
+                    },
+                    "data_sources": {
+                        "title": "Data sources",
+                        "description": "List if IDs of the data sources",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "file_type": {
+                        "title": "Fiel type",
+                        "description": "MIME of the file",
+                        "type": "string",
+                        "examples": [
+                            "text/csv"
+                        ]
+                    },
+                    "units": {
+                        "title": "Units",
+                        "description": "The units of the output fields",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/$defs/types/unit"
+                        }
+                    },
+                    "timestamps": {
+                        "title": "Timesamps",
+                        "description": "Link and range to the timestamps file",
+                        "$ref": "#/$defs/types/data set_file"
+                    },
+                    "data": {
+                        "title": "Data",
+                        "description": "Link and range to the data file",
+                        "$ref": "#/$defs/types/data set_file"
+                    }
+                },
+                "required": [
+                    "id",
+                    "title",
+                    "description",
+                    "timestamps",
+                    "data"
+                ],
+                "additionalProperties": false
+            },
+            "list": {
+                "title": "Data set (list)",
+                "description": "When all the data is stored in separated files (like a list of images)",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID of data set",
+                        "type": "string"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "description": "The title of the data set",
+                        "type": "string"
+                    },
+                    "description": {
+                        "title": "Description",
+                        "description": "The description of the data set",
+                        "type": "string"
+                    },
+                    "path": {
+                        "title": "Path",
+                        "type": "string",
+                        "description": "relative path to the data folder",
+                        "examples": [
+                            "..",
+                            "my_folder"
+                        ]
+                    },
+                    "data_sources": {
+                        "title": "Data sources",
+                        "description": "List if IDs of the data sources",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "file_type": {
+                        "title": "Fiel type",
+                        "description": "MIME of the file",
+                        "type": "string",
+                        "examples": [
+                            "text/csv"
+                        ]
+                    },
+                    "units": {
+                        "title": "Units",
+                        "description": "The units of the output fields",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/$defs/types/unit"
+                        }
+                    },
+                    "timestamps": {
+                        "title": "Timesamps",
+                        "description": "List of the timestamps",
+                        "$ref": "#/$defs/types/data set_list"
+                    },
+                    "data": {
+                        "title": "Data",
+                        "description": "List of the data files",
+                        "$ref": "#/$defs/types/data set_list"
+                    }
+                },
+                "required": [
+                    "id",
+                    "title",
+                    "description",
+                    "timestamps",
+                    "data"
+                ],
+                "additionalProperties": false
+            }
+        },
+        "types": {
+            "string": {
+                "type": "string",
+                "minLength": 1
+            },
+            "uri": {
+                "description": "Name, path or ULR of the file (no spaces, no accents)",
+                "type": "string",
+                "$comment": "regex to prohibit spaces and accents."
+            },
+            "data set_file": {
+                "type": "object",
+                "properties": {
+                    "filename": {
+                        "type": "string"
+                    },
+                    "delimiter": {
+                        "type": "string",
+                        "default": ";",
+                        "enum": [
+                            ";",
+                            ",",
+                            ":",
+                            "\t",
+                            " "
+                        ]
+                    },
+                    "data_range": {
+                        "type": "array",
+                        "minItems": 2,
+                        "maxItems": 2,
+                        "items": {
+                            "type": "string"
+                        },
+                        "examples": [
+                            [
+                                "B42",
+                                "B421"
+                            ]
+                        ]
+                    }
+                },
+                "examples": [
+                    {
+                        "filename": "results.csv",
+                        "delimiter": ":",
+                        "range": [
+                            "B52",
+                            "B421"
+                        ]
+                    }
+                ]
+            },
+            "data set_list": {
+                "type": "array",
+                "items": {
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ]
+                }
+            },
+            "unit": {
+                "type": "object",
+                "properties": {
+                    "value": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "unit": {
+                        "type": "string"
+                    },
+                    "scale": {
+                        "description": "ratio to the main unit",
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "value",
+                    "unit"
+                ]
+            },
+            "uint": {
+                "title": "uint",
+                "description": "Unsigned int",
+                "type": "integer",
+                "minimum": 0
+            }
+        }
+    }
+}

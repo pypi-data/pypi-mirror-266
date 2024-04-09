@@ -1,0 +1,57 @@
+[tool.poetry]
+name = "r3xa"
+version = "2024.4.8c"
+description = "Remember, Reuse and Replicate eXperiments and Analyses"
+authors = ["Emmanuel Roubin <emmanuel.roubin@univ-grenoble-alpes.fr>"]
+maintainers = ["Emmanuel Roubin <emmanuel.roubin@univ-grenoble-alpes.fr>"]
+homepage = "https://photomecanics.gitlab.io/r3xa/doc"
+repository = "https://gitlab.com/photomecanics/r3xa"
+keywords = []
+readme = "README.md"
+# license = "LICENSE"
+classifiers = [
+    "Natural Language :: French",
+    "License :: Public Domain"
+]
+include = ["resources/schema.json"]
+
+[tool.poetry.dependencies]
+python = "^3.8.1"
+jsonschema = "*"
+python-slugify = "*"
+
+[tool.poetry.group.dev]
+optional = true
+[tool.poetry.group.dev.dependencies]
+pytest = "*"
+pre-commit = "*"
+coverage = "*"
+json-schema-for-humans = "*"
+poethepoet = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+r3xa-validate = "r3xa.scripts:script_validate"
+
+[tool.poe.tasks]
+# build html doc
+doc_json = "poetry run generate-schema-doc --config no_link_to_reused_ref --config copy_js --config no_collapse_long_descriptions --config no_collapse_long_examples resources/schema.json doc/index.html"
+doc = ["doc_json"]
+# build coverage
+cov_test = "poetry run coverage run -m pytest"
+cov_html = "poetry run coverage html"
+cov = ["cov_test", "cov_html"]
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+ignore_errors = true
+omit = ["__init__.py", "tests/*"]
+exclude_also = ["if __name__ == .__main__.:"]
+
+[tool.coverage.html]
+directory = "coverage"
