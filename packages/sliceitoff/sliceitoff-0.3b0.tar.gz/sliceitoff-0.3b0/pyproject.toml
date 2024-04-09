@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "sliceitoff"
+version = "0.3-beta"
+description = "Arcade game where one slices play area off avoiding enemies."
+authors = ["Viljami Ilola <+@hix.fi>"]
+readme = "README.txt"
+packages = [{include = "sliceitoff", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pygame = "^2.5.2"
+
+[tool.poetry.group.dev.dependencies]
+pylint = "^3.1.0"
+pytest = "^8.1.1"
+coverage = "^7.4.4"
+
+[tool.poetry.scripts]
+sliceitoff = 'sliceitoff.main:main'
+
+[tool.pytest.ini_options]
+pythonpath = [ "src/sliceitoff" ]
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.pylint.main]
+recursive = true
+source-roots = ["src/sliceitoff"]
+extension-pkg-whitelist = ["pygame"]
+
+# From given .pylintrc
+[tool.pylint.design]
+max-args = 7
+max-attributes = 8
+max-statements = 20
+min-public-methods = 0
