@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load cms_tags static thumbnail %}
+
+{% block body %}
+    <div>
+        <a href="{% url 'events:index' %}" title="Back to events">Back to events</a>
+        <h1>{{ event.title }}</h1>
+    </div>
+    {% render_placeholder event.content %}
+{% endblock body %}
