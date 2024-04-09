@@ -1,0 +1,2 @@
+Effortlessly import genetic variants from targeted Galaxy histories or local repositories into your beacon instance with our utility. 
+Simplify querying and analysis of genetic data, enabling comprehensive genetic inquiries with ease
