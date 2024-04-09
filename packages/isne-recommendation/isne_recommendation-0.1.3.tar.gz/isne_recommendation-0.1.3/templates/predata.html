@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Simple HTML Page</title>
+</head>
+<body>
+
+<h2>Pick an approach to and type a desired username</h2>
+<p>My User Item Dataset: {{ ui_dataset }}</p>
+<p>My Item Dataset: {{ i_dataset }}</p>
+
+<form method="POST" enctype="multipart/form-data" action="/get-recommendation">
+    <h3>TF-IDF recommender</h3>
+    <p style="display: inline-block;">Search a user:<input type="text" id="user" name="user"></p>
+    <input style="display: inline-block;" type="submit" name="tfidf" value="submit">
+</form>
+
+<form method="POST" enctype="multipart/form-data" action="/get-recommendation">
+    <h3>KNN recommender</h3>
+    <p style="display: inline-block;">Search a user:<input type="text" id="user" name="user"></p>
+    <input style="display: inline-block;" type="submit" name="knn" value="submit">
+</form>
+<form method="POST" enctype="multipart/form-data" action="/get-recommendation">
+    <h3>Hybrid recommender</h3>
+    <p style="display: inline-block;">Search a user:<input type="text" id="user" name="user"></p>
+    <input style="display: inline-block;" type="submit" name="hybrid" value="submit">
+</form>
+
+<script>
+function getRecommendations(user) {
+    return ['a', 'b', 'c'];
+}
+</script>
+
+</body>
+</html>
