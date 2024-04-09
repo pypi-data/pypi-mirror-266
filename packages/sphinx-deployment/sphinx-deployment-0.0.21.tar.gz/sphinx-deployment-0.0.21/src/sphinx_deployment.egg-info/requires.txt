@@ -1,0 +1,29 @@
+click
+loguru
+sphinx
+gitpython
+jinja2
+
+[:python_version < "3.8"]
+importlib-metadata
+
+[:python_version < "3.9"]
+importlib-resources>=1.3
+typing-extensions>=3.10.0
+
+[dev]
+sphinx-deployment[docs,test]
+build
+wheel
+
+[docs]
+sphinx
+furo
+myst_parser>=0.13
+sphinx_copybutton
+sphinx_autodoc_typehints
+sphinx-inline-tabs
+
+[test]
+pytest>=6
+pytest-cov>=3

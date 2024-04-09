@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting</title>
+    <noscript>
+      <meta http-equiv="refresh" content="1; url={{href_to_ver}}" />
+    </noscript>
+    <script>
+      prefix = "{{href_to_ver}}";
+      window.location.replace(
+        prefix.substring(0, prefix.lastIndexOf("/") + 1) +
+          window.location.search +
+          window.location.hash,
+      );
+    </script>
+  </head>
+  <body>
+    Redirecting to <a href_to_ver="{{href_to_ver}}">{{href_to_ver}}</a>...
+  </body>
+</html>

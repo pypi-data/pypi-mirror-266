@@ -1,0 +1,120 @@
+name: CD
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+  release:
+    types:
+      - published
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FORCE_COLOR: 3
+
+jobs:
+  dist:
+    name: Distribution build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: hynek/build-and-inspect-python-package@v2
+
+  publish-pypi:
+    needs: [dist]
+    name: Publish to PyPI
+    environment:
+      name: pypi
+      url: https://pypi.org/p/${{ github.event.repository.name }}
+    permissions:
+      id-token: write
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' && github.event.action == 'published'
+
+    steps:
+      - name: Download packages built by build-and-inspect-python-package
+        with:
+          name: Packages
+          path: dist
+        uses: actions/download-artifact@v4
+
+      - name: Upload package to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        if:
+          github.event_name == 'release' && github.event.action == 'published'
+          && env.PYPI_API_TOKEN  != null
+        env:
+          PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN  }}
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
+
+  pages:
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    if:
+      ${{ github.ref_name == github.event.repository.default_branch ||
+      (github.event_name == 'release' && github.event.action == 'published') }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ github.head_ref }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - uses: wntrblm/nox@2024.03.02
+        with:
+          python-versions: "3.11"
+
+      - name: Verify no changes required to API docs
+        run: |
+          nox -s build_api_docs
+          git diff --exit-code
+
+      - name: Generate versioned docs
+        env:
+          VERSION_MODE: minor
+        shell: bash
+        run: |
+          if [[ "${{ github.ref_name }}" == "${{ github.event.repository.default_branch }}" ]]; then
+            version_deploy="${{ github.ref_name }}"
+          else
+            _TAG=${{ github.ref_name }}
+            if [[ -n "$_TAG" ]]; then
+              case "$VERSION_MODE" in
+                "major")
+                  version_deploy=$(echo $_TAG | grep -oP "\K^v?\d+")
+                  ;;
+                "minor")
+                  version_deploy=$(echo $_TAG | grep -oP "\K^v?\d+\.\d+")
+                  ;;
+                "patch")
+                  version_deploy=$(echo $_TAG | grep -oP "\K^v?\d+\.\d+\.\d+")
+                  ;;
+                "none")
+                  version_deploy="latest"
+                  ;;
+                *)
+                  echo "VERSION_MODE only works on semver or 'none'" >> /dev/stderr
+                  exit 1
+              esac
+            fi
+          fi
+
+          nox -s versioned_docs -- create -O . --push ${version_deploy}
+          if [[ "${{ github.event_name }}" == "release" && "${{ github.event.action }}" == "published" ]]; then
+            nox -s versioned_docs -- default -O . --push ${version_deploy}
+          fi

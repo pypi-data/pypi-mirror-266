@@ -1,0 +1,81 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "create",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "sphinx_deployment",
+            "console": "internalConsole",
+            "python": "${command:python.interpreterPath}",
+            "args": ["create", "master"],
+            "stopOnEntry": true,
+            "justMyCode": false
+        },
+        {
+            "name": "default",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "sphinx_deployment",
+            "console": "internalConsole",
+            "python": "${command:python.interpreterPath}",
+            "args": ["default", "dev"],
+            "stopOnEntry": true,
+            "justMyCode": false
+        },
+        {
+            "name": "delete",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "sphinx_deployment",
+            "console": "internalConsole",
+            "python": "${command:python.interpreterPath}",
+            "args": ["delete", "dev", "234"],
+            "stopOnEntry": true,
+            "justMyCode": false
+        },
+        {
+            "name": "rename",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "sphinx_deployment",
+            "console": "internalConsole",
+            "python": "${command:python.interpreterPath}",
+            "args": ["rename", "dev", "dev2"],
+            "stopOnEntry": true,
+            "justMyCode": false
+        },
+        {
+            "name": "serve",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "sphinx_deployment",
+            "console": "internalConsole",
+            "python": "${command:python.interpreterPath}",
+            "args": ["serve"],
+            "stopOnEntry": true,
+            "justMyCode": false
+        },
+        {
+            "name": "sphinx-build dev",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "/home/msclock/projects/sphinx-deployment/.venv/bin/sphinx-build",
+            "console": "internalConsole",
+            "python": "${command:python.interpreterPath}",
+            "args": [
+                "--keep-going",
+                "-n",
+                "-T",
+                "-b=html",
+                "docs",
+                "docs/_build/dev"
+            ],
+            "stopOnEntry": true,
+            "justMyCode": false
+        }
+    ]
+}
