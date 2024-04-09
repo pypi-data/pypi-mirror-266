@@ -1,0 +1,75 @@
+Metadata-Version: 2.1
+Name: coinpaprika_async
+Version: 3.0.3
+Summary: An asynchronous client for the coinpaprika API.
+Home-page: https://github.com/DroidZed/coinpaprika-async-client.git
+Author: DroidZed
+Author-email: droid.zed77@outlook.com
+License: MIT
+Keywords: coinpaprika_async,api,cryptocurrency,async,httpx,client
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: httpx
+
+<div align="center">
+<h1 style="font-size:50px;">Coinpaprika Async Client</h1>
+
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/coinpaprika-async)
+
+</div>
+
+## 1. Usage
+
+This library provides convenient and modern way to use [coinpaprika.com](https://api.coinpaprika.com/) API in Python.
+
+[Coinpaprika](https://coinpaprika.com/) delivers full market data to the world of crypto: coin prices, volumes, market caps, ATHs, return rates and more.
+
+## 2. Requirements
+
+```sh
+pip install coinpaprika_async
+```
+
+Or:
+
+```sh
+pipenv install coinpaprika_async
+```
+
+## 3. Getting started
+
+Each top-level path has their own endpoint class now:
+
+
+- `GET` /coins `->` `CoinsEndpoint`
+- `GET` /exchanges `->` `ExchangesEndpoint`
+- `GET` /key `->` `KeyEndpoint`
+- `GET` /global `->` `MarketEndpoint`
+- `GET` /search + /price-converter `->` `MiscelanousEndpoints`
+- `GET` /people `->` `PeopleEndpoint`
+- `GET` /tags `->` `TagsEndpoint`
+- `GET` /tickers `->` `TickersEndpoint`
+
+
+## 4 Examples:
+
+Check out the [examples](./examples) directory.
+
+## 5. Tests
+
+```test
+pip install -r requirements-dev.txt
+
+pytest tests/test_client.py
+```
+
+## 6. License
+CoinpaprikaAPI is available under the MIT license. See the LICENSE file for more info.
