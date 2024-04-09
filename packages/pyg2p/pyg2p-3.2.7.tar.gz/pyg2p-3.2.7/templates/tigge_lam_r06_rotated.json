@@ -1,0 +1,25 @@
+{
+    "Execution": {
+        "@name": "tigge_lam_r06",
+        "Aggregation": {
+            "@step": 24,
+            "@type": "accumulation"
+        }, 
+        "OutMaps": {
+            "@cloneMap":  "/dataset/maps/cosmo/dem05.map",
+            "@fmap": 1, 
+            "@namePrefix": "R06",
+            "@unitTime": 24, 
+            "Interpolation": {
+                "@latMap": "/dataset/maps/cosmo/lat_cosmo5km_new.map",
+                "@lonMap": "/dataset/maps/cosmo/lon_cosmo5km_new.map",
+                "@mode": "grib_invdist",
+                "@rotated_target": true
+            }
+        }, 
+        "Parameter": {
+            "@applyConversion": "cut", 
+            "@shortName": "tp"
+        }
+    }
+}

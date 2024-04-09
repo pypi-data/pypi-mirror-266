@@ -1,0 +1,28 @@
+{
+    "Execution": {
+        "@name": "eue_t24",
+        "Aggregation": {
+            "@step": 24, 
+            "@type": "average"
+        }, 
+        "OutMaps": {
+            "@cloneMap": "{EUROPE_MAPS}/lat.map",
+            "@ext": 1, 
+            "@fmap": 1, 
+            "@namePrefix": "pT24", 
+            "@unitTime": 24, 
+            "Interpolation": {
+                "@latMap": "{EUROPE_MAPS}/lat.map",
+                "@lonMap": "{EUROPE_MAPS}/long.map",
+                "@mode": "grib_nearest"
+            }
+        }, 
+        "Parameter": {
+            "@applyConversion": "k2c", 
+            "@correctionFormula": "p+gem-dem*0.0065", 
+            "@demMap": "{DEM_MAP}",
+            "@gem": "(z/9.81)*0.0065", 
+            "@shortName": "2t"
+        }
+    }
+}

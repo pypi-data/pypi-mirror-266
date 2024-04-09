@@ -1,0 +1,1334 @@
+Metadata-Version: 2.1
+Name: pyg2p
+Version: 3.2.7
+Summary: Convert GRIB files to netCDF or PCRaster
+Author: Domenico Nappo
+Author-email: domenico.nappo@gmail.com
+License: EUPL 1.2
+Keywords: NetCDF GRIB PCRaster Lisflood EFAS GLOFAS
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Financial and Insurance Industry
+Classifier: Intended Audience :: Other Audience
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: European Union Public Licence 1.2 (EUPL 1.2)
+Classifier: Operating System :: Unix
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Scientific/Engineering :: Physics
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: netCDF4<=1.6.4,>=1.5.3
+Requires-Dist: ujson>=5.4.0
+Requires-Dist: numpy>=1.18.2
+Requires-Dist: numba>=0.54.0
+Requires-Dist: scipy>=1.6.0
+Requires-Dist: numexpr>=2.7.1
+Requires-Dist: importlib-metadata<5.0.0
+Requires-Dist: dask[bag]
+Requires-Dist: dask[array]
+Requires-Dist: toolz
+Requires-Dist: eccodes
+Requires-Dist: lisflood-utilities
+Requires-Dist: GDAL==3.5.2
+
+[ChangeLog](CHANGE_LOG.rst)
+
+
+# pyg2p
+pyg2p is a converter between GRIB and netCDF4/PCRaster files. 
+It can also manipulates GRIB messages (performing aggregation or simple unit conversion) before to apply format conversion.
+
+## Installation
+
+To install package, you can use a python virtual environment or directly install dependencies and
+package at system level (executable script will be saved into /usr/local/bin in this case).
+
+### Using miniconda:
+
+
+* Install [miniconda](https://docs.conda.io/en/latest/miniconda.html)
+
+* Create a conda env named "pyg2penv" and install dependencies:
+
+  ```bash
+  conda create --name pyg2penv python=3.7 -c conda-forge
+  conda activate pyg2penv
+  ```
+
+>IMPORTANT: Before to launch setup, you need the following steps:
+
+>Install eccodes (and GDAL): this can be done compiling from source code or using the available conda virtual environment package by running 
+
+```bash
+$ conda install -c conda-forge gdal eccodes
+```
+
+>Configure geopotentials and intertables paths in
+configuration/global/global_conf.json. These paths are used by pyg2p to read
+geopotentials and intertables already configured. You may need to download files from FTP (launch `pyg2p -W` for this). 
+Users running pyg2p installed by a different user (ie. root) will configure similar paths for their own intertables 
+and geopotentials under his home folder. These paths will need write permissions.
+
+
+
+Grab last archive and extract it in a folder (or clone this repository) and follow these steps:
+
+```bash
+$ cd pyg2p
+$ vim configuration/global/global_conf.json # to edit shared paths !!!
+$ pip install -r requirements.txt
+$ pip install .
+```
+
+After installation, you will have all dependencies installed and an executable script 'pyg2p' (in a
+virtual environment, script is located under <VIRTUALENV_PATH>/bin folder otherwise under
+/usr/local/bin). To check correct installation of eccodes run the following command: 
+
+```bash
+$ python -m eccodes selfcheck
+```
+
+Some python packages can be problematic to install at first shot. Read
+following paragraph for details.
+
+## Configuration
+
+One of the things to configure for any user running pyg2p, is GEOPOTENTIALS and INTERTABLES
+variables with paths to folders with write permissions.
+
+>NOTE: From version 2.1, the user needs to setup these variables only if she/he
+needs to write new interpolation tables (option -B [-X]) or to add new
+geopotentials from grib files (option -g).
+
+These variables contains user paths and must be configured in a .conf file (e.g. paths.conf) under
+~/.pyg2p/ directory. This can look like:
+
+```text
+GEOPOTENTIALS=/dataset/pyg2p_data_user/geopotentials
+INTERTABLES=/dataset/pyg2p_data_user/intertables
+```
+
+User intertables (for interpolation) are read/write from `INTERTABLES` and geopotentials (for
+correction) are read from `GEOPOTENTIALS`.
+Pyg2p will use its default configuration for available intertables and geopotentials. These are read
+from paths configured during installation in global_conf.json.
+If you need to download default files from ECMWF FTP, just launch pyg2p with -W option and the
+dataset argument (argument can be *geopotentials* or *intertables*) and files are saved in user
+paths configured above:
+
+```bash
+$ pyg2p -W intertables
+```
+
+You can edit FTP authentication parameters in *~/.pyg2p/ftp.json*
+
+### Advanced configuration
+
+User json configuration files are empty. If you need a new parameter or geopotential that is not
+configured internally in pyg2p, you can setup new items (or overwrite internal configuration).
+
+#### Adding a parameter to ~/.pyg2p/parameters.json
+
+If you are extracting a parameter with shortName xy from a grib file that is not already globally
+configured, add an element as shown below (only part in bold has been added):
+
+
+```json
+{
+  "xy": {
+    "@description": "Variable description",
+    "@shortName": "xy",
+    "@unit": "unitstring"
+  }
+}
+```
+
+You can configure (more than) a conversion element with different ids and functions. You will use
+shortName and conversionId in the execution JSON templates.
+
+
+```json
+{
+    "xy": { "@description": "Variable description",
+    "@shortName": "xy",
+    "@unit": "unitstring"
+    },
+    "xyz": {
+    "@description": "Variable description",
+    "@shortName": "xyz",
+    "@unit": "unitstring/unistring2",
+    "Conversion": [
+        {
+        "@cutOffNegative": true,
+        "@function": "x=x*(-0.13)**2",
+        "@id": "conv_xyz1",
+        "@unit": "g/d"
+        },
+        {
+        "@cutOffNegative": true,
+        "@function": "x=x/5466 - (x**2)",
+        "@id": "conv_xyz2",
+        "@unit": "g/h"
+        }
+      ]
+    }
+}
+```
+
+>Note: Aware the syntax of conversion functions. They must start with x= followed
+by the actual conversion formula where x is the value to convert. Units are only
+used for logging.
+
+#### Adding a geopotential for correction
+
+If the input grib file has a geopotential message, pyg2p will use it for correction. Otherwise, it will
+read the file from user data paths or global data paths.
+To add a geopotential GRIB file to pyg2p configuration, use this command:
+
+```bash
+$ pyg2p -g path_to_geopotential_grib
+```
+
+This will copy the file to folder defined in `GEOPOTENTIALS` variable and will update
+geopotentials.json with the new item.
+
+#### Interpolation tables
+
+Interpolation tables are read from user or global data folders.
+If the table is missing, it will create it into user data folder for future interpolations (you must pass
+-B option to pyg2p).
+Depending on source and target grids size, and on interpolation method, table creation can take
+from minutes to days. To speed up interpolation table creation, use parallel option -X to have up to
+x6 speed gain.
+
+### Execution templates
+
+Execution templates are JSON files that you will use to configure a conversion. You will pass path to
+the file to pyg2p with command line option `-c`.
+Most of options can be both defined in this JSON file and from command line. 
+**Note that command line options overwrite JSON template.**
+
+If you have a large set of conversions for same parameters, it's more convenient to define a single
+template where you define parameter, interpolation and aggregation and pass the rest of parameters from command line.
+Here some examples of JSON commands files:
+
+```json
+{
+    "Execution": {
+        "@name": "Octahedral test 1",
+        "Aggregation": {
+            "@step": 24,
+            "@type": "average"
+        },
+        "OutMaps": {
+            "@cloneMap": "/dataset/maps/europe5km/dem.map",
+            "@ext": 1,
+            "@fmap": 1,
+            "@namePrefix": "t2",
+            "@unitTime": 24,
+            "Interpolation": {
+                "@latMap": "/dataset/maps/europe5km/lat.map",
+                "@lonMap": "/dataset/maps/europe5km/long.map",
+                "@mode": "grib_nearest"
+            }
+        },
+        "Parameter": {
+            "@applyConversion": "k2c",
+            "@correctionFormula": "p+gem-dem*0.0065",
+            "@demMap": "/dataset/maps/europe5km/dem.map",
+            "@gem": "(z/9.81)*0.0065",
+            "@shortName": "2t"
+        }
+    }
+}
+```
+
+There are four sections of configuration.
+
+#### Aggregation
+Defines the aggregation method and step. Method can be `accumulation`, `average` or `instantaneous`.
+
+#### OutMaps
+Here you define interpolation method and paths to coordinates netCDF/PCRaster maps, output unit time, the clone map etc.
+
+#### Interpolation
+This is a subelement of OutMaps. Here you define interpolation method (see later for details), paths
+to coordinates maps.
+
+#### Parameter
+In this section, you configure the parameter to select by using its shortName, as stored in GRIB file.
+You also configure conversion with applyConversion property set to a conversion id. Parameter
+shortName must be already configured in `~/.pyg2p/parameters.json` along with conversion ids.
+If you need to apply correction based on DEM files and geopotentials, you can configure formulas
+and the path to DEM map.
+
+#### Path configuration
+
+You can use variables in JSON files to define paths. Variables can be configured in `.conf` files under
+~/.pyg2p/ folder.
+`/home/domenico/.pyg2p/myconf.conf`
+
+```console
+EUROPE_MAPS=/dataset/maps/europe5km
+DEM_MAP=/dataset/maps/dem05.map
+EUROPE_DEM=/dataset/maps/europe/dem.map
+EUROPE_LAT=/dataset/maps/europe/lat.map
+EUROPE_LON=/dataset/maps/europe/long.map
+```
+
+Usage of user defined paths in JSON command file:
+
+```json
+{ 
+"Execution": {
+  "@name": "eue_t24",
+  "Aggregation": {
+    "@step": 24,
+    "@type": "average"
+  },
+  "OutMaps": {
+        "@format": "netcdf",
+        "@cloneMap": "{EUROPE_MAPS}/lat.map",
+        "@ext": 1,
+        "@fmap": 1,
+        "@namePrefix": "pT24",
+        "@unitTime": 24,
+        "Interpolation": {
+          "@latMap": "{EUROPE_MAPS}/lat.map",
+          "@lonMap": "{EUROPE_MAPS}/long.map",
+          "@mode": "grib_nearest"
+        }
+  },
+  "Parameter": {
+    "@applyConversion": "k2c",
+    "@correctionFormula": "p+gem-dem*0.0065",
+    "@demMap": "{DEM_MAP}",
+    "@gem": "(z/9.81)*0.0065",
+    "@shortName": "2t"
+  }
+ }
+}
+```
+
+### Full list of options
+
+<table> 
+    <thead> 
+        <tr> 
+            <th>Section</th> 
+            <th>Attribute</th> 
+            <th>Description</th> 
+        </tr> 
+    </thead>
+    <tbody>
+        <tr>
+        <td><b>Execution</b></td>
+        <td>name</td>
+        <td>Descriptive name of the execution configuration.</td>
+        </tr>        
+        <tr>
+        <td>&nbsp;</td><td>intertableDir</td><td>Alternative home folder for interpolation lookup
+tables, where pyg2p will load/save intertables. Folder must be existing. If not set, pyg2p will use intertables from ~/.pyg2p/intertables/</td>
+        </tr>    
+        <tr>
+        <td>&nbsp;</td><td>geopotentialDir</td><td>Alternative home folder for geopotential lookup
+tables. Folder must be existing. If not set, pyg2p will use geopotentials from ~/.pyg2p/geopotentials/</td>
+        </tr>    
+        <tr>
+        <td></td><td><b>Parameter</b></td><td>See relative table</td>
+        </tr>
+        <tr>
+        <td></td><td><b>OutMaps</b></td><td>See relative table</td>
+        </tr>
+        <tr>
+        <td></td><td><b>Parameter</b></td><td>See relative table</td>
+        </tr>
+        <tr>
+        <td colspan="3"><hr/></td>
+        </tr>
+        <tr>
+        <td><b>Parameter</b></td><td><b>shortName</b></td><td>The short name of the parameter, as it is in the grib file. The application use this to select messages. Must be configured in the parameters.json file, otherwise the application exits with an error.</td>
+        </tr>
+        <tr>
+        <td>&nbsp;</td><td>tstart</td><td rowspan="6">Optional grib selectors perturbationNumber,
+tstart, tend, dataDate and dataTime can also be
+issued via command line arguments (-m, -s, -e,
+-D, -T), which overwrite the ones in the
+execution JSON file.</td>
+        </tr>
+        <tr>
+        <td>&nbsp;</td><td>tend</td>
+        </tr>
+        <tr>
+        <td>&nbsp;</td><td>perturbationNumber</td>
+        </tr>
+        <tr>
+        <td>&nbsp;</td><td>dataDate</td>
+        </tr>
+        <tr>
+        <td>&nbsp;</td><td>dataTime</td>
+        </tr>
+        <tr>
+        <td>&nbsp;</td><td>level</td>
+        </tr>
+        <tr><td>&nbsp;</td><td>applyConversion</td><td>The conversion id to apply, as in the
+parameters.json file for the parameter to select.
+The combination parameter/conversion must be
+properly configured in parmaters.json file,
+otherwise the application exits with an error.</td></tr>
+        <tr><td>&nbsp;</td><td>correctionFormula</td><td>Formula to use for parameter correction with p,
+gem, dem variables, representing parameter
+value, converted geopotential to gem, and DEM
+map value. E.g.: p+gem*0.0065-dem*0.0065</td></tr>
+        <tr><td>&nbsp;</td><td>demMap</td><td>The dem map used for correction.</td></tr>
+        <tr><td>&nbsp;</td><td>gem</td><td>Formula for geopotential conversion for
+correction.</td></tr>
+        <tr>
+        <td colspan="3"><hr/></td>
+        </tr>
+        <tr>
+        <td><b>OutMaps</b></td><td>cloneMap</td><td>The clone map with area (must have a REAL cell
+type and missing values for points outside area
+of interest. A dem map works fine. A typical area boolean map will not).</td>
+        </tr>
+        <tr>
+        <td>&nbsp;</td><td><b>unitTime</b></td><td>Time unit in hours of output maps. Tipical value
+is 24 (daily maps). Used in "accumulation" operation</td>
+        </tr>
+        <tr>
+        <td>&nbsp;</td><td><b>format</b></td><td>Output file format. Default 'pcraster'. Available
+formats are 'pcraster', 'netcdf'.</td>
+        </tr>
+        <tr>
+        <td>&nbsp;</td><td><b>namePrefix</b></td><td>Prefix for maps. Default is parameter
+shortName.</td>
+        </tr>
+        <tr>
+        <td>&nbsp;</td><td><b>scaleFactor</b></td><td>Scale factor of the output netCDF map. Default 1.</td>
+        </tr>
+        <tr>
+        <td>&nbsp;</td><td><b>offset</b></td><td>Offset of the output netCDF map. Default 0.</td>
+        </tr>
+        <tr>
+        <td>&nbsp;</td><td><b>validMin</b></td><td>Minimum value of the output netCDF map. Values below will be set to nodata.</td>
+        </tr>
+        <tr>
+        <td>&nbsp;</td><td><b>validMax</b></td><td>Maximum value of the output netCDF map. Values above will be set to nodata.</td>
+        </tr>
+        <tr>
+        <td>&nbsp;</td><td><b>valueFormat</b></td><td>Variable type to use in the output netCDF map. Deafult f8. Available formats are: i1,i2,i4,i8,u1,u2,u4,u8,f4,f8 where i is integer, u is unsigned integer, f if float and the number corresponds to the number of bytes used (e.g. i4 is integer 32bits = 4 bytes)</td>
+        </tr>  
+        <tr>
+        <td>&nbsp;</td><td><b>outputStepUnits</b></td><td>Step units to use in output map. If not specified, it will use the stepUnits of the source Grib file. Available values are: 's': seconds, 'm': minutes, 'h': hours, '3h': 3h steps, '6h': 6h steps, '12h': 12h steps, 'D': days</td>
+        </tr>
+        <tr>      
+        <tr>
+        <td>&nbsp;</td><td><b>fmap</b></td><td>First PCRaster map number. Default 1.</td>
+        </tr>
+        <tr>
+        <td>&nbsp;</td><td><b>ext</b></td><td>Extension mode. It's the integer number
+defining the step numbers to skip when writing PCRaster maps. Same as old grib2pcraster. Default 1.</td>
+        </tr>
+        <tr>
+        <td>&nbsp;</td><td><b>Interpolation</b></td><td>See relative table.</td>
+        </tr>
+        <tr>
+        <td colspan="3"><hr/></td>
+        </tr>
+        <tr>
+        <td><b>Aggregation</b></td><td><b>step</b></td><td>Step of aggregation in hours.</td>
+        </tr>
+        <tr>
+        <td>&nbsp;</td><td><b>type</b></td><td>Type of aggregation (it was Manipulation in
+grib2pcraster). It can be average or accumulation.</td>
+        </tr>
+        <tr>
+        <td>&nbsp;</td><td><b>halfweights</b></td><td>If set to true and type is "average", it will avaluate the average by using half weights for the first and the last step</td>
+        </tr>
+        <tr>
+        <td>&nbsp;</td><td>forceZeroArray</td><td>Optional. In case of “accumulation”, and only
+then, if this attribute is set to”y” (or any value different from “false”, “False”, “FALSE”, “no”,
+“NO”, “No”, “0”), the program will use a zero array as message at step 0 to compute the first
+map, even if the GRIB file has a step 0 message.</td>
+        </tr>
+        <tr>
+        <td><b>Interpolation</b></td><td><b>mode</b></td><td>Interpolation mode. Possible values are:
+“nearest”, “invdist”, “grib_nearest”,
+“grib_invdist”</td>
+        </tr>
+        <tr>
+        <td>&nbsp;</td><td><b>latMap</b></td><td>PCRaster map of target latitudes.</td>
+        </tr>
+        <tr>
+        <td>&nbsp;</td><td><b>lonMap</b></td><td>PCRaster map of target longitudes.</td>
+        </tr>        
+    </tbody>
+</table>
+
+## Usage
+
+To use the application, after the main configuration you need to configure a template JSON file for
+each type of extraction you need to perform.
+
+### Grabbing information from GRIB files.
+
+To configure the application and compile your JSON templates, you might need to know the variable
+shortName as stored in the input GRIB file you're using or in the geopotential GRIB. Just execute the
+following GRIB tool command:
+
+`grib_get -p shortName /path/to/grib`
+
+Other keys you would to know for configuration or debugging purposes are:
+* startStep
+* endStep (for instantaneous messages, it can be the same of startStep)
+* perturbationNumber (the EPS member number)
+* stepType (type of field: instantaneous: 'instant', average: 'avg', cumulated: 'cumul')
+* longitudeOfFirstGridPointInDegrees
+* longitudeOfLastGridPointInDegrees
+* latitudeOfFirstGridPointInDegrees
+* latiitudeOfLastGridPointInDegrees
+* Ni (it can be missing)
+* Nj (it states the resolution: it's the number of points along the meridian)
+* numberOfValues
+* gridType (e.g.: regular_ll, reduced_gg, rotated_ll)
+
+### Input arguments
+
+If you run pyg2p without arguments, it shows help of all input arguments.
+
+```console
+usage: pyg2p [-h] [-c json_file] [-o out_dir] [-i input_file]
+             [-I input_file_2nd] [-s tstart] [-e tend] [-m eps_member]
+             [-T data_time] [-D data_date] [-f fmap] [-F format]
+             [-x extension_step] [-n outfiles_prefix] [-O offset]
+             [-S scale_factor] [-vM valid_max] [-vm valid_min]
+             [-vf value_format] [-U output_step_units] [-l log_level]
+             [-N intertable_dir] [-G geopotential_dir] [-B] [-X]
+             [-g geopotential] [-W dataset]
+
+Pyg2p: Execute the grib to netCDF/PCRaster conversion, using parameters
+from CLI/json configuration.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -c json_file, --commandsFile json_file
+                        Path to json command file
+  -o out_dir, --outDir out_dir
+                        Path where output maps will be created.
+  -i input_file, --inputFile input_file
+                        Path to input grib.
+  -I input_file_2nd, --inputFile2 input_file_2nd
+                        Path to 2nd resolution input grib.
+  -s tstart, --start tstart
+                        Grib timestep start. It overwrites the tstart in json
+                        execution file.
+  -e tend, --end tend   Grib timestep end. It overwrites the tend in json
+                        execution file.
+  -m eps_member, --perturbationNumber eps_member
+                        eps member number
+  -T data_time, --dataTime data_time
+                        To select messages by dataTime key value
+  -D data_date, --dataDate data_date
+                        <YYYYMMDD> to select messages by dataDate key value
+  -f fmap, --fmap fmap  First map number
+  -F format, --format format
+                        Output format. Available options: netcdf, pcraster.
+                        Default pcraster
+  -x extension_step, --ext extension_step
+                        Extension number step
+  -n outfiles_prefix, --namePrefix outfiles_prefix
+                        Prefix name for maps
+  -O offset, --offset offset
+                        Map offset
+  -S scale_factor, --scaleFactor scale_factor
+                        Map scale factor
+  -vM valid_max, --validMax valid_max
+                        Max valid value
+  -vm valid_min, --validMin valid_min
+                        Min valid value
+  -vf value_format, --valueFormat value_format
+                        output value format (default f8)
+  -U output_step_units, --outputStepUnits output_step_units
+                        output step units
+  -l log_level, --loggerLevel log_level
+                        Console logging level
+  -N intertable_dir, --intertableDir intertable_dir
+                        Alternate interpolation tables dir
+  -G geopotential_dir, --geopotentialDir geopotential_dir
+                        Alternate geopotential dir
+  -B, --createIntertable
+                        Flag to create intertable file
+  -X, --interpolationParallel
+                        Use parallelization tools to make interpolation
+                        faster.If -B option is not passed or intertable
+                        already exists it does not have any effect.
+  -g geopotential, --addGeopotential geopotential
+                        Add the file to geopotentials.json configuration file,
+                        to use for correction. The file will be copied into
+                        the right folder (configuration/geopotentials) Note:
+                        shortName of geopotential must be "fis" or "z"
+  -W dataset, --downloadConf dataset
+                        Download intertables and geopotentials (FTP settings
+                        defined in ftp.json)
+```
+#### Usage examples:
+
+```bash
+pyg2p -c ./exec1.json -i ./input.grib -o /out/dir -s 12 -e 36 -F netcdf
+pyg2p -c ./exec2.json -i ./input.grib -o /out/dir -m 10 -l INFO --format netcdf
+pyg2p -c ./exec3.json -i ./input.grib -I /input2ndres.grib -o /out/dir -m 10 -l DEBUG
+pyg2p -g /path/to/geopotential/grib/file # add geopotential to configuration
+pyg2p -t /path/to/test/commands.txt
+pyg2p -h
+```
+
+```text
+Note: Even if 'netcdf' format is used for output, paths to PCRaster clone/area,
+latitudes and longitudes maps have to be setup in any case.
+```
+
+### Check output maps
+
+After the execution, you can check output maps by using the PCRaster2 Aguila viewer for PCRaster
+maps or the NASA Panoply3 viewer for NetCDF files.
+
+`aguila /dataset/testdiffmaps/eueT24/pT240000.001`
+
+![Aguila](https://raw.githubusercontent.com/ec-jrc/pyg2p/master/media/aguila.png)
+
+
+`./panoply.sh /dataset/octahedral/out/grib_vs_scipy/global/ta/p_2016-09-25_average.nc`
+
+![Panoply](https://raw.githubusercontent.com/ec-jrc/pyg2p/master/media/panoply.png)
+
+Maps will be written in the folder specified by -o input argument. If this is missing, you will find
+maps in the folder where you launched the application (./).
+Refer to official documentation for further information about Aguila and Panoply.
+
+## Interpolation modes
+
+Interpolation is configured in JSON execution templates using the *Interpolation* attribute inside
+*OutMaps*.
+There are four interpolation methods available. Two are using GRIB_API nearest neighbours routines
+while the other two leverage on Scipy kd_tree module.
+
+```text
+Note: GRIB_API does not implement nearest neighbours routing for rotated grids.
+You have to use scipy methods and regular target grids (i.e.: latitudes and
+longitudes PCRaster maps).
+```
+
+### Intertable creation
+Interpolation will use precompiled intertables. They will be found in the path configured in
+`INTERTABLES` folder (take into account that can potentially contains gigabytes of files) or in global
+data path. You can also define an alternate intertables directory with -N argument (or
+*@intertableDir* attribute in JSON template).
+
+If interlookup table doesn't exist, the application will create one into `INTERTABLES` folder and
+update intertables.json configuration **only if -B option is passed**, otherwise program will exit.
+Be aware that for certain combination of grid and maps, the creation of the interlookup table (which
+is a numpy array saved in a binary file) could take several hours or even days for GRIB interpolation
+methods. 
+
+To have better performances (up to x6 of gain) you can pass -X option to enable parallel
+processing.
+
+Performances are not comparable with scipy based interpolation (seconds or minutes) but this
+option could not be viable for all GRIB inputs.
+
+### GRIB/ecCodes API interpolation methods
+
+To configure the interpolation method for conversion, set the @mode attribute in Execution/OutMaps/Interpolation property.
+
+#### grib_nearest
+
+This method uses GRIB API to perform nearest neighbour query.
+To configure this method, define:
+
+```json
+{"Interpolation": {
+  "@latMap": "/dataset/maps/europe5km/lat.map",
+  "@lonMap": "/dataset/maps/europe5km/long.map",
+  "@mode": "grib_nearest"}
+}
+```
+
+#### grib_invdist
+It uses GRIB_API to query for four neighbours and relative distances. It applies inverse distance
+calculation to compute the final value.
+To configure this method:
+
+```json
+{
+"Interpolation": {
+  "@latMap": "/dataset/maps/europe5km/lat.map",
+  "@lonMap": "/dataset/maps/europe5km/long.map",
+  "@mode": "grib_invdist"}
+}
+```
+
+### SciPy interpolation methods
+
+#### nearest
+It's the same nearest neighbour algorithm of grib_nearest but it uses the scipy kd_tree4 module to
+obtain neighbours and distances.
+
+```json
+{
+"Interpolation": {
+  "@latMap": "/dataset/maps/europe5km/lat.map",
+  "@lonMap": "/dataset/maps/europe5km/long.map",
+  "@mode": "nearest"}
+}
+```
+
+#### invdist
+It's the inverse distance algorithm with scipy.kd_tree, using 4 neighbours.
+
+```json
+{
+"Interpolation": {
+  "@latMap": "/dataset/maps/europe5km/lat.map",
+  "@lonMap": "/dataset/maps/europe5km/long.map",
+  "@mode": "invdist"}
+}
+```
+
+Attributes p, leafsize and eps for the kd tree algorithm are default in scipy library:
+
+| Attribute | Details              |
+|-----------|----------------------|
+| p         | 2 (Euclidean metric) |
+| eps       | 0                    |
+| leafsize  | 10                   |
+
+#### ADW
+It's the Angular Distance Weighted (ADW) algorithm by Shepard et al. 1968, with scipy.kd_tree using 11 neighbours.
+If @use_broadcasting is set to true, computations will run in full broadcasting mode but requires more memory
+If @num_of_splits is set to any number, computations will be split on subset and then recollected into the final map, to save mamory (do not set it if you have enought memory to run interpolation)
+
+```json
+{
+"Interpolation": {
+  "@latMap": "/dataset/maps/europe5km/lat.map",
+  "@lonMap": "/dataset/maps/europe5km/long.map",
+  "@mode": "adw",
+  "@use_broadcasting": false,
+  "@num_of_splits": 10}
+}
+```
+
+#### CDD
+It's the Correlation Distance Decay (CDD) modified implementation of the Angular Distance Weighted algorithm, with scipy.kd_tree using 11 neighbours. It needs a map of CDD values for each point, to be specified in the field @cdd_map
+@cdd_mode can be one of the following values: "Hofstra", "NewEtAl" or "MixHofstraShepard"
+In case of mode "MixHofstraShepard", @cdd_options allows to customize the parameters of Hofstra and Shepard algorithm ("weights_mode": can be "All" or "OnlyTOP10" to take 10 higher values only in the interpolation of each point).
+If @use_broadcasting is set to true, computations will run in full broadcasting mode but requires more memory
+If @num_of_splits is set to any number, computations will be split on subset and then recollected into the final map, to save mamory (do not set it if you have enought memory to run interpolation)
+
+```json
+{
+"Interpolation": {
+  "@latMap": "/dataset/maps/europe5km/lat.map",
+  "@lonMap": "/dataset/maps/europe5km/long.map",
+  "@mode": "cdd",
+  "@cdd_map": "/dataset/maps/europe5km/cdd_map.nc",
+  "@cdd_mode": "MixHofstraShepard",
+  "@cdd_options": {
+    "m_const": 4,
+    "min_num_of_station": 4,
+    "radius_ratio": 0.3333333333333333,
+    "weights_mode": "All"
+  },
+  "@use_broadcasting": false,
+  "@num_of_splits": 10}
+}
+```
+
+#### bilinear
+It's the bilinear interpolation algorithm applyied on regular and irregular grids. On irregular grids, it tries to get the best quatrilateral around each target point, but at the same time tries to use the best stable and grid-like shape from starting points. To do so, evaluates interpolation looking at point on similar latitude, thus on projected grib files may show some irregular results. 
+
+```json
+{
+"Interpolation": {
+  "@latMap": "/dataset/maps/europe5km/lat.map",
+  "@lonMap": "/dataset/maps/europe5km/long.map",
+  "@mode": "bilinear"}
+}
+```
+
+#### triangulation
+This interpolation works on a triangular tessellation of the starting grid applying the Delaunay criteria, and the uses the linear barycentric interpolation to get the target intrpolated values. It works on all type of grib files, but for some resolutions may show some edgy shapes.
+
+```json
+{
+"Interpolation": {
+  "@latMap": "/dataset/maps/europe5km/lat.map",
+  "@lonMap": "/dataset/maps/europe5km/long.map",
+  "@mode": "triangulation"}
+}
+```
+
+#### bilinear_delaunay
+This algorithm merges bilinear interpolation and triangular tessellation. Quadrilaters used for the bilinear interpolation are obtained joining two adjacent triangles detected from the Delaunay triangulation of the source points. The merge is done giving priority to the ones distributed on a grid-like shape. When a quadrilateral is not available (there are no more adjacent triangles left on the grid able to merge), the linear barycentric interpolation is applyied. The result of this interpolation works smoothly and adapts automatically on all kind of source grib file. 
+
+```json
+{
+"Interpolation": {
+  "@latMap": "/dataset/maps/europe5km/lat.map",
+  "@lonMap": "/dataset/maps/europe5km/long.map",
+  "@mode": "bilinear_delaunay"}
+}
+```
+
+## OutMaps configuration
+
+Interpolation is configured under the OutMaps tag. With additional attributes, you also configure
+resulting PCRaster or netCDF maps. Output dir is ./ by default or you can set it via command line using the
+option -o (--outDir).
+
+| Attribute      | Details                                                                                                                           |
+|----------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| namePrefix     | Prefix name for output map files. Default is the value of shortName key.                                                          |
+| unitTime       | Unit time in hours for results. This is used during aggregation operations.                                                       |
+| fmap           | Extension number for the first map. Default 1.                                                                                    |
+| ext            | Extension mode. It's the integer number defining the step numbers to skip when writing maps. Same as old grib2pcraster. Default 1.|
+| cloneMap       | Path to a PCRaster clone map, needed by PCRaster libraries to write a new map on disk.                                            |
+| scaleFactor    | Scale factor of the output netCDF map. Default 1. |
+| offset         | Offset of the output netCDF map. Default 0. |
+| validMin       | Minimum value of the output netCDF map. Values below will be set to nodata. |
+| validMax       | Maximum value of the output netCDF map. Values above will be set to nodata. |
+| valueFormat    | Variable type to use in the output netCDF map. Deafult f8. Available formats are: i1,i2,i4,i8,u1,u2,u4,u8,f4,f8 where i is integer, u is unsigned integer, f if float and the number corresponds to the number of bytes used (e.g. i4 is integer 32bits = 4 bytes) | 
+| outputStepUnits | Step units to use in output map. If not specified, it will use the stepUnits of the source Grib file. Available values are: 's': seconds, 'm': minutes, 'h': hours, '3h': 3h steps, '6h': 6h steps, '12h': 12h steps, 'D': days |
+
+## Aggregation
+
+Values from grib files can be aggregated before to write the final PCRaster maps. There are two kinds of aggregation available: average and accumulation. 
+The JSON configuration in the execution file will look like:
+
+```json
+{
+"Aggregation": {
+  "@type": "average",
+  "@halfweights": false}
+}
+```
+
+To better understand what these two types of aggregations do, the DEBUG output of execution is presented later in same paragraph.
+
+### Average
+Temperatures are often extracted as averages on 24 hours or 6 hours. Here's a typical execution configuration and the output of interest:
+
+**cosmo_t24.json**
+
+```json
+{
+"Execution": {
+"@name": "cosmo_T24",
+"Aggregation": {
+"@step": 24,
+"@type": "average",
+"@halfweights": false
+},
+"OutMaps": {
+"@cloneMap": "/dataset/maps/europe/dem.map",
+"@ext": 4,
+"@fmap": 1,
+"@namePrefix": "T24",
+"@unitTime": 24,
+"Interpolation": {
+"@latMap": "/dataset/maps/europe/lat.map",
+"@lonMap": "/dataset/maps/europe/lon.map",
+"@mode": "nearest"
+}
+},
+"Parameter": {
+"@applyConversion": "k2c",
+"@correctionFormula": "p+gem-dem*0.0065",
+"@demMap": "/dataset/maps/europe/dem.map",
+"@gem": "(z/9.81)*0.0065",
+"@shortName": "2t"
+}
+}
+}
+
+```
+
+**Command**
+`pyg2p -l DEBUG -c /execution_templates/cosmo_t24.json -i /dataset/cosmo/2012111912_pf10_t2.grb -o ./cosmo -m 10`
+
+**ext parameter**
+ext value will affect numbering of output maps:
+
+```console
+[2013-07-12 00:06:18,545] :./cosmo/T24a0000.001 written!
+[2013-07-12 00:06:18,811] :./cosmo/T24a0000.005 written!
+[2013-07-12 00:06:19,079] :./cosmo/T24a0000.009 written!
+[2013-07-12 00:06:19,349] :./cosmo/T24a0000.013 written!
+[2013-07-12 00:06:19,620] :./cosmo/T24a0000.017 written!
+```
+
+This is needed because we performed 24 hours average over 6 hourly steps.
+
+**Details about average parameters:**
+
+The to evaluate the average, the following steps are executed:
+
+- when "halfweights" is false, the results of the function is the sum of all the values from "start_step-aggregation_step+1" to end_step, taking for each step the value corresponding to the next available value in the grib file. E.g:
+
+  INPUT: start_step=24, end_step=<not specified, will take the end of file>, aggregation_step=24
+GRIB File: contains data starting from step 0 to 48 every 6 hours: 0,6,12,18,24,30,....
+
+  Day 1: Aggregation starts from 24-24+1=1, so it will sum up the step 6 six times, then the step 12 six times, step 18 six times, and finally the step 24 six times. The sum will be divided by the aggretation_step (24) to get the average.
+
+  Day 2: same as Day 1 starting from (24+24)-24+1=25...
+
+- when "halfweights" is true, the results of the function is the sum of all the values from "start_step-aggregation_step" to end_step, taking for each step the value corresponding to the next available value in the grib file but using half of the weights for the first and the last step in each aggregation_step cicle. E.g:
+
+  INPUT: start_step=24, end_step=<not specified, will take the end of file>, aggregation_step=24
+GRIB File: contains data starting from step 0 to 72 every 6 hours: 0,6,12,18,24,30,36,....
+
+  Day 1: Aggregation starts from 24-24=0, and will consider the step 0 value multiplied but 3, that is half of the number of steps between two step keys in the grib file. Then it will sum up the step 6 six times, then the step 12 six times, step 18 six times, and finally the step 24 again multiplied by 3. The sum will be divided by the aggretation_step (24) to get the average.
+
+  Day 2: same as Day 1 starting from (24+24)-24=24: the step 24 will have a weight of 3, while steps 30,36 and 42 will be counted 6 times, and finally the step 48 will have a weight of 3. 
+
+- if start_step is zero or is not specified, the aggregation will start from 0
+
+### Accumulation
+For precipitation values, accumulation over 6 or 24 hours is often performed. Here's an example of configuration and execution output in DEBUG mode.
+
+**dwd_r06.json**
+
+```json
+
+{"Execution": {
+"@name": "dwd_rain_gsp",
+"Aggregation": {
+"@step": 6,
+"@type": "accumulation"
+},
+"OutMaps": {
+"@cloneMap": "/dataset/maps/europe/dem.map",
+"@fmap": 1,
+"@namePrefix": "pR06",
+"@unitTime": 24,
+"Interpolation": {
+"@latMap": "/dataset/maps/europe/lat.map",
+"@lonMap": "/dataset/maps/europe/lon.map",
+"@mode": "nearest"
+}
+},
+"Parameter": {
+"@shortName": "RAIN_GSP",
+"@tend": 18,
+"@tstart": 12
+}
+}
+}
+```
+
+**Command**
+`pyg2p -l DEBUG -c /execution_templates/dwd_r06.json -i /dataset/dwd/2012111912_pf10_tp.grb -o ./cosmo -m 10`
+
+**Output**
+```console
+[2013-07-11 23:33:19,646] : Opening the GRIBReader for
+/dataset/dwd/grib/dwd_grib1_ispra_LME_2012111900
+[2013-07-11 23:33:19,859] : Grib input step 1 [type of step: accum]
+[2013-07-11 23:33:19,859] : Gribs from 0 to 78
+...
+...
+[2013-07-11 23:33:20,299] : ******** **** MANIPULATION **** *************
+[2013-07-11 23:33:20,299] : Accumulation at resolution: 657
+[2013-07-11 23:33:20,300] : out[s:6 e:12 res:657 step-lenght:6] = grib:12 - grib:6 *
+(24/6))
+[2013-07-11 23:33:20,316] : out[s:12 e:18 res:657 step-lenght:6] = grib:18 - grib:12 *
+(24/6))
+```
+
+```text
+Note: If you want to perform accumulation from Ts to Te with an aggregation step
+Ta, and Ts-Ta=0 (e.g. Ts=6h, Te=48h, Ta=6h), the program will select the first
+message at step 0 if present in the GRIB file, while you would use a zero values
+message instead.
+To use a zero values array, set the attribute forceZeroArray to ”true” in the
+Aggregation configuration element.
+For some DWD5 and COSMO6 accumulated precipitation files, the first zero message is
+an instant precipitation and the decision at EFAS was to use a zero message, as it
+happens for UKMO extractions, where input GRIB files don't have a first zero step
+message.
+```
+
+```bash
+grib_get -p units,name,stepRange,shortName,stepType 2012111912_pf10_tp.grb
+
+kg m**-2 Total Precipitation 0 tp instant
+kg m**-2 Total Precipitation 0-6 tp accum
+kg m**-2 Total Precipitation 0-12 tp accum
+kg m**-2 Total Precipitation 0-18 tp accum
+...
+...
+kg m**-2 Total Precipitation 0-48 tp accum
+```
+
+## Correction
+
+Values from grib files can be corrected with respect to their altitude coordinate (Lapse rate
+formulas). Formulas will use also a geopotential value (to read from a GRIB file, see later in this
+chapter for configuration).
+Correction has to be configured in the Parameter element, with three mandatory attributes.
+
+* correctionFormula (the formula used for correction, with input variables parameter value (p), gem, and dem value.
+* gem (the formula to obtain gem value from geopotential z value)
+* demMap (path to the DEM PCRaster map)
+
+`Note: formulas must be written in python notation.`
+
+Tested configurations are only for temperature and are specified as follows:
+
+**Temperature correction**
+
+```json
+{
+"Parameter": {
+  "@applyConversion": "k2c",
+  "@correctionFormula": "p+gem-dem*0.0065",
+  "@demMap": "/dataset/maps/europe/dem.map",
+  "@gem": "(z/9.81)*0.0065",
+  "@shortName": "2t"}
+}
+```
+
+**A more complicated correction formula:**
+
+```json
+{
+"Parameter": {
+  "@applyConversion": "k2c",
+  "@correctionFormula": "p/gem*(10**((-0.159)*dem/1000))",
+  "@demMap": "/dataset/maps/europe/dem.map",
+  "@gem": "(10**((-0.159)*(z/9.81)/1000))",
+  "@shortName": "2t"}
+}
+```
+
+### How to write formulas
+
+**z** is the geopotential value as read from the grib file
+**gem** is the value resulting from the formula specified in gem attribute I.e.: (gem="(10**((-0.159)*(z/9.81)/1000)))"
+**dem** is the dem value as read from the PCRaster map
+
+Be aware that if your dem map has directions values, those will be replicated in the final map.
+
+### Which geopotential file is used?
+
+The application will try to find a geopotential message in input GRIB file. If a geopotential message
+is not found, pyg2p will select a geopotential file from user or global data paths, by selecting
+filename from configuration according the geodetic attributes of GRIB message. If it doesn't find
+any suitable grib file, application will exit with an error message.
+
+Geodetic attributes compose the key id in the JSON configuration (note the $ delimiter):
+
+`longitudeOfFirstGridPointInDegrees$longitudeOfLastGridPointInDegrees$Ni$Nj$numberOfValues$gridType`
+
+If you want to add another geopotential file to the configuration, just execute the command:
+
+`pyg2p -g /path/to/geopotential/grib/file`
+
+The application will copy the geopotential GRIB file into `GEOPOTENTIALS` folder (under user home directory) 
+and will also add the proper JSON configuration to geopotentials.json file.
+
+## Conversion
+
+Values from GRIB files can be converted before to write final output maps. Conversions are
+configured in the parameters.json file for each parameter (ie. shortName).
+ 
+The right conversion formula will be selected using the id specified in the *applyConversion* attribute, and the shortName
+attribute of the parameter that is going to be extracted and converted.
+
+Refer to Parameter configuration paragraph for details.
+
+## Logging
+
+Console logger level is INFO by default and can be optionally set by using **-l** (or **–loggerLevel**)
+input argument.
+
+Possible logger level values are ERROR, WARN, INFO, DEBUG, in increasing order of verbosity .
+
+## pyg2p API
+From version 1.3, pyg2p comes with a simple API to import and use from other python programs
+(e.g. pyEfas).
+The pyg2p API is intended to mimic the pyg2p.py script execution from command line so it provides
+a Command class with methods to set input parameters and a *run_command(cmd)* module level function to execute pyg2p.
+
+### Setting execution parameters
+
+1. Create a pyg2p command:
+
+```python
+from pyg2p.main import api
+command = api.command()
+```
+
+2. Setup execution parameters using a chain of methods (or single calls):
+
+```python
+command.with_cmdpath('a.json')
+command.with_inputfile('0.grb')
+command.with_log_level('ERROR').with_out_format('netcdf')
+command.with_outdir('/dataout/').with_tstart('6').with_tend('24').with_eps('10').with_fmap('1')
+command.with_ext('4')
+print(str(command))
+'pyg2p.py -c a.json -e 240 -f 1 -i 0.grb -l ERROR -m 10 -o /dataout/test -s 6 -x 4 -F netcdf'
+```
+
+You can also create a command object using the input arguments as you would do when execute pyg2p from command line:
+
+```python
+args_string = '-l ERROR -c /pyg2p_git/execution_templates_devel/eue_t24.json -i /dataset/test_2013330702/EpsN320-2013063000.grb -o /dataset/testdiffmaps/eueT24 -m 10'
+command2 = api.command(args_string)
+```
+
+### Execute
+
+Use the run_command function from pyg2p module. This will delegate the main method, without
+shell execution.
+
+```python
+ret = api.run_command(command)
+```
+
+The function returns the same value pyg2p returns if executed from shell (0 for correct executions,
+included those for which messages are not found).
+
+### Adding geopotential file to configuration
+
+You can add a geopotential file to configuration from pyg2p API as well, using Configuration classes:
+
+```python
+from pyg2p.main.config import UserConfiguration, GeopotentialsConfiguration
+user=UserConfiguration()
+geopotentials=GeopotentialsConfiguration(user)
+geopotentials.add('path/to/geopotential.grib')
+```
+The result will be the same as executing `pyg2p -g path/to/geopotential.grib`.
+
+### Using API to bypass I/O
+
+Since version 3.1, pyg2p has a more usable api, useful for programmatically convert values
+
+Here an example of usage:
+
+```python
+from pyg2p.main.api import Pyg2pApi, ApiContext
+
+config = {
+        'loggerLevel': 'ERROR',
+        'inputFile': '/data/gribs/cosmo.grib',
+        'fmap': 1,
+        'start': 6,
+        'end': 132,
+        'perturbationNumber': 2,
+        'intertableDir': '/data/myintertables/',
+        'geopotentialDir': '/data/mygeopotentials',
+        'OutMaps': {
+            'unitTime': 24,
+            'cloneMap': '/data/mymaps/dem.map',
+            'Interpolation': {
+                "latMap": '/data/mymaps/lat.map',
+                "lonMap": '/data/mymaps/lon.map',
+                "mode": "nearest"
+            }
+        },
+
+        'Aggregation': {
+            'step': 6,
+            'type': 'average'
+        },
+        'Parameter': {
+            'shortName': 'alhfl_s',
+            'applyConversion': 'tommd',
+        },
+    }
+
+ctx = ApiContext(config)
+api = Pyg2pApi(ctx)
+values = api.execute()
+```
+
+The `values` variable is an ordered dictionary with keys of class `pyg2p.Step`, which is simply a tuple of (start, end, resolution_along_meridian, step, level))
+Each value of the dictionary is a numpy array representing a map of the converted variable for that step.
+For example, the first value would correspond to a PCRaster map file <var>0000.001 generated and written by pyg2p when executed normally via CLI.
+
+Check also this code we used in tests to validate API execution against CLI execution with same parameters:
+
+```python
+import numpy as np
+from pyg2p.main.readers import PCRasterReader
+for i, (step, val) in enumerate(values.items(), start=1):
+    i = str(i).zfill(3)
+    reference = PCRasterReader(f'/data/reference/cosmo/E06a0000.{i}')).values
+    diff = np.abs(reference - val)
+    assert np.allclose(diff, np.zeros(diff.shape), rtol=1.e-2, atol=1.e-3, equal_nan=True)
+```
+
+
+## Appendix A - Execution JSON files examples
+
+This paragraph will explain typical execution json configurations.
+
+### Example 1: Correction with dem and geopotentials
+
+```shell script
+pyg2p -c example1.json -i /dataset/cosmo/2012111912_pf2_t2.grb -o ./out_1
+```
+
+**example1.json**
+```json
+{
+  "Execution": {
+    "@name": "eue_t24",
+    "Aggregation": {
+      "@step": 24,
+      "@type": "average"
+    },
+    "OutMaps": {
+      "@cloneMap": "{EUROPE_MAPS}/lat.map",
+      "@ext": 1,
+      "@fmap": 1,
+      "@namePrefix": "pT24",
+      "@unitTime": 24,
+      "Interpolation": {
+        "@latMap": "{EUROPE_MAPS}/lat.map",
+        "@lonMap": "{EUROPE_MAPS}/long.map",
+        "@mode": "grib_nearest"
+      }
+    },
+    "Parameter": {
+        "@applyConversion": "k2c",
+        "@correctionFormula": "p+gem-dem*0.0065",
+        "@demMap": "{DEM_MAP}",
+        "@gem": "(z/9.81)*0.0065",
+        "@shortName": "2t"
+    }
+  }
+}
+```
+
+This configuration, will select the 2t parameter from time step 0 to 12, out of a cosmo t2 file. 
+Values will be corrected using the dem map and a geopotential file as in geopotentials.json configuration.
+
+Maps will be written under ./out_1 folder (the folder will be created if not existing yet). The clone map is set as same as dem.map. 
+
+>Note that paths to maps uses variables `EUROPE_MAPS` and `DEM_MAP`. 
+>You will set these variables in myconf.conf file under ~/.pyg2p/ folder.
+
+The original values will be converted using the conversion “k2c”. This conversion must be
+configured in the parameters.json file for the variable which is being extracted (2t). See Parameter
+property configuration at Parameter.
+The interpolation method is grib_nearest. Latitudes and longitudes values will be used only if the
+interpolation lookup table (intertable) hasn't be created yet but it's mandatory to set latMap and
+lonMap because the application uses their metadata raster attributes to select the right intertable.
+The table filename to be read and used for interpolation is automatically found by the application,
+so there is no need to specify it in configuration. However, lat and lon maps are mandatory
+configuration attributes.
+
+### Example 2: Dealing with multiresolution files
+
+```shell script
+pyg2p -c example1.json -i 20130325_en0to10.grib -I 20130325_en11to15.grib -o ./out_2
+```
+
+Performs accumulation 24 hours out of sro values of two input grib files having different vertical
+resolutions. You can also feed pyg2p with a single multiresolution file.
+
+```shell script
+pyg2p -c example1.json -i 20130325_sro_0to15.grib o ./out_2 -m 0
+```
+
+```json
+{
+  "Execution": {
+    "@name": "multi_sro",
+    "Aggregation": {
+      "@step": 24,
+      "@type": "accumulation"
+    },
+    "OutMaps": {
+      "@cloneMap": "/dataset/maps/global/dem.map",
+      "@fmap": 1,
+      "@namePrefix": "psro",
+      "@unitTime": 24,
+      "Interpolation": {
+        "@latMap": "/dataset/maps/global/lat.map",
+        "@lonMap": "/dataset/maps/global/lon.map",
+        "@mode": "grib_nearest"
+      }
+    },
+    "Parameter": {
+      "@applyConversion": "m2mm",
+      "@shortName": "sro",
+      "@tend": 360,
+      "@tstart": 0
+    }
+  }
+}
+```
+
+This execution configuration will extract global overlapping messages sro (perturbation number 0)
+from two files at different resolution.
+Values will be converted using “tomm” conversion and maps (interpolation used here is
+grib_nearest) will be written under ./out_6 folder.
+
+### Example 3: Accumulation 24 hours
+
+```shell script
+./pyg2p.py -i /dataset/eue/EpsN320-2012112000.grb -o ./out_eue -c execution_file_examples/execution_9.json
+```
+
+```json
+{
+  "Execution": {
+    "@name": "eue_tp",
+    "Aggregation": {
+      "@step": 24,
+      "@type": "accumulation"
+    },
+    "OutMaps": {
+      "@cloneMap": "/dataset/maps/europe5km/lat.map",
+      "@fmap": 1,
+      "@namePrefix": "pR24",
+      "@unitTime": 24,
+      "Interpolation": {
+        "@latMap": "/dataset/maps/europe5km/lat.map",
+        "@lonMap": "/dataset/maps/europe5km/long.map",
+        "@mode": "grib_nearest"
+      }
+    },
+    "Parameter": {
+      "@applyConversion": "tomm",
+      "@shortName": "tp"
+    }
+  }
+}
+```
+
+## Appendix B – Netcdf format output
+
+```prettier
+Format: NETCDF4_CLASSIC.
+Convention: CF-1.6
+Dimensions:
+        xc: Number of rows of area/clone map
+        yc: Number of cols of area/clone map
+        time: Unlimited dimension for time steps
+Variables:
+        lon: 2D array with shape (yc, xc)
+        lat: 2D array with shape (yc, xc)
+        time_nc: 1D array of values representing hours/days since dataDate of first grib message (endStep)
+        values_nc: a 3D array of dimensions (time, yc, xc), with coordinates set to 'lon, lat'.
+```

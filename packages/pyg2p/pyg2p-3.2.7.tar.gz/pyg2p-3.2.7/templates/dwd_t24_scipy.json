@@ -1,0 +1,30 @@
+{
+    "Execution": {
+        "@name": "dwd_T24a",
+        "Aggregation": {
+            "@step": 24, 
+            "@type": "average"
+        }, 
+        "OutMaps": {
+            "@cloneMap": "{EUROPE_DEM}",
+            "@ext": 4, 
+            "@fmap": 1, 
+            "@namePrefix": "pT24", 
+            "@unitTime": 24, 
+            "Interpolation": {
+                "@latMap": "{EUROPE_LAT}",
+                "@lonMap": "{EUROPE_LON}",
+                "@mode": "nearest"
+            }
+        }, 
+        "Parameter": {
+            "@applyConversion": "k2c", 
+            "@correctionFormula": "p+gem-dem*0.0065", 
+            "@demMap": "{EUROPE_DEM}",
+            "@gem": "(z/9.81)*0.0065", 
+            "@shortName": "2t", 
+            "@tend": 30, 
+            "@tstart": 0
+        }
+    }
+}
