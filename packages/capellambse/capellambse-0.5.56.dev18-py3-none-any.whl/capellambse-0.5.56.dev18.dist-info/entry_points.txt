@@ -1,0 +1,44 @@
+[capellambse.diagram.formats]
+datauri_svg = capellambse.model.diagram:SVGDataURIFormat
+html_img = capellambse.model.diagram:SVGInHTMLIMGFormat
+png = capellambse.model.diagram:PNGFormat
+svg = capellambse.model.diagram:SVGFormat
+svg_confluence = capellambse.model.diagram:ConfluenceSVGFormat
+svgdiagram = capellambse.model.diagram:convert_svgdiagram
+termgraphics = capellambse.model.diagram:TerminalGraphicsFormat
+
+[capellambse.filehandler]
+file = capellambse.filehandler.local:LocalFileHandler
+git = capellambse.filehandler.git:GitFileHandler
+glart = capellambse.filehandler.gitlab_artifacts:GitlabArtifactsFiles
+http = capellambse.filehandler.http:HTTPFileHandler
+https = capellambse.filehandler.http:HTTPFileHandler
+zip = capellambse.filehandler.zip:ZipFileHandler
+
+[capellambse.model_extensions]
+filtering = capellambse.extensions.filtering:init
+pvmt = capellambse.extensions.pvmt:init
+reqif = capellambse.extensions.reqif:init
+
+[capellambse.namespaces]
+activity = capellambse.metamodel.activity:NS
+behavior = capellambse.metamodel.behavior:NS
+capellacommon = capellambse.metamodel.capellacommon:NS
+capellacore = capellambse.metamodel.capellacore:NS
+capellamodeller = capellambse.metamodel.capellamodeller:NS
+cs = capellambse.metamodel.cs:NS
+epbs = capellambse.metamodel.epbs:NS
+fa = capellambse.metamodel.fa:NS
+information = capellambse.metamodel.information:NS
+information_communication = capellambse.metamodel.information_communication:NS
+information_datatype = capellambse.metamodel.information_datatype:NS
+information_datavalue = capellambse.metamodel.information_datavalue:NS
+interaction = capellambse.metamodel.interaction:NS
+la = capellambse.metamodel.la:NS
+libraries = capellambse.metamodel.libraries:NS
+metadata = capellambse.modelv2._meta:NS
+modellingcore = capellambse.modelv2._obj:NS
+oa = capellambse.metamodel.oa:NS
+pa = capellambse.metamodel.pa:NS
+pa_deployment = capellambse.metamodel.pa_deployment:NS
+sa = capellambse.metamodel.sa:NS
