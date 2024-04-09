@@ -1,0 +1,27 @@
+---
+# Add some sample tasks.
+tasks:
+  # Chaos.
+  - {name: sample1, factory: Sample, period_s: 0.9}
+  - {name: sample2, factory: Sample, period_s: 1.0}
+  - {name: sample3, factory: Sample, period_s: 1.1}
+
+  # Sinusoids.
+  - {name: wave1, factory: sinusoid, period_s: 0.01}
+  - {name: wave2, factory: sinusoid, period_s: 0.02}
+  - {name: wave3, factory: sinusoid, period_s: 0.03}
+
+# Add some sample structs.
+structs:
+  - name: struct1
+    factory: sample_struct
+    # Not actually used.
+    config:
+      a: 1
+      b: 2
+      c: 3
+
+  - name: struct2
+    factory: sample_struct
+  - name: struct3
+    factory: sample_struct
