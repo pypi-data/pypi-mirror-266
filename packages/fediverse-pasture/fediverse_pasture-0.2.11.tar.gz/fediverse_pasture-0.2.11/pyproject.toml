@@ -1,0 +1,53 @@
+# SPDX-FileCopyrightText: 2023 Helge
+#
+# SPDX-License-Identifier: MIT
+
+[tool.poetry]
+name = "fediverse-pasture"
+version = "0.2.11"
+description = "Helpful tools to test Fediverse Applications"
+authors = ["Helge <helge.krueger@gmail.com>"]
+readme = "README.md"
+packages = [{include = "fediverse_pasture"}]
+repository = "https://codeberg.org/funfedidev/python_fediverse_pasture"
+documentation = "https://funfedi.dev/python_package/"
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pydantic = "^2.3.0"
+tomli-w = "^1.0.0"
+quart = "^0.19.3"
+bovine = "^0.5.6"
+click = "^8.1.7"
+tortoise-orm = { version = "^0.20.0", optional= true}
+uvicorn = "^0.28.0"
+pillow = "^10.1.0"
+
+[tool.poetry.extras]
+runner = ["tortoise-orm"]
+
+[tool.poetry.group.test]
+optional = true
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.0.0"
+pytest-asyncio = "^0.23.5"
+pytest-watch = "^4.2.0"
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.3.0"
+mypy = "^1.7.1"
+reuse = "^3.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+asyncio_mode="auto"
+log_cli=true
+log_cli_level="info"
