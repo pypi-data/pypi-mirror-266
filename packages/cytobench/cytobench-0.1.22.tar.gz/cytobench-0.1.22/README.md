@@ -1,0 +1,1 @@
+Install environment and test manifold covering score
