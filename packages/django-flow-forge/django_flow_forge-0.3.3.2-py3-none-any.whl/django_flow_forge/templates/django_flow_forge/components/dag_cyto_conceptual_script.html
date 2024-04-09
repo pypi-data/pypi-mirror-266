@@ -1,0 +1,56 @@
+
+        <!-- Placeholder for HTMX response handling -->
+        <div id="cy-graph" style="width: 100%; height: 600px;" class="border rounded"></div>
+        <input type="hidden" class="include-input" id='current_flow_option' name="current_flow_option" value={{ current_flow_id }}>
+        
+        
+        <script>
+        // Initialize Cytoscape with default layout
+        var cy = cytoscape({
+            container: document.getElementById('cy-graph'),
+            elements: {{ graph_json|safe}},
+            style: [ // Updated styling for visibility against black background
+                        {
+                            selector: 'node',
+                            style: {
+                                'background-color': '#0074D9',
+                                'label': 'data(label)', // Use the 'label' field from the node's data for the label
+                                'color': '#fff',  // Ensure text is white for visibility
+                                'text-valign': 'center',
+                                'text-halign': 'center',
+                                'font-size': '9px' // Adjust font size here, e.g., 10px for smaller text
+                            }
+                        },
+                        
+                        {
+                            selector: 'edge',
+                            style: {
+                                'width': 2,
+                                'line-color': '#fff',  // Edge line color set to white
+                                'target-arrow-color': '#fff',  // Arrow color set to white
+                                'target-arrow-shape': 'triangle',  // Arrow shape
+                                'curve-style': 'bezier'
+                            }
+                        }
+                    ],
+            layout: {
+                name: 'dagre',
+                nodeSep: 120, // Increase node separation; adjust as needed
+                edgeSep: 50, // Increase edge separation; adjust as needed
+                rankSep: 30 // Increase rank separation; adjust as needed
+            }
+        });
+
+        // Add event listener for node clicks
+        cy.on('tap', 'node', function(evt){
+
+            var nodeId = (typeof evt.target.id == 'function') ? evt.target.id() : ""
+            var flowId = "{{ current_flow_id }}"; // Render Django variable into JS
+
+            // Trigger HTMX request upon clicking the node
+            console.log('Sending click event to body with node id: ' + nodeId + ' and flow id: ' + flowId)
+            htmx.trigger(htmx.find('#data-div1'), "tap", {'clicked_node_id':nodeId, 'executed_flow_option': flowId});
+
+            });
+        
+        </script>
