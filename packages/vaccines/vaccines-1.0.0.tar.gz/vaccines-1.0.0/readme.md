@@ -1,0 +1,50 @@
+
+******
+
+Bravo!  You have received a Mercantilism Diploma in "vaccines" from   
+the Orbital Convergence University International Air and Water 
+Embassy of the tangerine Planet (the planet that is one ellipse further from
+the Sun than Earth's ellipse).
+
+You are now officially certified to include "vaccines" in your practice.
+
+******
+
+--
+
+
+# vaccines
+
+--
+
+## obtain
+`[xonsh] pip install vaccines`
+
+--
+
+## tutorial
+`[xonsh] vaccines help`
+
+--
+
+## structure
+```
+	/vaccines_1
+		/trends
+		/mints
+		vaccines.JSON {
+				"trends": {
+					"path": "trends"
+				},
+				"mints": {
+					"path": "mints"
+				}
+			}
+```
+
+## start
+From anywhere higher than the "vaccines.JSON" file.   
+```
+[xonsh] vaccines trends turn-on
+```
+
