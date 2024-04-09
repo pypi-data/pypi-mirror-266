@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=65.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "itk_dev_shared_components"
+version = "2.1.0"
+authors = [
+  { name="ITK Development", email="itk-rpa@mkb.aarhus.dk" },
+]
+description = "Shared components to use in RPA projects"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows",
+]
+dependencies = [
+  "pywin32 >= 306",
+  "msal >= 1.24.1",
+  "requests >= 2.31.0",
+  "beautifulsoup4 >= 4.12.2"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/itk-dev-rpa/itk-dev-shared-components"
+"Bug Tracker" = "https://github.com/itk-dev-rpa/itk-dev-shared-components/issues"
