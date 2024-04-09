@@ -1,0 +1,61 @@
+Metadata-Version: 2.3
+Name: pystages
+Version: 1.1.1
+Summary: Motorized stage control library for scientific applications
+Project-URL: Homepage, https://github.com/Ledger-Donjon/pystages
+Project-URL: Bug Tracker, https://github.com/Ledger-Donjon/pystages/issues
+Project-URL: Documentation, https://pystages.readthedocs.io/en/latest
+Author-email: Olivier Hérivaux <olivier.heriveaux@ledger.fr>, Michaël Mouchous <michael.mouchous@ledger.fr>
+License-File: COPYING
+License-File: COPYING.LESSER
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.9
+Requires-Dist: numpy
+Requires-Dist: pyqt6
+Requires-Dist: pyserial
+Requires-Dist: pyusb
+Description-Content-Type: text/markdown
+
+# PyStages
+
+[![Documentation Status](https://readthedocs.org/projects/pystages/badge/?version=latest)](https://pystages.readthedocs.io/en/latest/?badge=latest)
+
+PyStages is a Python 3 library for controlling motorized stages which have a
+motion controller. It has been designed for microscopy test benches automation.
+
+The following motion controllers are currently supported (only the main features
+are implemented):
+
+- Micos Corvus Eco controller
+- New Scale Technologies M3-FS focus modules (serial only)
+- Newport SMC100 motion controllers
+- Tic Stepper Motor controller (USB only)
+- CNC Router with GRBL/GCode instructions (CNC 3018-PRO)
+
+The library also provides helper classes for basic vector manipulation and
+autofocus computation.
+
+## Documentation
+
+Documentation is available on [Read the Docs](https://pystages.readthedocs.io).
+
+## PyStages GUI
+
+A user interface has been implemented to control the stages.
+
+You can run it with the following command:
+
+```bash
+python -m pystages.gui
+```
+
+## Requirements
+
+This library requires the following packages:
+
+- [pyserial](https://pypi.org/project/pyserial/)
+- [numpy](https://pypi.org/project/numpy/)
+- [pyusb](https://pypi.org/project/pyusb/)
+- [PyQt6](https://pypi.org/project/PyQt6/)
