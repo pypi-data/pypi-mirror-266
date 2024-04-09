@@ -1,0 +1,1 @@
+from .andriatina_auth import get_auth
