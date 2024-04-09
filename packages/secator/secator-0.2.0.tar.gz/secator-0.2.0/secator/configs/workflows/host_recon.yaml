@@ -1,0 +1,41 @@
+type: workflow
+name: host_recon
+alias: hostrec
+description: Host recon
+tags: [recon, network, http]
+input_types:
+  - host
+  - cidr_range
+tasks:
+  naabu:
+    description: Find open ports
+  nmap:
+    description: Search for vulnerabilities on open ports
+    targets_: port.host
+    ports_: port.port
+  httpx:
+    description: Probe HTTP services on open ports
+    targets_:
+      - type: port
+        field: '{host}:{port}'
+        condition: item._source == 'nmap'
+  _group:
+    nuclei/network:
+      description: Scan network and SSL vulnerabilities
+      tags: [network, ssl]
+    nuclei/url:
+      description: Search for vulnerabilities on alive HTTP services
+      exclude_tags: [network, ssl, file, dns, osint, token-spray, headers]
+      targets_:
+        - type: url
+          field: url
+          condition: item.status_code != 0
+results:
+  - type: port
+    condition: item._source == 'nmap'
+
+  - type: vulnerability
+  #   condition: item.confidence == 'high'
+
+  - type: url
+    condition: item.status_code != 0
