@@ -1,0 +1,104 @@
+Metadata-Version: 2.1
+Name: python-bridge
+Version: 0.0.16
+Summary: A Python tool to abstract your Django infrastructure.
+Author-email: Caelean Barnes <caeleanb@gmail.com>, Evan Doyle <evanmdoyle@gmail.com>
+Project-URL: Homepage, https://github.com/never-over/bridge
+Project-URL: Issues, https://github.com/never-over/bridge/issues
+Keywords: python,deployment,local,infrastructure,postgres,django,architecture
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: docker ==7.0.0
+Requires-Dist: psycopg[binary] ==3.1.18
+Requires-Dist: rich ==13.7.1
+Requires-Dist: pydantic ==2.6.4
+Requires-Dist: google-cloud-storage ==2.16.0
+Requires-Dist: dj-database-url ==2.1.0
+
+# bridge
+
+---
+Automate your local and deployed infra in one line.
+
+#todo add gif
+
+ 
+
+[docs]
+
+### What is bridge?
+Bridge enables you to seamlessly run and deploy all of the infrastructure you need for your python web application.
+
+- Out of the box support for Django, FastAPI, and Flask
+- One line of copy-paste configuration
+- Local postgres database automatically configured and connected
+- Local Redis and Celery instances automatically configured and connected
+- Easy one-command deploy configuration for Render and Heroku
+
+### Installation
+```bash
+pip install python-bridge
+```
+### Usage
+Adding bridge to your project is incredibly simple.
+```python
+from bridge.framework.[framework] import configure
+
+configure(locals())
+```
+<details>
+<summary>Django</summary>
+Place this code snippet at the end of your `settings.py` file:
+<pre><code class="language-python">from bridge.framework.django import configure
+configure(locals())
+</code></pre>
+</details>
+<details>
+<summary>Flask</summary>
+Place this code snippet at the end of your `settings.py` file:
+<pre><code class="language-python">from bridge.flask import configure
+configure(locals())
+</code></pre>
+</details>
+<details>
+<summary>Fast API</summary>
+Place this code snippet at the end of your `settings.py` file:
+<pre><code class="language-python">from bridge.fastapi import configure
+configure(locals())
+</code></pre>
+</details>
+
+
+The next time you start up your application, bridge will create and configure local infrastructure for you.
+
+### Deploys
+Bridge can also handle deployed configuration for your app as well! Simply run
+```bash
+bridge init [heroku|render]
+```
+and bridge will create all of the configuration necessary for you to 1 click deploy onto either Heroku or Render's hosting solutions.
+
+
+### Advanced usage
+- turn on/off different services
+- specify environment variables?
+
+
+### TODO
+- add support for celery, redis, mailhog/mail, jupyter
+- add support for flask, fastapi, ...
+- add support for `pip install python-bridge[redis,flask,etc]`
+
