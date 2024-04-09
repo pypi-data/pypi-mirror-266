@@ -1,0 +1,48 @@
+Metadata-Version: 2.3
+Name: ocdiff
+Version: 0.0.7
+Classifier: Programming Language :: Python
+Requires-Dist: maturin ==1.4.0 ; extra == 'dev'
+Requires-Dist: pytest ==7.* ; extra == 'dev'
+Requires-Dist: mypy ==1.6.* ; extra == 'dev'
+Requires-Dist: pip ==24.0 ; extra == 'dev'
+Provides-Extra: dev
+License-File: LICENSE
+Summary: difftastic Python wrapper
+Keywords: diff
+Author: Oliver Russell <ojhrussell@gmail.com>
+Author-email: Oliver Russell <ojhrussell@gmail.com>
+Maintainer-email: Oliver Russell <ojhrussell@gmail.com>
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown; charset=UTF-8; variant=GFM
+Project-URL: homepage, https://github.com/leontrolski/ocdiff
+Project-URL: documentation, https://github.com/leontrolski/ocdiff
+Project-URL: repository, https://github.com/leontrolski/ocdiff.git
+
+# ocdiff
+
+Fast diff library for Python - wraps [similar](https://crates.io/crates/similar).
+
+# Install/Develop
+
+```shell
+uv pip install -e '.[dev]'
+maturin develop
+```
+
+# Make release
+
+- Add pypi token and user = `__token__` to settings (do this once).
+- Upversion `pyproject.toml`.
+
+```shell
+git tag -a v0.0.x head -m v0.0.x
+git push origin v0.0.x
+```
+
+# TODO
+
+- Implement `column_limit` - should just be a function of `Vec<LinePartsDiff>` to `Vec<LinePartsDiff>`.
+- Add console output with colours.
+- Add pytest plugin magic that plays with `rich`.
+
