@@ -1,0 +1,85 @@
+{#- value in hex format #}
+{% macro literal(reset, width) %}
+{{ "0x%0{w}x".format(w=width // 4) % reset }}
+{%- endmacro %}
+{#- sw access #}
+{% macro access(bf) %}
+<spirit:access>{%- if bf.access.startswith('ro') %}
+read-only
+{%- elif bf.access.startswith('wo') %}
+write-only
+{%- else %}
+read-write
+{%- endif %}</spirit:access>
+{%- endmacro %}
+{#- read / write modify #}
+{% macro rw_mod(bf) %}
+{% if bf.access == 'rw1c' %}
+            <spirit:modifiedWriteValues>oneToClear</spirit:modifiedWriteValues>
+{% elif bf.access == '1s' %}
+            <spirit:modifiedWriteValues>oneToSet</spirit:modifiedWriteValues>
+{% elif bf.access in ['roc', 'rolh'] %}
+            <spirit:readAction>clear</spirit:readAction>
+{% elif bf.access == 'roll' %}
+            <spirit:readAction>set</spirit:readAction>
+{% endif -%}
+{% endmacro %}
+<?xml version="1.0" encoding="utf-8"?>
+<spirit:component xmlns:spirit="http://www.spiritconsortium.org/XMLSchema/SPIRIT/1.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <spirit:vendor>{{ vendor }}</spirit:vendor>
+  <spirit:library>{{ library }}</spirit:library>
+  <spirit:name>{{ component_name }}</spirit:name>
+  <spirit:version>{{ version }}</spirit:version>
+  <spirit:memoryMaps>
+    <spirit:memoryMap>
+      <spirit:name>{{ memorymap_name }}</spirit:name>
+      <spirit:addressBlock>
+        {% set min_offset = (rmap | map(attribute='address') | sort)[0] %}
+        {% set max_offset = (rmap | map(attribute='address') | sort)[-1] %}
+        <spirit:name>{{ addressblock_name }}</spirit:name>
+        <spirit:description>{{ description }}</spirit:description>
+        <spirit:baseAddress>{{ literal(config.base_address, config.address_width) }}</spirit:baseAddress>
+        <spirit:range>{{ '0x%x' % (max_offset - min_offset + config.data_width / config.address_width) | int }}</spirit:range>
+        <spirit:width>{{ config.data_width }}</spirit:width>
+{% for reg in rmap %}
+        <spirit:register>
+          <spirit:name>{{ reg.name }}</spirit:name>
+{% if reg.description %}
+          <spirit:description>{{ reg.description }}</spirit:description>
+{% endif %}
+          <spirit:addressOffset>{{ literal(reg.address, config.address_width) }}</spirit:addressOffset>
+          <spirit:size>{{ config.data_width }}</spirit:size>
+          <spirit:reset>
+            <spirit:value>{{ literal(reg.reset, config.data_width) }}</spirit:value>
+          </spirit:reset>
+{% for bf in reg.bitfields %}
+          <spirit:field>
+            <spirit:name>{{ bf.name }}</spirit:name>
+{% if bf.description %}
+            <spirit:description>{{ bf.description }}</spirit:description>
+{% endif %}
+            <spirit:bitOffset>{{ bf.lsb }}</spirit:bitOffset>
+            <spirit:bitWidth>{{ bf.msb - bf.lsb + 1 }}</spirit:bitWidth>
+            {{ access(bf) -}}
+{{ rw_mod(bf) }}
+{% if bf.enums %}
+            <spirit:enumeratedValues>
+{% for enum in bf.enums %}
+              <spirit:enumeratedValue>
+                <spirit:name>{{ enum.name }}</spirit:name>
+{% if enum.description %}
+                <spirit:description>{{ enum.description }}</spirit:description>
+{% endif %}
+                <spirit:value>{{ enum.value }}</spirit:value>
+              </spirit:enumeratedValue>
+{% endfor %}
+            </spirit:enumeratedValues>
+{% endif %}
+          </spirit:field>
+{% endfor %}
+        </spirit:register>
+{% endfor %}
+      </spirit:addressBlock>
+    </spirit:memoryMap>
+  </spirit:memoryMaps>
+</spirit:component>

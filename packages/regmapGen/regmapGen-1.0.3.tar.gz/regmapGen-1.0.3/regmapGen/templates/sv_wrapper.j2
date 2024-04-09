@@ -1,0 +1,210 @@
+{# MACRO #}
+
+{#- signal: csr for rdata bus #}
+{% macro sig_rdata(reg) %}
+{{ reg.name.lower() }}_rdata
+{%- endmacro %}
+
+{#- port: bitfield output #}
+{% macro port_bf_out(reg, bf) %}
+{{ reg.name.lower() }}_{{ bf.name.lower() }}_out
+{%- endmacro %}
+
+{#- port: bitfield input  #}
+{% macro port_bf_in(reg, bf) %}
+{{ reg.name.lower() }}_{{ bf.name.lower() }}_in
+{%- endmacro %}
+
+{#- port: bitfield input enable #}
+{% macro port_bf_en(reg, bf) %}
+{{ reg.name.lower() }}_{{ bf.name.lower() }}_en
+{%- endmacro %}
+
+{#- port: bitfield clear enable #}
+{% macro port_bf_clr(reg, bf) %}
+{{ reg.name.lower() }}_{{ bf.name.lower() }}_clr
+{%- endmacro %}
+
+{#- port: bitfield set enable #}
+{% macro port_bf_set(reg, bf) %}
+{{ reg.name.lower() }}_{{ bf.name.lower() }}_set
+{%- endmacro %}
+
+{#- port: bitfield read enable #}
+{% macro port_bf_ren(reg, bf) %}
+{{ reg.name.lower() }}_{{ bf.name.lower() }}_ren
+{%- endmacro %}
+
+{#- port: bitfield read valid #}
+{% macro port_bf_rvalid(reg, bf) %}
+{{ reg.name.lower() }}_{{ bf.name.lower() }}_rvalid
+{%- endmacro %}
+
+{#- port: bitfield write enable #}
+{% macro port_bf_wen(reg, bf) %}
+{{ reg.name.lower() }}_{{ bf.name.lower() }}_wen
+{%- endmacro %}
+
+{#- port: bitfield write ready #}
+{% macro port_bf_wready(reg, bf) %}
+{{ reg.name.lower() }}_{{ bf.name.lower() }}_wready
+{%- endmacro %}
+
+{#- signal: bitfield registered read valid #}
+{% macro sig_bf_rvalid_ff(reg, bf) %}
+{{ reg.name.lower() }}_{{ bf.name.lower() }}_rvalid_ff
+{%- endmacro %}
+
+{#- signal: bitfield flip-flops #}
+{% macro sig_bf_ff(reg, bf) %}
+{{ reg.name.lower() }}_{{ bf.name.lower() }}_ff
+{%- endmacro %}
+
+{#- port: bitfield read access strobe #}
+{% macro port_bf_raccess(reg, bf) %}
+{{ reg.name.lower() }}_{{ bf.name.lower() }}_raccess
+{%- endmacro %}
+
+{#- port: bitfield write access strobe #}
+{% macro port_bf_waccess(reg, bf) %}
+{{ reg.name.lower() }}_{{ bf.name.lower() }}_waccess
+{%- endmacro %}
+
+{#- port: bitfield lock signal #}
+{% macro port_bf_lock(reg, bf) %}
+{{ reg.name.lower() }}_{{ bf.name.lower() }}_lock
+{%- endmacro %}
+
+{#- signal: register read enable #}
+{% macro sig_ren(reg) %}
+{{ reg.name.lower() }}_ren
+{%- endmacro %}
+
+{#- signal: register read enable registered #}
+{% macro sig_ren_ff(reg) %}
+{{ reg.name.lower() }}_ren_ff
+{%- endmacro %}
+
+{#- signal: register write enable #}
+{% macro sig_wen(reg) %}
+{{ reg.name.lower() }}_wen
+{%- endmacro %}
+
+{#- TEMPLATE NAMESPACE #}
+{% set tmp = namespace() %}
+{% from "amm2lb_sv.j2" import amm_core with context %}
+{% from "axil2lb_sv.j2" import axil_core with context %}
+{% from "apb2lb_sv.j2" import apb_core with context %}
+{% from "spi2lb_sv.j2" import spi_core with context %}
+
+{#- TEMPLATE #}
+// Created with regmapGen v{{ regmapGen_ver }}
+
+{{ module_name }} {{ module_name }}_wrapper(
+    // System
+    .clk(clk),
+    .rst(rst),
+
+{% for reg in rmap %}
+    {% for bf in reg %}
+    // {{ reg.name }}.{{ bf.name }}
+        {% if 'a' in bf.hardware %}
+            {% if 'i' in bf.hardware %}
+    .{{ port_bf_raccess(reg, bf) }}({{ port_bf_raccess(reg, bf) }}),
+            {% endif %}
+            {% if 'o' in bf.hardware %}
+    .{{ port_bf_waccess(reg, bf) }}({{ port_bf_waccess(reg, bf) }}),
+            {% endif %}
+        {% endif %}
+        {% if 'l' in bf.hardware %}
+    .{{ port_bf_lock(reg, bf) }}({{ port_bf_lock(reg, bf) }}),
+        {% endif %}
+        {% if 'e' in bf.hardware %}
+    .{{ port_bf_en(reg, bf) }}({{ port_bf_en(reg, bf) }}),
+        {% endif %}
+        {% if 'c' in bf.hardware %}
+    .{{ port_bf_clr(reg, bf) }}({{ port_bf_clr(reg, bf) }}),
+        {% endif %}
+        {% if 's' in bf.hardware %}
+    .{{ port_bf_set(reg, bf) }}({{ port_bf_set(reg, bf) }}),
+        {% endif %}
+        {% if 'q' in bf.hardware and 'r' in bf.access %}
+    .{{ port_bf_rvalid(reg, bf) }}({{ port_bf_rvalid(reg, bf) }}),
+    .{{ port_bf_ren(reg, bf) }}({{ port_bf_ren(reg, bf) }}),
+    .{{ port_bf_in(reg, bf) }}({{ port_bf_in(reg, bf) }}),
+        {% endif %}
+        {% if 'i' in bf.hardware %}
+    .{{ port_bf_in(reg, bf) }}({{ port_bf_in(reg, bf) }}),
+        {% endif %}
+        {% if 'o' in bf.hardware %}
+    .{{ port_bf_out(reg, bf) }}({{ port_bf_out(reg, bf) }}),
+        {% endif %}
+        {% if 'q' in bf.hardware and  'w' in bf.access %}
+    .{{ port_bf_out(reg, bf) }}({{ port_bf_out(reg, bf) }}),
+    .{{ port_bf_wready(reg, bf) }}({{ port_bf_wready(reg, bf) }}),
+    .{{ port_bf_wen(reg, bf) }}({{ port_bf_wen(reg, bf) }}),
+        {% endif %}
+    {% endfor %}
+
+{% endfor %}
+{% if interface == 'apb' %}
+    // APB interface
+    .psel(psel),
+    .paddr(paddr),
+    .penable(penable),
+    .pwrite(pwrite),
+    .pwdata(pwdata),
+    .pstrb(pstrb),
+    .prdata(prdata),
+    .pready(pready),
+    .pslverr(pslverr)
+{% elif interface == 'axil' %}
+    // AXI interface
+    .axil_awaddr(axil_awaddr),
+    .axil_awprot(axil_awprot),
+    .axil_awvalid(axil_awvalid),
+    .axil_awready(axil_awready),
+    .axil_wdata(axil_wdata),
+    .axil_wstrb(axil_wstrb),
+    .axil_wvalid(axil_wvalid),
+    .axil_wready(axil_wready),
+    .axil_bresp(axil_bresp),
+    .axil_bvalid(axil_bvalid),
+    .axil_bready(axil_bready),
+    .axil_araddr(axil_araddr),
+    .axil_arprot(axil_arprot),
+    .axil_arvalid(axil_arvalid),
+    .axil_arready(axil_arready),
+    .axil_rdata(axil_rdata),
+    .axil_rresp(axil_rresp),
+    .axil_rvalid(axil_rvalid),
+    .axil_rready(axil_rready)
+{% elif interface == 'amm' %}
+    // Avalon-MM interface
+    .address(address),
+    .read(read),
+    .readdata(readdata),
+    .readdatavalid(readdatavalidv),
+    .byteenable(byteenable),
+    .write(write),
+    .writedata(writedata),
+    .waitrequest(waitrequest)
+{% elif interface == 'spi' %}
+    // SPI interface
+    .spi_sck(spi_sck),
+    .spi_cs_n(spi_cs_n),
+    .spi_mosi(spi_mosi),
+    .spi_miso(spi_miso)
+{% else %}
+    // Local Bus
+    .waddr(waddr),
+    .wdata(wdata),
+    .wen(wen),
+    .wstrb(wstrb),
+    .wready(wready),
+    .raddr(raddr),
+    .ren(ren),
+    .rdata(rdata),
+    .rvalid(rvalid)
+{% endif %}
+    );
