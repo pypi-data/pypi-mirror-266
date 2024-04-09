@@ -1,0 +1,52 @@
+Metadata-Version: 2.3
+Name: volcano-base
+Version: 1.8.4
+Summary: Download, find and manipulate volcano and climate related time series
+Author-email: engeir <engeir@pm.me>
+License-Expression: MIT
+License-File: LICENSE
+Requires-Python: >=3.12
+Requires-Dist: beautifulsoup4>=4.12.3
+Requires-Dist: cftime>=1.6.3
+Requires-Dist: dask>=2024.2.0
+Requires-Dist: datetime>=5.4
+Requires-Dist: h5netcdf>=1.3.0
+Requires-Dist: matplotlib>=3.8.3
+Requires-Dist: numpy>=1.26.4
+Requires-Dist: pydantic>=2.6.2
+Requires-Dist: requests>=2.31.0
+Requires-Dist: returns>=0.22.0
+Requires-Dist: rich>=13.7.0
+Requires-Dist: scipy>=1.12.0
+Requires-Dist: xarray>=2024.1.1
+Description-Content-Type: text/markdown
+
+# Core module for volcanic eruption simulation projects
+
+<sup>Latest version: v1.8.4</sup> <!-- x-release-please-version -->
+
+> [!WARNING]
+>
+> This README reflects the changes made to the main branch. For the most up to date
+> documentation about the version you are using, see the README at the relevant tag.
+
+This repository contains the core elements used across several independent volcanic
+eruption studies. This include strategies for downloading necessary data, loading data
+from files and doing simple general manipulations to the time series.
+
+## Install
+
+This project is published to [pypi](https://pypi.org). Install with you preferred
+package manager, for example using `pip`:
+
+```bash
+pip install volcano-base
+```
+
+## Usage
+
+The available modules are:
+
+- `down` (download datasets)
+- `load` (find and load local files)
+- `manipulate` (make changes to time series)
