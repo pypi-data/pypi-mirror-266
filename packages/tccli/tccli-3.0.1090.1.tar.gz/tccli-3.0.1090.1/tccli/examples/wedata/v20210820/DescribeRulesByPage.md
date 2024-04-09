@@ -1,0 +1,161 @@
+**Example 1: 分页查询质量规则**
+
+
+
+Input: 
+
+```
+tccli wedata DescribeRulesByPage --cli-unfold-argument  \
+    --PageNumber 1 \
+    --PageSize 1 \
+    --Filters.0.Name tableId \
+    --Filters.0.Values 79tugiojbhkrfvdesc \
+    --OrderFields.0.Name id \
+    --OrderFields.0.Direction asc \
+    --ProjectId 5346789087654
+```
+
+Output: 
+```
+{
+    "Response": {
+        "Data": {
+            "TotalCount": 1,
+            "Items": [
+                {
+                    "RuleId": 1,
+                    "RuleGroupId": 1,
+                    "TableId": "79tyugihbksda",
+                    "Name": "规则",
+                    "Type": 1,
+                    "RuleTemplateId": 1,
+                    "RuleTemplateContent": "cont",
+                    "QualityDim": 1,
+                    "SourceObjectType": 1,
+                    "SourceObjectDataType": 1,
+                    "SourceObjectDataTypeName": "string",
+                    "SourceObjectValue": "1",
+                    "ConditionType": 1,
+                    "ConditionExpression": ">",
+                    "CustomSql": "abc",
+                    "CompareRule": {
+                        "Items": [
+                            {
+                                "CompareType": 1,
+                                "Operator": ">",
+                                "ValueComputeType": 1,
+                                "ValueList": [
+                                    {
+                                        "ValueType": 1,
+                                        "Value": "1"
+                                    }
+                                ]
+                            }
+                        ],
+                        "CycleStep": 1,
+                        "ComputeExpression": "expr"
+                    },
+                    "AlarmLevel": 1,
+                    "Description": "描述",
+                    "Operator": "zhangsan",
+                    "TargetDatabaseId": "70afsdfaasdgrthy8tyighb",
+                    "TargetDatabaseName": "dbName",
+                    "TargetTableId": "8y9uhojt79u",
+                    "TargetTableName": "test",
+                    "TargetConditionExpr": "expr",
+                    "RelConditionExpr": "expr",
+                    "FieldConfig": {
+                        "WhereConfig": [
+                            {
+                                "FieldKey": "name",
+                                "FieldValue": "zhangsan",
+                                "FieldDataType": "string"
+                            }
+                        ],
+                        "TableConfig": [
+                            {
+                                "DatabaseId": "7p9gyuih78tgy",
+                                "DatabaseName": "dbTest",
+                                "TableId": "7t8ygihb8t670ygo",
+                                "TableName": "test",
+                                "TableKey": "asdfsdf",
+                                "FieldConfig": [
+                                    {
+                                        "FieldKey": "id",
+                                        "FieldValue": "12",
+                                        "FieldDataType": "int"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "MultiSourceFlag": true,
+                    "WhereFlag": true,
+                    "TemplateSql": "select1",
+                    "SubQualityDim": 1,
+                    "TargetObjectType": 1,
+                    "TargetObjectDataType": 1,
+                    "TargetObjectDataTypeName": "int",
+                    "TargetObjectValue": "1",
+                    "SourceEngineTypes": [
+                        1
+                    ],
+                    "TableName": "test",
+                    "TableOwnerName": "zhangsan",
+                    "ExecStrategy": {
+                        "RuleGroupId": 1,
+                        "MonitorType": 1,
+                        "ExecQueue": "test",
+                        "ExecutorGroupId": "6578987685",
+                        "ExecutorGroupName": "name",
+                        "Tasks": [
+                            {
+                                "TaskId": "576890867",
+                                "TaskName": "任务名",
+                                "WorkflowId": "79tyughib87yu9"
+                            }
+                        ],
+                        "StartTime": "2023-10-01",
+                        "EndTime": "2023-10-01",
+                        "CycleType": "abc",
+                        "DelayTime": 1,
+                        "CycleStep": 1,
+                        "TaskAction": "abc",
+                        "ExecEngineType": "abc",
+                        "ExecPlan": "abc",
+                        "RuleId": 1,
+                        "RuleName": "规则1"
+                    },
+                    "Subscription": {
+                        "RuleGroupId": 1,
+                        "Receivers": [
+                            {
+                                "ReceiverUserId": 1,
+                                "ReceiverName": "zhangsan"
+                            }
+                        ],
+                        "SubscribeType": [
+                            1
+                        ],
+                        "WebHooks": [
+                            {
+                                "HookType": "1",
+                                "HookAddress": "www.baidu.com"
+                            }
+                        ],
+                        "RuleId": 1,
+                        "RuleName": "规则1"
+                    },
+                    "CreateTime": "2023-10-01",
+                    "DatasourceId": 1,
+                    "DatabaseId": "abc",
+                    "MonitorStatus": 0,
+                    "TriggerCondition": "abc"
+                }
+            ]
+        },
+        "RequestId": "0ff4e8ae-ebea-4a41-8aa2-1f6bc4b68e69"
+    }
+}
+```
+
