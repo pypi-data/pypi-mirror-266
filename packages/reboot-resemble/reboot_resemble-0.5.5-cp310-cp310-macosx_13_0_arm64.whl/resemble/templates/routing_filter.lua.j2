@@ -1,0 +1,78 @@
+function envoy_on_request(request_handle)
+  -- Lua code generated from `routing_filter.lua.j2` template.
+  -- This follows internet wisdom, most notably:
+  --   https://medium.com/gojekengineering/how-not-to-write-an-envoy-lua-filter-51eeec71e9f0
+  -- And from that, most notably:
+  --   * We never use global (= not-explicitly-`local`) variables.
+  --   * We operate only on headers, and avoid reading the whole body of the request.
+  --   * We log only in case of errors.
+  --   * We do not hold references to anything returned by the `request_handle`.
+  -- Follows the following hardcoded (generated) routing table.
+  local consensus_routing_map = {
+{% for application_id in consensuses | map(attribute='application_id') | unique %}
+    ["{{ application_id }}"] = {
+{% for consensus in consensuses | selectattr('application_id', 'equalto', application_id) -%}
+{% for service_name in consensus.service_names %}
+        ["{{ service_name }}"] = "{{ consensus.id }}",
+{% endfor %}
+{% endfor %}
+    },
+{% endfor %}
+  }
+
+  {{ mangled_http_path_filter | indent(2) }}
+
+  local application_id = request_handle:headers():get("x-resemble-application-id")
+  if application_id == nil then
+     -- HTTP/2 mandate use of 'authority' header, but to be
+     -- conservative if it's not present we look for 'host'.
+     local authority = request_handle:headers():get(":authority")
+     if authority == nil then
+       authority = request_handle:headers():get(":host")
+     end
+
+     -- NOTE: relying on `split()` from 'mangled_http_path_filter'
+     -- which we embed above.
+     local values = split(authority, ".")
+
+     -- We expect an application ID as the prefix, but it's not easy
+     -- to determine if someone forgot to send it. At the very least
+     -- we error out if we get something like 'localhost' by ensuring
+     -- our `split()` returned at least two values.
+     if #values < 2 then
+        print("Unable to determine application ID from authority/host: " .. authority)
+        request_handle:respond(
+          {[":status"] = "400"},
+          "ERROR: Unable to determine application ID from authority/host")
+     end
+
+     application_id = values[1]
+     request_handle:headers():replace("x-resemble-application-id", application_id)
+  end
+
+  local service_name = request_handle:headers():get("x-resemble-service-name")
+  if service_name == nil then
+    print("Missing x-resemble-service-name")
+    request_handle:respond(
+      {[":status"] = "400"},
+      "ERROR: Missing required x-resemble-service-name header")
+  else
+    local application_services = consensus_routing_map[application_id]
+    if application_services == nil then
+      print("Unknown x-resemble-application-id: " .. application_id)
+      request_handle:respond(
+        {[":status"] = "400"},
+        "ERROR: Invalid value " .. application_id .. " for x-resemble-application-id header")
+    else
+      local consensus_id = application_services[service_name]
+      if consensus_id == nil then
+        print("Unknown x-resemble-service-name: " .. service_name)
+        request_handle:respond(
+          {[":status"] = "400"},
+          "ERROR: Invalid value " .. service_name .. " for x-resemble-service-name header")
+      else
+        request_handle:headers():replace("x-resemble-consensus-id", consensus_id)
+      end
+    end
+  end
+end
