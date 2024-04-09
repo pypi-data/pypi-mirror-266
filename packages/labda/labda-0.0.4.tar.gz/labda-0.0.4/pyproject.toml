@@ -1,0 +1,54 @@
+[tool.poetry]
+name = "labda"
+version = "0.0.4"
+description = "Library for Advanced Behavioural Data Analysis"
+authors = ["Josef Heidler <jheidler@health.sdu.dk>"]
+maintainers = ["Josef Heidler <jheidler@health.sdu.dk>"]
+
+readme = "README.md"
+license = "	CC-BY-SA-4.0"
+homepage = "https://labda.josefheidler.cz"
+repository = "https://github.com/josefheidler/labda"
+documentation = "https://labda.josefheidler.cz"
+
+keywords = ["analysis", "health", "behaviour", "data", "spatial", "temporal"]
+
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Environment :: Console",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
+]
+
+packages = [{ include = "labda" }]
+include = ["CHANGELOG.md"]
+
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pandas = "^2.2.0"
+geopandas = "^0.14.2"
+timezonefinder = "^6.2.0"
+pyarrow = "^15.0.0"
+pandera = "^0.18.0"
+openpyxl = "^3.1.2"
+sqlalchemy = "^2.0.25"
+pydeck = "^0.8.0"
+loguru = "^0.7.2"
+
+
+[tool.poetry.group.dev.dependencies]
+mkdocs-material = "^9.5.6"
+mkdocstrings = "^0.24.0"
+scikit-learn = "^1.4.0"
+resampy = "^0.4.2"         # Remove after Axivity CWA/CSV parser and RAW to counts conversion is implemented
+
+[tool.poetry.group.jupyter.dependencies]
+ipykernel = "^6.29.0"
+nbformat = "^5.9.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
