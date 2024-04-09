@@ -1,0 +1,44 @@
+Metadata-Version: 2.1
+Name: sat-toolkit
+Version: 0.4.2
+Summary: Tool for manipulating CNF formulas
+Home-page: https://github.com/fanosta/sat_toolkit
+Author: Marcel Nageler
+Author-email: marcel.nageler@iaik.tugraz.at
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: POSIX :: Linux
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy >=1.21
+
+# SAT-toolkit
+A tool for efficiently handling CNF and DNF formulas in Python
+
+## Installation
+
+To install from pypi use:
+```bash
+pip install sat-toolkit
+```
+
+To simplify CNFs and convert DNFs to CNFs, you need to compile
+[espresso](https://github.com/classabbyamp/espresso-logic) and make it
+available on inside your $PATH.
+
+
+## Usage Example
+
+The following example shows how to create a minified CNF for a boolean function that is true at values 0, 6, 9, and 15.
+
+```python
+from sat_toolkit.formula import CNF, Truthtable
+import numpy as np
+
+table = np.zeros(16, int)
+table[[0, 6, 9, 15]] = 1
+
+tt = Truthtable.from_lut(table)
+cnf = tt.to_cnf()
+print(cnf)
+```
