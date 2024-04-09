@@ -1,0 +1,13 @@
+include CITATION.cff
+include LICENSE
+include README.md
+include requirements.txt
+
+exclude .codecov.yml
+exclude .pre-commit-config.yaml
+
+graft brainglobe_atlasapi *.py
+
+prune tests
+prune tutorials
+prune brainglobe_atlasapi/atlas_generation/atlas_scripts/*

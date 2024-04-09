@@ -1,0 +1,114 @@
+[project]
+name = "brainglobe-atlasapi"
+description = "A lightweight python module to interact with and generate atlases for systems neuroscience."
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Luigi Petrucco, Federico Claudi, Adam Tyson", email = "code@adamltyson.com" },
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.9",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "brainglobe-space >= 1.0.0",
+    "click",
+    "loguru",
+    "meshio",
+    "numpy",
+    "pandas",
+    "pyarrow",
+    "PyMCubes",
+    "requests",
+    "rich >= 9.0.0",
+    "SimpleITK",
+    "tifffile",
+    "tqdm>=4.46.1",
+    "treelib",
+    "vedo",
+    "xmltodict",
+    "scikit-image",
+]
+dynamic = ["version"]
+
+[project.urls]
+"Homepage" = "https://brainglobe.info/documentation/brainglobe-atlasapi/index.html"
+"Source Code" = "https://github.com/brainglobe/brainglobe-atlasapi"
+"Bug Tracker" = "https://github.com/brainglobe/brainglobe-atlasapi/issues"
+"Documentation" = "https://brainglobe.info/documentation/brainglobe-atlasapi/index.html"
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "check-manifest",
+    "coverage",
+    "mypy",
+    "pre-commit",
+    "pytest-cov",
+    "pytest-mock",
+    "pytest",
+    "ruff",
+    "setuptools_scm",
+    "tox",
+]
+
+allenmouse = ["allensdk"]
+
+
+[project.scripts]
+brainglobe = "brainglobe_atlasapi.cli:bg_cli"
+
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["brainglobe_atlasapi*"]
+exclude = ["tests*"]
+
+[tool.pytest.ini_options]
+addopts = "--cov=brainglobe_atlasapi"
+filterwarnings = ["error"]
+markers = ["slow: marks tests as slow (deselect with '-m \"not slow\"')"]
+
+[tool.black]
+target-version = ['py39', 'py310', 'py311']
+skip-string-normalization = false
+line-length = 79
+
+[tool.setuptools_scm]
+
+[tool.ruff]
+line-length = 79
+exclude = ["__init__.py", "build", ".eggs"]
+fix = true
+
+[tool.ruff.lint]
+select = ["I", "E", "F"]
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = py{39,310,311}
+
+[gh-actions]
+python =
+    3.9: py39
+    3.10: py310
+    3.11: py311
+
+[testenv]
+extras =
+    dev
+commands = pytest -v --color=yes --cov=brainglobe_atlasapi --cov-report=xml
+"""
