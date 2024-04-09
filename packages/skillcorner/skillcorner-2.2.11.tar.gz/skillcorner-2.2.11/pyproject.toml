@@ -1,0 +1,48 @@
+[tool.poetry]
+name = "skillcorner"
+version = "2.2.11"
+description = "Python client for interact with SkillCorner API"
+homepage = "https://skillcorner.com/"
+repository = "https://gitlab.com/public-corner/skillcorner"
+documentation = "https://skillcorner.readthedocs.io/en/latest/"
+authors = ["Skillcorner"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+fitrequest = ">=0.7.0,<0.8.0"
+orjson = "^3.9.10"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.3.0"
+pre-commit = ">=2.21.0,<2.22.0"
+
+[tool.poetry.group.docs.dependencies]
+sphinx = "^7.1.2"
+sphinx-book-theme = "*"
+
+[tool.poetry.group.test.dependencies]
+coverage = "^7.2.7"
+pytest = "^7.4.0"
+requests-mock = "^1.11.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+fix = true
+line-length = 120
+lint.select = ["B", "E", "F", "I001", "Q", "SIM", "UP", "W"]
+target-version = "py38"
+
+[tool.ruff.lint.flake8-quotes]
+inline-quotes = "single"
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-wrap-aliases = true
