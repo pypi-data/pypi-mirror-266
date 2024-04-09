@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0b255b"],{2458:function(e,n){FullCalendar.globalLocales.push(function(){"use strict";var e={code:"ru",week:{dow:1,doy:4},buttonText:{prev:"Пред",next:"След",today:"Сегодня",month:"Месяц",week:"Неделя",day:"День",list:"Повестка дня"},weekText:"Нед",allDayText:"Весь день",moreLinkText:function(e){return"+ ещё "+e},noEventsText:"Нет событий для отображения"};return e}())}}]);
+//# sourceMappingURL=chunk-2d0b255b.1f099761.js.map
