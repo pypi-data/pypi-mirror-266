@@ -1,0 +1,39 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "mvmlib"
+authors = [{name = "Khalil Al Handawi", email = "khalil.alhandawi@mail.mcgill.ca"}]
+
+requires-python = ">=3.8"
+dynamic = ['version', 'description']
+
+dependencies = [
+    "matplotlib<=3.8.4",
+    "pyDOE2<=1.3.0",
+    "scikit-fuzzy<=0.4.2",
+    "smt<=1.3.0",
+    "multiprocess<=0.70.16"
+]
+
+[tool.flit.module]
+name = "mvm"
+
+[project.optional-dependencies]
+test = [
+    "pytest>=6.2.5",
+    "pytest-cov==3.0.0",
+    "pytest-dependency==0.5.1",
+    "pandoc"
+]
+doc = [
+    "sphinx",
+    "sphinx-autobuild",
+    "sphinx-rtd-theme",
+    "nbsphinx",
+    "sphinx-copybutton"
+]
+
+[project.urls]
+Source = "https://github.com/sed-group/mvmlib"
