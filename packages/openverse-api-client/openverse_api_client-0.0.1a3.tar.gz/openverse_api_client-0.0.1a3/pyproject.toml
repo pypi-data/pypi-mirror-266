@@ -1,0 +1,107 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "openverse-api-client"
+dynamic = ["version"]
+description = 'Python client for the Openverse API'
+readme = "README.rst"
+requires-python = ">=3.8"
+keywords = []
+authors = [
+  { name = "sarayourfriend", email = "git@sarayourfriend.pictures" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+  "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+]
+dependencies = [
+  "httpx",
+  "typing_extensions",
+]
+
+[project.optional-dependencies]
+generator = [
+  "Jinja2",
+]
+
+[project.license]
+file = "LICENSE"
+
+[project.urls]
+Homepage = "https://sr.ht/~sara/openverse-api-client/#openverse-api-client"
+Documentation = "https://git.sr.ht/~sara/openverse-api-client#readme"
+Issues = "https://todo.sr.ht/~sara/openverse-api-client"
+Source = "https://git.sr.ht/~sara/openverse-api-client"
+
+[project.scripts]
+generate-openverse-api-client = "openverse_api_client._generate:generate_cli"
+
+[tool.hatch.version]
+path = "src/openverse_api_client/__about__.py"
+
+[tool.hatch.build.targets.sdist]
+packages = ["src/openverse_api_client"]
+artifacts = ["*client.py"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/openverse_api_client"]
+artifacts = ["*client.py"]
+
+[tool.hatch.envs.default]
+dependencies = [
+  "coverage[toml]>=6.5",
+  "mypy>=1.0.0",
+  "pytest",
+  "pytest-asyncio",
+  "pytest-pook",
+  "pook",
+  "pre-commit",
+]
+features = ["generator"]
+[tool.hatch.envs.default.scripts]
+generate = "generate-openverse-api-client {args}"
+test = "pytest {args:tests}"
+test-cov = "coverage run -m pytest {args:tests}"
+cov-report = [
+  "- coverage combine",
+  "coverage report",
+]
+cov = [
+  "test-cov",
+  "cov-report",
+]
+lint-install = "pre-commit install"
+lint = "pre-commit run --all-files"
+types = "mypy --install-types --non-interactive {args:src/openverse_api_client tests}"
+
+[[tool.hatch.envs.all.matrix]]
+python = ["3.8", "3.9", "3.10", "3.11", "3.12", "pypy3.11"]
+
+[tool.coverage.run]
+source_pkgs = ["openverse_api_client", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/openverse_api_client/__about__.py",
+]
+
+[tool.coverage.paths]
+openverse_api_client = ["src/openverse_api_client", "*/openverse-api-client/src/openverse_api_client"]
+tests = ["tests", "*/openverse-api-client/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
