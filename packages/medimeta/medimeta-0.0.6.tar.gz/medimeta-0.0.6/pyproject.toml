@@ -1,0 +1,42 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "medimeta"
+version = "0.0.6"
+authors = [
+    { name="Stefano Woerner", email="stefano@woerner.eu" },
+]
+description = "Library for using the MedIMeta dataset"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "h5py>=3.8.0",
+    "numpy>=1.24.3",
+    "torch>=2.0.0",
+    "PyYAML>=6.0",
+    "Pillow>=9.5.0",
+    "torchvision>=0.15.1",
+    "torchcross>=0.0.6",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/StefanoWoerner/medimeta-pytorch"
+"Issue Tracker" = "https://github.com/StefanoWoerner/medimeta-pytorch/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["medimeta"]
