@@ -1,0 +1,17 @@
+#!python
+
+import jsii
+import sys
+import os
+
+if "JSII_RUNTIME_PACKAGE_CACHE" not in os.environ:
+    os.environ["JSII_RUNTIME_PACKAGE_CACHE"] = "disabled"
+
+__jsii_assembly__ = jsii.JSIIAssembly.load(
+    "@packyak/aws-cdk", "0.4.26", "packyak_aws_cdk", "aws-cdk@0.4.26.jsii.tgz"
+)
+
+exit_code = __jsii_assembly__.invokeBinScript(
+    "@packyak/aws-cdk", "packyak", sys.argv[1:]
+)
+exit(exit_code)
