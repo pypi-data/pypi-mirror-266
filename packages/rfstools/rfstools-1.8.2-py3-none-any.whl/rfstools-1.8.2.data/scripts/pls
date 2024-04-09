@@ -1,0 +1,193 @@
+#!python
+from _rfstools import arg_parser, arg_processor
+import logging
+
+import os.path
+import stat
+
+import texttable
+import datetime
+
+
+def get_instance():
+  p = arg_parser.oneplus_arg_parser(wildcard_skipper=True,
+    description='This command list a given remote folder, or returns a file name, if it is not a folder. By default, no symlinks are dereferenced.')
+
+  p.add('-p', '--prepend-dirname', action='store_true', help='Enables prepending dirnames (+ r:) to the output.')
+  p.add('-d', '--directory', action='store_true', help='List directories themself, not their content.')
+  p.add('-l', '--long-format', action='store_true', help='Use long listing format. Not implemented yet.')
+
+  p.add('--sort', help="Sort by time/size. eg. --sort=time. Not implemented yet.")
+  p.add('-r', '--reverse', action='store_true', help="Reverse order while sorting. Not implemented yet.")
+  p.add('--time-style', help="Eather standard, fulliso or timestamp. Not implemented yet.")
+
+  p.add('-a', '--all', action='store_true', help='Show hidden files in listed folders including . and ..')
+  p.add('-A', '--almost-all', action='store_true', help='Show hidden files in listed folders excluding . and ..')
+
+  p.add('--dereference', action='store_true', help="Dereferences symlinks. Not implemented yet.")
+
+  return arg_processor.init(p, "pls", ["prepend_dirname", "directory", "long_format", "sort", "reverse", "time_style", "all", "almost_all", "dereference"])
+
+printed = []
+
+
+def v_print(text):
+  printed.append(text)
+  print(text)
+
+
+def finalize_printing():
+  logging.info('pls output:\n' + "\n".join(printed))
+
+
+table_rows = []
+
+def append_tableline(*args):
+  table_rows.append([*args])
+
+
+def finalize_table():
+  global table_rows
+
+  table = texttable.Texttable()
+  table.set_cols_align(['l', 'r', 'l', 'r', 'r', 'l', 'l'])
+  table.set_cols_valign(['t', 'i', 'i', 'i', 'i', 't', 't'])
+  table.set_deco(0)
+  
+  table.add_rows(table_rows, header=False)
+  table_rows = []
+  
+  v_print(table.draw())
+
+
+# In case of long_format returns size of file. Otherwise 0.
+def make_fileline(path):
+  if ic.prepend_dirname:
+    output_filename = 'r:' + path
+  
+  else:
+    dirname, basename = os.path.split(path)
+    output_filename = basename
+ 
+  if ic.long_format:
+
+    if ic.dereference:
+      st = ic.connection.stat(path)
+    else:
+      st = ic.connection.lstat(path)
+
+    mode = st.st_mode
+    filemode = stat.filemode(mode)
+    
+    raw_time = datetime.datetime.utcfromtimestamp(st.st_mtime)
+    this_year = datetime.datetime(year = datetime.date.today().year, month = 1, day = 1)
+
+    if raw_time > this_year:
+      time = raw_time.strftime('%b %d %H:%M')
+    else:
+      time = raw_time.strftime('%b %d %Y')
+
+    append_tableline(filemode, st.st_nlink, st.st_uid, st.st_gid, st.st_size, time, output_filename)
+
+    return st.st_size
+  
+  else:
+    v_print(output_filename)
+    return 0
+
+def ls(path):
+  logging.debug(f"Printing list output of remote file r:{path}.")
+
+  if ic.directory:
+    output_list = [path]
+
+  else:
+    output_list = ic.connection.xls(path)
+
+    if not (ic.almost_all or ic.all):
+      logging.debug(f"Filtring hidden files.")
+
+      swap_list = []
+      
+      for el in output_list:
+        _, basename = os.path.split(el)
+
+        if basename[0] != '.':
+          swap_list.append(el)
+
+      output_list = swap_list
+
+    elif ic.all:
+      output_list.append('.')
+      output_list.append('..')
+
+    output_list.sort()
+
+  total_size = 0
+
+  for s in output_list:
+    total_size += make_fileline(s)
+  
+  if ic.long_format:
+    if ic.connection.isdir(path):
+      v_print(f'total {total_size}')
+
+    finalize_table()
+
+
+def split_dir_nondir():
+  nondirs = []
+  dirs = []
+
+  for f in ic.files:
+    if ic.connection.isdir(f.path):
+      dirs.append(f.path)
+
+    else:   
+      nondirs.append(f.path)
+
+  return dirs, nondirs
+
+
+try:
+  with get_instance() as ic:
+
+    for f in ic.files:
+      if f.remote == False:
+        raise ValueError(f"A given file {f.path} must be remote.")
+      
+      if not ic.connection.exists(f.path):
+        raise ValueError(f"A given file {f.path} doesn't exist.")
+
+    if len(ic.files) == 0:
+      pass
+
+    elif len(ic.files) == 1 or ic.directory:
+      for f in ic.files:
+        ls(f.path)
+    
+    else:
+      dirs, nondirs = split_dir_nondir()
+
+      for nondir in nondirs:
+        ls(nondir)
+
+      for d in dirs:
+        if ic.prepend_dirname:
+          v_print('r:' + d + ':')
+
+        else:
+          dirname, basename = os.path.split(d)
+          v_print(basename + ':')
+
+        ls(d)
+
+
+except Exception: 
+  finalize_printing()
+  logging.exception("Fatal error. (returning 1)")
+  exit(1)
+ 
+finalize_printing()
+logging.info("Finished succesfully. (returning 0)")
+exit(0)
