@@ -1,0 +1,109 @@
+# Email Auth Remote
+
+Проект для интеграции МС авторизации с другими Django МС.
+
+## Как пользоваться
+
+Добавить проект в INSTALLED_APPS.
+
+```python
+# File: settings.py
+
+INSTALLED_APPS = [
+    ...
+    "email_auth_remote",
+]
+```
+
+В urlpatterns добавить include("email_auth_remote.urls") перед admin.site.urls.
+
+```python
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path("api/v1/catalog/admin/", include("email_auth_remote.urls")),
+    path("api/v1/catalog/admin/", admin.site.urls),
+]
+```
+
+Установить переменные в settings.py.
+
+```python
+# File: settings.py
+
+## defaults:
+EMAIL_AUTH_REMOTE = {
+    "JWT_AUTH_COOKIE": None,
+    "JWT_AUTH_REFRESH_COOKIE": None,
+    "JWT_AUTH_REFRESH_COOKIE_PATH": "/",
+    "JWT_AUTH_COOKIE_USE_CSRF": False,
+    "JWT_AUTH_COOKIE_ENFORCE_CSRF_ON_UNAUTHENTICATED": False,
+    "JWT_AUTH_SECURE": False,
+    "JWT_AUTH_HTTPONLY": True,
+    "JWT_AUTH_SAMESITE": "Lax",
+    "JWT_AUTH_COOKIE_DOMAIN": None,
+    "JWT_REFRESH_URL": None,
+    "ADMIN_LOGIN_URL": None,
+    "LOGOUT_URL": None,
+}
+
+## examples:
+EMAIL_AUTH_REMOTE = {
+    "JWT_AUTH_COOKIE": "jwt_access_token",
+    "JWT_AUTH_REFRESH_COOKIE": "jwt_refresh_token",
+    "JWT_AUTH_REFRESH_COOKIE_PATH": "/",
+    "JWT_AUTH_COOKIE_USE_CSRF": True,
+    "JWT_REFRESH_URL": "http://auth:8000/api/v1/auth/token/refresh/",
+    "ADMIN_LOGIN_URL": "/api/v1/auth/admin/login/",
+    "LOGOUT_URL": "http://auth:8000/api/v1/auth/logout/",
+    "JWT_AUTH_COOKIE_ENFORCE_CSRF_ON_UNAUTHENTICATED": False,
+    "JWT_AUTH_SECURE": False,
+    "JWT_AUTH_HTTPONLY": True,
+    "JWT_AUTH_SAMESITE": "Lax",
+    "JWT_AUTH_COOKIE_DOMAIN": None,
+}
+
+```
+
+Добавить класс аутентификации
+
+```python
+# File: settings.py
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "email_auth_remote.authentication.JWTStatelessCookieAuthentication",
+    ],
+}
+
+```
+
+**Важная информация:**
+При использовании библиотеки модель CustomTokenUser, полученная через request.user не будет
+сохранена в
+БД. На эту модель невозможно ссылаться через ForeignKey и тд. Сохранение в БД также невозможно.
+
+## Сборка
+
+***Необходимо только для сборки, для интеграции не надо.***
+
+Как собрать проект локально
+
+```bash
+python3 -m pip install build
+python3 -m build 
+```
+
+### Проверка собранного пакета
+
+```bash
+python3 -m pip install twine
+twine check dist/*
+```
+
+### Выкладывание проекта в PYPI
+
+```bash
+twine upload dist/*
+```
