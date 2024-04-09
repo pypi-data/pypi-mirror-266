@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dsfx"
+version = "0.2.5"
+description = "create installer packages"
+requires-python = ">=3.1"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Build Tools",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    'optioner>=1.4.1',
+    'colorama',
+    'argparse'
+]
+keywords = ['d33pster', 'pymakeself', 'makeself', 'makesfx', 'dsfx', 'pythonsfx']
+readme = {file = "README.md", content-type = "text/markdown"}
+license = { file = "LICENSE" }
+authors = [
+    {name = "Soumyo Deep Gupta", email = "deep.main.ac@gmail.com"}
+]
+maintainers = [
+    {name = "Soumyo Deep Gupta", email = "deep.main.ac@gmail.com"}
+]
+
+[project.scripts]
+dsfx = 'dsfx.dsfx:cli'
+
+[project.urls]
+GitHub = 'https://github.com/d33pster/dsfx'
+Issues = 'https://github.com/d33pster/dsfx/issues'
+Documentation = 'https://d33pster.github.io/dsfx/'

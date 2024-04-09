@@ -1,0 +1,194 @@
+Metadata-Version: 2.1
+Name: dsfx
+Version: 0.2.5
+Summary: create installer packages
+Author-email: Soumyo Deep Gupta <deep.main.ac@gmail.com>
+Maintainer-email: Soumyo Deep Gupta <deep.main.ac@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2024 Soumyo Deep Gupta
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: GitHub, https://github.com/d33pster/dsfx
+Project-URL: Issues, https://github.com/d33pster/dsfx/issues
+Project-URL: Documentation, https://d33pster.github.io/dsfx/
+Keywords: d33pster,pymakeself,makeself,makesfx,dsfx,pythonsfx
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.1
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: optioner>=1.4.1
+Requires-Dist: colorama
+Requires-Dist: argparse
+
+# dsfx
+
+![GitHub last commit](https://img.shields.io/github/last-commit/d33pster/dsfx)
+![PyPI - Status](https://img.shields.io/pypi/status/dsfx)
+![PyPI - Implementation](https://img.shields.io/pypi/implementation/dsfx)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/dsfx)
+![PyPI - Version](https://img.shields.io/pypi/v/dsfx)
+![GitHub License](https://img.shields.io/github/license/d33pster/dsfx)
+
+<p align='center'>
+    <a href='#Installation'>Installation</a>
+    &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+    <a href='#Usage'>Usage</a>
+</p>
+
+## NOTE: Backing up your files before using dsfx is best practice
+
+dsfx is an upgraded version of pymakeself by Andrew Gillis, well, kind of.<br><br>
+Changes:
+- python >= 3.9 support
+- choice of output file (OS specific executable file(with custom extension) or a .py file)
+- removed encryption support.
+- some features are made optional
+
+## About
+dsfx is a part of warlock (Data Breach Protection Software (patent-pending)). It is an upgraded version of pymakeself and works fine with recent versions of python
+
+## Working
+```console
+somewhere/_setup --------------------+
+                                     |
+                                     |
+                                     |
+someplace/_content/ -----------+     |
+         file 1                |     |
+         file 2                |     |
+         ...                   |     |
+                               |     |
+                               |     |
+   ./package/                  |     |
+          inf/                 |     |
+             ...   <-----------+     |
+             ...   <-----------------+
+    
+
+    +---------+                  +---------------+
+./  | package | ---------------> | package.targz | ----------+
+    +---------+                  +---------------+           |
+                                                             |
+                                                             |
+                                                             |
+    +-------------------------------------------------+      |
+ ./ | package.py/package.<extension>(executable file) | <----+
+    +-------------------------------------------------+
+
+```
+
+## Installation
+```console
+# install using pip
+$ pip install dsfx
+
+# download wheel or package from github or pypi
+```
+Links:
+
+- [PYPI](https://pypi.org/project/dsfx/) Package page.
+- [GitHub](https://github.com/d33pster/dsfx) Repository.
+
+Raise Issue Here:
+- [GitHub](https://github.com/d33pster/dsfx/issues) Issues.
+
+## Usage
+flow:
+```console
+# import as a module in python script/project
+
+>>> from dsfx.dsfx import _makesfx
+
+# create a class object
+
+>>> sfxCTRL = _makesfx()
+
+# make sfx
+
+>>> sfxCTRL._make(Params)
+```
+
+function help:
+```console
+>>> help(_makesfx._make)
+
+Help on function _make in module dsfx:
+
+_make(self, content: str, outfile: str, _setup: str, _setupargs=(), sha256=False, compress='gz', quiet=False, label=None, extension='.warlock')
+    Create SFX
+
+    Args:
+        content (str): input directory
+        outfile (str): output executable name
+        _setup (str): setup file which will be executed from the extracted content dir
+        _setupargs (tuple, optional): setup file arguments if any. Defaults to ().
+        sha256 (bool, optional): Enable (True), Disable (False) SHA256. Defaults to False.
+        compress (str, optional): Type of compression. Defaults to 'gz'. Possible -> ['gz', 'bz2', 'xz']
+        quiet (bool, optional): Do not print any messages other than errors if True. Defaults to False.
+        label (_type_, optional): Text describing the package. Defaults to None.
+
+    Return:
+        Path to SFX executable
+```
+
+## Usage (Terminal)
+```console
+$ dsfx -h
+help:
+    dsfx v0.2.4
+
+    HELP TEXT
+
+    format: $ dsfx [args] -s <setup> [setup-args]
+
+        |    -h or --help             -      show this help text. press q to exit.
+        |    -v or --version          -      show version info and exit.
+        |
+        |    COMPULSORY ARGUMENTS
+        |
+        |    -i or --infile           -      input file path or relative path.
+        |    -o or --outfile          -      output file name.
+        |    -s or --setup            -      setup script (executable). NOTE: can be a python script with a sheba
+    ng
+        |    NORMAL ARGUMENTS
+        |
+        |    -c or --compress-method  -      set compression method. Possible values: ['gz', 'bz2', 'xz']
+        |    -l or --label            -      set label text. Default: None
+        |    -e or --extension        -      specify output file extension. Default: '*.warlock'
+        |    -cs or --checksum        -      set checksum true or false. if not specified, it is off. (switch)
+        |    -q or --quiet            -      set quiet mode on. Default: off. (switch)
+        |    -ne or --no-executable   -      Output .py file. Default: make executable file. (switch)
+
+    END
+```
+
+## Note to Users
+I made this for my own personal use but it is not limited to that. If there is any suggestions or fixes, raise an issue [here](https://github.com/d33pster/dsfx/issues).
+
+The Original pymakeself was made by Andrew Gillis (Around 10 years ago or so). As a lot of users find it hard because it is deprecated, hope this helps :)
