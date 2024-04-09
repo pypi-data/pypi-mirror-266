@@ -1,0 +1,57 @@
+<!-- templates/your_app_name/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <script src="https://unpkg.com/htmx.org"></script>
+</head>
+
+<!-- Make sure to include CSRF token for HTMX to send to the database -->
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-ext="debug, event-header"></body>
+    <div style="margin-bottom: 25px">
+        <h1>Trigger Page</h1>
+    </div>
+
+    <div style="margin-bottom: 25px">
+        <button hx-post="{% url 'trigger_pipeline_simple' %}" hx-target="#status" hx-swap="outerHTML">
+            Initiate 'pipeline_simple' Flow
+        </button>
+    </div>
+    
+    <div style="margin-bottom: 25px">
+        <button hx-post="{% url 'trigger_pipeline_with_nested_tasks' %}" hx-target="#status" hx-swap="outerHTML">
+            Initiate 'trigger_pipeline_with_nested_tasks' Flow
+        </button>
+    </div>
+
+    <div style="margin-bottom: 25px">
+        <button hx-post="{% url 'trigger_pipeline_simple_ml' %}" hx-target="#status" hx-swap="outerHTML">
+            Initiate 'trigger_pipeline_simple_ml' Flow
+        </button>
+    </div>
+
+    <div style="margin-bottom: 25px">
+        <button hx-post="{% url 'trigger_pipeline_ml_grid_search' %}" hx-target="#status" hx-swap="outerHTML">
+            Initiate 'trigger_pipeline_ml_grid_search' Flow
+        </button>
+    </div>
+
+    <div style="margin-bottom: 25px">
+        <button hx-post="{% url 'trigger_pipeline_simple_with_celery' %}" hx-target="#status" hx-swap="outerHTML">
+            Initiate 'trigger_pipeline_simple_with_celery' Flow
+        </button>
+    </div>
+
+
+    <div style="margin-bottom: 25px">
+        <button hx-post="{% url 'trigger_pipeline_parallel_with_celery' %}" hx-target="#status" hx-swap="outerHTML">
+            Initiate 'trigger_pipeline_parallel_with_celery' Flow
+        </button>
+    </div>
+
+
+
+    <div id="status"></div>
+</body>
+</html>
