@@ -1,0 +1,27 @@
+[tasks.build]
+description = "Build the project"
+run = """
+#!/usr/bin/env bash
+source "$HOME/.rye/env"
+rye build
+"""
+alias = "b"
+depends = ["install"]
+
+[tasks.install]
+description = "Install rye and dependencies"
+run = """
+#!/usr/bin/env bash
+curl -sSf https://rye-up.com/get | RYE_INSTALL_OPTION="--yes" bash
+source "$HOME/.rye/env"
+rye sync -f
+"""
+
+[tasks.publish]
+description = "Release the project to PyPI"
+run = """
+#!/bin/bash
+rye publish --token "$(pass PyPI/main-token)"
+"""
+alias = "p"
+depends = ["build"]
