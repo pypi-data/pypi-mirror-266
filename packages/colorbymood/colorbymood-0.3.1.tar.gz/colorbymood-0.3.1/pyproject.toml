@@ -1,0 +1,74 @@
+
+
+[tool.poetry]
+name = "colorbymood"
+version = "0.3.1"
+description = ""
+authors = ["Niels Maedern <maedern@student.ethz.ch>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+matplotlib = "^3.7.0"
+pyqt6 = "^6.4.2"
+pyyaml = "^6.0"
+click = "^8.1.3"
+pytest = "^7.4.3"
+
+[tool.poetry.scripts]
+colorbymood = 'colorbymood.cli:main'
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.11.0"
+isort = "^5.12.0"
+pre-commit = "^3.5.0"
+tox = "^4.14.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+
+[tool.isort]
+profile = 'black'
+line_length = 88
+
+[tool.tox]
+legacy_tox_ini = """
+    [tox]
+    requires >= 4.0
+    env_list =
+        lint
+        py310
+        py311
+        py312
+    labels = 
+        test = py310, py311, py312
+        static = lint
+    isolated_build = true
+
+    [gh-actions]
+    python =
+        3.10: py310
+        3.11: py311
+        3.12: py312, lint
+
+    [testenv]
+    deps = 
+        pytest
+        pytest-cov
+    commands = pytest tests --cov=colorbymood --cov-report=term-missing
+
+    [testenv:lint]
+    basepython = 3.12
+    deps = 
+        black
+        isort
+    commands = 
+        isort tests colorbymood
+        black tests colorbymood
+"""
