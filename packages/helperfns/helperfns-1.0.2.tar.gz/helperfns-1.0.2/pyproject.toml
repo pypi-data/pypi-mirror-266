@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "helperfns"
+version = "1.0.2"
+authors = [
+    {name = "Crispen Gari", email = "crispengari@gmail.com"},
+]
+description = "This package provide some python helper functions that are useful in machine learning."
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.10"
+dependencies  =[
+   "prettytable",
+    "nltk",
+    "scikit-learn",
+    "matplotlib",
+    "numpy",
+    "pandas",
+    "seaborn",
+]
+keywords = [
+    "helperfns",
+    "python",
+    "python3",
+    "helper-functions",
+    "text cleaning",
+    "visualization",
+    "machine-learning"
+]
+classifiers = [
+    'Development Status :: 5 - Production/Stable',
+    'Development Status :: 6 - Mature',
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: Unix",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: Unix",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: Microsoft :: Windows",
+    'Natural Language :: English'
+]
+
+
+[project.urls]
+homepage = "https://github.com/CrispenGari/helperfns"
+repository = "https://github.com/CrispenGari/helperfns"
+documentation = "https://github.com/CrispenGari/helperfns/blob/main/README.md"
+changelog = "https://github.com/CrispenGari/helperfns/blob/main/CHANGELOG.md"
+issues = "https://github.com/CrispenGari/helperfns/issues"
+
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["helperfns"]
+exclude = ["helperfns.tests*", 'images', 'tests*', 'helperfns/tests', "tests"]  
+namespaces = false
