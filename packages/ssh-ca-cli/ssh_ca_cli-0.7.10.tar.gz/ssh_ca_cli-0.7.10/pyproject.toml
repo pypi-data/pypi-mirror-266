@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "ssh-ca-cli"
+version = "0.7.10"
+description = "CLI client to generate SSH Certificates"
+authors = ["Ric Sapasap <ric.sapasap@geant.org>"]
+readme = "README.md"
+
+packages = [{ include = "*.py", from = "src" }]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+certifi = "^2024.2.2"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.11.0"
+ruff = "^0.1.4"
+isort = "^5.12.0"
+
+[tool.poetry.scripts]
+generate_ssh_cert = "main:entrypoint"
+
+[tool.isort]
+profile = "black"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
