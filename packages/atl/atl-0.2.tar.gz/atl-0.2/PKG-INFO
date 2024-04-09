@@ -1,0 +1,84 @@
+Metadata-Version: 2.1
+Name: atl
+Version: 0.2
+Summary: ambedded.ch ambedded-technology-lab python3 library
+Home-page: https://gitlab.com/ambedded-labs/al-pypi-ambedded-atl
+Author: ambedded.ch
+Author-email: info@ambedded.ch
+License: GNU GENERAL PUBLIC LICENSE
+        Version 2, June 1991
+        
+        This license is the GPLv2-only license as published by the Free Software
+        Foundation. The GPLv2-only license text is available at
+        https://www.gnu.org/licenses/gpl-2.0.html
+        
+        You should have received a copy of the GNU General Public License along with
+        this program. If not, see <https://www.gnu.org/licenses/>.
+        
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: setuptools
+Requires-Dist: cryptocompare
+Requires-Dist: numpy
+
+# README
+
+> ambedded.ch ambedded-technology-lab python3 library
+
+## TODO
+
+- search for all TODO
+
+## changes
+
+- whenever you release a new version, remember to change setup.py version number!
+
+## basic construct
+
+TODO
+
+```bash
+my_package/
+│
+├── module1/
+│   ├── __init__.py
+│   └── functions1.py
+│
+├── module2/
+│   ├── __init__.py
+│   └── functions2.py
+│
+├── main.py
+│
+└── setup.py
+```
+
+## Building and Testing Locally
+
+Before deploying, it's a good idea to test your package locally. You can do this by installing it in editable mode:
+
+```bash
+python3 -m venv .venv
+. ./.venv/bin/activate
+pip3 install -e .
+python3 main.py
+```
+
+## Deploying to PyPI
+
+To deploy your package to PyPI, you'll need to register an account on the PyPI website if you haven't already. Once registered, you can use twine to upload your package.
+
+First, install twine if you haven't already:
+
+```bash
+python3 -m venv .venv
+. ./.venv/bin/activate
+pip3 install twine
+pip install wheel
+python3 setup.py sdist bdist_wheel
+twine upload dist/*
+```
