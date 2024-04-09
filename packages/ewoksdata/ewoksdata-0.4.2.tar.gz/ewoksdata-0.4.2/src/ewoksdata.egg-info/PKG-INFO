@@ -1,0 +1,54 @@
+Metadata-Version: 2.1
+Name: ewoksdata
+Version: 0.4.2
+Summary: Ewoks tasks for data access
+Home-page: https://gitlab.esrf.fr/workflow/ewoksapps/ewoksdata/
+Author: ESRF
+Author-email: wout.de_nolf@esrf.fr
+License: MIT
+Project-URL: Source, https://gitlab.esrf.fr/workflow/ewoksapps/ewoksdata/
+Project-URL: Documentation, https://ewoksdata.readthedocs.io
+Project-URL: Tracker, https://gitlab.esrf.fr/workflow/ewoksapps/ewoksdata/issues/
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE.md
+Requires-Dist: h5py>=2.8
+Requires-Dist: silx>=1.1.0
+Requires-Dist: hdf5plugin
+Requires-Dist: blissdata<1.0.1; python_version < "3.8"
+Requires-Dist: blissdata; python_version >= "3.8"
+Requires-Dist: redis
+Provides-Extra: online
+Requires-Dist: blissdata[tango]; extra == "online"
+Provides-Extra: test
+Requires-Dist: blissdata[tango]; extra == "test"
+Requires-Dist: pytest>=7; extra == "test"
+Provides-Extra: dev
+Requires-Dist: blissdata[tango]; extra == "dev"
+Requires-Dist: pytest>=7; extra == "dev"
+Requires-Dist: black>=22; extra == "dev"
+Requires-Dist: flake8>=4; extra == "dev"
+Provides-Extra: doc
+Requires-Dist: blissdata[tango]; extra == "doc"
+Requires-Dist: pytest>=7; extra == "doc"
+Requires-Dist: sphinx>=4.5; extra == "doc"
+Requires-Dist: sphinx-autodoc-typehints>=1.16; extra == "doc"
+
+# ewoksdata
+
+Data access utilities for [ewoks](https://ewoks.readthedocs.io/) workflows.
+
+## Installation
+
+Until `silx>1.0.0` is released:
+
+```bash
+python -m pip install git+https://github.com/silx-kit/silx.git
+```
+
+## Documentation
+
+https://ewoksdata.readthedocs.io

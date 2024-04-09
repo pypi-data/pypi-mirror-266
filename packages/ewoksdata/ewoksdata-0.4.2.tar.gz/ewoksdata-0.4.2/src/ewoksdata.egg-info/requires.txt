@@ -1,0 +1,29 @@
+h5py>=2.8
+silx>=1.1.0
+hdf5plugin
+redis
+
+[:python_version < "3.8"]
+blissdata<1.0.1
+
+[:python_version >= "3.8"]
+blissdata
+
+[dev]
+blissdata[tango]
+pytest>=7
+black>=22
+flake8>=4
+
+[doc]
+blissdata[tango]
+pytest>=7
+sphinx>=4.5
+sphinx-autodoc-typehints>=1.16
+
+[online]
+blissdata[tango]
+
+[test]
+blissdata[tango]
+pytest>=7
