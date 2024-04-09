@@ -1,0 +1,9 @@
+{% load shoutbox_bbcode %}
+
+{% for shout in shouts %}
+<div class="shoutbox__shout">
+  <span>{{shout.created_at|date:'g:i A'}}</span>
+  <span><a href="{% url 'punkweb_bb:profile' shout.user.id %}">{{shout.user.username}}</a>: </span>
+  <span>{{ shout.content | safe | shoutbox_bbcode }}</span>
+</div>
+{% endfor %}
