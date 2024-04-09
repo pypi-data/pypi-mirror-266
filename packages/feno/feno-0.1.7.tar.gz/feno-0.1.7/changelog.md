@@ -1,0 +1,33 @@
+# Changelog
+
+- 0.1.7
+  - add: mudando pasta default de rascunhos de lang para draft
+- 0.1.6
+  - fix: erro no filter de arquivo
+- 0.1.5
+  - fix: erro no mdpp links
+- 0.1.4
+  - adicionado modo recursivo no filter
+  - adicionando opcoes de clean, quiet no filter
+- 0.1.3
+  - removendo link para css que gerava arquivos html diferentes
+- 0.1.1
+  - apenas adiciona no drafts arquivos gerados
+- 0.1.0
+  - removendo unused tree
+- 0.0.9
+  - atualizando filter para remover comentários
+  - fix: bug do filter no modo manual
+- 0.0.8
+  - atualizando mdpp para remover comentários
+- 0.0.7
+  - atualizando filter adicionado o modo de manter os comentários
+- 0.0.6
+  - Avisando se chamar o update sem argumentos
+- 0.0.5
+  - Mostrando url de download
+- 0.0.4
+  - Várias correções importantes
+  - Adicionado suporte para carregar mapi.json localmente
+- 0.0.3
+  - Atualização no readme
