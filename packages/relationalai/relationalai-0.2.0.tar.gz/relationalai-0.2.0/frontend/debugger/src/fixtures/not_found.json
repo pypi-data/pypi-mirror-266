@@ -1,0 +1,270 @@
+[
+    {
+        "task": "sequence\n         call | RawCode(\"\\n@inline\\ndef make_identity(x..., z) =\\n    hash128({x...}, x..., u) and\\n    hash_value_uint128_convert(u, z)\\n    from u\\n\\n@inline\\ndef pyrel_default[F, c](k..., v) =\\n    F(k..., v) or (not F(k..., _) and v = c)\\n\\nbound __resource\\n\")\n",
+        "name": "pyrel_base",
+        "code": null,
+        "err": "None",
+        "mech": {
+            "id": 1,
+            "type": "sequence",
+            "items": [
+                {
+                    "id": 2,
+                    "type": "compute",
+                    "op": "RawCode",
+                    "args": [],
+                    "ret": "\"\\n@inline\\ndef make_identity(x..., z) =\\n    hash128({x...}, x..., u) and\\n    hash_value_uint128_convert(u, z)\\n    from u\\n\\n@inline\\ndef pyrel_default[F, c](k..., v) =\\n    F(k..., v) or (not F(k..., _) and v = c)\\n\\nbound __resource\\n\""
+                }
+            ]
+        }
+    },
+    {
+        "task": "query\n          get | person | Person income(income) name(name)\n         call | not query\n                  get | person | owns(owns)\n                  get | owns | Home area(area)\n                 call | >(area 750)\n\n         call | <(income 15060)\n       return | person name\n",
+        "ix": 0,
+        "code": null,
+        "err": "None",
+        "mech": {
+            "id": 5,
+            "type": "sequence",
+            "items": [
+                {
+                    "id": 6,
+                    "type": "get",
+                    "entity": {
+                        "id": 1149,
+                        "name": "person"
+                    },
+                    "types": [
+                        "Person"
+                    ],
+                    "props": {}
+                },
+                {
+                    "id": 7,
+                    "type": "get",
+                    "entity": {
+                        "id": 1149,
+                        "name": "person"
+                    },
+                    "types": [],
+                    "props": {
+                        "income": {
+                            "id": 1152,
+                            "name": "income"
+                        }
+                    }
+                },
+                {
+                    "id": 8,
+                    "type": "get",
+                    "entity": {
+                        "id": 1149,
+                        "name": "person"
+                    },
+                    "types": [],
+                    "props": {
+                        "name": {
+                            "id": 1173,
+                            "name": "name"
+                        }
+                    }
+                },
+                {
+                    "id": 9,
+                    "type": "sequence",
+                    "items": [
+                        {
+                            "id": 10,
+                            "type": "get",
+                            "entity": {
+                                "id": 1149,
+                                "name": "person"
+                            },
+                            "types": [],
+                            "props": {
+                                "owns": {
+                                    "id": 1160,
+                                    "name": "owns"
+                                }
+                            }
+                        },
+                        {
+                            "id": 11,
+                            "type": "get",
+                            "entity": {
+                                "id": 1160,
+                                "name": "owns"
+                            },
+                            "types": [
+                                "Home"
+                            ],
+                            "props": {}
+                        },
+                        {
+                            "id": 12,
+                            "type": "get",
+                            "entity": {
+                                "id": 1160,
+                                "name": "owns"
+                            },
+                            "types": [],
+                            "props": {
+                                "area": {
+                                    "id": 1166,
+                                    "name": "area"
+                                }
+                            }
+                        },
+                        {
+                            "id": 13,
+                            "type": "filter",
+                            "op": ">",
+                            "args": [
+                                {
+                                    "id": 1166,
+                                    "name": "area"
+                                },
+                                "750"
+                            ]
+                        },
+                        {
+                            "id": 14,
+                            "type": "quantify",
+                            "quantifier": "not",
+                            "group": []
+                        }
+                    ]
+                },
+                {
+                    "id": 15,
+                    "type": "filter",
+                    "op": "<",
+                    "args": [
+                        {
+                            "id": 1152,
+                            "name": "income"
+                        },
+                        "15060"
+                    ]
+                },
+                {
+                    "id": 16,
+                    "type": "return",
+                    "values": [
+                        {
+                            "id": 1149,
+                            "name": "person"
+                        },
+                        {
+                            "id": 1173,
+                            "name": "name"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "task": "query\n          get | person | Person age(age)\n         call | not query\n                  get | person | in_relationship_with(in_relationship_with)\n                  get | in_relationship_with | Person\n\n         call | >=(age 60)\n         bind | person | GoldenBachelorEligible\n",
+        "name": "rule1",
+        "code": null,
+        "err": "None",
+        "mech": {
+            "id": 29,
+            "type": "sequence",
+            "items": [
+                {
+                    "id": 30,
+                    "type": "get",
+                    "entity": {
+                        "id": 1254,
+                        "name": "person"
+                    },
+                    "types": [
+                        "Person"
+                    ],
+                    "props": {}
+                },
+                {
+                    "id": 31,
+                    "type": "get",
+                    "entity": {
+                        "id": 1254,
+                        "name": "person"
+                    },
+                    "types": [],
+                    "props": {
+                        "age": {
+                            "id": 1257,
+                            "name": "age"
+                        }
+                    }
+                },
+                {
+                    "id": 32,
+                    "type": "sequence",
+                    "items": [
+                        {
+                            "id": 33,
+                            "type": "get",
+                            "entity": {
+                                "id": 1254,
+                                "name": "person"
+                            },
+                            "types": [],
+                            "props": {
+                                "in_relationship_with": {
+                                    "id": 1265,
+                                    "name": "in_relationship_with"
+                                }
+                            }
+                        },
+                        {
+                            "id": 34,
+                            "type": "get",
+                            "entity": {
+                                "id": 1265,
+                                "name": "in_relationship_with"
+                            },
+                            "types": [
+                                "Person"
+                            ],
+                            "props": {}
+                        },
+                        {
+                            "id": 35,
+                            "type": "quantify",
+                            "quantifier": "not",
+                            "group": []
+                        }
+                    ]
+                },
+                {
+                    "id": 36,
+                    "type": "filter",
+                    "op": ">=",
+                    "args": [
+                        {
+                            "id": 1257,
+                            "name": "age"
+                        },
+                        "60"
+                    ]
+                },
+                {
+                    "id": 37,
+                    "type": "effect",
+                    "op": "Bind",
+                    "entity": {
+                        "id": 1254,
+                        "name": "person"
+                    },
+                    "types": [
+                        "GoldenBachelorEligible"
+                    ],
+                    "props": {}
+                }
+            ]
+        }
+    }
+]

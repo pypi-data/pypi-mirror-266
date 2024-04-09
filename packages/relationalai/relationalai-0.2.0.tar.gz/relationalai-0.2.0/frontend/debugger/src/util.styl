@@ -1,0 +1,75 @@
+//------------------------------------------------------------------------------
+// Vendor Prefix / Convenience Mixins
+//------------------------------------------------------------------------------
+
+border-left-radius($n) {
+  border-top-left-radius: $n;
+  border-bottom-left-radius: $n;
+}
+border-right-radius($n) {
+  border-top-right-radius: $n;
+  border-bottom-right-radius: $n;
+}
+border-top-radius($n) {
+  border-top-left-radius: $n;
+  border-top-right-radius: $n;
+}
+border-bottom-radius($n) {
+  border-bottom-left-radius: $n;
+  border-bottom-right-radius: $n;
+}
+
+appearance($arg) {
+  -webkit-appearance: $arg;
+  -moz-appearance: $arg;
+  appearance: $arg;
+}
+
+//------------------------------------------------------------------------------
+// Gradient Mixins
+//------------------------------------------------------------------------------
+
+hard() {
+    $last_pos = 0;
+    $last_color = transparent;
+    $result = "";
+
+    @each $stop in arguments {
+        $color = nth($stop, 1);
+        $pos = nth($stop, 2);
+
+        if $last_pos != 0 {
+            $result = $result + ", " + $last_color + " " + $pos + ", ";
+        }
+        $result = $result + $color + " " + $pos;
+        $last_pos = $pos;
+        $last_color = $color;
+    }
+    @return unquote($result);
+}
+
+//------------------------------------------------------------------------------
+// Position Mixins
+//------------------------------------------------------------------------------
+
+inset($y, $x = $y) {
+  top: $y; bottom: $y;
+  left: $x; right: $x;
+}
+
+//------------------------------------------------------------------------------
+// Pseudo
+//------------------------------------------------------------------------------
+ pseudo() {
+   display: block;
+   content: "";
+   position: absolute;
+   align-self: center;
+ }
+
+//------------------------------------------------------------------------------
+// Transition + Animation
+//------------------------------------------------------------------------------
+ transitions($t, $fn, $props...)
+   $timing = " " + $t + " " + $fn;
+   transition: unquote(join($timing + ", ", $props) + $timing);

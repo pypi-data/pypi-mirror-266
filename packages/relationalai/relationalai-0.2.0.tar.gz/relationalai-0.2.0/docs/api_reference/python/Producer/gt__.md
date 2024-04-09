@@ -1,0 +1,66 @@
+# `relationalai.Producer.__gt__()`
+
+```python
+relationalai.Producer.__gt__(other: Any) -> Expression
+```
+
+Returns an [`Expression`](../Expression.md) object that restricts the values
+represented by the [`Producer`](./README.md) object to the values that are strictly greater than `other`.
+
+## Parameters
+
+| Name | Type | Description |
+| :--- | :--- | :------ |
+| `other` | `Any` | A numeric value or another `Producer` object. |
+
+## Returns
+
+An [`Expression`](../Expression.md) object.
+
+## Example
+
+The `Producer.__gt__()` method is called when you use the `>` operator with a `Producer` object:
+
+```python
+import relationalai as rai
+
+model = rai.Model("people")
+Person = model.Type("Person")
+
+with model.rule():
+    Person.add(name="Fred", age=39)
+    Person.add(name="Wilma", age=36)
+
+with model.query() as select:
+    person = Person()
+    # Restrict `person.age` to values that are strictly greater
+    # than 36. `person.age` returns an `InstanceProperty` object,
+    # which is also a `Producer` object.
+    person.age > 36
+    response = select(person.name, person.age)
+
+print(response.results)
+# Output:
+#    name  age
+# 0  Fred   39
+```
+
+You may use `>` with two `Producer` objects:
+
+```python
+with model.query() as select:
+    person1, person2 = Person(), Person()
+    person1.age > person2.age
+    response = select(person1.name, person2.name)
+
+print(response.results)
+# Output:
+#    name  name2
+# 0  Fred  Wilma
+```
+
+## See Also
+
+[`Producer.__ge__()`](./ge__.md),
+[`Producer.__lt__()`](./lt__.md),
+and [`Producer.__le__()`](./le__.md).

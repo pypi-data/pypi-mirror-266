@@ -1,0 +1,32 @@
+# `relationalai.std.graphs`
+
+The `relationalai.std.graphs` namespace contains functions and classes for building
+[graphs](./Graph/README.md) from objects in a [model](../../Model/README.md) and doing graph analytics.
+
+- [`graphs.Compute`](./Compute/README.md)
+  - [`graphs.Compute.betweenness_centrality()`](./Compute/betweeness_centrality.md)
+  - [`graphs.Compute.cosine_similarity()`](./Compute/cosine_similarity.md)
+  - [`graphs.Compute.degree()`](./Compute/degree.md)
+  - [`graphs.Compute.degree_centrality()`](./Compute/degree_centrality.md)
+  - [`graphs.Compute.eigenvector_centrality()`](./Compute/eigenvector_centrality.md)
+  - [`graph.Compute.indegree()`](./Compute/indegree.md)
+  - [`graphs.Compute.label_propagation()`](./Compute/label_propagation.md)
+  - [`graphs.Compute.louvain()`](./Compute/louvain.md)
+  - [`graphs.Compute.outdegree()`](./Compute/outdegree.md)
+  - [`graphs.Compute.pagerank()`](./Compute/pagerank.md)
+  - [`graphs.Compute.weakly_connected_component()`](./Compute/weakly_connected_component.md)
+- [`graphs.Edges`](./Edges/README.md)
+  - [`graphs.Edges.add()`](./Edges/add.md)
+  - [`graphs.Edges.extend()`](./Edges/extend.md)
+- [`graphs.Graph`](./Graph/README.md)
+  - [`graphs.Graph.compute`](./Graph/compute.md)
+  - [`graphs.Graph.edges`](./Graph/edges.md)
+  - [`graphs.Graph.fetch()`](./Graph/fetch.md)
+  - [`graphs.Graph.id`](./Graph/id.md)
+  - [`graphs.Graph.model`](./Graph/model.md)
+  - [`graphs.Graph.nodes`](./Graph/nodes.md)
+  - [`graphs.Graph.undirected`](./Graph/undirected.md)
+  - [`graphs.Graph.visualize()`](./Graph/visualize.md)
+- [`graphs.Nodes`](./Nodes/README.md)
+  - [`graphs.Nodes.add()`](./Nodes/add.md)
+  - [`graphs.Nodes.extend()`](./Nodes/extend.md)

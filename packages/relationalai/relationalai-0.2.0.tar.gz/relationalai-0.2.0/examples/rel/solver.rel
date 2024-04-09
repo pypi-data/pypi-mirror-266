@@ -1,0 +1,19 @@
+@expr def obj[x, y] = 2 * x + y
+@expr def cons(x, y) =
+    Int(x) and x >= 0 and Int(y) and x + 3 * y = 1 and x + y >= 1
+
+@symb def vars = :x; :y
+
+def model = rel_primitive_solverapi_model[
+    :min, vars,  obj[vars:x, vars:y], cons[vars:x, vars:y]
+]
+def solved = rel:solverapi:solve[model, "HiGHS", {}]
+def extracted = rel:solverapi:extract[model, solved]
+def sol = extracted:point
+
+def info = extracted:termination_status, sol:x, sol:y, extracted:objective_value
+
+ic = extracted:termination_status ≡ "OPTIMAL"
+ic = obj[sol:x, sol:y] ≡ extracted:objective_value
+ic = cons(sol:x, sol:y)
+ic = approx_equal(0.00001, sol, {:x, 1; :y, 0})

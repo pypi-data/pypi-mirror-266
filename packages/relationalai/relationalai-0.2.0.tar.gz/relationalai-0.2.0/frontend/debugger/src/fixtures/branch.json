@@ -1,0 +1,137 @@
+[
+    {
+        "task": "sequence\n         call | RawCode(\"\\n@inline\\ndef make_identity(x..., z) =\\n    hash128({x...}, x..., u) and\\n    hash_value_uint128_convert(u, z)\\n    from u\\n\\n@inline\\ndef pyrel_default[F, c](k..., v) =\\n    F(k..., v) or (not F(k..., _) and v = c)\\n\\nbound __resource\\n\")\n",
+        "name": "pyrel_base",
+        "code": null,
+        "err": "None",
+        "mech": {
+            "id": 1,
+            "type": "sequence",
+            "items": [
+                {
+                    "id": 2,
+                    "type": "compute",
+                    "op": "RawCode",
+                    "args": [],
+                    "ret": "\"\\n@inline\\ndef make_identity(x..., z) =\\n    hash128({x...}, x..., u) and\\n    hash_value_uint128_convert(u, z)\\n    from u\\n\\n@inline\\ndef pyrel_default[F, c](k..., v) =\\n    F(k..., v) or (not F(k..., _) and v = c)\\n\\nbound __resource\\n\""
+                }
+            ]
+        }
+    },
+    {
+        "task": "query\n          get | person | Person\n         call | query\n                  get | person | age(age)\n                 bind | person | Old\n                 call | >(age 90)\n\n         call | query\n                  get | person | age(age)\n                 bind | person | Young\n                 call | <(age 10)\n\n",
+        "name": "rule0",
+        "code": null,
+        "err": "None",
+        "mech": {
+            "id": 5,
+            "type": "sequence",
+            "items": [
+                {
+                    "id": 6,
+                    "type": "get",
+                    "entity": {
+                        "id": 1149,
+                        "name": "person"
+                    },
+                    "types": [
+                        "Person"
+                    ],
+                    "props": {}
+                },
+                {
+                    "id": 7,
+                    "type": "sequence",
+                    "items": [
+                        {
+                            "id": 8,
+                            "type": "get",
+                            "entity": {
+                                "id": 1149,
+                                "name": "person"
+                            },
+                            "types": [],
+                            "props": {
+                                "age": {
+                                    "id": 1152,
+                                    "name": "age"
+                                }
+                            }
+                        },
+                        {
+                            "id": 9,
+                            "type": "filter",
+                            "op": ">",
+                            "args": [
+                                {
+                                    "id": 1152,
+                                    "name": "age"
+                                },
+                                "90"
+                            ]
+                        },
+                        {
+                            "id": 10,
+                            "type": "effect",
+                            "op": "Bind",
+                            "entity": {
+                                "id": 1149,
+                                "name": "person"
+                            },
+                            "types": [
+                                "Old"
+                            ],
+                            "props": {}
+                        }
+                    ]
+                },
+                {
+                    "id": 11,
+                    "type": "sequence",
+                    "items": [
+                        {
+                            "id": 12,
+                            "type": "get",
+                            "entity": {
+                                "id": 1149,
+                                "name": "person"
+                            },
+                            "types": [],
+                            "props": {
+                                "age": {
+                                    "id": 1152,
+                                    "name": "age"
+                                }
+                            }
+                        },
+                        {
+                            "id": 13,
+                            "type": "filter",
+                            "op": "<",
+                            "args": [
+                                {
+                                    "id": 1152,
+                                    "name": "age"
+                                },
+                                "10"
+                            ]
+                        },
+                        {
+                            "id": 14,
+                            "type": "effect",
+                            "op": "Bind",
+                            "entity": {
+                                "id": 1149,
+                                "name": "person"
+                            },
+                            "types": [
+                                "Young"
+                            ],
+                            "props": {}
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+]

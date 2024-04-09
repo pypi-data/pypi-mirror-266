@@ -1,0 +1,50 @@
+svg.schematic-node-icon {
+  // grid-row: 1;
+  // grid-column: 2 / -2;
+  overflow: visible;
+
+  color: var(--schematic-rail-color);
+
+  * {
+    vector-effect: non-scaling-stroke;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: transparent;
+  }
+
+  .square {
+    stroke-linecap: square;
+    stroke-linejoin: square;
+  }
+
+  .filled {
+    fill: currentcolor;
+    stroke-width: var(--schematic-node-icon-cutout);
+    stroke: var(--schematic-bg-color);
+  }
+
+  .outline {
+    fill: var(--schematic-bg-color);
+    stroke-width: var(--schematic-node-icon-thickness);
+    stroke: currentcolor;
+  }
+
+  .tick {
+    stroke-width: var(--schematic-node-icon-thickness);
+    stroke: currentcolor;
+  }
+
+  .tick.cutout {
+    stroke-width: calc(var(--schematic-node-icon-thickness) + var(--schematic-node-icon-cutout) * 2);
+  }
+
+  .cutout.cutout {
+    stroke: var(--schematic-bg-color);
+    fill: var(--schematic-bg-color);
+  }
+}
+
+schematic-node.sequence:nth-last-child(2) > schematic-rail > schematic-node:last-of-type > svg.schematic-node-icon .bridge-last {
+  stroke-width: var(--schematic-node-icon-thickness);
+  stroke: currentcolor;
+}

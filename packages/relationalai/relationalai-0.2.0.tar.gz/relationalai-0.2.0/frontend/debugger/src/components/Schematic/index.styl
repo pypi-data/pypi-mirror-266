@@ -1,0 +1,184 @@
+@require "../../util.styl";
+
+:root {
+  --schematic-bg-color: white;
+  --schematic-rail-color: #3D5A80;
+  --schematic-rail-width: 4px;
+  --schematic-rail-gap: 16px;
+
+  --schematic-node-icon-size: 20px;
+  --schematic-node-icon-thickness: var(--schematic-rail-width);
+  --schematic-node-icon-cutout: var(--schematic-rail-width);
+  --schematic-node-icon-padding: 8px;
+}
+
+b() {
+  unquote("[") + join(" ", arguments) + unquote("]")
+}
+
+ui-schematic {
+  font-family: Inter
+}
+
+schematic-machine {}
+
+schematic-rail {
+  --half-interstitial: calc((var(--schematic-node-icon-size) - var(--schematic-rail-width)) / 2);
+
+  display: grid;
+  gap: var(--schematic-rail-gap) 0;
+  grid-template-columns:                                             \
+    b(in-start)                          auto                        \
+    b(in-end node-start)                 var(--half-interstitial)    \
+    b(rail-start)                        var(--schematic-rail-width) \
+    b(rail-end)                          var(--half-interstitial)    \
+    b(node-end out-start content-start)  auto                        \
+    b(content-end out-end);
+
+  &.in {
+    grid-column: in-start / in-end;
+    grid-row: 1 / span 2;
+  }
+
+  &.out {
+    grid-column: content-start / content-end;
+    grid-row: 2 / span 2;
+    margin-left: var(--schematic-node-icon-padding);
+    padding-top: calc((var(--schematic-node-icon-size) - 1em) / 2);
+    justify-content: flex-start;
+  }
+
+  // &.flipped {
+  //   justify-content: flex-end;
+  //   grid-template-columns:                                          \
+  //     b(in-start content-start)         auto                        \
+  //     b(content-end in-end node-start)  var(--half-interstitial)    \
+  //     b(rail-start)                     var(--schematic-rail-width) \
+  //     b(rail-end)                       var(--half-interstitial)    \
+  //     b(node-end out-start)             auto                        \
+  //     b(out-end);
+
+  //   & > schematic-node {
+  //     margin-right: var(--schematic-node-icon-padding);
+  //     & > svg.schematic-node-icon {
+  //       transform: scaleX(-1);
+  //     }
+  //     & > section {
+  //       justify-content: flex-end;
+  //       margin-left: 0;
+  //       margin-right: var(--schematic-node-icon-padding);
+  //     }
+  //   }
+  // }
+
+  &.nested {
+    margin-top: calc(var(--schematic-node-icon-size) / 2 - var(--schematic-rail-width))
+
+    & > schematic-node:first-of-type {
+      margin-top: calc(var(--schematic-rail-gap));
+    }
+
+    & > schematic-rail-line {
+      --start-row: 1;
+      margin-top: 0;
+    }
+  }
+
+  &.merge {
+    & > schematic-rail-line {
+      margin-bottom: 0;
+    }
+  }
+
+  schematic-rail-line {
+    grid-column: rail-start \/ rail-end;
+    grid-row: var(--start-row, 2) \/ var(--end-row);
+    // margin: calc(var(--schematic-node-icon-size) / 2) 0;
+
+    background: var(--schematic-rail-color);
+    border-radius: var(--schematic-rail-width);
+  }
+}
+
+schematic-node {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-template-columns: subgrid;
+  gap: 0;
+
+  & > svg.schematic-node-icon {
+    grid-row: 2;
+    grid-column: node-start / node-end;
+    z-index: 1;
+  }
+
+  & > node-gap {
+    grid-row: 2 / 4;
+    grid-column: -1 / 1;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    grid-template-columns: subgrid;
+
+    & > schematic-rail-line {
+      margin-top: calc((var(--schematic-node-icon-size) + var(--schematic-rail-width)) / 2);
+      background: var(--schematic-bg-color);
+    }
+
+    & > .schematic-node-icon {
+      grid-row: 2;
+      grid-column: node-start / node-end;
+    }
+  }
+
+  & section {
+    grid-row: 2 / span 2;
+    grid-column: content-start / content-end;
+    margin: 0;
+    margin-left: var(--schematic-node-icon-padding);
+    max-width: 400px;
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: calc((var(--schematic-node-icon-size) - 1em) / 2);
+    line-height: 1;
+
+    span.op {
+      opacity: 0.8;
+    }
+    span.kv span.op {
+      padding: 0 0.2em;
+    }
+
+    span.arg:has(+ span.arg) {
+      &:after {
+        content: ",";
+        padding-right: 0.4em;
+      }
+    }
+
+    span.infix:has(+ span.infix) {
+      padding-right: 0.4em;
+    }
+
+    &.long {
+      display: block;
+      span.arg {
+        display: block;
+        padding-left: 20px;
+      }
+    }
+  }
+
+  // @FIXME: Terrible nightmare hack that should not be
+  // &.union:before {
+  //   display: block;
+  //   content: "";
+  //   position: initial;
+  //   background: var(--schematic-bg-color) !important;
+  //   grid-column: rail-start \/ rail-end;
+  //   grid-row: 2 \/ 4;
+  //   width: 100%;
+  //   margin-top: calc((var(--schematic-node-icon-size) + var(--schematic-rail-width)) / 2);
+  //   z-index: 10;
+  // }
+}

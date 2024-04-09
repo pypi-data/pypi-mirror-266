@@ -1,0 +1,60 @@
+@require "../util.styl";
+
+:root {
+  --input-ln: #ccc;
+  --input-control-bg: #ddd;
+}
+
+.field {
+  .field-input {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+
+    border-radius: 4px;
+
+    &:focus-within {
+      outline: 1px solid #999;
+    }
+  }
+
+  .field-input-value {
+    padding: 6px 8px;
+
+    appearance: none;
+    background: transparent;
+    border: 1px solid var(--input-ln);
+    border-radius: 4px;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .field-controls {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    padding: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+
+    & > *:first-child {
+      border-top-radius: 4px;
+    }
+    & > *:last-child {
+      border-bottom-radius: 4px;
+    }
+  }
+
+  &.number {
+
+
+    .field-input-increment, .field-input-decrement {
+      flex: 1 1 0;
+      background: var(--input-control-bg);
+    }
+  }
+}

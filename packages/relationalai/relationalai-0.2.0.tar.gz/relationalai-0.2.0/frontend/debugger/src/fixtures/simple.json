@@ -1,0 +1,208 @@
+[
+    {
+        "task": "sequence\n         call | RawCode(\"\\n@inline\\ndef make_identity(x..., z) =\\n    hash128({x...}, x..., u) and\\n    hash_value_uint128_convert(u, z)\\n    from u\\n\\n@inline\\ndef pyrel_default[F, c](k..., v) =\\n    F(k..., v) or (not F(k..., _) and v = c)\\n\\nbound __resource\\n\")\n",
+        "name": "pyrel_base",
+        "code": null,
+        "err": "None",
+        "mech": {
+            "id": 1,
+            "type": "sequence",
+            "items": [
+                {
+                    "id": 2,
+                    "type": "compute",
+                    "op": "RawCode",
+                    "args": [],
+                    "ret": "\"\\n@inline\\ndef make_identity(x..., z) =\\n    hash128({x...}, x..., u) and\\n    hash_value_uint128_convert(u, z)\\n    from u\\n\\n@inline\\ndef pyrel_default[F, c](k..., v) =\\n    F(k..., v) or (not F(k..., _) and v = c)\\n\\nbound __resource\\n\""
+                }
+            ]
+        }
+    },
+    {
+        "task": "query\n         bind | eFH65S0Bhn9psDoU2TA23A | Person name(\"Joe\") age(74)\n         bind | t59bKd0PnF5MFHvHxqu+Sg | Person name(\"Bob\") age(40)\n         bind | xfPBKQOhNFrXGt6MgOhS8g | Person name(\"Jane\") age(10)\n",
+        "name": "rule0",
+        "code": null,
+        "err": "None",
+        "mech": {
+            "id": 5,
+            "type": "sequence",
+            "items": [
+                {
+                    "id": 6,
+                    "type": "effect",
+                    "op": "Bind",
+                    "entity": "eFH65S0Bhn9psDoU2TA23A",
+                    "types": [
+                        "Person"
+                    ],
+                    "props": {
+                        "name": "\"Joe\"",
+                        "age": "74"
+                    }
+                },
+                {
+                    "id": 7,
+                    "type": "effect",
+                    "op": "Bind",
+                    "entity": "t59bKd0PnF5MFHvHxqu+Sg",
+                    "types": [
+                        "Person"
+                    ],
+                    "props": {
+                        "name": "\"Bob\"",
+                        "age": "40"
+                    }
+                },
+                {
+                    "id": 8,
+                    "type": "effect",
+                    "op": "Bind",
+                    "entity": "xfPBKQOhNFrXGt6MgOhS8g",
+                    "types": [
+                        "Person"
+                    ],
+                    "props": {
+                        "name": "\"Jane\"",
+                        "age": "10"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "task": "query\n          get | person | Person age(age)\n         call | >=(age 18)\n         bind | person | Adult\n",
+        "name": "rule1",
+        "code": null,
+        "err": "None",
+        "mech": {
+            "id": 13,
+            "type": "sequence",
+            "items": [
+                {
+                    "id": 14,
+                    "type": "get",
+                    "entity": {
+                        "id": 1239,
+                        "name": "person"
+                    },
+                    "types": [
+                        "Person"
+                    ],
+                    "props": {}
+                },
+                {
+                    "id": 15,
+                    "type": "get",
+                    "entity": {
+                        "id": 1239,
+                        "name": "person"
+                    },
+                    "types": [],
+                    "props": {
+                        "age": {
+                            "id": 1241,
+                            "name": "age"
+                        }
+                    }
+                },
+                {
+                    "id": 16,
+                    "type": "filter",
+                    "op": ">=",
+                    "args": [
+                        {
+                            "id": 1241,
+                            "name": "age"
+                        },
+                        "18"
+                    ]
+                },
+                {
+                    "id": 17,
+                    "type": "effect",
+                    "op": "Bind",
+                    "entity": {
+                        "id": 1239,
+                        "name": "person"
+                    },
+                    "types": [
+                        "Adult"
+                    ],
+                    "props": {}
+                }
+            ]
+        }
+    },
+    {
+        "task": "query\n          get | adult | Adult name(name) age(age)\n       return | adult name age\n",
+        "ix": 0,
+        "code": null,
+        "err": "None",
+        "mech": {
+            "id": 23,
+            "type": "sequence",
+            "items": [
+                {
+                    "id": 24,
+                    "type": "get",
+                    "entity": {
+                        "id": 1268,
+                        "name": "adult"
+                    },
+                    "types": [
+                        "Adult"
+                    ],
+                    "props": {}
+                },
+                {
+                    "id": 25,
+                    "type": "get",
+                    "entity": {
+                        "id": 1268,
+                        "name": "adult"
+                    },
+                    "types": [],
+                    "props": {
+                        "name": {
+                            "id": 1271,
+                            "name": "name"
+                        }
+                    }
+                },
+                {
+                    "id": 26,
+                    "type": "get",
+                    "entity": {
+                        "id": 1268,
+                        "name": "adult"
+                    },
+                    "types": [],
+                    "props": {
+                        "age": {
+                            "id": 1275,
+                            "name": "age"
+                        }
+                    }
+                },
+                {
+                    "id": 27,
+                    "type": "return",
+                    "values": [
+                        {
+                            "id": 1268,
+                            "name": "adult"
+                        },
+                        {
+                            "id": 1271,
+                            "name": "name"
+                        },
+                        {
+                            "id": 1275,
+                            "name": "age"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+]

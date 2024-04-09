@@ -1,0 +1,1811 @@
+[
+    {
+        "task": "sequence\n         call | RawCode(\"\\n@inline\\ndef make_identity(x..., z) =\\n    hash128({x...}, x..., u) and\\n    hash_value_uint128_convert(u, z)\\n    from u\\n\\n@inline\\ndef pyrel_default[F, c](k..., v) =\\n    F(k..., v) or (not F(k..., _) and v = c)\\n\\nbound __resource\\n\")\n",
+        "name": "pyrel_base",
+        "code": null,
+        "err": "None",
+        "mech": {
+            "id": 1,
+            "type": "sequence",
+            "items": [
+                {
+                    "id": 2,
+                    "type": "compute",
+                    "op": "RawCode",
+                    "args": [],
+                    "ret": "\"\\n@inline\\ndef make_identity(x..., z) =\\n    hash128({x...}, x..., u) and\\n    hash_value_uint128_convert(u, z)\\n    from u\\n\\n@inline\\ndef pyrel_default[F, c](k..., v) =\\n    F(k..., v) or (not F(k..., _) and v = c)\\n\\nbound __resource\\n\""
+                }
+            ]
+        }
+    },
+    {
+        "task": "query\n         call | range(0 100 1 v)\n          get | data_people_csv_id(v id)\n          get | data_people_csv_name(v name)\n          get | data_people_csv_age(v age)\n         call | query\n                  get | RawData([0, 1, 2, 3, 4, ... 98, 99] [\"P-00007333\", \"P-00007530\", \"P-00007649\", \"P-00007666\", \"P-00007809\", ... \"P-00016637\", \"P-00016681\"] v2 id2)\n                 bind | data_people_csv_id(v2 id2)\n\n         call | query\n                  get | RawData([0, 1, 2, 3, 4, ... 98, 99] [\"Tommy Roman\", \"Alan Hatfield\", \"Clayton Wilson\", \"Susan Jones\", \"Eric Horn\", ... \"Rodney Ortiz\", \"Ian Romero\"] v3 name2)\n                 bind | data_people_csv_name(v3 name2)\n\n         call | query\n                  get | RawData([0, 1, 2, 3, 4, ... 98, 99] [18, 16, 15, 25, 48, ... 50, 37] v4 age2)\n                 bind | data_people_csv_age(v4 age2)\n\n         call | query\n                  get | RawData([1, 2, 3, 4, 5, ... 98, 99] [\"ACCT-00010539\", \"ACCT-00010668\", \"ACCT-00010800\", \"ACCT-00010864\", \"ACCT-00010901\", ... \"ACCT-00018734\", \"ACCT-00018750\"] v5 account)\n                 bind | data_people_csv_account(v5 account)\n\n         call | query\n                  get | RawData([1, 15, 19, 24, 35, 40, 44, 50, 55, 73, 78, 86, 88, 89, 90] [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true] v6 criminal)\n                 bind | data_people_csv_criminal(v6 criminal)\n\n         call | make_identity([\"Person\", name, age, id] person)\n         bind | person | Person name(name) age(age) csv_id(id)\n         call | query\n                  get | data_people_csv_account(v account2)\n                 bind | person | Customer account(account2)\n\n         call | query\n                  get | data_people_csv_criminal(v criminal2)\n                 bind | person | Criminal\n\n",
+        "name": "rule0",
+        "code": null,
+        "err": "None",
+        "mech": {
+            "id": 5,
+            "type": "sequence",
+            "items": [
+                {
+                    "id": 6,
+                    "type": "compute",
+                    "op": "range",
+                    "args": [
+                        "0",
+                        "100",
+                        "1"
+                    ],
+                    "ret": {
+                        "id": 1172,
+                        "name": null
+                    }
+                },
+                {
+                    "id": 7,
+                    "type": "get",
+                    "entity": "data_people_csv_id",
+                    "types": [],
+                    "props": {
+                        "v11": {
+                            "id": 1172,
+                            "name": null
+                        }
+                    }
+                },
+                {
+                    "id": 8,
+                    "type": "get",
+                    "entity": "data_people_csv_id",
+                    "types": [],
+                    "props": {
+                        "v12": {
+                            "id": 1169,
+                            "name": "id"
+                        }
+                    }
+                },
+                {
+                    "id": 9,
+                    "type": "get",
+                    "entity": "data_people_csv_name",
+                    "types": [],
+                    "props": {
+                        "v11": {
+                            "id": 1172,
+                            "name": null
+                        }
+                    }
+                },
+                {
+                    "id": 10,
+                    "type": "get",
+                    "entity": "data_people_csv_name",
+                    "types": [],
+                    "props": {
+                        "v12": {
+                            "id": 1184,
+                            "name": "name"
+                        }
+                    }
+                },
+                {
+                    "id": 11,
+                    "type": "get",
+                    "entity": "data_people_csv_age",
+                    "types": [],
+                    "props": {
+                        "v11": {
+                            "id": 1172,
+                            "name": null
+                        }
+                    }
+                },
+                {
+                    "id": 12,
+                    "type": "get",
+                    "entity": "data_people_csv_age",
+                    "types": [],
+                    "props": {
+                        "v12": {
+                            "id": 1197,
+                            "name": "age"
+                        }
+                    }
+                },
+                {
+                    "id": 13,
+                    "type": "effect",
+                    "op": "Bind",
+                    "entity": {
+                        "id": 1226,
+                        "name": "person"
+                    },
+                    "types": [
+                        "Person"
+                    ],
+                    "props": {
+                        "name": {
+                            "id": 1184,
+                            "name": "name"
+                        },
+                        "age": {
+                            "id": 1197,
+                            "name": "age"
+                        },
+                        "csv_id": {
+                            "id": 1169,
+                            "name": "id"
+                        }
+                    }
+                },
+                {
+                    "id": 14,
+                    "type": "compute",
+                    "op": "make_identity",
+                    "args": [
+                        "[\"Person\", name, age, id]"
+                    ],
+                    "ret": {
+                        "id": 1226,
+                        "name": "person"
+                    }
+                },
+                {
+                    "id": 15,
+                    "type": "sequence",
+                    "items": [
+                        {
+                            "id": 16,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v11": "[0, 1, 2, 3, 4, ... 98, 99]"
+                            }
+                        },
+                        {
+                            "id": 17,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v12": "[\"P-00007333\", \"P-00007530\", \"P-00007649\", \"P-00007666\", \"P-00007809\", ... \"P-00016637\", \"P-00016681\"]"
+                            }
+                        },
+                        {
+                            "id": 18,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v13": {
+                                    "id": 1160,
+                                    "name": null
+                                }
+                            }
+                        },
+                        {
+                            "id": 19,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v14": {
+                                    "id": 1161,
+                                    "name": "id"
+                                }
+                            }
+                        },
+                        {
+                            "id": 20,
+                            "type": "effect",
+                            "op": "Bind",
+                            "entity": "data_people_csv_id",
+                            "types": [],
+                            "props": {
+                                "v11": {
+                                    "id": 1160,
+                                    "name": null
+                                },
+                                "v12": {
+                                    "id": 1161,
+                                    "name": "id"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": 21,
+                    "type": "sequence",
+                    "items": [
+                        {
+                            "id": 22,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v11": "[0, 1, 2, 3, 4, ... 98, 99]"
+                            }
+                        },
+                        {
+                            "id": 23,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v12": "[\"Tommy Roman\", \"Alan Hatfield\", \"Clayton Wilson\", \"Susan Jones\", \"Eric Horn\", ... \"Rodney Ortiz\", \"Ian Romero\"]"
+                            }
+                        },
+                        {
+                            "id": 24,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v13": {
+                                    "id": 1175,
+                                    "name": null
+                                }
+                            }
+                        },
+                        {
+                            "id": 25,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v14": {
+                                    "id": 1176,
+                                    "name": "name"
+                                }
+                            }
+                        },
+                        {
+                            "id": 26,
+                            "type": "effect",
+                            "op": "Bind",
+                            "entity": "data_people_csv_name",
+                            "types": [],
+                            "props": {
+                                "v11": {
+                                    "id": 1175,
+                                    "name": null
+                                },
+                                "v12": {
+                                    "id": 1176,
+                                    "name": "name"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": 27,
+                    "type": "sequence",
+                    "items": [
+                        {
+                            "id": 28,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v11": "[0, 1, 2, 3, 4, ... 98, 99]"
+                            }
+                        },
+                        {
+                            "id": 29,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v12": "[18, 16, 15, 25, 48, ... 50, 37]"
+                            }
+                        },
+                        {
+                            "id": 30,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v13": {
+                                    "id": 1188,
+                                    "name": null
+                                }
+                            }
+                        },
+                        {
+                            "id": 31,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v14": {
+                                    "id": 1189,
+                                    "name": "age"
+                                }
+                            }
+                        },
+                        {
+                            "id": 32,
+                            "type": "effect",
+                            "op": "Bind",
+                            "entity": "data_people_csv_age",
+                            "types": [],
+                            "props": {
+                                "v11": {
+                                    "id": 1188,
+                                    "name": null
+                                },
+                                "v12": {
+                                    "id": 1189,
+                                    "name": "age"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": 33,
+                    "type": "sequence",
+                    "items": [
+                        {
+                            "id": 34,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v11": "[1, 2, 3, 4, 5, ... 98, 99]"
+                            }
+                        },
+                        {
+                            "id": 35,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v12": "[\"ACCT-00010539\", \"ACCT-00010668\", \"ACCT-00010800\", \"ACCT-00010864\", \"ACCT-00010901\", ... \"ACCT-00018734\", \"ACCT-00018750\"]"
+                            }
+                        },
+                        {
+                            "id": 36,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v13": {
+                                    "id": 1201,
+                                    "name": null
+                                }
+                            }
+                        },
+                        {
+                            "id": 37,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v14": {
+                                    "id": 1202,
+                                    "name": "account"
+                                }
+                            }
+                        },
+                        {
+                            "id": 38,
+                            "type": "effect",
+                            "op": "Bind",
+                            "entity": "data_people_csv_account",
+                            "types": [],
+                            "props": {
+                                "v11": {
+                                    "id": 1201,
+                                    "name": null
+                                },
+                                "v12": {
+                                    "id": 1202,
+                                    "name": "account"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": 39,
+                    "type": "sequence",
+                    "items": [
+                        {
+                            "id": 40,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v11": "[1, 15, 19, 24, 35, 40, 44, 50, 55, 73, 78, 86, 88, 89, 90]"
+                            }
+                        },
+                        {
+                            "id": 41,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v12": "[true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]"
+                            }
+                        },
+                        {
+                            "id": 42,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v13": {
+                                    "id": 1214,
+                                    "name": null
+                                }
+                            }
+                        },
+                        {
+                            "id": 43,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v14": {
+                                    "id": 1215,
+                                    "name": "criminal"
+                                }
+                            }
+                        },
+                        {
+                            "id": 44,
+                            "type": "effect",
+                            "op": "Bind",
+                            "entity": "data_people_csv_criminal",
+                            "types": [],
+                            "props": {
+                                "v11": {
+                                    "id": 1214,
+                                    "name": null
+                                },
+                                "v12": {
+                                    "id": 1215,
+                                    "name": "criminal"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": 45,
+                    "type": "sequence",
+                    "items": [
+                        {
+                            "id": 46,
+                            "type": "get",
+                            "entity": "data_people_csv_account",
+                            "types": [],
+                            "props": {
+                                "v11": {
+                                    "id": 1172,
+                                    "name": null
+                                }
+                            }
+                        },
+                        {
+                            "id": 47,
+                            "type": "get",
+                            "entity": "data_people_csv_account",
+                            "types": [],
+                            "props": {
+                                "v12": {
+                                    "id": 1210,
+                                    "name": "account"
+                                }
+                            }
+                        },
+                        {
+                            "id": 48,
+                            "type": "effect",
+                            "op": "Bind",
+                            "entity": {
+                                "id": 1226,
+                                "name": "person"
+                            },
+                            "types": [
+                                "Customer"
+                            ],
+                            "props": {
+                                "account": {
+                                    "id": 1210,
+                                    "name": "account"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": 49,
+                    "type": "sequence",
+                    "items": [
+                        {
+                            "id": 50,
+                            "type": "get",
+                            "entity": "data_people_csv_criminal",
+                            "types": [],
+                            "props": {
+                                "v11": {
+                                    "id": 1172,
+                                    "name": null
+                                }
+                            }
+                        },
+                        {
+                            "id": 51,
+                            "type": "get",
+                            "entity": "data_people_csv_criminal",
+                            "types": [],
+                            "props": {
+                                "v12": {
+                                    "id": 1223,
+                                    "name": "criminal"
+                                }
+                            }
+                        },
+                        {
+                            "id": 52,
+                            "type": "effect",
+                            "op": "Bind",
+                            "entity": {
+                                "id": 1226,
+                                "name": "person"
+                            },
+                            "types": [
+                                "Criminal"
+                            ],
+                            "props": {}
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "task": "query\n         call | range(0 200 1 v)\n          get | data_transactions_csv_id(v id)\n          get | data_transactions_csv_date(v date)\n          get | data_transactions_csv_from(v from)\n          get | data_transactions_csv_to(v to)\n          get | data_transactions_csv_amount(v amount)\n          get | customer | Customer csv_id(from)\n          get | customer2 | Customer csv_id(to)\n         call | query\n                  get | RawData([0, 1, 2, 3, 4, ... 198, 199] [\"TXN-00004052\", \"TXN-00004148\", \"TXN-00004291\", \"TXN-00004482\", \"TXN-00004598\", ... \"TXN-00024404\", \"TXN-00024443\"] v2 id2)\n                 bind | data_transactions_csv_id(v2 id2)\n\n         call | query\n                  get | RawData([0, 1, 2, 3, 4, ... 198, 199] [\"2023-10-12\", \"2023-05-11\", \"2023-05-22\", \"2023-10-03\", \"2023-03-17\", ... \"2023-02-21\", \"2023-04-01\"] v3 date2)\n                 bind | data_transactions_csv_date(v3 date2)\n\n         call | query\n                  get | RawData([0, 1, 2, 3, 4, ... 198, 199] [\"P-00013130\", \"P-00009338\", \"P-00015723\", \"P-00012137\", \"P-00015268\", ... \"P-00010228\", \"P-00012262\"] v4 from2)\n                 bind | data_transactions_csv_from(v4 from2)\n\n         call | query\n                  get | RawData([0, 1, 2, 3, 4, ... 198, 199] [\"P-00015417\", \"P-00010602\", \"P-00010882\", \"P-00016527\", \"P-00010882\", ... \"P-00015556\", \"P-00015578\"] v5 to2)\n                 bind | data_transactions_csv_to(v5 to2)\n\n         call | query\n                  get | RawData([0, 1, 2, 3, 4, ... 198, 199] [5214, 2969, 1246, 1023, 1096, ... 29689, 17877] v6 amount2)\n                 bind | data_transactions_csv_amount(v6 amount2)\n\n         call | make_identity([\"Transaction\", id, date, customer, customer2, amount] transaction)\n         bind | transaction | Transaction txn_id(id) date(date) from_(customer) to_(customer2) amount(amount)\n",
+        "name": "rule1",
+        "code": null,
+        "err": "None",
+        "mech": {
+            "id": 101,
+            "type": "sequence",
+            "items": [
+                {
+                    "id": 102,
+                    "type": "compute",
+                    "op": "range",
+                    "args": [
+                        "0",
+                        "200",
+                        "1"
+                    ],
+                    "ret": {
+                        "id": 1497,
+                        "name": null
+                    }
+                },
+                {
+                    "id": 103,
+                    "type": "get",
+                    "entity": "data_transactions_csv_id",
+                    "types": [],
+                    "props": {
+                        "v11": {
+                            "id": 1497,
+                            "name": null
+                        }
+                    }
+                },
+                {
+                    "id": 104,
+                    "type": "get",
+                    "entity": "data_transactions_csv_id",
+                    "types": [],
+                    "props": {
+                        "v12": {
+                            "id": 1494,
+                            "name": "id"
+                        }
+                    }
+                },
+                {
+                    "id": 105,
+                    "type": "get",
+                    "entity": "data_transactions_csv_date",
+                    "types": [],
+                    "props": {
+                        "v11": {
+                            "id": 1497,
+                            "name": null
+                        }
+                    }
+                },
+                {
+                    "id": 106,
+                    "type": "get",
+                    "entity": "data_transactions_csv_date",
+                    "types": [],
+                    "props": {
+                        "v12": {
+                            "id": 1509,
+                            "name": "date"
+                        }
+                    }
+                },
+                {
+                    "id": 107,
+                    "type": "get",
+                    "entity": "data_transactions_csv_from",
+                    "types": [],
+                    "props": {
+                        "v11": {
+                            "id": 1497,
+                            "name": null
+                        }
+                    }
+                },
+                {
+                    "id": 108,
+                    "type": "get",
+                    "entity": "data_transactions_csv_from",
+                    "types": [],
+                    "props": {
+                        "v12": {
+                            "id": 1522,
+                            "name": "from"
+                        }
+                    }
+                },
+                {
+                    "id": 109,
+                    "type": "get",
+                    "entity": "data_transactions_csv_to",
+                    "types": [],
+                    "props": {
+                        "v11": {
+                            "id": 1497,
+                            "name": null
+                        }
+                    }
+                },
+                {
+                    "id": 110,
+                    "type": "get",
+                    "entity": "data_transactions_csv_to",
+                    "types": [],
+                    "props": {
+                        "v12": {
+                            "id": 1535,
+                            "name": "to"
+                        }
+                    }
+                },
+                {
+                    "id": 111,
+                    "type": "get",
+                    "entity": "data_transactions_csv_amount",
+                    "types": [],
+                    "props": {
+                        "v11": {
+                            "id": 1497,
+                            "name": null
+                        }
+                    }
+                },
+                {
+                    "id": 112,
+                    "type": "get",
+                    "entity": "data_transactions_csv_amount",
+                    "types": [],
+                    "props": {
+                        "v12": {
+                            "id": 1548,
+                            "name": "amount"
+                        }
+                    }
+                },
+                {
+                    "id": 113,
+                    "type": "get",
+                    "entity": {
+                        "id": 1551,
+                        "name": "customer"
+                    },
+                    "types": [
+                        "Customer"
+                    ],
+                    "props": {}
+                },
+                {
+                    "id": 114,
+                    "type": "get",
+                    "entity": {
+                        "id": 1551,
+                        "name": "customer"
+                    },
+                    "types": [],
+                    "props": {
+                        "csv_id": {
+                            "id": 1522,
+                            "name": "from"
+                        }
+                    }
+                },
+                {
+                    "id": 115,
+                    "type": "get",
+                    "entity": {
+                        "id": 1554,
+                        "name": "customer"
+                    },
+                    "types": [
+                        "Customer"
+                    ],
+                    "props": {}
+                },
+                {
+                    "id": 116,
+                    "type": "get",
+                    "entity": {
+                        "id": 1554,
+                        "name": "customer"
+                    },
+                    "types": [],
+                    "props": {
+                        "csv_id": {
+                            "id": 1535,
+                            "name": "to"
+                        }
+                    }
+                },
+                {
+                    "id": 117,
+                    "type": "effect",
+                    "op": "Bind",
+                    "entity": {
+                        "id": 1556,
+                        "name": "transaction"
+                    },
+                    "types": [
+                        "Transaction"
+                    ],
+                    "props": {
+                        "txn_id": {
+                            "id": 1494,
+                            "name": "id"
+                        },
+                        "date": {
+                            "id": 1509,
+                            "name": "date"
+                        },
+                        "from_": {
+                            "id": 1551,
+                            "name": "customer"
+                        },
+                        "to_": {
+                            "id": 1554,
+                            "name": "customer"
+                        },
+                        "amount": {
+                            "id": 1548,
+                            "name": "amount"
+                        }
+                    }
+                },
+                {
+                    "id": 118,
+                    "type": "compute",
+                    "op": "make_identity",
+                    "args": [
+                        "[\"Transaction\", id, date, customer, customer2, amount]"
+                    ],
+                    "ret": {
+                        "id": 1556,
+                        "name": "transaction"
+                    }
+                },
+                {
+                    "id": 119,
+                    "type": "sequence",
+                    "items": [
+                        {
+                            "id": 120,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v11": "[0, 1, 2, 3, 4, ... 198, 199]"
+                            }
+                        },
+                        {
+                            "id": 121,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v12": "[\"TXN-00004052\", \"TXN-00004148\", \"TXN-00004291\", \"TXN-00004482\", \"TXN-00004598\", ... \"TXN-00024404\", \"TXN-00024443\"]"
+                            }
+                        },
+                        {
+                            "id": 122,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v13": {
+                                    "id": 1485,
+                                    "name": null
+                                }
+                            }
+                        },
+                        {
+                            "id": 123,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v14": {
+                                    "id": 1486,
+                                    "name": "id"
+                                }
+                            }
+                        },
+                        {
+                            "id": 124,
+                            "type": "effect",
+                            "op": "Bind",
+                            "entity": "data_transactions_csv_id",
+                            "types": [],
+                            "props": {
+                                "v11": {
+                                    "id": 1485,
+                                    "name": null
+                                },
+                                "v12": {
+                                    "id": 1486,
+                                    "name": "id"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": 125,
+                    "type": "sequence",
+                    "items": [
+                        {
+                            "id": 126,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v11": "[0, 1, 2, 3, 4, ... 198, 199]"
+                            }
+                        },
+                        {
+                            "id": 127,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v12": "[\"2023-10-12\", \"2023-05-11\", \"2023-05-22\", \"2023-10-03\", \"2023-03-17\", ... \"2023-02-21\", \"2023-04-01\"]"
+                            }
+                        },
+                        {
+                            "id": 128,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v13": {
+                                    "id": 1500,
+                                    "name": null
+                                }
+                            }
+                        },
+                        {
+                            "id": 129,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v14": {
+                                    "id": 1501,
+                                    "name": "date"
+                                }
+                            }
+                        },
+                        {
+                            "id": 130,
+                            "type": "effect",
+                            "op": "Bind",
+                            "entity": "data_transactions_csv_date",
+                            "types": [],
+                            "props": {
+                                "v11": {
+                                    "id": 1500,
+                                    "name": null
+                                },
+                                "v12": {
+                                    "id": 1501,
+                                    "name": "date"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": 131,
+                    "type": "sequence",
+                    "items": [
+                        {
+                            "id": 132,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v11": "[0, 1, 2, 3, 4, ... 198, 199]"
+                            }
+                        },
+                        {
+                            "id": 133,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v12": "[\"P-00013130\", \"P-00009338\", \"P-00015723\", \"P-00012137\", \"P-00015268\", ... \"P-00010228\", \"P-00012262\"]"
+                            }
+                        },
+                        {
+                            "id": 134,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v13": {
+                                    "id": 1513,
+                                    "name": null
+                                }
+                            }
+                        },
+                        {
+                            "id": 135,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v14": {
+                                    "id": 1514,
+                                    "name": "from"
+                                }
+                            }
+                        },
+                        {
+                            "id": 136,
+                            "type": "effect",
+                            "op": "Bind",
+                            "entity": "data_transactions_csv_from",
+                            "types": [],
+                            "props": {
+                                "v11": {
+                                    "id": 1513,
+                                    "name": null
+                                },
+                                "v12": {
+                                    "id": 1514,
+                                    "name": "from"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": 137,
+                    "type": "sequence",
+                    "items": [
+                        {
+                            "id": 138,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v11": "[0, 1, 2, 3, 4, ... 198, 199]"
+                            }
+                        },
+                        {
+                            "id": 139,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v12": "[\"P-00015417\", \"P-00010602\", \"P-00010882\", \"P-00016527\", \"P-00010882\", ... \"P-00015556\", \"P-00015578\"]"
+                            }
+                        },
+                        {
+                            "id": 140,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v13": {
+                                    "id": 1526,
+                                    "name": null
+                                }
+                            }
+                        },
+                        {
+                            "id": 141,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v14": {
+                                    "id": 1527,
+                                    "name": "to"
+                                }
+                            }
+                        },
+                        {
+                            "id": 142,
+                            "type": "effect",
+                            "op": "Bind",
+                            "entity": "data_transactions_csv_to",
+                            "types": [],
+                            "props": {
+                                "v11": {
+                                    "id": 1526,
+                                    "name": null
+                                },
+                                "v12": {
+                                    "id": 1527,
+                                    "name": "to"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": 143,
+                    "type": "sequence",
+                    "items": [
+                        {
+                            "id": 144,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v11": "[0, 1, 2, 3, 4, ... 198, 199]"
+                            }
+                        },
+                        {
+                            "id": 145,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v12": "[5214, 2969, 1246, 1023, 1096, ... 29689, 17877]"
+                            }
+                        },
+                        {
+                            "id": 146,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v13": {
+                                    "id": 1539,
+                                    "name": null
+                                }
+                            }
+                        },
+                        {
+                            "id": 147,
+                            "type": "get",
+                            "entity": "RawData",
+                            "types": [],
+                            "props": {
+                                "v14": {
+                                    "id": 1540,
+                                    "name": "amount"
+                                }
+                            }
+                        },
+                        {
+                            "id": 148,
+                            "type": "effect",
+                            "op": "Bind",
+                            "entity": "data_transactions_csv_amount",
+                            "types": [],
+                            "props": {
+                                "v11": {
+                                    "id": 1539,
+                                    "name": null
+                                },
+                                "v12": {
+                                    "id": 1540,
+                                    "name": "amount"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "task": "query\n          get | transaction | Transaction from_(from_) to_(to_) amount(amount)\n          get | from_ | name(name)\n          get | to_ | name(name2)\n       return | transaction name name2 amount\n",
+        "ix": 0,
+        "code": null,
+        "err": "None",
+        "mech": {
+            "id": 197,
+            "type": "sequence",
+            "items": [
+                {
+                    "id": 198,
+                    "type": "get",
+                    "entity": {
+                        "id": 1763,
+                        "name": "transaction"
+                    },
+                    "types": [
+                        "Transaction"
+                    ],
+                    "props": {}
+                },
+                {
+                    "id": 199,
+                    "type": "get",
+                    "entity": {
+                        "id": 1763,
+                        "name": "transaction"
+                    },
+                    "types": [],
+                    "props": {
+                        "from_": {
+                            "id": 1765,
+                            "name": "from_"
+                        }
+                    }
+                },
+                {
+                    "id": 200,
+                    "type": "get",
+                    "entity": {
+                        "id": 1763,
+                        "name": "transaction"
+                    },
+                    "types": [],
+                    "props": {
+                        "to_": {
+                            "id": 1776,
+                            "name": "to_"
+                        }
+                    }
+                },
+                {
+                    "id": 201,
+                    "type": "get",
+                    "entity": {
+                        "id": 1763,
+                        "name": "transaction"
+                    },
+                    "types": [],
+                    "props": {
+                        "amount": {
+                            "id": 1787,
+                            "name": "amount"
+                        }
+                    }
+                },
+                {
+                    "id": 202,
+                    "type": "get",
+                    "entity": {
+                        "id": 1765,
+                        "name": "from_"
+                    },
+                    "types": [],
+                    "props": {
+                        "name": {
+                            "id": 1772,
+                            "name": "name"
+                        }
+                    }
+                },
+                {
+                    "id": 203,
+                    "type": "get",
+                    "entity": {
+                        "id": 1776,
+                        "name": "to_"
+                    },
+                    "types": [],
+                    "props": {
+                        "name": {
+                            "id": 1783,
+                            "name": "name"
+                        }
+                    }
+                },
+                {
+                    "id": 204,
+                    "type": "return",
+                    "values": [
+                        {
+                            "id": 1763,
+                            "name": "transaction"
+                        },
+                        {
+                            "id": 1772,
+                            "name": "name"
+                        },
+                        {
+                            "id": 1783,
+                            "name": "name"
+                        },
+                        {
+                            "id": 1787,
+                            "name": "amount"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "task": "query\n          get | customer | Customer\n          get | criminal | Criminal\n          get | transaction | Transaction from_(customer) to_(criminal)\n         bind | transaction | Suspicious\n         call | query\n                  get | transaction | amount(amount)\n                 bind | transaction | ImmediateReview review_reason(\"Large transaction to criminal\")\n                 call | >(amount 40000)\n\n",
+        "name": "rule3",
+        "code": null,
+        "err": "None",
+        "mech": {
+            "id": 213,
+            "type": "sequence",
+            "items": [
+                {
+                    "id": 214,
+                    "type": "get",
+                    "entity": {
+                        "id": 1839,
+                        "name": "customer"
+                    },
+                    "types": [
+                        "Customer"
+                    ],
+                    "props": {}
+                },
+                {
+                    "id": 215,
+                    "type": "get",
+                    "entity": {
+                        "id": 1841,
+                        "name": "criminal"
+                    },
+                    "types": [
+                        "Criminal"
+                    ],
+                    "props": {}
+                },
+                {
+                    "id": 216,
+                    "type": "get",
+                    "entity": {
+                        "id": 1843,
+                        "name": "transaction"
+                    },
+                    "types": [
+                        "Transaction"
+                    ],
+                    "props": {}
+                },
+                {
+                    "id": 217,
+                    "type": "get",
+                    "entity": {
+                        "id": 1843,
+                        "name": "transaction"
+                    },
+                    "types": [],
+                    "props": {
+                        "from_": {
+                            "id": 1839,
+                            "name": "customer"
+                        }
+                    }
+                },
+                {
+                    "id": 218,
+                    "type": "get",
+                    "entity": {
+                        "id": 1843,
+                        "name": "transaction"
+                    },
+                    "types": [],
+                    "props": {
+                        "to_": {
+                            "id": 1841,
+                            "name": "criminal"
+                        }
+                    }
+                },
+                {
+                    "id": 219,
+                    "type": "effect",
+                    "op": "Bind",
+                    "entity": {
+                        "id": 1843,
+                        "name": "transaction"
+                    },
+                    "types": [
+                        "Suspicious"
+                    ],
+                    "props": {}
+                },
+                {
+                    "id": 220,
+                    "type": "sequence",
+                    "items": [
+                        {
+                            "id": 221,
+                            "type": "get",
+                            "entity": {
+                                "id": 1843,
+                                "name": "transaction"
+                            },
+                            "types": [],
+                            "props": {
+                                "amount": {
+                                    "id": 1846,
+                                    "name": "amount"
+                                }
+                            }
+                        },
+                        {
+                            "id": 222,
+                            "type": "filter",
+                            "op": ">",
+                            "args": [
+                                {
+                                    "id": 1846,
+                                    "name": "amount"
+                                },
+                                "40000"
+                            ]
+                        },
+                        {
+                            "id": 223,
+                            "type": "effect",
+                            "op": "Bind",
+                            "entity": {
+                                "id": 1843,
+                                "name": "transaction"
+                            },
+                            "types": [
+                                "ImmediateReview"
+                            ],
+                            "props": {
+                                "review_reason": "\"Large transaction to criminal\""
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "task": "query\n          get | immediatereview | ImmediateReview from_(from_) to_(to_) amount(amount)\n          get | from_ | name(name)\n          get | to_ | name(name2)\n       return | name name2 amount\n",
+        "ix": 1,
+        "code": null,
+        "err": "None",
+        "mech": {
+            "id": 235,
+            "type": "sequence",
+            "items": [
+                {
+                    "id": 236,
+                    "type": "get",
+                    "entity": {
+                        "id": 1960,
+                        "name": "immediatereview"
+                    },
+                    "types": [
+                        "ImmediateReview"
+                    ],
+                    "props": {}
+                },
+                {
+                    "id": 237,
+                    "type": "get",
+                    "entity": {
+                        "id": 1960,
+                        "name": "immediatereview"
+                    },
+                    "types": [],
+                    "props": {
+                        "from_": {
+                            "id": 1963,
+                            "name": "from_"
+                        }
+                    }
+                },
+                {
+                    "id": 238,
+                    "type": "get",
+                    "entity": {
+                        "id": 1960,
+                        "name": "immediatereview"
+                    },
+                    "types": [],
+                    "props": {
+                        "to_": {
+                            "id": 1975,
+                            "name": "to_"
+                        }
+                    }
+                },
+                {
+                    "id": 239,
+                    "type": "get",
+                    "entity": {
+                        "id": 1960,
+                        "name": "immediatereview"
+                    },
+                    "types": [],
+                    "props": {
+                        "amount": {
+                            "id": 1987,
+                            "name": "amount"
+                        }
+                    }
+                },
+                {
+                    "id": 240,
+                    "type": "get",
+                    "entity": {
+                        "id": 1963,
+                        "name": "from_"
+                    },
+                    "types": [],
+                    "props": {
+                        "name": {
+                            "id": 1970,
+                            "name": "name"
+                        }
+                    }
+                },
+                {
+                    "id": 241,
+                    "type": "get",
+                    "entity": {
+                        "id": 1975,
+                        "name": "to_"
+                    },
+                    "types": [],
+                    "props": {
+                        "name": {
+                            "id": 1982,
+                            "name": "name"
+                        }
+                    }
+                },
+                {
+                    "id": 242,
+                    "type": "return",
+                    "values": [
+                        {
+                            "id": 1970,
+                            "name": "name"
+                        },
+                        {
+                            "id": 1982,
+                            "name": "name"
+                        },
+                        {
+                            "id": 1987,
+                            "name": "amount"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "task": "query\n          get | suspicious | Suspicious Transaction from_(from_) to_(to_)\n         bind | from_ | Suspicious\n         bind | to_ | Suspicious\n",
+        "name": "rule5",
+        "code": null,
+        "err": "None",
+        "mech": {
+            "id": 251,
+            "type": "sequence",
+            "items": [
+                {
+                    "id": 252,
+                    "type": "get",
+                    "entity": {
+                        "id": 2022,
+                        "name": "suspicious"
+                    },
+                    "types": [
+                        "Suspicious"
+                    ],
+                    "props": {}
+                },
+                {
+                    "id": 253,
+                    "type": "get",
+                    "entity": {
+                        "id": 2022,
+                        "name": "suspicious"
+                    },
+                    "types": [
+                        "Transaction"
+                    ],
+                    "props": {}
+                },
+                {
+                    "id": 254,
+                    "type": "get",
+                    "entity": {
+                        "id": 2022,
+                        "name": "suspicious"
+                    },
+                    "types": [],
+                    "props": {
+                        "from_": {
+                            "id": 2024,
+                            "name": "from_"
+                        }
+                    }
+                },
+                {
+                    "id": 255,
+                    "type": "get",
+                    "entity": {
+                        "id": 2022,
+                        "name": "suspicious"
+                    },
+                    "types": [],
+                    "props": {
+                        "to_": {
+                            "id": 2030,
+                            "name": "to_"
+                        }
+                    }
+                },
+                {
+                    "id": 256,
+                    "type": "effect",
+                    "op": "Bind",
+                    "entity": {
+                        "id": 2024,
+                        "name": "from_"
+                    },
+                    "types": [
+                        "Suspicious"
+                    ],
+                    "props": {}
+                },
+                {
+                    "id": 257,
+                    "type": "effect",
+                    "op": "Bind",
+                    "entity": {
+                        "id": 2030,
+                        "name": "to_"
+                    },
+                    "types": [
+                        "Suspicious"
+                    ],
+                    "props": {}
+                }
+            ]
+        }
+    },
+    {
+        "task": "query\n          get | criminal | Criminal\n       return | criminal\n",
+        "ix": 2,
+        "code": null,
+        "err": "None",
+        "mech": {
+            "id": 265,
+            "type": "sequence",
+            "items": [
+                {
+                    "id": 266,
+                    "type": "get",
+                    "entity": {
+                        "id": 2068,
+                        "name": "criminal"
+                    },
+                    "types": [
+                        "Criminal"
+                    ],
+                    "props": {}
+                },
+                {
+                    "id": 267,
+                    "type": "return",
+                    "values": [
+                        {
+                            "id": 2068,
+                            "name": "criminal"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "task": "query\n          get | suspicious | Suspicious Transaction from_(from_) to_(to_) amount(amount)\n       return | from_ to_ amount\n",
+        "ix": 3,
+        "code": null,
+        "err": "None",
+        "mech": {
+            "id": 271,
+            "type": "sequence",
+            "items": [
+                {
+                    "id": 272,
+                    "type": "get",
+                    "entity": {
+                        "id": 2087,
+                        "name": "suspicious"
+                    },
+                    "types": [
+                        "Suspicious"
+                    ],
+                    "props": {}
+                },
+                {
+                    "id": 273,
+                    "type": "get",
+                    "entity": {
+                        "id": 2087,
+                        "name": "suspicious"
+                    },
+                    "types": [
+                        "Transaction"
+                    ],
+                    "props": {}
+                },
+                {
+                    "id": 274,
+                    "type": "get",
+                    "entity": {
+                        "id": 2087,
+                        "name": "suspicious"
+                    },
+                    "types": [],
+                    "props": {
+                        "from_": {
+                            "id": 2089,
+                            "name": "from_"
+                        }
+                    }
+                },
+                {
+                    "id": 275,
+                    "type": "get",
+                    "entity": {
+                        "id": 2087,
+                        "name": "suspicious"
+                    },
+                    "types": [],
+                    "props": {
+                        "to_": {
+                            "id": 2092,
+                            "name": "to_"
+                        }
+                    }
+                },
+                {
+                    "id": 276,
+                    "type": "get",
+                    "entity": {
+                        "id": 2087,
+                        "name": "suspicious"
+                    },
+                    "types": [],
+                    "props": {
+                        "amount": {
+                            "id": 2095,
+                            "name": "amount"
+                        }
+                    }
+                },
+                {
+                    "id": 277,
+                    "type": "return",
+                    "values": [
+                        {
+                            "id": 2089,
+                            "name": "from_"
+                        },
+                        {
+                            "id": 2092,
+                            "name": "to_"
+                        },
+                        {
+                            "id": 2095,
+                            "name": "amount"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "task": "query\n          get | suspicious | Suspicious Person name(name)\n       return | suspicious name\n",
+        "ix": 4,
+        "code": null,
+        "err": "None",
+        "mech": {
+            "id": 285,
+            "type": "sequence",
+            "items": [
+                {
+                    "id": 286,
+                    "type": "get",
+                    "entity": {
+                        "id": 2123,
+                        "name": "suspicious"
+                    },
+                    "types": [
+                        "Suspicious"
+                    ],
+                    "props": {}
+                },
+                {
+                    "id": 287,
+                    "type": "get",
+                    "entity": {
+                        "id": 2123,
+                        "name": "suspicious"
+                    },
+                    "types": [
+                        "Person"
+                    ],
+                    "props": {}
+                },
+                {
+                    "id": 288,
+                    "type": "get",
+                    "entity": {
+                        "id": 2123,
+                        "name": "suspicious"
+                    },
+                    "types": [],
+                    "props": {
+                        "name": {
+                            "id": 2125,
+                            "name": "name"
+                        }
+                    }
+                },
+                {
+                    "id": 289,
+                    "type": "return",
+                    "values": [
+                        {
+                            "id": 2123,
+                            "name": "suspicious"
+                        },
+                        {
+                            "id": 2125,
+                            "name": "name"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+]
