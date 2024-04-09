@@ -1,0 +1,5 @@
+export interface {{ interface_name }} {
+{%- for prop in properties %}
+    {{ prop.name }}{{ "?" if not prop.required else "" }}: {{ prop.type }}
+{%- endfor %}
+}
