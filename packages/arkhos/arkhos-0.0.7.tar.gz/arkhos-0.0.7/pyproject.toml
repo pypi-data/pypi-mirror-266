@@ -1,0 +1,26 @@
+[project]
+name = "arkhos"
+version = "0.0.7"
+authors = [ { name="Jason Strauss", email="jason@getarkhos.com" }, ]
+description = "Python framework for deploying small apps"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = []
+dependencies = [
+    "Jinja2==3.1.3",
+    "requests==2.31.0",
+    "shellingham==1.5.4",
+    "typer==0.9.0",
+    "rich==13.7.0"
+]
+
+[project.urls]
+Homepage = "https://getArkhos.com"
+Repo = "https://github.com/arkhosapp/arkhos"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project.scripts]
+arkhos = "arkhos.local_cli:app"
