@@ -1,0 +1,33 @@
+// clang-format off
+#pragma once
+
+#ifdef __cplusplus
+namespace micm {
+extern "C" {
+#endif
+
+  const char* getMicmVersion()
+  {
+    return "@micm_VERSION@";
+  }
+  unsigned getMicmVersionMajor()
+  {
+    return @micm_VERSION_MAJOR@;
+  }
+  unsigned getMicmVersionMinor()
+  {
+    return @micm_VERSION_MINOR@+0;
+  }
+  unsigned getMicmVersionPatch()
+  {
+    return @micm_VERSION_PATCH@+0;
+  }
+  unsigned getMicmVersionTweak()
+  {
+    return @micm_VERSION_TWEAK@+0;
+  }
+
+#ifdef __cplusplus
+}  // extern "C"
+}  // namespace micm
+#endif
