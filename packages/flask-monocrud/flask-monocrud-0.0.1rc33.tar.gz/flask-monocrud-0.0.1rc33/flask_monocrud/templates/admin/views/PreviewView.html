@@ -1,0 +1,58 @@
+{% set resource=data_model.resource %}
+{% set id=id %}
+{% set model=result_set %}
+{% set edit_actions=edit_actions %}
+{% set resource_singularized = singularize(resource)|lower %}
+
+
+<script>
+    document.querySelectorAll('#preview-mode input, #preview-mode select, #preview-mode button, #preview-mode textarea').forEach(function (element) {
+        element.setAttribute('disabled', 'disabled');
+    });
+</script>
+
+<div id="preview-mode" class='container-lg'>
+    <div class="row gap-6 flex-column flex-lg-row align-items-start">
+        <div class="col-lg-8">
+            <div class="row gap-6 flex-column flex-lg-row align-items-start">
+                {% for field in data_model.table.columns().__dict__() %}
+                <div class="col-lg-6">
+                    <dl class="grid grid-cols-1 gap-6">
+                        <div class="col">
+                            <div class="grid gap-y-2">
+                                <div class="d-flex justify-content-between align-items-center gap-x-3">
+                                    <dt class="d-flex align-items-center gap-x-3">
+                                        <span class="text-sm font-medium text-gray-950" style="border-bottom: 4px solid lightslategrey;">{{ field.label or field.name }}</span>
+                                    </dt>
+                                </div>
+                                <div class="grid gap-y-2">
+                                    <dd>
+                                        <div class="fi-in-text">
+                                            <div class="fi-in-affixes d-flex">
+                                                <div class="min-w-0 flex-1">
+                                                    <div class="flex">
+                                                        <div class="flex max-w-max">
+                                                            <div class="fi-in-text-item d-flex align-items-center gap-1.5">
+                                                                <div class="text-sm text-gray-950">
+                                                                    {% set result = result_set %}
+                                                                    {% include 'admin/components/table/table-row.html' %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </dd>
+                                </div>
+                            </div>
+                        </div>
+                    </dl>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</div>
+

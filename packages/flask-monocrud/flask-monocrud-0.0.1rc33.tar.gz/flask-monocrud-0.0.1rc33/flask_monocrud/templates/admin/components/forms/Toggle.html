@@ -1,0 +1,26 @@
+{% if field.colspan %}
+    {% set colspan = "col-lg-" + field.colspan %}
+{% else %}
+    {% set colspan = "col-lg-2" %}
+{% endif %}
+
+<div class="form-check form-switch form-check-{{ field.checked_color }} {% if field.inline == True %}form-check-inline{% endif %} {{ colspan }} mt-3">
+    <input type="checkbox"
+            {% if value %}
+                {% if value|lower in ["on", "yes","true"] %}
+                    checked="{{ value }}"
+                {% elif value|lower in ["off", "no", "false"] %}
+                    checked="{{ value }}"
+                {% endif %}
+            {% else %}
+            {% if field.checked %}
+                checked="{{ value }}"
+            {% endif %}
+            {% endif %}
+
+            {% include 'admin/components/forms/FieldAttributes.html' with context %}
+    >
+    <label class="form-check-label" for="form-check-default">
+        {{ field.label or field.name }}
+    </label>
+</div>

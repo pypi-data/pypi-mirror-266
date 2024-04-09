@@ -1,0 +1,38 @@
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+{% from 'admin/components/forms/GetValue.html' import get_value  with context %}
+
+
+{% set field = field %}
+{% set result_set = model %}
+{% set model = model %}
+{% set value = get_value(result_set, field).lstrip().rstrip() %}
+
+
+
+
+{% if field.type == 'select' %}
+    {% include field.view with context %}
+{% elif field.type == 'file' %}
+    {% include field.view with context %}
+{% elif field.type in ["text", "datalist", "date", "datetime-local", "color", "email", "hidden", "month", "number", "password", "range", "search", "tel", "time", "url", "week"] %}
+    {% include field.view with context %}
+{% elif field.type == "checkbox" %}
+    {% include field.view with context %}
+{% elif field.type == "radio" %}
+    {% include field.view with context %}
+{% elif field.type == "toggle" %}
+    {% include field.view with context %}
+{% elif field.type == "textarea" %}
+    {% include field.view with context %}
+{% elif field.type == "repeater" %}
+    {% include field.view with context %}
+{% elif field.type == "horizontal-separator" %}
+    {% include field.view %}
+{% elif field.type == "grid" %}
+    {% include field.view %}
+{% elif field.type == "live" %}
+    {{ live(field.name, field=field, data=model)|safe }}
+{% elif field.type == "custom" %}
+    {% include field.view %}
+
+{% endif %}

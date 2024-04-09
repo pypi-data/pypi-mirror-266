@@ -1,0 +1,15 @@
+{% if field.type == "select" %}
+    {% set root_css_class = "form-select" %}
+{% elif field.type in ["checkbox", "toggle", "radio"] %}
+    {% set root_css_class = "form-check-input" %}
+{% else %}
+    {% set root_css_class = "form-control" %}
+{% endif %}
+
+class="{{ root_css_class }} {{ field.classes }} {% if field.type in ["date", "datetime-local"] %} datepicker{% endif %}"
+id="{{ field.options_key or field.name }}"
+name="{{ field.options_key or field.name }}"
+{% if field.autofocus %} autofocus="{{ field.autofocus }}"{% endif %}
+{% if field.disabled %} disabled="{{ field.disabled }}" {% endif %}
+{% if field.multiple %} multiple="{{ field.multiple }}" {% endif %}
+{% if field.required %} required="{{ field.required }}" {% endif %}

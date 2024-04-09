@@ -1,0 +1,17 @@
+{% if field.colspan %}
+    {% set colspan = "col-lg-" + field.colspan %}
+{% else %}
+    {% set colspan = "col-lg-4" %}
+{% endif %}
+
+<div class="form-group {{ colspan }} mt-3">
+    {% if field.label %}<label for="{{ field.id }}">{{ field.label }}</label>{% endif %}
+    <textarea
+    {% include 'admin/components/forms/FieldAttributes.html' with context %}
+    {% if field.autocomplete %} autocomplete="{{ field.autocomplete }}" {% endif %}
+    {% if field.placeholder %} placeholder="{{ field.placeholder }}" {% endif %}
+    {% if field.readonly %} readonly="{{ field.readonly }}" {% endif %}
+    {% if field.cols %}cols="{{ field.cols }}" {% endif %}
+    {% if field.rows %}rows="{{ field.rows }}" {% endif %}
+    >{% if value %}{{ value }}{% endif %}</textarea>
+</div>

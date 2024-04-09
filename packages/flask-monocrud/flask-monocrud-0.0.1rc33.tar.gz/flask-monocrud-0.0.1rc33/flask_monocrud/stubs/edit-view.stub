@@ -1,0 +1,7 @@
+from flask_monocrud import Admin
+from flask_orphus.routing.fs_router import endpoint
+
+
+@endpoint(name="Edit $Resource")
+def home(id):
+    return Admin().setup_edit_view("$Resource", id)
