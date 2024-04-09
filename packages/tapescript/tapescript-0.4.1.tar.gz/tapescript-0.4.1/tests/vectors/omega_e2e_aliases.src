@@ -1,0 +1,327 @@
+# omega e2e parsing test #
+
+def 0 {
+    if {
+        pop0
+    }
+}
+
+
+def 1 {
+    # comment within def #
+    if {
+        # comment within if #
+        push0 d0
+        push1 x22
+    } else {
+        # comment within else #
+        push2 xfeedbeef
+        push4 s"yellow submarine"
+    }
+}
+
+
+def 2 {
+    if {
+        if {
+            call d0
+        } else {
+            call d1
+        }
+    } else {
+        if {
+            call d0
+        } else {
+            call d1
+        }
+    }
+}
+
+
+if {
+    def 3 {
+        false
+    }
+} else {
+    def 3 {
+        true
+    }
+}
+
+
+try {
+    if {
+        true
+    }
+    def 4 {
+        call d0
+    }
+} except {
+    def 4 {
+        false
+    }
+}
+
+false
+call d0
+true
+call d1
+size
+write_cache s"size" d1
+read_cache s"size"
+rcs s"size"
+rcq
+rcqs
+add_ints d12
+subtract_ints d21
+mult_ints d2
+div_int d-10
+div_ints
+mod_int d10
+mod_ints
+add_floats d2
+subf d2
+div_float x3c4985f0
+div_floats
+mod_float x3c4985f0
+mod_floats
+add_points d3
+copy d5
+dup
+sha256
+shake256 d20
+verify
+equal
+equal_verify
+check_sig x22
+csv x33
+check_timestamp
+ctv
+check_epoch
+cev
+eval
+not
+random d32
+return
+set_flag xfeedbeef
+unset_flag xfeedbeef
+depth
+swap d12 d21
+swap2
+reverse d12
+concat
+split d12
+concat_str
+split_str d21
+check_transfer
+merkleval xfeedbeeffeedbeeffeedbeeffeedbeeffeedbeeffeedbeeffeedbeeffeedbeef
+try {
+    # comment within try #
+    false
+    verify
+} except {
+    # comment within except #
+    read_cache x45
+    push s"ScriptExecutionError|OP_VERIFY check failed"
+    try {
+        equal_verify
+    }
+}
+less
+leq
+val s"test"op_float_less
+fless
+fleq
+i2f
+f2i
+loop {
+    # comment within loop #
+    push d1
+    subtract_ints d2
+}
+cms x00 d2 d2
+cmsv x00 d2 d3
+sign x00
+sign_queue
+csq
+derive_scalar
+clamp_scalar d1
+add_scalars d3
+subtract_scalars d2
+derive_point
+subtract_points d4
+masu
+masv
+cas
+das
+invoke
+xor
+or
+and
+msg x00
+nop90 d1
+nop91 d1
+nop92 d1
+nop93 d1
+nop94 d1
+nop95 d1
+nop96 d1
+nop97 d1
+nop98 d1
+nop99 d1
+nop100 d1
+nop101 d1
+nop102 d1
+nop103 d1
+nop104 d1
+nop105 d1
+nop106 d1
+nop107 d1
+nop108 d1
+nop109 d1
+nop110 d1
+nop111 d1
+nop112 d1
+nop113 d1
+nop114 d1
+nop115 d1
+nop116 d1
+nop117 d1
+nop118 d1
+nop119 d1
+nop120 d1
+nop121 d1
+nop122 d1
+nop123 d1
+nop124 d1
+nop125 d1
+nop126 d1
+nop127 d1
+nop128 d1
+nop129 d1
+nop130 d1
+nop131 d1
+nop132 d1
+nop133 d1
+nop134 d1
+nop135 d1
+nop136 d1
+nop137 d1
+nop138 d1
+nop139 d1
+nop140 d1
+nop141 d1
+nop142 d1
+nop143 d1
+nop144 d1
+nop145 d1
+nop146 d1
+nop147 d1
+nop148 d1
+nop149 d1
+nop150 d1
+nop151 d1
+nop152 d1
+nop153 d1
+nop154 d1
+nop155 d1
+nop156 d1
+nop157 d1
+nop158 d1
+nop159 d1
+nop160 d1
+nop161 d1
+nop162 d1
+nop163 d1
+nop164 d1
+nop165 d1
+nop166 d1
+nop167 d1
+nop168 d1
+nop169 d1
+nop170 d1
+nop171 d1
+nop172 d1
+nop173 d1
+nop174 d1
+nop175 d1
+nop176 d1
+nop177 d1
+nop178 d1
+nop179 d1
+nop180 d1
+nop181 d1
+nop182 d1
+nop183 d1
+nop184 d1
+nop185 d1
+nop186 d1
+nop187 d1
+nop188 d1
+nop189 d1
+nop190 d1
+nop191 d1
+nop192 d1
+nop193 d1
+nop194 d1
+nop195 d1
+nop196 d1
+nop197 d1
+nop198 d1
+nop199 d1
+nop200 d1
+nop201 d1
+nop202 d1
+nop203 d1
+nop204 d1
+nop205 d1
+nop206 d1
+nop207 d1
+nop208 d1
+nop209 d1
+nop210 d1
+nop211 d1
+nop212 d1
+nop213 d1
+nop214 d1
+nop215 d1
+nop216 d1
+nop217 d1
+nop218 d1
+nop219 d1
+nop220 d1
+nop221 d1
+nop222 d1
+nop223 d1
+nop224 d1
+nop225 d1
+nop226 d1
+nop227 d1
+nop228 d1
+nop229 d1
+nop230 d1
+nop231 d1
+nop232 d1
+nop233 d1
+nop234 d1
+nop235 d1
+nop236 d1
+nop237 d1
+nop238 d1
+nop239 d1
+nop240 d1
+nop241 d1
+nop242 d1
+nop243 d1
+nop244 d1
+nop245 d1
+nop246 d1
+nop247 d1
+nop248 d1
+nop249 d1
+nop250 d1
+nop251 d1
+nop252 d1
+nop253 d1
+nop254 d1
+nop255 d1

@@ -1,0 +1,51 @@
+!= ev [ val1 val2 ] {
+    PUSH val1
+    PUSH val2
+    EQUAL_VERIFY
+}
+
+!ev [ d123 d321 ]
+
+@= ev [ x01 ]
+
+PUSH x01
+@ev
+EQUAL
+
+@= ev 1
+
+DEF 0 {
+    != ve [ ] { FALSE }
+    !ve [ ]
+    @= ve [ ]
+    @ve
+    @= ve 1
+}
+
+IF {
+    != vv [ ] { TRUE }
+    !vv [ ]
+    @= vv [ d1 ]
+    @vv
+    @= vv 0
+} ELSE {
+    != a1 [ ] { NOP255 d0 }
+    !a1 [ ]
+    @= a1 [ xfeedbeef ]
+    @a1
+    @= a1 0
+}
+
+TRY {
+    != a2 [ ] { NOP255 d0 }
+    !a2 [ ]
+    @= a2 [ xdeafacab ]
+    @a2
+    @= a2 1
+} EXCEPT {
+    != a2 [ ] { NOP255 d0 }
+    !a2 [ ]
+    @= a2 [ xdeafacab ]
+    @a2
+    @= a2 2
+}
