@@ -1,0 +1,129 @@
+[project]
+name  = "faster-eTaPR"
+authors = [
+    { name = "Gorden Platz", email = "36087062+GPla@users.noreply.github.com" }
+]
+dependencies = [
+    "numpy>=1.26.4",
+    "mlnext-framework>=0.4.1",
+    "einops>=0.7.0",
+]
+readme = "README.rst"
+requires-python = ">= 3.10"
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries",
+    "License :: OSI Approved :: MIT License"
+]
+keywords = [
+    "machine",
+    "learning",
+    "anomaly",
+    "detection",
+    "evaluation",
+    "performance",
+    "etapr",
+    "point-adjust",
+    "metrics",
+]
+license = "MIT"
+dynamic = ["version", "description"]
+
+[project.urls]
+Documentation = "https://faster-etapr.readthedocs.io"
+Source = "https://github.com/GPla/faster-eTaPR"
+
+[project.optional-dependencies]
+docs = [
+    "furo>=2024.01.29",
+    "myst-parser>=2.0.0",
+    "rinohtype>=0.5.4",
+    "sphinx>=7.2.6",
+    "sphinx-copybutton>=0.5.2",
+]
+tests = [
+    "pytest>=8.1.1",
+    "pytest-mock>=3.14.0",
+    "pytest-cov>=5.0.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.mypy]
+plugins = "numpy.typing.mypy_plugin"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "pre-commit>=3.6.2",
+    "pytest>=8.1.1",
+    "ipykernel>=6.29.3",
+    "etapr-pkg @ git+https://github.com/GPla/eTaPR",
+    "mypy>=1.9.0",
+    "pytest-mock>=3.14.0",
+    "tox>=4.14.2",
+    "uv>=0.1.24",
+    "pytest-cov>=5.0.0",
+    "towncrier>=23.11.0",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/faster_etapr"]
+
+[tool.hatch.version]
+path = "src/faster_etapr/__init__.py"
+
+[tool.hatch.description]
+path = "src/faster_etapr/__init__.py"
+
+[tool.black]
+line-length = 79
+skip-string-normalization = true
+
+[tool.ruff]
+target-version = "py311"
+line-length = 79
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.isort]
+force-single-line = true
+
+[tool.towncrier]
+    package_dir="src"
+    package = "faster_etapr"
+    filename = "CHANGELOG.rst"
+    directory = "changelog"
+    template = "changelog/towncrier_template.rst"
+    issue_format = "`#{issue} <https://github.com/GPla/faster-eTaPR/issues/{issue}>`__"
+    title_format = "{version} ({project_date})"
+    underlines=["-", "-", "^"]
+
+    [[tool.towncrier.type]]
+        directory = "change"
+        name = "Changes"
+        showcontent = true
+
+    [[tool.towncrier.type]]
+        directory = "feature"
+        name = "Features"
+        showcontent = true
+
+    [[tool.towncrier.type]]
+        directory = "deprecation"
+        name = "Deprecations"
+        showcontent = true
