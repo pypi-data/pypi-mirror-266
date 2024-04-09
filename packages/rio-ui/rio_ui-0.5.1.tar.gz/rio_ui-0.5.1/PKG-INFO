@@ -1,0 +1,116 @@
+Metadata-Version: 2.1
+Name: rio-ui
+Version: 0.5.1
+Summary: Build modern Websites and Apps just with Python
+Home-page: https://rio.dev
+License: LGPL-3.0
+Keywords: web-development,web-framework,framework,functional,type-safe,typing,typed,react,web,app,user-interface,web-app,local-app,modern,rio
+Author: Jakob Pinterits
+Author-email: jakob.pinterits@gmail.com
+Requires-Python: >=3.10,<4.0
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Financial and Insurance Industry
+Classifier: Intended Audience :: Information Technology
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Classifier: Topic :: Internet :: WWW/HTTP :: WSGI :: Application
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Provides-Extra: window
+Requires-Dist: aiofiles (>=23.2.1,<24.0.0)
+Requires-Dist: cefpython3 (>=66.1,<67.0) ; (sys_platform == "windows") and (extra == "window")
+Requires-Dist: fastapi (>=0.109.1,<0.110.0)
+Requires-Dist: fuzzywuzzy (>=0.18.0,<0.19.0)
+Requires-Dist: gitignore-parser (>=0.1.9,<0.2.0)
+Requires-Dist: httpx (>=0.25.1,<0.26.0)
+Requires-Dist: imy (>=0.2.1,<0.3.0)
+Requires-Dist: introspection (>=1.7.13,<2.0.0)
+Requires-Dist: keyring (>=24.3.0,<25.0.0)
+Requires-Dist: pillow (>=10.2.0,<11.0.0)
+Requires-Dist: platformdirs (>=3.11.0,<4.0.0) ; extra == "window"
+Requires-Dist: pygobject (>=3.44.1,<4.0.0) ; (sys_platform == "linux") and (extra == "window")
+Requires-Dist: pytest (>=7.3.1,<8.0.0)
+Requires-Dist: python-levenshtein (>=0.23.0,<0.24.0)
+Requires-Dist: python-multipart (>=0.0.6,<0.0.7)
+Requires-Dist: pytz (>=2024.1,<2025.0)
+Requires-Dist: pywebview (>=4.2.2,<5.0.0) ; extra == "window"
+Requires-Dist: revel (==0.8.19)
+Requires-Dist: timer-dict (>=1.0.0,<2.0.0)
+Requires-Dist: tomlkit (>=0.12.3,<0.13.0)
+Requires-Dist: typing-extensions (>=4.5.0,<5.0.0)
+Requires-Dist: unicall (>=0.1.5,<0.2.0)
+Requires-Dist: uniserde (>=0.3.12,<0.4.0)
+Requires-Dist: uvicorn[standard] (>=0.23.2,<0.24.0)
+Requires-Dist: watchfiles (>=0.21.0,<0.22.0)
+Requires-Dist: yarl (>=1.9.2,<2.0.0)
+Project-URL: Documentation, https://rio.dev/docs
+Description-Content-Type: text/markdown
+
+![Discord](https://img.shields.io/discord/1213589765484576818)
+![Python Version](https://img.shields.io/pypi/pyversions/rio-ui)
+![Version](https://img.shields.io/pypi/v/rio-ui)
+![License](https://img.shields.io/pypi/l/rio-ui)
+
+<!-- TODO: Stars -->
+
+<!-- https://shields.io/badges -->
+
+<img src="https://gitlab.com/team-rio/rio/-/raw/dev/rio/assets/hosted/rio-logos/logo-and-text-horizontal.png" alt="Rio Logo" style="width: 30rem" />
+
+🌊 You've arrived at **Rio**, an easy to use framework for creating websites and
+apps.
+
+🐍 Rio is based **entirely on Python**. You **won't need a single line of HTML, CSS, or
+JavaScript** to create beautiful, modern apps.
+
+[Tutorial](https://rio.dev/docs/tutorial-simple-dashboard/1-rio-setup) - [Examples](https://rio.dev/examples) - [Discord](https://discord.gg/7ejXaPwhyH) -  [docs](https://rio.dev/docs) - [Source Code](https://gitlab.com/team-rio/rio)
+
+Rio brings React-style components to Python. Pull from a wealth of built-in
+components and combine them to create your own custom components. Then combine
+those into entire apps. Best of all, Rio apps can run both locally on your
+machine and on the web.
+
+## Features 🧩
+
+- Modern, **declarative UI** framework
+- **100% Python** - Zero HTML, CSS, or JavaScript required
+- Over **50 Built-in components** for common UI elements, such as `rio.Switch`, `rio.Button`, and `rio.Text`, and many more
+- Integrates with **modern Python tooling**: Thanks to being **entirely Type Safe** editors can give you instant suggestions and highlight problems right away
+- Apps can run **both locally and on the web**
+- **Open Source & Free forever**
+
+## Installation 🛠️
+
+Rio is available on PyPI, so you can install it using pip:
+
+```bash
+pip install rio-ui
+```
+
+## Getting Started 🎓
+
+Rio comes with a very helpful command line utility to help you out. Create a new project in one short command:
+
+```bash
+rio new
+```
+
+You can choose from a variety of built-in templates to get you started. Here's a complete example to create a project based on the tic-tac-toe template:
+
+```bash
+rio new my-app --type website --template 'Tic-Tac-Toe'
+cd my-project
+rio run
+```
+
+You'll have your first app up and running in seconds!
+
+## How it works 🧠
+
+TODO: Minimal example
+
