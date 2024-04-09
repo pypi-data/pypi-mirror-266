@@ -1,0 +1,36 @@
+#!/bin/bash
+dir=$(dirname $0)
+. $dir/test-lib
+
+export RFSTOOLS_CONNECTION_TYPE=FS
+
+is_crlf(){
+  file $1 | grep 'with CRLF line terminators' >/dev/null
+}
+
+crlf_test()(
+  tmp=$(mktemp)
+  tmp2=$tmp.2
+  trap "rm $tmp"
+
+  export RFSTOOLS_REMOTE_CRLF=TRUE
+  cat > $tmp << EOF
+    Nice line 1
+    Nice line 2
+    Nice line 3
+EOF
+  
+   pcp -X $tmp r:$tmp2
+
+   is_crlf $tmp2 || die "File didn't convert to CRLF from LF." 
+   
+   echo "" > $tmp
+   pcp -X r:$tmp2 $tmp
+
+   is_crlf $tmp && die "File didn't convert to LF from CRLF."
+   exit 0 
+)
+
+run_test crlf_test
+
+

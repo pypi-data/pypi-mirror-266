@@ -1,0 +1,269 @@
+stages:
+- examine
+- deploy
+
+image: debian:stable
+
+default:
+  before_script:
+    - apt update -y
+    - apt dist-upgrade -y
+    - apt install -y python3-pip python3-virtualenv git
+
+    - export PATH=~/.local/bin:$PATH
+    
+    - virtualenv ~/venv
+    - source ~/venv/bin/activate
+
+
+
+test-tox:
+  stage: examine
+  script: 
+    - apt install -y libc6 dos2unix file
+    - pip install tox
+    - tox
+
+test-fs:
+  stage: examine
+  script:
+    - pip install .
+
+    - export RFSTOOLS_CONNECTION_TYPE=FS
+    - ./tests/generic-tests
+
+test-sftp:
+  stage: examine
+  script:
+    - pip install .
+
+    - apt install -y openssh-server
+    - ssh-keygen -f ~/.ssh/id_rsa -N ''
+    - cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+    - chmod og-wx ~/.ssh/authorized_keys
+
+    - mkdir -p /run/sshd
+    - /usr/sbin/sshd
+    - export RFSTOOLS_CONNECTION_TYPE=SFTP
+    - export RFSTOOLS_HOST=localhost
+    - export RFSTOOLS_USERNAME=root
+    - export RFSTOOLS_NO_HOST_KEY_CHECKING=TRUE
+
+    - ./tests/generic-tests
+
+  
+test-smb12:
+  stage: examine
+  script:
+    - pip install .
+
+    - apt install -y samba
+    - mkdir -p /samba/tmp
+    - chmod 1777 /samba/tmp
+    - cat < $TEST_SMB_CONFIG > /etc/samba/smb.conf
+    - testparm /etc/samba/smb.conf
+    - smbd -D
+    - nmbd -D
+    - sleep 10
+    
+    - smbstatus
+
+    - export RFSTOOLS_CONNECTION_TYPE=SMB12
+    - export RFSTOOLS_HOST=127.0.0.1
+    - export RFSTOOLS_USERNAME=testing
+    - export RFSTOOLS_PASSWORD=testing
+    - export RFSTOOLS_PORT=445
+    - export RFSTOOLS_SERVICE_NAME=share
+    - export RFSTOOLS_USE_DIRECT_TCP=true
+
+    - ./tests/generic-tests
+
+
+test-smb23:
+  stage: examine
+  script:
+    - pip install .
+
+    - apt install -y samba
+    - mkdir -p /samba/tmp
+    - chmod 1777 /samba/tmp
+    - cat < $TEST_SMB_CONFIG > /etc/samba/smb.conf
+    - testparm /etc/samba/smb.conf
+    - smbd -D
+    - nmbd -D
+    - sleep 10
+    
+    - smbstatus
+    
+    - | 
+      smbpasswd -a root -s <<EOF
+      testing
+      testing
+      EOF
+
+    - export RFSTOOLS_CONNECTION_TYPE=SMB23
+    - export RFSTOOLS_HOST=127.0.0.1
+    - export RFSTOOLS_USERNAME=root
+    - export RFSTOOLS_PASSWORD=testing
+    - export RFSTOOLS_SERVICE_NAME=share
+    - export RFSTOOLS_DISABLE_SECURE_NEGOTIATE=True
+    - export RFSTOOLS_DEBUG=False
+    - export RFSTOOLS_VERBOSE=True
+
+    - ./tests/generic-tests
+
+
+test-ftp:
+  stage: examine
+  script:
+    - pip install .
+
+    - apt install -y vsftpd net-tools
+    - cat < $TEST_VSFTPD_CONFIG  > /etc/vsftpd.conf
+    - mkdir -p /var/run/vsftpd/empty
+    - vsftpd /etc/vsftpd.conf &
+    - sleep 5
+    
+    - netstat -l
+
+    - export RFSTOOLS_CONNECTION_TYPE=FTP
+    - export RFSTOOLS_HOST=127.0.0.1
+    - export RFSTOOLS_USERNAME=anonymous
+    - export RFSTOOLS_PASSWORD=anonymous@profinit.lan
+
+    - ./tests/generic-tests
+
+
+build:
+  stage: examine
+  script:
+    - python setup.py sdist bdist_wheel
+    # an alternative approach is to install and run:
+    - pip install dist/*.tar.gz
+    # run the command here
+  artifacts:
+    paths:
+      - dist/*.whl
+      - dist/*.tar.gz
+    expire_in: 4 weeks
+
+
+deploy:
+  stage: deploy
+  environment: deploy
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - pip install twine
+    - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python -m twine upload --repository-url https://git.profinit.eu/api/v4/projects/${CI_PROJECT_ID}/packages/pypi dist/*
+  artifacts:
+    paths:
+      - dist
+
+backup-dependencies:
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - mkdir dependencies
+    - | 
+      apt install -y pandoc ghc rustc
+      pip download -d ./dependencies -r requirements.txt --no-binary :all:
+  artifacts:
+    paths:
+      - dependencies
+    expire_in: never
+
+deploy-doc:
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_TAG
+    - if: $CI_DOCS_ACCESS_TOKEN
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  script:
+    - |
+      apt install -y texlive-latex-recommended latexmk texlive-fonts-recommended texlive-latex-extra
+
+      export doc_repo=/tmp/rfstools-docs
+      ./docs/generate-docs.sh
+
+      [ -n "$CI_COMMIT_TAG" ] && {
+        echo Sleeping for 30 seconds to prevent race condition.
+        sleep 30
+      }
+
+      pushd /tmp
+      git clone https://oauth2:${CI_DOCS_ACCESS_TOKEN}@gitlab.com/rfs4/rfstools-docs
+      popd
+
+      pushd $doc_repo
+      rm -fr ./commands ./rfstools-dev-doc.pdf 2>/dev/null || :
+      popd
+
+      cp -r docs/_build/commands $doc_repo
+      cp docs/_build/latex/rfstools.pdf $doc_repo/rfstools-dev-doc.pdf
+      cp docs/_build/README.md $doc_repo
+
+      cd $doc_repo
+      
+      git config --global user.email "$GITLAB_USER_EMAIL"
+      git config --global user.name "$GITLAB_USER_NAME"
+
+      git add -A
+      git commit -m "$CI_COMMIT_MESSAGE" || :
+
+      [ -n "$CI_COMMIT_TAG" ] && git tag "$CI_COMMIT_TAG"
+
+      git push
+      git push --tags
+
+  artifacts:
+    paths:
+      - /builds/rfs/rfstools/doc
+    expire_in: 4 weeks
+      
+
+
+
+include:
+  - template: Security/SAST.gitlab-ci.yml
+  - template: Security/Secret-Detection.gitlab-ci.yml
+  - template: Security/Dependency-Scanning.gitlab-ci.yml
+
+
+sast:
+  stage: examine
+  before_script: []
+
+secret_detection:
+  stage: examine
+  before_script: []
+
+dependency_scanning:
+  stage: examine
+  before_script: []
+
+
+
+
+sonarcloud-check:
+  stage: examine
+  before_script: []
+
+  image:
+    name: sonarsource/sonar-scanner-cli:latest
+    entrypoint: [""]
+
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+
+  script:
+    - sonar-scanner
+    
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
+    GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
+
+
