@@ -1,0 +1,96 @@
+<!--
+pyodide-mkdocs-theme
+Copyleft GNU GPLv3 🄯 2024 Frédéric Zinelli
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.
+If not, see <https://www.gnu.org/licenses/>.
+-->
+
+{% extends "base.html" %}
+
+<!-- Load CDNs : Pyodide (Python in WASM), Ace (Editor) and JQuery (Terminal) and mathJax, then local scripts. -->
+<!-- WARNING: the mathjax tex-mml-chtml.js cdn must be loaded AFTER the config.js file has been loaded. -->
+{% block libs %}
+{{ super() }}
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.20/lodash.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.7/ace.min.js" charset="utf-8" type="text/javascript" integrity="sha512-GQpIYSKNIPIC763JKTNALj+t18/nfLdzw5gITgFGa31aK/4NmjyPKsfqrjh7CuzpJaG3nqEleeVcWUhHad9Axg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.7/ext-language_tools.min.js" charset="utf-8" type="text/javascript" integrity="sha512-iK7yTkCkv7MbFwTqRgHTbmIqoiiLq6BsyNjymnFyB5a7pEQwYThj9QIgqBy9+XPPwj7+hAEHyR2npOHL1bz4Qg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.terminal@2.34.0/js/jquery.terminal.min.js"></script>
+<!-- PYODIDE - insertion token -->
+<script type="application/javascript" src="{{ config.plugins.pyodide_macros.rebase(base_url) }}/pyodide-mkdocs/js-libs/globalsAndTools/0_config-libs.js"></script>
+<script type="application/javascript" src="{{ config.plugins.pyodide_macros.rebase(base_url) }}/pyodide-mkdocs/js-libs/globalsAndTools/functools-libs.js"></script>
+<script type="application/javascript" src="{{ config.plugins.pyodide_macros.rebase(base_url) }}/pyodide-mkdocs/js-libs/globalsAndTools/jsLogger-libs.js"></script>
+<script type="application/javascript" src="{{ config.plugins.pyodide_macros.rebase(base_url) }}/pyodide-mkdocs/js-libs/mathjax-libs.js"></script>
+<script type="application/javascript" src="{{ config.plugins.pyodide_macros.rebase(base_url) }}/pyodide-mkdocs/js-libs/globalsAndTools/securedPagesData-libs.js"></script>
+<script type="application/javascript" src="{{ config.plugins.pyodide_macros.rebase(base_url) }}/pyodide-mkdocs/js-libs/globalsAndTools/z_globalGuiButtons-libs.js"></script>
+<!-- PYODIDE - insertion token -->
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript" charset="utf-8"></script>
+<script type="application/javascript">
+  CONFIG.CURRENT_REVISION = "pyodide-mkdocs-theme v{{ config.plugins.pyodide_macros.version }}"
+  CONFIG.showFailedAssertionsOnValidation = {{ config.plugins.pyodide_macros.show_code_on_failed_assertions | tojson }}
+  CONFIG.encryptCorrectionsAndRems = {{ config.plugins.pyodide_macros.encrypt_corrections_and_rems | tojson }}
+  CONFIG.buttonIconsDirectory = "{{ config.plugins.pyodide_macros.rebase(base_url) }}/pyodide-mkdocs/IDE-and-buttons/images/"
+</script>
+{% endblock %}
+
+
+{% block extrahead %}
+
+{% if config.extra.ace_style %}
+  {% if config.extra.ace_style['slate'] and config.extra.ace_style['default'] %}
+  <input type="checkbox" id="ace_palette" autocomplete="off" class="md-toggle"
+        data-ace-dark-mode="{{config.extra.ace_style['slate']}}"
+        data-ace-light-mode="{{config.extra.ace_style['default']}}">
+  {% elif config.extra.ace_style['slate'] %}
+  <input type="checkbox" id="ace_palette" autocomplete="off" class="md-toggle"
+        data-ace-dark-mode="{{config.extra.ace_style['slate']}}"
+        data-ace-light-mode="crimson_editor">
+  {% elif config.extra.ace_style['default'] %}
+  <input type="checkbox" id="ace_palette" autocomplete="off" class="md-toggle"
+        data-ace-dark-mode="tomorrow_night_bright"
+        data-ace-light-mode="{{config.extra.ace_style['default']}}">
+  {% endif %}
+{% else %}
+  <input type="checkbox" id="ace_palette" autocomplete="off" class="md-toggle"
+        data-ace-dark-mode="tomorrow_night_bright"
+        data-ace-light-mode="crimson_editor">
+{% endif %}
+<!-- PYODIDE - insertion token -->
+<link rel="stylesheet" href="{{ config.plugins.pyodide_macros.rebase(base_url) }}/pyodide-mkdocs/terminal/css/0_cdn-terminal-replacement-extrahead.css">
+<link rel="stylesheet" href="{{ config.plugins.pyodide_macros.rebase(base_url) }}/pyodide-mkdocs/IDE-and-buttons/ide-extrahead.css">
+<link rel="stylesheet" href="{{ config.plugins.pyodide_macros.rebase(base_url) }}/pyodide-mkdocs/pyoditeur-extrahead.css">
+<link rel="stylesheet" href="{{ config.plugins.pyodide_macros.rebase(base_url) }}/qcm/qcm-extrahead.css">
+<link rel="stylesheet" href="{{ config.plugins.pyodide_macros.rebase(base_url) }}/pyodide-mkdocs/terminal/css/terminal-extrahead.css">
+<link rel="stylesheet" href="{{ config.plugins.pyodide_macros.rebase(base_url) }}/pyodide-mkdocs/js-libs/globalsAndTools/z_header-btns-extrahead.css">
+<!-- PYODIDE - insertion token -->
+{% endblock %}
+
+
+{% block scripts %}
+{{ super() }}
+<!-- PYODIDE - insertion token -->
+<script type="application/javascript" src="{{ config.plugins.pyodide_macros.rebase(base_url) }}/pyodide-mkdocs/IDE-and-buttons/0_buttonsAndCounter-scripts.js"></script>
+<script type="application/javascript" src="{{ config.plugins.pyodide_macros.rebase(base_url) }}/pyodide-mkdocs/actions/0_tasks-scripts.js"></script>
+<script type="application/javascript" src="{{ config.plugins.pyodide_macros.rebase(base_url) }}/pyodide-mkdocs/IDE-and-buttons/ace-editor-scripts.js"></script>
+<script type="application/javascript" src="{{ config.plugins.pyodide_macros.rebase(base_url) }}/pyodide-mkdocs/error-logs-generator-scripts.js"></script>
+<script type="application/javascript" src="{{ config.plugins.pyodide_macros.rebase(base_url) }}/pyodide-mkdocs/actions/genericCodeRunner-scripts.js"></script>
+<script type="application/javascript" src="{{ config.plugins.pyodide_macros.rebase(base_url) }}/qcm/qcm-scripts.js"></script>
+<script type="application/javascript" src="{{ config.plugins.pyodide_macros.rebase(base_url) }}/pyodide-mkdocs/terminal/terminal-helpers-scripts.js"></script>
+<script type="application/javascript" src="{{ config.plugins.pyodide_macros.rebase(base_url) }}/pyodide-mkdocs/terminal/terminal-scripts.js"></script>
+<script type="application/javascript" src="{{ config.plugins.pyodide_macros.rebase(base_url) }}/pyodide-mkdocs/IDE-and-buttons/z_doLast-subscriptions-scripts.js"></script>
+<script type="application/javascript" src="{{ config.plugins.pyodide_macros.rebase(base_url) }}/pyodide-mkdocs/terminal/z_doLast_terminal-scripts.js"></script>
+<!-- PYODIDE - insertion token -->
+{% endblock %}
