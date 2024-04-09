@@ -1,0 +1,114 @@
+[build-system]
+requires = ["maturin>=1.3.2"]
+build-backend = "maturin"
+
+[project]
+name = "polars-u64-idx"
+description = "Blazingly fast DataFrame library"
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = ["dataframe", "arrow", "out-of-core"]
+classifiers = ["Development Status :: 5 - Production/Stable", "Environment :: Console", "Intended Audience :: Science/Research", "License :: OSI Approved :: MIT License", "Operating System :: OS Independent", "Programming Language :: Python", "Programming Language :: Python :: 3", "Programming Language :: Python :: 3 :: Only", "Programming Language :: Python :: 3.8", "Programming Language :: Python :: 3.9", "Programming Language :: Python :: 3.10", "Programming Language :: Python :: 3.11", "Programming Language :: Python :: 3.12", "Programming Language :: Rust", "Topic :: Scientific/Engineering"]
+
+[[project.authors]]
+name = "Ritchie Vink"
+email = "ritchie46@gmail.com"
+
+[project.license]
+file = "LICENSE"
+
+[project.urls]
+Homepage = "https://www.pola.rs/"
+Documentation = "https://docs.pola.rs/py-polars/html/reference/index.html"
+Repository = "https://github.com/pola-rs/polars"
+Changelog = "https://github.com/pola-rs/polars/releases"
+
+[project.optional-dependencies]
+adbc = ["adbc_driver_manager", "adbc_driver_sqlite"]
+async = ["nest_asyncio"]
+cloudpickle = ["cloudpickle"]
+connectorx = ["connectorx >= 0.3.2"]
+deltalake = ["deltalake >= 0.14.0"]
+fastexcel = ["fastexcel >= 0.9"]
+fsspec = ["fsspec"]
+gevent = ["gevent"]
+matplotlib = ["matplotlib"]
+numpy = ["numpy >= 1.16.0"]
+openpyxl = ["openpyxl >= 3.0.0"]
+pandas = ["pyarrow >= 7.0.0", "pandas"]
+plot = ["hvplot >= 0.9.1"]
+pyarrow = ["pyarrow >= 7.0.0"]
+pydantic = ["pydantic"]
+pyiceberg = ["pyiceberg >= 0.5.0"]
+pyxlsb = ["pyxlsb >= 1.0"]
+sqlalchemy = ["sqlalchemy", "pandas"]
+timezone = ["backports.zoneinfo; python_version < '3.9'", "tzdata; platform_system == 'Windows'"]
+xlsx2csv = ["xlsx2csv >= 0.8.0"]
+xlsxwriter = ["xlsxwriter"]
+all = ["polars[adbc,async,cloudpickle,connectorx,deltalake,fastexcel,fsspec,gevent,numpy,pandas,plot,pyarrow,pydantic,pyiceberg,sqlalchemy,timezone,xlsx2csv,xlsxwriter]"]
+
+[tool]
+[tool.maturin]
+include = ["rust-toolchain.toml"]
+manifest-path = "py-polars/Cargo.toml"
+
+[tool.mypy]
+files = ["polars", "tests"]
+strict = true
+enable_error_code = ["redundant-expr", "truthy-bool", "ignore-without-code"]
+disable_error_code = ["empty-body"]
+
+[[tool.mypy.overrides]]
+module = ["IPython.*", "adbc_driver_manager.*", "adbc_driver_sqlite.*", "arrow_odbc", "backports", "connectorx", "deltalake.*", "ezodf.*", "fsspec.*", "gevent", "hvplot.*", "kuzu", "matplotlib.*", "moto.server", "nest_asyncio", "openpyxl", "polars.polars", "pyarrow.*", "pydantic", "pyxlsb", "sqlalchemy.*", "xlsx2csv", "xlsxwriter.*", "zoneinfo"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["IPython.*", "matplotlib.*"]
+follow_imports = "skip"
+
+[[tool.mypy.overrides]]
+module = ["polars.*"]
+warn_return_any = false
+
+[tool.ruff]
+line-length = 88
+fix = true
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "B", "C4", "D", "D213", "D417", "I", "SIM", "TCH", "TID", "UP", "PT", "RUF", "PTH", "FA", "PIE", "TD", "TRY", "EM", "FBT001"]
+ignore = ["E501", "D401", "PT011", "SIM102", "SIM108", "RUF005", "D105", "D100", "D104", "TD002", "TD003", "TRY003", "D206", "W191"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["D100", "D102", "D103", "B018", "FBT001"]
+
+[tool.ruff.lint.pycodestyle]
+max-doc-length = 88
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.lint.flake8-type-checking]
+strict = true
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.pytest.ini_options]
+addopts = ["--tb=short", "--strict-config", "--strict-markers", "--import-mode=importlib", "-m not slow and not hypothesis and not release and not write_disk and not docs"]
+markers = ["write_disk: Tests that write to disk", "slow: Tests with a longer than average runtime.", "release: Tests that should be run on a Polars release build.", "debug: Tests that should be run on a Polars debug build.", "docs: Documentation code snippets"]
+filterwarnings = ["error", "ignore:.*unrecognized arguments.*PyDevIPCompleter:DeprecationWarning", "ignore:.*is_sparse is deprecated.*:FutureWarning", "ignore:FigureCanvasAgg is non-interactive:UserWarning", "ignore:datetime.datetime.utcfromtimestamp\\(\\) is deprecated.*:DeprecationWarning", "ignore:datetime.datetime.utcnow\\(\\) is deprecated.*:DeprecationWarning", "ignore:.*co_lnotab is deprecated, use co_lines.*:DeprecationWarning", "ignore:unclosed file.*:ResourceWarning"]
+xfail_strict = true
+
+[tool.coverage]
+[tool.coverage.run]
+source = ["polars"]
+branch = true
+
+[tool.coverage.report]
+fail_under = 85
+skip_covered = true
+show_missing = true
+exclude_lines = ["pragma: no cover", "@overload", "except ImportError", "if TYPE_CHECKING:", "from typing_extensions import "]
