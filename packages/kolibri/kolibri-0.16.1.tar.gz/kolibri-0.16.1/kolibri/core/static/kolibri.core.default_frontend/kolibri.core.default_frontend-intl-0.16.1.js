@@ -1,0 +1,2 @@
+/*! For license information please see kolibri.core.default_frontend-intl-0.16.1.js.LICENSE.txt */
+(self["webpackChunkwebpack__kolibricore.default_frontend"]=self["webpackChunkwebpack__kolibricore.default_frontend"]||[]).push([[471],{12482:function(){}}]);
