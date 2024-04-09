@@ -1,0 +1,37 @@
+<!-- 导航栏 -->
+<div class="navbar bg-base-100 bg-[#3360A3] text-[#fbfbfb] min-h-0 p-0">
+  <div class="navbar-start justify-center">
+    <a
+      href="{{ url_for('profiler.dashboard') }}"
+      class="btn btn-ghost text-2xl bg-no-repeat bg-contain pl-[43px] drop-shadow-2xl"
+      >Profiler Flask</a
+    >
+  </div>
+  <div
+    class="navbar-center hidden lg:flex"
+  >
+    <ul class="menu menu-horizontal px-1 text-base">
+      <li>
+        <a
+          href="{{ url_for('profiler.dashboard') }}"
+          {% if active == 'dashboard' %}class="bg-[#537DB6]"{% endif %}
+          >Dashboard</a
+        >
+      </li>
+      <li>
+        <a
+          href="{{ url_for('profiler.filtering') }}"
+          {% if active == 'filtering' %}class="bg-[#537DB6]"{% endif %}
+          >Filtering</a
+        >
+      </li>
+      <li>
+        <a
+          href="{{ url_for('profiler.settings') }}"
+          {% if active == 'settings' %}class="bg-[#537DB6]"{% endif %}[-1]
+          >Settings</a
+        >
+      </li>
+    </ul>
+  </div>
+</div>

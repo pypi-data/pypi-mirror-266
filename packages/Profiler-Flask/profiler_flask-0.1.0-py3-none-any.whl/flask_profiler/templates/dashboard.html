@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% include 'head.html' %}
+  </head>
+  <body class="text-[18px] m-0">
+    {% include 'header.html' %}
+    <div class="container w-[80%] mx-auto my-[20px] border rounded">
+      <div
+        class="flex items-center justify-between bg-slate-100 text-black px-[25px] py-[25px]"
+      >
+        <div>
+          <h3 class="font-bold">
+            Dashboard
+            <small class="created-time text-[65%] text-[#777]"
+              >Created a few seconds ago</small
+            >
+          </h3>
+        </div>
+        <div x-data="{ activedBtn: 'sevenDayBtn' }">
+          <button
+            class="btn btn-sm rounded-sm btn-outline"
+            :class="{ 'bg-slate-950 text-white': activedBtn === 'dayBtn'}"
+            @click="activedBtn = 'dayBtn'"
+            hx-get="{{ url_for('profiler.get_data_within_days') }}?days=1"
+            hx-target="#draw"
+            hx-swap="outerHTML"
+            hx-trigger="click"
+          >
+            1day
+          </button>
+          <button
+            class="btn btn-sm rounded-sm btn-outline"
+            :class="{ 'bg-slate-950 text-white': activedBtn === 'sevenDayBtn'}"
+            @click="activedBtn = 'sevenDayBtn'"
+            hx-get="{{ url_for('profiler.get_data_within_days') }}?days=7"
+            hx-target="#draw"
+            hx-swap="outerHTML"
+            hx-trigger="load, click"
+          >
+            7days
+          </button>
+          <button
+            class="btn btn-sm rounded-sm btn-outline"
+            :class="{ 'bg-slate-950 text-white': activedBtn === 'thirtyDayBtn'}"
+            @click="activedBtn = 'thirtyDayBtn'"
+            hx-get="{{ url_for('profiler.get_data_within_days') }}?days=30"
+            hx-target="#draw"
+            hx-swap="outerHTML"
+            hx-trigger="click"
+          >
+            30days
+          </button>
+        </div>
+      </div>
+
+      <div class="flex flex-row flex-wrap bg-[#fff] pt-[15px]">
+        <div class="flex-1">
+          <div id="pie" style="width: 450px; height: 300px"></div>
+        </div>
+        <div class="flex-1">
+          <div id="line" style="width: 450px; height: 300px"></div>
+        </div>
+      </div>
+
+      <!-- 分隔线 -->
+      <div class="flex justify-center bg-[#fff] mt-[-15px]">
+        <div class="divider w-[90%] items-start m-0"></div>
+      </div>
+
+      <!-- Table -->
+      <div class="overflow-x-auto bg-[#fff]">
+        <!-- 排序筛选按钮 -->
+        <div class="flex flex-row bg-[#fff] pr-[50px] pb-[20px] justify-end">
+          <!-- 筛选 -->
+          <details class="dropdown">
+            <summary class="btn min-h-8 h-8">
+              <svg
+                t="1706841812537"
+                class="icon h-5 w-5"
+                viewBox="0 0 1024 1024"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                p-id="4469"
+              >
+                <path
+                  d="M675.693714 121.904762c42.569143 0 77.06819 35.132952 77.068191 78.482286 0 15.11619-4.291048 29.866667-12.336762 42.569142l-186.782476 294.473143v364.641524l-269.214477-182.759619v-181.881905L97.670095 242.95619c-23.088762-36.400762-12.824381-84.992 22.918095-108.495238A76.068571 76.068571 0 0 1 162.401524 121.904762h513.29219z m160.231619 601.624381v78.457905h-231.204571v-78.457905h231.204571z m102.741334-130.779429v78.457905H604.720762v-78.457905H938.666667z"
+                  p-id="4470"
+                ></path>
+              </svg>
+            </summary>
+            <ul
+              x-data="{ isActive: {} }"
+              class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-boxs"
+            >
+              <li>
+                <a
+                  :class="{ 'bg-slate-950 text-white': isActive['btnCount']}"
+                  class="px-2 py-1 bg-white"
+                  @click="isActive['btnCount'] = !isActive['btnCount']; visibleCol(0)"
+                  >Count</a
+                >
+              </li>
+              <li>
+                <a
+                  :class="{ 'bg-slate-950 text-white': isActive['btnAvg'] }"
+                  @click="isActive['btnAvg'] = !isActive['btnAvg']; visibleCol(1)"
+                  class="px-2 py-1 bg-white"
+                  >Avg</a
+                >
+              </li>
+              <li>
+                <a
+                  :class="{ 'bg-slate-950 text-white': isActive['btnMax'] }"
+                  @click="isActive['btnMax'] = !isActive['btnMax']; visibleCol(2)"
+                  class="px-2 py-1 bg-white"
+                  >Max</a
+                >
+              </li>
+              <li>
+                <a
+                  :class="{ 'bg-slate-950 text-white': isActive['btnMin']}"
+                  @click="isActive['btnMin'] = !isActive['btnMin']; visibleCol(3)"
+                  class="px-2 py-1 bg-white"
+                  >Min</a
+                >
+              </li>
+            </ul>
+          </details>
+        </div>
+
+        <div id="draw" x-show="false"></div>
+        <table
+          id="table"
+          class="max-w-[95%] font-sans-serif !text-center text-[15px] table !border-collapse"
+        >
+          <thead class="text-slate-950 text-[14px]">
+            <tr>
+              <th></th>
+              <th>Method</th>
+              <th>Name</th>
+              <th>Count</th>
+              <th>Avg</th>
+              <th>Max</th>
+              <th>Min</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+    <script type="text/javascript">
+      var table = $("#table").DataTable(
+        // 国际化
+        {
+          columns: [
+            { data: "index" },
+            { data: "method" },
+            { data: "name" },
+            { data: "count" },
+            { data: "avgElapsed" },
+            { data: "maxElapsed" },
+            { data: "minElapsed" },
+          ],
+          columnDefs: [
+            { orderable: false, targets: [0, 1, 2] },
+            { className: "!text-center", targets: "_all" },
+          ],
+          order: [],
+          lengthChange: false,
+          info: false,
+          searching: false,
+          paging: false,
+        }
+      );
+
+      function updatePage(data) {
+        table.clear();
+
+        var tableDataObj = {};
+        var pieData = [];
+        var methodDataObj = {};
+        var dateDataObj = {};
+
+        data.forEach(function (obj) {
+          // table数据汇总
+          key = `${obj.method}_${obj.name}`;
+          if (key in tableDataObj) {
+            var methodObj = tableDataObj[key];
+            methodObj.minElapsed = Math.min(
+              methodObj.minElapsed,
+              obj.minElapsed
+            );
+            methodObj.maxElapsed = Math.max(
+              methodObj.maxElapsed,
+              obj.maxElapsed
+            );
+            methodObj.avgElapsed = (methodObj.avgElapsed + obj.avgElapsed) / 2;
+          } else {
+            tableDataObj[key] = obj;
+          }
+
+          // 请求方法对应的请求个数
+          if (obj.method in methodDataObj) {
+            methodDataObj[obj.method] += obj.count;
+          } else {
+            methodDataObj[obj.method] = obj.count;
+          }
+
+          // 日期对应的请求次数
+          if (obj.day in dateDataObj) {
+            dateDataObj[obj.day] += obj.count;
+          } else {
+            dateDataObj[obj.day] = obj.count;
+          }
+        });
+
+        Object.entries(methodDataObj).forEach(([key, value]) => {
+          pieData.push({ name: key, value: value });
+        });
+
+        var lineDataObj = {
+          x: Object.keys(dateDataObj),
+          y: Object.values(dateDataObj),
+        };
+
+        var tableData = Object.values(tableDataObj);
+        table.rows.add(tableData).draw();
+        drawPie(pieData);
+        drawLine(lineDataObj);
+      }
+
+      // 隐藏某一列
+      function visibleCol(colIndex) {
+        // var table = $("#example").DataTable();
+        table
+          .column(colIndex + 3)
+          .visible(!table.column(colIndex + 3).visible());
+      }
+
+      function drawPie(data) {
+        // Initialize the echarts instance based on the prepared dom
+        var pieDom = document.getElementById("pie");
+        var pie = echarts.init(pieDom);
+        var option;
+
+        option = {
+          title: {
+            text: "Method distribution",
+            // subtext: "Fake Data",
+            left: "center",
+          },
+          tooltip: {
+            trigger: "item",
+          },
+          // legend: {
+          //   orient: "vertical",
+          //   left: "left",
+          // },
+          series: [
+            {
+              name: "Request frequency",
+              type: "pie",
+              radius: "50%",
+              label: {
+                formatter: "{b} {d}%",
+              },
+              data: data,
+              emphasis: {
+                itemStyle: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: "rgba(0, 0, 0, 0.5)",
+                },
+              },
+            },
+          ],
+        };
+
+        // Display the chart using the configuration items and data just specified.
+        pie.setOption(option);
+      }
+
+      function drawLine(data) {
+        var lineDom = document.getElementById("line");
+        var line = echarts.init(lineDom);
+        var option;
+
+        var xData = data.x;
+        var yData = data.y;
+
+        var max = Math.max(...yData);
+        var interval = Math.round(max / 5) || 1;
+
+        option = {
+          title: {
+            text: "Request count by time",
+            // subtext: "Fake Data",
+            left: "center",
+          },
+          xAxis: {
+            type: "category",
+            data: xData,
+          },
+          yAxis: {
+            type: "value",
+            interval: interval,
+            min: 0,
+            max: Math.ceil(max / interval) * interval,
+          },
+          series: [
+            {
+              data: yData,
+              type: "line",
+              // 折线图阴影
+              // areaStyle: {},
+            },
+          ],
+          // 鼠标滑过折点处显示x、y轴数据
+          tooltip: {
+            trigger: "item",
+            axisPointer: {
+              type: "cross",
+              label: {
+                backgroundColor: "#6a7985",
+              },
+            },
+          },
+        };
+
+        // Display the chart using the configuration items and data just specified.
+        line.setOption(option);
+      }
+    </script>
+  </body>
+</html>
