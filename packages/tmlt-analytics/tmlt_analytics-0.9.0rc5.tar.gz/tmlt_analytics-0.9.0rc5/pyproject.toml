@@ -1,0 +1,220 @@
+[tool.poetry]
+
+name = "tmlt.analytics"
+license = "Apache-2.0"
+
+description = "Tumult's differential privacy analytics API"
+readme = "README.md"
+authors = []
+homepage = "https://www.tmlt.dev/"
+repository = "https://gitlab.com/tumult-labs/analytics"
+documentation = "https://docs.tmlt.dev/analytics/latest"
+
+# The version field is required in this file format, even though it's ignored because of poetry-dynamic-versioning.
+version = "0.9.0-rc.5"
+
+classifiers = [
+   "Development Status :: 4 - Beta",
+   "Intended Audience :: Developers",
+   "Intended Audience :: Education",
+   "Intended Audience :: Science/Research",
+   "Natural Language :: English",
+   "Topic :: Software Development :: Libraries",
+   "Topic :: Software Development :: Libraries :: Python Modules",
+   "Topic :: Scientific/Engineering",
+   "Topic :: Security",
+]
+include = [
+  { path = "doc/", format = "sdist" },
+  { path = "examples/", format = "sdist" },
+  { path = "test/", format = "sdist" },
+  { path = "CHANGELOG.md", format = "sdist" },
+  { path = "test_requirements.txt", format = "sdist" },
+  { path = "NOTICE", format = "sdist" },
+  { path = "LICENSE", format = "sdist" },
+]
+packages = [
+  { include = "tmlt" },
+]
+
+
+[tool.poetry.dependencies]
+python = "^3.7.1, <3.12.0"
+
+# When updating Core, PySpark, Pandas or SymPy, remember to update
+# test_multi_deps in the Noxfile.
+
+"tmlt.core" = "^0.12.0"
+
+pandas = [
+  { version = ">=1.2.0,<1.4.0", python = "<3.8" },
+  { version = ">=1.2.0,<2.0.0", python = ">=3.8,<3.10" },
+  { version = ">=1.4.0,<2.0.0", python = ">=3.10,<3.11" },
+  { version = ">=1.5.0,<2.0.0", python = ">=3.11" },
+]
+pyspark = [
+  { version = "^3.0.0,<3.4.0", extras = ["sql"], python = "<3.8" },
+  { version = "^3.0.0,<3.6.0", extras = ["sql"], python = ">=3.8,<3.11" },
+  { version = "^3.4.0,<3.6.0", extras = ["sql"], python = ">=3.11" },
+]
+sympy = "^1.8,<1.10"
+typeguard = "^2.12.1,<2.13.0"
+typing-extensions = "^4.1.0"
+
+[tool.poetry.group.fix-lock.dependencies]
+# This is a hack to convince Poetry to allow different versions of various
+# transitive dependencies on different Python versions, as there is not a single
+# version of these dependencies that works across our entire supported Python
+# version range. Just having `version = "*"` does not work, as Poetry merges
+# such constraints, but having an extra irrelevant version constraint prevents
+# that behavior.
+numpy = [
+  { version = "*,!=0.0.1", python = "<3.8" },
+  { version = "*,!=0.0.2", python = ">=3.8,<3.9" },
+  { version = "*,!=0.0.3", python = ">=3.9,<3.10" },
+  { version = "*,!=0.0.4", python = ">=3.10,<3.11" },
+  { version = "*,!=0.0.5", python = ">=3.11" },
+]
+scipy = [
+  { version = "*,!=0.0.1", python = "<3.8" },
+  { version = "*,!=0.0.2", python = ">=3.8,<3.9" },
+  { version = "*,!=0.0.3", python = ">=3.9,<3.10" },
+  { version = "*,!=0.0.4", python = ">=3.10,<3.11" },
+  { version = "*,!=0.0.5", python = ">=3.11" },
+]
+
+[tool.poetry.group.dev.dependencies]
+
+# Linters, formatters
+black = "^23.3"
+isort = { version = "^5.11", extras = ["pyproject"] }
+mypy = "^1.2, !=1.4.0" # 1.4.0 incompatible with typing extensions 3.10.0 https://github.com/python/mypy/issues/15487
+pydocstyle = { version = "^6.3", extras = ["toml"] }
+pylint = "^2.13"
+
+# CI, testing, docs
+pytest = "^7.1.2"
+pytest-xdist = "^3.5.0"
+pytest-cov = "^4.1.0"
+coverage = "^6.5"
+pydata-sphinx-theme = "0.9.0"
+scanpydoc = "0.7.3" # 0.7.4 doesn't work
+sphinx = "^4.3.0"
+sphinx-autoapi = "^1.7.0"
+sphinx-autodoc-typehints = "1.12.0" # 1.13.0 doesn't work https://gitlab.com/tumult-labs/tumult/-/issues/1565
+sphinx-copybutton = "^0.4.0"
+sphinx-panels = "^0.6.0"
+sphinxcontrib-bibtex = "^1.0.0"
+sphinxcontrib-images = "^0.9.4"
+
+# Needed for examples, and for testing examples
+notebook = "^6.1.6"
+nbconvert = "^6.0.7"
+# Needed for code snippets in tutorials, examples
+matplotlib = "^3.0.0"
+seaborn = "^0.11.1"
+
+# dunamai 1.19.0 introduces a breaking change that some of our dev dependencies don't seem
+# to handle yet. If we ever update them (scanpydoc is a particular problem I think), try
+# removing this pin.
+dunamai = "<1.19.0"
+
+[tool.poetry.group.scripting.dependencies]
+nox = "2022.8.7"
+nox_poetry = "1.0.1"
+
+[tool.poetry.group.ci-tools.dependencies]
+requests = "^2.31.0"
+
+
+[build-system]
+requires = ["poetry-core>=1.3.2", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
+build-backend = "poetry_dynamic_versioning.backend"
+
+[tool.poetry-dynamic-versioning]
+enable = false
+style = "semver"
+pattern = "^(?P<base>\\d+\\.\\d+\\.\\d+)(-(?P<stage>[a-zA-Z]+)\\.(?P<revision>\\d+))?"
+fix-shallow-repository = true
+[tool.poetry-dynamic-versioning.substitution]
+files = ["tmlt/analytics/__init__.py"]
+
+[tool.black]
+force-exclude = "noxfile.py"
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+line_length = 88
+
+[tool.mypy]
+explicit_package_bases = true
+follow_imports = "silent"
+ignore_missing_imports = true
+namespace_packages = true
+check_untyped_defs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_unreachable = true
+
+[tool.pylint.master]
+# See https://github.com/PyCQA/pylint/issues/1975#issuecomment-387924981
+extension-pkg-whitelist = ['numpy']
+load-plugins = ['pylint.extensions.docparams']
+# Only check param docs in docstrings that contain an Args: section.
+# Set to "no" to show docstrings missing argument documentation.
+accept-no-param-doc = true
+
+[tool.pylint.'MESSAGES CONTROL']
+enable = ['useless-suppression']
+disable = [
+  'arguments-differ',
+  'bad-continuation',
+  'duplicate-code',
+  'fixme',
+  'invalid-name',
+  'logging-format-interpolation',
+  'logging-fstring-interpolation',
+  'missing-raises-doc',
+  'missing-return-doc',
+  'no-else-return',
+  'super-init-not-called',
+  'too-few-public-methods',
+  'too-many-ancestors',
+  'too-many-arguments',
+  'too-many-branches',
+  'too-many-instance-attributes',
+  'too-many-lines',
+  'too-many-locals',
+  'too-many-public-methods',
+  'too-many-return-statements',
+  'too-many-statements',
+  'unbalanced-tuple-unpacking',
+  # black and isort group tmlt.core separately from tmlt.analytics,
+  # but pylint thinks they should both be grouped as 'tmlt'.
+  'ungrouped-imports',
+  'wrong-import-order',
+]
+
+[tool.pylint.FORMAT]
+max-line-length = 88
+
+[tool.pydocstyle]
+convention = "google"
+add-ignore = [
+  # `D200: One-line docstring should fit on one line with quotes`
+  # conflicts with pylint's `max-line-length`.
+  "D200",
+]
+
+[tool.pytest.ini_options]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "serial",
+]
+
+[tool.coverage.run]
+relative_files = true
