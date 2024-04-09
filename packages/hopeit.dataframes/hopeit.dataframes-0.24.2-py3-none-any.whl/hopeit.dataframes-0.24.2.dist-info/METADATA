@@ -1,0 +1,62 @@
+Metadata-Version: 2.1
+Name: hopeit.dataframes
+Version: 0.24.2
+Summary: Hopeit Engine Dataframes Toolkit
+Home-page: https://github.com/hopeit-git/hopeit.engine
+Author: Leo Smerling and Pablo Canto
+Author-email: contact@hopeit.com.ar
+License: Apache 2
+Project-URL: CI: GitHub Actions, https://github.com/hopeit-git/hopeit.engine/actions?query=workflow
+Project-URL: Docs: RTD, https://hopeitengine.readthedocs.io/en/latest/
+Project-URL: GitHub: issues, https://github.com/hopeit-git/hopeit.engine/issues
+Project-URL: GitHub: repo, https://github.com/hopeit-git/hopeit.engine
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Development Status :: 4 - Beta
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Framework :: AsyncIO
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: hopeit.engine[fs-storage] ==0.24.2
+Requires-Dist: pandas
+Requires-Dist: numpy
+Provides-Extra: pyarrow
+Requires-Dist: pyarrow ; extra == 'pyarrow'
+
+# hopeit.engine dataframes plugin
+
+
+This library is part of hopeit.engine:
+
+> check: https://github.com/hopeit-git/hopeit.engine
+
+
+### Install using extras when installing hopeit.engine:
+
+```
+pip install hopeit.engine[dataframes]
+```
+
+### hopeit.dataframes
+
+This plugin introduces dataclasses annotations to work with `pandas` dataframes
+as other dataobjects:
+
+`@dataframe` annotation allows a dataclass to become the schema and container for a dataframe
+`@dataframeobject` annotation, acts as @dataobject with support to have dataframe annotated fields
+`DataFrames` class, provides an api to create, serialize, and access pandas dataframe
+
+Features:
+-Type coercion for @dataframe fields
+-Transparent access to series in @dataframe objects using dot notation
+-Serialization for @dataframe and @dataframeobjects allowing them to be transferred through streams (using file system storage to store the actual data, and transferring only metadata for deserialization in the stream)
+-Support to handle @dataframeobject as payload for web requests
