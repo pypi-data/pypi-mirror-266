@@ -1,0 +1,103 @@
+{% for action in data_model.table.actions() %}
+    {% if action.type == "action" %}
+        {% if not action.hidden(result) %}
+            <a class="dropdown-item"
+                    {% if not action.schema %}
+               href="#!"
+               data-hx-post="/mvlive/{{ resource }}"
+               data-hx-vals='{"method": "{{ action.name }}", "args": "{{ result[data_model.table.edit_column] }}", "data": "ACTION_DATA",  "csrf_token": "{{ csrf_token() }}"}'
+               data-hx-target="#result-{{ resource|lower }}-{{ result.id }}"
+               data-hx-select="#result-{{ resource|lower }}-{{ result.id }}"
+               data-hx-swap="outerHTML"
+                    {% endif %}
+                    {% if action.schema %}
+               data-bs-toggle="modal"
+               data-bs-target="#action-{{ action.name }}-resource-{{ result[data_model.table.edit_column] }}"
+                    {% endif %}
+            >
+                {% if action.label %}
+                    {{ render_dynamic_html(action.label, result=result)|safe }}
+                {% else %}
+                    {{ action.name }}
+                {% endif %}
+            </a>
+        {% endif %}
+
+        {% if action.schema %}
+            <div class="modal modal-blur fade modal-{% if action.size %}{{ action.size }}{% else %}md{% endif %}"
+                 id="action-{{ action.name }}-resource-{{ result[data_model.table.edit_column] }}"
+                 style="display: none"
+                aria-hidden="false"
+                tabindex="-1"
+                 data-bs-backdrop="static">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title"
+                                id="exampleModalLabel">
+                                {{ render_dynamic_html(action.label, result=result)|safe }}
+                            </h5>
+                            <button class="btn p-1" type="button"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close">
+                                <span class="fas fa-times fs--1"></span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            <form id="action-{{ action.name }}-resource-{{ result[data_model.table.edit_column] }}-form"
+                                  class='row'
+                                  data-hx-post="/mvlive/{{ resource }}"
+                                  data-hx-vals='js:{"method": "{{ action.name }}", "args": "{{ result[data_model.table.edit_column] }}",  "csrf_token": "{{ csrf_token() }}", "action_type": "single"}'
+                                  data-hx-target="#result-{{ resource|lower }}-{{ result[data_model.table.edit_column] }}"
+                                  data-hx-select="#result-{{ resource|lower }}-{{ result[data_model.table.edit_column] }}"
+                                  data-hx-select-oob="#action-{{ action.name }}-resource-{{ result[data_model.table.edit_column] }}-form"
+                                  data-hx-swap="outerHTML"
+                            >
+                                {% with messages = get_flashed_messages(with_categories=True) %}
+                                    {% if messages %}
+                                        <ul>
+                                            {% for category, message in messages %}
+                                            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert" id="action-{{ action.name }}-resource-{{ result[data_model.table.edit_column] }}-alert">
+                                                <button type="button" class="btn btn-transparent p-1" data-bs-dismiss="alert"
+                                                        aria-label="Close">
+                                                    <span class="fas fa-times fs--1"></span>
+                                                </button>
+                                                <strong>{{ message }}</strong>
+                                            </div>
+                                            <script>
+                                                // Close the alert after 5 seconds using vanilla JavaScript
+                                                window.setTimeout(function() {
+                                                    var alert = document.getElementById('action-{{ action.name }}-resource-{{ result[data_model.table.edit_column] }}-alert');
+                                                    alert.classList.remove('show');
+                                                    window.setTimeout(function() {
+                                                        alert.parentNode.removeChild(alert);
+                                                    }, 1000); // delay removal for fade-out transition
+                                                }, 5000);
+                                            </script>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                {% endwith %}
+                                {% for field in action.schema %}
+                                    {% if field.type != 'repeater' %}
+                                        {% include 'admin/components/forms/ReusableForm.html' with context %}
+                                    {% endif %}
+                                {% endfor %}
+                                <div class="col-12">
+                                    <button class="btn btn-primary float-end mt-5"
+                                            type="submit">
+                                        Run Action
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% elif action.type == "horizontal-separator" %}
+        {% include action.view %}
+    {% endif %}
+{% endfor %}

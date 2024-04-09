@@ -1,0 +1,11 @@
+{% if model_key(data_model.model, HOOK_NAME) %}
+    {% set tmpl_with_context = model_key(data_model.model, HOOK_NAME) %}
+    {% set tmpl = tmpl_with_context[0] %}
+    {% set ctx = tmpl_with_context[1] %}
+    {% if get_type(ctx) == "str" %}
+        {{ render_dynamic_html(model_key(data_model.model, HOOK_NAME)) }}
+    {% else %}
+        {{ render_dynamic_html(tmpl, **ctx) }}
+    {% endif %}
+
+{% endif %}

@@ -1,0 +1,13 @@
+{% if field.colspan %}
+    {% set colspan = "col-lg-" + field.colspan %}
+{% else %}
+    {% set colspan = "col-lg-4" %}
+{% endif %}
+
+
+<div class="form-group {{ colspan }} mt-3">
+    <label for="">{% if field.alias %}{{ field.alias.title() }}{% else %}{{ field.name.title() }}{% endif %}
+        <sup>{{ model_key(result_set, field.name) }}</sup></label>
+    <input id="t-text" type="{{ field.type }}" name="{{ field.name }}" placeholder="{{ field.placeholder }}"
+           class="form-control" value='{{ model_key(result_set, field.name) }}' required="{{ field.required }}">
+</div>

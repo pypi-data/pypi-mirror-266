@@ -1,0 +1,8 @@
+from flask_monocrud import Admin
+from flask_orphus.routing.fs_router import endpoint
+from flask_orphus import Request as orequest
+
+
+@endpoint(name="Delete $Resource")
+def home(id):
+    return Admin().delete_view("$Resource", id)

@@ -1,0 +1,21 @@
+<mv-admin.components.email.layout
+        header={{ header }}
+
+>
+    <mv-admin.components.email.header url={{ url }}>Laravel</mv-admin.components.email.header>
+
+    {{ content }}
+
+    {% if subcopy %}
+    <mv-admin.components.email.subcopy>
+        {{ subcopy }}
+    </mv-admin.components.email.subcopy>
+    {% endif %}
+
+    <mv-admin.components.email.footer>
+
+        © {#{ date('Y') }#} {{ from_config('app.name') }}. @lang('All rights reserved.')
+    </mv-admin.components.email.footer>
+
+
+</mv-admin.components.email.layout>

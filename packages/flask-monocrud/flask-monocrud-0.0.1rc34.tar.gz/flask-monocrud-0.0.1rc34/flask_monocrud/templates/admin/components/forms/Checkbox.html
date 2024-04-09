@@ -1,0 +1,32 @@
+{% if field.colspan %}
+    {% set colspan = "col-lg-" + field.colspan %}
+{% else %}
+    {% set colspan = "col-lg-2" %}
+{% endif %}
+
+{% if field.default and not value %}
+    {% set value = field.default %}
+{% endif %}
+
+<div class="form-check form-check-{{ field.checked_color }} {% if field.inline == True %}form-check-inline{% endif %} {{ colspan }} mt-3">
+    <input type="checkbox"
+            {% if model_key(result_set, field.name) %}
+                {% if model_key(result_set, field.name)|lower in ["on", "yes","true"] %}
+                    checked="{{ field.checked }}"
+                {% elif model_key(result_set, field.name)|lower in ["off", "no", "false"] %}
+                    checked="off"
+                {% else %}
+                    checked="{{ field.checked }}"
+                {% endif %}
+            {% else %}
+           {% if field.checked %}checked="{{ field.checked }}"{% endif %}
+            {% endif %}
+
+            value="{{ value }}"
+            {% include 'admin/components/forms/FieldAttributes.html' with context %}
+
+    >
+    <label class="form-check-label" for="form-check-default">
+        {{ field.label or field.name }}
+    </label>
+</div>

@@ -1,0 +1,114 @@
+{% if field.label %}
+    {% set label = field.label %}
+{% else %}
+    {% set label = field.name %}
+{% endif %}
+
+{% if not relationship %}
+    {% set value = model_key(result, field.name) %}
+{% else %}
+    {% set value = model_key(result, field.name) %}
+{% endif %}
+
+{% if field.mutate %}
+    {% set value = field.mutate(value)|safe %}
+{% endif %}
+
+{% if field.money %}
+    {% set value = currency_fmt(field.money, value).replace('$', '$ ') %}
+{% endif %}
+
+
+{% if field.datetime %}
+    {% set value = datetime_fmt(field.in_fmt, field.out_fmt, value) %}
+{% endif %}
+
+{% if field.limit %}
+    {% set value = value[:field.limit] %}
+{% endif %}
+
+{% if field.words %}
+    {% set value = limit_words(field.words, value) %}
+{% endif %}
+
+
+
+{% if field.html %}
+    {% set value = markup(value) %}
+{% endif %}
+
+{% if not Value and field.default %}
+    {% set value = field.default %}
+{% endif %}
+
+
+{% if field.name|int == "id" %}
+    {#    <td>#}
+    {#        <div class="form-check form-check-primary">#}
+    {#            <input class="form-check-input checkbox_child" type="checkbox" name='id'#}
+    {#                   value='{{ value }}'>#}
+    {#        </div>#}
+    {#    </td>#}
+    {#    <td>#}
+    {#        <a href='/admin/{{ pluralize(resource)|lower }}/{{ value }}'>{{ value }}</a>#}
+    {#    </td>#}
+{% else %}
+    {% if field.type == "text" %}
+        <td class="mb-0 ms-3 text-1100 fw-bold">
+            {% if data_model.model %}
+                {% if data_model.table.preview_column == field.name %}
+                    <a href="#!"
+                       class="fw-semi-bold text-900"
+                       data-bs-toggle="modal"
+                       data-bs-target="#preview-modal"
+                       data-hx-on="mouseover: htmx.ajax('GET', '/admin/{{ data_model.name.plural|lower }}/{{ result[data_model.table.preview_column] }}/preview', '#preview-modal .modal-body')"
+                    >
+                        {{ value }}
+                    </a>
+                {% else %}
+                    {{ value }}
+                {% endif %}
+            {% else %}
+                {{ value }}
+            {% endif %}
+            {% include 'admin/components/table/helpers/edit.html' %}
+        </td>
+    {% elif field.type == "image" %}
+        <td class="mb-0 ms-3 text-1100 fw-bold">
+            <div class="media">
+                <div class="avatar me-2">
+                    <img alt="avatar" src="
+
+
+                            {% if field.local %}{{ get_file_internal(field.path, value) }}{% else %}{{ value }}{% endif %}"
+                         class="{% if field.boxed %}rounded{% elif field.circle %}rounded-circle{% endif %}"/>
+                </div>
+                {% if field.text %}
+                    <div class="media-body align-self-center">
+                        <h6 class="mb-0">{{ model_key(result, field.id_key) }}</h6>
+                        <!-- <span>shaun.park@mail.com</span> -->
+                    </div>
+                {% endif %}
+            </div>
+        </td>
+    {% elif field.type == "boolean" %}
+        <td class="mb-0 ms-3 text-1100 fw-bold">
+            <div class="form-check form-switch form-check-inline form-switch-{{ field.color or "primary" }}">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                       {% if value in ["on", "yes","true", "in", 1, "1"] %}checked{% endif %} disabled>
+                <label class="form-check-label" for="flexSwitchCheckDefault"></label>
+            </div>
+        </td>
+    {% elif field.type == "badge" %}
+        {% for pair in field.state_colors %}
+            {% if value == pair.keys()|list|first %}
+                {% set key = pair.keys()|list|first %}
+                <td class="">
+                    <span class="badge fs--2 bg-{{ pair[key] }}">{{ value }}</span>
+                </td>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endif %}
+
+

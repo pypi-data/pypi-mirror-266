@@ -1,0 +1,466 @@
+{% extends 'components/layouts/BaseLayoutAdmin.html' %}
+{% block content scoped %}
+
+    {% if resource != "Dashboard" %}
+        {% if data_model.table.table_polling %}
+            <div id="table-poller"
+                 data-hx-trigger="every {{ data_model.table.table_polling_interval }}s"
+                 data-hx-target="#{{ data_model.resource }}-table"
+                 data-hx-select="#{{ data_model.resource }}-table"
+                 data-hx-get="{{ data_model.table.query_string.query_string }}"
+                 data-hx-swap="outerHTML"
+                 data-hx-swap-oob="true"
+            ></div>
+        {% endif %}
+    {% endif %}
+
+    {% if data_model.header_metrics %}
+        <div id="{{ data_model.resource }}-metric-top" class="row" data-hx-swap-oob="true">
+            {% for metric in data_model.header_metrics() %}
+                <div class="col-{{ metric.colspan }}">
+
+                    <div class="card mb-5">
+                        <div class="card-body">
+                            <div class="row g-4 g-xl-1 g-xxl-3 ">
+                                <div class="col-sm-auto">
+                                    <div class="d-sm-block d-inline-flex d-md-flex flex-xl-column flex-xxl-row align-items-center align-items-xl-start align-items-xxl-center">
+                                        {% if metric.icon %}
+                                            <div class="d-flex rounded flex-center me-3 mb-sm-3 mb-md-0 mb-xl-3 mb-xxl-0"
+                                                 style="width:32px; height:32px; background-color: {{ metric.icon_bg_color }}">
+                                                <i class="fa {{ metric.icon }}"
+                                                   style="color: {{ metric.icon_color }} !important;"></i>
+                                            </div>
+                                        {% endif %}
+                                        <div>
+                                            <p class="fw-bold mb-1">{{ metric.heading or metric.name }}</p>
+                                            <h4 class="fw-bolder text-nowrap">{{ metric.value|safe }}</h4>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+
+
+    {% if resource != "Dashboard" %}
+        {% include 'admin/components/table/filters/tab_filter.html' %}
+
+
+        <div class="mb-4">
+            <div class="row mt-4">
+                <div class='col-lg-2 col-xl-2'>
+                    <div class="form-group">
+                        <input type="text"
+                               class="form-control" name="search" id=""
+                               data-hx-trigger="keyup changed delay:200ms"
+                               data-hx-get="{{ data_model.table.query_string.query_string }}&page=1"
+                               data-hx-target="#{{ data_model.resource }}-table"
+                               data-hx-swap="outerHTML"
+                               data-hx-select="#{{ data_model.resource }}-table"
+                               data-hx-push-url="true"
+                               value='{% if search_query != "%" %}{{ search_query }}{% endif %}'
+                               aria-describedby="helpId"
+                               autocomplete="off"
+                               placeholder="Search {{ data_model.name.pluralize|lower }} by {% if get_type(data_model.table.search.search_field) == "
+                       list" %}{{ titleize(', '.join(data_model.table.search.search_field)) }}{% else %}{{ titleize(data_model.table.search.search_field) }}{% endif %}......">
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <select class="form-control" id=""
+                                data-hx-trigger="change"
+                                data-hx-get="{{ data_model.table.query_string.query_string }}"
+                                data-hx-target="#{{ data_model.resource }}-table"
+                                data-hx-swap="outerHTML"
+                                data-hx-select="#{{ data_model.resource }}-table"
+                        >
+                            <option value=>Select a filter</option>
+                            $$$$FILTER$$$$
+                        </select>
+                    </div>
+                </div>
+
+                {% for field in data_model.table.filters() %}
+                    {% set js_string = "js:{" + field.name + ": document.getElementById('" + field.name + "').value" + "}" %}
+                    <div class="col-lg-2"
+                         data-hx-trigger="change"
+                         data-hx-get="{{ data_model.table.query_string.query_string }}&page=1"
+                         data-hx-vals='{{ js_string }}'
+                         data-hx-target="#{{ data_model.resource }}-table"
+                         data-hx-swap="outerHTML"
+                         data-hx-select="#{{ data_model.resource }}-table"
+                         data-hx-push-url="true"
+                    >
+
+                        {% include 'admin/components/forms/Select.html' %}
+
+                    </div>
+                {% endfor %}
+
+                <div class="col-lg-1">
+                    <button class="btn px-3 btn-secondary" type="button" data-bs-toggle="modal"
+                            data-bs-target="#column-toggle-modal" aria-haspopup="true" aria-expanded="false"
+                            data-bs-reference="parent">
+                        <i class="fa fa-grip text-primary m-0 p-0"></i>
+                    </button>
+                </div>
+
+
+                <!-- Modal -->
+                <div class="modal fade" id="column-toggle-modal" tabindex="-1" role="dialog"
+                     aria-labelledby="modelTitleId"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content" id="table-toggle-modal"
+
+                        >
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Hide Table Columns</h5>
+                                <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><span
+                                        class="fas fa-times fs--1"></span></button>
+                            </div>
+                            <div class="modal-body">
+                                <p><small>Check table columns to make them hidden.</small></p>
+                                <form class="container-fluid p-0"
+                                      data-hx-get="{{ data_model.table.query_string.query_string }}?toggle_columns=true"
+                                      data-hx-target="#{{ data_model.resource }}-table"
+                                      data-hx-swap="outerHTML"
+                                      data-hx-select="#{{ data_model.resource }}-table"
+                                      data-hx-push-url="true"
+                                      data-hx-replace-url="true"
+                                      data-hx-trigger="submit"
+
+                                >
+                                    {% for field in data_model.table.columns().__dict__() %}
+                                        <div class="form-check">
+                                            <input class="form-check-input" id="flexCheckChecked" type="checkbox"
+                                                   value="hide"
+                                                   name="toggle_columns|{{ field.name }}"
+                                                   {% if "toggle_columns|" + field.name in request.args %}checked{% endif %}
+                                            />
+                                            <label class="form-check-label"
+                                                   for="flexCheckChecked">{{ field.label or field.name }}</label>
+                                        </div>
+                                    {% endfor %}
+                                    <hr>
+                                    <button type="submit" class="btn btn-primary w-100 mt-3">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        {% set HOOK_NAME = "before_table_content" %}
+        {% include 'macros/inject-template-hook.html' %}
+
+
+        <div id="tableCheckbox"
+             class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white border-top border-bottom border-200 position-relative top-1">
+
+            <div class="card-body p-0">
+
+                <div class="p-4 code-to-copy">
+                    <div class="table-list">
+                        <div class="table-responsive scrollbar mb-3">
+
+                            {% with messages = get_flashed_messages(with_categories=True) %}
+                                {% if messages %}
+                                    <ul>
+                                        {% for category, message in messages %}
+                                            <div class="alert alert-{{ category }} alert-dismissible fade show"
+                                                 role="alert">
+                                                <button type="button" class="btn btn-transparent p-1"
+                                                        data-bs-dismiss="alert"
+                                                        aria-label="Close">
+                                                    <span class="fas fa-times fs--1"></span>
+                                                </button>
+                                                <strong>{{ message }}</strong>
+                                            </div>
+                                            <script>
+                                                // Close the alert after 5 seconds using vanilla JavaScript
+                                                window.setTimeout(function () {
+                                                    var alert = document.getElementById('');
+                                                    alert.classList.remove('show');
+                                                    window.setTimeout(function () {
+                                                        alert.parentNode.removeChild(alert);
+                                                    }, 1000); // delay removal for fade-out transition
+                                                }, 5000);
+                                            </script>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            {% endwith %}
+
+                            <!-- Bulk Actions Buttons Section -->
+                            <div id="bulkActionsSection" class="mb-4" style="opacity: 0">
+                                <button id="bulkActionDelete" class="btn btn-danger btn-sm"
+                                        data-hx-post="/mvlive/{{ resource }}"
+                                        data-hx-target="#tableCheckbox"
+                                        data-hx-select="#tableCheckbox"
+                                        data-hx-swap="outerHTML"
+                                        data-hx-vals='js:{"method": "bulk_delete", "args": get_selected_items(),  "csrf_token": "{{ csrf_token() }}", "action_type": "bulk"}'
+                                        data-hx-confirm="Are you sure you wish to delete selected {{ data_model.name.plural|lower }}?"
+                                >Delete Selected
+                                </button>
+                                {% if data_model.table.bulk_actions() %}
+                                    {% for action in data_model.table.bulk_actions() %}
+                                        {% if not action.hidden(result) %}
+                                            <button class="btn btn-primary btn-sm"
+                                                    data-hx-post="/mvlive/{{ resource }}"
+                                                    data-hx-target="#tableCheckbox"
+                                                    data-hx-select="#tableCheckbox"
+                                                    data-hx-swap="outerHTML"
+                                                    data-hx-vals='js:{"method": "{{ action.name }}", "args": get_selected_items(),  "csrf_token": "{{ csrf_token() }}", "action_type": "bulk"}'
+                                                    data-hx-confirm="Are you sure you wish to delete selected {{ data_model.name.plural|lower }}?"
+                                            >{{ action.label }}
+                                            </button>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+
+                            <!-- Table -->
+                            <table id='{{ data_model.resource }}-table'
+                                   class="table table-sm fs--1 mb-0 overflow-hidden {% if data_model.table.show_column_borders %}table-bordered{% endif %}">
+                                <thead class="text-900">
+                                <tr>
+                                    <th class="sort pe-1 align-middle white-space-nowrap border-end pe-3">
+                                        <div class="form-check form-check-primary">
+                                            <input class="form-check-input" id="checkbox_parent_all" type="checkbox"
+                                                   onchange="selectAll()">
+                                        </div>
+                                    </th>
+
+                                    {% for field in data_model.table.columns().__dict__() %}
+                                        {% include 'admin/components/table/table-head.html' %}
+                                    {% endfor %}
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                {% for result in data_model.result_set %}
+                                    <tr id="result-{{ data_model.resource|lower }}-{{ result[data_model.table.edit_column] }}"
+                                        data-click-action="{{ data_model.table.table_click_action|lower }}"
+                                        data-resource-id="{{ result[data_model.model.get_primary_key()] or result[data_model.table.edit_column] }}"
+                                        data-preview-column="{{ result[data_model.table.preview_column] }}">
+                                        <td>
+                                            <div class="form-check">
+                                                <input class="form-check-input checkbox-item" type="checkbox"
+                                                       name="selected_items[]" value="{{ result.id }}"
+                                                       onchange="checkBulkActions()">
+                                            </div>
+                                        </td>
+                                        {% for field in data_model.table.columns().__dict__() %}
+                                            {% include 'admin/components/table/table-row.html' %}
+                                        {% endfor %}
+
+                                        <td class="align-middle white-space-nowrap text-end pe-0 ps-4 btn-reveal-trigger"
+                                            data-hx-preserve="true">
+                                            <div class="font-sans-serif btn-reveal-trigger position-static">
+                                                <button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs--2"
+                                                        type="button" data-bs-toggle="dropdown" data-boundary="window"
+                                                        aria-haspopup="true" aria-expanded="false"
+                                                        data-bs-reference="parent">
+                                                    <svg class="svg-inline--fa fa-ellipsis fs--2" aria-hidden="true"
+                                                         focusable="false" data-prefix="fas" data-icon="ellipsis"
+                                                         role="img"
+                                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
+                                                         data-fa-i2svg="">
+                                                        <path fill="currentColor"
+                                                              d="M120 256C120 286.9 94.93 312 64 312C33.07 312 8 286.9 8 256C8 225.1 33.07 200 64 200C94.93 200 120 225.1 120 256zM280 256C280 286.9 254.9 312 224 312C193.1 312 168 286.9 168 256C168 225.1 193.1 200 224 200C254.9 200 280 225.1 280 256zM328 256C328 225.1 353.1 200 384 200C414.9 200 440 225.1 440 256C440 286.9 414.9 312 384 312C353.1 312 328 286.9 328 256z"></path>
+                                                    </svg>
+                                                    <!-- <span class="fas fa-ellipsis-h fs--2"></span> Font Awesome fontawesome.com -->
+                                                </button>
+                                                <div class="dropdown-menu dropdown-menu-end py-2" style="">
+                                                    {% if data_model.table.actions() %}
+                                                        {% include 'admin/components/actions/table-action-component.html' %}
+                                                    {% endif %}
+
+                                                    <a class="dropdown-item"
+                                                       href="/admin/{{ data_model.name.plural|lower }}/{{ result[data_model.table.edit_column] }}?view_mode=view">View</a>
+                                                    <a class="dropdown-item"
+                                                       href="/admin/{{ data_model.name.plural|lower }}/{{ result[data_model.table.edit_column] }}?view_mode=edit">
+                                                        Edit
+                                                    </a>
+
+                                                    {% if data_model.permissions.can_replicate %}
+                                                        <a class="dropdown-item"
+                                                           data-hx-post="/mvlive/{{ resource }}"
+                                                           data-hx-target="#tableCheckbox"
+                                                           data-hx-select="#tableCheckbox"
+                                                           data-hx-swap="outerHTML"
+                                                           data-hx-vals='js:{"method": "replicate", "args": {{ result[data_model.table.edit_column] }},  "csrf_token": "{{ csrf_token() }}", "action_type": "single"}'
+                                                           data-hx-confirm="Are you sure you wish to replicate selected {{ data_model.name.plural|lower }}?"
+                                                        >Replicate
+                                                        </a>
+                                                    {% endif %}
+
+                                                    {% if data_model.permissions.can_delete %}
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item text-danger"
+                                                           data-hx-get="/admin/{{ data_model.name.plural|lower }}/{{ result[data_model.model.get_primary_key()] }}/delete?redirect=true"
+                                                           data-hx-confirm="Are you sure you want to delete this {{ resource|lower }}?"
+                                                           data-hx-target="#result-{{ data_model.resource|lower }}-{{ result[data_model.model.get_primary_key()] }}"
+                                                           data-hx-select="#result-{{ data_model.resource|lower }}-{{ result[data_model.model.get_primary_key()] }}"
+                                                           data-hx-swap="outerHTML"
+                                                           href="#!">Remove
+                                                        </a>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+
+                            <script>
+                                function selectAll() {
+                                    var checkboxes = document.querySelectorAll('.checkbox-item');
+                                    var selectAllCheckbox = document.getElementById('checkbox_parent_all');
+                                    checkboxes.forEach(function (checkbox) {
+                                        checkbox.checked = selectAllCheckbox.checked;
+                                    });
+                                    checkBulkActions(); // Check bulk actions after selecting all checkboxes
+                                }
+
+                                function checkBulkActions() {
+                                    var checkboxes = document.querySelectorAll('.checkbox-item');
+                                    var bulkActionsSection = document.getElementById('bulkActionsSection');
+                                    var anyCheckboxChecked = Array.from(checkboxes).some(function (checkbox) {
+                                        return checkbox.checked;
+                                    });
+                                    if (anyCheckboxChecked) {
+                                        bulkActionsSection.style.opacity = 1;
+                                    } else {
+                                        bulkActionsSection.style.opacity = 0;
+                                    }
+                                }
+
+                                function get_selected_items() {
+                                    var selected_items = [];
+                                    var checkboxes = document.querySelectorAll('.checkbox-item');
+                                    checkboxes.forEach(function (checkbox) {
+                                        if (checkbox.checked) {
+                                            selected_items.push(checkbox.value);
+                                        }
+                                    });
+                                    return selected_items.toString();
+                                }
+                            </script>
+
+
+                        </div>
+                    </div>
+
+                    {% set per_page = data_model.table.pagination.per_page %}
+
+                    <select class="form-select mt-5" name="per_page" id=""
+                            data-hx-get='{{ data_model.table.query_string.query_string }}'
+                            data-hx-trigger="change"
+                            data-hx-select='#{{ data_model.resource }}-table'
+                            data-hx-target='#{{ data_model.resource }}-table'
+                            data-hx-replace-url="true"
+                            style='position: absolute; bottom: 0; right: 0; width: 6%; margin-bottom: 15px; margin-right: 20px;'
+                    >
+
+                        {% if per_page not in [5, 15, 25, 50, 75, 100] %}
+                            <option selected value="{{ per_page }}">{{ per_page }}</option>
+                        {% endif %}
+                        {% for page_option in data_model.table.pagination.per_page_options %}
+                            <option value="{{ page_option }}">{{ page_option }}</option>
+                        {% endfor %}
+                    </select>
+
+
+                    <div class="{% if result_set.count == 0 %}opacity-0 {% endif %} btn-group mt-5" id="pagination"
+                         data-hx-swap-oob="true" aria-label="Page navigation example">
+
+                        {% if data_model.result_set.previous_page %}
+                            <a name="" id=""
+                               class="page-link btn btn-secondary {% if data_model.result_set.current_page|int == data_model.table.pagination.page|int %}active{% endif %} me-3 pe-3"
+                               data-hx-get="{{ data_model.table.query_string.query_string }}&page={{ data_model.result_set.previous_page }}&per_page={{ data_model.table.pagination.per_page }}"
+                               data-hx-select="#{{ data_model.resource }}-table"
+                               data-hx-target="#{{ data_model.resource }}-table"
+                               data-hx-replace-url="true"
+                               data-hx-push-url="true"
+                               role="button"><span
+                                    class="fas fa-chevron-left"></span></a>
+                        {% endif %}
+
+                        {% if data_model.result_set.current_page|int == data_model.table.pagination.page|int %}
+                            <a name="" id=""
+                               class="page-link btn btn-secondary {% if data_model.result_set.current_page|int == data_model.table.pagination.page|int %}active{% endif %}"
+                               data-hx-get="{{ data_model.table.query_string.query_string }}&page={{ data_model.result_set.current_page }}&per_page={{ data_model.table.pagination.per_page }}"
+                               data-hx-select="#{{ data_model.resource }}-table"
+                               data-hx-target="#{{ data_model.resource }}-table"
+                               data-hx-replace-url="true"
+                               data-hx-push-url="true"
+                               role="button">{{ data_model.result_set.current_page }}</a>
+                        {% endif %}
+
+                        {% if data_model.result_set.has_more_pages() %}
+                            <a name="" id=""
+                               class="page-link btn btn-secondary {% if data_model.result_set.current_page|int == data_model.table.pagination.page|int %}active{% endif %} ms-3 ps-3"
+                               data-hx-get="{{ data_model.table.query_string.query_string }}&page={{ data_model.result_set.next_page }}&per_page={{ data_model.table.pagination.per_page }}"
+                               data-hx-select="#{{ data_model.resource }}-table"
+                               data-hx-target="#{{ data_model.resource }}-table"
+                               data-hx-replace-url="true"
+                               data-hx-push-url="true"
+                               role="button"><span
+                                    class="fas fa-chevron-right"></span></a>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        {% set HOOK_NAME = "after_table_content" %}
+        {% include 'macros/inject-template-hook.html' %}
+
+
+        {% if data_model.table.preview_column %}
+            <div class="modal fade modal-xl" id="preview-modal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">{{ singularize(data_model.resource_alias) }}
+                                Preview</h5>
+                            <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><span
+                                    class="fas fa-times fs--1"></span></button>
+                        </div>
+                        <div class="modal-body">
+
+                        </div>
+                        <div class="modal-footer border-0 d-none">
+                            <button class="btn btn-primary" type="button">Okay</button>
+                            <button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div id="modal-containers">
+
+        </div>
+    {% endif %}
+
+
+{% endblock %}

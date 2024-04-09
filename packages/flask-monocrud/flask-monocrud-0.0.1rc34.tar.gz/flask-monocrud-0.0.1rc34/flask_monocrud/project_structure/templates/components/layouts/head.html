@@ -1,0 +1,43 @@
+<head>
+    <title>{{ title }}</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://bootswatch.com/5/zephyr/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+          integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="/static/modal.css">
+    <script src="https://unpkg.com/hyperscript.org@0.9.12"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    {% include 'components/layouts/mvlive.html' %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+
+    <style>
+        .breadcrumb-item + .breadcrumb-item::before {
+            float: left;
+            padding-right: var(--bs-breadcrumb-item-padding-x);
+            color: var(--bs-breadcrumb-divider-color);
+            content: var(--bs-breadcrumb-divider, ">");
+        }
+
+    </style>
+
+    <style>
+.bulk-actions-section {
+    opacity: 1;
+    max-height: 100px; /* Set initial height */
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+
+.bulk-actions-section.hidden {
+    opacity: 0;
+    max-height: 0; /* Hide element */
+}
+
+    </style>
+</head>

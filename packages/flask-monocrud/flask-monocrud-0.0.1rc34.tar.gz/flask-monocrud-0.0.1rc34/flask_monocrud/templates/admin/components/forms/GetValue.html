@@ -1,0 +1,15 @@
+{% macro get_value(result_set, field) -%}
+{% if model_key(result_set, field.name) %}
+    {% set value = model_key(result_set, field.name) %}
+{% else %}
+    {% set value = None %}
+{% endif %}
+
+{% if view_mode == "edit" %}
+    {% if field.mutate %}
+        {% set value = field.mutate(value) %}
+    {% endif %}
+{% endif %}
+
+{{ value or "" }}
+{%- endmacro %}

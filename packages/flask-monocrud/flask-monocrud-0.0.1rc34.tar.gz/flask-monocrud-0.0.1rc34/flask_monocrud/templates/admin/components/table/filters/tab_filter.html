@@ -1,0 +1,22 @@
+<nav class="breadcrumb bg-inverse-primary bg-white border-0 shadow-sm mb-0 border-bottom">
+    {% if data_model.table.tabs() %}
+        {% for tab in data_model.table.tabs() %}
+            <a class="breadcrumb-item"
+               href="#"
+               data-hx-get="{{ data_model.table.query_string.query_string }}&tab_filter={{ tab.name }}"
+               data-hx-target="#{{ data_model.resource }}-table"
+               data-hx-swap="outerHTML"
+               data-hx-select="#{{ data_model.resource }}-table"
+               data-hx-push-url="true"
+               style="text-decoration: none; color: black">
+                {{ tab.label or tab.name }}
+
+                {% if tab.badge %}
+                    <span class="badge badge-pill bg-{{ tab.badge_color or 'primary' }}">
+                        <small>{{ tab.badge }}</small>
+                    </span>
+                {% endif %}
+            </a>
+        {% endfor %}
+    {% endif %}
+</nav>
