@@ -1,0 +1,29 @@
+# ---------------------------------------------------------
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# ---------------------------------------------------------
+language_tools.tools.entity_recognition.get_entity_recognition:
+  function: get_entity_recognition
+  inputs:
+    connection:
+      type:
+      - CustomConnection
+    document:
+      type: 
+      - object
+    max_retries:
+      default: 5
+      type:
+      - int
+    max_wait:
+      default: 60
+      type:
+      - int
+    parse_response:
+      default: False
+      type: 
+      - bool 
+  module: language_tools.tools.entity_recognition
+  name: Entity Recognition
+  description: Use Azure AI Language to recognize and categorize entities in documents.
+  type: python
+  category: azure_ai_language

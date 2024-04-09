@@ -1,0 +1,44 @@
+# ---------------------------------------------------------
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# ---------------------------------------------------------
+language_tools.tools.extractive_summarization.get_extractive_summarization:
+  function: get_extractive_summarization
+  inputs:
+    connection:
+      type:
+      - CustomConnection
+    document:
+      type:
+      - object
+    query:
+      default: ""
+      type:
+      - string
+    sentence_count:
+      default: 3
+      type:
+      - int 
+    sort_by: 
+      default: 'Offset'
+      enum: 
+      - 'Offset' 
+      - 'Rank'
+      type: 
+      - string
+    max_retries:
+      default: 5
+      type:
+      - int
+    max_wait:
+      default: 60
+      type:
+      - int
+    parse_response:
+      default: False
+      type: 
+      - bool 
+  module: language_tools.tools.extractive_summarization
+  name: Extractive Summarization
+  description: Use Azure AI Language to extract summaries from documents.
+  type: python
+  category: azure_ai_language

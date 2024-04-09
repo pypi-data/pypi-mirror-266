@@ -1,0 +1,50 @@
+# ---------------------------------------------------------
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# ---------------------------------------------------------
+language_tools.tools.conversational_pii.get_conversational_pii:
+  function: get_conversational_pii
+  inputs:
+    connection:
+      type:
+      - CustomConnection
+    conversation:
+      type:
+      - object
+    pii_categories:
+      default: ["Default"]
+      type:
+      - list
+    redact_audio_timing:
+      default: False
+      type:
+      - bool
+    redaction_source:
+      default: 'text'
+      enum:
+      - 'lexical'
+      - 'itn'
+      - 'maskedItn'
+      - 'text'
+      type:
+      - string
+    exclude_pii_categories:
+      default: []
+      type:
+      - list
+    max_retries:
+      default: 5
+      type:
+      - int
+    max_wait:
+      default: 60
+      type:
+      - int
+    parse_response:
+      default: False
+      type: 
+      - bool
+  module: language_tools.tools.conversational_pii
+  name: Conversational PII
+  description: Use Azure AI Language to recognize and redact PII entities in conversations.
+  type: python
+  category: azure_ai_language

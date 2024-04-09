@@ -1,0 +1,39 @@
+# ---------------------------------------------------------
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# ---------------------------------------------------------
+language_tools.tools.conversation_summarization.get_conversation_summarization:
+  function: get_conversation_summarization
+  inputs:
+    connection:
+      type:
+      - CustomConnection
+    conversation:
+      type:
+      - object
+    summary_aspect:
+      enum: 
+      - "chapterTitle"
+      - "issue"
+      - "narrative"
+      - "resolution"
+      - "recap"
+      - "follow-up tasks"
+      type: 
+      - string
+    max_retries:
+      default: 5
+      type:
+      - int
+    max_wait:
+      default: 60
+      type:
+      - int
+    parse_response:
+      default: False
+      type: 
+      - bool 
+  module: language_tools.tools.conversation_summarization
+  name: Conversation Summarization
+  description: Use Azure AI Language to summarize conversations.
+  type: python
+  category: azure_ai_language

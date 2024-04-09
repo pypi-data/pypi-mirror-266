@@ -1,0 +1,41 @@
+# ---------------------------------------------------------
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# ---------------------------------------------------------
+language_tools.tools.abstractive_summarization.get_abstractive_summarization:
+  function: get_abstractive_summarization
+  inputs:
+    connection:
+      type:
+      - CustomConnection
+    document:
+      type:
+      - object
+    query:
+      default: ""
+      type:
+      - string
+    summary_length:
+      default: ""
+      enum:
+      - "short"
+      - "medium"
+      - "long"
+      type:
+      - string
+    max_retries:
+      default: 5
+      type:
+      - int
+    max_wait:
+      default: 60
+      type:
+      - int
+    parse_response:
+      default: False
+      type: 
+      - bool 
+  module: language_tools.tools.abstractive_summarization
+  name: Abstractive Summarization
+  description: Use Azure AI Language to generate abstractive summaries of documents.
+  type: python
+  category: azure_ai_language

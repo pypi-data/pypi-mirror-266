@@ -1,0 +1,33 @@
+# ---------------------------------------------------------
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# ---------------------------------------------------------
+language_tools.tools.sentiment_analysis.get_sentiment_analysis:
+  function: get_sentiment_analysis
+  inputs:
+    connection:
+      type:
+      - CustomConnection
+    document:
+      type:
+      - object
+    opinion_mining:
+      default: False
+      type:
+      - bool
+    max_retries:
+      default: 5
+      type:
+      - int
+    max_wait:
+      default: 60
+      type:
+      - int
+    parse_response:
+      default: False
+      type: 
+      - bool 
+  module: language_tools.tools.sentiment_analysis
+  name: Sentiment Analysis
+  description: Use Azure AI Language to analyze the sentiment of documents.
+  type: python
+  category: azure_ai_language
