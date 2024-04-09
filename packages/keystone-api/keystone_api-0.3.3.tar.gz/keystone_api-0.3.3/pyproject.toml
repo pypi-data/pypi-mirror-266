@@ -1,0 +1,36 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "keystone-api"
+version = "0.3.3"
+readme = "README.md"
+description = "A REST API for managing user resource allocations on HPC systems."
+authors = ["Pitt Center for Research Computing"]
+keywords = ["Pitt", "CRC", "HPC", "django"]
+
+[tool.poetry.scripts]
+keystone-api = "keystone_api.manage:main"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "5.0.3"
+django-auth-ldap = "4.7.0"
+django-celery-beat = "2.6.0"
+django-celery-results = "2.5.1"
+django-cors-headers = "4.3.1"
+django-environ = "0.11.2"
+django-filter = "24.2"
+django-health-check = "3.18.1"
+django-jazzmin = "2.6.1"
+djangorestframework = "3.15.1"
+djangorestframework-simplejwt = "5.3.1"
+drf_spectacular = { version = "0.27.1", extras = ["sidecar"] }
+gunicorn = "21.2.0"
+psycopg2-binary = "2.9.9"
+pyyaml = "6.0.1"
+redis = "5.0.3"
+tqdm = "4.66.2"
+uritemplate = "4.1.1"
+whitenoise = "6.6.0"

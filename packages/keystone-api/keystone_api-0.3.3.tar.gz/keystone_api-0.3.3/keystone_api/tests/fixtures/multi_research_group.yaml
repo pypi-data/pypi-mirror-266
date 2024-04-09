@@ -1,0 +1,151 @@
+# This test fixture creates two research groups on the same cluster.
+# Each group has a single allocation request with a single allocation.
+#
+# Research Group 1:
+#   - pi_1          (Research group PI)
+#   - group_admin_1 (Research group admin)
+#   - member_1      (Generic group member)
+#
+# Research Group 2:
+#   - pi_2          (Research group PI)
+#   - group_admin_2 (Research group admin)
+#   - member_2      (Generic group member)
+#
+# Accounts not affiliated with a group:
+#   - super_user  (Super user account)
+#   - staff_user  (Staff user account)
+#   - common_user (Generic user account)
+
+# Clusters
+- model: allocations.cluster
+  pk: 1
+  fields:
+    name: cluster
+    enabled: true
+
+# Users
+- model: users.user
+  pk: 1
+  fields:
+    username: pi_1
+    first_name: foo
+    last_name: bar
+    email: pi_1@domain.com
+    password: foobar123
+- model: users.user
+  pk: 2
+  fields:
+    username: group_admin_1
+    first_name: foo
+    last_name: bar
+    email: group_admin_1@domain.com
+    password: foobar123
+- model: users.user
+  pk: 3
+  fields:
+    username: member_1
+    first_name: foo
+    last_name: bar
+    email: member_1@domain.com
+    password: foobar123
+- model: users.user
+  pk: 4
+  fields:
+    username: pi_2
+    first_name: foo
+    last_name: bar
+    email: pi_2@domain.com
+    password: foobar123
+- model: users.user
+  pk: 5
+  fields:
+    username: group_admin_2
+    first_name: foo
+    last_name: bar
+    email: group_admin_2@domain.com
+    password: foobar123
+- model: users.user
+  pk: 6
+  fields:
+    username: member_2
+    first_name: foo
+    last_name: bar
+    email: member_2@domain.com
+    password: foobar123
+- model: users.user
+  pk: 7
+  fields:
+    username: generic_user
+    password: testpassword
+- model: users.user
+  pk: 8
+  fields:
+    username: super_user
+    first_name: foo
+    last_name: bar
+    email: super_user@domain.com
+    password: foobar123
+    is_superuser: true
+- model: users.user
+  pk: 9
+  fields:
+    username: staff_user
+    first_name: foo
+    last_name: bar
+    email: staff_user@domain.com
+    password: foobar123
+    is_staff: true
+
+# Research Groups
+- model: users.researchgroup
+  pk: 1
+  fields:
+    name: Research Group 1
+    pi: 1
+    admins: [ 2 ]
+    members: [ 3 ]
+- model: users.researchgroup
+  pk: 2
+  fields:
+    name: Research Group 2
+    pi: 4
+    members: [ 6 ]
+
+# Allocation Requests
+- model: allocations.allocationrequest
+  pk: 1
+  fields:
+    status: AP
+    group: 1
+    submitted: "2023-01-01"
+- model: allocations.allocationrequest
+  pk: 2
+  fields:
+    status: AP
+    group: 2
+    submitted: "2023-01-01"
+
+# Allocation Request Reviews
+- model: allocations.allocationrequestreview
+  pk: 1
+  fields:
+    status: AP
+    request: 1
+    reviewer: 9
+    date_modified: "2023-01-01T12:00:00Z"
+
+# Allocations
+- model: allocations.allocation
+  pk: 1
+  fields:
+    request: 1
+    cluster: 1
+    requested: 10000
+    awarded: 10000
+- model: allocations.allocation
+  pk: 2
+  fields:
+    request: 2
+    cluster: 1
+    requested: 10000
+    awarded: 10000
