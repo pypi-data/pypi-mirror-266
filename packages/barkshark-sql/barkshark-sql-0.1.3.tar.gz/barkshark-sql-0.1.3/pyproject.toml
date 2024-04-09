@@ -1,0 +1,77 @@
+[build-system]
+requires = ["setuptools >= 38.3.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "barkshark-sql"
+authors = [{name = "Zoey Mae", email = "admin@barkshark.xyz"}]
+description = "Connection pool and query builder for dbapi 2.0 database drivers"
+license = {text = "CNPL 7+"}
+keywords = ["sql", "database", "sqlite", "postgresql"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+  "Topic :: Database",
+  "Typing :: Typed"
+]
+requires-python = ">= 3.8"
+dependencies = ["pg8000"]
+dynamic = ["version"]
+
+[project.readme]
+file = "README.md"
+content-type = "text/markdown"
+
+[project.urls]
+Homepage = "https://git.barkshark.xyz/barkshark/bsql"
+"Bug Tracker" = "https://git.barkshark.xyz/barkshark/bsql/issues"
+Documentation = "https://docs.barkshark.xyz/barkshark-sql"
+"Source Code" = "https://git.barkshark.xyz/barkshark/bsql"
+
+[tool.setuptools]
+include-package-data = true
+packages = ["bsql"]
+platforms = ["any"]
+license-files = ["LICENSE.md"]
+
+[tool.setuptools.dynamic]
+version = {attr = "bsql.__version__"}
+
+[project.optional-dependencies]
+docs = [
+    "furo == 2024.1.29",
+    "sphinx == 7.2.6",
+    "sphinx-external-toc == 1.0.1",
+]
+dev = [
+    "mypy == 1.9.0",
+    "flake8 == 7.0.0",
+    "pytest == 8.1.1",
+    "typing_extensions >= 4.10.0; python_version < '3.11.0'"
+]
+
+[tool.distutils.bdist_wheel]
+universal = false
+
+[tool.distutils.sdist]
+formats = "zip, gztar"
+
+[tool.mypy]
+show_traceback = true
+install_types = true
+pretty = true
+disallow_untyped_decorators = true
+warn_redundant_casts = true
+warn_unreachable = true
+warn_unused_ignores = true
+ignore_missing_imports = true
+follow_imports = "silent"
