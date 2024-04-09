@@ -1,0 +1,33 @@
+Metadata-Version: 2.1
+Name: ctao-dpps-cosmic-ray-spectra
+Version: 0.1.0rc1
+Summary: Common definitions of cosmic ray reference spectra
+Author-email: Maximilian Linhoff <maximilian.linhoff@tu-dortmund.de>
+License: BSD-3-Clause
+Project-URL: repository, https://gitlab.cta-observatory.org/cta-comuting/dpps/cosmic-ray-spectra
+Project-URL: documentation, http://cta-computing.gitlab-pages.cta-observatory.org/dpps/cosmic-ray-spectra
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: astropy
+Requires-Dist: scipy
+Provides-Extra: all
+Requires-Dist: ctao-dpps-cosmic-ray-spectra[dev,doc,test] ; extra == 'all'
+Provides-Extra: dev
+Requires-Dist: setuptools-scm ; extra == 'dev'
+Requires-Dist: sphinx-autobuild ; extra == 'dev'
+Provides-Extra: doc
+Requires-Dist: sphinx ; extra == 'doc'
+Requires-Dist: numpydoc ; extra == 'doc'
+Requires-Dist: pydata-sphinx-theme ; extra == 'doc'
+Provides-Extra: test
+Requires-Dist: pytest ; extra == 'test'
+Requires-Dist: pytest-cov ; extra == 'test'
+
+# Cosmic Ray Reference Spectra
+
+This repository provides reference cosmic ray spectra and a python library
+to evaluate them.
+
+Spectra from external publications or CTAC definitions used e.g. for performance curves are defined.
