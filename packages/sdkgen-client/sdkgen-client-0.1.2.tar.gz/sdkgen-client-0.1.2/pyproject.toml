@@ -1,0 +1,37 @@
+[project]
+name = "sdkgen-client"
+version = "0.1.2"
+authors = [
+  { name="Christoph Kappestein", email="christoph.kappestein@gmail.com" },
+]
+description = "SDKgen is a powerful code generator to automatically build client SDKs for your REST API"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Code Generators",
+]
+dependencies = [
+    "requests",
+    "dataclasses-json",
+]
+
+[project.urls]
+Homepage = "https://github.com/apioo/sdkgen-python"
+Issues = "https://github.com/apioo/sdkgen-python/issues"
+
+[project.optional-dependencies]
+tests = [
+  'pytest',
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["sdkgen"]
+package-dir = {"" = "src"}
