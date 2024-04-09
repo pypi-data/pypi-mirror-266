@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+{% include 'components/layouts/head.html' %}
+<body class="nav-slim">
+
+<!-- ===============================================-->
+<!--    Main Content-->
+<!-- ===============================================-->
+<main class="main" id="top">
+    {% include 'components/layouts/navbar.html' %}
+    {#    {% include 'components/layouts/parts/top-navigation-slim.html' %}#}
+    {#    {% include 'components/layouts/parts/search-modal.html' %}#}
+
+    <script>
+        var body = document.querySelector('body');
+        var topNavSlim = document.querySelector('#topNavSlim');
+        var navbarVertical = document.querySelector('.navbar-vertical');
+
+        topNavSlim.style.display = 'block';
+        navbarVertical.removeAttribute('style');
+        body.classList.add('nav-slim');
+        topNavSlim.classList.add('navbar-darker');
+    </script>
+
+
+    <div class="content p-3">
+        <nav class="mb-2" aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+                <li class="breadcrumb-item"
+                    aria-current="page">
+                    <a href="/admin/{{ pluralize(resource)|lower }}">{{ pluralize(resource)|replace("_", " ") }}</a>
+                </li>
+                {% if True %}
+                    <li class="breadcrumb-item active"
+                        aria-current="page">{{ view_mode|title }} {{ data_model.name.singular|title }}</li>
+                {% endif %}
+            </ol>
+        </nav>
+        <div class="mb-9">
+            <div class="row align-items-center justify-content-between g-3 mb-4">
+                {#                {% include 'admin/components/helpers/page-title.html' %}#}
+                <h4 class="mt-5">{{ page_title }}</h4>
+                <div class="col-12 col-md-auto">
+                    {% if request.path == "/admin/" + pluralize(resource)|lower %}
+                        {{ before_list_view_actions_hook|safe }}
+                        {% if data_model.permissions.can_create %}
+                            <a href="/admin/{{ pluralize(resource)|lower }}/create-{{ resource|lower }}"
+                               class="btn btn-primary  me-2">
+                                <span class="fa-solid fa-add me-sm-2"></span>
+                                <span class="d-none d-sm-inline">Add</span>
+                            </a>
+                        {% endif %}
+                    {% elif request.path == "/admin/" + pluralize(resource)|lower + "/create-" + resource|lower %}
+                        <button
+                                onclick="document.getElementById('save-action').value = 'Save';document.getElementById('create-{{ resource|lower }}-form').submit();"
+                                class="btn btn-primary  me-2">
+                            <span class="fa-solid fa-floppy-disk me-sm-2"></span>
+                            <span class="d-none d-sm-inline">Save</span></button>
+                        <button
+                                onclick="document.getElementById('save-action').value = 'Save & Create New';document.getElementById('create-{{ resource|lower }}-form').submit();"
+                                class="btn btn-primary  me-2">
+                            <span class="fa-solid fa-plus me-sm-2"></span>
+                            <span class="d-none d-sm-inline">Save & Create New</span></button>
+                        <button
+                                onclick="location.href = '/admin/{{ pluralize(resource)|lower }}'"
+                                class="btn btn-primary  me-2">
+                            <span class="fa-solid fa-remove me-sm-2"></span>
+                            <span class="d-none d-sm-inline">Cancel Changes</span></button>
+                    {% elif id and request.path == "/admin/" + pluralize(resource)|lower + "/" + id %}
+                        {{ before_edit_actions_hook|safe }}
+                        {% if edit_actions %}
+                            {% for action in edit_actions %}
+                                <button data-bs-toggle="modal"
+                                        data-bs-target="#{{ resource|lower }}-{{ action.name }}-modal"
+                                        class="btn btn-primary  me-2
+
+
+
+
+
+
+
+
+
+
+                                                {% if action.color %}{{ action.color }}{% else %}primary{% endif %} mb-2 me-4 _effect--ripple waves-effect waves-light">
+                                    {{ action.label }}
+                                </button>
+                            {% endfor %}
+                        {% endif %}
+                        <button
+                                onclick="document.getElementById('save-action').value = 'Save & Continue Editing';document.getElementById('edit-{{ resource|lower }}-form-submit-btn').click();"
+                                class="btn btn-primary  me-2">
+                            <span class="fa-solid fa-add me-sm-2"></span>
+                            <span class="d-none d-sm-inline">Save & Continue Editing</span></button>
+                        <button
+                                id="save-changes-{{ resource|lower }}-loader"
+                                onclick="document.getElementById('save-action').value ='Save Changes';document.getElementById('edit-{{ resource|lower }}-form-submit-btn').click();"
+                                class="btn btn-primary  me-2">
+                            <span class="fa-solid fa-add me-sm-2"></span>
+                            <span class="d-none d-sm-inline">Save Changes</span></button>
+                        <button
+                                onclick="location.href = '/admin/{{ pluralize(resource)|lower }}'"
+                                class="btn btn-primary  me-2">
+                            <span class="fa-solid fa-add me-sm-2"></span>
+                            <span class="d-none d-sm-inline">Cancel Changes</span></button>
+                    {% endif %}
+                </div>
+            </div>
+
+
+            {% block content %}
+
+            {% endblock %}
+        </div>
+    </div>
+</main>
+<!-- ===============================================-->
+<!--    End of Main Content-->
+<!-- ===============================================-->
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+    function moveModalsIntoContainerAtBottom() {
+        // Get all elements with class 'modal'
+        var modals = document.querySelectorAll('.modal');
+
+        // Get the modal container
+        var modalContainer = document.getElementById('modal-containers');
+
+        // Loop through each modal and move it into the modal container
+        modals.forEach(function (modal) {
+            modalContainer.append(modal);
+        });
+    }
+
+    window.onload = function () {
+        moveModalsIntoContainerAtBottom();
+
+
+        htmx.on("htmx:afterSwap", (e) => {
+            function deleteModalsNotInContainer() {
+                // Select all modal elements
+                var modals = document.querySelectorAll('.modal');
+
+                // Iterate through each modal element
+                modals.forEach(function (modal) {
+                    // Check if the parent node's ID is not modal-containers
+                    if (modal.parentNode.id !== 'modal-containers') {
+                        // If the parent node is not modal-containers, remove the modal element from the DOM
+                        modal.remove();
+                    }
+                });
+            }
+
+            deleteModalsNotInContainer();
+        })
+
+        var tableRows = document.querySelectorAll('tr');
+        tableRows.forEach(function (row) {
+            let resouce = '{{ data_model.name.plural|lower }}'
+            let clickAction = row.getAttribute("data-click-action");
+            let resourceId = row.getAttribute("data-resource-id");
+            let previewColumn = row.getAttribute("data-preview-column");
+            row.addEventListener('dblclick', function () {
+                if (clickAction === 'edit') {
+                    window.location.href = `/admin/${resouce}/${resourceId}`
+                } else if (clickAction === 'preview') {
+                    htmx.ajax('GET', `/admin/{{ data_model.name.plural|lower }}/${previewColumn}/preview`, '#preview-modal .modal-body')
+                    let modal = document.getElementById('preview-modal')
+                    let modalInstance = new bootstrap.Modal(modal)
+                    modalInstance.show()
+                }
+            });
+        });
+
+
+        if (document.querySelector(".datepicker")) {
+            flatpickr(".datepicker", {});
+        }
+
+    };
+
+
+</script>
+</body>
+</html>

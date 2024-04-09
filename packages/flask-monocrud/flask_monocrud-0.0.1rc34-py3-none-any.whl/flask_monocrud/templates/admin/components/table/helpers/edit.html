@@ -1,0 +1,22 @@
+{% if field.editable %}
+
+    <span></span>
+    <button id="sort-btn-{{ field.name }}" class="ms-1 float-end bg-transparent border-0 p-0"
+            data-hx-push-url="true"
+            data-hx-get="{{ query_param_string }}"
+            data-hx-vals='{"sort": "{{ field.name }}|{{ next_sort }}"}'
+            data-hx-trigger="click"
+            data-hx-target="#{{ resource }}-table"
+            data-hx-select="#{{ resource }}-table"
+            data-hx-swap="outerHTML"
+    >
+
+
+        <i id="{{ field.name }}-edit-icon"
+           class="fas fa-pencil text-info-500"
+        ></i>
+
+    </button>
+
+{% endif %}
+

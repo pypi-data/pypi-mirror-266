@@ -1,0 +1,23 @@
+{% extends 'components/layouts/BaseLayoutAdmin.html' %}
+{% set application_name=application_name %}
+{% set models=data_model.models %}
+{% set resource=data_model.resource %}
+
+
+{% block content %}
+    <div class="card">
+        <div class="card-body mb-3">
+            {% set model = data_model.result_set.results %}
+            <form class='row' action='{{ submit_url }}' method='post'
+                  id='create-{{ data_model.name.singular|lower }}-form'
+                  enctype='multipart/form-data'>
+                {% for field in data_model.fillable() %}
+                    {% if field.type != 'repeater' %}
+                        {% include 'admin/components/forms/ReusableForm.html' with context %}
+                    {% endif %}
+                {% endfor %}
+                <input type="hidden" name="save-action" id="save-action">
+            </form>
+        </div>
+    </div>
+{% endblock %}

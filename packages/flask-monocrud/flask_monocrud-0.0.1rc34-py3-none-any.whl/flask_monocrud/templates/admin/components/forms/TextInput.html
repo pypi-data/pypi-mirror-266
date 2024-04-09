@@ -1,0 +1,62 @@
+{% if field.colspan %}
+    {% set colspan = "col-lg-" + field.colspan %}
+{% else %}
+    {% set colspan = "col-lg-4" %}
+{% endif %}
+
+
+{% if field.type == "file" and value %}
+    <div class="form-group {{ colspan }}">
+        <div class="d-flex align-items-center">
+            <div class="avatar avatar-xl">
+                <img alt="avatar" src="{{ get_file_internal('UPLOADS', value) }}" class="rounded-soft"/>
+            </div>
+            <p class="p-3">
+                <b>{{ value }}</b>
+            </p>
+        </div>
+    </div>
+
+{% else %}
+    <div class="form-group {{ colspan }} {% if not field.hidden %}mt-3{% endif %}">
+        {% if field.label %}
+            <label for="{{ field.id }}">
+                {{ field.label }}
+                {% if field.type == "file" %}
+                    <sup>{{ value or "" }}</sup>
+                {% endif %}
+            </label>
+        {% endif %}
+
+        <input
+        {% include 'admin/components/forms/FieldAttributes.html' with context %}
+        {% if field.autocomplete %} autocomplete="{{ field.autocomplete }}" {% endif %}
+        {% if field.checked %} checked="{{ field.checked }}" {% endif %}
+        {% if field.type=="datalist" %}list="{{ pluralize(field.name) }}"{% endif %}
+        {% if field.max %} max="{{ field.max }}" {% endif %}
+        {% if field.maxlength %} maxlength="{{ field.maxlength }}" {% endif %}
+        {% if field.min %} min="{{ field.min }}" {% endif %}
+        {% if field.minlength %} minlength="{{ field.minlength }}" {% endif %}
+        {% if field.placeholder %} placeholder="{{ field.placeholder }}" {% endif %}
+        {% if field.readonly %} readonly="{{ field.readonly }}" {% endif %}
+        {% if field.step %} step="{{ field.step }}" {% endif %}
+        type="{{ field.type }}"
+        {% if value %}value='{{ value }}'{% elif field.default %}value='{{ render_dynamic_html(field.default, result=result)|safe }}'{% endif %}
+        {% if field.hidden %}
+            hidden
+            {% if id %}
+                value="{{ id }}"
+            {% endif %}
+        {% endif %}
+        >
+
+        {% if field.type=="datalist" %}
+            <datalist id="{{ pluralize(field.name) }}">
+                {% for option in field.options %}
+                    <option value="{{ option }}"
+                            {% if value == option %}selected{% endif %}>{{ option }}</option>
+                {% endfor %}
+            </datalist>
+        {% endif %}
+    </div>
+{% endif %}

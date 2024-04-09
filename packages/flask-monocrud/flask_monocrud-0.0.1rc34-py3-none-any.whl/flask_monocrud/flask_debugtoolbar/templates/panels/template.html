@@ -1,0 +1,27 @@
+{% if templates %}
+
+  {% for template in templates %}
+  {% if editable %}
+    <a href="/_debug_toolbar/views/template/{{ key }}?name={{ template.template.name }}" onclick="return fldt.load_href(this.href);">Edit templates</a>
+  {% endif %}
+    <h4>{{ template.template.name }}</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>Variable</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for k, v in template.context|dictsort %}
+        <tr class="{{ loop.cycle('flDebugOdd', 'flDebugEven') }}">
+          <td>{{ k }}</td>
+          <td>{{ v|printable }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endfor %}
+{% else %}
+  <p>No template rendered</p>
+{% endif %}

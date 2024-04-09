@@ -1,0 +1,9 @@
+from masoniteorm.models import Model
+from application.admin.$ResourceAdmin import $ResourceAdmin
+from application.policies.$ResourcePolicies import $ResourcePolicies
+from application.hooks.$ResourceHooks import $ResourceHooks
+
+
+class $Resource(Model, $ResourceAdmin, $ResourcePolicies, $ResourceHooks):
+    __guarded__ = ["csrf_token"]
+

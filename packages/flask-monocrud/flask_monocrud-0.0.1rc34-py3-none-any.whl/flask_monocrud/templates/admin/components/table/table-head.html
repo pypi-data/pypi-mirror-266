@@ -1,0 +1,54 @@
+{% if field.label %}
+    {% set label = field.label %}
+{% else %}
+    {% set label = field.name %}
+{% endif %}
+
+
+{% if label %}
+    <th class="sort pe-1 align-middle white-space-nowrap border-end pe-3">
+        <div class="d-flex">
+            {% include 'admin/components/table/helpers/filter.html' %}
+            <span>{{ label }}</span>
+
+{#            <span class="w-75"></span>#}
+
+            {% include 'admin/components/table/helpers/sort.html' with context %}
+        </div>
+    </th>
+
+
+    {% if view_mode == "list" %}
+    <div class="modal fade" id="{{ field.name }}-filter-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Filter by {{ label }}</h5>
+                    <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close"><span
+                            class="fas fa-times fs--1"></span></button>
+                </div>
+                <div class="modal-body">
+
+                    {% for filter in data_model.result_set.result.pluck(field.name).unique() %}
+                        <div class="form-check">
+                            <input class="form-check-input" id="flexCheckChecked" type="checkbox" value=""
+                                   checked="">
+                            <label class="form-check-label" for="flexCheckChecked">{{ filter }}</label>
+                        </div>
+                    {% endfor %}
+
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="button">Okay</button>
+                    <button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+{% endif %}
+
+
+<!-- Modal -->

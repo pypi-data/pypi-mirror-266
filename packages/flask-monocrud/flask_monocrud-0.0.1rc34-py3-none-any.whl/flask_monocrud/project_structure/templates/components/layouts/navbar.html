@@ -1,0 +1,61 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">{{ from_config('admin.admin_site_title') }}</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02"
+                aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarColor02">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item {% if request.path == '/' %}active{% endif %}">
+                    <a class="nav-link" href="/">Home
+                        {% if request.path == '/' %}
+                        <span class="visually-hidden">(current)</span>
+                        {% endif %}
+                    </a>
+                </li>
+                {% set ungrouped_models = [] %}
+                {% set grouped_models = {} %}
+                {% for model in data_model.models %}
+                    {% if model.group %}
+                        {% set model_list = grouped_models[model.group] if model.group in grouped_models else [] %}
+                        {% set _ = model_list.append(model) %}
+                        {% set _ = grouped_models.update({model.group: model_list}) %}
+                    {% else %}
+                        {% set _ = ungrouped_models.append(model) %}
+                    {% endif %}
+                {% endfor %}
+                {% for model in ungrouped_models|sort(attribute='navigation_sort_order') %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if "/admin/" + pluralize(model.name)|lower in request.path %}active{% endif %}" href="/admin/{{ pluralize(model.name)|lower }}">{{ model.get('label') or pluralize(model.name)|replace("_", "  ") }}</a>
+                    </li>
+                {% endfor %}
+                {% for group, models in grouped_models.items() %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="{{ group|lower }}Dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ group }}
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="{{ group|lower }}Dropdown">
+                            {% for model in models|sort(attribute='navigation_sort_order') %}
+                                <li><a class="dropdown-item {% if "/admin/" + pluralize(model.name)|lower in request.path %}active{% endif %}" href="/admin/{{ pluralize(model.name)|lower }}">{{ model.get('label') or pluralize(model.name)|replace("_", "  ") }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        User Area
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{{ url_for('do_logout') }}">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

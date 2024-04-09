@@ -1,0 +1,20 @@
+"""CreateUsersTable Migration."""
+
+from masoniteorm.migrations import Migration
+
+
+class __MIGRATION_NAME__(Migration):
+    def up(self):
+        """
+        Run the migrations.
+        """
+        with self.schema.create("__ResourceLower__") as table:
+            table.increments("id")
+
+            table.timestamps()
+
+    def down(self):
+        """
+        Revert the migrations.
+        """
+        self.schema.drop("__ResourceLower__")
