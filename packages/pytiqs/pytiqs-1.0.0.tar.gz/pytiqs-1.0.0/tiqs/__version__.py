@@ -1,0 +1,8 @@
+__title__ = "pytiqs"
+__description__ = "The official Python client for the Tiqs trading API"
+__url__ = ""
+__download_url__ = ""
+__version__ = "1.0.0"
+__author__ = "Butterfly Broking Pvt. Ltd."
+__author_email__ = ""
+__license__ = ""
