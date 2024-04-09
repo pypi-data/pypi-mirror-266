@@ -1,0 +1,72 @@
+"""Hashing.
+
+.. autosummary::
+   :toctree: .
+
+   hash_set
+   hash_file
+
+"""
+
+import base64
+import hashlib
+from typing import List, Set, Tuple
+from .types import Path, UPathStr
+
+
+def to_b64_str(bstr: bytes):
+    b64 = base64.urlsafe_b64encode(bstr).decode().strip("=")
+    return b64
+
+
+def b16_to_b64(s: str):
+    return to_b64_str(base64.b16decode(s.strip('"'), casefold=True))
+
+
+# a lot to read about this: lamin-notes/2022/hashing
+def hash_set(s: Set[str]) -> str:
+    bstr = ":".join(sorted(s)).encode("utf-8")
+    # as we're truncating at 20 b64, we choose md5 over sha512
+    return to_b64_str(hashlib.md5(bstr).digest())[:20]
+
+
+def hash_md5s_from_dir(etags: List[str]) -> Tuple[str, str]:
+    # need to sort below because we don't want the order of parsing the dir to
+    # affect the hash
+    digests = b"".join(
+        hashlib.md5(etag.encode("utf-8")).digest() for etag in sorted(etags)
+    )
+    digest = hashlib.md5(digests).digest()
+    return to_b64_str(digest)[:22], "md5-d"
+
+
+def hash_code(file_path: UPathStr):
+    with open(file_path, "rb") as fp:
+        data = fp.read()
+    data_size = len(data)
+    header = f"blob {data_size}\0".encode()
+    blob = header + data
+    return hashlib.sha1(blob)
+
+
+def hash_file(file_path: Path, chunk_size=50 * 1024 * 1024) -> Tuple[str, str]:
+    chunks = []
+    with open(file_path, "rb") as fp:
+        # read first chunk
+        chunks = [fp.read(chunk_size)]
+        # try reading the 2nd chunk
+        data = fp.read(chunk_size)
+        if data:
+            # go to end of file
+            fp.seek(-chunk_size, 2)
+            # read last chunk
+            data = fp.read(chunk_size)
+            chunks.append(data)
+    if len(chunks) == 1:
+        digest = hashlib.md5(chunks[0]).digest()
+        hash_type = "md5"
+    else:
+        digests = b"".join(hashlib.sha1(chunk).digest() for chunk in chunks)
+        digest = hashlib.sha1(digests).digest()
+        hash_type = "sha1-fl"  # sha1 first last chunk
+    return to_b64_str(digest)[:22], hash_type
