@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "pyautowire"
+version = "0.3.0"
+description = "Good enough autowiring for Python"
+authors = ["Tobias Waslowski <tobias.waslowski@gmail.com>"]
+license = "gpl3"
+readme = "README.md"
+
+keywords = ["dependency injection", "autowire", "fixture"]
+homepage = "https://github.com/twaslowski/py-autowire"
+repository = "https://github.com/twaslowski/py-autowire"
+documentation = "https://github.com/twaslowski/py-autowire"
+
+classifiers = [
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)"
+]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+kink = "^0.7.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
