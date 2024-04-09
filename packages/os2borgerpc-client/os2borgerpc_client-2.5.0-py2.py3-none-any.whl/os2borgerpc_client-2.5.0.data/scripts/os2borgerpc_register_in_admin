@@ -1,0 +1,31 @@
+#!python
+
+import sys
+import urllib.parse
+
+from os2borgerpc.client.config import OS2borgerPCConfig
+from os2borgerpc.client.admin_client import OS2borgerPCAdmin
+
+computer_name = sys.argv[1]
+
+config = OS2borgerPCConfig()
+data = config.get_data()
+
+mac = data['mac']
+site = data['site']
+admin_url = data.get('admin_url', 'http://os2borgerpc-admin.magenta.dk/')
+xml_rpc_url = data.get('xml_rpc_url', '/admin-xml/')
+urllib.parse.urljoin(admin_url, xml_rpc_url)
+
+admin = OS2borgerPCAdmin(urllib.parse.urljoin(admin_url, xml_rpc_url))
+
+# Data collected, now register computer.
+
+try:
+    uid = admin.register_new_computer(mac, computer_name, None, site, data)
+    config.set_value('uid', uid)
+    config.save()
+
+except Exception as e:
+    print('Error:', str(e), file=sys.stderr)
+    sys.exit(1)
