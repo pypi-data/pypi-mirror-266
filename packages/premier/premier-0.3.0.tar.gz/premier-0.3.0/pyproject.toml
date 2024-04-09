@@ -1,0 +1,43 @@
+[tool.poetry]
+name = "premier"
+version = "0.3.0"
+description = "an intuitive throttler supports distributed usage and various throttling algorithms"
+authors = ["raceychan <raceychan@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+redis = "^5.0.3"
+
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.1.1"
+
+[tool.pyright]
+include = ["src/*.py"]
+typeCheckingMode = "strict"
+exclude = ["tests"]
+
+
+[tool.poetry.group.dev.dependencies]
+python-semantic-release = "^9.4.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+# addopts = "--strict-markers --maxfail=1 --pdbcls=IPython.terminal.debugger:Pdb"
+addopts = "--strict-markers --maxfail=1"
+markers = [
+    "integration_test: marks tests as slow integration tests (deselect with '-m \"not integration_test\"')",
+]
+
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.semantic_release]
+version_variable = "pyproject.toml:version"
