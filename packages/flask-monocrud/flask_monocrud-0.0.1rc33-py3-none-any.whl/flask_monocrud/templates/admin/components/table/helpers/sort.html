@@ -1,0 +1,34 @@
+{% if field.sortable %}
+    {% if request.args.get("sort") %}
+        {% if request.args.get('sort').split('|')[0] == field.name %}
+            {% if request.args.get("sort").split("|")[1] == "desc" %}
+                {% set sort_icon_state = "up" %}
+            {% else %}
+                {% set sort_icon_state = "down" %}
+            {% endif %}
+        {% else %}
+            {% set sort_icon_state = "down" %}
+        {% endif %}
+    {% else %}
+        {% set sort_icon_state = "down" %}
+    {% endif %}
+
+
+    <button id="sort-btn-{{ field.name }}" class="ms-1 float-end bg-transparent border-0 p-0"
+            data-hx-push-url="true"
+            data-hx-get="{{ query_param_string }}"
+            data-hx-vals='{"sort": "{{ field.name }}|{{ next_sort }}"}'
+            data-hx-trigger="click"
+            data-hx-target="#{{ resource }}-table"
+            data-hx-select="#{{ resource }}-table"
+            data-hx-swap="outerHTML"
+    >
+
+
+        <i id="{{ field.name }}-sort-icon"
+           class="fas fa-arrow-{{ sort_icon_state }}-short-wide"
+        ></i>
+
+    </button>
+
+{% endif %}

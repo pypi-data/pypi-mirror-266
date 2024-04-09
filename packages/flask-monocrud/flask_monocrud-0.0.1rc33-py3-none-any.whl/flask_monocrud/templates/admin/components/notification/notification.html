@@ -1,0 +1,27 @@
+<div id="x-admin-notifications" data-hx-swap-oob="true">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <script>
+                    toastr.{{ message.category }}("{{ message.message }}", "{{ message.title }}", {
+                            "closeButton": false,
+                            "debug": false,
+                            "newestOnTop": false,
+                            "progressBar": true,
+                            //"preventDuplicates": true,
+                            "onclick": null,
+                            "showDuration": "10000",
+                            "hideDuration": "10000",
+                            "timeOut": "5000",
+                            "extendedTimeOut": "10000",
+                            "showEasing": "linear",
+                            "hideEasing": "linear",
+                            "showMethod": "show",
+                            "hideMethod": "fadeOut"
+                        }
+                    );
+                </script>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>

@@ -1,0 +1,7 @@
+from flask_monocrud import Admin
+from flask_orphus.routing.fs_router import endpoint
+
+
+@endpoint(name="Preview $Resource")
+def home(id):
+    return Admin().setup_preview_view("$Resource", id)

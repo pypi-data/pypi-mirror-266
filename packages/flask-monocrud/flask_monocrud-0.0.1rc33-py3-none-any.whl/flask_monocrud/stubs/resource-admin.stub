@@ -1,0 +1,45 @@
+from flask_monocrud.action_components import Action
+from flask_monocrud.form_components import FileUpload, Repeater, TextInput, Select
+from flask_monocrud.notification_component import Notification
+from flask_monocrud.table_components import BadgeColumn, BooleanColumn, TextColumn
+from flask_monocrud.metrics import Metric
+from flask_monocrud.table_components.table import Table
+from typing import Any
+from flask_monocrud.resource.Resource import Resource
+
+
+class $ResourceAdmin(Resource):
+    display_in_nav = True # Display resource in navigation
+    menu_icon = ""
+    preview_field = "id"
+    edit_field = "id"
+    table_polling = False
+    table_polling_interval = 5 # seconds
+
+    def get_header_metrics(self):
+        return [
+
+        ]
+
+    def get_fillable(self) -> list[dict[str, Any]]:
+        return [
+
+        ]
+
+    def get_table(self):
+        return Table.make("$Resource").columns([
+
+        ])
+
+    def get_relations(self):
+        return [
+
+        ]
+
+    def get_table_actions(self):
+        return [
+
+        ]
+
+    __admin_list_filter__ = "id" # Filter field for resource
+    __admin_search_field__ = "name" # Search field for resource

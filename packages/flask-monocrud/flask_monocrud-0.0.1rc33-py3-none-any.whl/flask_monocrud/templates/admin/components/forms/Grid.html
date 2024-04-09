@@ -1,0 +1,12 @@
+<div class="col-lg-{{ field.cols }} row align-content-start {{ field.classes }}">
+    <div class="col-lg-12">
+        <h5 class="mt-4">{{ field.label }}</h5>
+    </div>
+    {% set empty_res = {} %}
+    {% for repeater_field in field.schema %}
+        {% set field = repeater_field %}
+        {% include 'admin/components/forms/ReusableForm.html' %}
+    {% endfor %}
+</div>
+
+

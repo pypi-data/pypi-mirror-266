@@ -1,0 +1,9 @@
+from flask_monocrud import Admin
+from flask_orphus.routing.fs_router import endpoint
+from flask_orphus import Request as orequest
+
+
+@endpoint(name="Edit $Resource POST")
+def home(id):
+    data = orequest.all()
+    Admin().submit_edit_view("$Resource", id, data)

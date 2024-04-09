@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <title>404 HTML Template by Colorlib</title>
+
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:200,400,700" rel="stylesheet">
+
+    <!-- Custom stlylesheet -->
+    <link type="text/css" rel="stylesheet" href="css/style.css"/>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <style>
+        * {
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        body {
+            padding: 0;
+            margin: 0;
+        }
+
+        #notfound {
+            position: relative;
+            height: 100vh;
+        }
+
+        #notfound .notfound {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+        .notfound {
+            max-width: 520px;
+            width: 100%;
+            line-height: 1.4;
+            text-align: center;
+        }
+
+        .notfound .notfound-404 {
+            position: relative;
+            height: 200px;
+            margin: 0px auto 20px;
+            z-index: -1;
+        }
+
+        .notfound .notfound-404 h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 236px;
+            font-weight: 200;
+            margin: 0px;
+            color: #211b19;
+            text-transform: uppercase;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+        .notfound .notfound-404 h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 28px;
+            font-weight: 400;
+            text-transform: uppercase;
+            color: #211b19;
+            background: #fff;
+            padding: 10px 5px;
+            margin: auto;
+            display: inline-block;
+            position: absolute;
+            bottom: 0px;
+            left: 0;
+            right: 0;
+        }
+
+        .notfound a {
+            font-family: 'Montserrat', sans-serif;
+            display: inline-block;
+            font-weight: 700;
+            text-decoration: none;
+            color: #fff;
+            text-transform: uppercase;
+            padding: 13px 23px;
+            background: #ff6300;
+            font-size: 18px;
+            -webkit-transition: 0.2s all;
+            transition: 0.2s all;
+        }
+
+        .notfound a:hover {
+            color: #ff6300;
+            background: #211b19;
+        }
+
+        @media only screen and (max-width: 767px) {
+            .notfound .notfound-404 h1 {
+                font-size: 148px;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            .notfound .notfound-404 {
+                height: 148px;
+                margin: 0px auto 10px;
+            }
+
+            .notfound .notfound-404 h1 {
+                font-size: 86px;
+            }
+
+            .notfound .notfound-404 h2 {
+                font-size: 16px;
+            }
+
+            .notfound a {
+                padding: 7px 15px;
+                font-size: 14px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div id="notfound">
+    <div class="notfound">
+        <div class="notfound-404">
+            <h1>Oops!</h1>
+            <h2>{{ error.title }}.</h2>
+        </div>
+        <br>
+        <br>
+        <h3 class="text-center text-danger">
+            <img src="data:image/png;base64,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"
+                 alt="">
+            <br>
+        </h3>
+        {% if is_debug() %}
+            <br>
+            <br>
+            <br>
+            <br>
+            <h4>{{ error.message }}</h4>
+        {% endif %}
+        <a href="{{ from_config('LOGIN_REDIRECT_URL') }}" style="">Go TO Homepage</a>
+    </div>
+</div>
+
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+
+</html>

@@ -1,0 +1,255 @@
+{% extends 'components/layouts/BaseLayoutAdmin.html' %}
+{% set models=data_model.models %}
+{% set resource=data_model.resource %}
+{% set page_title=page_title|replace("_", " ") %}
+{% set edit_actions=edit_actions %}
+
+{% block content scoped %}
+
+
+
+<div class="row">
+    <div class="col-12 float-end">
+        
+    </div>
+
+    <div class="col-lg-9">
+        <div class="card">
+            <div class="card-body mb-3">
+                <form class='row'
+                      data-hx-post='{{ submit_url }}'
+                      data-hx-target="#edit-{{ data_model.name.singular|lower }}-form"
+                      data-hx-encoding="multipart/form-data"
+                      data-hx-select="#edit-{{ data_model.name.singular|lower }}-form"
+                      data-hx-swap="outerHTML"
+                      data-hx-indicator="#save-changes-{{ resource|lower }}-loader"
+                      id='edit-{{ data_model.name.singular|lower }}-form' enctype='multipart/form-data'>
+                    {% for field in fields() %}
+                        {% if field.type != 'repeater' and field.type != "custom" %}
+                            {% set model = result_set %}
+                            {% include 'admin/components/forms/ReusableForm.html' %}
+                        {% elif field.type != 'repeater' and field.type == "custom"  %}
+                            {% include field.view %}
+                        {% endif %}
+                    {% endfor %}
+                    <input type="hidden" name="save-action" id="save-action">
+                    <button id='edit-{{ data_model.name.singular|lower }}-form-submit-btn' type="submit"
+                            class="btn btn-primary d-none">
+                        Submit
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% if model_key(result_set, 'created_at') %}
+    <div class="col-lg-3">
+        <div class="card">
+            <div class="card-body mb-3">
+                <p class="d-block" style="font-weight: bold">Created at</p>
+                <p class="d-block">{{ model_key(result_set, 'created_at').diff_for_humans() }}</p>
+                <p class="d-block" style="font-weight: bold">Last modified at</p>
+                <p class="d-block">{{ model_key(result_set, 'updated_at').diff_for_humans() }}</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+
+<div id='repeater-area' data-hx-swap-oob="true">
+    {% for field in fields() %}
+    {% if field.type == "repeater" %}
+    <br>
+    <hr>
+    {% include 'admin/components/forms/Repeater.html' %}
+    {% endif %}
+    {% endfor %}
+</div>
+
+
+{% if data_model.table.relations() %}
+{% for relation_ in data_model.table.relations() %}
+{% if relation_.can_view %}
+<div id="tableCheckbox"
+     class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white border-bottom border-200 position-relative top-1 mt-5">
+
+    <div class="card-body p-0">
+        <div class="p4 code-to-copy">
+            <div class="table-list">
+                {% if get_type(relation_) == 'str' %}
+                {% set relation = {
+                "name": relation_,
+                "heading": pluralize(relation_)|replace("_", " ")|title,
+                "description": relation_,
+                "class_": relation_.title()
+                } %}
+                {% else %}
+                {% set relation = relation_ %}
+                {% endif %}
+                {% set relationship_class = get_class(singularize(relation.class_), 'admin') %}
+                {% set relationship_model = get_class(singularize(relation.model)) %}
+                <h4 class="pt-2 pb-5">{{ relation.heading }}</h4>
+                <div class="table-responsive scrollbar mb-3" id='relationship-{{ relation.name }}-table'>
+                    {% if not model_key(result_set, relation.name) %}
+                    <p class='text-center mb-0 p-5'>No data to display</p>
+                    {% else %}
+                    <table id='{{ singularize(relation.name).title() }}-table'
+                           data-hx-swap-oob="true"
+                           class="table table-sm fs--1 mb-0 overflow-hidden">
+                        <thead class="text-900">
+                        <tr>
+                            {% for field in relationship_class.get_table().__dict__() %}
+                            {% include 'admin/components/table/table-head.html' %}
+                            {% endfor %}
+                            <th>
+
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for answer in model_key(result_set, relation.name) %}
+                        {% set relation_table_fields = relationship_class.get_table().__dict__() %}
+
+
+                        <tr id="result-{{ relation.name|lower }}-{{ answer[relationship_model.get_primary_key()] }}">
+                            {% for field in relation_table_fields %}
+                            {% set fields = relation_table_fields %}
+                            {% set relationship = True %}
+                            {% set resource = relation.name %}
+                            {% set field = field %}
+                            {% set result = answer %}
+                            {% include 'admin/components/table/table-row.html' %}
+                            {% endfor %}
+                            <td class="align-middle white-space-nowrap text-end pe-0 ps-4 btn-reveal-trigger"
+                                data-hx-preserve="true"
+                                id="{{ relation.name }}-table-actions-group-{{ answer[relationship_model.get_primary_key()] }}">
+                                <button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs--2"
+                                        type="button" data-bs-toggle="dropdown" data-boundary="window"
+                                        aria-haspopup="true" aria-expanded="false"
+                                        data-bs-reference="parent">
+                                    <svg class="svg-inline--fa fa-ellipsis fs--2" aria-hidden="true"
+                                         focusable="false" data-prefix="fas" data-icon="ellipsis"
+                                         role="img"
+                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
+                                         data-fa-i2svg="">
+                                        <path fill="currentColor"
+                                              d="M120 256C120 286.9 94.93 312 64 312C33.07 312 8 286.9 8 256C8 225.1 33.07 200 64 200C94.93 200 120 225.1 120 256zM280 256C280 286.9 254.9 312 224 312C193.1 312 168 286.9 168 256C168 225.1 193.1 200 224 200C254.9 200 280 225.1 280 256zM328 256C328 225.1 353.1 200 384 200C414.9 200 440 225.1 440 256C440 286.9 414.9 312 384 312C353.1 312 328 286.9 328 256z"></path>
+                                    </svg>
+                                    <!-- <span class="fas fa-ellipsis-h fs--2"></span> Font Awesome fontawesome.com -->
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end py-2" style="">
+                                    {% set relation_table_actions = relationship_class.get_table_actions() %}
+                                    {% if relation_table_actions %}
+                                    {% for action in relation_table_actions %}
+                                    <a class="dropdown-item"
+                                       {% if not action.schema %}
+                                       href="#!"
+                                       data-hx-post="/mvlive/{{ pluralize(relation.class_) }}/{{ answer[relationship_model.get_primary_key()] }}"
+                                       data-hx-vals='{"method": "{{ action.name }}", "args": "{{ answer[relationship_model.get_primary_key()] }}", "data": "ACTION_DATA", "csrf_token": "{{ csrf_token() }}"}'
+                                       data-hx-target="#result-{{ relation_.name|lower }}-{{ answer[relationship_model.get_primary_key()] }}"
+                                       data-hx-select="#result-{{ relation_.name|lower }}-{{ answer[relationship_model.get_primary_key()] }}"
+                                       data-hx-swap="outerHTML"
+                                       {% endif %}
+                                       {% if action.schema %}
+                                       data-bs-toggle="modal"
+                                       data-bs-target="#action-{{ action.name }}-resource-{{ answer[relationship_model.get_primary_key()] }}"
+                                       {% endif %}
+                                    >
+                                        {% if action.label %}
+                                        {{ render_dynamic_html(action.label, result=answer)|safe }}{% else %}
+                                        {{ action.name }}{% endif %}
+                                    </a>
+
+                                    {% if action.schema %}
+                                    <div class="modal fade modal-md"
+                                         id="action-{{ action.name }}-resource-{{ answer[relationship_model.get_primary_key()] }}"
+                                         tabindex="-1"
+                                         data-bs-backdrop="static"
+                                         aria-hidden="true">
+                                        <div class="modal-dialog modal-{% if action.size %}{{ action.size }}{% else %}sm{% endif %}">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title"
+                                                        id="exampleModalLabel">
+                                                        {{ render_dynamic_html(action.label, result=answer)|safe }}
+                                                    </h5>
+                                                    <button class="btn p-1" type="button"
+                                                            data-bs-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span class="fas fa-times fs--1"></span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form id="action-{{ action.name }}-resource-{{ answer[relationship_model.get_primary_key()] }}-form"
+                                                          class='row'
+                                                          data-hx-post="/mvlive/{{ relation.class_ }}"
+                                                          data-hx-vals='js:{"method": "{{ action.name }}", "args": "{{ answer[relationship_model.get_primary_key()] }}",  "csrf_token": "{{ csrf_token() }}"}'
+                                                          _="on htmx:afterOnLoad call hideModal('#action-{{ action.name }}-resource-{{ answer[relationship_model.get_primary_key()] }}')"
+                                                          data-hx-target="#result-{{ relation.name|lower }}-{{ answer[relationship_model.get_primary_key()] }}"
+                                                          data-hx-select="#result-{{ relation.name|lower }}-{{ answer[relationship_model.get_primary_key()] }}"
+                                                          data-hx-swap="outerHTML"
+                                                    >
+                                                        {% for field in action.schema %}
+                                                        {% if field.type != 'repeater' %}
+                                                        {% include 'admin/components/forms/ReusableForm.html' with
+                                                        context %}
+                                                        {% endif %}
+                                                        {% endfor %}
+                                                        <div class="col-12">
+                                                            <button class="btn btn-primary float-end mt-5"
+                                                                    type="submit">
+                                                                Run Action
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                    <div class="dropdown-divider"></div>
+                                    {% endif %}
+                                    <a
+                                            class="dropdown-item" href="#!">View</a><a
+                                        class="dropdown-item"
+                                        href="/admin/{{ pluralize(relation.class_)|lower }}/{{ answer[relationship_model.get_primary_key()] }}">Edit</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item text-danger"
+                                       data-hx-get="/admin/{{ pluralize(relation.class_)|lower }}/{{ answer[relationship_model.get_primary_key()] }}/delete"
+                                       data-hx-confirm="Are you sure you want to delete this {{ singularize(relation.name)|lower }}?"
+                                       data-hx-target="#result-{{ relation.name|lower }}-{{ answer[relationship_model.get_primary_key()] }}"
+                                       data-hx-swap="outerHTML"
+                                       href="#!">Remove</a>
+                                </div>
+
+
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if edit_actions %}
+{% for action in edit_actions %}
+<mv-{{ action.view }} resource="{{ resource }}" id="{{ id }}"
+edit_action="{{ action.name }}"></mv-{{ action.view }}>
+{% endfor %}
+{% endif %}
+
+<div id="modal-containers"></div>
+
+
+{% endblock %}

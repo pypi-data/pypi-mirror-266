@@ -1,0 +1,77 @@
+<h6 class="mt-4">{{ field.label }}</h6>
+
+<form id="relationship-{{ field.relationship }}-form"
+      data-hx-target="#relationship-{{ field.relationship }}-table"
+      data-hx-post="/admin/{{ pluralize(field.name)|lower }}/create-{{ singularize(field.name)|lower }}"
+      data-hx-encoding="multipart/form-data"
+      data-hx-select="#relationship-{{ field.relationship }}-table"
+      data-hx-swap="outerHTML"
+      data-hx-swap-oob="true"
+      data-hx-indicator="#relationship-{{ field.relationship }}-loader"
+      class="card card-body mb-3 {% if field.cols %}col-lg-{{ field.cols }}{% endif %}"
+>
+    <input type="hidden" name="save-action" id="save-action" value="Save">
+    <div class="row">
+        {% set empty_res = {} %}
+        {% for repeater_field in field.schema %}
+            {% set field = repeater_field %}
+            {% include 'admin/components/forms/ReusableForm.html' %}
+        {% endfor %}
+        <div class="col-lg-12">
+            <input type="hidden" name="redirect_url" value="{{ field.redirect_url }}">
+            <p class="text-center">
+                <button type="submit" class="btn btn-primary mt-3">
+                    <div class="my-indicator" id="relationship-{{ field.relationship }}-loader">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-loader spin me-2">
+                            <line x1="12" y1="2" x2="12" y2="6"></line>
+                            <line x1="12" y1="18" x2="12" y2="22"></line>
+                            <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
+                            <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
+                            <line x1="2" y1="12" x2="6" y2="12"></line>
+                            <line x1="18" y1="12" x2="22" y2="12"></line>
+                            <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
+                            <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
+                        </svg>
+                    </div>
+                    {{ field.create_button_label }}
+                </button>
+            </p>
+        </div>
+    </div>
+</form>
+
+
+<div
+        id="relationship-{{ field.relationship }}-show-items"
+        data-hx-swap-oob="true"
+>
+    {% if field.show_items %}
+        {% for res in model_key(result_set, field.relationship) %}
+            <div class="card card-body mt-3  {% if field.cols %}col-lg-{{ field.cols }}{% endif %}">
+                <div class="row">
+                    {% for field in field.schema %}
+                        {% with value = model_key(res, field.name), field=field %}
+                            {% if field.type == 'select' %}
+                                {% include 'admin/components/forms/Select.html' %}
+                            {% elif field.type == 'file' %}
+                                {% include 'admin/components/forms/TextInput.html' %}
+                            {% elif field.type in ["text", "datalist", "date", "datetime-local", "color", "email", "hidden", "month", "number", "password", "range", "search", "tel", "time", "url", "week"] %}
+                                {% include 'admin/components/forms/TextInput.html' %}
+                            {% elif field.type == "checkbox" %}
+                                {% include 'admin/components/forms/Checkbox.html' %}
+                            {% elif field.type == "radio" %}
+                                {% include 'admin/components/forms/Radio.html' %}
+                            {% elif field.type == "toggle" %}
+                                {% include 'admin/components/forms/Toggle.html' %}
+                            {% elif field.type == "textarea" %}
+                                {% include 'admin/components/forms/Textarea.html' %}
+                            {% endif %}
+                        {% endwith %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
