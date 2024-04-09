@@ -1,0 +1,177 @@
+Metadata-Version: 2.1
+Name: easy_kite_methods
+Version: 0.0.5
+Summary: 
+Author: Vivek Patel
+Author-email: vivekkvhpatel@gmail.com
+Requires-Python: >=3.9,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: kiteconnect (>=5.0.1,<6.0.0)
+Requires-Dist: pandas (>=2.2.1,<3.0.0)
+Requires-Dist: pydantic (>=2.6.4,<3.0.0)
+Requires-Dist: python-dotenv (>=1.0.1,<2.0.0)
+Description-Content-Type: text/markdown
+
+# easy_kite_methods
+
+The `easy_kite_methods` package provides a seamless interface for interacting with the Kite Connect API for stock trading on the Zerodha platform.
+<br/>
+Kite Connect Python Client - https://kite.trade/docs/pykiteconnect/v4/ .
+<br/>
+Kite HTTP API Documentation - https://kite.trade/docs/connect/v3/.
+
+## Installation
+
+To install the `easy_kite_methods` package, run the following command:
+
+```bash
+pip install easy_kite_methods
+```
+
+## Configuration
+
+Before using the `easy_kite_methods` package, you must configure your environment with necessary API keys and secrets. Follow these steps to set up your environment:
+
+1. **Environment Variables**: Store your Kite Connect API key and secret in a `.env` file at the root of your project. This file should contain:
+
+    ```
+    KITE_API_KEY=your_api_key_here
+    KITE_API_SECRET=your_api_secret_here
+    ```
+
+## Usage
+
+Import the package using the alias `ekm` and utilize its functions for interacting with the Zerodha Kite Connect API.
+
+### Example Imports
+
+```python
+import easy_kite_methods as ekm
+```
+
+### Placing Orders
+
+-   **Buy an Intraday Normal Order**:
+
+    ```python
+    order_id = ekm.buy_intraday_normal_order(stock_name="RELIANCE", quantity=1)
+    ```
+
+-   **Sell an Intraday Normal Order**:
+
+    ```python
+    order_id = ekm.sell_intraday_normal_order(stock_name="TCS", quantity=2)
+    ```
+-   **Buy an Intraday Limit Order**:
+
+    ```python
+    order_id = ekm.buy_intraday_limit_order(stock_name="RELIANCE", quantity=1,price=2900)
+    ```
+
+-   **Sell an Intraday Limit Order**:
+
+    ```python
+    order_id = ekm.sell_intraday_limit_order(stock_name="TCS", quantity=2,price=2300)
+    ```
+-   **Place Stop Loss Market Order**:
+
+    ```python
+    order_id = ekm.place_slm_order(stock_name="INFY", quantity=10, order_type="BUY", price=1500)
+    ```
+
+### Modifying Orders 
+
+-   **Varieties can be [REGULAR,BO,CO,AMO]r**:
+
+    ```python
+    ekm.modify_order(variety="REGULAR", orderId="your_order_id_here", quantity=2, price=3550)
+    ```
+
+    ```python
+    ekm.modify_order_quantity(variety="REGULAR", order_id="order123", quantity=15)
+    ```
+
+    ```python
+    ekm.modify_order_price(variety="AMO", order_id="order123", price=1520)
+    ```
+
+    ```python
+    ekm.modify_order_to_buy(variety="CO", order_id="order123")
+    ```
+
+    ```python
+    ekm.modify_order_to_sell(variety="BO", order_id="order123")
+    ```
+
+### Fetching Account Details
+
+-   **Fetch Holdings**:
+
+    ```python
+    holdings = ekm.get_holdings()
+    ```
+
+-   **Fetch Positions**:
+
+    ```python
+    positions = ekm.get_positions()
+    ```
+
+-   **Cancel or Exit Orders**:
+
+    ```python
+    ekm.cancel_order(order_id="order123")
+    ```
+
+    ```python
+    ekm.exit_orders(order_id="order123")
+    ```
+### Additional Useful APIS
+
+-   **Get Status and Average Price  [COMPLETED,REJECTED] as an example **:
+
+    ```python
+    order_status = ekm.get_status(order_id="order123")
+     ```
+
+    ```python
+    average_price,status = ekm.get_average_price_and_status(order_id="order123")
+     ```
+
+    ```python
+    order_history = ekm.get_order_history(order_id="order123")
+     ```
+    
+### Fetching Live Data 
+
+
+-   **Get Stock Price**:
+
+    ```python
+    stock_price = ekm.get_stock_price(name="RELIANCE")
+    ```
+
+-   **Get Stock Instrument Token**:
+
+    ```python
+    token = ekm.get_stock_instrument_token(stock_name="RELIANCE")
+    ```
+
+-   **Get FNO Instrument Price**:
+
+    ```python
+    stock_price = ekm.get_fno_price(name="BANKNIFTY24APRFUT")
+    ```
+
+-   **Get FNO Instrument Token**:
+
+    ```python
+    token = ekm.get_fno_instrument_token(stock_name="BANKNIFTY24APRFUT")
+    ```
+
+
+
