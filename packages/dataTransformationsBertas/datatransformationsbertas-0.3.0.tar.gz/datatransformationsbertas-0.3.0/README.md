@@ -1,0 +1,49 @@
+# Data Tranformation package
+https://pypi.org/project/dataTransformationsBertas/
+
+## This is a data transformation package to automate daily data scientist tasks.
+#### The package contains: Transpose, Time Series Windowing and Cross-Correlation funcitons. 
+
+# To use them download the package
+`pip install dataTransformationsBertas`
+
+## And then use it in your python.py file:
+`from datatransformationsbertas import *` - to import all functions. 
+## If you need them seperately: 
+`from datatransformationsbertas import transpose2d`
+`from datatransformationsbertas import window1d`
+`from datatransformationsbertas import convolution2d`
+
+## Example 
+
+```python 
+from datatransformationsbertas import transpose2d
+
+test = transpose2d ([
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+])
+print (test)
+```
+```python 
+from datatransformationsbertas import window1d
+input_array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+size = 3
+shift = 2
+stride = 1
+print(window1d(input_array, size, shift, stride))
+```
+```python 
+from datatransformationsbertas import convolution2d
+import numpy as np
+input_matrix = np.array([[1, 2, 3],
+                         [4, 5, 6],
+                         [7, 8, 9]])
+
+kernel = np.array([[1, 0, 1],
+                   [0, 1, 0],
+                   [1, 0, 1]])
+
+print(convolution2d(input_matrix, kernel))
+```
