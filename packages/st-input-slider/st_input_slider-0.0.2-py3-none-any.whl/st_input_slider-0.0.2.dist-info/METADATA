@@ -1,0 +1,50 @@
+Metadata-Version: 2.1
+Name: st-input-slider
+Version: 0.0.2
+Summary: A custom Streamlit component that combines a slider with an input box for more precise value selection
+Home-page: 
+Author: Brayan Munoz
+Author-email: balexander.munoz@udea.edu.co
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: streamlit >=0.63
+Provides-Extra: devel
+Requires-Dist: wheel ; extra == 'devel'
+Requires-Dist: pytest ==7.4.0 ; extra == 'devel'
+Requires-Dist: playwright ==1.39.0 ; extra == 'devel'
+Requires-Dist: requests ==2.31.0 ; extra == 'devel'
+Requires-Dist: pytest-playwright-snapshot ==1.0 ; extra == 'devel'
+Requires-Dist: pytest-rerunfailures ==12.0 ; extra == 'devel'
+
+# streamlit-input-slider
+A custom Streamlit component that combines a slider with an input box for more precise value selection
+
+## Installation instructions
+
+```sh
+pip install st-input-slider
+```
+
+## Usage instructions
+
+```python
+import streamlit as st
+from st_input_slider import st_input_slider
+
+st.title("Slider + Input Example!")
+options = {
+    "color": "#9E9A35",
+    "inputWidth": "58px",
+    "disableUnderline": True
+}
+slider_value = st_input_slider(
+    label="A custom slider", min_value=-100, max_value=200, value=50, step=0.1, options=options)
+st.markdown("Value: %s" % (slider_value))
+
+with st.sidebar:
+    st.markdown("This is another slider with all default options:")
+    value = st_input_slider()
+    value
+
+```
