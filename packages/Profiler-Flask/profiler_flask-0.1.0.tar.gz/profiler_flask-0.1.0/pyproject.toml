@@ -1,0 +1,40 @@
+[project]
+name = "Profiler-Flask"
+version = "0.1.0"
+description = "Monitor and analyze flask endpoint and request performance."
+authors = [
+    { name = "Dumbliidore", email = "2361018131@qq.com" },
+]
+dependencies = [
+    "flask>=3.0.2",
+    "flask-httpauth>=4.8.0",
+]
+requires-python = ">=3.11"
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: MIT License",
+]
+
+[project.license]
+text = "MIT"
+
+[project.urls]
+Homepage = "https://pypi.org/project/profiler-flask"
+"Source Code" = "https://github.com/Dumbliidore/profiler-flask"
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "pytest>=8.1.1",
+    "pytailwindcss>=0.2.0",
+    "python-dotenv>=1.0.1",
+]
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"

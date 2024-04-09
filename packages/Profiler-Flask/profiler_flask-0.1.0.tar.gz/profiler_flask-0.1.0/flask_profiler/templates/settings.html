@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% include 'head.html' %}
+
+  <body class="text-[18px] m-0">
+    {% include 'header.html' %}
+
+    <!-- <div class="container mx-20 mt-[20px]"> -->
+    <div class="container w-[80%] mx-auto my-[20px] border rounded">
+      <div
+        class="flex items-center justify-between bg-slate-100 text-black px-[25px] py-[25px]"
+      >
+        <div>
+          <h3 class="font-bold">Settings</h3>
+        </div>
+      </div>
+      <div class="p-5">
+        <button
+          class="inline-flex items-center px-3 py-2 mr-[10px] bg-[#5bc0de] transition ease-in-out delay-75 hover:bg-[#5bc0de] h-8 min-h-8 mt-[10px] text-white font-semibold text-sm rounded-md hover:-translate-y-1 hover:scale-110"
+          hx-get="{{ url_for('profiler.download') }}"
+          hx-trigger="click"
+          hx-swap="none"
+          hx-boost="false"
+          mimetype="application/json"
+          download
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            class="h-5 w-5 mr-2"
+          >
+            <g stroke-width="0" id="SVGRepo_bgCarrier"></g>
+            <g
+              stroke-linejoin="round"
+              stroke-linecap="round"
+              id="SVGRepo_tracerCarrier"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              <g id="Interface / Download">
+                <path
+                  stroke-linejoin="round"
+                  stroke-linecap="round"
+                  stroke-width="2"
+                  stroke="#f1f1f1"
+                  d="M6 21H18M12 3V17M12 17L17 12M12 17L7 12"
+                  id="Vector"
+                ></path>
+              </g>
+            </g>
+          </svg>
+
+          Dump all data
+        </button>
+        <button
+          class="inline-flex items-center px-3 py-2 bg-red-600 transition ease-in-out delay-75 hover:bg-red-700 h-8 min-h-8 mt-[10px] text-white font-semibold text-sm rounded-md hover:-translate-y-1 hover:scale-110"
+          hx-get="{{ url_for('profiler.delete') }}"
+          hx-trigger="click"
+          hx-target="#settings-info"
+          hx-swap="innerHTML"
+        >
+          <svg
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            fill="none"
+            class="h-5 w-5 mr-2"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+              stroke-width="2"
+              stroke-linejoin="round"
+              stroke-linecap="round"
+            ></path>
+          </svg>
+
+          Delete all data
+        </button>
+      </div>
+      <div id="settings-info"></div>
+    </div>
+  </body>
+</html>

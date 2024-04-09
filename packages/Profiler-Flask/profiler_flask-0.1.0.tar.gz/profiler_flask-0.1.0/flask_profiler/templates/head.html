@@ -1,0 +1,36 @@
+<meta charset="utf-8" />
+<title>profiler-flask</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<script src="{{ url_for('profiler.static', filename='js/htmx.min.js') }}"></script>
+<script src="{{ url_for('profiler.static', filename='js/jquery.js') }}"></script>
+<script src="{{ url_for('profiler.static', filename='js/dataTable.js') }}"></script>
+<!-- <script src="{{ url_for('profiler.static', filename='js/tailwindcss.js' ) }}"></script> -->
+<!-- Include the ECharts file you just downloaded -->
+<script src="{{ url_for('profiler.static', filename='js/echarts.min.js' ) }}"></script>
+<style>
+  [x-cloak] {
+    display: none;
+  }
+</style>
+<!-- Include the Alpine library on your page -->
+<script
+  defer
+  src="{{ url_for('profiler.static', filename='js/alpine.js') }}"
+></script>
+<link
+  href="{{ url_for('profiler.static', filename='css/daisyui.css' ) }}"
+  rel="stylesheet"
+  type="text/css"
+/>
+<link
+  href="{{ url_for('profiler.static', filename='css/tailwindcss.css' ) }}"
+  rel="stylesheet"
+  type="text/css"
+/>
+<link
+  href="{{ url_for('profiler.static', filename='css/dataTable.css' ) }}"
+  rel="stylesheet"
+  type="text/css"
+/>

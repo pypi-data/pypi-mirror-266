@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% include 'head.html' %}
+</head>
+
+<body class="text-[18px] m-0">
+  {% include 'header.html' %}
+
+  <!-- <div class="container mx-20 mt-[20px]"> -->
+  <div class="container w-[80%] mx-auto my-[20px] border rounded">
+    <div class="flex items-center justify-between bg-slate-100 text-black px-[25px] py-[25px]">
+      <div>
+        <h3 class="font-bold">Filtering</h3>
+      </div>
+    </div>
+
+    <div class="overflow-x-auto bg-[#fff] p-[20px]" x-data="{ info: '' }">
+      <table id="example" class="font-sans-serif text-[14px] table !border-collapse">
+        <!-- <table id="example" class="font-sans-serif table text-center"> -->
+        <!-- head -->
+        <thead class="text-slate-950">
+          <tr>
+            <th>Method</th>
+            <th>Name</th>
+            <th>Elapsed</th>
+            <th>StartedAt</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for each in data %}
+          <tr class="hover" @click="my_modal_2.showModal(); info = {{ each.context|string|safe }}">
+            <td><span class="bg-[#4BB74B] text-[#fff] px-[4px] py-[2px] rounded-[3px]">{{ each.method }}<span></td>
+            <td>{{ each.name }}</td>
+            <td>{{ each.elapsed }}</td>
+            <td>{{ each.startedAt }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <!-- 信息展示 -->
+      <dialog id="my_modal_2" class="modal">
+        <div class="modal-box min-w-[800px]">
+          {
+          <div class="font-[monospace] text-[1em] ml-[1.5em]" x-data="{ isOpen: true }">
+            <ul class="list-none relative">
+              <li>
+                <span class="font-bold">args: </span>
+                <span x-text="info.args"></span>,
+              <li>
+              <li>
+                <span class="font-bold">body: </span>
+                <span class="text-green-600">
+                  <span class="w-0">"<span x-text="info.body"></span>"</span>
+                </span>,
+              <li>
+              <li>
+                <span class="font-bold">form: </span>
+                <span x-text="info.form"></span>,
+              <li>
+              <li>
+                <span class="font-bold">func: </span>
+                <span class="text-green-600">
+                  <span class="w-0">"<span x-text="info.func"></span>"</span>
+                </span>,
+              <li>
+              <li>
+                <div class="collapser absolute left-[-0.75em] cursor-pointer" x-show="isOpen" @click="isOpen = false">-
+                </div>
+                <div class="collapser absolute left-[-0.75em] cursor-pointer" x-show="!isOpen" @click="isOpen = true">+
+                </div>
+                <span class="font-bold">headers: </span>{
+                <span class="ellipsis" x-show="!isOpen"> … </span>
+                <ul class="ml-[2em]" x-show="isOpen">
+                  <li>
+                    <span class="font-bold">Accept: </span>
+                    <span class="text-green-600">
+                      <span class="w-0">"<span x-text="info.headers.Accept"></span>"</span>
+                    </span>,
+                  <li>
+                  <li>
+                    <span class="font-bold">Accept-Encoding: </span>
+                    <span class="text-green-600">
+                      <span class="w-0">"<span x-text="info.headers['Accept-Encoding']"></span>"</span>
+                    </span>,
+                  <li>
+                  <li>
+                    <span class="font-bold">Accept-Language: </span>
+                    <span class="text-green-600">
+                      <span class="w-0">"<span x-text="info.headers['Accept-Language']"></span>"</span>
+                    </span>,
+                  <li>
+                  <li>
+                    <span class="font-bold">Connection: </span>
+                    <span class="text-green-600">
+                      <span class="w-0">"<span x-text="info.headers.Connection"></span>"</span>
+                    </span>,
+                  <li>
+                  <li>
+                    <span class="font-bold">Host: </span>
+                    <span class="text-green-600">
+                      <span class="w-0">"<span x-text="info.headers.Host"></span>"</span>
+                    </span>,
+                  <li>
+                  <li>
+                    <span class="font-bold">User-Agent: </span>
+                    <span class="text-green-600">
+                      <span class="w-0">"<span x-text="info.headers['User-Agent']"></span>"</span>
+                    </span>,
+                  <li>
+                  <li>
+                    <span class="font-bold">Referer: </span>
+                    <a class="text-[#428bca] hover:text-[#2a6496] hover:underline" :href="info.headers.Referer"
+                      x-text="info.headers.Referer" x-show="info.headers.Referer !== ''"></a>
+                    <a class="text-green-600" href="#" x-show="info.headers.Referer === ''">""</a>
+                    ,
+                  </li>
+                </ul>
+                }
+              </li>
+              <li>
+                <span class="font-bold">ip: </span>
+                <span class="text-green-600">
+                  <span class="w-0">"<span x-text="info.ip"></span>"</span>
+                </span>,
+              <li>
+              <li>
+                <span class="font-bold">url: </span>
+                <a class="text-[#428bca] hover:text-[#2a6496] hover:underline" :href="info.url" x-text="info.url"
+                  x-show="info.url !== ''"></a>
+                <a class="text-green-600" href="#" x-show="info.url === ''">""</a>
+              <li>
+            </ul>
+          </div>
+          }
+        </div>
+      </dialog>
+    </div>
+  </div>
+  <script>
+    $("#example").DataTable(
+      // 国际化
+      {
+        columnDefs: [
+          { orderable: false, targets: [0, 1] },
+          { className: "!text-center", targets: "_all" },
+        ],
+        order: [],
+        lengthChange: true,
+        info: false,
+        searching: true,
+        paging: true,
+        // TODO: 设置文本尺寸
+        // language: {
+        //   sProcessing: "处理中...",
+        //   sLengthMenu: "显示 _MENU_ 项结果",
+        //   sZeroRecords: "没有匹配结果",
+        //   sInfo: "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+        //   sInfoEmpty: "显示第 0 至 0 项结果，共 0 项",
+        //   sInfoFiltered: "(由 _MAX_ 项结果过滤)",
+        //   sInfoPostFix: "",
+        //   sSearch: "搜索:",
+        //   sUrl: "",
+        //   sEmptyTable: "表中数据为空",
+        //   sLoadingRecords: "载入中...",
+        //   sInfoThousands: ",",
+        //   oPaginate: {
+        //     sFirst: "首页",
+        //     sPrevious: "上页",
+        //     sNext: "下页",
+        //     sLast: "末页",
+        //   },
+        //   oAria: {
+        //     sSortAscending: ": 以升序排列此列",
+        //     sSortDescending: ": 以降序排列此列",
+        //   },
+        // },
+      }
+    );
+  </script>
+</body>
+
+</html>
