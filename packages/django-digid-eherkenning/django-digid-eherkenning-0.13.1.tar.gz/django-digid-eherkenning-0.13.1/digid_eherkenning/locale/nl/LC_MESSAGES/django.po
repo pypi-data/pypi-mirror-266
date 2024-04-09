@@ -1,0 +1,571 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-10-23 10:00+0000\n"
+"PO-Revision-Date: 2020-06-23 16:55+0200\n"
+"Last-Translator: Sergei Maertens <sergei@maykinmedia.nl>\n"
+"Language-Team: Maykin Media <info@maykinmedia.nl>\n"
+"Language: NL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: admin.py:24 admin.py:89
+msgid "X.509 Certificate"
+msgstr "X.509 Certificaat"
+
+#: admin.py:33 admin.py:98
+msgid "Identity provider"
+msgstr "Identity provider"
+
+#: admin.py:43 admin.py:108
+msgid "SAML configuration"
+msgstr "SAML-configuratie"
+
+#: admin.py:57 admin.py:122
+msgid "Service details"
+msgstr "Servicegegevens"
+
+#: admin.py:69 admin.py:159
+msgid "Organization details"
+msgstr "Organisatiegegevens"
+
+#: admin.py:136
+msgid "eHerkenning"
+msgstr "eHerkenning"
+
+#: admin.py:147
+msgid "eIDAS"
+msgstr "eIDAS"
+
+#: apps.py:7
+msgid "DigiD, eHerkenning & eIDAS"
+msgstr "DigiD, eHerkenning & eIDAS"
+
+#: backends.py:25
+#, python-format
+msgid "The %(service)s login from %(ip)s did not succeed or was cancelled."
+msgstr "De %(service)s-login van %(ip)s is niet geslaagd of was geannuleerd."
+
+# python-format
+#: backends.py:28
+#, python-format
+msgid "A technical error occurred from %(ip)s during %(service)s login."
+msgstr ""
+"Er is een technische fout opgetreden tijdens de %(service)s-login vanaf "
+"%(ip)s."
+
+# python-format
+#: backends.py:31
+#, python-format
+msgid "User %(user)s%(user_info)s from %(ip)s logged in using %(service)s"
+msgstr ""
+"Gebruiker %(user)s%(user_info)s is met %(service)s ingelogd vanaf %(ip)s."
+
+#: backends.py:89
+msgid " (new account)"
+msgstr " (nieuw account)"
+
+#: backends.py:104 mock/backends.py:19
+msgid "Login failed due to no BSN being returned by DigiD."
+msgstr "Login mislukt doordat er geen BSN is teruggegeven door DigiD."
+
+#: choices.py:29
+msgid "Non existent (1)"
+msgstr "Non existent (1)"
+
+#: choices.py:30
+msgid "Low (2)"
+msgstr "Low (2)"
+
+#: choices.py:31
+msgid "Low (2+)"
+msgstr "Low (2+)"
+
+#: choices.py:32
+msgid "Substantial (3)"
+msgstr "Substantial (3)"
+
+#: choices.py:33
+msgid "High (4)"
+msgstr "High (4)"
+
+#: choices.py:40
+msgid "DigiD Basis"
+msgstr ""
+
+#: choices.py:44
+msgid "DigiD Midden"
+msgstr ""
+
+#: choices.py:48
+msgid "DigiD Substantieel"
+msgstr ""
+
+#: choices.py:52
+msgid "DigiD Hoog"
+msgstr ""
+
+#: mock/backends.py:20
+msgid "Login failed due to no BSN having more then 9 digits."
+msgstr "Login mislukt doordat er geen BSN gevonden is met 9 cijfers."
+
+#: mock/backends.py:21
+msgid "Login failed due to no BSN not being numerical."
+msgstr "Login mislukt doordat er geen numeriek BSN gevonden is."
+
+#: mock/idp/forms.py:11
+msgid "DigiD gebruikersnaam"
+msgstr ""
+
+#: mock/idp/forms.py:15
+msgid "Wachtwoord"
+msgstr ""
+
+#: mock/idp/forms.py:18
+msgid "Onthoud mijn DigiD gebruikersnaam"
+msgstr ""
+
+#: mock/views/digid.py:92 views/digid.py:89
+msgid ""
+"An error occurred in the communication with DigiD. Please try again later. "
+"If this error persists, please check the website https://www.digid.nl for "
+"the latest information."
+msgstr ""
+"Er is een fout opgetreden in de communicatie met DigiD. Probeert u het later "
+"nogmaals. Indien deze fout blijft aanhouden, kijk dan op de website https://"
+"www.digid.nl voor de laatste informatie."
+
+#: models/base.py:27
+msgid "key pair"
+msgstr "sleutelpaar"
+
+#: models/base.py:29
+msgid ""
+"The private key and public certificate pair to use during the authentication "
+"flow."
+msgstr "De private-key en publieke certificaat voor de authenticatie-flow."
+
+#: models/base.py:34
+msgid "identity provider metadata"
+msgstr "metadata identity provider"
+
+#: models/base.py:37
+msgid ""
+"The metadata file of the identity provider. This is auto populated from the "
+"configured source URL."
+msgstr ""
+"Het bestand met metadata van de identity provider. Deze wordt automatisch opgehaald "
+"via de ingestelde metadata-URL."
+
+#: models/base.py:42
+msgid "identity provider service entity ID"
+msgstr "identity provider service entity ID"
+
+#: models/base.py:46
+msgid ""
+"Example value: 'https://was-preprod1.digid.nl/saml/idp/metadata'. Note that "
+"this must match the 'entityID' attribute on the 'md:EntityDescriptor' node "
+"found in the Identity Provider's metadata. This is auto populated from the "
+"configured source URL."
+msgstr ""
+"Bijvoorbeeld: 'https://was-preprod1.digid.nl/saml/idp/metadata'. Merk op dat "
+"dit moet overeenkomen met het 'entityID'-attribuut op het 'md-"
+"EntityDescriptor'-element in de metadata van de identity provider. Dit wordt "
+"automatisch opgehaald via de ingestelde metadata-URL."
+
+#: models/base.py:53
+msgid "metadata file(XML) URL"
+msgstr "(XML) metadata-URL"
+
+#: models/base.py:57
+msgid "The URL-source where the XML metadata file can be retrieved from."
+msgstr "De URL waar het XML metadata-bestand kan gedownload worden."
+
+#: models/base.py:61
+msgid "want assertions signed"
+msgstr "onderteken assertions"
+
+#: models/base.py:64
+msgid ""
+"If True, the XML assertions need to be signed, otherwise the whole response "
+"needs to be signed."
+msgstr ""
+"Indien aangevinkt, dan moeten de XML-assertions ondertekend zijn. In het "
+"andere geval moet de hele response ondertekend zijn."
+
+#: models/base.py:70
+msgid "want assertions encrypted"
+msgstr "versleutel assertions"
+
+#: models/base.py:72
+msgid "If True the XML assertions need to be encrypted."
+msgstr "Indien aangevinkt, dan moeten de XML-assertions versleuteld zijn."
+
+#: models/base.py:76
+msgid "resolve artifact binding content type"
+msgstr "Content-Type 'resolve artifact binding'"
+
+#: models/base.py:81
+msgid ""
+"'application/soap+xml' is considered legacy and modern brokers typically "
+"expect 'text/xml'."
+msgstr ""
+"'application/soap+xml' wordt als 'legacy' beschouwd. Moderne brokers "
+"verwachten typisch 'text/xml'."
+
+#: models/base.py:86
+msgid "key passphrase"
+msgstr "wachtwoordzin private-key"
+
+#: models/base.py:88
+msgid "Passphrase for the private key used by the SOAP client."
+msgstr "Wachtwoord voor de private-key voor de authenticatie-flow."
+
+#: models/base.py:92
+msgid "signature algorithm"
+msgstr "signature algorithm"
+
+#: models/base.py:97
+msgid ""
+"Signature algorithm. Note that DSA_SHA1 and RSA_SHA1 are deprecated, but "
+"RSA_SHA1 is still the default value in the SAMLv2 standard. Warning: there "
+"are known issues with single-logout functionality if using anything other "
+"than SHA1 due to some hardcoded algorithm."
+msgstr ""
+"Ondertekenalgoritme. Merk op dat DSA_SHA1 en RSA_SHA1 deprecated zijn, maar "
+"RSA_SHA1 is nog steeds de default-waarde ind e SAMLv2-standaard. Opgelet: er "
+"zijn bekende problemen met de single-logoutfunctionaliteit indien je een "
+"ander algoritme dan SHA1 gebruikt (door hardcoded algoritmes)."
+
+#: models/base.py:105
+msgid "digest algorithm"
+msgstr "digest algorithm"
+
+#: models/base.py:110
+msgid ""
+"Digest algorithm. Note that SHA1 is deprecated, but still the default value "
+"in the SAMLv2 standard. Warning: there are known issues with single-logout "
+"functionality if using anything other than SHA1 due to some hardcoded "
+"algorithm."
+msgstr ""
+
+#: models/base.py:118
+msgid "entity ID"
+msgstr "entity ID"
+
+#: models/base.py:118
+msgid "Service provider entity ID."
+msgstr "Service provider entity ID."
+
+#: models/base.py:121
+msgid "base URL"
+msgstr "Basis-URL"
+
+#: models/base.py:122
+msgid "Base URL of the application, without trailing slash."
+msgstr "De basis-URL van de applicatie, zonder slash op het eind."
+
+#: models/base.py:126
+msgid "service name"
+msgstr "servicenaam"
+
+#: models/base.py:127
+msgid "Name of the service you are providing."
+msgstr "Naam van de service die je aanbiedt."
+
+#: models/base.py:131
+msgid "service description"
+msgstr "Service-omschrijving"
+
+#: models/base.py:132
+msgid "A description of the service you are providing."
+msgstr "Een beschrijving van de service die je aanbiedt."
+
+#: models/base.py:136
+msgid "technical contact: phone number"
+msgstr "technisch contactpersoon: telefoonnummer"
+
+#: models/base.py:139
+msgid ""
+"Telephone number of the technical person responsible for this DigiD/"
+"eHerkenning/eIDAS setup. For it to show up in the metata, you should also "
+"specify the email address."
+msgstr ""
+"Telefoonnummer van de technische contactpersoon voor deze DigiD/eHerkenning/"
+"eIDAS-installatie. Je moet ook het e-mailadres opgeven voor dit in de "
+"metadata beschikbaar is."
+
+#: models/base.py:146
+msgid "technical contact: email"
+msgstr "technisch contactpersoon: e-mailadres"
+
+#: models/base.py:149
+msgid ""
+"Email address of the technical person responsible for this DigiD/eHerkenning/"
+"eIDAS setup. For it to show up in the metadata, you should also specify the "
+"phone number."
+msgstr ""
+"E-mailadres van de technische contactpersoon voor deze DigiD/eHerkenning/"
+"eIDAS-installatie. Je moet ook het telefoonnummer opgeven voor dit in de "
+"metadata beschikbaar is."
+
+#: models/base.py:156
+msgid "organization URL"
+msgstr "organisatie-URL"
+
+#: models/base.py:159
+msgid ""
+"URL of the organization providing the service for which DigiD/eHerkenning/"
+"eIDAS login is configured. For it to show up in the metadata, you should "
+"also specify the organization name."
+msgstr ""
+"URL van de organisatie die de service aanbiedt waarvoor DigiD/eHerkenning/"
+"eIDAS-authenticatie ingericht is. Je moet ook de organisatienaam opgeven "
+"voor dit in de metadata beschikbaar is."
+
+#: models/base.py:166
+msgid "organization name"
+msgstr "organisatienaam"
+
+#: models/base.py:169
+msgid ""
+"URL of the organization providing the service for which DigiD/eHerkenning/"
+"eIDAS login is configured. For it to show up in the metadata, you should "
+"also specify the organization URL."
+msgstr ""
+"Naam van de organisatie die de service aanbiedt waarvoor DigiD/eHerkenning/"
+"eIDAS-authenticatie ingericht is. Je moet ook de URL opgeven voor dit in de "
+"metadata beschikbaar is."
+
+#: models/base.py:211
+#, python-brace-format
+msgid "Failed to parse the metadata, got error: {err}"
+msgstr "Kon de metadata niet verwerken. De fout is: {err}"
+
+#: models/base.py:217
+msgid ""
+"Could not find any identity provider information in the metadata at the "
+"provided URL."
+msgstr ""
+
+#: models/base.py:246
+msgid "You must select a certificate"
+msgstr "Je moet een certificaat selecteren"
+
+#: models/digid.py:20 models/digid.py:23
+msgid "Attribute consuming service index"
+msgstr "Attribute consuming service index"
+
+#: models/digid.py:27 models/eherkenning.py:28 models/eherkenning.py:60
+msgid "requested attributes"
+msgstr "gewenste attributen"
+
+#: models/digid.py:30
+msgid ""
+"A list of strings (or objects) with the requested attributes, e.g. "
+"'[\"bsn\"]'"
+msgstr ""
+"Een lijst van strings (of objecten) met de gewenste attributen, bijvoorbeeld "
+"'[\"bsn\"]'"
+
+#: models/digid.py:34
+msgid "Single logout"
+msgstr "Single logout"
+
+#: models/digid.py:36
+msgid "If enabled, Single Logout is supported"
+msgstr "Single Logout is beschikbaar indien ingeschakeld"
+
+#: models/digid.py:40
+msgid "Digid configuration"
+msgstr "DigiD-configuratie"
+
+#: models/eherkenning.py:14
+msgid "LoA"
+msgstr "LoA"
+
+#: models/eherkenning.py:17
+msgid "Level of Assurance (LoA) to use for all the services."
+msgstr "Betrouwbaarheidsniveau (LoA) voor alle services."
+
+#: models/eherkenning.py:21
+msgid "eHerkenning attribute consuming service index"
+msgstr "eHerkenning attribute consuming service index"
+
+#: models/eherkenning.py:24
+msgid "Attribute consuming service index for the eHerkenning service"
+msgstr "Attribute consuming service index voor de eHerkenningservice"
+
+#: models/eherkenning.py:31 models/eherkenning.py:63
+msgid ""
+"A list of additional requested attributes. A single requested attribute can "
+"be a string (the name of the attribute) or an object with keys 'name' and "
+"'required', where 'name' is a string and 'required' a boolean'."
+msgstr ""
+"Een lijst van extra gewenste attributen. Eén enkel gewenst attribuut kan een "
+"string (de naam van het attribuut) zijn of een object met de sleutels 'name' "
+"en 'required', waarbij 'name' een string is en 'required' een boolean."
+
+#: models/eherkenning.py:37
+msgid "eHerkenning service UUID"
+msgstr "UUID eHerkenningservice"
+
+#: models/eherkenning.py:40
+msgid ""
+"UUID of the eHerkenning service. Once entered into catalogues, changing the "
+"value is a manual process."
+msgstr ""
+"UUID van de eHerkenningservice. Eenmaal dit in catalogi opgenomen is kan de "
+"waarde enkel via een handmatig proces gewijzigd worden."
+
+#: models/eherkenning.py:45
+msgid "eHerkenning service instance UUID"
+msgstr "UUID eHerkenningservice instance"
+
+#: models/eherkenning.py:48
+msgid ""
+"UUID of the eHerkenning service instance. Once entered into catalogues, "
+"changing the value is a manual process."
+msgstr ""
+"UUID van de eHerkenningservice-instantie. Eenmaal dit in catalogi opgenomen "
+"is kan de waarde enkel via een handmatig proces gewijzigd worden."
+
+#: models/eherkenning.py:53
+msgid "eIDAS attribute consuming service index"
+msgstr "eIDAS attribute consuming service index"
+
+#: models/eherkenning.py:56
+msgid "Attribute consuming service index for the eIDAS service"
+msgstr "Attribute consuming service index voor de eIDAS-service"
+
+#: models/eherkenning.py:69
+msgid "eIDAS service UUID"
+msgstr "UUID eIDAS-service"
+
+#: models/eherkenning.py:72
+msgid ""
+"UUID of the eIDAS service. Once entered into catalogues, changing the value "
+"is a manual process."
+msgstr ""
+"UUID van de eIDAS-service. Eenmaal dit in catalogi opgenomen is kan de "
+"waarde enkel via een handmatig proces gewijzigd worden."
+
+#: models/eherkenning.py:77
+msgid "eIDAS service instance UUID"
+msgstr "UUID eIDAS-service instance"
+
+#: models/eherkenning.py:80
+msgid ""
+"UUID of the eIDAS service instance. Once entered into catalogues, changing "
+"the value is a manual process."
+msgstr ""
+"UUID van de eIDAS-service-instantie. Eenmaal dit in catalogi opgenomen is "
+"kan de waarde enkel via een handmatig proces gewijzigd worden."
+
+#: models/eherkenning.py:85
+msgid "OIN"
+msgstr "OIN"
+
+#: models/eherkenning.py:86
+msgid "The OIN of the company providing the service."
+msgstr "De OIN van het bedrijf dat de service aanbiedt."
+
+#: models/eherkenning.py:91
+msgid "no eIDAS"
+msgstr "zonder eIDAS"
+
+#: models/eherkenning.py:95
+msgid ""
+"If True, then the service catalogue will contain only the eHerkenning "
+"service."
+msgstr ""
+"Indien aangevinkt, dan zal de dienstcatalogus enkel de eHerkenningservice "
+"bevatten."
+
+#: models/eherkenning.py:99
+msgid "privacy policy"
+msgstr "privacybeleid"
+
+#: models/eherkenning.py:101
+msgid ""
+"The URL where the privacy policy from the organization providing the service "
+"can be found."
+msgstr ""
+"De URL waar het privacybeleid van de service-aanbieder (organisatie) "
+"beschreven staat."
+
+#: models/eherkenning.py:107
+msgid "broker ID"
+msgstr "makelaar-ID"
+
+#: models/eherkenning.py:108
+msgid "OIN of the broker used to set up eHerkenning/eIDAS."
+msgstr "OIN van de makelaar waarmee eHerkenning/eIDAS ingericht is."
+
+#: models/eherkenning.py:113
+msgid "service language"
+msgstr "servicetaal"
+
+#: models/eherkenning.py:116
+msgid "Metadata for eHerkenning/eidas will contain this language key"
+msgstr "eHerkenning/eIDAS-metadata zal deze taal bevatten"
+
+#: models/eherkenning.py:120
+msgid "Eherkenning/eIDAS configuration"
+msgstr "eHerkenning/eIDAS-configuratie"
+
+#: templates/admin/digid_eherkenning/digidconfiguration/change_form.html:7
+#: templates/admin/digid_eherkenning/eherkenningconfiguration/change_form.html:6
+msgid "View SAML metadata (XML)"
+msgstr "SAML metadata inzien (XML)"
+
+#: templates/admin/digid_eherkenning/eherkenningconfiguration/change_form.html:10
+msgid "View service catalogue metadata (XML)"
+msgstr "Dienstcatalogus inzien (XML)"
+
+#: validators.py:9
+msgid "A valid OIN consists of 20 digits."
+msgstr "Een geldig OIN moet uit 20 cijfers bestaan."
+
+#: validators.py:14
+msgid "Expected a numerical value."
+msgstr "De waarde moet numeriek zijn."
+
+#: validators.py:60
+#, python-format
+msgid "BSN should have %(size)i characters."
+msgstr "Een BSN bestaat uit %(size)i getallen."
+
+#: validators.py:61
+msgid "Invalid BSN."
+msgstr "Ongeldig BSN."
+
+#: views/digid.py:93
+msgid "You have cancelled logging in with DigiD."
+msgstr "U heeft het inloggen met DigiD geannuleerd."
+
+#: views/digid.py:145
+msgid "You are not authenticated with Digid"
+msgstr "U bent niet ingelogd met DigiD."
+
+#: views/eherkenning.py:103
+msgid "No RSIN returned by eHerkenning. Login to eHerkenning did not succeed."
+msgstr ""
+"eHerkenning gaf geen RSIN terug. Het inloggen moet eHerkenning is niet "
+"gelukt."
+
+#: views/eherkenning.py:108 views/eherkenning.py:113
+msgid "Login to eHerkenning did not succeed. Please try again."
+msgstr "eHerkenning-login mislukt. Probeer het nogmaals"
+
+#: views/metadata.py:51
+msgid ""
+"Something went wrong while generating the metadata. Please get in touch with "
+"your technical contact person and inform them the configuration is invalid."
+msgstr ""
+"Er ging iets fout bij het genereren van de metadata. Neem a.u.b. contact op "
+"met uw technisch contactpersoon en informeer hen dat de configuratie "
+"ongeldig is."
