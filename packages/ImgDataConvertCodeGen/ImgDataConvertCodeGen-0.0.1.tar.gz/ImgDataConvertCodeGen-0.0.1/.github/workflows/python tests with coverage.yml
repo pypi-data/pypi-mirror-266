@@ -1,0 +1,42 @@
+name: Tests
+
+on: [push, pull_request]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11"]
+
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+          python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements_cpu.txt
+        pip install pytest pytest-cov
+
+    - name: Run pytest
+      id: test
+      run: pytest tests/
+
+    - name: Run tests with coverage (Python ${{ matrix.python-version }})
+      if: matrix.python-version == '3.10'  # Choose one version for coverage
+      run: |
+        echo "COVERAGE=true" >> $GITHUB_ENV
+        pytest --cov=src.imgdataconvertcodegen tests/
+    
+    - name: Upload coverage reports to Codecov
+      if: env.COVERAGE == 'true'
+      uses: codecov/codecov-action@v4.0.1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        slug: c3di/ImgDataConvertCodeGen
