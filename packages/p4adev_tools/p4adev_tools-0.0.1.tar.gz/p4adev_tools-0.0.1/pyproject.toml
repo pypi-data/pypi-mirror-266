@@ -1,0 +1,157 @@
+[tool.poetry]
+name = "p4adev_tools"
+version = "0.0.1"
+description = "Collection of widgets for the older kivymd 1.1.1 lib (material design 2)."
+authors = ["BlackCatDevel0per <bcdev@mail.ru>"]
+license = "Apache 2.0"
+
+packages = [
+    { include = "p4adev_tools", from = "src" },
+]
+
+[tool.poetry.urls]
+Homepage = "https://github.com/BlackCatDevel0per/p4adev_tools"
+Documentation = "https://github.com/BlackCatDevel0per/p4adev_tools"
+Repository = "https://github.com/BlackCatDevel0per/p4adev_tools"
+
+# TODO: Execute without wait to end (poetry will closed while task is pending)
+[tool.poetry-plugin-commands]
+stree = "tree src"
+# TODO: Make some examples (like kivy garden or etc.)
+run-ftpserv = "PYTHONPATH=src:. poetry run python src/p4adev_tools/ftp_server.py"
+run-ipyk = "PYTHONPATH=src:. poetry run python src/p4adev_tools/ipykernel_threaded.py"
+
+[tool.ruff]
+line-length = 100
+select = [
+	"RUF",
+	"FBT",
+	"FURB",
+	"PERF",
+	"TRY",
+	"FLY",
+	"YTT",
+	"PIE",
+	# "PYI",  # For stub files
+	"TCH",
+	"FA",
+	"UP",
+	"EM",
+	"PL",
+	"G",  # NOTE: CONF!
+	"INP",
+	"PT",
+	"DJ",
+	"NPY",
+	"PD",
+	"ERA",
+	"ARG",
+	"INT",
+	"TID",
+	"SIM",
+	"SLOT",
+	"RET",
+	"RSE",
+	"SLF",
+	"T20",
+	"Q",
+	"ISC",
+	"BLE",
+	"DTZ",
+	"COM",
+	"C4",
+	"A",
+	"PTH",
+	"FIX",
+	"TD",
+	"ANN",
+	"S",
+	"ASYNC",
+	"D",
+	"N",
+
+	"C",
+	"I",
+	# Pycodestyle
+	"E",
+	# Pyflakes
+	"F",
+	"B",
+	"W",
+	# isort
+	# "I001"
+]
+
+ignore = [
+	"W191", "D206", "RET502",
+	"UP040",  # New type aliases (type hinting)
+	"PTH123",  # Not good solution for all things..
+	"TD001",
+	"TD002",
+	"TD003",
+	"S101",
+]  # Add RET503?
+
+src = ["src/p4adev_tools", "tests", "scripts"]
+
+exclude = [
+    ".git",
+    "build",
+    "dist",
+    "venv",
+    ".venv",
+    "docs",
+    "tests",
+    "dev",
+    "*.egg-info",
+]
+target-version = "py310"
+
+[tool.ruff.flake8-quotes]
+inline-quotes = "single"
+
+[tool.ruff.format]
+indent-style = "tab"
+
+
+[tool.poetry.dependencies]
+python = ">=3.8.1,<4.0"
+plyer = "^2.1.0"
+
+
+[tool.poetry.group.main]
+optional = false
+
+[tool.poetry.group.main.dependencies]
+pyftpdlib = "^1.5.9"
+ipykernel = "^6.29.4"
+jedi = "0.19.1"
+ipython = "8.12.3"
+
+# TODO: Replace it..
+background-zmq-ipython = "^1.20220901.135250"
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+poetry-plugin-commands = "^0.0.8"
+
+pytest = "^7.4.2"
+pytest-dependency = "^0.5.1"
+ruff = "^0.0.292"
+build = "^1.0.3"
+setuptools = "^69.0.3"
+wheel = "^0.42.0"
+pyperclip = "^1.8.2"
+ipython = "8.12.3"
+ftputil = "^5.1.0"
+
+[tool.poetry.group.other.dependencies]
+rich = "^13.7.0"
+
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+
+
