@@ -1,0 +1,37 @@
+name: Test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -el {0}
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version:
+          - "3.9"
+        test_type:
+          - tests
+    steps:
+    - uses: actions/checkout@v4.1.1
+
+    - name: Setup Python
+      uses: mamba-org/setup-micromamba@v1.8.0
+      with:
+        environment-file: environment-dev.yml
+        create-args: >-
+          python=${{ matrix.python-version }}
+          -c conda-forge
+
+    - name: Install JHub Apps
+      run: |
+        pip install .
+
+    - name: Run Tests
+      run: |
+        pytest jhub_apps/${{ matrix.test_type }} -vvv -s
