@@ -1,0 +1,74 @@
+Metadata-Version: 2.1
+Name: django-intra
+Version: 0.2.1
+Summary: An extension of the Django admin application with special features
+Home-page: https://github.com/ahmdhjj/django-intra
+Author: ahmdhjj
+License: MIT License
+Project-URL: Documentation, https://ahmdhjj.github.io/django-intra/
+Project-URL: Source, https://github.com/ahmdhjj/django-intra
+Project-URL: Tracker, https://github.com/ahmdhjj/django-intra/issues
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: Django >=4.2
+
+[![PyPI](https://img.shields.io/pypi/v/django-intra)](https://pypi.org/project/django-intra/)
+[![Pylint](https://github.com/ahmdhjj/django-intra/actions/workflows/pylint.yml/badge.svg)](https://github.com/ahmdhjj/django-intra/actions/workflows/pylint.yml)
+[![Django CI](https://github.com/ahmdhjj/django-intra/actions/workflows/test.yml/badge.svg)](https://github.com/ahmdhjj/django-intra/actions/workflows/test.yml)
+[![Upload Python Package](https://github.com/ahmdhjj/django-intra/actions/workflows/release.yml/badge.svg)](https://github.com/ahmdhjj/django-intra/actions/workflows/release.yml)
+# django-intra
+## Docs
+https://ahmdhjj.github.io/django-intra/
+
+## Installation
+```
+pip install django-intra
+```
+## Settings
+In your settings file:
+
+1. Add `'intra'` to `INSTALLED_APPS`.
+
+2. Add `'intra/templates'` to the `DIRS` option in the `TEMPLATES` setting:
+```
+  TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': ['intra/templates'],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+```
+## URL configuration
+```
+from django.urls import path, include
+
+urlpatterns = [
+    ...
+    path('admin/', include('intra.urls')),
+    ...
+]
+```
+Make sure to remove the default `AdminSite` instance `django.contrib.admin.site` at the URL `/admin/`, i.e. remove the line below:
+```
+  path('admin/', admin.site.urls),`
+```
