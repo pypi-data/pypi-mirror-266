@@ -1,0 +1,39 @@
+{
+    "config": {
+        "step": {
+            "reconfigure": {
+                "data": {
+                    "host": "Host",
+                    "port": "Poort"
+                }
+            },
+            "user": {
+                "data": {
+                    "host": "Host",
+                    "port": "Poort"
+                }
+            }
+        }
+    },
+    "exceptions": {
+        "invalid_controller_id": {
+            "message": "Ongeldige controller_id \" {controller_id} \", verwacht een van \" {controller_ids} \""
+        }
+    },
+    "services": {
+        "send_command": {
+            "description": "Stuur aangepast commando naar een controller",
+            "fields": {
+                "command": {
+                    "description": "Het commando om naar de controller te sturen. Dit kan een enkele commando of een lijst van commando's zijn.",
+                    "name": "Commando"
+                },
+                "controller_id": {
+                    "description": "De controller waar het commando naar toe wordt gestuurd.",
+                    "name": "Controller ID"
+                }
+            },
+            "name": "Stuur commando"
+        }
+    }
+}
