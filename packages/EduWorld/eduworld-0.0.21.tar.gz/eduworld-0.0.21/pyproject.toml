@@ -1,0 +1,36 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "EduWorld"
+version = "0.0.21"
+description = "Educational package to learn computational thinking and other basic programming concepts"
+long-description = "``EduWorld`` is an educational ``python`` package designed for students to learn computational thinking, algorithms, and other basic programming concepts. \n Through this process they learn how to divide a problem into smaller steps and refine them; to abstract; to recognize patterns; and to design and implement algorithms;"
+readme = "README.md"
+requires-python = ">=3.8"
+license = "GPL-3.0-or-later"
+keywords = ["education", "gamification", "learning", "beginners", "computational thinking"]
+authors = [
+  { name = "Stanislav Grinkov", email = "StanislavGrinkov@users.noreply.codeberg.org" },
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Education",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
+dependencies = []
+
+[project.urls]
+Documentation = "https://codeberg.org/helkaraxe/algoworld-python#readme"
+Issues = "https://codeberg.org/helkaraxe/algoworld-python/issues"
+Source = "https://codeberg.org/helkaraxe/algoworld-python"
+
+[[tool.hatch.envs.all.matrix]]
+python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
