@@ -1,0 +1,130 @@
+Metadata-Version: 2.1
+Name: sklearn-quantile
+Version: 0.0.30
+Summary: README.md
+Author-email: Jasper Roebroek <roebroek.jasper@gmail.com>
+License: BSD 3-Clause License
+        
+        Copyright (c) 2022 Jasper Roebroek.
+        All rights reserved.
+        
+        Redistribution and use in source and binary forms, with or without
+        modification, are permitted provided that the following conditions are met:
+        
+        * Redistributions of source code must retain the above copyright notice, this
+          list of conditions and the following disclaimer.
+        
+        * Redistributions in binary form must reproduce the above copyright notice,
+          this list of conditions and the following disclaimer in the documentation
+          and/or other materials provided with the distribution.
+        
+        * Neither the name of the copyright holder nor the names of its
+          contributors may be used to endorse or promote products derived from
+          this software without specific prior written permission.
+        
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+        AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+        IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+        DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+        FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+        DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+        SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+        CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+        OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+        OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+        
+Project-URL: repository, https://github.com/jasperroebroek/sklearn-quantile
+Project-URL: documentation, https://sklearn-quantile.readthedocs.io/en/latest/index.html
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy>=1.19.0
+Requires-Dist: scikit-learn>=1.4
+Requires-Dist: joblib
+Requires-Dist: packaging
+Provides-Extra: documentation
+Requires-Dist: matplotlib; extra == "documentation"
+Requires-Dist: sphinx; extra == "documentation"
+Requires-Dist: sphinx_rtd_theme; extra == "documentation"
+Requires-Dist: numpydoc; extra == "documentation"
+Requires-Dist: jupyter; extra == "documentation"
+Requires-Dist: pandas; extra == "documentation"
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Provides-Extra: develop
+Requires-Dist: pytest; extra == "develop"
+Requires-Dist: twine; extra == "develop"
+Requires-Dist: cython; extra == "develop"
+Provides-Extra: all
+Requires-Dist: matplotlib; extra == "all"
+Requires-Dist: sphinx; extra == "all"
+Requires-Dist: sphinx_rtd_theme; extra == "all"
+Requires-Dist: numpydoc; extra == "all"
+Requires-Dist: jupyter; extra == "all"
+Requires-Dist: pandas; extra == "all"
+Requires-Dist: pytest; extra == "all"
+Requires-Dist: twine; extra == "all"
+Requires-Dist: cython; extra == "all"
+
+[![Documentation Status](https://readthedocs.org/projects/sklearn-quantile/badge/?version=latest)](https://sklearn-quantile.readthedocs.io/en/latest/?badge=latest)
+
+This module provides quantile machine learning models for python, in a plug-and-play fashion in the sklearn environment. This means that practically the only dependency is sklearn and all its functionality is applicable to the here provided models without code changes.
+
+The models implemented here share the trait that they are trained in exactly the same way as their non-quantile counterpart. The quantile information is only used in the prediction phase. The advantage of this (over for example Gradient Boosting Quantile Regression) is that several quantiles can be predicted at once without the need for retraining the model, which overall leads to a significantly faster workflow. Note that accuracy of doing this depends on the data. As can be seen in the example in the documentation: with certain data characteristics different quantiles might require different parameter optimisation for optimal performance. This is obviously possible with the implemented models here, but this requires the use of a single quantile during prediction, thus losing the speed advantage described above.
+
+For guidance see docs (through the link in the badge). They include an example that for quantile regression forests in exactly the same template as used for Gradient Boosting Quantile Regression in sklearn for comparability.
+
+Implemented:
+- Random Forest Quantile Regression 
+  - RandomForestQuantileRegressor: the main implementation
+  - SampleRandomForestQuantileRegressor: an approximation, that is much faster than the main implementation.
+  - RandomForestMaximumRegressor: mathematically equivalent to the main implementation but much faster.
+
+- Extra Trees Quantile Regression
+  - ExtraTreesQuantileRegressor: the main implementation
+  - SampleExtraTreesQuantileRegressor: an approximation, that is much faster than the main implementation.
+
+- Quantile K-nearest neighbors (KNeighborsQuantileRegressor)
+
+# Installation
+
+The package can be installed with conda:
+
+```
+conda install --channel conda-forge sklearn-quantile
+```
+
+# Example
+
+An example of Random Forest Quantile Regression in action (both the main implementation and its approximation):
+
+<img src="https://github.com/jasperroebroek/sklearn-quantile/raw/master/docs/source/notebooks/example.png"/>
+
+# Usage example
+
+Random Forest Quantile Regressor predicting the 5th, 50th and 95th percentile of the California housing dataset.
+
+```
+from sklearn.datasets import fetch_california_housing
+from sklearn.model_selection import train_test_split
+from sklearn_quantile import RandomForestQuantileRegressor
+
+X, y = fetch_california_housing(return_X_y=True)
+X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.5, random_state=0)
+
+qrf = RandomForestQuantileRegressor(q=[0.05, 0.50, 0.95])
+qrf.fit(X_train, y_train)
+
+y_pred_5, y_pred_median, y_pred_95 = qrf.predict(X_test)
+qrf.score(X_test, y_test)
+```
+
+# Important links
+
+- API reference: https://sklearn-quantile.readthedocs.io/en/latest/api.html
+- Documentation: https://sklearn-quantile.readthedocs.io/en/latest/index.html
