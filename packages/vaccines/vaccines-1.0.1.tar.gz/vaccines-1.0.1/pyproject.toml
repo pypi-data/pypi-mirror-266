@@ -1,0 +1,71 @@
+
+
+
+
+#
+#	install:
+#		python3 /vaccines/moves/install.py
+#
+
+#
+#	how to publish:
+#
+#		python3 /vaccines/modules/structures/vaccines/_status/status.proc.py
+#		cp /vaccines/modules/structures/vaccines/module.MD /vaccines/readme.md
+#		(rm -rf dist && python3 -m build && twine upload dist/*)
+#
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vaccines"
+version = "1.0.1"
+dependencies = [
+	"volts",
+	"ships",
+	"somatic",
+	"law_dictionary",
+	
+	#
+	#
+	#
+	
+	"deepmerge",
+	"pydash",
+	"pymongo",
+	"rich",
+	"tinydb",
+	"click"
+]
+
+license = { file = "modules/structures/vaccines/license.txt" }
+
+description = "How to organize remedies."
+readme = "readme.md"
+keywords = [
+	"leads",
+	"organization"
+]
+
+[project.scripts]
+#
+#	https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#creating-executable-scripts
+#	from this_module import clique; clique ()
+#
+vaccines = "vaccines:clique"
+
+
+[tool.setuptools.packages.find]
+where = [ "modules/structures" ]
+
+#
+#	https://setuptools.pypa.io/en/latest/userguide/datafiles.html
+#
+[tool.setuptools.package-data]
+"*" = [ "*.html", "*.txt" ]
+
+
+
+
