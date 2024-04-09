@@ -1,0 +1,69 @@
+[project]
+name = "mov-cli"
+description = "Watch everything from your terminal."
+authors = [
+    {name = "Pain", email = "painedposeidon444@gmail.com"},
+    {name = "Ananas", email = "ananas@r3tr0ananas.lol"},
+    {name = "Goldy", email = "goldy@devgoldy.xyz"}
+]
+readme = {file = "README.md", content-type = "text/markdown"}
+requires-python = ">=3.8"
+license = { file = "LICENSE" }
+keywords = [
+    "movie-cli", "mov_cli"
+]
+classifiers = [
+	'Operating System :: Microsoft :: Windows :: Windows 11',
+    'Operating System :: Microsoft :: Windows :: Windows 10',
+    'Operating System :: POSIX :: Linux',
+    'License :: OSI Approved :: MIT License',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+	'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12'
+]
+dependencies = [
+    "httpx",
+    "importlib-metadata; python_version<'3.8'",
+    "toml",
+    "devgoldyutils>=2.5.7",
+    "typer>=0.10.0",
+    "inquirer",
+    "beautifulsoup4",
+    "Unidecode",
+    "deprecation",
+    "packaging",
+
+    # Included plugins
+    "mov-cli-test>=1.1.0"
+]
+
+dynamic = ["version"]
+
+[project.optional-dependencies]
+dev = [
+    "ruff",
+    "build",
+    "devgoldyutils[pprint]>=2.5.7"
+]
+
+[project.urls]
+GitHub = "https://github.com/mov-cli/mov-cli"
+BugTracker = "https://github.com/mov-cli/mov-cli/issues"
+
+[tool.setuptools.dynamic]
+version = { attr = "mov_cli.__version__" }
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["mov_cli*"]
+
+[tool.setuptools.package-data]
+"mov_cli" = ["config.template.toml"]
+
+[project.scripts]
+mov-cli = "mov_cli.cli.__main__:app"
