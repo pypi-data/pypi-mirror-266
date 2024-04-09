@@ -1,0 +1,122 @@
+# MilanPetstoreSdk Python SDK 1.0.0
+
+A Python SDK for MilanPetstoreSdk.
+
+- API version: 1.0.0
+- SDK version: 1.0.0
+
+## Table of Contents
+
+- [Installation](#installation)
+- [Services](#services)
+
+## Installation
+
+```bash
+pip install milan-petstore-sdk
+```
+
+## Services
+
+A list of all SDK services. Click on the service name to access its corresponding service methods.
+
+| Service                     |
+| :-------------------------- |
+| [PetsService](#petsservice) |
+
+### PetsService
+
+A list of all methods in the `PetsService` service. Click on the method name to view detailed information about that method.
+
+| Methods                           | Description |
+| :-------------------------------- | :---------- |
+| [list_pets](#list_pets)           |             |
+| [create_pets](#create_pets)       |             |
+| [show_pet_by_id](#show_pet_by_id) |             |
+
+#### **list_pets**
+
+- HTTP Method: `GET`
+- Endpoint: `/pets`
+
+**Parameters**
+| Name | Type| Required | Description |
+| :-------- | :----------| :----------:| :----------|
+| limit | int | ❌ | list_pets |
+
+**Return Type**
+
+`List[Pet]`
+
+**Example Usage Code Snippet**
+
+```py
+from milan_petstore_sdk import MilanPetstoreSdk, Environment
+
+sdk = MilanPetstoreSdk(
+    base_url=Environment.DEFAULT.value
+)
+
+result = sdk.pets.list_pets(limit=85)
+
+print(result)
+```
+
+#### **create_pets**
+
+- HTTP Method: `POST`
+- Endpoint: `/pets`
+
+**Parameters**
+| Name | Type| Required | Description |
+| :-------- | :----------| :----------:| :----------|
+| request_body | Pet | ✅ | The request body. |
+
+**Example Usage Code Snippet**
+
+```py
+from milan_petstore_sdk import MilanPetstoreSdk, Environment
+from milan_petstore_sdk.models import Pet
+
+sdk = MilanPetstoreSdk(
+    base_url=Environment.DEFAULT.value
+)
+
+request_body = Pet(**{
+    "id_": 8,
+    "name": "name",
+    "tag": "tag"
+})
+
+result = sdk.pets.create_pets(request_body=request_body)
+
+print(result)
+```
+
+#### **show_pet_by_id**
+
+- HTTP Method: `GET`
+- Endpoint: `/pets/{petId}`
+
+**Parameters**
+| Name | Type| Required | Description |
+| :-------- | :----------| :----------:| :----------|
+| petId | str | ✅ | show_pet_by_id |
+
+**Return Type**
+
+`Pet`
+
+**Example Usage Code Snippet**
+
+```py
+from milan_petstore_sdk import MilanPetstoreSdk, Environment
+
+sdk = MilanPetstoreSdk(
+    base_url=Environment.DEFAULT.value
+)
+
+result = sdk.pets.show_pet_by_id(pet_id="petId")
+
+print(result)
+```
