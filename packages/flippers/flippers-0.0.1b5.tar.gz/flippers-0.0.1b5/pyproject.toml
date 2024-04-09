@@ -1,0 +1,137 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "flippers"
+description = '`flippers` is a weak supervision library for creating high quality labels using domain kownledge and heuristics.'
+readme = "README.md"
+requires-python = ">=3.7"
+license = "Apache-2.0"
+keywords = [
+  "weak supervision",
+  "labeling",
+  "annotation",
+  "data labeling",
+  "data science",
+  "machine learning",
+  "data",
+]
+
+authors = [{ name = "Liam Toran", email = "liam.toran@gmail.com" }]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+]
+dependencies = ["numpy", "pandas", "scikit-learn<1.4.0", "torch", "tqdm"]
+dynamic = ["version"]
+
+[project.urls]
+Documentation = "https://github.com/liamtoran/flippers#readme"
+Issues = "https://github.com/liamtoran/flippers/issues"
+Source = "https://github.com/liamtoran/flippers"
+
+[tool.hatch.version]
+path = "flippers/__about__.py"
+
+[tool.hatch.envs.default]
+python = "3.10"
+dependencies = [
+  "pre-commit",
+  "pre-commit-hooks",
+  "docformatter",
+  "black[jupyter]",
+  "ipywidgets",
+  "isort",
+  "jupyterlab",
+  "matplotlib",
+  "ray[air,tune]",
+  "snorkel",
+  "jupyterlab-code-formatter",
+  "ruff",
+]
+[tool.hatch.envs.default.scripts]
+
+
+[tool.coverage.run]
+branch = true
+parallel = true
+omit = ["flippers/__about__.py"]
+
+# Linting and ruff
+[tool.hatch.envs.lint]
+python = "3.10"
+description = "Check and lint the codebase."
+dependencies = [
+  "pre-commit",
+  "pre-commit-hooks",
+  "docformatter",
+  "isort",
+  "black[jupyter]",
+  "ruff",
+]
+
+[tool.hatch.envs.lint.scripts]
+run = ["black .", "isort .", "docformatter -i -r .", "ruff ."]
+
+
+# mypy checks
+[tool.hatch.envs.type]
+description = "Type check the codebase."
+dependencies = [
+  "pytest",
+  "pytest-cov",
+  "mypy",
+  # Dependencies
+  "types-appdirs",
+  "importlib_metadata",
+  "types-Pillow",
+  "sixelcrop",
+  "pandas-stubs",
+  # Optional dependencies
+  "rich",
+  "black",
+  "isort",
+  "types-tqdm",
+  # Non-dependencies
+  "html2text",
+  "sympy",
+]
+cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=flippers --cov=tests {args}"
+no-cov = "cov --no-cov {args}"
+
+[tool.mypy]
+allow_redefinition = true
+ignore_missing_imports = true
+
+[tool.hatch.envs.type.scripts]
+run = "mypy {args:--namespace-packages -p flippers}"
+
+[tool.coverage.report]
+exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
+
+# Documentation environment
+[tool.hatch.envs.docs]
+description = "Build the documentation."
+python = "3.10"
+dependencies = [
+  "sphinx",
+  "nbsphinx",
+  "sphinx_argparse_cli",
+  "sphinx_copybutton",
+  "pydata_sphinx_theme",
+]
+
+[tool.hatch.envs.docs.scripts]
+clean = "cd docs; ./make.bat clean"
+
+[tool.ruff]
+line-length = 88
+
+[tool.isort]
+profile = "black"
