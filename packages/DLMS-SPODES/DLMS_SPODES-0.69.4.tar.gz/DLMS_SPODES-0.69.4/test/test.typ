@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='cp1251'?>
+<Objects version="4.0.0"><dlms_ver>6</dlms_ver><country>7</country><country_ver>3.0</country_ver><manufacturer>KPZ</manufacturer><server_type>09054d324d5f31</server_type><server_ver instance="0">1.5.3</server_ver><obj ln="0.0.40.0.3.255"><ver>1</ver></obj><obj ln="0.0.128.100.0.255"><attr i="2">10</attr></obj></Objects>

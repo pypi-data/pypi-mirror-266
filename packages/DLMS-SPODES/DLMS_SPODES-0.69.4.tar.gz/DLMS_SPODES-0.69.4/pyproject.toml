@@ -1,0 +1,32 @@
+[build-system]
+requires = [
+    "setuptools",
+    "setuptools-scm"]
+#build-backend = "setuptools.build_meta"
+
+#[tool.setuptools]
+#package-dir = {"" = "src"}
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+DLMS_SPODES = ["config.toml"]
+
+[project]
+name = "DLMS_SPODES"
+version = "0.69.4"
+authors = [
+    {name="Serj Kotilevski", email="youserj@outlook.com"}
+]
+dependencies = [
+    "pycryptodomex>=3.15"
+]
+description="dlms-spodes"
+readme = "README.md"
+requires-python = ">=3.11"
+keywords=["dlms"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
