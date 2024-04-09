@@ -1,0 +1,110 @@
+Metadata-Version: 2.1
+Name: rd
+Version: 1.5.0.1
+Summary: reliable-download client tool
+Home-page: https://gitlab.emacsos.com/sylecn/reliable-download
+Author: Yuanle Song
+Author-email: sylecn@gmail.com
+Maintainer: Yuanle Song
+Maintainer-email: sylecn@gmail.com
+License: GPLv3+
+Download-URL: https://pypi.org/project/rd/
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Topic :: System :: Networking
+Classifier: Programming Language :: Haskell
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Description-Content-Type: text/x-rst
+
+rd - reliable download command line tool
+========================================
+
+.. image:: https://img.shields.io/pypi/v/rd.svg
+    :target: https://pypi.org/project/rd/
+
+.. image:: https://img.shields.io/pypi/l/rd.svg
+    :target: https://pypi.org/project/rd/
+
+.. image:: https://img.shields.io/pypi/wheel/rd.svg
+    :target: https://pypi.org/project/rd/
+
+Download large files across slow and unstable network reliably. Requires using
+rd-api on server side. For more information on how it works, see rd-api_.
+
+Installation
+------------
+
+To install this package:
+
+.. code-block:: bash
+
+   $ pip install --user rd
+   $ rd --help
+   $ ~/.local/bin/rd --help     # if ~/.local/bin/ is not in PATH
+
+Baisc Usage
+------------
+
+server side (requires rd-api_):
+
+.. code-block:: bash
+
+   $ ls
+   bigfile1 bigfile2
+   $ rd-api --host 0.0.0.0 --port 8082
+
+client side:
+
+.. code-block:: bash
+
+   $ rd http://server-ip:8082/bigfile1
+
+Documentation
+-------------
+
+see rd-api_.
+
+.. _rd-api: https://pypi.org/project/rd-api/
+
+License
+---------------
+
+Reliable download is released under GPLv3+. Source code can be found at
+https://gitlab.emacsos.com/sylecn/reliable-download
+
+ChangeLog
+---------
+
+* v1.5.0.0 2024-04-08
+
+  - bugfix: properly handle unicode string in URL path
+  - bugfix: use local time in log messages instead of UTC time
+  - bugfix: rd client now supports ipv6 address in URL
+
+* v1.3.0.0 2022-03-15
+
+  - feature: add download progress logging
+
+* v1.2.0.0 2022-03-14
+
+  - feature: add --rolling-combine option. allow combine big file when disk space is low.
+
+* v1.1.3.0 2022-03-14
+
+  - feature: code ported to ghc 8.10.7
+
+* v1.0.0.3 2018-05-09
+
+  - init release.
+
+
