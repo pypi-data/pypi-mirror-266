@@ -1,0 +1,96 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["pip>=22.0.0", "setuptools", "setuptools_scm", "wheel"]
+
+[project]
+authors = [{ name = "janbjorge"}]
+description = "A Python library for real-time PostgreSQL event-driven cache invalidation."
+dynamic = ["version"]
+license = { text = "Apache 2.0" }
+name = "PGCacheWatch"
+readme = "README.md"
+requires-python = ">=3.10"
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Other Environment",
+    "Environment :: Web Environment",
+    "Framework :: AsyncIO",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python",
+    "Topic :: Database",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities",
+]
+dependencies = [
+    "asyncpg>=0.27.0",
+    "pydantic>=2.0.0",
+    "websockets>=12.0.0",
+]
+
+[project.urls]
+Documentation = "https://github.com/janbjorge/pgcachewatch/"
+Homepage = "https://github.com/janbjorge/pgcachewatch/"
+Issues = "https://github.com/janbjorge/pgcachewatch/issues"
+Repository = "https://github.com/janbjorge/pgcachewatch/"
+
+[project.optional-dependencies]
+dev = [
+    "asyncpg-stubs",
+    "fastapi",
+    "httpx",
+    "mypy-extensions",
+    "mypy",
+    "pytest-asyncio",
+    "pytest",
+    "ruff",
+    "uvicorn",
+]
+docs = [
+    "myst-parser",
+    "sphinx",
+    "sphinx-rtd-theme",
+]
+
+[tool.setuptools_scm]
+write_to = "src/pgcachewatch/_version.py"
+
+[tool.ruff]
+line-length = 88
+[tool.ruff.lint]
+select = [
+    "C",
+    "E",
+    "F",
+    "I",
+    "PIE",
+    "Q",
+    "RET",
+    "RSE",
+    "SIM",
+    "W",
+    "C90",
+]
+[tool.ruff.lint.isort]
+combine-as-imports = true
+
+[tool.mypy]
+disallow_untyped_defs = true
+exclude = "^(build|docs)"
+extra_checks = true
+ignore_missing_imports = true
+plugins = ["pydantic.mypy"]
+python_version = "3.10"
+strict_equality = true
+warn_redundant_casts = true
+warn_unused_configs = true
+warn_unused_ignores = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
