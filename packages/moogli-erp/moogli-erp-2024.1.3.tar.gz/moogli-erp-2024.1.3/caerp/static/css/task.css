@@ -1,0 +1,76 @@
+body.caerp[class*="estimations/{id}"] .main_actions div[role="group"],
+body.caerp[class*="invoices/{id}"] .main_actions div[role="group"] {
+  order: 0; }
+
+body.caerp[class*="estimations/{id}"] .main_actions .child-container > div,
+body.caerp[class*="invoices/{id}"] .main_actions .child-container > div {
+  display: flex; }
+  body.caerp[class*="estimations/{id}"] .main_actions .child-container > div > div,
+  body.caerp[class*="invoices/{id}"] .main_actions .child-container > div > div {
+    margin: 0 0 5px 5px; }
+
+body.caerp[class*="estimations/{id}"] .layout.flex div[class*="col-md"] > div:not(:last-child),
+body.caerp[class*="invoices/{id}"] .layout.flex div[class*="col-md"] > div:not(:last-child) {
+  padding-bottom: 20px; }
+
+body.caerp[class*="estimations/{id}"] .quotation_item_title,
+body.caerp[class*="invoices/{id}"] .quotation_item_title {
+  justify-content: space-between;
+  padding: 0 2px 5px;
+  width: 100%; }
+  body.caerp[class*="estimations/{id}"] .quotation_item_title h3 em,
+  body.caerp[class*="invoices/{id}"] .quotation_item_title h3 em {
+    font-weight: normal; }
+  body.caerp[class*="estimations/{id}"] .quotation_item_title > div:last-child:not(:first-child),
+  body.caerp[class*="invoices/{id}"] .quotation_item_title > div:last-child:not(:first-child) {
+    white-space: nowrap; }
+
+body.caerp[class*="estimations/{id}"] .separate_block .form-group,
+body.caerp[class*="invoices/{id}"] .separate_block .form-group {
+  padding-bottom: 5px; }
+
+body.caerp[class*="estimations/{id}"] .content > button,
+body.caerp[class*="invoices/{id}"] .content > button {
+  margin: 5px; }
+
+body.caerp[class*="estimations/{id}"] .ht-before-discounts table,
+body.caerp[class*="estimations/{id}"] .total-ttc table,
+body.caerp[class*="estimations/{id}"] .total-due table,
+body.caerp[class*="invoices/{id}"] .ht-before-discounts table,
+body.caerp[class*="invoices/{id}"] .total-ttc table,
+body.caerp[class*="invoices/{id}"] .total-due table {
+  margin-bottom: 5px; }
+
+body.caerp[class*="estimations/{id}"] .ht-before-discounts table tr.row_recap th,
+body.caerp[class*="estimations/{id}"] .ht-before-discounts table tr.row_recap td:not(.level_spacer):not(.empty),
+body.caerp[class*="estimations/{id}"] .total-ttc table tr.row_recap th,
+body.caerp[class*="estimations/{id}"] .total-ttc table tr.row_recap td:not(.level_spacer):not(.empty),
+body.caerp[class*="estimations/{id}"] .total-due table tr.row_recap th,
+body.caerp[class*="estimations/{id}"] .total-due table tr.row_recap td:not(.level_spacer):not(.empty),
+body.caerp[class*="invoices/{id}"] .ht-before-discounts table tr.row_recap th,
+body.caerp[class*="invoices/{id}"] .ht-before-discounts table tr.row_recap td:not(.level_spacer):not(.empty),
+body.caerp[class*="invoices/{id}"] .total-ttc table tr.row_recap th,
+body.caerp[class*="invoices/{id}"] .total-ttc table tr.row_recap td:not(.level_spacer):not(.empty),
+body.caerp[class*="invoices/{id}"] .total-due table tr.row_recap th,
+body.caerp[class*="invoices/{id}"] .total-due table tr.row_recap td:not(.level_spacer):not(.empty) {
+  background: none; }
+
+@media (min-width: 75rem) {
+  body.caerp[class*="estimations/{id}"] .main_actions div.totals,
+  body.caerp[class*="invoices/{id}"] .main_actions div.totals {
+    order: 1; }
+  body.caerp[class*="estimations/{id}"] .main_actions div.child-container,
+  body.caerp[class*="invoices/{id}"] .main_actions div.child-container {
+    order: 2; } }
+
+@media (max-width: 75rem) {
+  body.caerp[class*="estimations/{id}"] .main_actions,
+  body.caerp[class*="invoices/{id}"] .main_actions {
+    flex-wrap: wrap; }
+    body.caerp[class*="estimations/{id}"] .main_actions div.totals,
+    body.caerp[class*="invoices/{id}"] .main_actions div.totals {
+      order: 2;
+      width: 100%; }
+    body.caerp[class*="estimations/{id}"] .main_actions div.child-container,
+    body.caerp[class*="invoices/{id}"] .main_actions div.child-container {
+      order: 1; } }
