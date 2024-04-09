@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "rho-store"
+version = "0.1.17"
+description = ""
+authors = ["Björn Ström <bjornstrom90@gmail.com>"]
+readme = "README.md"
+packages = [{include = "rho_store"}]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.13"
+pandas = "^2.0.0"
+dask = "^2024.2.0"
+requests = "^2.31.0"
+pyarrow = "==15.0.0"
+python-dotenv = "^1.0.0"
+orjson = "^3.9.10"
+setuptools = "^69.1.0"
+
+[tool.poetry.group.test.dependencies]
+pytest = "==8.0.1"
+responses = "^0.25.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
