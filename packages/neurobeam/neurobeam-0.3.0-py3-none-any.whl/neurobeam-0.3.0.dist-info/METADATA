@@ -1,0 +1,147 @@
+Metadata-Version: 2.1
+Name: neurobeam
+Version: 0.3.0
+Summary: Neuroscience Experiments Using Real-time Optogenetics, Behavior, and Microscopy
+Author: Darik A. O'Neil
+Maintainer: Darik A. O'Neil
+License: MIT License
+        
+        Copyright (c) 2023 Darik A O’Neil
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: documentation, https://readthedocs.org
+Project-URL: repository, https://github.com/darikoneil/LickSuppression
+Keywords: Brain Computer Interface,BCI,Optical Brain Computer Interface,Behavior,Neuroscience,Psychology,Head-fixed,Immobile,Imaging,In-Vivo,Calcium Imaging,Two-Photon,Microscopy,Optogenetics,Holographic Optogenetics,Precision Optogenetics,Patterned Photostimulation,Fear Conditioning,Trace Fear Conditioning,Startle,Paired Pulse Inhibition,Locomotion,Closed-Loop,Real-Time,Spatial Light Modulator
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: C++
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Natural Language :: English
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Topic :: Scientific/Engineering
+Requires-Python: <4,>=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: click
+Requires-Dist: dearpygui
+Requires-Dist: frozendict
+Requires-Dist: importlib-metadata
+Requires-Dist: memoization
+Requires-Dist: nanobind
+Requires-Dist: nidaqmx
+Requires-Dist: numpy
+Requires-Dist: opencv-python
+Requires-Dist: pandas
+Requires-Dist: psychtoolbox
+Requires-Dist: pyarrow
+Requires-Dist: pydantic
+Requires-Dist: slmsuite
+Requires-Dist: tomli
+Requires-Dist: tomli-w
+Requires-Dist: winsdk
+Provides-Extra: development
+Requires-Dist: boltons ; extra == 'development'
+Requires-Dist: build ; extra == 'development'
+Requires-Dist: coverage[toml] ; extra == 'development'
+Requires-Dist: coveralls ; extra == 'development'
+Requires-Dist: flake8 ; extra == 'development'
+Requires-Dist: flake8-annotations ; extra == 'development'
+Requires-Dist: flake8-bugbear ; extra == 'development'
+Requires-Dist: flake8-class-attributes-order ; extra == 'development'
+Requires-Dist: flake8-comprehensions ; extra == 'development'
+Requires-Dist: flake8-html ; extra == 'development'
+Requires-Dist: flake8-unused-arguments ; extra == 'development'
+Requires-Dist: icecream ; extra == 'development'
+Requires-Dist: tomli ; extra == 'development'
+Requires-Dist: twine ; extra == 'development'
+Provides-Extra: documentation
+Requires-Dist: sphinx ; extra == 'documentation'
+Requires-Dist: sphinx-rtd-theme ; extra == 'documentation'
+Requires-Dist: sphinx-autodoc-typehints ; extra == 'documentation'
+Provides-Extra: tests
+Requires-Dist: pytest ; extra == 'tests'
+Requires-Dist: pytest-lazy-fixture ; extra == 'tests'
+Requires-Dist: pytest-sugar ; extra == 'tests'
+Requires-Dist: pytest-clarity ; extra == 'tests'
+Requires-Dist: pytest-timeout ; extra == 'tests'
+
+## PROBE (Python Repo)
+<!--Platform for Real-time Optogenetic & Behavior Experiments-->
+<!-- Line 0 Title... Working title is WeRDumb but something better would be nice-->
+<!-- Line 1 Badges... PyPi, Downloads, Maintained, Coverage, Documentation -->
+<!-- Line 2 Badges... Python Versions, PyPi Status, License, Contributors -->
+![PyPI](https://img.shields.io/pypi/v/WeRDumb)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/WeRDumb)
+![Maintenance](https://img.shields.io/maintenance/yes/2023)
+[![Coverage Status](https://coveralls.io/repos/github/darikoneil/WeRDumb/badge.svg?branch=master)](https://coveralls.io/github/darikoneil/WeRDumb?branch=master)
+[![Documentation Status](https://readthedocs.org/projects/WeRDumb/badge/?version=latest)](https://WeRDumb.readthedocs.io/en/latest/?badge=latest)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/WeRDumb?)
+![PyPI - Status](https://img.shields.io/pypi/status/WeRDumb)
+![GitHub](https://img.shields.io/github/license/darikoneil/WeRDumb)
+[![Contributors](https://img.shields.io/github/contributors-anon/darikoneil/WeRDumb)](https://github.com/darikoneil/WeRDumb/graphs/contributors)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/darikoneil/WeRDumb/WeRDumb_lint_test_action.yml)
+
+PROBE is an open-source software-hardware system for behavioral experiments in head-fixed rodents using a low-cost, modular experimental rig. The software is primarily written in python to allow easy distribution, use, and end-user modification with bits of C/C++ glued in for low-latency performance. An optional GUI is largely handled by your GPU to allow real-time streaming of ongoing behavior and data acquisition without disrupting your experiments. Currently PROBE is only supported on windows. Triggers dependent on neural activity require access to a raw-stream of imaging data. PROBE only offers native support for PrairieView at this time, but if you have a raw stream it should work. In constrast, software communication with spatial light modulators or hardware-triggered stimulation for optogenetic actions should be platform-independent.
+
+More information on hardware implementation can be found here.
+
+Integration Tests
+Make sure to launch prairie_mock_server.exe if conducting integration tests with PrairieView. This is automatically launched if calling prairie_probe_test.exe but NOT any other testing application/suite including google tests
+
+Software Reminders
+These things aren't listed in TODOs
+Remember to test on Prairie-1 Workstation-3. It has an old Xeon processer so it will be a good test of performance of single-thread performance on a slow processor.
+Remember to double-check for potential race conditions.
+Remember to refactor GUI aesthetic and import logo before pushing here from WRD repo
+Remember to update badge links before ever making public--just placeholders from WRD repo. Figure out whether I need to do anything special for distribution of C++ lib, executables, & Node.js in a pypi package. Figure out whether anti-viruses will get grumpy from having an executable in a pypi package.
+
+Hardware Reminders
+The sucrose preference robotic spout-swapper has not been tested.
+Try to test on a nicer NI-DAQ. Might be able to achieve higher best-case performance since they have hardware-timed digital I/O and I won't have to call those in-between analog-input callbacks.
+Take a second look at the PCB scheme and see if I can simplify the connection from / to DAQ. I probably won't re-fabricate since I did that out-of-pocket, but some optimization there will make building much simpler/more flexible.
+
+##### Development Statistics (PyCharm Repo)
+~75,000 Lines
+~75% Coverage
+0 Linting Errors
+
+##### Developmentn Statistics (CLion Repo)
+~25,000 Lines
+~20% Coverage
+0 Linting Errors
+
+##### Supported Pre-Configured Behaviors
+|    Module     |           Task           |                 Description                 | Recipe | Pilot
+|:-------------:|:------------------------:|:-------------------------------------------:|:------:|:----:|
+| Disk or Wheel |        Locomotion        |       Hyperactivity & Motor Function        | x      | x    |
+|               |     Acoustic Startle     |    Hearing, Habituation, & Sensitization    | x      | x    |
+|               |   Pre-Pulse Inhibition   |             Sensorimotor Gating             | x      | x    |
+|               |         Go No-Go         |               Learning & Memory             |        |      |
+|  Linear Track |       Navigation         |               Learning & Memory             |        |      |
+|    Burrow     |     Shelter Seeking      |                   Anxiety                   |        |      |
+|               |    Sucrose Preference    |                  Anhedonia                  |        |      |
+|               | Attentional Set-Shifting |           Behavioral Flexibility            |        |      |
+|               |         Go No-Go         |              Learning & Memory              |        |      |
+|               | Trace Fear Conditioning  |              Learning & Memory              |        |      |
+|               |  Delay Fear Conditioning |              Learning & Memory              |        |      |
+|               |  Instrumental Learning   |              Learning & Memory              |        |      |
