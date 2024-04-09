@@ -1,0 +1,224 @@
+[project]
+name = "npc_lims"
+version = "0.1.139"
+description = "Tools to fetch and update paths, metadata and state for Mindscope Neuropixels sessions, in the cloud."
+authors = [
+    { name = "Arjun Sridhar", email = "arjun.sridhar@alleninstitute.org" },
+    { name = "Ben Hardcastle", email = "ben.hardcastle@alleninstitute.org" },
+]
+dependencies = [
+    "npc_session>=0.1.30",
+    "redis>=4.1.4",
+    "aind-codeocean-api>=0.4.0",
+    "pydbhub-bjh>=0.0.8",
+    "pyyaml>=6.0.1",
+    "pyopenssl>=23.2.0",
+    "openpyxl>=3.1.2",
+    "packaging>=23.2",
+    "types-pyYAML>=6.0.12.12",
+    "types-requests>=2.31.0.6",
+    "npc-io>=0.1.24",
+]
+requires-python = ">=3.9"
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+]
+
+[project.license]
+text = "MIT"
+
+[project.urls]
+Repository = "https://github.com/AllenInstitute/npc_lims"
+Issues = "https://github.com/AllenInstitute/npc_lims/issues"
+
+[project.scripts]
+update_session_status = "npc_lims.scripts.update_session_status:main"
+regenerate_nwb_files = "npc_lims.scripts.regenerate_nwb_files:main"
+run_session_cache_capsule = "npc_lims.scripts.run_session_cache_capsule:main"
+run_video_tracking = "npc_lims.scripts.run_video_processing:main"
+generate_video_assets = "npc_lims.scripts.generate_session_video_data_assets:main"
+update_video_permissions = "npc_lims.scripts.update_session_video_data_asset_permissions:main"
+
+[tool.pdm]
+plugins = [
+    "pdm-bump",
+]
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "ruff>=0.0.282",
+    "mypy>=1.4.1",
+    "pytest-cov>=4.1.0",
+    "black>=23.7.0",
+    "parver>=0.3",
+    "git-changelog>=2.3",
+]
+docs = [
+    "markdown-callouts>=0.3",
+    "markdown-exec>=1.7",
+    "mkdocs>=1.5",
+    "mkdocs-coverage>=1.0",
+    "mkdocs-gen-files>=0.5",
+    "mkdocs-literate-nav>=0.6",
+    "mkdocs-material>=9.4",
+    "mkdocs-minify-plugin>=0.7",
+    "mkdocstrings[python]>=0.23",
+    "tomli>=2.0; python_version < '3.11'",
+]
+
+[tool.pdm.scripts]
+ruff = "ruff check src --fix-only"
+black = "black src"
+test = "pytest --cov --cov-report=xml"
+mypy = "mypy src --install-types --non-interactive"
+log = "git-changelog -o CHANGELOG.md -p github"
+
+[tool.pdm.scripts.doc]
+shell = "cd docs && mkdocs serve"
+help = "Start the dev server for doc preview"
+
+[tool.pdm.scripts.bumpver]
+composite = [
+    "pdm self add pdm-bump",
+    "pdm bump micro",
+]
+
+[tool.pdm.scripts.tag]
+composite = [
+    "pdm self add pdm-bump",
+    "pdm bump tag",
+]
+
+[tool.pdm.scripts.prebuild]
+composite = [
+    "mypy",
+    "test",
+    "black",
+    "ruff",
+    "log",
+]
+
+[tool.pdm.scripts.dryrun]
+composite = [
+    "prebuild",
+    "pdm publish --repository testpypi",
+]
+
+[tool.pdm.scripts.pub]
+composite = [
+    "prebuild",
+    "bumpver",
+    "pdm publish",
+]
+
+[tool.setuptools.packages.find]
+where = [
+    "src",
+]
+
+[tool.setuptools.package-data]
+"*" = [
+    "py.typed",
+    "*.sql",
+    "tracked_sessions.*",
+]
+
+[tool.ruff]
+fix = true
+ignore-init-module-imports = true
+select = [
+    "ANN",
+    "B",
+    "C",
+    "E",
+    "F",
+    "I",
+    "RUF100",
+    "N",
+    "UP",
+    "W",
+    "YTT",
+]
+extend-exclude = [
+    "tests",
+]
+src = [
+    "src",
+    "tests",
+]
+target-version = "py39"
+
+[tool.ruff.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.black]
+target-version = [
+    "py39",
+]
+
+[tool.coverage.paths]
+source = [
+    "src",
+]
+
+[tool.coverage.run]
+branch = true
+source = [
+    "src",
+]
+
+[tool.coverage.report]
+skip_covered = true
+show_missing = true
+skip_empty = true
+exclude_also = [
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "@(abc.)?abstractmethod",
+    "@typing.runtime_checkable",
+]
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+    "--doctest-modules",
+    "--ignore-glob=*scripts*,*examples*,*docs*",
+    "--doctest-glob=*README.md",
+]
+doctest_optionflags = [
+    "NORMALIZE_WHITESPACE",
+    "IGNORE_EXCEPTION_DETAIL",
+    "ELLIPSIS",
+]
+testpaths = [
+    "src",
+    "tests",
+]
+
+[tool.mypy]
+check_untyped_defs = false
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+disallow_untyped_decorators = false
+disallow_any_unimported = false
+warn_return_any = false
+warn_unused_ignores = true
+no_implicit_optional = true
+show_error_codes = true
+ignore_missing_imports = true
+
+[build-system]
+requires = [
+    "setuptools>=61",
+    "wheel",
+]
+build-backend = "setuptools.build_meta"
