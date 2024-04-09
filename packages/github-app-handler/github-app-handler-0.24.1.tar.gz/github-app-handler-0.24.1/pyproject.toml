@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "github-app-handler"
+authors = [
+    { name="Heitor Luis Polidoro" },
+]
+description = "Package to help creates Github Apps."
+readme = "README.md"
+requires-python = ">=3.9"
+keywords = ["github", "app", "githubapp"]
+license = { text = "MIT" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dynamic = ["version", "dependencies"]
+
+[project.urls]
+"Homepage" = "https://github.com/heitorpolidoro/github-app-handler"
+
+[tool.setuptools.dynamic]
+version = {attr = "githubapp.__version__"}
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools.packages.find]
+exclude = ["payloads", "tests"]
+
+[tool.coverage.run]
+source = ["."]
+omit = ["tests/*", "payload_helper.py"]
+relative_files = true
+
+[tool.black]
+line_length = 120
