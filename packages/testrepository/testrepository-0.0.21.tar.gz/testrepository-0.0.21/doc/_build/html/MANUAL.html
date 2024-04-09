@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Test Repository users manual &#8212; Test Repository  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css?v=601dbdee" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Design / Architecture of Test Repository" href="DESIGN.html" />
+    <link rel="prev" title="Welcome to Test Repository’s documentation!" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="DESIGN.html" title="Design / Architecture of Test Repository"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to Test Repository’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Test Repository  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Test Repository users manual</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="test-repository-users-manual">
+<h1>Test Repository users manual<a class="headerlink" href="#test-repository-users-manual" title="Link to this heading">¶</a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
+<p>Test repository is a small application for tracking test results. Any test run
+that can be represented as a subunit stream can be inserted into a repository.</p>
+<p>Typical workflow is to have a repository into which test runs are inserted, and
+then to query the repository to find out about issues that need addressing.
+testr can fully automate this, but lets start with the low level facilities,
+using the sample subunit stream included with testr:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># Note that there is a .testr.conf already:
+ls .testr.conf
+# Create a store to manage test results in.
+$ testr init
+# add a test result (shows failures)
+$ testr load &lt; doc/example-failing-subunit-stream
+# see the tracked failing tests again
+$ testr failing
+# fix things
+$ testr load &lt; doc/example-passing-subunit-stream
+# Now there are no tracked failing tests
+$ testr failing
+</pre></div>
+</div>
+<p>Most commands in testr have comprehensive online help, and the commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ testr help [command]
+$ testr commands
+</pre></div>
+</div>
+<p>Will be useful to explore the system.</p>
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h2>
+<p>testr is configured via the ‘.testr.conf’ file which needs to be in the same
+directory that testr is run from. testr includes online help for all the
+options that can be set within it:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ testr help run
+</pre></div>
+</div>
+<section id="python">
+<h3>Python<a class="headerlink" href="#python" title="Link to this heading">¶</a></h3>
+<p>If your test suite is written in Python, the simplest - and usually correct
+configuration is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[DEFAULT]
+test_command=python -m subunit.run discover . $LISTOPT $IDOPTION
+test_id_option=--load-list $IDFILE
+test_list_option=--list
+</pre></div>
+</div>
+</section>
+</section>
+<section id="running-tests">
+<h2>Running tests<a class="headerlink" href="#running-tests" title="Link to this heading">¶</a></h2>
+<p>testr is taught how to run your tests by interepreting your .testr.conf file.
+For instance:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[DEFAULT]
+test_command=foo $IDOPTION
+test_id_option=--bar $IDFILE
+</pre></div>
+</div>
+<p>will cause ‘testr run’ to run ‘foo’ and process it as ‘testr load’ would.
+Likewise ‘testr run –failing’ will automatically create a list file listing
+just the failing tests, and then run ‘foo –bar failing.list’ and process it as
+‘testr load’ would. failing.list will be a newline separated list of the
+test ids that your test runner outputs. If there are no failing tests, no test
+execution will happen at all.</p>
+<p>Arguments passed to ‘testr run’ are used to filter test ids that will be run -
+testr will query the runner for test ids and then apply each argument as a
+regex filter. Tests that match any of the given filters will be run. Arguments
+passed to run after a <code class="docutils literal notranslate"><span class="pre">--</span></code> are passed through to your test runner command
+line. For instance, using the above config example <code class="docutils literal notranslate"><span class="pre">testr</span> <span class="pre">run</span> <span class="pre">quux</span> <span class="pre">--</span> <span class="pre">bar</span>
+<span class="pre">--no-plugins</span></code> would query for test ids, filter for those that match ‘quux’ and
+then run <code class="docutils literal notranslate"><span class="pre">foo</span> <span class="pre">bar</span> <span class="pre">--load-list</span> <span class="pre">tempfile.list</span> <span class="pre">--no-plugins</span></code>. Shell variables
+are expanded in these commands on platforms that have a shell.</p>
+<p>Having setup a .testr.conf, a common workflow then becomes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># Fix currently broken tests - repeat until there are no failures.
+$ testr run --failing
+# Do a full run to find anything that regressed during the reduction process.
+$ testr run
+# And either commit or loop around this again depending on whether errors
+# were found.
+</pre></div>
+</div>
+<p>The –failing option turns on <code class="docutils literal notranslate"><span class="pre">--partial</span></code> automatically (so that if the
+partial test run were to be interrupted, the failing tests that aren’t run are
+not lost).</p>
+<p>Another common use case is repeating a failure that occured on a remote
+machine (e.g. during a jenkins test run). There are two common ways to do
+approach this.</p>
+<p>Firstly, if you have a subunit stream from the run you can just load it:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ testr load &lt; failing-stream
+# Run the failed tests
+$ testr run --failing
+</pre></div>
+</div>
+<p>The streams generated by test runs are in .testrepository/ named for their test
+id - e.g. .testrepository/0 is the first stream.</p>
+<p>If you do not have a stream (because the test runner didn’t output subunit or
+you don’t have access to the .testrepository) you may be able to use a list
+file. If you can get a file that contains one test id per line, you can run
+the named tests like this:</p>
+<blockquote>
+<div><p>$ testr run –load-list FILENAME</p>
+</div></blockquote>
+<p>This can also be useful when dealing with sporadically failing tests, or tests
+that only fail in combination with some other test - you can bisect the tests
+that were run to get smaller and smaller (or larger and larger) test subsets
+until the error is pinpointed.</p>
+<p><code class="docutils literal notranslate"><span class="pre">testr</span> <span class="pre">run</span> <span class="pre">--until-failure</span></code> will run your test suite again and again and
+again stopping only when interrupted or a failure occurs. This is useful
+for repeating timing-related test failures.</p>
+</section>
+<section id="listing-tests">
+<h2>Listing tests<a class="headerlink" href="#listing-tests" title="Link to this heading">¶</a></h2>
+<p>It is useful to be able to query the test program to see what tests will be
+run - this permits partitioning the tests and running multiple instances with
+separate partitions at once. Set ‘test_list_option’ in .testr.conf like so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">test_list_option</span><span class="o">=--</span><span class="nb">list</span><span class="o">-</span><span class="n">tests</span>
+</pre></div>
+</div>
+<p>You also need to use the $LISTOPT option to tell testr where to expand things:</p>
+<blockquote>
+<div><p>test_command=foo $LISTOPT $IDOPTION</p>
+</div></blockquote>
+<p>All the normal rules for invoking test program commands apply: extra parameters
+will be passed through, if a test list is being supplied test_option can be
+used via $IDOPTION.</p>
+<p>The output of the test command when this option is supplied should be a subunit
+test enumeration. For subunit v1 that is a series of test ids, in any order,
+<code class="docutils literal notranslate"><span class="pre">\n</span></code> separated on stdout. For v2 use the subunit protocol and emit one event
+per test with each test having status ‘exists’.</p>
+<p>To test whether this is working the <cite>testr list-tests</cite> command can be useful.</p>
+<p>You can also use this to see what tests will be run by a given testr run
+command. For instance, the tests that <code class="docutils literal notranslate"><span class="pre">testr</span> <span class="pre">run</span> <span class="pre">myfilter</span></code> will run are shown
+by <code class="docutils literal notranslate"><span class="pre">testr</span> <span class="pre">list-tests</span> <span class="pre">myfilter</span></code>. As with ‘run’, arguments to ‘list-tests’ are
+used to regex filter the tests of the test runner, and arguments after a ‘–’
+are passed to the test runner.</p>
+</section>
+<section id="parallel-testing">
+<h2>Parallel testing<a class="headerlink" href="#parallel-testing" title="Link to this heading">¶</a></h2>
+<p>If both test listing and filtering (via either IDLIST or IDFILE) are configured
+then testr is able to run your tests in parallel:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ testr run --parallel
+</pre></div>
+</div>
+<p>This will first list the tests, partition the tests into one partition per CPU
+on the machine, and then invoke multiple test runners at the same time, with
+each test runner getting one partition. Currently the partitioning algorithm
+is simple round-robin for tests that testr has not seen run before, and
+equal-time buckets for tests that testr has seen run. NB: This uses the anydbm
+Python module to store the duration of each test. On some platforms (to date
+only OSX) there is no bulk-update API and performance may be impacted if you
+have many (10’s of thousands) of tests.</p>
+<p>To determine how many CPUs are present in the machine, testrepository will
+use the multiprocessing Python module (present since 2.6). On operating systems
+where this is not implemented, or if you need to control the number of workers
+that are used, the –concurrency option will let you do so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ testr run --parallel --concurrency=2
+</pre></div>
+</div>
+<p>A more granular interface is available too - if you insert into .testr.conf:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">test_run_concurrency</span><span class="o">=</span><span class="n">foo</span> <span class="n">bar</span>
+</pre></div>
+</div>
+<p>Then when testr needs to determine concurrency, it will run that command and
+read the first line from stdout, cast that to an int, and use that as the
+number of partitions to create. A count of 0 is interpreted to mean one
+partition per test. For instance in .test.conf:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">test_run_concurrency</span><span class="o">=</span><span class="n">echo</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<p>Would tell testr to use concurrency of 2.</p>
+<p>When running tests in parallel, testrepository tags each test with a tag for
+the worker that executed the test. The tags are of the form <code class="docutils literal notranslate"><span class="pre">worker-%d</span></code>
+and are usually used to reproduce test isolation failures, where knowing
+exactly what test ran on a given backend is important. The %d that is
+substituted in is the partition number of tests from the test run - all tests
+in a single run with the same worker-N ran in the same test runner instance.</p>
+<p>To find out which slave a failing test ran on just look at the ‘tags’ line in
+its test error:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">======================================================================</span>
+<span class="n">label</span><span class="p">:</span> <span class="n">testrepository</span><span class="o">.</span><span class="n">tests</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">TestDemo</span><span class="o">.</span><span class="n">test_methodname</span>
+<span class="n">tags</span><span class="p">:</span> <span class="n">foo</span> <span class="n">worker</span><span class="o">-</span><span class="mi">0</span>
+<span class="o">----------------------------------------------------------------------</span>
+<span class="n">error</span> <span class="n">text</span>
+</pre></div>
+</div>
+<p>And then find tests with that tag:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ testr last --subunit | subunit-filter -s --xfail --with-tag=worker-3 | subunit-ls &gt; slave-3.list
+</pre></div>
+</div>
+</section>
+<section id="grouping-tests">
+<h2>Grouping Tests<a class="headerlink" href="#grouping-tests" title="Link to this heading">¶</a></h2>
+<p>In certain scenarios you may want to group tests of a certain type together
+so that they will be run by the same backend. The group_regex option in
+.testr.conf permits this. When set, tests are grouped by the group(0) of any
+regex match. Tests with no match are not grouped.</p>
+<p>For example, extending the python sample .testr.conf from the configuration
+section with a group regex that will group python tests cases together by
+class (the last . splits the class and test method):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[DEFAULT]
+test_command=python -m subunit.run discover . $LISTOPT $IDOPTION
+test_id_option=--load-list $IDFILE
+test_list_option=--list
+group_regex=([^\.]+\.)+
+</pre></div>
+</div>
+</section>
+<section id="remote-or-isolated-test-environments">
+<h2>Remote or isolated test environments<a class="headerlink" href="#remote-or-isolated-test-environments" title="Link to this heading">¶</a></h2>
+<p>A common problem with parallel test running is test runners that use global
+resources such as well known ports, well known database names or predictable
+directories on disk.</p>
+<p>One way to solve this is to setup isolated environments such as chroots,
+containers or even separate machines. Such environments typically require
+some coordination when being used to run tests, so testr provides an explicit
+model for working with them.</p>
+<p>The model testr has is intended to support both developers working
+incrementally on a change and CI systems running tests in a one-off setup,
+for both statically and dynamically provisioned environments.</p>
+<p>The process testr follows is:</p>
+<ol class="arabic simple">
+<li><p>The user should perform any one-time or once-per-session setup. For instance,
+checking out source code, creating a template container, sourcing your cloud
+credentials.</p></li>
+<li><p>Execute testr run.</p></li>
+<li><p>testr queries for concurrency.</p></li>
+<li><p>testr will make a callout request to provision that many instances.
+The provisioning callout needs to synchronise source code and do any other
+per-instance setup at this stage.</p></li>
+<li><p>testr will make callouts to execute tests, supplying files that should be
+copied into the execution environment. Note that instances may be used for
+more than one command execution.</p></li>
+<li><p>testr will callout to dispose of the instances after the test run completes.</p></li>
+</ol>
+<p>Instances may be expensive to create and dispose of. testr does not perform
+any caching, but the callout pattern is intended to facilitate external
+caching - the provisioning callout can be used to pull environments out of
+a cache, and the dispose to just return it to the cache.</p>
+<section id="configuring-environment-support">
+<h3>Configuring environment support<a class="headerlink" href="#configuring-environment-support" title="Link to this heading">¶</a></h3>
+<p>There are three callouts that testrepository depends on - configured in
+.testr.conf as usual. For instance:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>instance_provision=foo -c $INSTANCE_COUNT
+instance_dispose=bar $INSTANCE_IDS
+instance_execute=quux $INSTANCE_ID $FILES -- $COMMAND
+</pre></div>
+</div>
+<p>These should operate as follows:</p>
+<ul class="simple">
+<li><p>instance_provision should start up the number of instances provided in the
+$INSTANCE_COUNT parameter. It should print out on stdout the instance ids
+that testr should supply to the dispose and execute commands. There should
+be no other output on stdout (stderr is entirely up for grabs). An exit code
+of non-zero will cause testr to consider the command to have failed. A
+provisioned instance should be able to execute the list tests command and
+execute tests commands that testr will run via the instance_execute callout.
+Its possible to lazy-provision things if you desire - testr doesn’t care -
+but to reduce latency we suggest performing any rsync or other code
+synchronisation steps during the provision step, as testr may make multiple
+calls to one environment, and re-doing costly operations on each command
+execution would impair performance.</p></li>
+<li><p>instance_dispose should take a list of instance ids and get rid of them
+this might mean putting them back in a pool of instances, or powering them
+off, or terminating them - whatever makes sense for your project.</p></li>
+<li><p>instance_execute should accept an instance id, a list of files that need to
+be copied into the instance and a command to run within the instance. It
+needs to copy those files into the instance (it may adjust their paths if
+desired). If the paths are adjusted, the same paths within $COMMAND should be
+adjusted to match. Execution that takes place with a shared filesystem can
+obviously skip file copying or adjusting (and the $FILES parameter). When the
+instance_execute terminates, it should use the exit code that the command
+used within the instance. Stdout and stderr from instance_execute are
+presumed to be that of $COMMAND. In particular, stdout is where the subunit
+test output, and subunit test listing output, are expected, and putting other
+output into stdout can lead to surprising results - such as corrupting the
+subunit stream.
+instance_execute is invoked for both test listing and test executing
+callouts.</p></li>
+</ul>
+</section>
+</section>
+<section id="hiding-tests">
+<h2>Hiding tests<a class="headerlink" href="#hiding-tests" title="Link to this heading">¶</a></h2>
+<p>Some test runners (for instance, zope.testrunner) report pseudo tests having to
+do with bringing up the test environment rather than being actual tests that
+can be executed. These are only relevant to a test run when they fail - the
+rest of the time they tend to be confusing. For instance, the same ‘test’ may
+show up on multiple parallel test runs, which will inflate the ‘executed tests’
+count depending on the number of worker threads that were used. Scheduling such
+‘tests’ to run is also a bit pointless, as they are only ever executed
+implicitly when preparing (or finishing with) a test environment to run other
+tests in.</p>
+<p>testr can ignore such tests if they are tagged, using the filter_tags
+configuration option. Tests tagged with any tag in that (space separated) list
+will only be included in counts and reports if the test failed (or errored).</p>
+</section>
+<section id="automated-test-isolation-bisection">
+<h2>Automated test isolation bisection<a class="headerlink" href="#automated-test-isolation-bisection" title="Link to this heading">¶</a></h2>
+<p>As mentioned above, its possible to manually analyze test isolation issues by
+interrogating the repository for which tests ran on which worker, and then
+creating a list file with those tests, re-running only half of them, checking
+the error still happens, rinse and repeat.</p>
+<p>However that is tedious. testr can perform this analysis for you:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ testr run --analyze-isolation
+</pre></div>
+</div>
+<p>will perform that analysis for you. (This requires that your test runner is
+(mostly) deterministic on test ordering). The process is:</p>
+<ol class="arabic simple">
+<li><p>The last run in the repository is used as a basis for analysing against -
+tests are only cross checked against tests run in the same worker in that
+run. This means that failures accrued from several different runs would not
+be processed with the right basis tests - you should do a full test run to
+seed your repository. This can be local, or just testr load a full run from
+your Jenkins or other remote run environment.</p></li>
+<li><p>Each test that is currently listed as a failure is run in a test process
+given just that id to run.</p></li>
+<li><p>Tests that fail are excluded from analysis - they are broken on their own.</p></li>
+<li><p>The remaining failures are then individually analysed one by one.</p></li>
+<li><p>For each failing, it gets run in one work along with the first 1/2 of the
+tests that were previously run prior to it.</p></li>
+<li><p>If the test now passes, that set of prior tests are discarded, and the
+other half of the tests is promoted to be the full list. If the test fails
+then other other half of the tests are discarded and the current set
+promoted.</p></li>
+<li><p>Go back to running the failing test along with 1/2 of the current list of
+priors unless the list only has 1 test in it. If the failing test still
+failed with that test, we have found the isolation issue. If it did not
+then either the isolation issue is racy, or it is a 3-or-more test
+isolation issue. Neither of those cases are automated today.</p></li>
+</ol>
+</section>
+<section id="forcing-isolation">
+<h2>Forcing isolation<a class="headerlink" href="#forcing-isolation" title="Link to this heading">¶</a></h2>
+<p>Sometimes it is useful to force a separate test runner instance for each test
+executed. The <code class="docutils literal notranslate"><span class="pre">--isolated</span></code> flag will cause testr to execute a separate runner
+per test:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ testr run --isolated
+</pre></div>
+</div>
+<p>In this mode testr first determines tests to run (either automatically listed,
+using the failing set, or a user supplied load-list), and then spawns one test
+runner per test it runs. To avoid cross-test-runner interactions concurrency
+is disabled in this mode. <code class="docutils literal notranslate"><span class="pre">--analyze-isolation</span></code> supercedes <code class="docutils literal notranslate"><span class="pre">--isolated</span></code> if
+they are both supplied.</p>
+</section>
+<section id="repositories">
+<h2>Repositories<a class="headerlink" href="#repositories" title="Link to this heading">¶</a></h2>
+<p>A testr repository is a very simple disk structure. It contains the following
+files (for a format 1 repository - the only current format):</p>
+<ul class="simple">
+<li><p>format: This file identifies the precise layout of the repository, in case
+future changes are needed.</p></li>
+<li><p>next-stream: This file contains the serial number to be used when adding another
+stream to the repository.</p></li>
+<li><p>failing: This file is a stream containing just the known failing tests. It
+is updated whenever a new stream is added to the repository, so that it only
+references known failing tests.</p></li>
+<li><p>#N - all the streams inserted in the repository are given a serial number.</p></li>
+<li><p>repo.conf: This file contains user configuration settings for the repository.
+<code class="docutils literal notranslate"><span class="pre">testr</span> <span class="pre">repo-config</span></code> will dump a repo configration and
+<code class="docutils literal notranslate"><span class="pre">test</span> <span class="pre">help</span> <span class="pre">repo-config</span></code> has online help for all the repository settings.</p></li>
+</ul>
+</section>
+<section id="setuptools-integration">
+<h2>setuptools integration<a class="headerlink" href="#setuptools-integration" title="Link to this heading">¶</a></h2>
+<p>testrepository provides a setuptools commands for ease of integration with
+setuptools-based workflows:</p>
+<ul class="simple">
+<li><p>testr:
+<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">testr</span></code> will run testr in parallel mode
+Options that would normally be passed to testr run can be added to the
+testr-options argument.
+<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">testr</span> <span class="pre">--testr-options=&quot;--failing&quot;</span></code> will append –failing
+to the test run.</p></li>
+<li><p>testr –coverage:
+<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">testr</span> <span class="pre">--coverage</span></code> will run testr in code coverage mode. This
+assumes the installation of the python coverage module.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">testr</span> <span class="pre">--coverage</span> <span class="pre">--omit=ModuleThatSucks.py</span></code> will append
+–omit=ModuleThatSucks.py to the coverage report command.</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Test Repository users manual</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a><ul>
+<li><a class="reference internal" href="#python">Python</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#running-tests">Running tests</a></li>
+<li><a class="reference internal" href="#listing-tests">Listing tests</a></li>
+<li><a class="reference internal" href="#parallel-testing">Parallel testing</a></li>
+<li><a class="reference internal" href="#grouping-tests">Grouping Tests</a></li>
+<li><a class="reference internal" href="#remote-or-isolated-test-environments">Remote or isolated test environments</a><ul>
+<li><a class="reference internal" href="#configuring-environment-support">Configuring environment support</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#hiding-tests">Hiding tests</a></li>
+<li><a class="reference internal" href="#automated-test-isolation-bisection">Automated test isolation bisection</a></li>
+<li><a class="reference internal" href="#forcing-isolation">Forcing isolation</a></li>
+<li><a class="reference internal" href="#repositories">Repositories</a></li>
+<li><a class="reference internal" href="#setuptools-integration">setuptools integration</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="index.html"
+                          title="previous chapter">Welcome to Test Repository’s documentation!</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="DESIGN.html"
+                          title="next chapter">Design / Architecture of Test Repository</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/MANUAL.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="DESIGN.html" title="Design / Architecture of Test Repository"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to Test Repository’s documentation!"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Test Repository  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Test Repository users manual</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2012, Testrepository Contributors.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

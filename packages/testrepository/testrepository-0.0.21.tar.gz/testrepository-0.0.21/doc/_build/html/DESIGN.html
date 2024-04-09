@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Design / Architecture of Test Repository &#8212; Test Repository  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css?v=601dbdee" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Development guidelines for Test Repository" href="DEVELOPERS.html" />
+    <link rel="prev" title="Test Repository users manual" href="MANUAL.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="DEVELOPERS.html" title="Development guidelines for Test Repository"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="MANUAL.html" title="Test Repository users manual"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Test Repository  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Design / Architecture of Test Repository</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="design-architecture-of-test-repository">
+<h1>Design / Architecture of Test Repository<a class="headerlink" href="#design-architecture-of-test-repository" title="Link to this heading">¶</a></h1>
+<section id="values">
+<h2>Values<a class="headerlink" href="#values" title="Link to this heading">¶</a></h2>
+<p>Code reuse.
+Focus on the project.
+Do one thing well.</p>
+</section>
+<section id="goals">
+<h2>Goals<a class="headerlink" href="#goals" title="Link to this heading">¶</a></h2>
+<p>Achieve a Clean UI, responsive UI, small-tools approach. Simulataneously have
+a small clean code base which is easily approachable.</p>
+</section>
+<section id="data-model-storage">
+<h2>Data model/storage<a class="headerlink" href="#data-model-storage" title="Link to this heading">¶</a></h2>
+<p>testrepository stores subunit streams as subunit streams in .testrespository
+with simple additional metadata. See the MANUAL for documentation on the
+repository layout. The key design elements are that streams are stored
+verbatim, and a testr managed stream called ‘failing’ is used  to track the
+current failures.</p>
+</section>
+<section id="code-layout">
+<h2>Code layout<a class="headerlink" href="#code-layout" title="Link to this heading">¶</a></h2>
+<p>One conceptual thing per module, packages for anything where multiple types
+are expected (e.g. testrepository.commands, testrespository.ui).</p>
+<p>Generic driver code should not trigger lots of imports: code dependencies
+should be loaded when needed. For example, argument validation uses argument
+types that each command can import, so the core code doesn’t need to know about
+all types.</p>
+<p>The tests for the code in testrepository.foo.bar is in
+testrepository.tests.foo.test_bar. Interface tests for testrepository.foo is
+in testrepository.tests.test_foo.</p>
+</section>
+<section id="external-integration">
+<h2>External integration<a class="headerlink" href="#external-integration" title="Link to this heading">¶</a></h2>
+<p>Test Repository command, ui, parsing etc objects should all be suitable for
+reuse from other programs.</p>
+</section>
+<section id="threads-concurrency">
+<h2>Threads/concurrency<a class="headerlink" href="#threads-concurrency" title="Link to this heading">¶</a></h2>
+<p>In general using any public interface is fine, but keeping syncronisation
+needs to a minimum for code readability.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Design / Architecture of Test Repository</a><ul>
+<li><a class="reference internal" href="#values">Values</a></li>
+<li><a class="reference internal" href="#goals">Goals</a></li>
+<li><a class="reference internal" href="#data-model-storage">Data model/storage</a></li>
+<li><a class="reference internal" href="#code-layout">Code layout</a></li>
+<li><a class="reference internal" href="#external-integration">External integration</a></li>
+<li><a class="reference internal" href="#threads-concurrency">Threads/concurrency</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="MANUAL.html"
+                          title="previous chapter">Test Repository users manual</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="DEVELOPERS.html"
+                          title="next chapter">Development guidelines for Test Repository</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/DESIGN.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="DEVELOPERS.html" title="Development guidelines for Test Repository"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="MANUAL.html" title="Test Repository users manual"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Test Repository  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Design / Architecture of Test Repository</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2012, Testrepository Contributors.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>
