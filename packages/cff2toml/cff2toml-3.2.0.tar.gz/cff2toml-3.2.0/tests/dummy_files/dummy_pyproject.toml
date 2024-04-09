@@ -1,0 +1,37 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "someuncooltool"
+version = "0.0.1"
+description = "A module that does something uncool."
+readme = "README.md"
+requires-python = ">=3.8"
+license = "Apache-1.0"
+keywords = []
+authors = [
+  { name = "Will Riley", email = "test1@willriley.net" },
+  { name = "Willy Riley", email = "test2@willriley.net" }
+]
+classifiers = [
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = ["toml==0.10.2", "PyYAML==6.0.1"]
+
+[project.urls]
+Documentation = "https://github.com/willynilly/somewhereuncool#readme"
+Issues = "https://github.com/willynilly/somewhereuncool/issues"
+Source = "https://github.com/willynilly/somewhereuncool"
+
+[project.optional-dependencies]
+testing = [
+    "pytest==8.1.1",
+]
