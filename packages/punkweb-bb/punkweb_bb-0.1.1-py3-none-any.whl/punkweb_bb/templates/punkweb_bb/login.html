@@ -1,0 +1,42 @@
+{% extends 'punkweb_bb/base.html' %}
+{% load static %}
+
+{% block title_prefix %}Login | {% endblock%}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'punkweb_bb/css/login.css' %}" />
+{% endblock %}
+
+{% block content %}
+
+<nav>
+  <ul class="pw-breadcrumb">
+    <li class="pw-breadcrumb-item">
+      <a href="{% url 'punkweb_bb:index' %}">Home</a>
+    </li>
+    <li class="pw-breadcrumb-item active">
+      Login
+    </li>
+  </ul>
+</nav>
+
+<div class="pw-card center">
+  <div class="pw-card-header">Login</div>
+  <div class="pw-card-content">
+    <form class="loginForm" action="{% url 'punkweb_bb:login' %}" method="post">
+      {% csrf_token %}
+      {% for field in form %}
+      <div class="loginForm__field">
+        <label class="pw-input-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+      </div>
+      {% endfor %}
+      {% if form.non_field_errors %}
+      {{ form.non_field_errors }}
+      {% endif %}
+      <button class="pw-button fluid raised primary" type="submit">Login</button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
