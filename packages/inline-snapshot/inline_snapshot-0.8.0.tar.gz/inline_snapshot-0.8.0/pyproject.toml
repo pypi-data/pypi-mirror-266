@@ -1,0 +1,89 @@
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0"]
+
+[tool.commitizen]
+changelog_incremental = true
+major_version_zero = true
+tag_format = "v$major.$minor.$patch$prerelease"
+update_changelog_on_bump = true
+version_files = [
+  "inline_snapshot/__init__.py:version"
+]
+version_provider = "poetry"
+
+[tool.coverage.paths]
+source = [
+  "./",
+  ".nox/test-*/lib/python*/site-packages/"
+]
+
+[tool.coverage.report]
+exclude_lines = ["pragma: no cover", "assert False", "raise NotImplemented", "\\.\\.\\."]
+
+[tool.coverage.run]
+branch = true
+data_file = "$TOP/.coverage"
+parallel = true
+source = [
+  "tests",
+  "inline_snapshot",
+  ".nox/test-*/lib/python*/site-packages"
+]
+
+[tool.poetry]
+authors = ["Frank Hoffmann <15r10nk@polarbit.de>"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Framework :: Pytest",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+  "Topic :: Software Development :: Testing",
+  "Framework :: Pytest"
+]
+description = "golden master/snapshot/approval testing library which puts the values right into your source code"
+keywords = ["pytest", "testing", "snapshot", "approval", "golden-master"]
+license = "MIT"
+name = "inline-snapshot"
+readme = "README.md"
+repository = "https://github.com/15r10nk/inline-snapshots"
+version = "0.8.0"
+
+[tool.poetry.dependencies]
+asttokens = ">=2.0.5"
+black = ">=23.3.0"
+click = ">=8.1.4"
+executing = ">=2.0.0"
+python = ">=3.7"
+toml = ">=0.10.2"
+types-toml = ">=0.10.8.7"
+
+[tool.poetry.group.dev.dependencies]
+coverage = ">=7.2.3"
+coverage-enable-subprocess = ">=1.0"
+dirty-equals = ">=0.7.0"
+hypothesis = ">=6.75.5"
+mypy = ">=1.2.0"
+pytest = ">=7.1"
+pytest-subtests = ">=0.11.0"
+pytest-xdist = {extras = ["psutil"], version = ">=3.2.1"}
+time-machine = ">=2.10.0"
+
+[tool.poetry.group.doc.dependencies]
+mkdocs = ">=1.4.2"
+mkdocs-material = {extras = ["imaging"], version = ">=8.5.10"}
+mkdocstrings = {extras = ["python-legacy"], version = ">=0.19.0"}
+
+[tool.poetry.plugins.pytest11]
+inline_snapshot = "inline_snapshot.pytest_plugin"
+
+[tool.poetry.urls]
+Changelog = "https://15r10nk.github.io/inline-snapshot/changelog/"
+Discussions = "https://15r10nk.github.io/inline-snapshot/discussions"
+Documentation = "https://15r10nk.github.io/inline-snapshot"
+Funding = "https://github.com/sponsors/15r10nk"
+Homepage = "https://15r10nk.github.io/inline-snapshot"
+Issues = "https://github.com/15r10nk/inline-snapshots/issues"
+Repository = "https://github.com/15r10nk/inline-snapshot/"
