@@ -1,0 +1,26 @@
+{% extends 'stela_control/base.html' %}
+{% load i18n %}
+{% load humanize %}
+{% load hosts %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block styles %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    {% block section_styles %}
+    {% endblock  %}
+{% endblock  %}
+{% block content %}
+  {% block template_content %}
+  {% endblock  %} 
+{% endblock  %}
+{% block inside_scripts %}
+  <script src="https://stelacdn.s3.amazonaws.com/static/js/stela/contenido/stela_templates/particle_reveal.js"></script>
+  <script src="https://stelacdn.s3.amazonaws.com/static/js/stela/contenido/stela_templates/newsHeroSlider.js"></script>
+  <script src="https://stelacdn.s3.amazonaws.com/static/js/stela/contenido/stela_templates/faq_section.js"></script>
+  <script src="https://stelacdn.s3.amazonaws.com/static/js/stela/contenido/stela_templates/consultingBooking.js"></script>
+{% endblock  %}
+
+
+
+

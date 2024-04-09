@@ -1,0 +1,33 @@
+{% load i18n %}
+{% load crispy_forms_tags %}
+<div class="row">
+    <div class="col-lg-12">
+        {{form.title|as_crispy_field}}
+    </div>
+    <div class="col-lg-12">
+        {{form.subtitle|as_crispy_field}}
+    </div>
+    <div class="col-lg-6">
+        {{form.status|as_crispy_field}}
+    </div>
+    <div class="col-lg-6">
+        {{form.category|as_crispy_field}}
+    </div>
+    <div class="col-12 {% if form.media.errors %}has-danger{% endif %}">
+        <label for="">{% trans "Image" %}</label>
+        {{form.media|as_crispy_field}}
+    </div>
+    <div class="col-12 {% if form.folder_doc.errors %}has-danger{% endif %}">
+        {{form.folder_doc|as_crispy_field}}
+    </div>
+    <div class="col-lg-12">
+        {{form.content|as_crispy_field}}
+    </div>
+</div>
+<input type="hidden" name="form-id" value="{{form_name}}">
+<input type="hidden" name="ckeditor" value="cke_content">
+<input type="hidden" name="form-url" value="/validations/stela-story/">
+
+{% if pk %}
+    <input type="hidden" name="pk" value="{{pk}}">
+{% endif %}
