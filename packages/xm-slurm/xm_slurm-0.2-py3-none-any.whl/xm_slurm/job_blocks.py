@@ -1,0 +1,14 @@
+from xmanager import xm
+
+
+def get_args_for_python_entrypoint(
+    entrypoint: xm.ModuleName | xm.CommandList,
+) -> xm.SequentialArgs:
+    match entrypoint:
+        case xm.ModuleName():
+            entrypoint_args = ["-m", entrypoint.module_name]
+        case xm.CommandList():
+            entrypoint_args = entrypoint.commands
+        case _:
+            raise TypeError(f"Invalid entrypoint type: {type(entrypoint)}")
+    return xm.SequentialArgs.from_collection(entrypoint_args)
