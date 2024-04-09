@@ -1,0 +1,74 @@
+[tool.coverage.run]
+branch = true
+source = [ "traceloop/sdk" ]
+
+[tool.coverage.report]
+exclude_lines = [ "if TYPE_CHECKING:" ]
+show_missing = true
+
+[tool.poetry]
+name = "traceloop-sdk"
+version = "0.15.13"
+description = "Traceloop Software Development Kit (SDK) for Python"
+authors = [
+  "Gal Kleinman <gal@traceloop.com>",
+  "Nir Gazit <nir@traceloop.com>",
+  "Tomer Friedman <tomer@traceloop.com>"
+]
+repository = "https://github.com/traceloop/openllmetry"
+documentation = "https://traceloop.com/docs/openllmetry"
+license = "Apache-2.0"
+readme = "README.md"
+
+[[tool.poetry.packages]]
+include = "traceloop/sdk"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4"
+opentelemetry-api = "^1.24.0"
+opentelemetry-sdk = "^1.24.0"
+opentelemetry-exporter-otlp-proto-http = "^1.24.0"
+opentelemetry-exporter-otlp-proto-grpc = "^1.24.0"
+opentelemetry-instrumentation-requests = "^0.45b0"
+opentelemetry-instrumentation-sqlalchemy = "^0.45b0"
+opentelemetry-instrumentation-urllib3 = "^0.45b0"
+opentelemetry-semantic-conventions-ai = "0.1.1"
+opentelemetry-instrumentation-openai = "==0.15.13"
+opentelemetry-instrumentation-anthropic = "==0.15.13"
+opentelemetry-instrumentation-cohere = "==0.15.13"
+opentelemetry-instrumentation-pinecone = "==0.15.13"
+opentelemetry-instrumentation-qdrant = "==0.15.13"
+opentelemetry-instrumentation-langchain = "==0.15.13"
+opentelemetry-instrumentation-chromadb = "==0.15.13"
+opentelemetry-instrumentation-transformers = "==0.15.13"
+opentelemetry-instrumentation-llamaindex = "==0.15.13"
+opentelemetry-instrumentation-haystack = "==0.15.13"
+opentelemetry-instrumentation-bedrock = "==0.15.13"
+opentelemetry-instrumentation-replicate = "==0.15.13"
+opentelemetry-instrumentation-vertexai = "==0.15.13"
+opentelemetry-instrumentation-watsonx = "==0.15.13"
+opentelemetry-instrumentation-weaviate = "==0.15.13"
+colorama = "^0.4.6"
+tenacity = "^8.2.3"
+pydantic = ">=1"
+jinja2 = "^3.1.2"
+deprecated = "^1.2.14"
+posthog = "^3.0.2"
+tiktoken = "^0.6.0"
+
+[tool.poetry.group.dev.dependencies]
+autopep8 = "2.1.0"
+flake8 = "7.0.0"
+pytest = "8.1.1"
+pytest-sugar = "1.0.0"
+
+[tool.poetry.group.test.dependencies]
+openai = "^1.7.1"
+vcrpy = "^6.0.1"
+pytest-recording = "^0.13.1"
+pydantic = "<2"
+pytest-asyncio = "^0.23.5"
+
+[build-system]
+requires = [ "poetry-core" ]
+build-backend = "poetry.core.masonry.api"
