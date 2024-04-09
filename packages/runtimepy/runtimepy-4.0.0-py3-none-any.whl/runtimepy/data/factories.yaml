@@ -1,0 +1,37 @@
+---
+# Connection factories.
+factories:
+  # JSON messaging.
+  - {name: runtimepy.net.factories.TcpJson}
+  - {name: runtimepy.net.factories.UdpJson}
+  - {name: runtimepy.net.factories.WebsocketJson}
+
+  # Echo and null connections (useful for testing and debugging).
+  - {name: runtimepy.net.factories.TcpEcho, namespaces: [tcp, echo]}
+  - {name: runtimepy.net.factories.UdpEcho, namespaces: [udp, echo]}
+  - name: runtimepy.net.factories.WebsocketEcho
+    namespaces: [websocket, echo]
+  - {name: runtimepy.net.factories.TcpNull, namespaces: [tcp, "null"]}
+  - {name: runtimepy.net.factories.UdpNull, namespaces: [udp, "null"]}
+  - name: runtimepy.net.factories.WebsocketNull
+    namespaces: [websocket, "null"]
+
+  # Useful protocols.
+  - {name: runtimepy.net.factories.Http}
+  - {name: runtimepy.net.factories.RuntimepyHttp}
+  - {name: runtimepy.net.factories.RuntimepyWebsocketJson}
+  - {name: runtimepy.net.factories.RuntimepyWebsocketData}
+
+  # Useful tasks.
+  - {name: runtimepy.task.trig.Sinusoid}
+  - {name: runtimepy.task.sample.Sample}
+
+  # Useful structs.
+  - {name: runtimepy.net.arbiter.struct.SampleStruct}
+  - {name: runtimepy.net.server.struct.UiState}
+
+ports:
+  # Reserve ports for JSON listeners.
+  - {name: udp_json, type: udp}
+  - {name: tcp_json, type: tcp}
+  - {name: websocket_json, type: tcp}
