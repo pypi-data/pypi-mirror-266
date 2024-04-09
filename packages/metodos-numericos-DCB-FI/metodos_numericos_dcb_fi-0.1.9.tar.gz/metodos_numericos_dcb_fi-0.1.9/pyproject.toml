@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "metodos_numericos_DCB_FI"
+version = "0.1.9"
+description = "Biblioteca con las utilidades necesarias para ejecutar los jupyter notebooks de métodos numéricos."
+authors = ["Guillermo Hernández Ruiz de Esparza <guillermo.hre@gmail.com>"]
+license = "MIT License"
+
+[tool.poetry.dependencies]
+python = ">=3.9.0"
+"typing"="3.7.4.3"
+"sympy"="1.12"
+"numpy"="1.26.4"
+"pandas"="2.2.1"
+"ipython"="8.18.1"
+"pathlib"="1.0.1"
+"plotly"="5.19.0"
+"nbformat"="5.9.2"
+"scipy"="1.13.0"
+
+
+[tool.pyright]
+# https://github.com/microsoft/pyright/blob/main/docs/configuration.md
+useLibraryCodeForTypes = true
+exclude = [".cache"]
+
+[tool.ruff]
+# https://beta.ruff.rs/docs/configuration/
+select = ['E', 'W', 'F', 'I', 'B', 'C4', 'ARG', 'SIM']
+ignore = ['W291', 'W292', 'W293']
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
