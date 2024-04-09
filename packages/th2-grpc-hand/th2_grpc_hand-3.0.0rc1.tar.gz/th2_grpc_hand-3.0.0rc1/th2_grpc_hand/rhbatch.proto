@@ -1,0 +1,95 @@
+/*
+ * Copyright 2020-2021 Exactpro (Exactpro Systems Limited)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.exactpro.th2.act.grpc.hand";
+
+import "th2_grpc_hand/rhactionsmessages_web.proto";
+import "th2_grpc_hand/rhactionsmessages_win.proto";
+import "th2_grpc_common/common.proto";
+import "google/protobuf/empty.proto";
+
+service RhBatch {
+  rpc register(RhTargetServer) returns (RhSessionID) {}
+  rpc unregister(RhSessionID) returns (google.protobuf.Empty) {}
+  rpc executeRhActionsBatch(RhActionsBatch) returns (RhBatchResponse) {}
+}
+
+message RhSessionID {
+    string id = 1;
+    string sessionAlias = 2;
+}
+
+message RhTargetServer {
+    string target = 1;
+}
+
+message ResultDetails {
+    string actionId = 1;
+    string result = 2;
+}
+
+message RhBatchResponse {
+
+    enum ScriptExecutionStatus {
+        SUCCESS = 0;
+        COMPILE_ERROR = 1;
+        EXECUTION_ERROR = 2;
+        HAND_INTERNAL_ERROR = 3;
+    }
+
+    ScriptExecutionStatus scriptStatus = 1;
+    string errorMessage = 2;
+    repeated ResultDetails result = 3;
+    string sessionId = 4;
+    string execution_id = 5;
+    MessageType message_type = 6;
+}
+
+// Represents list of RhActions which need to be executed to perform some operation user wants to
+message RhActionsBatch {
+    RhSessionID sessionId = 1;
+    EventID parentEventId = 3;
+    string eventName = 4;
+    bool storeActionMessages = 5;
+    RhActionList rhAction = 6;
+    AdditionalEventInfo additionalEventInfo = 7;
+    string execution_id = 8;
+    MessageType message_type = 9;
+
+    message AdditionalEventInfo {
+        bool printTable = 1;
+        string requestParamsTableTitle = 2;
+        repeated string keys = 3;
+        repeated string values = 4;
+        
+        string description = 5;
+    }    
+}
+
+message RhActionList {
+  oneof list {
+      RhWebActionList web = 1;
+      RhWinActionList win = 2;
+  }
+}
+
+enum MessageType {
+    PLAIN_STRING = 0;
+    FIX = 1;
+} 
