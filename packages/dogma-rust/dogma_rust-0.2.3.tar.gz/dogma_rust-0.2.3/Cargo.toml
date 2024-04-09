@@ -1,0 +1,19 @@
+[package]
+name = "dogma-rust"
+version = "0.2.3"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+name = "dogma_rust"
+crate-type = ["cdylib"]
+
+[dependencies]
+anyhow = "1.0.81"
+chrono = "0.4.37"
+eyre = "0.6.12"
+num-bigint = "0.4.4"
+numpy = "0.21.0"
+pyo3 = {version = "0.21.0", features = ["extension-module"]}
+rand = "0.8.5"
+rayon = "1.10.0"
