@@ -1,0 +1,72 @@
+Metadata-Version: 2.1
+Name: trinnov-altitude
+Version: 0.1.0
+Summary: Python client for interfacing with the Trinnov Altitude processor
+Home-page: https://github.com/binarylogic/py-trinnov-altitude
+Author: Ben Johnson
+Author-email: ben@binarylogic.com
+License: Apache 2.0
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Home Automation
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# Trinnov Altitude Python Library
+
+A Python library for interacting with the [Trinnov Altitude processor](https://www.trinnov.com/en/products/altitude32/) via the TCP/IP
+automation protocol provided by the Trinnov Altitude.
+
+## Overview
+
+The Trinnov Altitude processor is simply a computer that exposes an automation
+protocol over TCP/IP or RS232 serial link for remote control. This library uses
+the TCP/IP interface.
+
+The interface is a two-way communication protocol. At any time the processor
+can broadcast messages to all connected client reflecting processor state
+changes, and these messages are in no gauranteed order. For example, the user
+could turn the volume knob on the processor itself which would broad volume
+change messages to all clients.
+
+Therefore, it's important to architect usage of this library to handle state
+changes asynchronously. You should not be polling the processor for state
+changes. Instead, you should receive messages and process them in real-time.
+
+## Basic Usage
+
+### Connect
+
+```python
+from trinnov_altitude.trinnov_altitude import TrinnovAltitude
+
+# Instantiate the Trinnov Altitude client. Adjust the `host` and `client_id`
+# accordingly.
+altitude = TrinnovAltitude(host = "192.168.1.90", client_id = "my_altitude_integration")
+
+# Connect to the Trinnov Altitude processor
+await altitude.connect()
+
+# Shortly after connecting, the processor will send a group of messages
+# reflecting the current state. The `sync` method receives _all_ messages
+# and updates it's state accordingly.
+await altitude.sync()
+
+# See the current volume level
+altitude.volume
+
+# Change the processor's volume
+await altitude.set_volume(-45)
+
+# Sync again
+await altitude.sync()
+
+# See the current volume level which should reflect the new value
+altitude.volume
+
+# Disconnect
+await altitude.disconnect()
+```
