@@ -1,0 +1,175 @@
+[tool.poetry]
+name = "gzspidertools"
+version = "0.0.18"
+description = "魔改使用工具库"
+authors = ["George <persistencehoo@gmail.com>"]
+maintainers = ["George <persistencehoo@gmail.com>"]
+readme = "README.md"
+packages = [{ include = "gzspidertools" }]
+repository = "https://github.com/georgeJzzz/gzspidertools"
+keywords = ["crawler", "scraping", "aiohttp", "asyncio", "scrapy"]
+
+[tool.poetry.dependencies]
+python = "^3.8.1"
+PyMySQL = "^1.0.2"
+loguru = "~0.7.0"
+requests = "^2.28.1"
+Scrapy = "2.11.1"
+retrying = "^1.3.3"
+SQLAlchemy = "^2.0.23"
+DBUtils = "^3.0.2"
+itemadapter = "^0.7.0"
+aiohttp = "~3.9.3"
+aiomysql = "^0.1.1"
+pika = "~1.3.2"
+kafka-python = "2.0.2"
+motor = [
+    { version = "2.5.1", python = "<3.11" },
+    { version = "3.3.0", python = ">=3.11" },
+]
+pymongo = [
+    { version = "^3.12.3", python = "<3.11" },
+    { version = "^4.5.0", python = ">=3.11" },
+]
+mmh3 = { version = "^3.0.0", optional = true }
+pycryptodome = { version = "^3.15.0", optional = true }
+python-hcl2 = { version = "^4.3.0", optional = true }
+pyyaml = { version = "~6.0", optional = true }
+opencv-python = { version = "~4.8.0.74", optional = true }
+Pillow = { version = "^9.2.0", optional = true }
+numpy = [
+    { version = "~1.24.3", python = "<3.9", optional = true },
+    { version = "~1.26.0", python = ">=3.9,<3.13", optional = true },
+]
+psycopg = { version = "^3.1.13", optional = true }
+psycopg-binary = { version = "^3.1.13", optional = true }
+psycopg-pool = { version = "^3.2.0", optional = true }
+oracledb = { version = "^1.4.2", optional = true }
+elasticsearch-dsl = { version = "^8.11.0", optional = true }
+oss2 = { version = "^2.18.4", optional = true }
+redis = "^4.0.0"
+#redis-py-cluster = { version = "^2.1.3", optional = false }
+drissionpage = "4.0.4.5"
+scrapy-redis = "0.7.3"
+
+[tool.poetry.scripts]
+gzcmd = "gzspidertools.utils.cmdline:execute"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.1.3"
+black = "23.9.1"
+isort = "5.12.0"
+sphinx-rtd-theme = "1.2.0"
+coverage = "^7.2.2"
+tox = "^4.4.8"
+flake8 = "6.1.0"
+testfixtures = "^7.1.0"
+myst-parser = "1.0.0"
+sphinx-markdown-tables = "0.0.17"
+sphinx-hoverxref = "1.3.0"
+sphinx-notfound-page = "0.8.3"
+mypy = "~1.5.1"
+pre-commit = "3.4.0"
+toml = "0.10.2"
+
+[tool.poetry.extras]
+all = [
+    "mmh3", "pycryptodome", "python-hcl2", "pyyaml", "opencv-python", "numpy", "Pillow", "psycopg", "psycopg-binary",
+    "psycopg-pool", "oracledb", "elasticsearch-dsl", "oss2"
+]
+database = ["psycopg", "psycopg-binary", "psycopg-pool", "oracledb", "elasticsearch-dsl"]
+
+[[tool.poetry.source]]
+name = "aliyun"
+url = "https://mirrors.aliyun.com/pypi/simple"
+priority = "default"
+
+[[tool.poetry.source]]
+name = "PyPI"
+priority = "primary"
+
+[tool.pytest.ini_options]
+xfail_strict = true
+python_files = "test_*.py __init__.py"
+python_classes = "Test*"
+testpaths = [
+    "tests",
+]
+norecursedirs = ["dist", "build", "docs", "examples"]
+addopts = "--assert=plain --doctest-modules --reactor=asyncio"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore:scrapy.downloadermiddlewares.decompression is deprecated",
+    "ignore:Module scrapy.utils.reqser is deprecated",
+    "ignore:typing.re is deprecated",
+    "ignore:typing.io is deprecated"
+]
+
+[tool.coverage.run]
+branch = true
+source = ["gzspidertools"]
+parallel = true
+omit = [
+    "tests/docs/*",
+    "tests/VIT/*",
+    "tests/conftest.py",
+    "tests/**/__init__.py",
+    "gzspidertools/**/__init__.py",
+    "gzspidertools/utils/cmdline.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "if __name__ == '__main__':",
+    "pragma: no cover",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "__repr__",
+    "__str__",
+]
+precision = 2
+fail_under = 30
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+[tool.coverage.xml]
+output = "coverage.xml"
+
+[tool.black]
+line-length = 88
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+python_version = "3.8"
+ignore_missing_imports = true
+disable_error_code = ["attr-defined", "arg-type", "union-attr"]
+
+[[tool.mypy.overrides]]
+module = [
+    "yaml",
+    "toml",
+    "pymysql",
+    "pymysql.connections",
+    "pymysql.cursors",
+    "requests",
+]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "gzspidertools.items"
+ignore_errors = "True"
+
+[[tool.mypy.overrides]]
+module = "gzspidertools.common.typevars"
+ignore_errors = "True"
+
+[[tool.mypy.overrides]]
+module = "tests.mockserver"
+ignore_errors = "True"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
