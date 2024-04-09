@@ -1,0 +1,31 @@
+{% block before %}{% endblock %}
+<frame pos="{{ widget_x }} {{ widget_y }}"
+       class="{% if distraction_hide %}distraction-hide{% else %}{% endif %}"
+       {% if z_index %}z-index="{{ z_index }}"{% endif %}
+>
+  {% block title %}
+    {% if title %}
+      <quad pos="0 0" z-index="0" size="35 6" bgcolor="00000099"/>
+      {% if open_action %}
+        <label pos="17.5 -3" z-index="1" size="35 6" text="{{ title }}" textfont="RajdhaniMono" textsize="2.0" textemboss="1" halign="center" valign="center2"
+               action="{{ id }}__open_widget" scriptevents="1"/>
+        <label pos="33 -3" z-index="2" size="4 6" text="&#xf08e;" textsize="1.0"  halign="center" valign="center2" action="{{ id }}__open_widget" scriptevents="1"/>
+      {% else %}
+        <label pos="17.5 -3" z-index="1" size="35 6" text="{{ title }}" textfont="RajdhaniMono" textsize="2.0" textemboss="1" halign="center" valign="center2"/>
+      {% endif %}
+    {% endif %}
+  {% endblock %}
+
+  <frame pos="0 {% if title %}-6.5{% else %}0{% endif %}">
+    {% block content %}{% endblock %}
+  </frame>
+</frame>
+{% block after %}{% endblock %}
+
+{% block maniascript %}
+  {% if _game.game == 'tmnext' %}
+    <script><!-- {% include 'core.views/generics/widget_next.Script.Txt' %} --></script>
+  {% else %}
+    <script><!-- {% include 'core.views/generics/widget.Script.Txt' %} --></script>
+  {% endif %}
+{% endblock %}
