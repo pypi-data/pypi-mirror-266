@@ -1,0 +1,130 @@
+Metadata-Version: 2.1
+Name: notion2pandas
+Version: 0.9.2
+Summary: Notion Client extension to import notion Database into pandas Dataframe
+Home-page: https://gitlab.com/Jaeger87/notion2pandas
+Author: Andrea Rosati
+Author-email: rosati.1595834@gmail.com
+License: MIT
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.9, <4
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: notion-client
+Requires-Dist: pandas
+
+# Notion2Pandas
+<p align="center">
+<img src="https://gitlab.com/Jaeger87/notion2pandas/-/raw/main/readme_assets/logo.png?ref_type=heads"  class="center">
+</p> <p align="center">
+
+Notion2Pandas is a Python 3 package that extends the capabilities of the excellent [notion-sdk-py](https://ramnes.github.io/notion-sdk-py/) by [Ramnes](https://github.com/ramnes),  It enables the seamless import of a Notion database into a pandas dataframe and vice versa, requiring just a single line of code.
+
+
+## Installation
+
+```
+pip install notion2pandas
+```
+
+## Usage
+
+<p align="center">
+<img src="https://gitlab.com/Jaeger87/notion2pandas/-/raw/main/readme_assets/notiondb2pandas.gif?ref_type=heads"  class="center">
+</p> <p align="left">
+
+* As shown in the gif, you just need to import the Notion2PandasClient class, 
+```python
+from notion2pandas import Notion2PandasClient
+```
+* create an instance by passing your authentication token 
+```python
+n2p = Notion2PandasClient(auth=os.environ["NOTION_TOKEN"])
+```
+* use the 'from_notion_DB_to_dataframe' method to get the data into a dataframe. 
+```python
+n2p.update_notion_DB_from_dataframe(os.environ["DATABASE_ID"], df)
+```
+* When you're done working with your dataframe, use the 'update_notion_DB_from_dataframe' method to save the data back to Notion.
+```python
+n2p.update_notion_DB_from_dataframe(databaseID, df)
+```
+
+## PageID and Row_Hash
+
+As you can see, in the pandas dataframe there are two additional columns compared to those in the original database, PageID and Row_Hash. As you can imagine, PageID it's the ID related to the page of that entry in Notion. Row_Hash is a value calculated based on the fields' values of the entry, this value is used by the update_notion_DB_from_dataframe function to determine if a row in the dataframe has been modified, and if not, it avoids making the API call to Notion for that row. Any change to those functions can lead to malfunctions, so please do not change them!
+
+## Utility functions
+
+Notion2Pandas is a class that extend [Client](https://github.com/ramnes/notion-sdk-py/blob/main/notion_client/client.py)  from notion_client, so you can find every feature present in notion_client. In addition to the functions for importing and exporting dataframes, I've added some other convenient functions that wrap the usage of the notion_client functionality and allow them to be used more directly. These are:
+
+* get_database_columns(database_ID)
+* create_page(page_ID)
+* update_page(page_ID)
+* retrieve_page(page_ID)
+* delete_page(page_ID)
+* retrieve_block(block_ID)
+* retrieve_block_children_list(block_ID)
+* update_block(block_ID, field, field_value_updated)
+
+## read_write_lambdas
+
+Notion2Pandas has the ability to transform a Notion database into a Pandas dataframe without having to specify how to parse the data. However, in some cases, the default parsing may not be what you want to achieve. Therefore, it's possible to specify how to parse the data. In Notion2Pandas, each data type in Notion is associated with a tuple consisting of two functions: one for reading the data and the other for writing it.
+
+In this example, I'm changing the functions for reading and writing dates so that I can work only with the start date.
+
+```python
+n2p.date_read_write_lambdas = (lambda notion_property:
+                                    notion_property.get('date').get('start')
+                                    if notion_property.get('date') is not None
+                                    else '',
+                                    lambda row_value:
+                                    {'date': {'start': row_value}
+                                    if row_value != ''
+                                    else None})
+```
+
+My suggestion for changing the read and write functions is to take the original function directly from the [Notion2Pandas.py](https://gitlab.com/Jaeger87/notion2pandas/-/blob/main/Notion2Pandas.py?ref_type=heads) code and modify it until the desired result is achieved. These are the names of the tuple for each kind of Notion Data:
+
+NotionData | LambdaFunction
+------------ | -------------
+Title | title_read_write_lambdas
+Rich Text | rich_text_read_write_lambdas
+Check box | checkbox_read_write_lambdas
+Number | number_read_write_lambdas
+Date | date_read_write_lambdas
+Select | select_read_write_lambdas
+Multi Select | multi_select_read_write_lambdas
+Status | status_read_write_lambdas
+Email | email_read_write_lambdas
+People | people_read_write_lambdas
+Phone number | phone_number_read_write_lambdas
+URL | url_read_write_lambdas
+Relation | relation_read_write_lambdas
+Roll Up | rollup_read_write_lambdas
+Files | files_read_write_lambdas
+Formula | formula_read_write_lambdas
+String | string_read_write_lambdas
+Unique ID | unique_id_read_write_lambdas
+Button | button_read_write_lambdas
+Created by | created_by_read_write_lambdas
+Created time | created_time_read_write_lambdas
+Last edited by | last_edited_by_read_write_lambdas
+Last edited time | last_edited_time_read_write_lambdas
+
+## Adding and removes rows
+
+If you add a row to the dataframe and then update the Notion database from it, Notion2Pandas is capable of adding the new row to the database. On the contrary, if a row is removed, Notion2Pandas will not automatically delete the row during the update. In this case, you need to use the delete_page method manually.
+
+# Support
+Notion2Pandas is an open-source project; anyone can contribute to the project by reporting issues or proposing merge requests. I will commit to evaluating every proposal and responding to all. If you disagree with the decisions made and the direction the project may take, you are free to fork the project, and you will have my blessing!
+
+
+
