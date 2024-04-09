@@ -1,0 +1,140 @@
+Metadata-Version: 2.1
+Name: halludetector
+Version: 0.0.8
+Summary: Hallucination detection package
+Home-page: https://github.com/Mihai-Onofrei/Hallucination-detector
+Author: Mihai Onofrei
+Author-email: monofrei@cisco.com
+License: MIT
+Requires-Dist: beautifulsoup4==4.12.3
+Requires-Dist: bert-score==0.3.13
+Requires-Dist: boto3==1.34.54
+Requires-Dist: botocore==1.34.54
+Requires-Dist: bs4==0.0.2
+Requires-Dist: click==8.1.7
+Requires-Dist: datasets==2.18.0
+Requires-Dist: diskcache==5.6.3
+Requires-Dist: Flask==3.0.2
+Requires-Dist: httpx==0.27.0
+Requires-Dist: huggingface-hub==0.21.3
+Requires-Dist: Jinja2==3.1.3
+Requires-Dist: jmespath==1.0.1
+Requires-Dist: openai==1.13.3
+Requires-Dist: rank-bm25==0.2.2
+Requires-Dist: safetensors==0.4.2
+Requires-Dist: selfcheckgpt==0.1.6
+Requires-Dist: spacy==3.7.4
+Requires-Dist: spacy-legacy==3.0.12
+Requires-Dist: spacy-loggers==1.0.5
+Requires-Dist: tokenizers==0.15.2
+Requires-Dist: torch==2.2.1
+Requires-Dist: transformers==4.38.2
+Requires-Dist: tzdata==2024.1
+Requires-Dist: urllib3==2.0.7
+Requires-Dist: Werkzeug==3.0.1
+
+Hallucination detector
+======================
+
+This project implements generic approaches for hallucination detection.
+
+The ``Detector`` base class implements the building blocks to detect
+hallucinations and score them.
+
+``ask_llm`` - method to request a response from an LLM via a prompt
+
+``extract_triplets`` - method to extract subject, predicate, object from
+a text.
+
+``extract_sentences`` - method to split a text into sentences using
+spacy
+
+``generate_question`` - method to generate a question from a text
+
+``retrieve`` - method to retrieve information from google via the serper
+api
+
+``check`` - method to check if the claims contain hallucinations
+
+``similarity_bertscore`` - method to check the similarity between texts
+via bertscore
+
+``similarity_ngram`` - method to check the similarity between texts via
+ngram model
+
+You can implement any custom detector and combine all the available
+methods from above.
+
+Installation
+------------
+
+Use a conda environment and install the followings.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+::
+
+   pip install -e .
+   pip install -r requirements.txt
+
+   python3 -m spacy download en_core_web_sm
+
+Export envs for openai and google wrapper
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+::
+
+   export OPENAI_API_KEY=
+   export SERPER_API_KEY=
+
+Usage
+-----
+
+as server
+^^^^^^^^^
+
+::
+
+   python3 server.py
+
+Go to http://127.0.0.1:5000 and use the app.
+
+as library
+^^^^^^^^^^
+
+::
+
+   from openai import OpenAI
+   from halludetector import calculate_score
+
+   client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+
+   # prompt - the prompt as text
+   # the question you want to ask as text
+   # 5 times to ask the llm if the completion contains hallucinations
+
+   score, completion, explanations = calculate_score(client, prompt, question, 5)
+
+   print(score)
+
+from cli
+^^^^^^^^
+
+::
+
+   python3 scorer.py --file data/questions.json --config config.json
+
+Configuration for ChainPoll
+---------------------------
+
+The file ``/data/prompt.txt`` contains a prompt template that is used.
+
+Feel free to update it.
+
+Allowed variables:
+
+``{completion}`` for the answer to the question.
+
+``{question}`` the initial question.
+
+The file ``config.json`` contains the needed configuration for the
+library.
