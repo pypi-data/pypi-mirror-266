@@ -1,0 +1,192 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Using Dask for single-machine parallel computing &#8212; joblib 1.3.2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Development" href="../../developing.html" />
+    <link rel="prev" title="Parallel examples" href="index.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-parallel-distributed-backend-simple-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code</p>
+</div>
+<section class="sphx-glr-example-title" id="using-dask-for-single-machine-parallel-computing">
+<span id="sphx-glr-auto-examples-parallel-distributed-backend-simple-py"></span><h1>Using Dask for single-machine parallel computing<a class="headerlink" href="#using-dask-for-single-machine-parallel-computing" title="Permalink to this headline">¶</a></h1>
+<p>This example shows the simplest usage of the
+<a class="reference external" href="https://docs.dask.org/en/stable/">Dask</a>
+backend on your local machine.</p>
+<p>This is useful for prototyping a solution, to later be run on a truly
+<a class="reference external" href="https://docs.dask.org/en/stable/deploying.html#distributed-computing">distributed Dask cluster</a>,
+as the only change needed is the cluster class.</p>
+<p>Another realistic usage scenario: combining dask code with joblib code,
+for instance using dask for preprocessing data, and scikit-learn for
+machine learning. In such a setting, it may be interesting to use
+distributed as a backend scheduler for both dask and joblib, to
+orchestrate the computation.</p>
+<section id="setup-the-distributed-client">
+<h2>Setup the distributed client<a class="headerlink" href="#setup-the-distributed-client" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <a href="https://distributed.dask.org/en/latest/api.html#distributed.Client" title="distributed.Client" class="sphx-glr-backref-module-distributed sphx-glr-backref-type-py-class"><span class="n">Client</span></a><span class="p">,</span> <a href="https://distributed.dask.org/en/latest/api.html#distributed.LocalCluster" title="distributed.LocalCluster" class="sphx-glr-backref-module-distributed sphx-glr-backref-type-py-class"><span class="n">LocalCluster</span></a>
+
+<span class="c1"># replace with whichever cluster class you&#39;re using</span>
+<span class="c1"># https://docs.dask.org/en/stable/deploying.html#distributed-computing</span>
+<a href="https://distributed.dask.org/en/latest/api.html#distributed.LocalCluster" title="distributed.LocalCluster" class="sphx-glr-backref-module-distributed sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cluster</span></a> <span class="o">=</span> <a href="https://distributed.dask.org/en/latest/api.html#distributed.LocalCluster" title="distributed.LocalCluster" class="sphx-glr-backref-module-distributed sphx-glr-backref-type-py-class"><span class="n">LocalCluster</span></a><span class="p">()</span>
+<span class="c1"># connect client to your cluster</span>
+<a href="https://distributed.dask.org/en/latest/api.html#distributed.Client" title="distributed.Client" class="sphx-glr-backref-module-distributed sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">client</span></a> <span class="o">=</span> <a href="https://distributed.dask.org/en/latest/api.html#distributed.Client" title="distributed.Client" class="sphx-glr-backref-module-distributed sphx-glr-backref-type-py-class"><span class="n">Client</span></a><span class="p">(</span><a href="https://distributed.dask.org/en/latest/api.html#distributed.LocalCluster" title="distributed.LocalCluster" class="sphx-glr-backref-module-distributed sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cluster</span></a><span class="p">)</span>
+
+<span class="c1"># Monitor your computation with the Dask dashboard</span>
+<span class="nb">print</span><span class="p">(</span><a href="https://distributed.dask.org/en/latest/api.html#distributed.Client.dashboard_link" title="distributed.Client.dashboard_link" class="sphx-glr-backref-module-distributed sphx-glr-backref-type-py-property"><span class="n">client</span><span class="o">.</span><span class="n">dashboard_link</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>http://127.0.0.1:8787/status
+</pre></div>
+</div>
+</section>
+<section id="run-parallel-computation-using-dask-distributed">
+<h2>Run parallel computation using dask.distributed<a class="headerlink" href="#run-parallel-computation-using-dask-distributed" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">joblib</span>
+
+
+<span class="k">def</span> <span class="nf">long_running_function</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+    <a href="https://docs.python.org/3/library/time.html#time.sleep" title="time.sleep" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">sleep</span></a><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">i</span>
+</pre></div>
+</div>
+<p>The verbose messages below show that the backend is indeed the
+dask.distributed one</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <a href="../../generated/joblib.parallel_config.html#joblib.parallel_config" title="joblib.parallel_config" class="sphx-glr-backref-module-joblib sphx-glr-backref-type-py-class"><span class="n">joblib</span><span class="o">.</span><span class="n">parallel_config</span></a><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;dask&quot;</span><span class="p">):</span>
+    <a href="../../generated/joblib.Parallel.html#joblib.Parallel" title="joblib.Parallel" class="sphx-glr-backref-module-joblib sphx-glr-backref-type-py-class"><span class="n">joblib</span><span class="o">.</span><span class="n">Parallel</span></a><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">100</span><span class="p">)(</span>
+        <a href="../../parallel.html#joblib.delayed" title="joblib.delayed" class="sphx-glr-backref-module-joblib sphx-glr-backref-type-py-function"><span class="n">joblib</span><span class="o">.</span><span class="n">delayed</span></a><span class="p">(</span><span class="n">long_running_function</span><span class="p">)(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[Parallel(n_jobs=-1)]: Using backend DaskDistributedBackend with 12 concurrent workers.
+[Parallel(n_jobs=-1)]: Done   1 tasks      | elapsed:    0.2s
+[Parallel(n_jobs=-1)]: Batch computation too fast (0.1587216854095459s.) Setting batch_size=2.
+[Parallel(n_jobs=-1)]: Done   2 out of  10 | elapsed:    0.2s remaining:    0.7s
+[Parallel(n_jobs=-1)]: Done   3 out of  10 | elapsed:    0.2s remaining:    0.4s
+[Parallel(n_jobs=-1)]: Done   4 out of  10 | elapsed:    0.2s remaining:    0.2s
+[Parallel(n_jobs=-1)]: Done   5 out of  10 | elapsed:    0.2s remaining:    0.2s
+[Parallel(n_jobs=-1)]: Done   6 out of  10 | elapsed:    0.2s remaining:    0.1s
+[Parallel(n_jobs=-1)]: Done   7 out of  10 | elapsed:    0.2s remaining:    0.1s
+[Parallel(n_jobs=-1)]: Done   8 out of  10 | elapsed:    0.2s remaining:    0.0s
+[Parallel(n_jobs=-1)]: Done  10 out of  10 | elapsed:    0.2s finished
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.078 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-parallel-distributed-backend-simple-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/857637eaee8f6564825e4c32dddf9581/distributed_backend_simple.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">distributed_backend_simple.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/fec4ba264e936c334617fdc79f61159e/distributed_backend_simple.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">distributed_backend_simple.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/joblib_logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">User manual</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../why.html">Why joblib: project goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installing.html">Installing joblib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../memory.html">On demand recomputing: the <cite>Memory</cite> class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../parallel.html">Embarrassingly parallel for loops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../persistence.html">Persistence</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#id1">General examples</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#parallel-examples">Parallel examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developing.html">Development</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Module reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../generated/joblib.Memory.html">joblib.Memory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../generated/joblib.Parallel.html">joblib.Parallel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../generated/joblib.parallel_config.html">joblib.parallel_config</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../generated/joblib.dump.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">joblib</span></code>.dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../generated/joblib.load.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">joblib</span></code>.load</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../generated/joblib.hash.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">joblib</span></code>.hash</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../generated/joblib.register_compressor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">joblib</span></code>.register_compressor</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Deprecated functionalities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../generated/joblib.parallel_backend.html">joblib.parallel_backend</a></li>
+</ul>
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2008-2021, Joblib developers.
+      
+      |
+      <a href="../../_sources/auto_examples/parallel/distributed_backend_simple.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

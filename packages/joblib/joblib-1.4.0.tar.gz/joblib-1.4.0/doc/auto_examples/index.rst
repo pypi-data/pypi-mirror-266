@@ -1,0 +1,215 @@
+:orphan:
+
+.. _general_examples:
+
+Examples
+========
+
+General examples
+----------------
+
+General-purpose and introductory examples for joblib.
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example illustrates how to cache intermediate computing results using joblib.Memory within...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_nested_parallel_memory_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_nested_parallel_memory.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Checkpoint using joblib.Memory and joblib.Parallel</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example illustrates the usage of joblib.Memory with both functions and methods.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_memory_basic_usage_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_memory_basic_usage.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">How to use joblib.Memory</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Randomness is affected by parallel execution differently by the different backends.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_parallel_random_state_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_parallel_random_state.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Random state within joblib.Parallel</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example highlights the options for tempering with joblib serialization process.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_serialization_and_wrappers_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_serialization_and_wrappers.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Serialization of un-picklable objects</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example illustrates some features enabled by using a memory map (numpy.memmap) within jobl...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_parallel_memmap_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_parallel_memmap.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">NumPy memmap in joblib.Parallel</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example compares the compressors available in Joblib. In the example, Zlib, LZMA and LZ4 c...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_compressors_comparison_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_compressors_comparison.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Improving I/O using compressors</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example illustrates memory optimization enabled by using joblib.Parallel to get a generato...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_parallel_generator_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_parallel_generator.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Returning a generator in joblib.Parallel</div>
+    </div>
+
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/nested_parallel_memory
+   /auto_examples/memory_basic_usage
+   /auto_examples/parallel_random_state
+   /auto_examples/serialization_and_wrappers
+   /auto_examples/parallel_memmap
+   /auto_examples/compressors_comparison
+   /auto_examples/parallel_generator
+
+
+Parallel examples
+-----------------
+
+Examples demoing more advanced parallel patterns.
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example shows the simplest usage of the Dask backend on your local machine.">
+
+.. only:: html
+
+  .. image:: /auto_examples/parallel/images/thumb/sphx_glr_distributed_backend_simple_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_parallel_distributed_backend_simple.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Using Dask for single-machine parallel computing</div>
+    </div>
+
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+   :includehidden:
+
+
+   /auto_examples/parallel/index.rst
+
+
+.. only:: html
+
+  .. container:: sphx-glr-footer sphx-glr-footer-gallery
+
+    .. container:: sphx-glr-download sphx-glr-download-python
+
+      :download:`Download all examples in Python source code: auto_examples_python.zip </auto_examples/auto_examples_python.zip>`
+
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
+
+      :download:`Download all examples in Jupyter notebooks: auto_examples_jupyter.zip </auto_examples/auto_examples_jupyter.zip>`
+
+
+.. only:: html
+
+ .. rst-class:: sphx-glr-signature
+
+    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.github.io>`_

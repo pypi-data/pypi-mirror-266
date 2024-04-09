@@ -1,0 +1,1422 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Latest changes &#8212; joblib 1.3.2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="latest-changes">
+<h1>Latest changes<a class="headerlink" href="#latest-changes" title="Permalink to this headline">¶</a></h1>
+<section id="in-development">
+<h2>In development<a class="headerlink" href="#in-development" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Allow caching co-routines with <cite>Memory.cache</cite>.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/894">https://github.com/joblib/joblib/pull/894</a></p></li>
+<li><p>Try to cast <code class="docutils literal notranslate"><span class="pre">n_jobs</span></code> to int in parallel and raise an error if
+it fails. This means that <code class="docutils literal notranslate"><span class="pre">n_jobs=2.3</span></code> will now result in
+<code class="docutils literal notranslate"><span class="pre">effective_n_jobs=2</span></code> instead of failing.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1539">https://github.com/joblib/joblib/pull/1539</a></p></li>
+<li><p>Ensure that errors in the task generator given to Parallel’s call
+are raised in the results consumming thread.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1491">https://github.com/joblib/joblib/pull/1491</a></p></li>
+<li><p>Adjust codebase to NumPy 2.0 by changing <code class="docutils literal notranslate"><span class="pre">np.NaN</span></code> to <code class="docutils literal notranslate"><span class="pre">np.nan</span></code>
+and importing <code class="docutils literal notranslate"><span class="pre">byte_bounds</span></code> from <code class="docutils literal notranslate"><span class="pre">np.lib.array_utils</span></code>.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1501">https://github.com/joblib/joblib/pull/1501</a></p></li>
+<li><p>The parameter <code class="docutils literal notranslate"><span class="pre">return_as</span></code> in <code class="docutils literal notranslate"><span class="pre">joblib.Parallel</span></code> can now be set to
+<code class="docutils literal notranslate"><span class="pre">generator_unordered</span></code>. In this case the results will be returned in the
+order of task completion rather than the order of submission.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1463">https://github.com/joblib/joblib/pull/1463</a></p></li>
+<li><p>dask backend now supports <code class="docutils literal notranslate"><span class="pre">return_as=generator</span></code> and
+<code class="docutils literal notranslate"><span class="pre">return_as=generator_unordered</span></code>.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1520">https://github.com/joblib/joblib/pull/1520</a></p></li>
+<li><p>Vendor cloudpickle 3.0.0 and end support for Python 3.7 which has
+reached end of life.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1487">https://github.com/joblib/joblib/pull/1487</a>
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1515">https://github.com/joblib/joblib/pull/1515</a></p></li>
+</ul>
+</section>
+<section id="release-1-3-2-2023-08-08">
+<h2>Release 1.3.2 – 2023/08/08<a class="headerlink" href="#release-1-3-2-2023-08-08" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Fix a regression in <code class="docutils literal notranslate"><span class="pre">joblib.Parallel</span></code> introduced in 1.3.0 where
+explicitly setting <code class="docutils literal notranslate"><span class="pre">n_jobs=None</span></code> was not interpreted as “unset”.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1475">https://github.com/joblib/joblib/pull/1475</a></p></li>
+<li><p>Fix a regression in <code class="docutils literal notranslate"><span class="pre">joblib.Parallel</span></code> introduced in 1.3.0 where
+<code class="docutils literal notranslate"><span class="pre">joblib.Parallel</span></code> logging methods exposed from inheritance to
+<code class="docutils literal notranslate"><span class="pre">joblib.Logger</span></code> didn’t work because of missing logger
+initialization.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1494">https://github.com/joblib/joblib/pull/1494</a></p></li>
+<li><p>Various maintenance updates to the doc, the ci and the test.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1480">https://github.com/joblib/joblib/pull/1480</a>,
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1481">https://github.com/joblib/joblib/pull/1481</a>,
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1476">https://github.com/joblib/joblib/pull/1476</a>,
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1492">https://github.com/joblib/joblib/pull/1492</a></p></li>
+</ul>
+</section>
+<section id="release-1-3-1-2023-06-29">
+<h2>Release 1.3.1 – 2023/06/29<a class="headerlink" href="#release-1-3-1-2023-06-29" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Fix compatibility with python 3.7 by vendor loky 3.4.1
+which is compatible with this version.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1472">https://github.com/joblib/joblib/pull/1472</a></p></li>
+</ul>
+</section>
+<section id="release-1-3-0-2023-06-28">
+<h2>Release 1.3.0 – 2023/06/28<a class="headerlink" href="#release-1-3-0-2023-06-28" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Ensure native byte order for memmap arrays in <code class="docutils literal notranslate"><span class="pre">joblib.load</span></code>.
+<a class="reference external" href="https://github.com/joblib/joblib/issues/1353">https://github.com/joblib/joblib/issues/1353</a></p></li>
+<li><p>Add ability to change default Parallel backend in tests by setting the
+<code class="docutils literal notranslate"><span class="pre">JOBLIB_TESTS_DEFAULT_PARALLEL_BACKEND</span></code> environment variable.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1356">https://github.com/joblib/joblib/pull/1356</a></p></li>
+<li><p>Fix temporary folder creation in <cite>joblib.Parallel</cite> on Linux subsystems on Windows
+which do have <cite>/dev/shm</cite> but don’t have the <cite>os.statvfs</cite> function
+<a class="reference external" href="https://github.com/joblib/joblib/issues/1353">https://github.com/joblib/joblib/issues/1353</a></p></li>
+<li><p>Drop runtime dependency on <code class="docutils literal notranslate"><span class="pre">distutils</span></code>. <code class="docutils literal notranslate"><span class="pre">distutils</span></code> is going away
+in Python 3.12 and is deprecated from Python 3.10 onwards. This import
+was kept around to avoid breaking scikit-learn, however it’s now been
+long enough since scikit-learn deployed a fixed (verion 1.1 was released
+in May 2022) that it should be safe to remove this.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1361">https://github.com/joblib/joblib/pull/1361</a></p></li>
+<li><p>A warning is raised when a pickling error occurs during caching operations.
+In version 1.5, this warning will be turned into an error. For all other
+errors, a new warning has been introduced: <code class="docutils literal notranslate"><span class="pre">joblib.memory.CacheWarning</span></code>.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1359">https://github.com/joblib/joblib/pull/1359</a></p></li>
+<li><p>Avoid (module, name) collisions when caching nested functions. This fix
+changes the module name of nested functions, invalidating caches from
+previous versions of Joblib.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1374">https://github.com/joblib/joblib/pull/1374</a></p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">cache_validation_callback</span></code> in <a class="reference internal" href="generated/joblib.Memory.html#joblib.Memory.cache" title="joblib.Memory.cache"><code class="xref py py-meth docutils literal notranslate"><span class="pre">joblib.Memory.cache()</span></code></a>, to allow
+custom cache invalidation based on the metadata of the function call.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1149">https://github.com/joblib/joblib/pull/1149</a></p></li>
+<li><p>Add a <code class="docutils literal notranslate"><span class="pre">return_as</span></code> parameter for <code class="docutils literal notranslate"><span class="pre">Parallel</span></code>, that enables consuming
+results asynchronously.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1393">https://github.com/joblib/joblib/pull/1393</a>,
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1458">https://github.com/joblib/joblib/pull/1458</a></p></li>
+<li><p>Improve the behavior of <code class="docutils literal notranslate"><span class="pre">joblib</span></code> for <code class="docutils literal notranslate"><span class="pre">n_jobs=1</span></code>, with simplified
+tracebacks and more efficient running time.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1393">https://github.com/joblib/joblib/pull/1393</a></p></li>
+<li><p>Add the <code class="docutils literal notranslate"><span class="pre">parallel_config</span></code> context manager to allow for more fine-grained
+control over the backend configuration. It should be used in place of the
+<code class="docutils literal notranslate"><span class="pre">parallel_backend</span></code> context manager. In particular, it has the advantage
+of not requiring to set a specific backend in the context manager.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1392">https://github.com/joblib/joblib/pull/1392</a>,
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1457">https://github.com/joblib/joblib/pull/1457</a></p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">items_limit</span></code> and <code class="docutils literal notranslate"><span class="pre">age_limit</span></code> in <a class="reference internal" href="generated/joblib.Memory.html#joblib.Memory.reduce_size" title="joblib.Memory.reduce_size"><code class="xref py py-meth docutils literal notranslate"><span class="pre">joblib.Memory.reduce_size()</span></code></a>
+to make it easy to limit the number of items and remove items that have
+not been accessed for a long time in the cache.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1200">https://github.com/joblib/joblib/pull/1200</a></p></li>
+<li><p>Deprecate <code class="docutils literal notranslate"><span class="pre">bytes_limit</span></code> in <code class="docutils literal notranslate"><span class="pre">Memory</span></code> as this is not automatically enforced,
+the limit can be directly passed to <a class="reference internal" href="generated/joblib.Memory.html#joblib.Memory.reduce_size" title="joblib.Memory.reduce_size"><code class="xref py py-meth docutils literal notranslate"><span class="pre">joblib.Memory.reduce_size()</span></code></a> which
+needs to be called to actually enforce the limit.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1447">https://github.com/joblib/joblib/pull/1447</a></p></li>
+<li><p>Vendor <code class="docutils literal notranslate"><span class="pre">loky</span></code> 3.4.0 which includes various fixes.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1422">https://github.com/joblib/joblib/pull/1422</a></p></li>
+<li><p>Various updates to the documentation and to benchmarking tools.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1343">https://github.com/joblib/joblib/pull/1343</a>,
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1348">https://github.com/joblib/joblib/pull/1348</a>,
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1411">https://github.com/joblib/joblib/pull/1411</a>,
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1451">https://github.com/joblib/joblib/pull/1451</a>,
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1427">https://github.com/joblib/joblib/pull/1427</a>,
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1400">https://github.com/joblib/joblib/pull/1400</a></p></li>
+<li><p>Move project metadata to <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1382">https://github.com/joblib/joblib/pull/1382</a>,
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1433">https://github.com/joblib/joblib/pull/1433</a></p></li>
+<li><p>Add more tests to improve python <code class="docutils literal notranslate"><span class="pre">nogil</span></code> support.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1394">https://github.com/joblib/joblib/pull/1394</a>,
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1395">https://github.com/joblib/joblib/pull/1395</a></p></li>
+</ul>
+</section>
+<section id="release-1-2-0">
+<h2>Release 1.2.0<a class="headerlink" href="#release-1-2-0" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Fix a security issue where <code class="docutils literal notranslate"><span class="pre">eval(pre_dispatch)</span></code> could potentially run
+arbitrary code. Now only basic numerics are supported.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1327">https://github.com/joblib/joblib/pull/1327</a></p></li>
+<li><p>Make sure that joblib works even when multiprocessing is not available,
+for instance with Pyodide
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1256">https://github.com/joblib/joblib/pull/1256</a></p></li>
+<li><p>Avoid unnecessary warnings when workers and main process delete
+the temporary memmap folder contents concurrently.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1263">https://github.com/joblib/joblib/pull/1263</a></p></li>
+<li><p>Fix memory alignment bug for pickles containing numpy arrays.
+This is especially important when loading the pickle with
+<code class="docutils literal notranslate"><span class="pre">mmap_mode</span> <span class="pre">!=</span> <span class="pre">None</span></code> as the resulting <code class="docutils literal notranslate"><span class="pre">numpy.memmap</span></code> object
+would not be able to correct the misalignment without performing
+a memory copy.
+This bug would cause invalid computation and segmentation faults
+with native code that would directly access the underlying data
+buffer of a numpy array, for instance C/C++/Cython code compiled
+with older GCC versions or some old OpenBLAS written in platform
+specific assembly.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1254">https://github.com/joblib/joblib/pull/1254</a></p></li>
+<li><p>Vendor cloudpickle 2.2.0 which adds support for PyPy 3.8+.</p></li>
+<li><p>Vendor loky 3.3.0 which fixes several bugs including:</p>
+<ul>
+<li><p>robustly forcibly terminating worker processes in case of a crash
+(<a class="reference external" href="https://github.com/joblib/joblib/pull/1269">https://github.com/joblib/joblib/pull/1269</a>);</p></li>
+<li><p>avoiding leaking worker processes in case of nested loky parallel
+calls;</p></li>
+<li><p>reliability spawn the correct number of reusable workers.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="release-1-1-1">
+<h2>Release 1.1.1<a class="headerlink" href="#release-1-1-1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Fix a security issue where <code class="docutils literal notranslate"><span class="pre">eval(pre_dispatch)</span></code> could potentially run
+arbitrary code. Now only basic numerics are supported.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1327">https://github.com/joblib/joblib/pull/1327</a></p></li>
+</ul>
+</section>
+<section id="release-1-1-0">
+<h2>Release 1.1.0<a class="headerlink" href="#release-1-1-0" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Fix byte order inconsistency issue during deserialization using joblib.load
+in cross-endian environment: the numpy arrays are now always loaded to
+use the system byte order, independently of the byte order of the system
+that serialized the pickle.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1181">https://github.com/joblib/joblib/pull/1181</a></p></li>
+<li><p>Fix joblib.Memory bug with the <code class="docutils literal notranslate"><span class="pre">ignore</span></code> parameter when the cached function
+is a decorated function.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1165">https://github.com/joblib/joblib/pull/1165</a></p></li>
+<li><p>Fix <cite>joblib.Memory</cite> to properly handle caching for functions defined
+interactively in a IPython session or in Jupyter notebook cell.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1214">https://github.com/joblib/joblib/pull/1214</a></p></li>
+<li><p>Update vendored loky (from version 2.9 to 3.0) and cloudpickle (from
+version 1.6 to 2.0)
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1218">https://github.com/joblib/joblib/pull/1218</a></p></li>
+</ul>
+</section>
+<section id="release-1-0-1">
+<h2>Release 1.0.1<a class="headerlink" href="#release-1-0-1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Add check_call_in_cache method to check cache without calling function.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/820">https://github.com/joblib/joblib/pull/820</a></p></li>
+<li><p>dask: avoid redundant scattering of large arguments to make a more
+efficient use of the network resources and avoid crashing dask with
+“OSError: [Errno 55] No buffer space available”
+or “ConnectionResetError: [Errno 104] connection reset by peer”.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1133">https://github.com/joblib/joblib/pull/1133</a></p></li>
+</ul>
+</section>
+<section id="release-1-0-0">
+<h2>Release 1.0.0<a class="headerlink" href="#release-1-0-0" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Make <cite>joblib.hash</cite> and <cite>joblib.Memory</cite> caching system compatible with <cite>numpy
+&gt;= 1.20.0</cite>. Also make it explicit in the documentation that users should now
+expect to have their <cite>joblib.Memory</cite> cache invalidated when either <cite>joblib</cite>
+or a third party library involved in the cached values definition is
+upgraded.  In particular, users updating <cite>joblib</cite> to a release that includes
+this fix will see their previous cache invalidated if they contained
+reference to <cite>numpy</cite> objects.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1136">https://github.com/joblib/joblib/pull/1136</a></p></li>
+<li><p>Remove deprecated <cite>check_pickle</cite> argument in <cite>delayed</cite>.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/903">https://github.com/joblib/joblib/pull/903</a></p></li>
+</ul>
+</section>
+<section id="release-0-17-0">
+<h2>Release 0.17.0<a class="headerlink" href="#release-0-17-0" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Fix a spurious invalidation of <cite>Memory.cache</cite>’d functions called with
+<cite>Parallel</cite> under Jupyter or IPython.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1093">https://github.com/joblib/joblib/pull/1093</a></p></li>
+<li><p>Bump vendored loky to 2.9.0 and cloudpickle to 1.6.0. In particular
+this fixes a problem to add compat for Python 3.9.</p></li>
+</ul>
+</section>
+<section id="release-0-16-0">
+<h2>Release 0.16.0<a class="headerlink" href="#release-0-16-0" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Fix a problem in the constructors of Parallel backends classes that
+inherit from the <cite>AutoBatchingMixin</cite> that prevented the dask backend to
+properly batch short tasks.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1062">https://github.com/joblib/joblib/pull/1062</a></p></li>
+<li><p>Fix a problem in the way the joblib dask backend batches calls that would
+badly interact with the dask callable pickling cache and lead to wrong
+results or errors.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1055">https://github.com/joblib/joblib/pull/1055</a></p></li>
+<li><p>Prevent a dask.distributed bug from surfacing in joblib’s dask backend
+during nested Parallel calls (due to joblib’s auto-scattering feature)
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1061">https://github.com/joblib/joblib/pull/1061</a></p></li>
+<li><p>Workaround for a race condition after Parallel calls with the dask backend
+that would cause low level warnings from asyncio coroutines:
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1078">https://github.com/joblib/joblib/pull/1078</a></p></li>
+</ul>
+</section>
+<section id="release-0-15-1">
+<h2>Release 0.15.1<a class="headerlink" href="#release-0-15-1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Make joblib work on Python 3 installation that do not ship with the lzma
+package in their standard library.</p></li>
+</ul>
+</section>
+<section id="release-0-15-0">
+<h2>Release 0.15.0<a class="headerlink" href="#release-0-15-0" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Drop support for Python 2 and Python 3.5. All objects in
+<code class="docutils literal notranslate"><span class="pre">joblib.my_exceptions</span></code> and <code class="docutils literal notranslate"><span class="pre">joblib.format_stack</span></code> are now deprecated and
+will be removed in joblib 0.16. Note that no deprecation warning will be
+raised for these objects Python &lt; 3.7.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1018">https://github.com/joblib/joblib/pull/1018</a></p></li>
+<li><p>Fix many bugs related to the temporary files and folder generated when
+automatically memory mapping large numpy arrays for efficient inter-process
+communication. In particular, this would cause <cite>PermissionError</cite> exceptions
+to be raised under Windows and large leaked files in <cite>/dev/shm</cite> under Linux
+in case of crash.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/966">https://github.com/joblib/joblib/pull/966</a></p></li>
+<li><p>Make the dask backend collect results as soon as they complete
+leading to a performance improvement:
+<a class="reference external" href="https://github.com/joblib/joblib/pull/1025">https://github.com/joblib/joblib/pull/1025</a></p></li>
+<li><p>Fix the number of jobs reported by <code class="docutils literal notranslate"><span class="pre">effective_n_jobs</span></code> when <code class="docutils literal notranslate"><span class="pre">n_jobs=None</span></code>
+called in a parallel backend context.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/985">https://github.com/joblib/joblib/pull/985</a></p></li>
+<li><p>Upgraded vendored cloupickle to 1.4.1 and loky to 2.8.0. This allows for
+Parallel calls of dynamically defined functions with type annotations
+in particular.</p></li>
+</ul>
+</section>
+<section id="release-0-14-1">
+<h2>Release 0.14.1<a class="headerlink" href="#release-0-14-1" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>Configure the loky workers’ environment to mitigate oversubsription with
+nested multi-threaded code in the following case:</p>
+<ul class="simple">
+<li><p>allow for a suitable number of threads for numba (<code class="docutils literal notranslate"><span class="pre">NUMBA_NUM_THREADS</span></code>);</p></li>
+<li><p>enable Interprocess Communication for scheduler coordination when the
+nested code uses Threading Building Blocks (TBB) (<code class="docutils literal notranslate"><span class="pre">ENABLE_IPC=1</span></code>)</p></li>
+</ul>
+<p><a class="reference external" href="https://github.com/joblib/joblib/pull/951">https://github.com/joblib/joblib/pull/951</a></p>
+</li>
+<li><p>Fix a regression where the loky backend was not reusing previously
+spawned workers.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/968">https://github.com/joblib/joblib/pull/968</a></p></li>
+<li><p>Revert <a class="reference external" href="https://github.com/joblib/joblib/pull/847">https://github.com/joblib/joblib/pull/847</a> to avoid using
+<cite>pkg_resources</cite> that introduced a performance regression under Windows:
+<a class="reference external" href="https://github.com/joblib/joblib/issues/965">https://github.com/joblib/joblib/issues/965</a></p></li>
+</ul>
+</section>
+<section id="release-0-14-0">
+<h2>Release 0.14.0<a class="headerlink" href="#release-0-14-0" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Improved the load balancing between workers to avoid stranglers caused by an
+excessively large batch size when the task duration is varying significantly
+(because of the combined use of <code class="docutils literal notranslate"><span class="pre">joblib.Parallel</span></code> and <code class="docutils literal notranslate"><span class="pre">joblib.Memory</span></code>
+with a partially warmed cache for instance).
+<a class="reference external" href="https://github.com/joblib/joblib/pull/899">https://github.com/joblib/joblib/pull/899</a></p></li>
+<li><p>Add official support for Python 3.8: fixed protocol number in <cite>Hasher</cite>
+and updated tests.</p></li>
+<li><p>Fix a deadlock when using the dask backend (when scattering large numpy
+arrays).
+<a class="reference external" href="https://github.com/joblib/joblib/pull/914">https://github.com/joblib/joblib/pull/914</a></p></li>
+<li><p>Warn users that they should never use <cite>joblib.load</cite> with files from
+untrusted sources. Fix security related API change introduced in numpy
+1.6.3 that would prevent using joblib with recent numpy versions.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/879">https://github.com/joblib/joblib/pull/879</a></p></li>
+<li><p>Upgrade to cloudpickle 1.1.1 that add supports for the upcoming
+Python 3.8 release among other things.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/878">https://github.com/joblib/joblib/pull/878</a></p></li>
+<li><p>Fix semaphore availability checker to avoid spawning resource trackers
+on module import.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/893">https://github.com/joblib/joblib/pull/893</a></p></li>
+<li><p>Fix the oversubscription protection to only protect against nested
+<cite>Parallel</cite> calls. This allows <cite>joblib</cite> to be run in background threads.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/934">https://github.com/joblib/joblib/pull/934</a></p></li>
+<li><p>Fix <cite>ValueError</cite> (negative dimensions) when pickling large numpy arrays on
+Windows.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/920">https://github.com/joblib/joblib/pull/920</a></p></li>
+<li><p>Upgrade to loky 2.6.0 that add supports for the setting environment variables
+in child before loading any module.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/940">https://github.com/joblib/joblib/pull/940</a></p></li>
+<li><p>Fix the oversubscription protection for native libraries using threadpools
+(OpenBLAS, MKL, Blis and OpenMP runtimes).
+The maximal number of threads is can now be set in children using the
+<code class="docutils literal notranslate"><span class="pre">inner_max_num_threads</span></code> in <code class="docutils literal notranslate"><span class="pre">parallel_backend</span></code>. It defaults to
+<code class="docutils literal notranslate"><span class="pre">cpu_count()</span> <span class="pre">//</span> <span class="pre">n_jobs</span></code>.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/940">https://github.com/joblib/joblib/pull/940</a></p></li>
+</ul>
+</section>
+<section id="release-0-13-2">
+<h2>Release 0.13.2<a class="headerlink" href="#release-0-13-2" title="Permalink to this headline">¶</a></h2>
+<p>Pierre Glaser</p>
+<blockquote>
+<div><p>Upgrade to cloudpickle 0.8.0</p>
+<p>Add a non-regression test related to joblib issues #836 and #833, reporting
+that cloudpickle versions between 0.5.4 and 0.7 introduced a bug where
+global variables changes in a parent process between two calls to
+joblib.Parallel would not be propagated into the workers</p>
+</div></blockquote>
+</section>
+<section id="release-0-13-1">
+<h2>Release 0.13.1<a class="headerlink" href="#release-0-13-1" title="Permalink to this headline">¶</a></h2>
+<p>Pierre Glaser</p>
+<blockquote>
+<div><p>Memory now accepts pathlib.Path objects as <code class="docutils literal notranslate"><span class="pre">location</span></code> parameter.
+Also, a warning is raised if the returned backend is None while
+<code class="docutils literal notranslate"><span class="pre">location</span></code> is not None.</p>
+</div></blockquote>
+<p>Olivier Grisel</p>
+<blockquote>
+<div><p>Make <code class="docutils literal notranslate"><span class="pre">Parallel</span></code> raise an informative <code class="docutils literal notranslate"><span class="pre">RuntimeError</span></code> when the
+active parallel backend has zero worker.</p>
+<p>Make the <code class="docutils literal notranslate"><span class="pre">DaskDistributedBackend</span></code> wait for workers before trying to
+schedule work. This is useful in particular when the workers are
+provisionned dynamically but provisionning is not immediate (for
+instance using Kubernetes, Yarn or an HPC job queue).</p>
+</div></blockquote>
+</section>
+<section id="release-0-13-0">
+<h2>Release 0.13.0<a class="headerlink" href="#release-0-13-0" title="Permalink to this headline">¶</a></h2>
+<p>Thomas Moreau</p>
+<blockquote>
+<div><p>Include loky 2.4.2 with default serialization with <code class="docutils literal notranslate"><span class="pre">cloudpickle</span></code>.
+This can be tweaked with the environment variable <code class="docutils literal notranslate"><span class="pre">LOKY_PICKLER</span></code>.</p>
+</div></blockquote>
+<p>Thomas Moreau</p>
+<blockquote>
+<div><p>Fix nested backend in SequentialBackend to avoid changing the default
+backend to Sequential. (#792)</p>
+</div></blockquote>
+<p>Thomas Moreau, Olivier Grisel</p>
+<blockquote>
+<div><p>Fix nested_backend behavior to avoid setting the default number of
+workers to -1 when the backend is not dask. (#784)</p>
+</div></blockquote>
+</section>
+<section id="release-0-12-5">
+<h2>Release 0.12.5<a class="headerlink" href="#release-0-12-5" title="Permalink to this headline">¶</a></h2>
+<p>Thomas Moreau, Olivier Grisel</p>
+<blockquote>
+<div><p>Include loky 2.3.1 with better error reporting when a worker is
+abruptly terminated. Also fixes spurious debug output.</p>
+</div></blockquote>
+<p>Pierre Glaser</p>
+<blockquote>
+<div><p>Include cloudpickle 0.5.6. Fix a bug with the handling of global
+variables by locally defined functions.</p>
+</div></blockquote>
+</section>
+<section id="release-0-12-4">
+<h2>Release 0.12.4<a class="headerlink" href="#release-0-12-4" title="Permalink to this headline">¶</a></h2>
+<p>Thomas Moreau, Pierre Glaser, Olivier Grisel</p>
+<blockquote>
+<div><p>Include loky 2.3.0 with many bugfixes, notably w.r.t. when setting
+non-default multiprocessing contexts. Also include improvement on
+memory management of long running worker processes and fixed issues
+when using the loky backend under PyPy.</p>
+</div></blockquote>
+<p>Maxime Weyl</p>
+<blockquote>
+<div><p>Raises a more explicit exception when a corrupted MemorizedResult is loaded.</p>
+</div></blockquote>
+<p>Maxime Weyl</p>
+<blockquote>
+<div><p>Loading a corrupted cached file with mmap mode enabled would
+recompute the results and return them without memory mapping.</p>
+</div></blockquote>
+</section>
+<section id="release-0-12-3">
+<h2>Release 0.12.3<a class="headerlink" href="#release-0-12-3" title="Permalink to this headline">¶</a></h2>
+<p>Thomas Moreau</p>
+<blockquote>
+<div><p>Fix joblib import setting the global start_method for multiprocessing.</p>
+</div></blockquote>
+<p>Alexandre Abadie</p>
+<blockquote>
+<div><p>Fix MemorizedResult not picklable (#747).</p>
+</div></blockquote>
+<p>Loïc Estève</p>
+<blockquote>
+<div><p>Fix Memory, MemorizedFunc and MemorizedResult round-trip pickling +
+unpickling (#746).</p>
+</div></blockquote>
+<p>James Collins</p>
+<blockquote>
+<div><p>Fixed a regression in Memory when positional arguments are called as
+kwargs several times with different values (#751).</p>
+</div></blockquote>
+<p>Thomas Moreau and Olivier Grisel</p>
+<blockquote>
+<div><p>Integration of loky 2.2.2 that fixes issues with the selection of the
+default start method and improve the reporting when calling functions
+with arguments that raise an exception when unpickling.</p>
+</div></blockquote>
+<p>Maxime Weyl</p>
+<blockquote>
+<div><p>Prevent MemorizedFunc.call_and_shelve from loading cached results to
+RAM when not necessary. Results in big performance improvements</p>
+</div></blockquote>
+</section>
+<section id="release-0-12-2">
+<h2>Release 0.12.2<a class="headerlink" href="#release-0-12-2" title="Permalink to this headline">¶</a></h2>
+<p>Olivier Grisel</p>
+<blockquote>
+<div><p>Integrate loky 2.2.0 to fix regression with unpicklable arguments and
+functions reported by users (#723, #643).</p>
+<p>Loky 2.2.0 also provides a protection against memory leaks long running
+applications when psutil is installed (reported as #721).</p>
+<p>Joblib now includes the code for the dask backend which has been updated
+to properly handle nested parallelism and data scattering at the same
+time (#722).</p>
+</div></blockquote>
+<p>Alexandre Abadie and Olivier Grisel</p>
+<blockquote>
+<div><p>Restored some private API attribute and arguments
+(<cite>MemorizedResult.argument_hash</cite> and <cite>BatchedCalls.__init__</cite>’s
+<cite>pickle_cache</cite>) for backward compat. (#716, #732).</p>
+</div></blockquote>
+<p>Joris Van den Bossche</p>
+<blockquote>
+<div><p>Fix a deprecation warning message (for <cite>Memory</cite>’s <cite>cachedir</cite>) (#720).</p>
+</div></blockquote>
+</section>
+<section id="release-0-12-1">
+<h2>Release 0.12.1<a class="headerlink" href="#release-0-12-1" title="Permalink to this headline">¶</a></h2>
+<p>Thomas Moreau</p>
+<blockquote>
+<div><p>Make sure that any exception triggered when serializing jobs in the queue
+will be wrapped as a PicklingError as in past versions of joblib.</p>
+</div></blockquote>
+<p>Noam Hershtig</p>
+<blockquote>
+<div><p>Fix kwonlydefaults key error in filter_args (#715)</p>
+</div></blockquote>
+</section>
+<section id="release-0-12">
+<h2>Release 0.12<a class="headerlink" href="#release-0-12" title="Permalink to this headline">¶</a></h2>
+<p>Thomas Moreau</p>
+<blockquote>
+<div><p>Implement the <code class="docutils literal notranslate"><span class="pre">'loky'</span></code> backend with &#64;ogrisel. This backend relies on
+a robust implementation of <code class="docutils literal notranslate"><span class="pre">concurrent.futures.ProcessPoolExecutor</span></code>
+with spawned processes that can be reused across the <code class="docutils literal notranslate"><span class="pre">Parallel</span></code>
+calls. This fixes the bad integration with third paty libraries relying on
+thread pools, described in <a class="reference external" href="https://pythonhosted.org/joblib/parallel.html#bad-interaction-of-multiprocessing-and-third-party-libraries">https://pythonhosted.org/joblib/parallel.html#bad-interaction-of-multiprocessing-and-third-party-libraries</a></p>
+<p>Limit the number of threads used in worker processes by C-libraries that
+relies on threadpools. This functionality works for MKL, OpenBLAS, OpenMP
+and Accelerated.</p>
+</div></blockquote>
+<p>Elizabeth Sander</p>
+<blockquote>
+<div><p>Prevent numpy arrays with the same shape and data from hashing to
+the same memmap, to prevent jobs with preallocated arrays from
+writing over each other.</p>
+</div></blockquote>
+<p>Olivier Grisel</p>
+<blockquote>
+<div><p>Reduce overhead of automatic memmap by removing the need to hash the
+array.</p>
+<p>Make <code class="docutils literal notranslate"><span class="pre">Memory.cache</span></code> robust to <code class="docutils literal notranslate"><span class="pre">PermissionError</span> <span class="pre">(errno</span> <span class="pre">13)</span></code> under
+Windows when run in combination with <code class="docutils literal notranslate"><span class="pre">Parallel</span></code>.</p>
+<p>The automatic array memory mapping feature of <code class="docutils literal notranslate"><span class="pre">Parallel</span></code> does no longer
+use <code class="docutils literal notranslate"><span class="pre">/dev/shm</span></code> if it is too small (less than 2 GB). In particular in
+docker containers <code class="docutils literal notranslate"><span class="pre">/dev/shm</span></code> is only 64 MB by default which would cause
+frequent failures when running joblib in Docker containers.</p>
+<p>Make it possible to hint for thread-based parallelism with
+<code class="docutils literal notranslate"><span class="pre">prefer='threads'</span></code> or enforce shared-memory semantics with
+<code class="docutils literal notranslate"><span class="pre">require='sharedmem'</span></code>.</p>
+<p>Rely on the built-in exception nesting system of Python 3 to preserve
+traceback information when an exception is raised on a remote worker
+process. This avoid verbose and redundant exception reports under
+Python 3.</p>
+<p>Preserve exception type information when doing nested Parallel calls
+instead of mapping the exception to the generic <code class="docutils literal notranslate"><span class="pre">JoblibException</span></code> type.</p>
+</div></blockquote>
+<p>Alexandre Abadie</p>
+<blockquote>
+<div><p>Introduce the concept of ‘store’ and refactor the <code class="docutils literal notranslate"><span class="pre">Memory</span></code> internal
+storage implementation to make it accept extra store backends for caching
+results. <code class="docutils literal notranslate"><span class="pre">backend</span></code> and <code class="docutils literal notranslate"><span class="pre">backend_options</span></code> are the new options added to
+<code class="docutils literal notranslate"><span class="pre">Memory</span></code> to specify and configure a store backend.</p>
+<p>Add the <code class="docutils literal notranslate"><span class="pre">register_store_backend</span></code> function to extend the store backend
+used by default with Memory. This default store backend is named ‘local’
+and corresponds to the local filesystem.</p>
+<p>The store backend API is experimental and thus is subject to change in the
+future without deprecation.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">cachedir</span></code> parameter of <code class="docutils literal notranslate"><span class="pre">Memory</span></code> is now marked as deprecated, use
+<code class="docutils literal notranslate"><span class="pre">location</span></code> instead.</p>
+<p>Add support for LZ4 compression if <code class="docutils literal notranslate"><span class="pre">lz4</span></code> package is installed.</p>
+<p>Add <code class="docutils literal notranslate"><span class="pre">register_compressor</span></code> function for extending available compressors.</p>
+<p>Allow passing a string to <code class="docutils literal notranslate"><span class="pre">compress</span></code> parameter in <code class="docutils literal notranslate"><span class="pre">dump</span></code> function. This
+string should correspond to the compressor used (e.g. zlib, gzip, lz4,
+etc). The default compression level is used in this case.</p>
+</div></blockquote>
+<p>Matthew Rocklin</p>
+<blockquote>
+<div><p>Allow <code class="docutils literal notranslate"><span class="pre">parallel_backend</span></code> to be used globally instead of only as a context
+manager.
+Support lazy registration of external parallel backends</p>
+</div></blockquote>
+</section>
+<section id="release-0-11">
+<h2>Release 0.11<a class="headerlink" href="#release-0-11" title="Permalink to this headline">¶</a></h2>
+<p>Alexandre Abadie</p>
+<blockquote>
+<div><p>Remove support for python 2.6</p>
+</div></blockquote>
+<p>Alexandre Abadie</p>
+<blockquote>
+<div><p>Remove deprecated <cite>format_signature</cite>, <cite>format_call</cite> and <cite>load_output</cite>
+functions from Memory API.</p>
+</div></blockquote>
+<p>Loïc Estève</p>
+<blockquote>
+<div><p>Add initial implementation of LRU cache cleaning. You can specify
+the size limit of a <code class="docutils literal notranslate"><span class="pre">Memory</span></code> object via the <code class="docutils literal notranslate"><span class="pre">bytes_limit</span></code>
+parameter and then need to clean explicitly the cache via the
+<code class="docutils literal notranslate"><span class="pre">Memory.reduce_size</span></code> method.</p>
+</div></blockquote>
+<p>Olivier Grisel</p>
+<blockquote>
+<div><p>Make the multiprocessing backend work even when the name of the main
+thread is not the Python default. Thanks to Roman Yurchak for the
+suggestion.</p>
+</div></blockquote>
+<p>Karan Desai</p>
+<blockquote>
+<div><p>pytest is used to run the tests instead of nosetests.
+<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">test</span></code> or <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">nosetests</span></code> do not work
+anymore, run <code class="docutils literal notranslate"><span class="pre">pytest</span> <span class="pre">joblib</span></code> instead.</p>
+</div></blockquote>
+<p>Loïc Estève</p>
+<blockquote>
+<div><p>An instance of <code class="docutils literal notranslate"><span class="pre">joblib.ParallelBackendBase</span></code> can be passed into
+the <code class="docutils literal notranslate"><span class="pre">parallel</span></code> argument in <code class="docutils literal notranslate"><span class="pre">joblib.Parallel</span></code>.</p>
+</div></blockquote>
+<p>Loïc Estève</p>
+<blockquote>
+<div><p>Fix handling of memmap objects with offsets greater than
+mmap.ALLOCATIONGRANULARITY in <code class="docutils literal notranslate"><span class="pre">joblib.Parallel</span></code>. See
+<a class="reference external" href="https://github.com/joblib/joblib/issues/451">https://github.com/joblib/joblib/issues/451</a> for more details.</p>
+</div></blockquote>
+<p>Loïc Estève</p>
+<blockquote>
+<div><p>Fix performance regression in <code class="docutils literal notranslate"><span class="pre">joblib.Parallel</span></code> with
+n_jobs=1. See <a class="reference external" href="https://github.com/joblib/joblib/issues/483">https://github.com/joblib/joblib/issues/483</a> for more
+details.</p>
+</div></blockquote>
+<p>Loïc Estève</p>
+<blockquote>
+<div><p>Fix race condition when a function cached with
+<code class="docutils literal notranslate"><span class="pre">joblib.Memory.cache</span></code> was used inside a <code class="docutils literal notranslate"><span class="pre">joblib.Parallel</span></code>. See
+<a class="reference external" href="https://github.com/joblib/joblib/issues/490">https://github.com/joblib/joblib/issues/490</a> for more details.</p>
+</div></blockquote>
+</section>
+<section id="release-0-10-3">
+<h2>Release 0.10.3<a class="headerlink" href="#release-0-10-3" title="Permalink to this headline">¶</a></h2>
+<p>Loïc Estève</p>
+<blockquote>
+<div><p>Fix tests when multiprocessing is disabled via the
+JOBLIB_MULTIPROCESSING environment variable.</p>
+</div></blockquote>
+<p>harishmk</p>
+<blockquote>
+<div><p>Remove warnings in nested Parallel objects when the inner Parallel
+has n_jobs=1. See <a class="reference external" href="https://github.com/joblib/joblib/pull/406">https://github.com/joblib/joblib/pull/406</a> for
+more details.</p>
+</div></blockquote>
+</section>
+<section id="release-0-10-2">
+<h2>Release 0.10.2<a class="headerlink" href="#release-0-10-2" title="Permalink to this headline">¶</a></h2>
+<p>Loïc Estève</p>
+<blockquote>
+<div><p>FIX a bug in stack formatting when the error happens in a compiled
+extension. See <a class="reference external" href="https://github.com/joblib/joblib/pull/382">https://github.com/joblib/joblib/pull/382</a> for more
+details.</p>
+</div></blockquote>
+<p>Vincent Latrouite</p>
+<blockquote>
+<div><p>FIX a bug in the constructor of BinaryZlibFile that would throw an
+exception when passing unicode filename (Python 2 only).
+See <a class="reference external" href="https://github.com/joblib/joblib/pull/384">https://github.com/joblib/joblib/pull/384</a> for more details.</p>
+</div></blockquote>
+<p>Olivier Grisel</p>
+<blockquote>
+<div><p>Expose <a class="reference internal" href="parallel.html#joblib.parallel.ParallelBackendBase" title="joblib.parallel.ParallelBackendBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">joblib.parallel.ParallelBackendBase</span></code></a> and
+<a class="reference internal" href="parallel.html#joblib.parallel.AutoBatchingMixin" title="joblib.parallel.AutoBatchingMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">joblib.parallel.AutoBatchingMixin</span></code></a> in the public API to
+make them officially re-usable by backend implementers.</p>
+</div></blockquote>
+</section>
+<section id="release-0-10-0">
+<h2>Release 0.10.0<a class="headerlink" href="#release-0-10-0" title="Permalink to this headline">¶</a></h2>
+<p>Alexandre Abadie</p>
+<blockquote>
+<div><p>ENH: joblib.dump/load now accept file-like objects besides filenames.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/351">https://github.com/joblib/joblib/pull/351</a> for more details.</p>
+</div></blockquote>
+<p>Niels Zeilemaker and Olivier Grisel</p>
+<blockquote>
+<div><p>Refactored joblib.Parallel to enable the registration of custom
+computational backends.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/306">https://github.com/joblib/joblib/pull/306</a>
+Note the API to register custom backends is considered experimental
+and subject to change without deprecation.</p>
+</div></blockquote>
+<p>Alexandre Abadie</p>
+<blockquote>
+<div><p>Joblib pickle format change: joblib.dump always create a single pickle file
+and joblib.dump/joblib.save never do any memory copy when writing/reading
+pickle files. Reading pickle files generated with joblib versions prior
+to 0.10 will be supported for a limited amount of time, we advise to
+regenerate them from scratch when convenient.
+joblib.dump and joblib.load also support pickle files compressed using
+various strategies: zlib, gzip, bz2, lzma and xz. Note that lzma and xz are
+only available with python &gt;= 3.3.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/260">https://github.com/joblib/joblib/pull/260</a> for more details.</p>
+</div></blockquote>
+<p>Antony Lee</p>
+<blockquote>
+<div><p>ENH: joblib.dump/load now accept pathlib.Path objects as filenames.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/316">https://github.com/joblib/joblib/pull/316</a> for more details.</p>
+</div></blockquote>
+<p>Olivier Grisel</p>
+<blockquote>
+<div><p>Workaround for “WindowsError: [Error 5] Access is denied” when trying to
+terminate a multiprocessing pool under Windows:
+<a class="reference external" href="https://github.com/joblib/joblib/issues/354">https://github.com/joblib/joblib/issues/354</a></p>
+</div></blockquote>
+</section>
+<section id="release-0-9-4">
+<h2>Release 0.9.4<a class="headerlink" href="#release-0-9-4" title="Permalink to this headline">¶</a></h2>
+<p>Olivier Grisel</p>
+<blockquote>
+<div><p>FIX a race condition that could cause a joblib.Parallel to hang
+when collecting the result of a job that triggers an exception.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/296">https://github.com/joblib/joblib/pull/296</a></p>
+</div></blockquote>
+<p>Olivier Grisel</p>
+<blockquote>
+<div><p>FIX a bug that caused joblib.Parallel to wrongly reuse previously
+memmapped arrays instead of creating new temporary files.
+<a class="reference external" href="https://github.com/joblib/joblib/pull/294">https://github.com/joblib/joblib/pull/294</a> for more details.</p>
+</div></blockquote>
+<p>Loïc Estève</p>
+<blockquote>
+<div><p>FIX for raising non inheritable exceptions in a Parallel call. See
+<a class="reference external" href="https://github.com/joblib/joblib/issues/269">https://github.com/joblib/joblib/issues/269</a> for more details.</p>
+</div></blockquote>
+<p>Alexandre Abadie</p>
+<blockquote>
+<div><p>FIX joblib.hash error with mixed types sets and dicts containing mixed
+types keys when using Python 3.
+see <a class="reference external" href="https://github.com/joblib/joblib/issues/254">https://github.com/joblib/joblib/issues/254</a></p>
+</div></blockquote>
+<p>Loïc Estève</p>
+<blockquote>
+<div><p>FIX joblib.dump/load for big numpy arrays with dtype=object. See
+<a class="reference external" href="https://github.com/joblib/joblib/issues/220">https://github.com/joblib/joblib/issues/220</a> for more details.</p>
+</div></blockquote>
+<p>Loïc Estève</p>
+<blockquote>
+<div><p>FIX joblib.Parallel hanging when used with an exhausted
+iterator. See <a class="reference external" href="https://github.com/joblib/joblib/issues/292">https://github.com/joblib/joblib/issues/292</a> for more
+details.</p>
+</div></blockquote>
+</section>
+<section id="release-0-9-3">
+<h2>Release 0.9.3<a class="headerlink" href="#release-0-9-3" title="Permalink to this headline">¶</a></h2>
+<p>Olivier Grisel</p>
+<blockquote>
+<div><p>Revert back to the <code class="docutils literal notranslate"><span class="pre">fork</span></code> start method (instead of
+<code class="docutils literal notranslate"><span class="pre">forkserver</span></code>) as the latter was found to cause crashes in
+interactive Python sessions.</p>
+</div></blockquote>
+</section>
+<section id="release-0-9-2">
+<h2>Release 0.9.2<a class="headerlink" href="#release-0-9-2" title="Permalink to this headline">¶</a></h2>
+<p>Loïc Estève</p>
+<blockquote>
+<div><p>Joblib hashing now uses the default pickle protocol (2 for Python
+2 and 3 for Python 3). This makes it very unlikely to get the same
+hash for a given object under Python 2 and Python 3.</p>
+<p>In particular, for Python 3 users, this means that the output of
+joblib.hash changes when switching from joblib 0.8.4 to 0.9.2 . We
+strive to ensure that the output of joblib.hash does not change
+needlessly in future versions of joblib but this is not officially
+guaranteed.</p>
+</div></blockquote>
+<p>Loïc Estève</p>
+<blockquote>
+<div><p>Joblib pickles generated with Python 2 can not be loaded with
+Python 3 and the same applies for joblib pickles generated with
+Python 3 and loaded with Python 2.</p>
+<p>During the beta period 0.9.0b2 to 0.9.0b4, we experimented with
+a joblib serialization that aimed to make pickles serialized with
+Python 3 loadable under Python 2. Unfortunately this serialization
+strategy proved to be too fragile as far as the long-term
+maintenance was concerned (For example see
+<a class="reference external" href="https://github.com/joblib/joblib/pull/243">https://github.com/joblib/joblib/pull/243</a>). That means that joblib
+pickles generated with joblib 0.9.0bN can not be loaded under
+joblib 0.9.2. Joblib beta testers, who are the only ones likely to
+be affected by this, are advised to delete their joblib cache when
+they upgrade from 0.9.0bN to 0.9.2.</p>
+</div></blockquote>
+<p>Arthur Mensch</p>
+<blockquote>
+<div><p>Fixed a bug with <code class="docutils literal notranslate"><span class="pre">joblib.hash</span></code> that used to return unstable values for
+strings and numpy.dtype instances depending on interning states.</p>
+</div></blockquote>
+<p>Olivier Grisel</p>
+<blockquote>
+<div><p>Make joblib use the ‘forkserver’ start method by default under Python 3.4+
+to avoid causing crash with 3rd party libraries (such as Apple vecLib /
+Accelerate or the GCC OpenMP runtime) that use an internal thread pool that
+is not reinitialized when a <code class="docutils literal notranslate"><span class="pre">fork</span></code> system call happens.</p>
+</div></blockquote>
+<p>Olivier Grisel</p>
+<blockquote>
+<div><p>New context manager based API (<code class="docutils literal notranslate"><span class="pre">with</span></code> block) to re-use
+the same pool of workers across consecutive parallel calls.</p>
+</div></blockquote>
+<p>Vlad Niculae and Olivier Grisel</p>
+<blockquote>
+<div><p>Automated batching of fast tasks into longer running jobs to
+hide multiprocessing dispatching overhead when possible.</p>
+</div></blockquote>
+<p>Olivier Grisel</p>
+<blockquote>
+<div><p>FIX make it possible to call <code class="docutils literal notranslate"><span class="pre">joblib.load(filename,</span> <span class="pre">mmap_mode='r')</span></code>
+on pickled objects that include a mix of arrays of both
+memory memmapable dtypes and object dtype.</p>
+</div></blockquote>
+</section>
+<section id="release-0-8-4">
+<h2>Release 0.8.4<a class="headerlink" href="#release-0-8-4" title="Permalink to this headline">¶</a></h2>
+<p>2014-11-20
+Olivier Grisel</p>
+<blockquote>
+<div><p>OPTIM use the C-optimized pickler under Python 3</p>
+<p>This makes it possible to efficiently process parallel jobs that deal with
+numerous Python objects such as large dictionaries.</p>
+</div></blockquote>
+</section>
+<section id="release-0-8-3">
+<h2>Release 0.8.3<a class="headerlink" href="#release-0-8-3" title="Permalink to this headline">¶</a></h2>
+<p>2014-08-19
+Olivier Grisel</p>
+<blockquote>
+<div><p>FIX disable memmapping for object arrays</p>
+</div></blockquote>
+<p>2014-08-07
+Lars Buitinck</p>
+<blockquote>
+<div><p>MAINT NumPy 1.10-safe version comparisons</p>
+</div></blockquote>
+<p>2014-07-11
+Olivier Grisel</p>
+<blockquote>
+<div><p>FIX #146: Heisen test failure caused by thread-unsafe Python lists</p>
+<p>This fix uses a queue.Queue datastructure in the failing test. This
+datastructure is thread-safe thanks to an internal Lock. This Lock instance
+not picklable hence cause the picklability check of delayed to check fail.</p>
+<p>When using the threading backend, picklability is no longer required, hence
+this PRs give the user the ability to disable it on a case by case basis.</p>
+</div></blockquote>
+</section>
+<section id="release-0-8-2">
+<h2>Release 0.8.2<a class="headerlink" href="#release-0-8-2" title="Permalink to this headline">¶</a></h2>
+<p>2014-06-30
+Olivier Grisel</p>
+<blockquote>
+<div><p>BUG: use mmap_mode=’r’ by default in Parallel and MemmappingPool</p>
+<p>The former default of mmap_mode=’c’ (copy-on-write) caused
+problematic use of the paging file under Windows.</p>
+</div></blockquote>
+<p>2014-06-27
+Olivier Grisel</p>
+<blockquote>
+<div><p>BUG: fix usage of the /dev/shm folder under Linux</p>
+</div></blockquote>
+</section>
+<section id="release-0-8-1">
+<h2>Release 0.8.1<a class="headerlink" href="#release-0-8-1" title="Permalink to this headline">¶</a></h2>
+<p>2014-05-29
+Gael Varoquaux</p>
+<blockquote>
+<div><p>BUG: fix crash with high verbosity</p>
+</div></blockquote>
+</section>
+<section id="release-0-8-0">
+<h2>Release 0.8.0<a class="headerlink" href="#release-0-8-0" title="Permalink to this headline">¶</a></h2>
+<p>2014-05-14
+Olivier Grisel</p>
+<blockquote>
+<div><p>Fix a bug in exception reporting under Python 3</p>
+</div></blockquote>
+<p>2014-05-10
+Olivier Grisel</p>
+<blockquote>
+<div><p>Fixed a potential segfault when passing non-contiguous memmap
+instances.</p>
+</div></blockquote>
+<p>2014-04-22
+Gael Varoquaux</p>
+<blockquote>
+<div><p>ENH: Make memory robust to modification of source files while the
+interpreter is running. Should lead to less spurious cache flushes
+and recomputations.</p>
+</div></blockquote>
+<p>2014-02-24
+Philippe Gervais</p>
+<blockquote>
+<div><p>New <code class="docutils literal notranslate"><span class="pre">Memory.call_and_shelve</span></code> API to handle memoized results by
+reference instead of by value.</p>
+</div></blockquote>
+</section>
+<section id="release-0-8-0a3">
+<h2>Release 0.8.0a3<a class="headerlink" href="#release-0-8-0a3" title="Permalink to this headline">¶</a></h2>
+<p>2014-01-10
+Olivier Grisel &amp; Gael Varoquaux</p>
+<blockquote>
+<div><p>FIX #105: Race condition in task iterable consumption when
+pre_dispatch != ‘all’ that could cause crash with error messages “Pools
+seems closed” and “ValueError: generator already executing”.</p>
+</div></blockquote>
+<p>2014-01-12
+Olivier Grisel</p>
+<blockquote>
+<div><p>FIX #72: joblib cannot persist “output_dir” keyword argument.</p>
+</div></blockquote>
+</section>
+<section id="release-0-8-0a2">
+<h2>Release 0.8.0a2<a class="headerlink" href="#release-0-8-0a2" title="Permalink to this headline">¶</a></h2>
+<p>2013-12-23
+Olivier Grisel</p>
+<blockquote>
+<div><p>ENH: set default value of Parallel’s max_nbytes to 100MB</p>
+<p>Motivation: avoid introducing disk latency on medium sized
+parallel workload where memory usage is not an issue.</p>
+<p>FIX: properly handle the JOBLIB_MULTIPROCESSING env variable</p>
+<p>FIX: timeout test failures under windows</p>
+</div></blockquote>
+</section>
+<section id="release-0-8-0a">
+<h2>Release 0.8.0a<a class="headerlink" href="#release-0-8-0a" title="Permalink to this headline">¶</a></h2>
+<p>2013-12-19
+Olivier Grisel</p>
+<blockquote>
+<div><p>FIX: support the new Python 3.4 multiprocessing API</p>
+</div></blockquote>
+<p>2013-12-05
+Olivier Grisel</p>
+<blockquote>
+<div><p>ENH: make Memory respect mmap_mode at first call too</p>
+<p>ENH: add a threading based backend to Parallel</p>
+<p>This is low overhead alternative backend to the default multiprocessing
+backend that is suitable when calling compiled extensions that release
+the GIL.</p>
+</div></blockquote>
+<p>Author: Dan Stahlke &lt;<a class="reference external" href="mailto:dan&#37;&#52;&#48;stahlke&#46;org">dan<span>&#64;</span>stahlke<span>&#46;</span>org</a>&gt;
+Date:   2013-11-08</p>
+<blockquote>
+<div><p>FIX: use safe_repr to print arg vals in trace</p>
+<p>This fixes a problem in which extremely long (and slow) stack traces would
+be produced when function parameters are large numpy arrays.</p>
+</div></blockquote>
+<p>2013-09-10
+Olivier Grisel</p>
+<blockquote>
+<div><p>ENH: limit memory copy with Parallel by leveraging numpy.memmap when
+possible</p>
+</div></blockquote>
+</section>
+<section id="release-0-7-1">
+<h2>Release 0.7.1<a class="headerlink" href="#release-0-7-1" title="Permalink to this headline">¶</a></h2>
+<p>2013-07-25
+Gael Varoquaux</p>
+<blockquote>
+<div><p>MISC: capture meaningless argument (n_jobs=0) in Parallel</p>
+</div></blockquote>
+<p>2013-07-09
+Lars Buitinck</p>
+<blockquote>
+<div><p>ENH Handles tuples, sets and Python 3’s dict_keys type the same as
+lists. in pre_dispatch</p>
+</div></blockquote>
+<p>2013-05-23
+Martin Luessi</p>
+<blockquote>
+<div><p>ENH: fix function caching for IPython</p>
+</div></blockquote>
+</section>
+<section id="release-0-7-0">
+<h2>Release 0.7.0<a class="headerlink" href="#release-0-7-0" title="Permalink to this headline">¶</a></h2>
+<p><strong>This release drops support for Python 2.5 in favor of support for
+Python 3.0</strong></p>
+<p>2013-02-13
+Gael Varoquaux</p>
+<blockquote>
+<div><p>BUG: fix nasty hash collisions</p>
+</div></blockquote>
+<p>2012-11-19
+Gael Varoquaux</p>
+<blockquote>
+<div><p>ENH: Parallel: Turn of pre-dispatch for already expanded lists</p>
+</div></blockquote>
+<p>Gael Varoquaux
+2012-11-19</p>
+<blockquote>
+<div><p>ENH: detect recursive sub-process spawning, as when people do not
+protect the __main__ in scripts under Windows, and raise a useful
+error.</p>
+</div></blockquote>
+<p>Gael Varoquaux
+2012-11-16</p>
+<blockquote>
+<div><p>ENH: Full python 3 support</p>
+</div></blockquote>
+</section>
+<section id="release-0-6-5">
+<h2>Release 0.6.5<a class="headerlink" href="#release-0-6-5" title="Permalink to this headline">¶</a></h2>
+<p>2012-09-15
+Yannick Schwartz</p>
+<blockquote>
+<div><p>BUG: make sure that sets and dictionaries give reproducible hashes</p>
+</div></blockquote>
+<p>2012-07-18
+Marek Rudnicki</p>
+<blockquote>
+<div><p>BUG: make sure that object-dtype numpy array hash correctly</p>
+</div></blockquote>
+<p>2012-07-12
+GaelVaroquaux</p>
+<blockquote>
+<div><p>BUG: Bad default n_jobs for Parallel</p>
+</div></blockquote>
+</section>
+<section id="release-0-6-4">
+<h2>Release 0.6.4<a class="headerlink" href="#release-0-6-4" title="Permalink to this headline">¶</a></h2>
+<p>2012-05-07
+Vlad Niculae</p>
+<blockquote>
+<div><p>ENH: controlled randomness in tests and doctest fix</p>
+</div></blockquote>
+<p>2012-02-21
+GaelVaroquaux</p>
+<blockquote>
+<div><p>ENH: add verbosity in memory</p>
+</div></blockquote>
+<p>2012-02-21
+GaelVaroquaux</p>
+<blockquote>
+<div><p>BUG: non-reproducible hashing: order of kwargs</p>
+<p>The ordering of a dictionary is random. As a result the function hashing
+was not reproducible. Pretty hard to test</p>
+</div></blockquote>
+</section>
+<section id="release-0-6-3">
+<h2>Release 0.6.3<a class="headerlink" href="#release-0-6-3" title="Permalink to this headline">¶</a></h2>
+<p>2012-02-14
+GaelVaroquaux</p>
+<blockquote>
+<div><p>BUG: fix joblib Memory pickling</p>
+</div></blockquote>
+<p>2012-02-11
+GaelVaroquaux</p>
+<blockquote>
+<div><p>BUG: fix hasher with Python 3</p>
+</div></blockquote>
+<p>2012-02-09
+GaelVaroquaux</p>
+<blockquote>
+<div><p>API: filter_args:  <cite>*args, **kwargs -&gt; args, kwargs</cite></p>
+</div></blockquote>
+</section>
+<section id="release-0-6-2">
+<h2>Release 0.6.2<a class="headerlink" href="#release-0-6-2" title="Permalink to this headline">¶</a></h2>
+<p>2012-02-06
+Gael Varoquaux</p>
+<blockquote>
+<div><p>BUG: make sure Memory pickles even if cachedir=None</p>
+</div></blockquote>
+</section>
+<section id="release-0-6-1">
+<h2>Release 0.6.1<a class="headerlink" href="#release-0-6-1" title="Permalink to this headline">¶</a></h2>
+<p>Bugfix release because of a merge error in release 0.6.0</p>
+</section>
+<section id="release-0-6-0">
+<h2>Release 0.6.0<a class="headerlink" href="#release-0-6-0" title="Permalink to this headline">¶</a></h2>
+<p><strong>Beta 3</strong></p>
+<p>2012-01-11
+Gael Varoquaux</p>
+<blockquote>
+<div><p>BUG: ensure compatibility with old numpy</p>
+<p>DOC: update installation instructions</p>
+<p>BUG: file semantic to work under Windows</p>
+</div></blockquote>
+<p>2012-01-10
+Yaroslav Halchenko</p>
+<blockquote>
+<div><p>BUG: a fix toward 2.5 compatibility</p>
+</div></blockquote>
+<p><strong>Beta 2</strong></p>
+<p>2012-01-07
+Gael Varoquaux</p>
+<blockquote>
+<div><p>ENH: hash: bugware to be able to hash objects defined interactively
+in IPython</p>
+</div></blockquote>
+<p>2012-01-07
+Gael Varoquaux</p>
+<blockquote>
+<div><p>ENH: Parallel: warn and not fail for nested loops</p>
+<p>ENH: Parallel: n_jobs=-2 now uses all CPUs but one</p>
+</div></blockquote>
+<p>2012-01-01
+Juan Manuel Caicedo Carvajal and Gael Varoquaux</p>
+<blockquote>
+<div><p>ENH: add verbosity levels in Parallel</p>
+</div></blockquote>
+</section>
+<section id="release-0-5-7">
+<h2>Release 0.5.7<a class="headerlink" href="#release-0-5-7" title="Permalink to this headline">¶</a></h2>
+<p>2011-12-28
+Gael varoquaux</p>
+<blockquote>
+<div><p>API: zipped -&gt; compress</p>
+</div></blockquote>
+<p>2011-12-26
+Gael varoquaux</p>
+<blockquote>
+<div><p>ENH: Add a zipped option to Memory</p>
+<p>API: Memory no longer accepts save_npy</p>
+</div></blockquote>
+<p>2011-12-22
+Kenneth C. Arnold and Gael varoquaux</p>
+<blockquote>
+<div><p>BUG: fix numpy_pickle for array subclasses</p>
+</div></blockquote>
+<p>2011-12-21
+Gael varoquaux</p>
+<blockquote>
+<div><p>ENH: add zip-based pickling</p>
+</div></blockquote>
+<p>2011-12-19
+Fabian Pedregosa</p>
+<blockquote>
+<div><p>Py3k: compatibility fixes.
+This makes run fine the tests test_disk and test_parallel</p>
+</div></blockquote>
+</section>
+<section id="release-0-5-6">
+<h2>Release 0.5.6<a class="headerlink" href="#release-0-5-6" title="Permalink to this headline">¶</a></h2>
+<p>2011-12-11
+Lars Buitinck</p>
+<blockquote>
+<div><p>ENH: Replace os.path.exists before makedirs with exception check
+New disk.mkdirp will fail with other errnos than EEXIST.</p>
+</div></blockquote>
+<p>2011-12-10
+Bala Subrahmanyam Varanasi</p>
+<blockquote>
+<div><p>MISC: pep8 compliant</p>
+</div></blockquote>
+</section>
+<section id="release-0-5-5">
+<h2>Release 0.5.5<a class="headerlink" href="#release-0-5-5" title="Permalink to this headline">¶</a></h2>
+<p>2011-19-10
+Fabian Pedregosa</p>
+<blockquote>
+<div><p>ENH: Make joblib installable under Python 3.X</p>
+</div></blockquote>
+</section>
+<section id="release-0-5-4">
+<h2>Release 0.5.4<a class="headerlink" href="#release-0-5-4" title="Permalink to this headline">¶</a></h2>
+<p>2011-09-29
+Jon Olav Vik</p>
+<blockquote>
+<div><p>BUG: Make mangling path to filename work on Windows</p>
+</div></blockquote>
+<p>2011-09-25
+Olivier Grisel</p>
+<blockquote>
+<div><p>FIX: doctest heisenfailure on execution time</p>
+</div></blockquote>
+<p>2011-08-24
+Ralf Gommers</p>
+<blockquote>
+<div><p>STY: PEP8 cleanup.</p>
+</div></blockquote>
+</section>
+<section id="release-0-5-3">
+<h2>Release 0.5.3<a class="headerlink" href="#release-0-5-3" title="Permalink to this headline">¶</a></h2>
+<p>2011-06-25
+Gael varoquaux</p>
+<blockquote>
+<div><p>API: All the useful symbols in the __init__</p>
+</div></blockquote>
+</section>
+<section id="release-0-5-2">
+<h2>Release 0.5.2<a class="headerlink" href="#release-0-5-2" title="Permalink to this headline">¶</a></h2>
+<p>2011-06-25
+Gael varoquaux</p>
+<blockquote>
+<div><p>ENH: Add cpu_count</p>
+</div></blockquote>
+<p>2011-06-06
+Gael varoquaux</p>
+<blockquote>
+<div><p>ENH: Make sure memory hash in a reproducible way</p>
+</div></blockquote>
+</section>
+<section id="release-0-5-1">
+<h2>Release 0.5.1<a class="headerlink" href="#release-0-5-1" title="Permalink to this headline">¶</a></h2>
+<p>2011-04-12
+Gael varoquaux</p>
+<blockquote>
+<div><p>TEST: Better testing of parallel and pre_dispatch</p>
+</div></blockquote>
+<p>Yaroslav Halchenko
+2011-04-12</p>
+<blockquote>
+<div><p>DOC: quick pass over docs – trailing spaces/spelling</p>
+</div></blockquote>
+<p>Yaroslav Halchenko
+2011-04-11</p>
+<blockquote>
+<div><p>ENH: JOBLIB_MULTIPROCESSING env var to disable multiprocessing from the
+environment</p>
+</div></blockquote>
+<p>Alexandre Gramfort
+2011-04-08</p>
+<blockquote>
+<div><p>ENH : adding log message to know how long it takes to load from disk the
+cache</p>
+</div></blockquote>
+</section>
+<section id="release-0-5-0">
+<h2>Release 0.5.0<a class="headerlink" href="#release-0-5-0" title="Permalink to this headline">¶</a></h2>
+<p>2011-04-01
+Gael varoquaux</p>
+<blockquote>
+<div><p>BUG: pickling MemoizeFunc does not store timestamp</p>
+</div></blockquote>
+<p>2011-03-31
+Nicolas Pinto</p>
+<blockquote>
+<div><p>TEST: expose hashing bug with cached method</p>
+</div></blockquote>
+<p>2011-03-26…2011-03-27
+Pietro Berkes</p>
+<blockquote>
+<div><p>BUG: fix error management in rm_subdirs
+BUG: fix for race condition during tests in mem.clear()</p>
+</div></blockquote>
+<p>Gael varoquaux
+2011-03-22…2011-03-26</p>
+<blockquote>
+<div><p>TEST: Improve test coverage and robustness</p>
+</div></blockquote>
+<p>Gael varoquaux
+2011-03-19</p>
+<blockquote>
+<div><p>BUG: hashing functions with only *var **kwargs</p>
+</div></blockquote>
+<p>Gael varoquaux
+2011-02-01… 2011-03-22</p>
+<blockquote>
+<div><p>BUG: Many fixes to capture interprocess race condition when mem.cache
+is used by several processes on the same cache.</p>
+</div></blockquote>
+<p>Fabian Pedregosa
+2011-02-28</p>
+<blockquote>
+<div><p>First work on Py3K compatibility</p>
+</div></blockquote>
+<p>Gael varoquaux
+2011-02-27</p>
+<blockquote>
+<div><p>ENH: pre_dispatch in parallel: lazy generation of jobs in parallel
+for to avoid drowning memory.</p>
+</div></blockquote>
+<p>GaelVaroquaux
+2011-02-24</p>
+<blockquote>
+<div><p>ENH: Add the option of overloading the arguments of the mother
+‘Memory’ object in the cache method that is doing the decoration.</p>
+</div></blockquote>
+<p>Gael varoquaux
+2010-11-21</p>
+<blockquote>
+<div><p>ENH: Add a verbosity level for more verbosity</p>
+</div></blockquote>
+</section>
+<section id="release-0-4-6">
+<h2>Release 0.4.6<a class="headerlink" href="#release-0-4-6" title="Permalink to this headline">¶</a></h2>
+<p>Gael varoquaux
+2010-11-15</p>
+<blockquote>
+<div><p>ENH: Deal with interruption in parallel</p>
+</div></blockquote>
+<p>Gael varoquaux
+2010-11-13</p>
+<blockquote>
+<div><p>BUG: Exceptions raised by Parallel when n_job=1 are no longer captured.</p>
+</div></blockquote>
+<p>Gael varoquaux
+2010-11-13</p>
+<blockquote>
+<div><p>BUG: Capture wrong arguments properly (better error message)</p>
+</div></blockquote>
+</section>
+<section id="release-0-4-5">
+<h2>Release 0.4.5<a class="headerlink" href="#release-0-4-5" title="Permalink to this headline">¶</a></h2>
+<p>Pietro Berkes
+2010-09-04</p>
+<blockquote>
+<div><p>BUG: Fix Windows peculiarities with path separators and file names
+BUG: Fix more windows locking bugs</p>
+</div></blockquote>
+<p>Gael varoquaux
+2010-09-03</p>
+<blockquote>
+<div><p>ENH: Make sure that exceptions raised in Parallel also inherit from
+the original exception class
+ENH: Add a shadow set of exceptions</p>
+</div></blockquote>
+<p>Fabian Pedregosa
+2010-09-01</p>
+<blockquote>
+<div><p>ENH: Clean up the code for parallel. Thanks to Fabian Pedregosa for
+the patch.</p>
+</div></blockquote>
+</section>
+<section id="release-0-4-4">
+<h2>Release 0.4.4<a class="headerlink" href="#release-0-4-4" title="Permalink to this headline">¶</a></h2>
+<p>Gael varoquaux
+2010-08-23</p>
+<blockquote>
+<div><p>BUG: Fix Parallel on computers with only one CPU, for n_jobs=-1.</p>
+</div></blockquote>
+<p>Gael varoquaux
+2010-08-02</p>
+<blockquote>
+<div><p>BUG: Fix setup.py for extra setuptools args.</p>
+</div></blockquote>
+<p>Gael varoquaux
+2010-07-29</p>
+<blockquote>
+<div><p>MISC: Silence tests (and hopefully Yaroslav :P)</p>
+</div></blockquote>
+</section>
+<section id="release-0-4-3">
+<h2>Release 0.4.3<a class="headerlink" href="#release-0-4-3" title="Permalink to this headline">¶</a></h2>
+<p>Gael Varoquaux
+2010-07-22</p>
+<blockquote>
+<div><p>BUG: Fix hashing for function with a side effect modifying their input
+argument. Thanks to Pietro Berkes for reporting the bug and proving the
+patch.</p>
+</div></blockquote>
+</section>
+<section id="release-0-4-2">
+<h2>Release 0.4.2<a class="headerlink" href="#release-0-4-2" title="Permalink to this headline">¶</a></h2>
+<p>Gael Varoquaux
+2010-07-16</p>
+<blockquote>
+<div><p>BUG: Make sure that joblib still works with Python2.5. =&gt; release 0.4.2</p>
+</div></blockquote>
+</section>
+<section id="release-0-4-1">
+<h2>Release 0.4.1<a class="headerlink" href="#release-0-4-1" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/joblib_logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">User manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="why.html">Why joblib: project goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing.html">Installing joblib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory.html">On demand recomputing: the <cite>Memory</cite> class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parallel.html">Embarrassingly parallel for loops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="persistence.html">Persistence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developing.html">Development</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Module reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="generated/joblib.Memory.html">joblib.Memory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/joblib.Parallel.html">joblib.Parallel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/joblib.parallel_config.html">joblib.parallel_config</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="generated/joblib.dump.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">joblib</span></code>.dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/joblib.load.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">joblib</span></code>.load</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/joblib.hash.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">joblib</span></code>.hash</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generated/joblib.register_compressor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">joblib</span></code>.register_compressor</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Deprecated functionalities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="generated/joblib.parallel_backend.html">joblib.parallel_backend</a></li>
+</ul>
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2008-2021, Joblib developers.
+      
+      |
+      <a href="_sources/CHANGES.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

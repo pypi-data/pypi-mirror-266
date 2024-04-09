@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>joblib.parallel_backend &#8212; joblib 1.3.2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="joblib.register_compressor" href="joblib.register_compressor.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="joblib-parallel-backend">
+<h1>joblib.parallel_backend<a class="headerlink" href="#joblib-parallel-backend" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="joblib.parallel_backend">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">joblib.</span></span><span class="sig-name descname"><span class="pre">parallel_backend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inner_max_num_threads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">backend_params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#joblib.parallel_backend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change the default backend used by Parallel inside a with block.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>It is advised to use the <a class="reference internal" href="joblib.parallel_config.html#joblib.parallel_config" title="joblib.parallel_config"><code class="xref py py-class docutils literal notranslate"><span class="pre">parallel_config</span></code></a> context
+manager instead, which allows more fine-grained control over the
+backend configuration.</p>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">backend</span></code> is a string it must match a previously registered
+implementation using the <a class="reference internal" href="../parallel.html#joblib.register_parallel_backend" title="joblib.register_parallel_backend"><code class="xref py py-func docutils literal notranslate"><span class="pre">register_parallel_backend()</span></code></a> function.</p>
+<p>By default the following backends are available:</p>
+<ul class="simple">
+<li><p>‘loky’: single-host, process-based parallelism (used by default),</p></li>
+<li><p>‘threading’: single-host, thread-based parallelism,</p></li>
+<li><p>‘multiprocessing’: legacy single-host, process-based parallelism.</p></li>
+</ul>
+<p>‘loky’ is recommended to run functions that manipulate Python objects.
+‘threading’ is a low-overhead alternative that is most efficient for
+functions that release the Global Interpreter Lock: e.g. I/O-bound code or
+CPU-bound code in a few calls to native code that explicitly releases the
+GIL. Note that on some rare systems (such as Pyodide),
+multiprocessing and loky may not be available, in which case joblib
+defaults to threading.</p>
+<p>You can also use the <a class="reference external" href="https://docs.dask.org/en/stable/">Dask</a> joblib
+backend to distribute work across machines. This works well with
+scikit-learn estimators with the <code class="docutils literal notranslate"><span class="pre">n_jobs</span></code> parameter, for example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">joblib</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">GridSearchCV</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">LocalCluster</span> 
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># create a local Dask cluster</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cluster</span> <span class="o">=</span> <span class="n">LocalCluster</span><span class="p">()</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">cluster</span><span class="p">)</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid_search</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">param_grid</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">... </span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">joblib</span><span class="o">.</span><span class="n">parallel_backend</span><span class="p">(</span><span class="s2">&quot;dask&quot;</span><span class="p">,</span> <span class="n">scatter</span><span class="o">=</span><span class="p">[</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">]):</span>  
+<span class="gp">... </span>    <span class="n">grid_search</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It is also possible to use the distributed ‘ray’ backend for distributing
+the workload to a cluster of nodes. To use the ‘ray’ joblib backend add
+the following lines:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ray.util.joblib</span> <span class="kn">import</span> <span class="n">register_ray</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">register_ray</span><span class="p">()</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">parallel_backend</span><span class="p">(</span><span class="s2">&quot;ray&quot;</span><span class="p">):</span>  
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">Parallel</span><span class="p">()(</span><span class="n">delayed</span><span class="p">(</span><span class="n">neg</span><span class="p">)(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)))</span>
+<span class="go">[-1, -2, -3, -4, -5]</span>
+</pre></div>
+</div>
+<p>Alternatively the backend can be passed directly as an instance.</p>
+<p>By default all available workers will be used (<code class="docutils literal notranslate"><span class="pre">n_jobs=-1</span></code>) unless the
+caller passes an explicit value for the <code class="docutils literal notranslate"><span class="pre">n_jobs</span></code> parameter.</p>
+<p>This is an alternative to passing a <code class="docutils literal notranslate"><span class="pre">backend='backend_name'</span></code> argument to
+the <a class="reference internal" href="joblib.Parallel.html#joblib.Parallel" title="joblib.Parallel"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parallel</span></code></a> class constructor. It is particularly useful when
+calling into library code that uses joblib internally but does not expose
+the backend argument in its own API.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">neg</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">parallel_backend</span><span class="p">(</span><span class="s1">&#39;threading&#39;</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">Parallel</span><span class="p">()(</span><span class="n">delayed</span><span class="p">(</span><span class="n">neg</span><span class="p">)(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)))</span>
+<span class="gp">...</span>
+<span class="go">[-1, -2, -3, -4, -5]</span>
+</pre></div>
+</div>
+<p>Joblib also tries to limit the oversubscription by limiting the number of
+threads usable in some third-party library threadpools like OpenBLAS, MKL
+or OpenMP. The default limit in each worker is set to
+<code class="docutils literal notranslate"><span class="pre">max(cpu_count()</span> <span class="pre">//</span> <span class="pre">effective_n_jobs,</span> <span class="pre">1)</span></code> but this limit can be
+overwritten with the <code class="docutils literal notranslate"><span class="pre">inner_max_num_threads</span></code> argument which will be used
+to set this limit in the child processes.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.10.</span></p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="joblib.parallel_config.html#joblib.parallel_config" title="joblib.parallel_config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">joblib.parallel_config</span></code></a></dt><dd><p>context manager to change the backend configuration.</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<span class="target" id="sphx-glr-backreferences-joblib-parallel-backend"></span></section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/joblib_logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">User manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../why.html">Why joblib: project goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installing.html">Installing joblib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../memory.html">On demand recomputing: the <cite>Memory</cite> class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parallel.html">Embarrassingly parallel for loops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../persistence.html">Persistence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developing.html">Development</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Module reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="joblib.Memory.html">joblib.Memory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="joblib.Parallel.html">joblib.Parallel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="joblib.parallel_config.html">joblib.parallel_config</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="joblib.dump.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">joblib</span></code>.dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="joblib.load.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">joblib</span></code>.load</a></li>
+<li class="toctree-l1"><a class="reference internal" href="joblib.hash.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">joblib</span></code>.hash</a></li>
+<li class="toctree-l1"><a class="reference internal" href="joblib.register_compressor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">joblib</span></code>.register_compressor</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Deprecated functionalities</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">joblib.parallel_backend</a></li>
+</ul>
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2008-2021, Joblib developers.
+      
+      |
+      <a href="../_sources/generated/joblib.parallel_backend.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

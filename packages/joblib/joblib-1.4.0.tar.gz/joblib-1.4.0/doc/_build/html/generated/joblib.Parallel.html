@@ -1,0 +1,388 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>joblib.Parallel &#8212; joblib 1.3.2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="joblib.parallel_config" href="joblib.parallel_config.html" />
+    <link rel="prev" title="joblib.Memory" href="joblib.Memory.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="joblib-parallel">
+<h1>joblib.Parallel<a class="headerlink" href="#joblib-parallel" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="joblib.Parallel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">joblib.</span></span><span class="sig-name descname"><span class="pre">Parallel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">default(None)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">default(None)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_as</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'list'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">default(0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pre_dispatch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'2</span> <span class="pre">*</span> <span class="pre">n_jobs'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temp_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">default(None)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_nbytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">default('1M')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mmap_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">default('r')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">default(None)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">require</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">default(None)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#joblib.Parallel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper class for readable parallel mapping.</p>
+<p>Read more in the <a class="reference internal" href="../parallel.html#parallel"><span class="std std-ref">User Guide</span></a>.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>n_jobs: int, default: None</strong></dt><dd><p>The maximum number of concurrently running jobs, such as the number
+of Python worker processes when backend=”multiprocessing”
+or the size of the thread-pool when backend=”threading”.
+If -1 all CPUs are used.
+If 1 is given, no parallel computing code is used at all, and the
+behavior amounts to a simple python <cite>for</cite> loop. This mode is not
+compatible with <cite>timeout</cite>.
+For n_jobs below -1, (n_cpus + 1 + n_jobs) are used. Thus for
+n_jobs = -2, all CPUs but one are used.
+None is a marker for ‘unset’ that will be interpreted as n_jobs=1
+unless the call is performed under a <a class="reference internal" href="joblib.parallel_config.html#joblib.parallel_config" title="joblib.parallel_config"><code class="xref py py-func docutils literal notranslate"><span class="pre">parallel_config()</span></code></a>
+context manager that sets another value for <code class="docutils literal notranslate"><span class="pre">n_jobs</span></code>.</p>
+</dd>
+<dt><strong>backend: str, ParallelBackendBase instance or None, default: ‘loky’</strong></dt><dd><p>Specify the parallelization backend implementation.
+Supported backends are:</p>
+<ul class="simple">
+<li><p>“loky” used by default, can induce some
+communication and memory overhead when exchanging input and
+output data with the worker Python processes. On some rare
+systems (such as Pyiodide), the loky backend may not be
+available.</p></li>
+<li><p>“multiprocessing” previous process-based backend based on
+<cite>multiprocessing.Pool</cite>. Less robust than <cite>loky</cite>.</p></li>
+<li><p>“threading” is a very low-overhead backend but it suffers
+from the Python Global Interpreter Lock if the called function
+relies a lot on Python objects. “threading” is mostly useful
+when the execution bottleneck is a compiled extension that
+explicitly releases the GIL (for instance a Cython loop wrapped
+in a “with nogil” block or an expensive call to a library such
+as NumPy).</p></li>
+<li><p>finally, you can register backends by calling
+<a class="reference internal" href="../parallel.html#joblib.register_parallel_backend" title="joblib.register_parallel_backend"><code class="xref py py-func docutils literal notranslate"><span class="pre">register_parallel_backend()</span></code></a>. This will allow you to
+implement a backend of your liking.</p></li>
+</ul>
+<p>It is not recommended to hard-code the backend name in a call to
+<a class="reference internal" href="#joblib.Parallel" title="joblib.Parallel"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parallel</span></code></a> in a library. Instead it is recommended to set
+soft hints (prefer) or hard constraints (require) so as to make it
+possible for library users to change the backend from the outside
+using the <a class="reference internal" href="joblib.parallel_config.html#joblib.parallel_config" title="joblib.parallel_config"><code class="xref py py-func docutils literal notranslate"><span class="pre">parallel_config()</span></code></a> context manager.</p>
+</dd>
+<dt><strong>return_as: str in {‘list’, ‘generator’}, default: ‘list’</strong></dt><dd><p>If ‘list’, calls to this instance will return a list, only when
+all results have been processed and retrieved.
+If ‘generator’, it will return a generator that yields the results
+as soon as they are available, in the order the tasks have been
+submitted with.
+Future releases are planned to also support ‘generator_unordered’,
+in which case the generator immediately yields available results
+independently of the submission order.</p>
+</dd>
+<dt><strong>prefer: str in {‘processes’, ‘threads’} or None, default: None</strong></dt><dd><p>Soft hint to choose the default backend if no specific backend
+was selected with the <a class="reference internal" href="joblib.parallel_config.html#joblib.parallel_config" title="joblib.parallel_config"><code class="xref py py-func docutils literal notranslate"><span class="pre">parallel_config()</span></code></a> context manager.
+The default process-based backend is ‘loky’ and the default
+thread-based backend is ‘threading’. Ignored if the <code class="docutils literal notranslate"><span class="pre">backend</span></code>
+parameter is specified.</p>
+</dd>
+<dt><strong>require: ‘sharedmem’ or None, default None</strong></dt><dd><p>Hard constraint to select the backend. If set to ‘sharedmem’,
+the selected backend will be single-host and thread-based even
+if the user asked for a non-thread based backend with
+<a class="reference internal" href="joblib.parallel_config.html#joblib.parallel_config" title="joblib.parallel_config"><code class="xref py py-func docutils literal notranslate"><span class="pre">parallel_config()</span></code></a>.</p>
+</dd>
+<dt><strong>verbose: int, optional</strong></dt><dd><p>The verbosity level: if non zero, progress messages are
+printed. Above 50, the output is sent to stdout.
+The frequency of the messages increases with the verbosity level.
+If it more than 10, all iterations are reported.</p>
+</dd>
+<dt><strong>timeout: float, optional</strong></dt><dd><p>Timeout limit for each task to complete.  If any task takes longer
+a TimeOutError will be raised. Only applied when n_jobs != 1</p>
+</dd>
+<dt><strong>pre_dispatch: {‘all’, integer, or expression, as in ‘3*n_jobs’}</strong></dt><dd><p>The number of batches (of tasks) to be pre-dispatched.
+Default is ‘2*n_jobs’. When batch_size=”auto” this is reasonable
+default and the workers should never starve. Note that only basic
+arithmetics are allowed here and no modules can be used in this
+expression.</p>
+</dd>
+<dt><strong>batch_size: int or ‘auto’, default: ‘auto’</strong></dt><dd><p>The number of atomic tasks to dispatch at once to each
+worker. When individual evaluations are very fast, dispatching
+calls to workers can be slower than sequential computation because
+of the overhead. Batching fast computations together can mitigate
+this.
+The <code class="docutils literal notranslate"><span class="pre">'auto'</span></code> strategy keeps track of the time it takes for a
+batch to complete, and dynamically adjusts the batch size to keep
+the time on the order of half a second, using a heuristic. The
+initial batch size is 1.
+<code class="docutils literal notranslate"><span class="pre">batch_size=&quot;auto&quot;</span></code> with <code class="docutils literal notranslate"><span class="pre">backend=&quot;threading&quot;</span></code> will dispatch
+batches of a single task at a time as the threading backend has
+very little overhead and using larger batch size has not proved to
+bring any gain in that case.</p>
+</dd>
+<dt><strong>temp_folder: str, optional</strong></dt><dd><p>Folder to be used by the pool for memmapping large arrays
+for sharing memory with worker processes. If None, this will try in
+order:</p>
+<ul class="simple">
+<li><p>a folder pointed by the JOBLIB_TEMP_FOLDER environment
+variable,</p></li>
+<li><p>/dev/shm if the folder exists and is writable: this is a
+RAM disk filesystem available by default on modern Linux
+distributions,</p></li>
+<li><p>the default system temporary folder that can be
+overridden with TMP, TMPDIR or TEMP environment
+variables, typically /tmp under Unix operating systems.</p></li>
+</ul>
+<p>Only active when backend=”loky” or “multiprocessing”.</p>
+</dd>
+<dt><strong>max_nbytes int, str, or None, optional, 1M by default</strong></dt><dd><p>Threshold on the size of arrays passed to the workers that
+triggers automated memory mapping in temp_folder. Can be an int
+in Bytes, or a human-readable string, e.g., ‘1M’ for 1 megabyte.
+Use None to disable memmapping of large arrays.
+Only active when backend=”loky” or “multiprocessing”.</p>
+</dd>
+<dt><strong>mmap_mode: {None, ‘r+’, ‘r’, ‘w+’, ‘c’}, default: ‘r’</strong></dt><dd><p>Memmapping mode for numpy arrays passed to workers. None will
+disable memmapping, other modes defined in the numpy.memmap doc:
+<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.memmap.html">https://numpy.org/doc/stable/reference/generated/numpy.memmap.html</a>
+Also, see ‘max_nbytes’ parameter documentation for more details.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This object uses workers to compute in parallel the application of a
+function to many different arguments. The main functionality it brings
+in addition to using the raw multiprocessing or concurrent.futures API
+are (see examples for details):</p>
+<ul class="simple">
+<li><p>More readable code, in particular since it avoids
+constructing list of arguments.</p></li>
+<li><dl class="simple">
+<dt>Easier debugging:</dt><dd><ul>
+<li><p>informative tracebacks even when the error happens on
+the client side</p></li>
+<li><p>using ‘n_jobs=1’ enables to turn off parallel computing
+for debugging without changing the codepath</p></li>
+<li><p>early capture of pickling errors</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>An optional progress meter.</p></li>
+<li><p>Interruption of multiprocesses jobs with ‘Ctrl-C’</p></li>
+<li><p>Flexible pickling control for the communication to and from
+the worker processes.</p></li>
+<li><p>Ability to use shared memory efficiently with worker
+processes for large numpy-based datastructures.</p></li>
+</ul>
+<p>Note that the intended usage is to run one call at a time. Multiple
+calls to the same Parallel object will result in a <code class="docutils literal notranslate"><span class="pre">RuntimeError</span></code></p>
+<p class="rubric">Examples</p>
+<p>A simple example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">joblib</span> <span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">delayed</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">)(</span><span class="n">delayed</span><span class="p">(</span><span class="n">sqrt</span><span class="p">)(</span><span class="n">i</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="go">[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]</span>
+</pre></div>
+</div>
+<p>Reshaping the output when the function has several return
+values:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">modf</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">joblib</span> <span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">delayed</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">)(</span><span class="n">delayed</span><span class="p">(</span><span class="n">modf</span><span class="p">)(</span><span class="n">i</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">res</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">r</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">res</span>
+<span class="go">(0.0, 0.5, 0.0, 0.5, 0.0, 0.5, 0.0, 0.5, 0.0, 0.5)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">i</span>
+<span class="go">(0.0, 0.0, 1.0, 1.0, 2.0, 2.0, 3.0, 3.0, 4.0, 4.0)</span>
+</pre></div>
+</div>
+<p>The progress meter: the higher the value of <cite>verbose</cite>, the more
+messages:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">joblib</span> <span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">delayed</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">10</span><span class="p">)(</span>
+<span class="gp">... </span>    <span class="n">delayed</span><span class="p">(</span><span class="n">sleep</span><span class="p">)(</span><span class="mf">.2</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span> 
+<span class="go">[Parallel(n_jobs=2)]: Done   1 tasks      | elapsed:    0.6s</span>
+<span class="go">[Parallel(n_jobs=2)]: Done   4 tasks      | elapsed:    0.8s</span>
+<span class="go">[Parallel(n_jobs=2)]: Done  10 out of  10 | elapsed:    1.4s finished</span>
+</pre></div>
+</div>
+<p>Traceback example, note how the line of the error is indicated
+as well as the values of the parameter passed to the function that
+triggered the exception, even though the traceback happens in the
+child process:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">heapq</span> <span class="kn">import</span> <span class="n">nlargest</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">joblib</span> <span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">delayed</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="mi">2</span><span class="p">)(</span>
+<span class="gp">... </span><span class="n">delayed</span><span class="p">(</span><span class="n">nlargest</span><span class="p">)(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="s1">&#39;abcde&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="gp">... </span>
+<span class="go">-----------------------------------------------------------------------</span>
+<span class="go">Sub-process traceback:</span>
+<span class="go">-----------------------------------------------------------------------</span>
+<span class="go">TypeError                                      Mon Nov 12 11:37:46 2012</span>
+<span class="go">PID: 12934                                Python 2.7.3: /usr/bin/python</span>
+<span class="go">........................................................................</span>
+<span class="go">/usr/lib/python2.7/heapq.pyc in nlargest(n=2, iterable=3, key=None)</span>
+<span class="go">    419         if n &gt;= size:</span>
+<span class="go">    420             return sorted(iterable, key=key, reverse=True)[:n]</span>
+<span class="go">    421</span>
+<span class="go">    422     # When key is none, use simpler decoration</span>
+<span class="go">    423     if key is None:</span>
+<span class="go">--&gt; 424         it = izip(iterable, count(0,-1))           # decorate</span>
+<span class="go">    425         result = _nlargest(n, it)</span>
+<span class="go">    426         return map(itemgetter(0), result)          # undecorate</span>
+<span class="go">    427</span>
+<span class="go">    428     # General case, slowest method</span>
+<span class="go"> TypeError: izip argument #1 must support iteration</span>
+<span class="go">_______________________________________________________________________</span>
+</pre></div>
+</div>
+<p>Using pre_dispatch in a producer/consumer situation, where the
+data is generated on the fly. Note how the producer is first
+called 3 times before the parallel loop is initiated, and then
+called to generate new data on the fly:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">joblib</span> <span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">delayed</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">producer</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Produced </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="k">yield</span> <span class="n">i</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">pre_dispatch</span><span class="o">=</span><span class="s1">&#39;1.5*n_jobs&#39;</span><span class="p">)(</span>
+<span class="gp">... </span>    <span class="n">delayed</span><span class="p">(</span><span class="n">sqrt</span><span class="p">)(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">producer</span><span class="p">())</span> 
+<span class="go">Produced 0</span>
+<span class="go">Produced 1</span>
+<span class="go">Produced 2</span>
+<span class="go">[Parallel(n_jobs=2)]: Done 1 jobs     | elapsed:  0.0s</span>
+<span class="go">Produced 3</span>
+<span class="go">[Parallel(n_jobs=2)]: Done 2 jobs     | elapsed:  0.0s</span>
+<span class="go">Produced 4</span>
+<span class="go">[Parallel(n_jobs=2)]: Done 3 jobs     | elapsed:  0.0s</span>
+<span class="go">Produced 5</span>
+<span class="go">[Parallel(n_jobs=2)]: Done 4 jobs     | elapsed:  0.0s</span>
+<span class="go">[Parallel(n_jobs=2)]: Done 6 out of 6 | elapsed:  0.0s remaining: 0.0s</span>
+<span class="go">[Parallel(n_jobs=2)]: Done 6 out of 6 | elapsed:  0.0s finished</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="joblib.Parallel.dispatch_next">
+<span class="sig-name descname"><span class="pre">dispatch_next</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#joblib.Parallel.dispatch_next" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dispatch more data for parallel processing</p>
+<p>This method is meant to be called concurrently by the multiprocessing
+callback. We rely on the thread-safety of dispatch_one_batch to protect
+against concurrent consumption of the unprotected iterator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="joblib.Parallel.dispatch_one_batch">
+<span class="sig-name descname"><span class="pre">dispatch_one_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterator</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#joblib.Parallel.dispatch_one_batch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prefetch the tasks for the next batch and dispatch them.</p>
+<p>The effective size of the batch is computed here.
+If there are no more jobs to dispatch, return False, else return True.</p>
+<p>The iterator consumption and dispatching is protected by the same
+lock so calling this function should be thread safe.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="joblib.Parallel.print_progress">
+<span class="sig-name descname"><span class="pre">print_progress</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#joblib.Parallel.print_progress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display the process of the parallel execution only a fraction
+of time, controlled by self.verbose.</p>
+</dd></dl>
+
+</dd></dl>
+
+<section id="examples-using-joblib-parallel">
+<span id="sphx-glr-backreferences-joblib-parallel"></span><h2>Examples using <code class="docutils literal notranslate"><span class="pre">joblib.Parallel</span></code><a class="headerlink" href="#examples-using-joblib-parallel" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="This example illustrates memory optimization enabled by using joblib.Parallel to get a generato..."><img alt="" src="../_images/sphx_glr_parallel_generator_thumb.png" />
+<p><a class="reference internal" href="../auto_examples/parallel_generator.html#sphx-glr-auto-examples-parallel-generator-py"><span class="std std-ref">Returning a generator in joblib.Parallel</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Returning a generator in joblib.Parallel</div>
+</div></div></section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/joblib_logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">User manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../why.html">Why joblib: project goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installing.html">Installing joblib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../memory.html">On demand recomputing: the <cite>Memory</cite> class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parallel.html">Embarrassingly parallel for loops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../persistence.html">Persistence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developing.html">Development</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Module reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="joblib.Memory.html">joblib.Memory</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">joblib.Parallel</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#examples-using-joblib-parallel">Examples using <code class="docutils literal notranslate"><span class="pre">joblib.Parallel</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="joblib.parallel_config.html">joblib.parallel_config</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="joblib.dump.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">joblib</span></code>.dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="joblib.load.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">joblib</span></code>.load</a></li>
+<li class="toctree-l1"><a class="reference internal" href="joblib.hash.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">joblib</span></code>.hash</a></li>
+<li class="toctree-l1"><a class="reference internal" href="joblib.register_compressor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">joblib</span></code>.register_compressor</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Deprecated functionalities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="joblib.parallel_backend.html">joblib.parallel_backend</a></li>
+</ul>
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2008-2021, Joblib developers.
+      
+      |
+      <a href="../_sources/generated/joblib.Parallel.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

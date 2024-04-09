@@ -1,0 +1,244 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>joblib.parallel_config &#8212; joblib 1.3.2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="joblib.dump" href="joblib.dump.html" />
+    <link rel="prev" title="joblib.Parallel" href="joblib.Parallel.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="joblib-parallel-config">
+<h1>joblib.parallel_config<a class="headerlink" href="#joblib-parallel-config" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="joblib.parallel_config">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">joblib.</span></span><span class="sig-name descname"><span class="pre">parallel_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">default(None)</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">default(None)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">default(0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temp_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">default(None)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_nbytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">default('1M')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mmap_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">default('r')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">default(None)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">require</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">default(None)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inner_max_num_threads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">backend_params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#joblib.parallel_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the default backend or configuration for <a class="reference internal" href="joblib.Parallel.html#joblib.Parallel" title="joblib.Parallel"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parallel</span></code></a>.</p>
+<p>This is an alternative to directly passing keyword arguments to the
+<a class="reference internal" href="joblib.Parallel.html#joblib.Parallel" title="joblib.Parallel"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parallel</span></code></a> class constructor. It is particularly useful when
+calling into library code that uses joblib internally but does not expose
+the various parallel configuration arguments in its own API.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>backend</strong><span class="classifier">str or ParallelBackendBase instance, default=None</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">backend</span></code> is a string it must match a previously registered
+implementation using the <a class="reference internal" href="../parallel.html#joblib.register_parallel_backend" title="joblib.register_parallel_backend"><code class="xref py py-func docutils literal notranslate"><span class="pre">register_parallel_backend()</span></code></a> function.</p>
+<p>By default the following backends are available:</p>
+<ul class="simple">
+<li><p>‘loky’: single-host, process-based parallelism (used by default),</p></li>
+<li><p>‘threading’: single-host, thread-based parallelism,</p></li>
+<li><p>‘multiprocessing’: legacy single-host, process-based parallelism.</p></li>
+</ul>
+<p>‘loky’ is recommended to run functions that manipulate Python objects.
+‘threading’ is a low-overhead alternative that is most efficient for
+functions that release the Global Interpreter Lock: e.g. I/O-bound
+code or CPU-bound code in a few calls to native code that explicitly
+releases the GIL. Note that on some rare systems (such as pyodide),
+multiprocessing and loky may not be available, in which case joblib
+defaults to threading.</p>
+<p>In addition, if the <code class="docutils literal notranslate"><span class="pre">dask</span></code> and <code class="docutils literal notranslate"><span class="pre">distributed</span></code> Python packages are
+installed, it is possible to use the ‘dask’ backend for better
+scheduling of nested parallel calls without over-subscription and
+potentially distribute parallel calls over a networked cluster of
+several hosts.</p>
+<p>It is also possible to use the distributed ‘ray’ backend for
+distributing the workload to a cluster of nodes. See more details
+in the Examples section below.</p>
+<p>Alternatively the backend can be passed directly as an instance.</p>
+</dd>
+<dt><strong>n_jobs</strong><span class="classifier">int, default=None</span></dt><dd><p>The maximum number of concurrently running jobs, such as the number
+of Python worker processes when <code class="docutils literal notranslate"><span class="pre">backend=&quot;loky&quot;</span></code> or the size of the
+thread-pool when <code class="docutils literal notranslate"><span class="pre">backend=&quot;threading&quot;</span></code>.
+If -1 all CPUs are used. If 1 is given, no parallel computing code
+is used at all, which is useful for debugging. For <code class="docutils literal notranslate"><span class="pre">n_jobs</span></code> below -1,
+(n_cpus + 1 + n_jobs) are used. Thus for <code class="docutils literal notranslate"><span class="pre">n_jobs=-2</span></code>, all
+CPUs but one are used.
+<code class="docutils literal notranslate"><span class="pre">None</span></code> is a marker for ‘unset’ that will be interpreted as
+<code class="docutils literal notranslate"><span class="pre">n_jobs=1</span></code> in most backends.</p>
+</dd>
+<dt><strong>verbose</strong><span class="classifier">int, default=0</span></dt><dd><p>The verbosity level: if non zero, progress messages are
+printed. Above 50, the output is sent to stdout.
+The frequency of the messages increases with the verbosity level.
+If it more than 10, all iterations are reported.</p>
+</dd>
+<dt><strong>temp_folder</strong><span class="classifier">str, default=None</span></dt><dd><p>Folder to be used by the pool for memmapping large arrays
+for sharing memory with worker processes. If None, this will try in
+order:</p>
+<ul class="simple">
+<li><p>a folder pointed by the <code class="docutils literal notranslate"><span class="pre">JOBLIB_TEMP_FOLDER</span></code> environment
+variable,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/dev/shm</span></code> if the folder exists and is writable: this is a
+RAM disk filesystem available by default on modern Linux
+distributions,</p></li>
+<li><p>the default system temporary folder that can be
+overridden with <code class="docutils literal notranslate"><span class="pre">TMP</span></code>, <code class="docutils literal notranslate"><span class="pre">TMPDIR</span></code> or <code class="docutils literal notranslate"><span class="pre">TEMP</span></code> environment
+variables, typically <code class="docutils literal notranslate"><span class="pre">/tmp</span></code> under Unix operating systems.</p></li>
+</ul>
+</dd>
+<dt><strong>max_nbytes int, str, or None, optional, default=’1M’</strong></dt><dd><p>Threshold on the size of arrays passed to the workers that
+triggers automated memory mapping in temp_folder. Can be an int
+in Bytes, or a human-readable string, e.g., ‘1M’ for 1 megabyte.
+Use None to disable memmapping of large arrays.</p>
+</dd>
+<dt><strong>mmap_mode: {None, ‘r+’, ‘r’, ‘w+’, ‘c’}, default=’r’</strong></dt><dd><p>Memmapping mode for numpy arrays passed to workers. None will
+disable memmapping, other modes defined in the numpy.memmap doc:
+<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.memmap.html">https://numpy.org/doc/stable/reference/generated/numpy.memmap.html</a>
+Also, see ‘max_nbytes’ parameter documentation for more details.</p>
+</dd>
+<dt><strong>prefer: str in {‘processes’, ‘threads’} or None, default=None</strong></dt><dd><p>Soft hint to choose the default backend.
+The default process-based backend is ‘loky’ and the default
+thread-based backend is ‘threading’. Ignored if the <code class="docutils literal notranslate"><span class="pre">backend</span></code>
+parameter is specified.</p>
+</dd>
+<dt><strong>require: ‘sharedmem’ or None, default=None</strong></dt><dd><p>Hard constraint to select the backend. If set to ‘sharedmem’,
+the selected backend will be single-host and thread-based.</p>
+</dd>
+<dt><strong>inner_max_num_threads</strong><span class="classifier">int, default=None</span></dt><dd><p>If not None, overwrites the limit set on the number of threads
+usable in some third-party library threadpools like OpenBLAS,
+MKL or OpenMP. This is only used with the <code class="docutils literal notranslate"><span class="pre">loky</span></code> backend.</p>
+</dd>
+<dt><strong>backend_params</strong><span class="classifier">dict</span></dt><dd><p>Additional parameters to pass to the backend constructor when
+backend is a string.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Joblib tries to limit the oversubscription by limiting the number of
+threads usable in some third-party library threadpools like OpenBLAS, MKL
+or OpenMP. The default limit in each worker is set to
+<code class="docutils literal notranslate"><span class="pre">max(cpu_count()</span> <span class="pre">//</span> <span class="pre">effective_n_jobs,</span> <span class="pre">1)</span></code> but this limit can be
+overwritten with the <code class="docutils literal notranslate"><span class="pre">inner_max_num_threads</span></code> argument which will be used
+to set this limit in the child processes.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.3.</span></p>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">neg</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">parallel_config</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s1">&#39;threading&#39;</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">Parallel</span><span class="p">()(</span><span class="n">delayed</span><span class="p">(</span><span class="n">neg</span><span class="p">)(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)))</span>
+<span class="gp">...</span>
+<span class="go">[-1, -2, -3, -4, -5]</span>
+</pre></div>
+</div>
+<p>To use the ‘ray’ joblib backend add the following lines:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ray.util.joblib</span> <span class="kn">import</span> <span class="n">register_ray</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">register_ray</span><span class="p">()</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">parallel_config</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;ray&quot;</span><span class="p">):</span>  
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">Parallel</span><span class="p">()(</span><span class="n">delayed</span><span class="p">(</span><span class="n">neg</span><span class="p">)(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)))</span>
+<span class="go">[-1, -2, -3, -4, -5]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<section id="examples-using-joblib-parallel-config">
+<span id="sphx-glr-backreferences-joblib-parallel-config"></span><h2>Examples using <code class="docutils literal notranslate"><span class="pre">joblib.parallel_config</span></code><a class="headerlink" href="#examples-using-joblib-parallel-config" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="This example highlights the options for tempering with joblib serialization process."><img alt="" src="../_images/sphx_glr_serialization_and_wrappers_thumb.png" />
+<p><a class="reference internal" href="../auto_examples/serialization_and_wrappers.html#sphx-glr-auto-examples-serialization-and-wrappers-py"><span class="std std-ref">Serialization of un-picklable objects</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Serialization of un-picklable objects</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example shows the simplest usage of the Dask backend on your local machine."><img alt="" src="../_images/sphx_glr_distributed_backend_simple_thumb.png" />
+<p><a class="reference internal" href="../auto_examples/parallel/distributed_backend_simple.html#sphx-glr-auto-examples-parallel-distributed-backend-simple-py"><span class="std std-ref">Using Dask for single-machine parallel computing</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Using Dask for single-machine parallel computing</div>
+</div></div></section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/joblib_logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">User manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../why.html">Why joblib: project goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installing.html">Installing joblib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../memory.html">On demand recomputing: the <cite>Memory</cite> class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parallel.html">Embarrassingly parallel for loops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../persistence.html">Persistence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developing.html">Development</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Module reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="joblib.Memory.html">joblib.Memory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="joblib.Parallel.html">joblib.Parallel</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">joblib.parallel_config</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#examples-using-joblib-parallel-config">Examples using <code class="docutils literal notranslate"><span class="pre">joblib.parallel_config</span></code></a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="joblib.dump.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">joblib</span></code>.dump</a></li>
+<li class="toctree-l1"><a class="reference internal" href="joblib.load.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">joblib</span></code>.load</a></li>
+<li class="toctree-l1"><a class="reference internal" href="joblib.hash.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">joblib</span></code>.hash</a></li>
+<li class="toctree-l1"><a class="reference internal" href="joblib.register_compressor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">joblib</span></code>.register_compressor</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Deprecated functionalities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="joblib.parallel_backend.html">joblib.parallel_backend</a></li>
+</ul>
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2008-2021, Joblib developers.
+      
+      |
+      <a href="../_sources/generated/joblib.parallel_config.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
