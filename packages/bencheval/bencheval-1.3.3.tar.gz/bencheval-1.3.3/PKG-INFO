@@ -1,0 +1,85 @@
+Metadata-Version: 2.1
+Name: bencheval
+Version: 1.3.3
+Summary: Tools for measuring sensitivity and diversity of multi-task benchmarks.
+Author: Guanhua Zhang
+License: MIT
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: scipy
+Requires-Dist: numpy
+Requires-Dist: torch
+Requires-Dist: pandas
+Requires-Dist: joblib
+Requires-Dist: scikit-learn
+Requires-Dist: zarth_utils==1.0
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/socialfoundations/bencheval/main/assets/logo.jpg" height="400" width="600">
+</p>
+
+**BenchEval** is a Python package that provides a suite of tools to evaluate multi-task benchmarks focusing on
+diversity and sensitivity against irrelevant variations, such as label noise injection and the addition of irrelevant
+candidate models. This package facilitates comprehensive analysis of multi-task benchmarks through a social choice lens,
+exposing the fundamental trade-off between diversity and stability in both cardinal and ordinal benchmarks.
+
+For more information, including the motivations behind the measures and our empirical findings, please
+see [our paper](https://github.com/socialfoundations/bencheval).
+
+## Quick Start
+
+To install the package, simply run:
+
+```bash
+pip install bencheval
+```
+
+## Example Usage
+
+To evaluate a cardinal benchmark, you can use the following code:
+
+```python
+from bencheval.data import load_cardinal_benchmark
+from bencheval.measures.cardinal import get_diversity, get_sensitivity
+
+data, cols = load_cardinal_benchmark('GLUE')
+diversity = get_diversity(data, cols)
+sensitivity = get_sensitivity(data, cols)
+```
+
+To evaluate an ordinal benchmark, you can use the following code:
+
+```python
+from bencheval.data import load_ordinal_benchmark
+from bencheval.measures.ordinal import get_diversity, get_sensitivity
+
+data, cols = load_ordinal_benchmark('HELM-accuracy')
+diversity = get_diversity(data, cols)
+sensitivity = get_sensitivity(data, cols)
+```
+
+To use your own benchmark, you just need to provide a pandas DataFrame a list of columns indicating the tasks.
+Check the [documentation](https://socialfoundations.github.io/bencheval) for more details.
+
+## Reproduce the Paper
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/socialfoundations/bencheval/main/assets/banner.png" height="400" width="600">
+</p>
+
+Please check out [cardinal.ipynb](https://githubtocolab.com/socialfoundations/bencheval/blob/main/examples/cardinal.ipynb), [ordinal.ipynb](https://githubtocolab.com/socialfoundations/bencheval/blob/main/examples/ordinal.ipynb) and [banner.ipynb](https://githubtocolab.com/socialfoundations/bencheval/blob/main/examples/banner.ipynb)
+for
+reproducing our results.
