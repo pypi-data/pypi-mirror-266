@@ -1,0 +1,42 @@
+Metadata-Version: 2.1
+Name: kaspad_client
+Version: 1.0.3
+Summary: This is a simple gRPC client for a python application which communiactes with the Kaspa node called KASPAD.
+Author: lAmeR1
+Author-email: lamer1@github.com
+Requires-Python: >=3.12,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: grpcio (>=1.62.1,<2.0.0)
+Requires-Dist: protobuf (==4.21.6)
+Description-Content-Type: text/markdown
+
+This is a simple gRPC client for a python application which communiactes with the Kaspa node called KASPAD.
+
+The module is based on asyncio, since the Kaspa BlockDAG is unbelievable fast and also needs the support of notifications.
+
+# Usage
+
+    import asyncio
+
+    from kaspad_client import KaspadClient
+    
+    
+    async def main():
+        kaspad_client = KaspadClient("127.0.0.1", 16110)
+        print(await kaspad_client.get_info())
+    
+    
+    asyncio.run(main())
+
+
+returns
+
+    {'getInfoResponse': {'p2pId': 'd3d2af24-9ddd-4cf8-86eb-d1acd539857a', 'serverVersion': '0.13.4', 'isUtxoIndexed': True, 'isSynced': True, 'hasNotifyCommand': True, 'hasMessageId': True, 'mempoolSize': '0'}, 'id': '0'}
+
+# Donation
+
+We are doing this in our free time. Please consider a donation if this helps! Thank you!
+
+[kaspa:qrlsm9tvmak6909pr9f35g6scapz5t689nhhls54sfxx5m46sn085ajhn9hn8](https://explorer.kaspa.org/addresses/kaspa:qrlsm9tvmak6909pr9f35g6scapz5t689nhhls54sfxx5m46sn085ajhn9hn8?page=1)
+
