@@ -1,0 +1,27 @@
+Metadata-Version: 2.3
+Name: fastapi_orm_helper
+Version: 0.0.11
+Summary: FastAPI ORM Helper
+Project-URL: Homepage, https://github.com/megatron-global/fastapi-orm-helper
+Project-URL: Bug Tracker, https://github.com/megatron-global/fastapi-orm-helper/issues
+Author-email: Dzung Nguyen <dung@megatron-solutions.com>
+License-File: LICENSE
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+
+# FastAPI ORM Helper
+
+FastAPI ORM Helper helps us to work with SQLAlchemy easier with lots of useful functions
+
+## How to use
+
+```python
+from fastapi_orm_helper import BaseRepository
+from users.entities.user import UserEntity
+
+class UserRepository(BaseRepository[UserEntity]):
+    _entity = UserEntity
+```
