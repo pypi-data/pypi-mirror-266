@@ -1,0 +1,54 @@
+Metadata-Version: 2.3
+Name: msr-reader
+Version: 0.2.0
+Summary: Pure Python reader for MSR/OBF (Imspector) image data
+Project-URL: Homepage, https://github.com/hoerlteam/msr-reader
+Project-URL: Bug Tracker, https://github.com/hoerlteam/msr-reader/issues
+Author-email: David Hörl <hoerldavid@gmail.com>
+License-File: LICENSE
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.7
+Requires-Dist: numpy
+Description-Content-Type: text/markdown
+
+# msr
+
+Pure Python and cross-platform reader for MSR/OBF image files as created by Imspector.
+
+Implementation follows the description at: https://imspectordocs.readthedocs.io/en/latest/fileformat.html
+
+**WARNING:** Only tested on data from our own Abberior Expert Line STED microscope with a narrow range of Imspector versions.
+
+## Installation
+
+```
+pip install msr-reader
+```
+
+## Usage
+
+```python
+from msr_reader import OBFFile
+from xml.etree import ElementTree
+
+with OBFFile('file_path.msr') as f:
+
+    # reading image data
+    idx = 0
+    img = f.read_stack(idx) # read stack with index idx into numpy array
+
+    # metadata
+    stack_shapes = f.shapes # list of stack shapes, including stack and dimension names
+    pixel_sizes = f.pixel_sizes # like sizes, but with pixel sizes (unit: meters)
+
+    # imspector metadata as xml string
+    xml_imspector_metadata = f.get_xml_metadata(idx)
+    
+    # can be parsed with ElementTree, for example    
+    et = ElementTree.fromstring(xml_imspector_metadata)
+    # find, e.g. x pixel size in XML
+    et.find('doc/ExpControl/scan/range/x/psz').text
+```
