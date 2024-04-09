@@ -1,0 +1,48 @@
+Metadata-Version: 2.1
+Name: jbar
+Version: 0.1.1
+Summary: 
+Author: Jakob Troidl
+Author-email: jakob.troidl@googlemail.com
+Requires-Python: >=3.9,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: anywidget (>=0.9.6,<0.10.0)
+Requires-Dist: jupyterlab (>=4.1.5,<5.0.0)
+Requires-Dist: pandas (>=2.2.1,<3.0.0)
+Requires-Dist: watchfiles (>=0.21.0,<0.22.0)
+Description-Content-Type: text/markdown
+
+# jbar
+
+## Development installation
+
+Create a virtual environment and install jbar in *editable* mode with the
+optional development dependencies:
+
+```sh
+poetry install
+poetry shell
+```
+
+You then need to install the JavaScript dependencies and run the development server.
+
+```sh
+npm install
+npm run dev
+```
+
+Open `example.ipynb` in JupyterLab, VS Code, or your favorite editor
+to start developing. Changes made in `js/` will be reflected
+in the notebook.
+
+## Publish to PyPI
+
+```sh
+poetry build
+poetry publish
+```
+
