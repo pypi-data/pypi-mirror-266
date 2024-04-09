@@ -1,0 +1,25 @@
+#!python
+from _rfstools import arg_parser, arg_processor
+import logging
+
+def get_instance():
+  p = arg_parser.one_arg_parser(description='This command list a given remote folder, or returns a file name, if it is not a folder.')
+  p.add('-p', '--make-parents', action='store_true', help='Makes parents if needed.', default=False)
+  return arg_processor.init(p, "pls", ["make_parents"])
+
+try:
+  with get_instance() as ic:
+    if ic.file.remote == False:
+      raise ValueError("A given file must be remote.")
+
+    if ic.make_parents:
+      ic.connection.pmkdir(ic.file.path)
+    else:
+      ic.connection.mkdir(ic.file.path)
+
+except Exception: 
+  logging.exception("Fatal error. (returning 1)")
+  exit(1)
+ 
+logging.info("Finished succesfully. (returning 0)")
+exit(0)

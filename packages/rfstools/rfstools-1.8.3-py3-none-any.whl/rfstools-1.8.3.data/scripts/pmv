@@ -1,0 +1,26 @@
+#!python
+from rfslib import sftp_pconnection, path_utils
+from _rfstools import arg_parser, arg_processor
+
+import logging
+
+
+def get_instance():
+  p = arg_parser.many_to_one_arg_parser(description='Moves file(s) from source address to destination address. At least source or destination address must be remote.' +
+       'Nondirectory local files are copied first into remote temporary files in the destination and then moved into destination. Local moving works as usual.')
+  p.add('-f', '--force', action='store_true', help='Enable force mode. (skip nonexistent source files)')
+
+  return arg_processor.init(p, "pmv", ["force"])
+
+try:
+  with get_instance() as ic:
+    path_utils.generic_mv(ic.connection, ic.source_files, ic.destination_file)
+
+except Exception: 
+  logging.exception("Fatal error. (returning 1)")
+  exit(1)
+ 
+logging.info("Finished succesfully. (returning 0)")
+exit(0)
+
+
