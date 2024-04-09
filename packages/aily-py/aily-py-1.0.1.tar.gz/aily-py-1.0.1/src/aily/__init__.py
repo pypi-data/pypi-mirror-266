@@ -1,0 +1,1 @@
+from .aigc import AIGC
