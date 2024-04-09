@@ -1,0 +1,22 @@
+{% extends "layout.jinja2" %}
+{% import "util.jinja2" as util with context %}
+{% block content %}
+<div class="container">
+  <h1>{{ _("page.resend_verification.title") }}</h1>
+  <p>{{ _("page.resend_verification.info") }}</p>
+  <form method="POST">
+    <div class="row align-items-center">
+      <div class="col-lg-5">
+        <div class="form-floating">
+          <input type="email" id="resendEmail" name="email" class="form-control" placeholder="x">
+          <label for="resendEmail">{{ _("page.resend_verification.email") }}</label>
+        </div>
+      </div>
+      {{ util.hidden_csrf_input() }}
+      <div class="col-lg-4">
+        <button class="btn btn-primary">{{ _("page.resend_verification.request") }}</button>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}

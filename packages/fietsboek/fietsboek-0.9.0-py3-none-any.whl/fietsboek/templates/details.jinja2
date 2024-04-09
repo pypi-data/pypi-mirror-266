@@ -1,0 +1,222 @@
+{% extends "layout.jinja2" %}
+{% import "util.jinja2" as util with context %}
+
+{% block content %}
+<div class="container">
+  <h1>
+    {{ track.title | default(_("page.details.title"), true) }}
+    {% if request.identity %}
+    <span style="display: inline-flex; vertical-align: middle;">
+    {% if request.identity in track.favourees %}
+    <i class="bi bi-star-fill favourite-star" data-track-id="{{ track.id }}"></i>
+    {% else %}
+    <i class="bi bi-star favourite-star" data-track-id="{{ track.id }}"></i>
+    {% endif %}
+    </span>
+    {% endif %}
+  </h1>
+  {% if show_edit_link %}
+  <div class="btn-group" role="group">
+    <a class="btn btn-success" href="{{ request.route_path('edit', track_id=track.id) }}"><i class="bi-pencil-square"></i> {{ _("page.details.edit") }}</a>
+    <button type="button" class="btn btn-info" id="showShareLink" data-bs-toggle="modal" data-bs-target="#shareLinkModal"><i class="bi-share"></i> {{ _("page.details.share") }}</button>
+    <button type="button" class="btn btn-danger" id="deleteLink" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> {{ _("page.details.delete") }}</button>
+  </div>
+  <div class="modal fade" id="shareLinkModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ _("page.details.sharelink.title") }}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>{{ _("page.details.sharelink.info") }}</p>
+          {% set share_link = request.route_url('details', track_id=track.id, _query=[("secret", track.link_secret)]) %}
+          <a href="{{ share_link }}">{{ share_link }}</a>
+        </div>
+        <div class="modal-footer">
+          <form method="POST" action="{{ request.route_url('invalidate-share', track_id=track.id) }}">
+            {{ util.hidden_csrf_input() }}
+            <button type="submit" class="btn btn-warning">{{ _("page.details.sharelink.invalidate") }}</button>
+          </form>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _("page.details.sharelink.close") }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ _("page.details.delete.title") }}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>{{ _("page.details.delete.info") }}</p>
+        </div>
+        <div class="modal-footer">
+          <form method="POST" action="{{ request.route_url('delete-track', track_id=track.id) }}">
+            {{ util.hidden_csrf_input() }}
+            <button type="submit" class="btn btn-danger">{{ _("page.details.delete.delete") }}</button>
+          </form>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _("page.details.delete.close") }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% endif %}
+
+  {% if show_organic %}
+  <ul>
+    <li>{{ track.owner.name }}</li>
+    {% for user in track.tagged_people %}
+    <li>{{ user.name }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  {% if track.tags %}
+  <p>
+    {{ _("page.details.tags") }}: {% for tag in track.tags %}<span class="badge rounded-pill bg-info text-dark">{{ tag.tag }}</span> {% endfor %}
+  </p>
+  {% endif %}
+
+  {% if 'secret' in request.GET %}
+  {% set gpx_url = request.route_path('gpx', track_id=track.id, _query=[('secret', request.GET['secret'])]) %}
+  {% else %}
+  {% set gpx_url = request.route_path('gpx', track_id=track.id) %}
+  {% endif %}
+  <div id="mainmap" class="gpxview:{{ gpx_url }}:OSM" style="width:100%;height:600px">
+    <noscript><p>{{ _("page.noscript") }}<p></noscript>
+  </div>
+  <div id="mainmap_hp" style="width:100%;height:300px">
+  </div>
+
+  <div class="mb-3">
+    <a class="btn btn-primary" href="{{ gpx_url }}"><i class="bi bi-download"></i> {{ _("page.details.download") }}</a>
+  </div>
+
+  <table class="table table-hover table-sm">
+    <tbody>
+      <tr>
+        <th scope="row">{{ _("page.details.date") }}</th>
+        <td id="detailsDate">{{ track.date | format_datetime }}</td>
+      </tr>
+      {% if show_organic %}
+      <tr>
+        <th scope="row">{{ _("page.details.start_time") }}</th>
+        <td id="detailsStartTime">{{ track.start_time | format_datetime }}</td>
+      </tr>
+      <tr>
+        <th scope="row">{{ _("page.details.end_time") }}</th>
+        <td id="detailsEndTime">{{ track.end_time | format_datetime }}</td>
+      </tr>
+      {% endif %}
+      <tr>
+        <th scope="row">{{ _("page.details.length") }}</th>
+        <td id="detailsLength">{{ (track.length / 1000) | round(2) | format_decimal }} km</td>
+      </tr>
+      <tr>
+        <th scope="row">{{ _("page.details.uphill") }}</th>
+        <td id="detailsUphill">{{ track.uphill | round(2) | format_decimal }} m</td>
+      </tr>
+      <tr>
+        <th scope="row">{{ _("page.details.downhill") }}</th>
+        <td id="detailsDownhill">{{ track.downhill | round(2) | format_decimal }} m</td>
+      </tr>
+      {% if show_organic %}
+      <tr>
+        <th scope="row">{{ _("page.details.moving_time") }}</th>
+        <td id="detailsMovingTime">{{ track.moving_time }}</td>
+      </tr>
+      <tr>
+        <th scope="row">{{ _("page.details.stopped_time") }}</th>
+        <td id="detailsStoppedTime">{{ track.stopped_time }}</td>
+      </tr>
+      <tr>
+        <th scope="row">{{ _("page.details.max_speed") }}</th>
+        <td id="detailsMaxSpeed">{{ mps_to_kph(track.max_speed) | round(2) | format_decimal }} km/h</td>
+      </tr>
+      <tr>
+        <th scope="row">{{ _("page.details.avg_speed") }}</th>
+        <td id="detailsAvgSpeed">{{ mps_to_kph(track.avg_speed) | round(2) | format_decimal }} km/h</td>
+      </tr>
+      {% endif %}
+    </tbody>
+  </table>
+  {% if track.badges %}
+  <div class="d-flex">
+    {% for badge in track.badges %}
+    {{ util.render_badge(badge) }}
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% if description %}
+  <div class="track-description">
+      {{ description }}
+  </div>
+  <hr>
+  {% endif %}
+  {% if images %}
+  <div id="trackImageShowcase" class="carousel carousel-dark slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      {% for image, description in images %}
+      <div class="carousel-item{% if loop.first %} active{% endif %}">
+        <a href="{{ image }}" target="_blank">
+          <img src="{{ image }}" class="d-block">
+        </a>
+        {% if description %}
+        <div class="track-image-caption">
+          <p>{{ description }}</p>
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#trackImageShowcase" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#trackImageShowcase" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+  {% endif %}
+  <h2>{{ _("page.details.comments") }}</h2>
+  {% for comment in track.comments %}
+  <div class="card mb-3">
+      <h5 class="card-header">
+          {{ _("page.details.comments.author").format(comment.author.name) }}
+      </h5>
+      <div class="card-body">
+          {% if comment.title %}
+          <h5 class="card-title">{{ comment.title }}</h5>
+          {% endif %}
+          {{ comment_md_to_html(comment.text) }}
+      </div>
+      <div class="card-footer text-muted">
+          {{ comment.date | local_datetime }}
+      </div>
+  </div>
+  {% endfor %}
+  {% if request.identity %}
+  <div class="card">
+      <form action="{{ request.route_url('add-comment', track_id=track.id) }}" method="POST">
+          <h5 class="card-header">
+              {{ _("page.details.comments.new.title") }}
+          </h5>
+          <div class="card-body">
+              <input type="text" class="form-control mb-3" name="title" placeholder="{{ _('page.details.comments.new.input_title') }}">
+              <textarea name="comment" class="form-control" rows="5" placeholder="{{ _('page.details.comments.new.input_comment') }}"></textarea>
+          </div>
+          <div class="card-footer text-muted">
+              <button type="submit" class="btn btn-success"><i class="bi bi-pen"></i> {{ _("page.details.comments.new.submit") }}</button>
+          </div>
+          {{ util.hidden_csrf_input() }}
+      </form>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

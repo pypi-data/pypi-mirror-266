@@ -1,0 +1,21 @@
+{% extends "layout.jinja2" %}
+
+{% import "edit_form.jinja2" as edit_form with context %}
+{% import "util.jinja2" as util with context %}
+
+{% block content %}
+<div class="container">
+  <h1>{{ _("page.edit.title") }}</h1>
+  <div id="mainmap" class="gpxview:{{ request.route_path('gpx', track_id=track.id) }}:OSM" style="width:100%;height:600px">
+    <noscript><p>{{ _("page.noscript") }}<p></noscript>
+  </div>
+  <form method="POST" enctype="multipart/form-data">
+    {{ edit_form.edit_track(track.title, track.date_raw, track.date_tz or 0, track.visibility, track.type, track.description, track.text_tags(), badges, track.tagged_people, images) }}
+    {{ util.hidden_csrf_input() }}
+    <div class="btn-group" role="group">
+        <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> {{ _("page.edit.form.submit") }}</button>
+        <a href="{{ request.route_url('details', track_id=track.id) }}" class="btn btn-secondary"><i class="bi bi-x-circle"></i> {{ _("page.edit.form.cancel") }}</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

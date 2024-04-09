@@ -1,0 +1,94 @@
+{% extends "layout.jinja2" %}
+
+{% import "util.jinja2" as util with context %}
+
+{% block content %}
+<div class="container">
+  <h1>{{ _("page.my_profile.title") }}</h1>
+
+  <hr>
+
+  <h2>{{ _("page.my_profile.personal_data") }}</h2>
+
+  <form method="POST" action="{{ request.route_path('user-data') }}" class="needs-validation" novalidate>
+    <div class="form-floating mb-3 col-lg-5">
+      <input type="text" class="form-control" id="inputName" name="name" value="{{ user.name }}" placeholder="x">
+      <label for="inputName">{{ _("page.my_profile.personal_data.name") }}</label>
+    </div>
+    <div class="form-floating mb-3 col-lg-5">
+      <input type="password" class="form-control" id="inputPassword" name="password" onchange="checkPasswordValidity('#inputPassword', '#repeatPassword')" placeholder="x">
+      <div class="invalid-feedback">
+          {{ _("page.my_profile.personal_data.password_invalid") }}
+      </div>
+      <label for="inputPassword">{{ _("page.my_profile.personal_data.password") }}</label>
+    </div>
+    <div class="form-floating mb-3 col-lg-5">
+      <input type="password" class="form-control" id="repeatPassword" name="repeat-password" onchange="checkPasswordValidity('#inputPassword', '#repeatPassword')" placeholder="x">
+      <div class="invalid-feedback">
+          {{ _("page.my_profile.personal_data.password_must_match") }}
+      </div>
+      <label for="repeatPassword">{{ _("page.my_profile.personal_data.repeat_password") }}</label>
+    </div>
+    {{ util.hidden_csrf_input() }}
+    <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> {{ _("page.my_profile.personal_data.save") }}</button>
+  </form>
+
+  <hr>
+
+  <h2>{{ _("page.my_profile.session_logout.title") }}</h2>
+
+  <p>{{ _("page.my_profile.session_logout.explanation") }}</p>
+
+  <form method="POST" action="{{ request.route_path('force-logout') }}">
+    {{ util.hidden_csrf_input() }}
+    <button type="submit" class="btn btn-danger"><i class="bi bi-shield-lock-fill"></i> {{ _("page.my_profile.session_logout.button") }}</button>
+  </form>
+
+  <hr>
+
+  <h2>{{ _("page.my_profile.friends") }}</h2>
+
+  <ul class="list-group">
+    {% for friend in user.get_friends() %}
+    <li class="list-group-item d-flex align-items-center">
+      <form action="{{ request.route_url('delete-friend') }}" method="POST">
+        <input type="hidden" name="friend-id" value="{{ friend.id }}">
+        {{ util.hidden_csrf_input() }}
+        <button type="submit" class="btn btn-danger"><i class="bi bi-person-dash"></i> {{ _("page.my_profile.unfriend") }}</button>
+      </form>
+      <span class="ms-3">{{ friend.name }} ({{ friend.email }})</span>
+    </li>
+    {% endfor %}
+    {% for friend_request in incoming_friend_requests %}
+    <li class="list-group-item list-group-item-success d-flex align-items-center">
+      <form action="{{ request.route_url('accept-friend') }}" method="POST">
+        <input type="hidden" name="request-id" value="{{ friend_request.id }}">
+        {{ util.hidden_csrf_input() }}
+        <button type="submit" class="btn btn-success"><i class="bi bi-person-check"></i> {{ _("page.my_profile.accept_friend") }}</button>
+      </form>
+      <span class="ms-3">{{ friend_request.sender.name }} ({{ friend_request.sender.email }})</span>
+    </li>
+    {% endfor %}
+    {% for friend_request in outgoing_friend_requests %}
+    <li class="list-group-item list-group-item-dark">{{ friend_request.recipient.name }} ({{ friend_request.recipient.email }})</li>
+    {% endfor %}
+  </ul>
+
+  <div class="my-3">
+    <form action="{{ request.route_url('add-friend') }}" method="POST">
+      {{ util.hidden_csrf_input() }}
+      <div class="row align-items-center">
+        <div class="col-lg-5">
+          <div class="form-floating">
+            <input type="email" id="friendRequestEmail" name="friend-email" class="form-control" placeholder="x">
+            <label for="friendRequestEmail">{{ _("page.my_profile.friend_request_email") }}</label>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <button class="btn btn-primary"><i class="bi bi-person-plus"></i> {{ _("page.my_profile.send_friend_request") }}</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
