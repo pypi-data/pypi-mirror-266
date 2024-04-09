@@ -1,0 +1,39 @@
+Metadata-Version: 2.1
+Name: dbis-exc-manager
+Version: 0.4.0
+Summary: RWTH Aachen Computer Science i5/dbis assets for Lecture Datenbanken und Informationssysteme
+Author-email: DBIS i5 RWTH Aachen <dbis-vl@dbis.rwth-aachen.de>
+Project-URL: Homepage, https://git.rwth-aachen.de/i5/teaching/dbis/dbis-exercise-manager
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: ipython~=8.4
+Requires-Dist: Levenshtein~=0.23
+Requires-Dist: requests~=2.27
+Requires-Dist: tabulate~=0.8
+Provides-Extra: test
+Requires-Dist: black==23.12.1; extra == "test"
+Provides-Extra: build
+Requires-Dist: twine==4.*; extra == "build"
+Requires-Dist: build==1.*; extra == "build"
+
+# DBIS Exercise Manager
+
+[![pypi](https://img.shields.io/pypi/pyversions/dbis-exc-manager)](https://pypi.org/project/dbis-exc-manager/)
+[![PyPI Status](https://img.shields.io/pypi/v/dbis-exc-manager)](https://pypi.python.org/pypi/dbis-exc-manager/)
+
+This class manages the state of the exercises.
+Example for arguments:
+ÜB 1, Aufgabe 2.3 a), 2 Punkte 
+* exc = 1
+* task = 2
+* subtask = 3a)
+* points = 2
+
+Example usage:
+``` python
+exc = Exercise( 1 )
+task1 = Task( exc, task = 1, subtask = "2 a)", points = 2 )
+```
