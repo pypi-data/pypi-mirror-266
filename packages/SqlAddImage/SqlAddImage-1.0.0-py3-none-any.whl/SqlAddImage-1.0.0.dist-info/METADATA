@@ -1,0 +1,160 @@
+Metadata-Version: 2.1
+Name: SqlAddImage
+Version: 1.0.0
+Summary: SqlAddImage is a Python Package which helps user to insertand retrieve image in mysql database for particularfield by creating image column. 
+Home-page: https://github.com/DeveloperHarshit09/SqlAddImage
+Author: Easy Algorithm
+Author-email: easyalgorithmsuccess@gmail.com
+License: MIT
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: altgraph ==0.17.3
+Requires-Dist: appdirs ==1.4.4
+Requires-Dist: argon2-cffi ==20.1.0
+Requires-Dist: asgiref ==3.3.1
+Requires-Dist: async-generator ==1.10
+Requires-Dist: attrs ==20.3.0
+Requires-Dist: autopep8 ==1.5.7
+Requires-Dist: backcall ==0.2.0
+Requires-Dist: backports.functools-lru-cache ==1.6.5
+Requires-Dist: beautifulsoup4 ==4.9.3
+Requires-Dist: bleach ==3.2.1
+Requires-Dist: certifi ==2020.12.5
+Requires-Dist: cffi ==1.14.4
+Requires-Dist: chardet ==4.0.0
+Requires-Dist: click ==7.1.2
+Requires-Dist: colorama ==0.4.4
+Requires-Dist: cycler ==0.10.0
+Requires-Dist: decorator ==4.4.2
+Requires-Dist: defusedxml ==0.6.0
+Requires-Dist: distlib ==0.3.1
+Requires-Dist: entrypoints ==0.3
+Requires-Dist: exceptiongroup ==1.2.0
+Requires-Dist: filelock ==3.0.12
+Requires-Dist: idna ==2.10
+Requires-Dist: importlib-metadata ==3.3.0
+Requires-Dist: indic-transliteration ==2.3.44
+Requires-Dist: iniconfig ==2.0.0
+Requires-Dist: ipykernel ==5.4.2
+Requires-Dist: ipython ==7.19.0
+Requires-Dist: ipython-genutils ==0.2.0
+Requires-Dist: ipywidgets ==7.6.2
+Requires-Dist: itsdangerous ==1.1.0
+Requires-Dist: jedi ==0.18.0
+Requires-Dist: joblib ==1.3.2
+Requires-Dist: jsonschema ==3.2.0
+Requires-Dist: MarkupSafe ==1.1.1
+Requires-Dist: mistune ==0.8.4
+Requires-Dist: MouseInfo ==0.1.3
+Requires-Dist: mysql-connector-python ==8.0.22
+Requires-Dist: nbclient ==0.5.1
+Requires-Dist: nbconvert ==6.0.7
+Requires-Dist: nbformat ==5.0.8
+Requires-Dist: nest-asyncio ==1.4.3
+Requires-Dist: nltk ==3.8.1
+Requires-Dist: notebook ==6.1.6
+Requires-Dist: numpy ==1.19.4
+Requires-Dist: packaging ==20.8
+Requires-Dist: pandocfilters ==1.4.3
+Requires-Dist: parso ==0.8.1
+Requires-Dist: pefile ==2023.2.7
+Requires-Dist: pickleshare ==0.7.5
+Requires-Dist: Pillow ==8.0.1
+Requires-Dist: pluggy ==1.2.0
+Requires-Dist: prometheus-client ==0.9.0
+Requires-Dist: prompt-toolkit ==3.0.8
+Requires-Dist: protobuf ==3.14.0
+Requires-Dist: PyAutoGUI ==0.9.52
+Requires-Dist: pycodestyle ==2.7.0
+Requires-Dist: pycparser ==2.20
+Requires-Dist: PyGetWindow ==0.0.9
+Requires-Dist: Pygments ==2.7.3
+Requires-Dist: pyinstaller ==5.10.1
+Requires-Dist: pyinstaller-hooks-contrib ==2023.2
+Requires-Dist: PyMsgBox ==1.0.9
+Requires-Dist: pyparsing ==2.4.7
+Requires-Dist: pyperclip ==1.8.2
+Requires-Dist: PyRect ==0.1.4
+Requires-Dist: pyrsistent ==0.17.3
+Requires-Dist: PyScreeze ==0.1.27
+Requires-Dist: pytest ==7.4.4
+Requires-Dist: python-dateutil ==2.8.1
+Requires-Dist: PyTweening ==1.0.3
+Requires-Dist: pytz ==2020.5
+Requires-Dist: pywin32 ==300
+Requires-Dist: pywin32-ctypes ==0.2.0
+Requires-Dist: pywinpty ==0.5.7
+Requires-Dist: PyYAML ==6.0.1
+Requires-Dist: pyzmq ==20.0.0
+Requires-Dist: qtconsole ==5.0.1
+Requires-Dist: QtPy ==1.9.0
+Requires-Dist: regex ==2023.6.3
+Requires-Dist: roman ==4.1
+Requires-Dist: Send2Trash ==1.5.0
+Requires-Dist: six ==1.15.0
+Requires-Dist: soupsieve ==2.2.1
+Requires-Dist: sqlparse ==0.4.1
+Requires-Dist: Student ==0.0.1
+Requires-Dist: terminado ==0.9.1
+Requires-Dist: testpath ==0.4.4
+Requires-Dist: TitleBar ==2021.8.26.1
+Requires-Dist: tkinterhtml ==0.7
+Requires-Dist: toml ==0.10.2
+Requires-Dist: tomli ==2.0.1
+Requires-Dist: tornado ==6.1
+Requires-Dist: tqdm ==4.66.1
+Requires-Dist: traitlets ==5.0.5
+Requires-Dist: typer ==0.9.0
+Requires-Dist: typing-extensions ==3.7.4.3
+Requires-Dist: urllib3 ==1.26.6
+Requires-Dist: wcwidth ==0.2.5
+Requires-Dist: webencodings ==0.5.1
+Requires-Dist: widgetsnbextension ==3.5.1
+Requires-Dist: zipp ==3.4.0
+
+# SqlAddImage
+
+SqlAddImage is a Python Package which helps user to insert and retrieve image in mysql database for particular field by creating image column. 
+
+## Installation
+
+pip install SqlAddImage
+
+## Usage
+
+import SqlAddImage as im
+
+
+<p>&num; First make a connection with your database</p>
+
+checker = im.make_connection(host="localhost", user="your username",
+                         password="your password", database='your database')
+
+<p>&num; Insert image in this way</p>
+
+<span style="color: #4CAF50;">
+im.insert_image(status=checker,img_path="your imagefile",tablename="table of database",
+                correspond_field="field in table",correspond_value="value of field")
+</span>
+
+<br>
+<p>&num; Retrieve already stored image in this way in the working directory</p>
+
+<span style="color: darkred;">
+im.get_image(status=checker,tablename="table of database",
+                correspond_field="field in table",correspond_value="value of field")
+</span>
+
+
+
+
+
+## Contributing
+
+Contribute in this package on GitHub
+https://github.com/DeveloperHarshit09/SqlAddImage
+
+## License
+
+MIT License
