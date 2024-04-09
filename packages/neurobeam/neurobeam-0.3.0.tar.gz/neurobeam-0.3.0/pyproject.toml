@@ -1,0 +1,175 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "neurobeam"
+version = "0.3.0"
+description = "Neuroscience Experiments Using Real-time Optogenetics, Behavior, and Microscopy"
+readme = "README.md"
+requires-python = ">=3.10, <4"
+license = {file = "LICENSE"}
+keywords = [
+    "Brain Computer Interface",
+    "BCI",
+    "Optical Brain Computer Interface",
+    "Behavior",
+    "Neuroscience",
+    "Psychology",
+    "Head-fixed",
+    "Immobile",
+    "Imaging",
+    "In-Vivo",
+    "Calcium Imaging",
+    "Two-Photon",
+    "Microscopy",
+    "Optogenetics",
+    "Holographic Optogenetics",
+    "Precision Optogenetics",
+    "Patterned Photostimulation",
+    "Fear Conditioning",
+    "Trace Fear Conditioning",
+    "Startle",
+    "Paired Pulse Inhibition",
+    "Locomotion",
+    "Closed-Loop",
+    "Real-Time",
+    "Spatial Light Modulator",
+]
+authors = [
+    {name = "Darik A. O'Neil"},
+]
+maintainers = [
+    {name = "Darik A. O'Neil"},
+]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: C++",
+    "Operating System :: Microsoft :: Windows",
+    "Natural Language :: English",
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: End Users/Desktop",
+    "Topic :: Scientific/Engineering",
+]
+
+dependencies = [
+    "click",
+    "dearpygui",
+    "frozendict",
+    "importlib-metadata",
+    "memoization",
+    "nanobind",
+    "nidaqmx",
+    "numpy",
+    "opencv-python",
+    "pandas",
+    "psychtoolbox",
+    "pyarrow",
+    "pydantic",
+    "slmsuite",
+    "tomli",
+    "tomli-w",
+    "winsdk",
+]
+
+[project.scripts]
+neurobeam = "neurobeam:main"
+
+[project.optional-dependencies]
+tests = [
+    "pytest",
+    "pytest-lazy-fixture",
+    "pytest-sugar",
+    "pytest-clarity",
+    "pytest-timeout",
+]
+development = [
+    "boltons",
+    "build",
+    "coverage[toml]",
+    "coveralls",
+    "flake8",
+    "flake8-annotations",
+    "flake8-bugbear",
+    "flake8-class-attributes-order",
+    "flake8-comprehensions",
+    "flake8-html",
+    "flake8-unused-arguments",
+    "icecream",
+    "tomli",
+    "twine"
+]
+documentation = [
+    "sphinx",
+    "sphinx-rtd-theme",
+    "sphinx-autodoc-typehints"
+]
+
+[project.urls]
+documentation = "https://readthedocs.org"
+repository = "https://github.com/darikoneil/LickSuppression"
+
+[tool.setuptools]
+packages = ["neurobeam",
+    "neurobeam.adapters",
+    "neurobeam.behavior",
+    "neurobeam.callbacks",
+    "neurobeam.hardware",
+    "neurobeam.static",
+    "neurobeam.tools"]
+
+[tool.setuptools.package-data]
+"*" = ["*.json", "*.ttf", "*.ico", "*.ini", "*.wav", "*.toml"]
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+    "-s",
+    "--color=yes",
+    "-vv",
+    "--diff-width=120",
+    "--disable-warnings",
+    "--html=./reports/pytest-report.html",
+]
+
+testpaths = "tests"
+console_output_style = "progress"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::FutureWarning"
+]
+
+[tool.coverage.run]
+branch = true
+command_line = "-m pytest"
+omit = ["*/tests*", "*tests*", "*tests/*", "tests*", "tests/*", "tests", "*/src/WeRDumb/dev_tools/*",
+    "src/WeRDumb/fev_tools", "src/WeRDumb/dev_tools*", "/*src/WeRDumb/dev_tools", "*src/WeRDumb/dev_tools*",
+    "*src/WeRDumb/dev_tools", "config.py", "config-3.py", "*/neurobeam/backports/*", "*/neurobeam/tools/color_scheme.py",
+    "*/neurobeam/tools/validators.py", "*/OG_neurobeam/*", "*/ras/*"]
+
+dynamic_context = "test_function"
+
+[tool.coverage.report]
+fail_under = 75
+exclude_also = [
+    "def __repr__",
+    "def __name__",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "except ImportError",
+    "@(abc\\.)?abstractmethod",
+    "@(abc\\.)?abstractproperty",
+    "@(abc\\.)?abstractclassmethod",
+    "@(abc\\.)?abstractstaticmethod",
+
+]
+
+[tool.coverage.json]
+pretty_print = true
+
+[tool.coverage.html]
+show_contexts = true
