@@ -1,0 +1,42 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "latex-rubber"
+dynamic = ["version"]
+description = "an automated system for building LaTeX documents"
+license = {text = "GPL-3.0-or-later"}
+requires-python = ">=3.8"
+authors = [
+    { name = "Sebastian Kapfer", email = "sebastian.kapfer@fau.de" },
+]
+maintainers = [
+    { name = "Florian Schmaus", email = "flo@geekplace.eu" },
+]
+
+[project.urls]
+Homepage = "https://gitlab.com/latex-rubber/rubber"
+
+[project.scripts]
+rubber = "rubber.cmdline:main_rubber_plain"
+rubber-info = "rubber.cmdline:main_rubber_info"
+rubber-lsmod = "rubber.cmdline:main_rubber_lsmod"
+rubber-pipe = "rubber.cmdline:main_rubber_pipe"
+
+[tool.hatch.version]
+path = "rubber/version.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/rubber",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["rubber"]
+
+# These two empty sections enable the custom build hook
+# in file `hatch_build.py`.
+# (https://hatch.pypa.io/1.9/config/build/#build-hooks)
+[tool.hatch.build.targets.sdist.hooks.custom]
+[tool.hatch.build.targets.wheel.hooks.custom]
