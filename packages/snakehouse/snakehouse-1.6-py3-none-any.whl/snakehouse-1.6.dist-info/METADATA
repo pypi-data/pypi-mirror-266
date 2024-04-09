@@ -1,0 +1,62 @@
+Metadata-Version: 2.1
+Name: snakehouse
+Version: 1.6
+Summary: Utilities for packing multiple pyx files into a single Cython extension
+Home-page: https://github.com/smok-serwis/snakehouse
+Author: Piotr Maślanka
+Author-email: pmaslanka@smok.co
+Project-URL: Code, https://github.com/smok-serwis/snakehouse
+Project-URL: Issue tracker, https://github.com/smok-serwis/snakehouse/issues
+Keywords: cython,extension,multiple,pyx
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Topic :: Software Development :: Code Generators
+Classifier: Topic :: Software Development :: Build Tools
+Requires-Python: !=2.7.*,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*
+Description-Content-Type: text/markdown; charset=UTF-8
+License-File: LICENSE
+Requires-Dist: Cython
+Requires-Dist: mako ==1.1.0
+Requires-Dist: satella ==2.20.0
+Requires-Dist: MarkupSafe ==1.1.1
+
+snakehouse
+==========
+![Build status](https://github.com/smok-serwis/snakehouse/actions/workflows/ci.yml/badge.svg)
+[![Code Climate](https://codeclimate.com/github/smok-serwis/snakehouse/badges/gpa.svg)](https://codeclimate.com/github/smok-serwis/snakehouse)
+[![Issue Count](https://codeclimate.com/github/smok-serwis/snakehouse/badges/issue_count.svg)](https://codeclimate.com/github/smok-serwis/snakehouse)
+[![PyPI](https://img.shields.io/pypi/pyversions/snakehouse.svg)](https://pypi.python.org/pypi/snakehouse)
+[![PyPI version](https://badge.fury.io/py/snakehouse.svg)](https://badge.fury.io/py/snakehouse)
+[![PyPI](https://img.shields.io/pypi/implementation/snakehouse.svg)](https://pypi.python.org/pypi/snakehouse)
+[![PyPI](https://img.shields.io/pypi/wheel/snakehouse.svg)]()
+[![Documentation Status](https://readthedocs.org/projects/snakehouse/badge/?version=latest)](http://snakehouse.readthedocs.io/en/latest/?badge=latest)
+[![License](https://img.shields.io/pypi/l/snakehouse)](https://github.com/smok-serwis/snakehouse)
+
+snakehouse is a tool to pack mutiple .pyx files
+into a single extension so that they are importable as separate
+Python modules inside Python.
+
+Inspired by [this StackOverflow discussion](https://stackoverflow.com/questions/30157363/collapse-multiple-submodules-to-one-cython-extension).
+
+Tested and works on CPython 3.5-3.12, 
+both Windows and [Linux](https://travis-ci.org/github/smok-serwis/snakehouse).
+
+It doesn't work on PyPy due to lack of
+`PyModule_FromDefAndSpec` symbol.
+
+READ BEFORE YOU USE
+===================
+
+Be sure to read the [docs](http://snakehouse.readthedocs.io/en/latest/) 
+before you start using it.
