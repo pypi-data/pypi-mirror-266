@@ -1,0 +1,33 @@
+space: "{{powerops_models}}"
+externalId: BidConfiguration
+name: BidConfiguration
+usedFor: node
+properties:
+  name:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: name
+  marketConfiguration:
+    type:
+      type: direct
+      list: false
+    nullable: true
+    autoIncrement: false
+    name: marketConfiguration
+  priceArea:
+    type:
+      type: direct
+      list: false
+    nullable: true
+    autoIncrement: false
+    name: priceArea
+indexes:
+  priceAreaIndex:
+    properties:
+      - priceArea
+    indexType: btree
+    cursorable: false

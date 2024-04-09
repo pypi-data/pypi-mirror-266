@@ -1,0 +1,56 @@
+space: "{{powerops_models}}"
+externalId: BidMatrix
+name: BidMatrix
+usedFor: node
+properties:
+  matrix:
+    type:
+      list: false
+      type: sequence
+    nullable: false
+    autoIncrement: false
+    name: matrix
+  powerAsset:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: powerAsset
+  state:
+    type:
+      list: false
+      collation: ucs_basic
+      type: text
+    nullable: false
+    autoIncrement: false
+    name: state
+  partialBidConfiguration:
+    type:
+      list: false
+      type: direct
+    nullable: true
+    autoIncrement: false
+    name: partialBidConfiguration
+  # assetId:
+  #   type:
+  #     list: false
+  #     collation: ucs_basic
+  #     type: text
+  #   nullable: true
+  #   autoIncrement: false
+  #   name: assetId
+  # isProcessed:
+  #   type:
+  #     type: boolean
+  #   nullable: true
+  #   autoIncrement: false
+  #   name: isProcessed
+  # resourceCost:
+  #   type:
+  #     list: false
+  #     collation: ucs_basic
+  #     type: text
+  #   nullable: true
+  #   autoIncrement: false
+  #   name: resourceCost
