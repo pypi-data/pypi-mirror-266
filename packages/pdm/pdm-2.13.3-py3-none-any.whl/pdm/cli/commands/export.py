@@ -1,0 +1,85 @@
+from __future__ import annotations
+
+import argparse
+from pathlib import Path
+from typing import Iterable
+
+from pdm.cli.actions import resolve_candidates_from_lockfile
+from pdm.cli.commands.base import BaseCommand
+from pdm.cli.filters import GroupSelection
+from pdm.cli.options import groups_group, lockfile_option
+from pdm.exceptions import PdmUsageError
+from pdm.formats import FORMATS
+from pdm.models.candidates import Candidate
+from pdm.models.requirements import Requirement
+from pdm.project import Project
+
+
+class Command(BaseCommand):
+    """Export the locked packages set to other formats"""
+
+    def add_arguments(self, parser: argparse.ArgumentParser) -> None:
+        lockfile_option.add_to_parser(parser)
+        parser.add_argument(
+            "-f",
+            "--format",
+            choices=FORMATS.keys(),
+            default="requirements",
+            help="Specify the export file format",
+        )
+        groups_group.add_to_parser(parser)
+        parser.add_argument(
+            "--no-hashes",
+            "--without-hashes",
+            dest="hashes",
+            action="store_false",
+            default=True,
+            help="Don't include artifact hashes",
+        )
+        parser.add_argument(
+            "--no-markers", action="store_false", default=True, dest="markers", help="Don't include platform markers"
+        )
+        parser.add_argument(
+            "-o",
+            "--output",
+            help="Write output to the given file, or print to stdout if not given",
+        )
+        parser.add_argument(
+            "--pyproject",
+            action="store_true",
+            help="Read the list of packages from pyproject.toml",
+        )
+        parser.add_argument("--expandvars", action="store_true", help="Expand environment variables in requirements")
+        group = parser.add_mutually_exclusive_group()
+        group.add_argument("--self", action="store_true", help="Include the project itself")
+        group.add_argument(
+            "--editable-self", action="store_true", help="Include the project itself as an editable dependency"
+        )
+
+    def handle(self, project: Project, options: argparse.Namespace) -> None:
+        if options.pyproject:
+            options.hashes = False
+        selection = GroupSelection.from_options(project, options)
+        requirements: dict[str, Requirement] = {}
+        packages: Iterable[Requirement] | Iterable[Candidate]
+        for group in selection:
+            requirements.update(project.get_dependencies(group))
+        if options.pyproject:
+            packages = requirements.values()
+        else:
+            if not project.lockfile.exists():
+                raise PdmUsageError("No lockfile found, please run `pdm lock` first.")
+
+            candidates = resolve_candidates_from_lockfile(
+                project, requirements.values(), groups=set(selection), cross_platform=options.markers
+            )
+            # Remove candidates with [extras] because the bare candidates are already
+            # included
+            packages = (candidate for candidate in candidates.values() if not candidate.req.extras)
+
+        content = FORMATS[options.format].export(project, packages, options)
+        if options.output:
+            Path(options.output).write_text(content, encoding="utf-8")
+        else:
+            # Use a regular print to avoid any formatting / wrapping.
+            print(content)
