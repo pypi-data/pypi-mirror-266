@@ -1,0 +1,59 @@
+# RHDZMOTA Standard Dependency Tags: all, standalone, baseline
+# Use the standalone tag to identify all the dependencies that correspond to
+#   the main package (i.e., rhdzmota).
+# RHDZMOTA Additional tags: develop
+# RHDZMOTA Additional tags (to be deprecated): tools, google_services, celery, backend
+# RHDZMOTA Extensions Tags:
+#   Reference to an extension fullname & version with a tag
+#   in the following format: ext.{{extension-slug}}
+# EXCLUDE Operator for extensions:
+#   All the dependencies from the base package (identified as with the standalone tag)
+#   will be intalled EXCEPT if you explicitly exclude them.
+#   You can exclude a dependency from you package
+#   by using the following notation: ~ext.{{extension-slug}}
+# NOTES:
+#   - All the standalone dependencies that have not been excluded from any extension
+#     conform another tag called the `baseline` tag (created programatically via the setup.py).
+#     As a result, baseline is a subset of standalone.
+#   - All dependencies get incorporated into the `all` tag for debugging purposes.
+
+
+# Default Exclusive
+fire==0.4.0: standalone
+pyyaml==6.0.1: standalone
+requests==2.31.0: standalone
+sentry-sdk==1.40.6: standalone, ~ext.streamlit_webapps
+
+# Develop Exclusive
+pycodestyle==2.7.0: develop
+mypy==0.971: develop
+mypy-extensions==0.4.3: develop
+typing_extensions==4.3.0: develop
+typed-ast==1.5.4: develop
+scalene==1.3.12: develop
+ipython==7.34.0: develop
+jupyter==1.0.0: develop
+
+# RHDZMOTA Extensions
+rhdzmota-extension-hello-world>=0.1.2,<1.0.0: ext.hello_world
+rhdzmota-extension-streamlit-webapps>=0.5.1,<1.0.0: ext.streamlit_webapps
+
+# Tools Exclusive
+rsa==4.8: standalone
+psutil==5.9.2: standalone
+
+# Celery Exclusive
+celery[redis]==5.1.2: celery
+flower==1.2.0: celery
+
+# Google Services Exclusive
+oauth2client==4.1.3: google_services
+google-api-python-client==2.63.0: google_services
+google-auth-oauthlib==0.5.3: google_services
+
+# Backend Utilities Exclusive
+Flask==2.0.1: backend
+waitress==2.0.0: backend
+
+# Backend <> Frontend <> Tools
+PyJWT==2.3.0: backend, tools
