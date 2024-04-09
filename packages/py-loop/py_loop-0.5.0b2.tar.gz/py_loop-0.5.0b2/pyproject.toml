@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "py-loop"
+version = "0.5.0b2"
+description = "Run commands until it fails"
+authors = ["jerem <jeremy.tellaa@tanker.io>"]
+
+[tool.poetry.dependencies]
+python = ">=3.8.1,<4.0"
+cli-ui = "^0.17.2"
+
+[tool.poetry.group.dev.dependencies]
+twine = "^4.0.2"
+black = "23.12.1"
+codecov = "^2.1.13"
+flake8 = "6.1.0"
+mypy = "1.8.0"
+pytest = "^7.4.3"
+pytest-cov = "^4.1.0"
+isort = "^5.13.2"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+
+[tool.poetry.scripts]
+looper = 'py_loop.main:main'
