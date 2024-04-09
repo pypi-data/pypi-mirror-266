@@ -1,0 +1,25 @@
+[tool.black]
+target-version = ['py37']
+
+[tool.pytest.ini_options]
+# https://github.com/spulec/moto/issues/3418
+filterwarnings = 'ignore:.*imp module is deprecated in favour of importlib.*'
+
+[build-system]
+requires = [
+    "setuptools>=42",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
+
+[tool.semantic_release]
+# ver https://python-semantic-release.readthedocs.io/en/latest/configuration.html
+branch = "main"
+version_variable = [
+    'setup.py:__version__'
+]
+version_pattern = [
+    'README.md:{version}'
+]
+upload_to_pypi = false
+commit_subject = "chore(release): {version}"
