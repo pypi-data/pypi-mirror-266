@@ -1,0 +1,44 @@
+[build-system]
+requires = [
+    "setuptools",
+    "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+#[tool.setuptools.package-data]
+#DLMSFirmwareUpdater = ["*.toml", "*.dat", "*.typ"]
+#exclude = ["test*", "dummy"]  # alternatively: `exclude = ["additional*"]`
+#namespaces = false
+
+[project]
+name = "DLMS_Firmware_updater"
+version = "0.1.0"
+authors = [
+    {name="Serj Kotilevski", email="youserj@outlook.com"}
+]
+dependencies = [
+    "DLMS_SPODES_client == 0.7.1",
+    "pyinstaller >= 6.2",
+    "build >= 1.2.1"
+]
+description="dlms-spodes"
+readme = "README.md"
+requires-python = ">=3.11"
+keywords=["dlms", "spodes", "client", "firmware", "update"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Source = "https://github.com/youserj/DLMSFirmwareUpdater_project"
+
+[project.scripts]
+DLMSFirUp = "DLMSFirmwareUpdater.main:main"
