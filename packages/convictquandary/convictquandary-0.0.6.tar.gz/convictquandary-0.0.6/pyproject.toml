@@ -1,0 +1,45 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "convictquandary"
+dynamic = ["version"]
+authors = [
+  { name="Prashant Sinha", email="prashantsinha94@gmail.com" },
+]
+description = "A extension of the iterated prisoners dilemma tournaments by Axelrod"
+keywords = ["axelrod", "ipd", "prisoners dilemma", "game theory", "iterated prisoners dilemma"]
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.9"
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Framework :: Flake8",
+    "Framework :: Pytest",
+    "Framework :: Matplotlib",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/prashant94/convict_quandary"
+Issues = "https://github.com/prashant94/convict_quandary/issues"
+
+[tool.pytest.ini_options]
+pythonpath = "src"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.scriv]
+version = "command: git describe --tags --abbrev=0"
+format = "md"

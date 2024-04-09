@@ -1,0 +1,97 @@
+fail_fast: false
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.3.0
+    hooks:
+      - id: check-yaml
+      - id: check-toml
+      - id: trailing-whitespace
+      - id: pretty-format-json
+        args: ['--autofix']
+  - repo: local
+    hooks:
+      - id: black-format-src
+        name: black-format-src
+        entry: python -m black
+        args: ["./src/"]
+        language: python
+        types: [python]
+        additional_dependencies: [black]
+        pass_filenames: false
+        verbose: true
+  - repo: local
+    hooks:
+      - id: black-format-tests
+        name: black-format-tests
+        entry: python -m black
+        args: ["./tests/"]
+        language: python
+        types: [python]
+        pass_filenames: false
+        additional_dependencies: [black]
+        verbose: true
+  - repo: local
+    hooks:
+      - id: isort
+        name: isort
+        entry: isort
+        args: ["./src/","./tests/","--profile", "black", "--filter-files"]
+        language: python
+        types: [python]
+        pass_filenames: false
+        additional_dependencies: [isort]
+        verbose: true
+  - repo: local
+    hooks:
+      - id: flake8-linting
+        name: flake8-linting
+        entry: flake8
+        args: ["./src/","./tests/"]
+        language: python
+        types: [python]
+        pass_filenames: false
+        additional_dependencies: ['flake8','pep8-naming']
+        verbose: true
+  - repo: local
+    hooks:
+      - id: unit-tests
+        name: unit-tests
+        entry: python -m pytest
+        language: python
+        types: [python]
+        pass_filenames: false
+        additional_dependencies: [pytest]
+  - repo: local
+    hooks:
+      - id: code-coverage
+        name: code-coverage
+        entry: coverage run -m pytest
+        language: python
+        types: [python]
+        pass_filenames: false
+        additional_dependencies: [coverage, pytest]
+        verbose: true
+  - repo: local
+    hooks:
+      - id: code-coverage-html-report
+        name: code-coverage-html-report
+        entry: coverage html
+        language: python
+        types: [python]
+        pass_filenames: false
+        additional_dependencies: [coverage]
+  - repo: local
+    hooks:
+      - id: bandit-security-checks
+        name: bandit-security-checks
+        entry: bandit -r ./src/
+        language: python
+        types: [python]
+        pass_filenames: false
+        additional_dependencies: [bandit]
+        verbose: true
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: master
+    hooks:
+      - id: commitizen
+        stages: [commit-msg]
