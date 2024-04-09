@@ -1,0 +1,45 @@
+Metadata-Version: 2.1
+Name: mindgard
+Version: 0.16.0
+Summary: Test your AI model's security without leaving your terminal.
+Home-page: https://github.com/Mindgard/cli
+Author: Danny Hunt
+Author-email: danny.hunt@mindgard.ai
+Requires-Python: >=3.8,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: auth0-python (>=4.7.1,<5.0.0)
+Requires-Dist: rich (>=13.7.1,<14.0.0)
+Requires-Dist: tabulate (>=0.9.0,<0.10.0)
+Project-URL: Issues, https://github.com/Mindgard/cli/issues
+Description-Content-Type: text/markdown
+
+# cli
+
+Test your AI model's security through CLI alone
+
+### Dev locally
+
+- Set up a local python environment
+- `poetry install`
+- Run commands as eg: `python3 -m src.mindgard login`
+
+### Release process:
+
+- be in the repo root directory
+- increment build number in pyproject.toml & setup.py (it overrides setup.py's value) - YOU CAN USE fully_release.sh for this
+- `python3 -m build`
+- `python3 -m twine upload --repository testpypi dist/*`
+
+### Running tests:
+
+- `pytest tests/{unit,module}`
+
+OR
+
+- `./run_system_tests.sh`
+
