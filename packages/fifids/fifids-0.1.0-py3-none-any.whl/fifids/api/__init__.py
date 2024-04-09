@@ -1,0 +1,1 @@
+from .fifi import Fifi
