@@ -1,0 +1,38 @@
+[project]
+name = "nonebot-plugin-cnrail"
+dynamic = []
+description = "NoneBot2 plugin for query the train time table"
+authors = [
+    { name = "student_2333", email = "lgc2333@126.com" },
+    { name = "XieXiLin", email = "support@xiexilin.com" },
+]
+dependencies = [
+    "nonebot2>=2.2.0",
+    "httpx>=0.24",
+    "nonebot-plugin-alconna>=0.40.1",
+    "nonebot-plugin-htmlrender>=0.2.2",
+    "jinja2>=3.1.2",
+    "pytz>=2023.3.post1",
+]
+requires-python = ">=3.9,<4.0"
+readme = "README.md"
+version = "0.2.2"
+
+[project.license]
+text = "MIT"
+
+[project.urls]
+homepage = "https://github.com/lgc-NB2Dev/nonebot-plugin-cnrail"
+
+[tool.pdm.build]
+includes = []
+
+[tool.pdm.version]
+source = "file"
+path = "nonebot_plugin_cnrail/__init__.py"
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
