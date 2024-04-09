@@ -1,0 +1,62 @@
+[project]
+name = "eldpy"
+description = "A Python package to download and analyze data from endangered language archives"
+version = "0.0.11"
+authors = [
+    { name = "Sebastian Nordhoff", email = "sebastian.nordhoff@glottotopia.de" }
+]
+readme = "README.md"
+requires-python = ">=3.7"
+
+dependencies = [
+        "pycryptodome",
+        "lxml",
+        "matplotlib",
+        "rdflib",
+        "requests",
+        # "urllib2",
+        "wptools",
+        "langdetect",
+        "random2",
+]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+# dynamic = ["version"]
+
+[project.urls]
+"Homepage" = "https://github.com/ZAS-QUEST/eldpy"
+"Bug Tracker" = "https://github.com/ZAS-QUEST/eldpy/issues"
+
+[project.optional-dependencies]
+dev = [
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "*.py",
+]
+exclude = [
+  "/.git",
+  "/docs",
+  "/tests/testeafs",
+]
+
+[tool.hatch.build.targets.wheel]
+include = [
+  "eldpy/*.py",
+]
+exclude = [
+  "/.git",
+  "/docs",
+  "/tests/testeafs",
+]

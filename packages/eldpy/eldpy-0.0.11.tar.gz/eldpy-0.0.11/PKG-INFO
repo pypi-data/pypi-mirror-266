@@ -1,0 +1,70 @@
+Metadata-Version: 2.1
+Name: eldpy
+Version: 0.0.11
+Summary: A Python package to download and analyze data from endangered language archives
+Project-URL: Homepage, https://github.com/ZAS-QUEST/eldpy
+Project-URL: Bug Tracker, https://github.com/ZAS-QUEST/eldpy/issues
+Author-email: Sebastian Nordhoff <sebastian.nordhoff@glottotopia.de>
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.7
+Requires-Dist: langdetect
+Requires-Dist: lxml
+Requires-Dist: matplotlib
+Requires-Dist: pycryptodome
+Requires-Dist: random2
+Requires-Dist: rdflib
+Requires-Dist: requests
+Requires-Dist: wptools
+Provides-Extra: dev
+Description-Content-Type: text/markdown
+
+# LangSci
+
+This package provides tools for interfacing with endangered language archives.
+
+For the time being, only the download functionality is robust enough for general use.
+
+The package contains script for the analysis of ELAN files. These analyses are quantitative (duration, tiers, tokens) as well as qualitative (vernacular language, tranlations, glosses, semantic domains).
+
+The analyses are cached in JSON format and can be exported to RDF.
+
+Sample usage:
+- download all ELAN files from the AILLA archives:
+```
+from eldpy import download
+download.bulk_download(archive='AILLA', filetype=1, username='janedoe', password='mypassword')
+```
+- analyze all downloaded ELAN files
+```
+from eldpy.bulk import *
+bulk_populate(cache=False)
+```
+- cache for future usage: as above and add
+```
+bulk_cache()
+```
+- read cached information
+```
+from eldpy.bulk import *
+bulk_populate(cache=True)
+```
+- compute tokens and durations
+```
+from eldpy.bulk import *
+bulk_populate()
+bulk_statistics()
+```
+- analyze ELAN tier hierarchies
+```
+from eldpy.bulk import *
+bulk_populate()
+bulk_fingerprints()
+```
+-export as rdf
+```
+from eldpy.bulk import *
+bulk_populate()
+bulk_rdf()
+```
