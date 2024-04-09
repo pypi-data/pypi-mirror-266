@@ -1,0 +1,105 @@
+[tool.poetry]
+name = "dev-shell"
+version = "0.8.0"
+description = "Developer shell for easy startup..."
+readme = "README.md"
+authors = ["Jens Diemer <python@jensdiemer.de>"]
+homepage = "https://github.com/jedie/dev-shell"
+license = "GNU General Public License v3.0"
+packages = [
+    { include = "dev_shell" },
+]
+
+[tool.poetry.scripts]
+devshell = 'dev_shell.dev_shell_app:devshell_cmdloop'
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+cmd2 = "*"  # https://github.com/python-cmd2/cmd2
+
+[tool.poetry.dev-dependencies]
+cmd2_ext_test = "*"
+poetry-publish = "*"  # https://github.com/jedie/poetry-publish
+pytest = "*"
+pytest-randomly = "*"
+pytest-cov = "*"
+darker = "*"  # https://github.com/akaihola/darker
+# TODO: pytest-mypy = "*"
+tox = "*"
+pyupgrade = "*"  # https://github.com/asottile/pyupgrade
+flake8 = "*"
+isort = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.darker]
+src = ['.',]
+revision = "origin/main..."
+line_length = 100
+skip_string_normalization = true
+diff = false
+check = false
+stdout = false
+isort = true
+lint = [
+    "flake8",
+]
+log_level = "INFO"
+
+
+[tool.isort]
+# https://pycqa.github.io/isort/docs/configuration/config_files/#pyprojecttoml-preferred-format
+atomic=true
+known_first_party=["dev_shell"]
+profile='black'
+line_length=100
+skip_glob=["*/htmlcov/*"]
+lines_after_imports=2
+
+
+[tool.coverage.run]
+omit = [".*"]
+
+
+[tool.pytest.ini_options]
+# https://docs.pytest.org/en/latest/customize.html#pyproject-toml
+minversion = "6.0"
+norecursedirs = ".* .git __pycache__ conf coverage* dist htmlcov"
+# sometimes helpfull "addopts" arguments:
+#    -vv
+#    --verbose
+#    --capture=no
+#    --trace-config
+#    --full-trace
+#    -p no:warnings
+addopts = """
+    --cov=.
+    --cov-report term-missing
+    --cov-report html
+    --cov-report xml
+    --no-cov-on-fail
+    --showlocals
+    --doctest-modules
+    --failed-first
+    --last-failed-no-failures all
+    --new-first
+"""
+# TODO: --mypy
+
+
+[tool.tox]
+# https://tox.wiki/en/latest/example/basic.html#pyproject-toml-tox-legacy-ini
+legacy_tox_ini = """
+[tox]
+isolated_build = True
+envlist = py{39,310,311}
+skip_missing_interpreters = True
+
+[testenv]
+passenv = *
+commands =
+    python --version
+    python devshell.py pytest
+"""
