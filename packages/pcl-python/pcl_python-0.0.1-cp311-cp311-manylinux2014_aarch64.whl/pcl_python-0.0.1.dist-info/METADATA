@@ -1,0 +1,36 @@
+Metadata-Version: 2.1
+Name: pcl-python
+Version: 0.0.1
+Summary: Point Cloud Library for Python
+Home-page: https://github.com/turingmotors/PyPcl
+Author: Hiroyuki Shimatani
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# Point Cloud Library for Python
+
+## How to install
+
+```bash
+pip install git+https://github.com/turingmotors/PyPcl.git
+```
+
+## How to build [WIP]
+
+依存パッケージをインストール
+
+```bash
+sudo apt install libpcl-dev
+```
+
+wheel ファイルの作成
+
+```bash
+git clone https://github.com/turingmotors/PyPcl.git
+cd PyPcl
+poetry install
+poetry run python setup.py bdist_wheel
+```
+
+`/dist` 下の whl ファイルを pip でインストールできる。
