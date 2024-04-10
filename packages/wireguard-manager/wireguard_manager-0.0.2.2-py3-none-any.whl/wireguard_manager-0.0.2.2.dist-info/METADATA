@@ -1,0 +1,34 @@
+Metadata-Version: 2.1
+Name: wireguard-manager
+Version: 0.0.2.2
+Summary: Wireguard management tool
+Author: Egor Kardasov
+Author-email: <egor@kardasov.ru>
+Keywords: python,vpn,wireguard,server,manager
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: Unix
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: cryptography
+
+
+
+<h1>Wireguard manager</h1>
+
+<h1>Contributing</h1>
+<h2>Tests</h2>
+Due to the specifics of the package testing environment, the tests are run in a docker container. To create an environment, build an image from test.Dockerfile
+
+```shell
+docker build -f test.Dockerfile -t wireguard_manager_test_enviroment .
+```
+
+And run container with mounted src to ```/tests/src``` and tests to ```/tests``` directories
+
+```shell
+docker container run --cap-add=NET_ADMIN --name test -v ./wireguard_manager:/tests/wireguard_manager  -v ./tests:/tests wireguard_manager_test_enviroment
+```
