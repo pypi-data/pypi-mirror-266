@@ -1,0 +1,21 @@
+## mako
+
+<%page args="section_data" expression_filter="h"/>
+<%!
+from django.utils.translation import gettext as _
+from openedx.core.djangolib.markup import HTML
+%>
+
+<%include file="/courseware/xqa_interface.html/"/>
+<%
+superset_url = section_data.get("superset_url")
+%>
+
+<section class="superset">
+    % if superset_url:
+    <div class="superset-link">
+      <a href="${superset_url}login/openedxsso">${_("Go to Superset to create new or further customize the reports below.")}</a>
+    </div>
+    % endif
+    ${HTML(section_data['fragment'].body_html())}
+</section>
