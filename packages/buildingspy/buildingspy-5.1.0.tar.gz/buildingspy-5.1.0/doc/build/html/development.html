@@ -1,0 +1,1061 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Development &#8212; BuildingsPy documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Copyright and License" href="legal.html" />
+    <link rel="prev" title="Examples" href="examples.html" /> 
+  </head><body>
+<div class="headerStyle">
+<img src="_static/lbl-logo.png" alt="LBL logo" />
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="legal.html" title="Copyright and License"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="examples.html" title="Examples"
+             accesskey="P">previous</a> |</li>
+    <li><a href="http://simulationresearch.lbl.gov/modelica">Home</a> &gt;
+    <a href="http://simulationresearch.lbl.gov/modelica/buildingspy">BuildingsPy</a></li>
+    </br>
+<!--    
+        <li class="nav-item nav-item-0"><a href="index.html">BuildingsPy documentation</a> &#187;</li> -->
+
+        <li class="nav-item nav-item-this"><a href="">Development</a></li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Development</a><ul>
+<li><a class="reference internal" href="#module-buildingspy.development.refactor">Refactoring code</a></li>
+<li><a class="reference internal" href="#module-buildingspy.development.regressiontest">Regression tests</a></li>
+<li><a class="reference internal" href="#module-buildingspy.development.validator">Validator of syntax</a></li>
+<li><a class="reference internal" href="#module-buildingspy.development.merger">Merging Modelica IBPSA Library</a></li>
+<li><a class="reference internal" href="#module-buildingspy.development.error_dictionary">Error dictionary</a></li>
+<li><a class="reference internal" href="#module-buildingspy.development.simulationCompare">Comparing simulation performance</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="examples.html"
+                        title="previous chapter">Examples</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="legal.html"
+                        title="next chapter">Copyright and License</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-buildingspy.development">
+<span id="development"></span><h1>Development<a class="headerlink" href="#module-buildingspy.development" title="Permalink to this headline">¶</a></h1>
+<p>This module contains the classes</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#module-buildingspy.development.refactor" title="buildingspy.development.refactor"><code class="xref py py-func docutils literal notranslate"><span class="pre">refactor</span></code></a>, a module that assists in refactoring Modelica classes,</p></li>
+<li><p><a class="reference internal" href="#buildingspy.development.regressiontest.Tester" title="buildingspy.development.regressiontest.Tester"><code class="xref py py-func docutils literal notranslate"><span class="pre">Tester</span></code></a> that runs the unit tests of the <cite>Buildings</cite> library,</p></li>
+<li><p><a class="reference internal" href="#buildingspy.development.validator.Validator" title="buildingspy.development.validator.Validator"><code class="xref py py-func docutils literal notranslate"><span class="pre">Validator</span></code></a> that validates the html code of the info section of the <cite>.mo</cite> files, and</p></li>
+<li><p><a class="reference internal" href="#buildingspy.development.merger.IBPSA" title="buildingspy.development.merger.IBPSA"><code class="xref py py-func docutils literal notranslate"><span class="pre">IBPSA</span></code></a> that synchronizes Modelica libraries with the <cite>IBPSA</cite> library.</p></li>
+<li><p><a class="reference internal" href="#buildingspy.development.error_dictionary.ErrorDictionary" title="buildingspy.development.error_dictionary.ErrorDictionary"><code class="xref py py-func docutils literal notranslate"><span class="pre">ErrorDictionary</span></code></a> that contains information about possible error strings.</p></li>
+<li><p><a class="reference internal" href="#buildingspy.development.simulationCompare.Comparator" title="buildingspy.development.simulationCompare.Comparator"><code class="xref py py-func docutils literal notranslate"><span class="pre">Comparator</span></code></a> that compares the simulation performance across simulation tools or git branches.</p></li>
+</ul>
+<section id="module-buildingspy.development.refactor">
+<span id="refactoring-code"></span><h2>Refactoring code<a class="headerlink" href="#module-buildingspy.development.refactor" title="Permalink to this headline">¶</a></h2>
+<p>This module provides functions to</p>
+<ul class="simple">
+<li><p>create Modelica packages and autopopulate for example the
+<cite>package.mo</cite> and <cite>package.order</cite> files</p></li>
+<li><p>move Modelica classes include any associated <cite>.mos</cite> scripts,
+reference results and images, and</p></li>
+<li><p>rewrite the <cite>package.order</cite> file.</p></li>
+</ul>
+<dl class="py function">
+<dt class="sig sig-object py" id="buildingspy.development.refactor.create_modelica_package">
+<span class="sig-prename descclassname"><span class="pre">buildingspy.development.refactor.</span></span><span class="sig-name descname"><span class="pre">create_modelica_package</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.refactor.create_modelica_package" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create in <cite>directory</cite> a Modelica package.</p>
+<p>If <cite>directory/package.mo</cite> exists, this method returns and does
+nothing. Otherwise, it creates the directory and populates
+it with a <cite>package.mo</cite> and <cite>package.order</cite> file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>directory</strong> – The directory in which the package is created.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="buildingspy.development.refactor.move_class">
+<span class="sig-prename descclassname"><span class="pre">buildingspy.development.refactor.</span></span><span class="sig-name descname"><span class="pre">move_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.refactor.move_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move the class from the <cite>source</cite>
+to the <cite>target</cite> name.</p>
+<p>Both arguments need to be Modelica class names
+such as <cite>Buildings.Fluid.Sensors.TemperatureTwoPort</cite>,
+or a directory with a top-level <cite>package.mo</cite> file, such as
+<cite>Buildings/Fluid</cite>, that contains a file <cite>Buildings/Fluid/package.mo</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source</strong> – Class name of the source.</p></li>
+<li><p><strong>target</strong> – Class name of the target.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Usage: Type</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">buildingspy.development.refactor</span> <span class="k">as</span> <span class="nn">r</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">old</span> <span class="o">=</span> <span class="s2">&quot;Buildings.Fluid.Movers.FlowControlled_dp&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new</span> <span class="o">=</span> <span class="s2">&quot;Buildings.Fluid.Movers.Flow_dp&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">move_class</span><span class="p">(</span><span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">)</span> 
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="buildingspy.development.refactor.write_package_order">
+<span class="sig-prename descclassname"><span class="pre">buildingspy.development.refactor.</span></span><span class="sig-name descname"><span class="pre">write_package_order</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recursive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.refactor.write_package_order" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the <cite>package.order</cite> file in the directory <cite>directory</cite>.</p>
+<p>Any existing <cite>package.order</cite> file will be overwritten.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>directory</strong> – The name of the directory in which the <cite>package.order</cite> file
+will be written.</p></li>
+<li><p><strong>recursive</strong> – Set to <cite>True</cite> to recursively include all sub directories.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Usage: To rewrite <cite>package.order</cite> in the current directory, type</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">buildingspy.development.refactor</span> <span class="k">as</span> <span class="nn">r</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">write_package_order</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span> 
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="module-buildingspy.development.regressiontest">
+<span id="regression-tests"></span><h2>Regression tests<a class="headerlink" href="#module-buildingspy.development.regressiontest" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">buildingspy.development.regressiontest.</span></span><span class="sig-name descname"><span class="pre">Tester</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">check_html</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dymola'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cleanup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comp_tool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'funnel'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_verification</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rewriteConfigurationFile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class that runs regression tests of the Modelica library.</p>
+<p>Initiate with the following optional arguments:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>check_html</strong> – Boolean (default <code class="docutils literal notranslate"><span class="pre">True</span></code>). Specify whether to load tidylib and
+perform validation of html documentation.</p></li>
+<li><p><strong>tool</strong> – string {<code class="docutils literal notranslate"><span class="pre">'dymola'</span></code>, <code class="docutils literal notranslate"><span class="pre">'openmodelica'</span></code>, <code class="docutils literal notranslate"><span class="pre">'optimica'</span></code>}.
+Default is <code class="docutils literal notranslate"><span class="pre">'dymola'</span></code>, specifies the
+tool to use for running the regression test with <code class="xref py py-func docutils literal notranslate"><span class="pre">run()</span></code>.</p></li>
+<li><p><strong>cleanup</strong> – Boolean (default <code class="docutils literal notranslate"><span class="pre">True</span></code>). Specify whether to delete temporary directories.</p></li>
+<li><p><strong>tol</strong> – float or dict (default=1E-3). Comparison tolerance
+If a float is provided, it is assigned to the absolute tolerance along x axis and to the
+absolute and relative tolerance along y axis.
+(If <code class="docutils literal notranslate"><span class="pre">comp_tool='legacy'</span></code>, only the absolute tolerance in y is used.)
+If a dict is provided, keys must conform with <code class="docutils literal notranslate"><span class="pre">pyfunnel.compareAndReport</span></code> arguments.</p></li>
+<li><p><strong>skip_verification</strong> – Boolean (default <code class="docutils literal notranslate"><span class="pre">False</span></code>).
+If <code class="docutils literal notranslate"><span class="pre">True</span></code>, unit test results are not verified against reference points.</p></li>
+<li><p><strong>color</strong> – Boolean (default <code class="docutils literal notranslate"><span class="pre">False</span></code>).
+If <code class="docutils literal notranslate"><span class="pre">True</span></code>, command line output will be in color (ignored on Windows).</p></li>
+<li><p><strong>rewriteConfigurationFile</strong> – Boolean (default <code class="docutils literal notranslate"><span class="pre">False</span></code>).
+If <code class="docutils literal notranslate"><span class="pre">True</span></code>, rewrite <cite>conf.yml</cite> file. (Currently only supported for OpenModelica.)</p></li>
+</ul>
+</dd>
+</dl>
+<p>This class can be used to run all regression tests.</p>
+<p><em>Regression testing using Dymola</em></p>
+<p>For Dymola, this module searches the directory
+<code class="docutils literal notranslate"><span class="pre">CURRENT_DIRECTORY/Resources/Scripts/Dymola</span></code> for
+all <code class="docutils literal notranslate"><span class="pre">*.mos</span></code> files that contain the string <code class="docutils literal notranslate"><span class="pre">simulate</span></code>,
+where <code class="docutils literal notranslate"><span class="pre">CURRENT_DIRECTORY</span></code> is the name of the directory in which the Python
+script is started, as returned by the function <a class="reference internal" href="#buildingspy.development.regressiontest.Tester.getLibraryName" title="buildingspy.development.regressiontest.Tester.getLibraryName"><code class="xref py py-func docutils literal notranslate"><span class="pre">getLibraryName()</span></code></a>.
+All these files will be executed as part of the regression tests.
+Any variables or parameters that are plotted by these <code class="docutils literal notranslate"><span class="pre">*.mos</span></code> files
+will be compared to previous results that are stored in
+<code class="docutils literal notranslate"><span class="pre">CURRENT_DIRECTORY/Resources/ReferenceResults/Dymola</span></code>.
+If no reference results exist, then they will be created.
+Otherwise, the accuracy of the new results is compared to the
+reference results. If they differ by more than a prescibed
+tolerance, a plot such as the one below is shown.</p>
+<figure class="align-default" id="id1">
+<a class="reference internal image-reference" href="_images/unitTestPlot.png"><img alt="_images/unitTestPlot.png" src="_images/unitTestPlot.png" style="width: 560px;" /></a>
+<figcaption>
+<p><span class="caption-text">Plot that compares the new results (solid line) of the regression test with the old results (dotted line).
+The blue line indicates the time where the largest error occurs.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>In this plot, the vertical line indicates the time where the biggest error
+occurs.
+The user is then asked to accept or reject the new results.</p>
+<p>For Dymola, the regression tests also store and compare the following statistics
+for the initialization problem and the time domain simulation:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>The number and the size of the linear system of equations,</p></li>
+<li><p>the number and the size of the nonlinear system of equations, and</p></li>
+<li><p>the number of the numerical Jacobians.</p></li>
+</ol>
+</div></blockquote>
+<p>To run the regression tests, type</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">buildingspy.development.regressiontest</span> <span class="k">as</span> <span class="nn">r</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rt</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">Tester</span><span class="p">(</span><span class="n">tool</span><span class="o">=</span><span class="s2">&quot;dymola&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">myMoLib</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;buildingspy&quot;</span><span class="p">,</span> <span class="s2">&quot;tests&quot;</span><span class="p">,</span> <span class="s2">&quot;MyModelicaLibrary&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rt</span><span class="o">.</span><span class="n">setLibraryRoot</span><span class="p">(</span><span class="n">myMoLib</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rt</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>                    
+<span class="go">MyModelicaLibrary.Examples.NoSolution: Excluded from simulation. Model excluded from simulation as it has no solution.</span>
+<span class="go">Number of models   : 11</span>
+<span class="go">          blocks   : 2</span>
+<span class="go">          functions: 0</span>
+<span class="go">Using ... of ... processors to run unit tests for dymola.</span>
+<span class="go">Generated 7 regression tests.</span>
+
+<span class="go">Comparison files output by funnel are stored in the directory &#39;funnel_comp&#39; of size ... MB.</span>
+<span class="go">Run &#39;python -c &quot;import buildingspy.development.regressiontest as t; t.Tester(tool=\&quot;dymola\&quot;).report()&quot;&#39;</span>
+<span class="go">to access a summary of the comparison results.</span>
+
+<span class="go">Script that runs unit tests had 0 warnings and 0 errors.</span>
+
+<span class="go">See &#39;simulator-dymola.log&#39; for details.</span>
+<span class="go">Unit tests completed successfully.</span>
+
+<span class="go">Execution time = ...</span>
+</pre></div>
+</div>
+<p>To run regression tests only for a single package, call <a class="reference internal" href="#buildingspy.development.regressiontest.Tester.setSinglePackage" title="buildingspy.development.regressiontest.Tester.setSinglePackage"><code class="xref py py-func docutils literal notranslate"><span class="pre">setSinglePackage()</span></code></a>
+prior to <a class="reference internal" href="#buildingspy.development.regressiontest.Tester.run" title="buildingspy.development.regressiontest.Tester.run"><code class="xref py py-func docutils literal notranslate"><span class="pre">run()</span></code></a>.</p>
+<p><em>Regression testing using OpenModelica or OPTIMICA</em></p>
+<p>For OpenModelica and OPTIMICA, the selection of test cases is done the same
+way as for Dymola. However, the solver tolerance is obtained
+from the <cite>.mo</cite> file by reading the annotation
+<cite>Tolerance=”value”</cite>.</p>
+<p>For OpenModelica and OPTIMICA, a JSON file stored as
+<code class="docutils literal notranslate"><span class="pre">Resources/Scripts/BuildingsPy/conf.yml</span></code> (or for backward compatibility, in <cite>conf.json</cite>) can be used
+to further configure tests. The file has the syntax below,
+where <code class="docutils literal notranslate"><span class="pre">openmodelica</span></code> or <code class="docutils literal notranslate"><span class="pre">optimica</span></code> specifies the tool.</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="nx">model_name</span><span class="o">:</span> <span class="nx">Buildings</span><span class="p">.</span><span class="nx">Fluid</span><span class="p">.</span><span class="nx">Examples</span><span class="p">.</span><span class="nx">FlowSystem</span><span class="p">.</span><span class="nx">Simplified2</span>
+  <span class="nx">optimica</span><span class="o">:</span>
+    <span class="nx">ncp</span><span class="o">:</span> <span class="mf">500</span><span class="p">,</span>
+    <span class="nx">rtol</span><span class="o">:</span> <span class="mf">1E-6</span><span class="p">,</span>
+    <span class="nx">solver</span><span class="o">:</span> <span class="s2">&quot;CVode&quot;</span><span class="p">,</span>
+    <span class="nx">simulate</span><span class="o">:</span> <span class="nx">True</span><span class="p">,</span>
+    <span class="nx">translate</span><span class="o">:</span> <span class="nx">True</span><span class="p">,</span>
+    <span class="nx">time_out</span><span class="o">:</span> <span class="mf">600</span>
+    <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;Add some comment and ideally a link to a github issue&#39;</span>
+</pre></div>
+</div>
+<p>For OpenModelica, replace <code class="docutils literal notranslate"><span class="pre">optimica</span></code> with <code class="docutils literal notranslate"><span class="pre">openmodelica</span></code>.
+For the detailed specification of allowed fields, see <code class="docutils literal notranslate"><span class="pre">buildingspy/templates/regressiontest_conf.py</span></code>.</p>
+<p>Any entries are optional, and the entries shown above
+are the default values, except for the relative tolerance <cite>rtol</cite>
+which is read from the <cite>.mo</cite> file. However, with <cite>rtol</cite>, this
+value can be overwritten.
+Note that this syntax is still experimental and may be changed.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester.areResultsEqual">
+<span class="sig-name descname"><span class="pre">areResultsEqual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tOld</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yOld</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tNew</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yNew</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">varNam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_idx</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester.areResultsEqual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <cite>True</cite> if the data series are equal within a tolerance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tOld</strong> – List of old time values.</p></li>
+<li><p><strong>yOld</strong> – Old simulation results.</p></li>
+<li><p><strong>tNew</strong> – Time stamps of new results.</p></li>
+<li><p><strong>yNew</strong> – New simulation results.</p></li>
+<li><p><strong>varNam</strong> – Variable name, used for reporting.</p></li>
+<li><p><strong>filNam</strong> – File name, used for reporting.</p></li>
+<li><p><strong>model_name</strong> – Model name, used for reporting.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list with <code class="docutils literal notranslate"><span class="pre">False</span></code> if the results are not equal, and the time
+of the maximum error, and an error message or <cite>None</cite>.
+In case of errors, the time of the maximum error may by <cite>None</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester.are_statistics_equal">
+<span class="sig-name descname"><span class="pre">are_statistics_equal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester.are_statistics_equal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare the simulation statistics <cite>s1</cite> and <cite>s2</cite> and
+return <cite>True</cite> if they are equal, or <cite>False</cite> otherwise.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester.batchMode">
+<span class="sig-name descname"><span class="pre">batchMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batchMode</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester.batchMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the batch mode flag.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>batchMode</strong> – Set to <code class="docutils literal notranslate"><span class="pre">True</span></code> to run without interactive prompts
+and without plot windows.</p>
+</dd>
+</dl>
+<p>By default, the regression tests require the user to respond if results differ from previous simulations.
+This method can be used to run the script in batch mode, suppressing all prompts that require
+the user to enter a response. If run in batch mode, no new results will be stored.
+To run the regression tests in batch mode, enter</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">buildingspy.development.regressiontest</span> <span class="k">as</span> <span class="nn">r</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">Tester</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">batchMode</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">run</span><span class="p">()</span> 
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester.checkPythonModuleAvailability">
+<span class="sig-name descname"><span class="pre">checkPythonModuleAvailability</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester.checkPythonModuleAvailability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether all required python modules are installed.</p>
+<p>If some modules are missing, then an <cite>ImportError</cite> is raised.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester.deleteTemporaryDirectories">
+<span class="sig-name descname"><span class="pre">deleteTemporaryDirectories</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delete</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester.deleteTemporaryDirectories" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flag, if set to <code class="docutils literal notranslate"><span class="pre">False</span></code>, then the temporary directories will not be deleted
+after the regression tests are run.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>delete</strong> – Flag, set to <code class="docutils literal notranslate"><span class="pre">False</span></code> to avoid the temporary directories to be deleted.</p>
+</dd>
+</dl>
+<p>Unless this method is called prior to running the regression tests with <code class="docutils literal notranslate"><span class="pre">delete=False</span></code>,
+all temporary directories will be deleted after the regression tests.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester.expand_packages">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">expand_packages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">packages</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester.expand_packages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expand the <code class="docutils literal notranslate"><span class="pre">packages</span></code> from the form
+<code class="docutils literal notranslate"><span class="pre">A.{B,C}</span></code> and return <code class="docutils literal notranslate"><span class="pre">A.B,A.C</span></code>
+:param: packages: A list of packages</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester.format_float">
+<span class="sig-name descname"><span class="pre">format_float</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester.format_float" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the argument in exponential notation, with
+non-significant zeros removed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester.getLibraryName">
+<span class="sig-name descname"><span class="pre">getLibraryName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester.getLibraryName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the name of the library that will be run by this regression test.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The name of the library that will be run by this regression test.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester.getModelicaCommand">
+<span class="sig-name descname"><span class="pre">getModelicaCommand</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester.getModelicaCommand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the name of the modelica executable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The name of the modelica executable.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester.get_configuration_data_from_disk">
+<span class="sig-name descname"><span class="pre">get_configuration_data_from_disk</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester.get_configuration_data_from_disk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the configuration data <cite>conf.yml</cite> from disk
+and return it as an arry whose elements are json dictionaries.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester.get_configuration_file_name">
+<span class="sig-name descname"><span class="pre">get_configuration_file_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester.get_configuration_file_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the full name of the <cite>conf.yml</cite> file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester.get_number_of_tests">
+<span class="sig-name descname"><span class="pre">get_number_of_tests</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester.get_number_of_tests" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of regression tests that will be run for the current library and configuration.</p>
+<p>Note: Needs to be run within the run method (where elements of self._data requiring no simulation
+are first removed).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester.get_plot_variables">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_plot_variables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester.get_plot_variables" title="Permalink to this definition">¶</a></dt>
+<dd><p>For a string of the form <cite>*y={aa,bb,cc}*</cite>, optionally with whitespace characters,
+return the list <cite>[aa, bb, cc]</cite>.
+If the string does not contain <cite>y = …</cite>, return <cite>None</cite>.</p>
+<p>A usage may be as follows. Note that the second call returns <cite>None</cite> as
+it has a different format.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">buildingspy.development.regressiontest</span> <span class="k">as</span> <span class="nn">r</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">Tester</span><span class="o">.</span><span class="n">get_plot_variables</span><span class="p">(</span><span class="s1">&#39;y = {&quot;a&quot;, &quot;b&quot;, &quot;c&quot;}&#39;</span><span class="p">)</span>
+<span class="go">[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">Tester</span><span class="o">.</span><span class="n">get_plot_variables</span><span class="p">(</span><span class="s1">&#39;... x}, y = {&quot;a&quot;, &quot;b&quot;, &quot;c&quot;}, z = {...&#39;</span><span class="p">)</span>
+<span class="go">[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">Tester</span><span class="o">.</span><span class="n">get_plot_variables</span><span class="p">(</span><span class="s2">&quot;y=abc&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester.get_tolerance">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_tolerance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">library_home</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester.get_tolerance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the tolerance as read from the <cite>.mo</cite> file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>library_home</strong> – Home directory of the library.</p></li>
+<li><p><strong>model_name</strong> – Name of the model.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester.get_unit_test_log_files">
+<span class="sig-name descname"><span class="pre">get_unit_test_log_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester.get_unit_test_log_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the name of the logs files of the unit tests,
+such as <code class="docutils literal notranslate"><span class="pre">unitTests-openmodelica.log</span></code>, <code class="docutils literal notranslate"><span class="pre">unitTests-optimica.log</span></code> or <code class="docutils literal notranslate"><span class="pre">unitTests-dymola.log</span></code> and
+<code class="docutils literal notranslate"><span class="pre">simulator-openmodelica.log</span></code> etc.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester.include_fmu_tests">
+<span class="sig-name descname"><span class="pre">include_fmu_tests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fmu_export</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester.include_fmu_tests" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets a flag that, if <code class="docutils literal notranslate"><span class="pre">False</span></code>, does not test the export of FMUs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fmu_export</strong> – Set to <code class="docutils literal notranslate"><span class="pre">True</span></code> to test the export of FMUs (default), or <code class="docutils literal notranslate"><span class="pre">False</span></code>
+to not test the FMU export.</p>
+</dd>
+</dl>
+<p>To run the unit tests but do not test the export of FMUs, type</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">buildingspy.development.regressiontest</span> <span class="k">as</span> <span class="nn">r</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">Tester</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">include_fmu_tests</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">run</span><span class="p">()</span> 
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester.isExecutable">
+<span class="sig-name descname"><span class="pre">isExecutable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">program</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester.isExecutable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">True</span></code> if the <code class="docutils literal notranslate"><span class="pre">program</span></code> is an executable</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester.isValidLibrary">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">isValidLibrary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">library_home</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester.isValidLibrary" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Returns true if the regression tester points to a valid library</dt><dd><p>that implements the scripts for the regression tests.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>library_home</strong> – top-level directory of the library, such as <code class="docutils literal notranslate"><span class="pre">Buildings</span></code>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the library implements regression tests, <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester.pedanticModelica">
+<span class="sig-name descname"><span class="pre">pedanticModelica</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pedanticModelica</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester.pedanticModelica" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the pedantic Modelica mode flag.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>pedanticModelica</strong> – Set to <code class="docutils literal notranslate"><span class="pre">True</span></code> to run the unit tests in the pedantic Modelica mode.</p>
+</dd>
+</dl>
+<p>By default, regression tests are run in non-pedantic Modelica mode.
+This however will be changed in the near future.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">buildingspy.development.regressiontest</span> <span class="k">as</span> <span class="nn">r</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">Tester</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">pedanticModelica</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">run</span><span class="p">()</span> 
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester.printNumberOfClasses">
+<span class="sig-name descname"><span class="pre">printNumberOfClasses</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester.printNumberOfClasses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the number of models, blocks and functions to the
+standard output stream</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester.report">
+<span class="sig-name descname"><span class="pre">report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">browser</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autoraise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comp_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester.report" title="Permalink to this definition">¶</a></dt>
+<dd><p>Builds and displays HTML report.</p>
+<p>Serves until timeout (s) or KeyboardInterrupt.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester.return_new_configuration_data_using_CI_results">
+<span class="sig-name descname"><span class="pre">return_new_configuration_data_using_CI_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">configuration_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulator_log_file_json</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">list_of_fmu_exports</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester.return_new_configuration_data_using_CI_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compares the entry from the <cite>simulator_log_file_json</cite> with the <cite>configuration_data</cite>,
+and returns a new copy of <cite>configuration_data</cite> with changes to <cite>translate</cite> or <cite>simulate</cite> entries based
+on the CI tests.
+This method also removes comments if the translation or simulation was successful.</p>
+<p>For models in the list <cite>list_of_fmu_exports</cite>, no entry about <cite>simulation</cite> will be added.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run all regression tests and checks the results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>0 if no errors and no warnings occurred during the regression tests,
+otherwise a non-zero value.</p>
+</dd>
+</dl>
+<p>This method</p>
+<ul class="simple">
+<li><p>creates temporary directories for each processors,</p></li>
+<li><p>copies the directory <code class="docutils literal notranslate"><span class="pre">CURRENT_DIRECTORY</span></code> into these
+temporary directories,</p></li>
+<li><p>creates run scripts that run all regression tests,</p></li>
+<li><p>runs these regression tests,</p></li>
+<li><p>collects the dymola log files from each process,</p></li>
+<li><p>writes the combined log file <code class="docutils literal notranslate"><span class="pre">unitTests-x.log</span></code>
+to the current directory, where <cite>x</cite> is the name of the
+Modelica tool,</p></li>
+<li><p>for Dymola, compares the results of the new simulations with
+reference results that are stored in <code class="docutils literal notranslate"><span class="pre">Resources/ReferenceResults</span></code>,</p></li>
+<li><p>writes the message <cite>Regression tests completed successfully.</cite>
+if no error occurred,</p></li>
+<li><p>returns 0 if no errors and no warnings occurred, or non-zero otherwise.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester.setDataDictionary">
+<span class="sig-name descname"><span class="pre">setDataDictionary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_package</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester.setDataDictionary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build the data structures that are needed to parse the output files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Param</dt>
+<dd class="field-odd"><p>root_package The name of the top-level package for which the files need to be parsed.
+Separate package names with a period.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester.setLibraryRoot">
+<span class="sig-name descname"><span class="pre">setLibraryRoot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rootDir</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester.setLibraryRoot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the root directory of the library.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>rootDir</strong> – The top-most directory of the library.</p>
+</dd>
+</dl>
+<p>The root directory is the directory that contains the <code class="docutils literal notranslate"><span class="pre">Resources</span></code> folder
+and the top-level <code class="docutils literal notranslate"><span class="pre">package.mo</span></code> file.</p>
+<dl>
+<dt>Usage: Type</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">buildingspy.development.regressiontest</span> <span class="k">as</span> <span class="nn">r</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rt</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">Tester</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">myMoLib</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;buildingspy&quot;</span><span class="p">,</span> <span class="s2">&quot;tests&quot;</span><span class="p">,</span> <span class="s2">&quot;MyModelicaLibrary&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rt</span><span class="o">.</span><span class="n">setLibraryRoot</span><span class="p">(</span><span class="n">myMoLib</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester.setNumberOfThreads">
+<span class="sig-name descname"><span class="pre">setNumberOfThreads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester.setNumberOfThreads" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the number of parallel threads that are used to run the regression tests.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>number</strong> – The number of parallel threads that are used to run the regression tests.</p>
+</dd>
+</dl>
+<p>By default, the number of parallel threads are set to be equal to the number of
+processors of the computer.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester.setSinglePackage">
+<span class="sig-name descname"><span class="pre">setSinglePackage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">packageName</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester.setSinglePackage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the name of one or multiple Modelica package(s) to be tested.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>packageName</strong> – The name of the package(s) to be tested.</p>
+</dd>
+</dl>
+<p>Calling this method will cause the regression tests to run
+only for the examples in the package <code class="docutils literal notranslate"><span class="pre">packageName</span></code>, and in
+all its sub-packages.</p>
+<p>For example:</p>
+<ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">packageName</span> <span class="pre">=</span> <span class="pre">IBPSA.Controls.Continuous.Examples</span></code>,
+then a test of the <code class="docutils literal notranslate"><span class="pre">IBPSA</span></code> library will run all examples in
+<code class="docutils literal notranslate"><span class="pre">IBPSA.Controls.Continuous.Examples</span></code>.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">packageName</span> <span class="pre">=</span> <span class="pre">IBPSA.Controls.Continuous.Examples,IBPSA.Controls.Continuous.Validation</span></code>,
+then a test of the <code class="docutils literal notranslate"><span class="pre">IBPSA</span></code> library will run all examples in
+<code class="docutils literal notranslate"><span class="pre">IBPSA.Controls.Continuous.Examples</span></code> and in <code class="docutils literal notranslate"><span class="pre">IBPSA.Controls.Continuous.Validation</span></code>.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester.showGUI">
+<span class="sig-name descname"><span class="pre">showGUI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester.showGUI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call this function to show the GUI of the simulator.</p>
+<p>By default, the simulator runs without GUI</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester.useExistingResults">
+<span class="sig-name descname"><span class="pre">useExistingResults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dirs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester.useExistingResults" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function allows to use existing results, as opposed to running a simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dirs</strong> – A non-empty list of directories that contain existing results.</p>
+</dd>
+</dl>
+<p>This method can be used for testing and debugging. If called, then no simulation is
+run.
+If the directories
+<code class="docutils literal notranslate"><span class="pre">['/tmp/tmp-Buildings-0-zABC44',</span> <span class="pre">'/tmp/tmp-Buildings-0-zQNS41']</span></code>
+contain previous results, then this method can be used as</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">buildingspy.development.regressiontest</span> <span class="k">as</span> <span class="nn">r</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">l</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;/tmp/tmp-Buildings-0-zABC44&#39;</span><span class="p">,</span> <span class="s1">&#39;/tmp/tmp-Buildings-0-zQNS41&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rt</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">Tester</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rt</span><span class="o">.</span><span class="n">useExistingResults</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rt</span><span class="o">.</span><span class="n">run</span><span class="p">()</span> 
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.regressiontest.Tester.writeOpenModelicaResultDictionary">
+<span class="sig-name descname"><span class="pre">writeOpenModelicaResultDictionary</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.regressiontest.Tester.writeOpenModelicaResultDictionary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write in <code class="docutils literal notranslate"><span class="pre">Resources/Scripts/OpenModelica/compareVars</span></code> files whose
+name are the name of the example model, and whose content is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">compareVars</span> <span class="o">:=</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;controler.y&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sensor.T&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;heater.Q_flow&quot;</span>
+  <span class="p">};</span>
+</pre></div>
+</div>
+<p>These files are then used in the regression testing that is done by the
+OpenModelica development team.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-buildingspy.development.validator">
+<span id="validator-of-syntax"></span><h2>Validator of syntax<a class="headerlink" href="#module-buildingspy.development.validator" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="buildingspy.development.validator.Validator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">buildingspy.development.validator.</span></span><span class="sig-name descname"><span class="pre">Validator</span></span><a class="headerlink" href="#buildingspy.development.validator.Validator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class that validates <code class="docutils literal notranslate"><span class="pre">.mo</span></code> files for the correct html syntax.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.validator.Validator.validateExperimentSetup">
+<span class="sig-name descname"><span class="pre">validateExperimentSetup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_dir</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.validator.Validator.validateExperimentSetup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate the experiment setup in <code class="docutils literal notranslate"><span class="pre">.mo</span></code> and <code class="docutils literal notranslate"><span class="pre">.mos</span></code> files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>root_dir</strong> – Root directory.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.validator.Validator.validateHTMLInPackage">
+<span class="sig-name descname"><span class="pre">validateHTMLInPackage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rootDir</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.validator.Validator.validateHTMLInPackage" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function recursively validates all <code class="docutils literal notranslate"><span class="pre">.mo</span></code> files
+in a package.</p>
+<p>If there is malformed html code in the <code class="docutils literal notranslate"><span class="pre">info</span></code> or the
+<code class="docutils literal notranslate"><span class="pre">revision</span></code> section,
+then this function write the error message of tidy to the
+standard output.</p>
+<p>Note that the line number correspond to an intermediate format
+(e.g., the output format of tidy), which may be different from
+the <code class="docutils literal notranslate"><span class="pre">.mo</span></code> file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>rootDir</strong> – The root directory of the package.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>str[] Warning/error messages from tidylib.</p>
+</dd>
+</dl>
+<dl>
+<dt>Usage: Type</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">buildingspy.development.validator</span> <span class="k">as</span> <span class="nn">v</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">val</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">Validator</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">myMoLib</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>                    <span class="s2">&quot;buildingspy&quot;</span><span class="p">,</span> <span class="s2">&quot;tests&quot;</span><span class="p">,</span> <span class="s2">&quot;MyModelicaLibrary&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get a list whose elements are the error strings</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">errStr</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">validateHTMLInPackage</span><span class="p">(</span><span class="n">myMoLib</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-buildingspy.development.merger">
+<span id="merging-modelica-ibpsa-library"></span><h2>Merging Modelica IBPSA Library<a class="headerlink" href="#module-buildingspy.development.merger" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="buildingspy.development.merger.IBPSA">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">buildingspy.development.merger.</span></span><span class="sig-name descname"><span class="pre">IBPSA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ibpsa_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest_dir</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.merger.IBPSA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class that merges the
+<a class="reference external" href="https://github.com/ibpsa/modelica-ibpsa">Modelica IBPSA Library</a>
+with other Modelica libraries.</p>
+<p>Both libraries need to have the same package structure.</p>
+<p>By default, the top-level packages <cite>Experimental</cite>
+and <cite>Obsolete</cite> are not included in the merge.
+This can be overwritten with the function
+<a class="reference internal" href="#buildingspy.development.merger.IBPSA.set_excluded_directories" title="buildingspy.development.merger.IBPSA.set_excluded_directories"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_excluded_directories()</span></code></a>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.merger.IBPSA.filter_files">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filter_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.merger.IBPSA.filter_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">file_list</span></code> for those that match <code class="docutils literal notranslate"><span class="pre">pattern</span></code>.</p>
+<p>Currently, pattern can contain at most one wildchar (‘*’) character.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_list</strong> – List of files.</p></li>
+<li><p><strong>pattern</strong> – Pattern that is used to match files.</p></li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt>A typical usage is</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">buildingspy.development.merger</span> <span class="k">as</span> <span class="nn">m</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">IBPSA</span><span class="o">.</span><span class="n">filter_files</span><span class="p">([</span><span class="s1">&#39;a.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;aa/b.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;aa/bb/c.txt&#39;</span><span class="p">],</span> <span class="s1">&#39;*.txt&#39;</span><span class="p">)</span>
+<span class="go">[&#39;a.txt&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">IBPSA</span><span class="o">.</span><span class="n">filter_files</span><span class="p">([</span><span class="s1">&#39;a.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;aa/b.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;aa/bb/c.txt&#39;</span><span class="p">],</span> <span class="s1">&#39;aa/*.txt&#39;</span><span class="p">)</span>
+<span class="go">[&#39;aa/b.txt&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">IBPSA</span><span class="o">.</span><span class="n">filter_files</span><span class="p">([</span><span class="s1">&#39;a.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;aa/b1.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;aa/b2.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;aa/bb/c.txt&#39;</span><span class="p">],</span> <span class="s1">&#39;aa/*.txt&#39;</span><span class="p">)</span>
+<span class="go">[&#39;aa/b1.txt&#39;, &#39;aa/b2.txt&#39;]</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.merger.IBPSA.merge">
+<span class="sig-name descname"><span class="pre">merge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">overwrite_reference_results</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.merger.IBPSA.merge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merge all files except the license file and the top-level <code class="docutils literal notranslate"><span class="pre">package.mo</span></code></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This method is experimental. Do not use it without
+having a backup of your code.</p>
+</div>
+<p>This function merges the <cite>IBPSA</cite> library into other
+Modelica libraries.</p>
+<p>In the top-level directory of the
+destination library, this function creates the file
+<cite>.copiedFiles.txt</cite> that lists all files that have been
+copied. In subsequent calls, this function
+deletes all files listed in <cite>.copiedFiles.txt</cite>,
+then merges the libraries, and creates a new version of
+<cite>.copiedFiles.txt</cite>. Therefore, if a model is moved
+in the <cite>IBPSA</cite> library, it will also be moved in the
+target library by deleting the old file and copying
+the new file.</p>
+<p>This function will merge all Modelica files,
+Modelica scripts, regression results and images.
+An exception is the file <cite>IBPSA/package.mo</cite>, as libraries
+typically have their own top-level package file that contains
+their release notes and version information.</p>
+<p>When copying the files, all references and file names
+that contain the string <cite>IBPSA</cite> will be renamed with
+the name of the top-level
+directory of the destination library.
+Afterwards, the <cite>package.order</cite> files will be regenerated,
+which allows libraries to have Modelica classes in the same
+directory as are used by the <cite>IBPSA</cite> library, as long
+as their name differs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>overwrite_reference_results</strong> – Boolean
+<cite>True</cite> causes the reference results to be overwritten,
+<cite>False</cite> causes the reference results to be skipped if
+they already exist.
+Note that if the reference result does not yet exist,
+it will be merged regardless of the setting
+of this parameter.</p>
+</dd>
+</dl>
+<dl>
+<dt>A typical usage is</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">buildingspy.development.merger</span> <span class="k">as</span> <span class="nn">m</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">home</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">root</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">home</span><span class="p">,</span> <span class="s2">&quot;test&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ibpsa_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s2">&quot;modelica&quot;</span><span class="p">,</span> <span class="s2">&quot;IBPSA&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dest_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s2">&quot;modelica-buildings&quot;</span><span class="p">,</span> <span class="s2">&quot;Buildings&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mer</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">IBPSA</span><span class="p">(</span><span class="n">ibpsa_dir</span><span class="p">,</span> <span class="n">dest_dir</span><span class="p">)</span> 
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mer</span><span class="o">.</span><span class="n">merge</span><span class="p">()</span>                            
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.merger.IBPSA.remove_library_specific_documentation">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">remove_library_specific_documentation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_lines</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">library_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.merger.IBPSA.remove_library_specific_documentation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove library specific content.</p>
+<blockquote>
+<div><p>For example, for the <cite>Buildings</cite> and <cite>IDEAS</cite> libraries, include the
+section in the commented block below, but keep the comment as an html-comment
+for other libraries.</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="cm">&lt;!-- @include_Buildings @include_IDEAS</span>
+<span class="cm">some documentation to be used for</span>
+<span class="cm">Buildings and IDEAS library only.</span>
+<span class="cm">--&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_lines</strong> – The lines of the file to be merged.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The lines of the files, with comments removed as indicated by the tag(s) in the comment line.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.merger.IBPSA.set_excluded_directories">
+<span class="sig-name descname"><span class="pre">set_excluded_directories</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directories</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.merger.IBPSA.set_excluded_directories" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the directories that are excluded from the merge.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>packages</strong> – A list of directories to be excluded.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-buildingspy.development.error_dictionary">
+<span id="error-dictionary"></span><h2>Error dictionary<a class="headerlink" href="#module-buildingspy.development.error_dictionary" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="buildingspy.development.error_dictionary.ErrorDictionary">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">buildingspy.development.error_dictionary.</span></span><span class="sig-name descname"><span class="pre">ErrorDictionary</span></span><a class="headerlink" href="#buildingspy.development.error_dictionary.ErrorDictionary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class that contains data fields needed for the
+error checking of the regression tests.</p>
+<p>If additional error messages need to be checked,
+then they should be added to the constructor of this class.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.error_dictionary.ErrorDictionary.get_dictionary">
+<span class="sig-name descname"><span class="pre">get_dictionary</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.error_dictionary.ErrorDictionary.get_dictionary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the dictionary with all error data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.error_dictionary.ErrorDictionary.increment_counter">
+<span class="sig-name descname"><span class="pre">increment_counter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.error_dictionary.ErrorDictionary.increment_counter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increment the error counter by one for the error type defined by <em>key</em>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>key</strong> – The json key of the error type.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.error_dictionary.ErrorDictionary.keys">
+<span class="sig-name descname"><span class="pre">keys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.error_dictionary.ErrorDictionary.keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy of the dictionary’s list of keys.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.error_dictionary.ErrorDictionary.tool_messages">
+<span class="sig-name descname"><span class="pre">tool_messages</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.error_dictionary.ErrorDictionary.tool_messages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy of the tool messages as a list.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-buildingspy.development.simulationCompare">
+<span id="comparing-simulation-performance"></span><h2>Comparing simulation performance<a class="headerlink" href="#module-buildingspy.development.simulationCompare" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="buildingspy.development.simulationCompare.Comparator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">buildingspy.development.simulationCompare.</span></span><span class="sig-name descname"><span class="pre">Comparator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tools</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">branches</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">package</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nPro</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolAbsTime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolRelTime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">postCloneCommand</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.simulationCompare.Comparator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class that compares various simulation statistics across tools or branches.</p>
+<p>This class allows comparing various simulation performance indicators
+(CPU time, number of state events, number of Jacobian evaluations)
+across Modelica simulation tools and across git branches.
+The tests can be run across a whole library, or across an individual Modelica package.
+The results will be summarized in a table format that compares the performance
+across tools and branches.</p>
+<p>Initiate with the following optional arguments:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tools</strong> – A list of tools to compare, such as <code class="docutils literal notranslate"><span class="pre">['openmodelica',</span> <span class="pre">'dymola']</span></code>.</p></li>
+<li><p><strong>branches</strong> – A list of branches to compare, such as <code class="docutils literal notranslate"><span class="pre">['master',</span> <span class="pre">'issueXXX']</span></code>.</p></li>
+<li><p><strong>package</strong> – Name of top-level package to compare, such as <code class="docutils literal notranslate"><span class="pre">Buildings</span></code> or <code class="docutils literal notranslate"><span class="pre">Buildings.Examples</span></code>.</p></li>
+<li><p><strong>repo</strong> – Name of repository, such as <code class="docutils literal notranslate"><span class="pre">https://github.com/lbl-srg/modelica-buildings</span></code>.</p></li>
+<li><p><strong>nPro</strong> – Number of threads that are used to run the translations and simulations.
+Set to <code class="docutils literal notranslate"><span class="pre">0</span></code> to use all processors.</p></li>
+<li><p><strong>tolAbsTim</strong> – float (default <code class="docutils literal notranslate"><span class="pre">0.1</span></code>). Absolute tolerance in time, if exceeded, results will be flagged in summary table.</p></li>
+<li><p><strong>tolRelTim</strong> – float (default <code class="docutils literal notranslate"><span class="pre">0.1</span></code>). Relative tolerance in time, if exceeded, results will be flagged in summary table.</p></li>
+<li><p><strong>postCloneCommand</strong> – list. A list of a command and its arguments that is run after cloning the repository. The command is run from
+the root folder inside the repository, e.g., the folder that contains the <code class="docutils literal notranslate"><span class="pre">.git</span></code> folder.</p></li>
+</ul>
+</dd>
+</dl>
+<p>This class can be used to compare translation and simulation statistics across tools and branches.
+Note that only one simulation is done, hence the simulation time can vary from one run to another,
+and therefore indicates trends rather than exact comparison of computing time.</p>
+<p>To run the comparison, type</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">buildingspy.development.simulationCompare</span> <span class="k">as</span> <span class="nn">sc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">Comparator</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;dymola&#39;</span><span class="p">,</span> <span class="s1">&#39;openmodelica&#39;</span><span class="p">],</span>
+<span class="gp">... </span>  <span class="n">branches</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;master&#39;</span><span class="p">],</span>
+<span class="gp">... </span>  <span class="n">package</span><span class="o">=</span><span class="s1">&#39;Buildings&#39;</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="n">repo</span><span class="o">=</span><span class="s1">&#39;https://github.com/lbl-srg/modelica-buildings&#39;</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="n">postCloneCommand</span><span class="o">=</span><span class="p">[</span>
+<span class="gp">... </span>     <span class="s2">&quot;python&quot;</span><span class="p">,</span>
+<span class="gp">... </span>     <span class="s2">&quot;Buildings/Resources/src/ThermalZones/install.py&quot;</span><span class="p">,</span>
+<span class="gp">... </span>     <span class="s2">&quot;--binaries-for-os-only&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>                                           
+</pre></div>
+</div>
+<p>To change the comparison for different tolerances without running the simulations again, type</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">buildingspy.development.simulationCompare</span> <span class="k">as</span> <span class="nn">sc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">Comparator</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;dymola&#39;</span><span class="p">,</span> <span class="s1">&#39;openmodelica&#39;</span><span class="p">],</span>
+<span class="gp">... </span>  <span class="n">branches</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;master&#39;</span><span class="p">],</span>
+<span class="gp">... </span>  <span class="n">package</span><span class="o">=</span><span class="s1">&#39;Buildings&#39;</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="n">repo</span><span class="o">=</span><span class="s1">&#39;https://github.com/lbl-srg/modelica-buildings&#39;</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="n">postCloneCommand</span><span class="o">=</span><span class="p">[</span>
+<span class="gp">... </span>     <span class="s2">&quot;python&quot;</span><span class="p">,</span>
+<span class="gp">... </span>     <span class="s2">&quot;Buildings/Resources/src/ThermalZones/install.py&quot;</span><span class="p">,</span>
+<span class="gp">... </span>     <span class="s2">&quot;--binaries-for-os-only&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">post_process</span><span class="p">(</span><span class="n">tolAbsTime</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">tolRelTime</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>     
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.simulationCompare.Comparator.post_process">
+<span class="sig-name descname"><span class="pre">post_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tolAbsTime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolRelTime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.simulationCompare.Comparator.post_process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the html tables.</p>
+<p>This function post-processes the simulations, generates the overview tables, and writes the tables
+to the directory <cite>results</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tolAbsTime</strong> – float. Optional argument for absolute tolerance in time, if exceeded, results will be flagged in summary table.</p></li>
+<li><p><strong>tolRelTime</strong> – float. Optional argument for relative tolerance in time, if exceeded, results will be flagged in summary table.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.development.simulationCompare.Comparator.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.development.simulationCompare.Comparator.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the comparison and generate the output.</p>
+<p>The output files will be in the directory <code class="docutils literal notranslate"><span class="pre">results</span></code>, and the raw test data
+are in the directories with the same names as specified by the parameter <code class="docutils literal notranslate"><span class="pre">tools</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="legal.html" title="Copyright and License"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="examples.html" title="Examples"
+             >previous</a> |</li>
+    <li><a href="http://simulationresearch.lbl.gov/modelica">Home</a> &gt;
+    <a href="http://simulationresearch.lbl.gov/modelica/buildingspy">BuildingsPy</a></li>
+    </br>
+<!--    
+        <li class="nav-item nav-item-0"><a href="index.html">BuildingsPy documentation</a> &#187;</li> -->
+
+        <li class="nav-item nav-item-this"><a href="">Development</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2011-2024, The Regents of the University of California (through Lawrence Berkeley National Laboratory), subject to receipt of any required approvals from U.S. Department of Energy.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
+    </div>
+  </body>
+</html>

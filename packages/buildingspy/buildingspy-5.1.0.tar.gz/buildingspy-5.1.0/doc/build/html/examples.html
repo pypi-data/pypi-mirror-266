@@ -1,0 +1,283 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Examples &#8212; BuildingsPy documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Development" href="development.html" />
+    <link rel="prev" title="FMI" href="fmi.html" /> 
+  </head><body>
+<div class="headerStyle">
+<img src="_static/lbl-logo.png" alt="LBL logo" />
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="development.html" title="Development"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="fmi.html" title="FMI"
+             accesskey="P">previous</a> |</li>
+    <li><a href="http://simulationresearch.lbl.gov/modelica">Home</a> &gt;
+    <a href="http://simulationresearch.lbl.gov/modelica/buildingspy">BuildingsPy</a></li>
+    </br>
+<!--    
+        <li class="nav-item nav-item-0"><a href="index.html">BuildingsPy documentation</a> &#187;</li> -->
+
+        <li class="nav-item nav-item-this"><a href="">Examples</a></li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Examples</a><ul>
+<li><a class="reference internal" href="#simulating-a-model-with-two-different-parameter-values">Simulating a model with two different parameter values</a></li>
+<li><a class="reference internal" href="#plotting-of-time-series">Plotting of Time Series</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="fmi.html"
+                        title="previous chapter">FMI</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="development.html"
+                        title="next chapter">Development</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-buildingspy.examples.dymola">
+<span id="examples"></span><h1>Examples<a class="headerlink" href="#module-buildingspy.examples.dymola" title="Permalink to this headline">¶</a></h1>
+<section id="simulating-a-model-with-two-different-parameter-values">
+<h2>Simulating a model with two different parameter values<a class="headerlink" href="#simulating-a-model-with-two-different-parameter-values" title="Permalink to this headline">¶</a></h2>
+<p>This module provides an example that illustrates the
+use of the python to run a Modelica simulation.</p>
+<p>The module
+<a class="reference internal" href="simulate.html#module-buildingspy.simulate" title="buildingspy.simulate"><code class="xref py py-mod docutils literal notranslate"><span class="pre">buildingspy.simulate</span></code></a> that can be used to automate running simulations.
+For example, to translate and simulate the model
+<code class="docutils literal notranslate"><span class="pre">Buildings.Fluid.SolarCollectors.Examples.FlatPlateWithTank</span></code>
+from the Modelica Buildings Library, release 9.1.0,
+with different sizes for the water tank, use
+the following commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#</span>
+<span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Pool</span>
+
+<span class="kn">from</span> <span class="nn">buildingspy.simulate.Dymola</span> <span class="kn">import</span> <span class="n">Simulator</span>
+
+
+<span class="c1"># Function to set common parameters and to run the simulation</span>
+<span class="k">def</span> <span class="nf">simulateCase</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Set common parameters and run a simulation.</span>
+
+<span class="sd">    :param s: A simulator object.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">setStopTime</span><span class="p">(</span><span class="mi">24</span> <span class="o">*</span> <span class="mi">3600</span><span class="p">)</span>
+    <span class="c1"># Kill the process if it does not finish in 1 minute</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">setTimeOut</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">printModelAndTime</span><span class="p">()</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">simulate</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Main method that configures and runs all simulations</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">shutil</span>
+
+    <span class="c1"># Build list of cases to run</span>
+    <span class="n">li</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># First model, from Modelica Buildings Library, v9.1.0</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="s1">&#39;Buildings.Fluid.SolarCollectors.Examples.FlatPlateWithTank&#39;</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">Simulator</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">outputDirectory</span><span class="o">=</span><span class="s1">&#39;case1&#39;</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">addParameters</span><span class="p">({</span><span class="s1">&#39;tan.VTan&#39;</span><span class="p">:</span> <span class="mf">1.5</span><span class="p">})</span>
+    <span class="n">li</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="c1"># second model</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">Simulator</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">outputDirectory</span><span class="o">=</span><span class="s1">&#39;case2&#39;</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">addParameters</span><span class="p">({</span><span class="s1">&#39;tan.VTan&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
+    <span class="n">li</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+    <span class="c1"># Run all cases in parallel</span>
+    <span class="n">po</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">()</span>
+    <span class="n">po</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">simulateCase</span><span class="p">,</span> <span class="n">li</span><span class="p">)</span>
+    <span class="n">po</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">po</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+    <span class="c1"># Clean up</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="s1">&#39;case1&#39;</span><span class="p">)</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="s1">&#39;case2&#39;</span><span class="p">)</span>
+
+
+<span class="c1"># Main function</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This will run the two test cases and store the results in the directories
+<code class="docutils literal notranslate"><span class="pre">case1</span></code> and <code class="docutils literal notranslate"><span class="pre">case2</span></code>. To use Optimica instead of Dymola, replace in the
+above script <code class="docutils literal notranslate"><span class="pre">Dymola</span></code> with <code class="docutils literal notranslate"><span class="pre">Optimica</span></code>.</p>
+</section>
+<section id="plotting-of-time-series">
+<h2>Plotting of Time Series<a class="headerlink" href="#plotting-of-time-series" title="Permalink to this headline">¶</a></h2>
+<p>This module provides an example that illustrates the
+use of the python to plot results from a Dymola simulation.
+See also the class <a class="reference internal" href="io.html#buildingspy.io.postprocess.Plotter" title="buildingspy.io.postprocess.Plotter"><code class="xref py py-class docutils literal notranslate"><span class="pre">buildingspy.io.postprocess.Plotter</span></code></a>
+for more advanced plotting.</p>
+<p>The file <code class="docutils literal notranslate"><span class="pre">plotResult.py</span></code> illustrates how to plot results from a
+Dymola output file. To run the example, proceed as follows:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p>Open a terminal or dos-shell.</p></li>
+<li><p>Set the PYTHONPATH environment variables to the
+directory that contains <code class="docutils literal notranslate"><span class="pre">`buildingspy`</span></code> as a subdirectory, such as</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> buildingspy/examples/dymola
+<span class="nb">export</span> <span class="nv">PYTHONPATH</span><span class="o">=</span><span class="si">${</span><span class="nv">PYTHONPATH</span><span class="si">}</span>:../../..
+</pre></div>
+</div>
+</li>
+<li><p>Type</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python plotResult.py
+</pre></div>
+</div>
+</li>
+</ol>
+</div></blockquote>
+<p>This will execute the script <code class="docutils literal notranslate"><span class="pre">plotResult.py</span></code>, which contains
+the following instructions:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Main method that plots the results</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">os</span>
+
+    <span class="kn">import</span> <span class="nn">matplotlib</span>
+    <span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;Agg&#39;</span><span class="p">)</span>
+    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+    <span class="kn">from</span> <span class="nn">buildingspy.io.outputfile</span> <span class="kn">import</span> <span class="n">Reader</span>
+
+    <span class="c1"># Optionally, change fonts to use LaTeX fonts</span>
+    <span class="c1"># from matplotlib import rc</span>
+    <span class="c1"># rc(&#39;text&#39;, usetex=True)</span>
+    <span class="c1"># rc(&#39;font&#39;, family=&#39;serif&#39;)</span>
+
+    <span class="c1"># Read results</span>
+    <span class="n">ofr1</span> <span class="o">=</span> <span class="n">Reader</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;buildingspy&quot;</span><span class="p">,</span> <span class="s2">&quot;examples&quot;</span><span class="p">,</span> <span class="s2">&quot;dymola&quot;</span><span class="p">,</span>
+                               <span class="s2">&quot;case1&quot;</span><span class="p">,</span> <span class="s2">&quot;FlatPlateWithTank.mat&quot;</span><span class="p">),</span> <span class="s2">&quot;dymola&quot;</span><span class="p">)</span>
+    <span class="n">ofr2</span> <span class="o">=</span> <span class="n">Reader</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;buildingspy&quot;</span><span class="p">,</span> <span class="s2">&quot;examples&quot;</span><span class="p">,</span> <span class="s2">&quot;dymola&quot;</span><span class="p">,</span>
+                               <span class="s2">&quot;case2&quot;</span><span class="p">,</span> <span class="s2">&quot;FlatPlateWithTank.mat&quot;</span><span class="p">),</span> <span class="s2">&quot;dymola&quot;</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">time1</span><span class="p">,</span> <span class="n">TIn1</span><span class="p">)</span> <span class="o">=</span> <span class="n">ofr1</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="s2">&quot;TIn.T&quot;</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">time1</span><span class="p">,</span> <span class="n">TOut1</span><span class="p">)</span> <span class="o">=</span> <span class="n">ofr1</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="s2">&quot;TOut.T&quot;</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">time2</span><span class="p">,</span> <span class="n">TIn2</span><span class="p">)</span> <span class="o">=</span> <span class="n">ofr2</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="s2">&quot;TIn.T&quot;</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">time2</span><span class="p">,</span> <span class="n">TOut2</span><span class="p">)</span> <span class="o">=</span> <span class="n">ofr2</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="s2">&quot;TOut.T&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Plot figure</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time1</span> <span class="o">/</span> <span class="mi">3600</span><span class="p">,</span> <span class="n">TIn1</span> <span class="o">-</span> <span class="mf">273.15</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$T_{in,1}(V=1.5 </span><span class="se">\\</span><span class="s1">mathrm{m^3})$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time1</span> <span class="o">/</span> <span class="mi">3600</span><span class="p">,</span> <span class="n">TOut1</span> <span class="o">-</span> <span class="mf">273.15</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$T_{out,1}(V=1.5 </span><span class="se">\\</span><span class="s1">mathrm{m^3})$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time2</span> <span class="o">/</span> <span class="mi">3600</span><span class="p">,</span> <span class="n">TIn2</span> <span class="o">-</span> <span class="mf">273.15</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$T_{in,2}(V=2.0 </span><span class="se">\\</span><span class="s1">mathrm{m^3})$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time2</span> <span class="o">/</span> <span class="mi">3600</span><span class="p">,</span> <span class="n">TOut2</span> <span class="o">-</span> <span class="mf">273.15</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$T_{out,2}(V=2.0 </span><span class="se">\\</span><span class="s1">mathrm{m^3})$&#39;</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;time [h]&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Collector inlet and outlet temperature [$^\circ$C]&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">25</span><span class="p">)))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">24</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Save figure to file</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;plot.pdf&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;plot.png&#39;</span><span class="p">)</span>
+
+    <span class="c1"># To show the plot on the screen, uncomment the line below</span>
+    <span class="c1"># plt.show()</span>
+
+
+<span class="c1"># Main function</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The script generates the following plot:</p>
+<a class="reference internal image-reference" href="_images/plot.png"><img alt="Plot generated by ``plotResult.py``" class="align-center" src="_images/plot.png" style="width: 560px;" /></a>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="development.html" title="Development"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="fmi.html" title="FMI"
+             >previous</a> |</li>
+    <li><a href="http://simulationresearch.lbl.gov/modelica">Home</a> &gt;
+    <a href="http://simulationresearch.lbl.gov/modelica/buildingspy">BuildingsPy</a></li>
+    </br>
+<!--    
+        <li class="nav-item nav-item-0"><a href="index.html">BuildingsPy documentation</a> &#187;</li> -->
+
+        <li class="nav-item nav-item-this"><a href="">Examples</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2011-2024, The Regents of the University of California (through Lawrence Berkeley National Laboratory), subject to receipt of any required approvals from U.S. Department of Energy.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
+    </div>
+  </body>
+</html>

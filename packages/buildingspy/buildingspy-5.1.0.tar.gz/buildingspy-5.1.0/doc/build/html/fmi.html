@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>FMI &#8212; BuildingsPy documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Examples" href="examples.html" />
+    <link rel="prev" title="Reading output files, plotting results and reporting simulation output" href="io.html" /> 
+  </head><body>
+<div class="headerStyle">
+<img src="_static/lbl-logo.png" alt="LBL logo" />
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="examples.html" title="Examples"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="io.html" title="Reading output files, plotting results and reporting simulation output"
+             accesskey="P">previous</a> |</li>
+    <li><a href="http://simulationresearch.lbl.gov/modelica">Home</a> &gt;
+    <a href="http://simulationresearch.lbl.gov/modelica/buildingspy">BuildingsPy</a></li>
+    </br>
+<!--    
+        <li class="nav-item nav-item-0"><a href="index.html">BuildingsPy documentation</a> &#187;</li> -->
+
+        <li class="nav-item nav-item-this"><a href="">FMI</a></li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="io.html"
+                        title="previous chapter">Reading output files, plotting results and reporting simulation output</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="examples.html"
+                        title="next chapter">Examples</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-buildingspy.fmi">
+<span id="fmi"></span><h1>FMI<a class="headerlink" href="#module-buildingspy.fmi" title="Permalink to this headline">¶</a></h1>
+<p>This module provides functions to analyse FMUs.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="buildingspy.fmi.get_dependencies">
+<span class="sig-prename descclassname"><span class="pre">buildingspy.fmi.</span></span><span class="sig-name descname"><span class="pre">get_dependencies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fmu_file_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.fmi.get_dependencies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the input and state dependencies of an FMU as a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Fmu_file_name</dt>
+<dd class="field-odd"><p>Name of the FMU file.</p>
+</dd>
+</dl>
+<p>Extracts the FMU <code class="docutils literal notranslate"><span class="pre">fmu_file_name</span></code> to a temporary directory,
+reads its <cite>modelDescription.xml</cite> file,
+and returns a dictionary with the dependencies of derivatives,
+outputs and initial unknowns.</p>
+<p>For example, if applied to an FMU that encapsulates the Modelica model</p>
+<div class="highlight-modelica notranslate"><div class="highlight"><pre><span></span><span class="kr">block</span> <span class="nc">IntegratorGain</span> <span class="s2">&quot;Block to demonstrate the FMU export&quot;</span>
+  <span class="kr">parameter</span> <span class="nb">Real</span> <span class="n">k</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="s2">&quot;Gain&quot;</span><span class="p">;</span>
+  <span class="n">Modelica</span><span class="o">.</span><span class="n">Blocks</span><span class="o">.</span><span class="n">Interfaces</span><span class="o">.</span><span class="n">RealInput</span> <span class="n">u</span> <span class="s2">&quot;Input&quot;</span><span class="p">;</span>
+  <span class="n">Modelica</span><span class="o">.</span><span class="n">Blocks</span><span class="o">.</span><span class="n">Interfaces</span><span class="o">.</span><span class="n">RealOutput</span> <span class="n">y1</span>
+    <span class="s2">&quot;Output that depends on the state&quot;</span><span class="p">;</span>
+  <span class="n">Modelica</span><span class="o">.</span><span class="n">Blocks</span><span class="o">.</span><span class="n">Interfaces</span><span class="o">.</span><span class="n">RealOutput</span> <span class="n">y2</span>
+    <span class="s2">&quot;Output that depends on the input&quot;</span><span class="p">;</span>
+  <span class="nb">Real</span> <span class="n">x</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="s2">&quot;State&quot;</span><span class="p">;</span>
+<span class="kr">equation</span>
+  <span class="kr">der</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="n">u</span><span class="p">;</span>
+  <span class="n">y1</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+  <span class="n">y2</span> <span class="o">=</span> <span class="n">k</span><span class="o">*</span><span class="n">u</span><span class="p">;</span>
+<span class="kr">end</span> <span class="nc">IntegratorGain</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The output will be as follows:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">json</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">buildingspy.fmi</span> <span class="k">as</span> <span class="nn">f</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fmu_name</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;buildingspy&quot;</span><span class="p">,</span> <span class="s2">&quot;tests&quot;</span><span class="p">,</span> <span class="s2">&quot;fmi&quot;</span><span class="p">,</span> <span class="s2">&quot;IntegratorGain.fmu&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">get_dependencies</span><span class="p">(</span><span class="n">fmu_name</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;: &#39;</span><span class="p">),</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="go">{</span>
+<span class="go">  &quot;Derivatives&quot;: {</span>
+<span class="go">    &quot;der(x)&quot;: [</span>
+<span class="go">      &quot;u&quot;</span>
+<span class="go">    ]</span>
+<span class="go">  },</span>
+<span class="go">  &quot;InitialUnknowns&quot;: {</span>
+<span class="go">    &quot;der(x)&quot;: [</span>
+<span class="go">      &quot;u&quot;</span>
+<span class="go">    ],</span>
+<span class="go">    &quot;y1&quot;: [</span>
+<span class="go">      &quot;x&quot;</span>
+<span class="go">    ],</span>
+<span class="go">    &quot;y2&quot;: [</span>
+<span class="go">      &quot;k&quot;,</span>
+<span class="go">      &quot;u&quot;</span>
+<span class="go">    ]</span>
+<span class="go">  },</span>
+<span class="go">  &quot;Outputs&quot;: {</span>
+<span class="go">    &quot;y1&quot;: [</span>
+<span class="go">      &quot;x&quot;</span>
+<span class="go">    ],</span>
+<span class="go">    &quot;y2&quot;: [</span>
+<span class="go">      &quot;u&quot;</span>
+<span class="go">    ]</span>
+<span class="go">  }</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="examples.html" title="Examples"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="io.html" title="Reading output files, plotting results and reporting simulation output"
+             >previous</a> |</li>
+    <li><a href="http://simulationresearch.lbl.gov/modelica">Home</a> &gt;
+    <a href="http://simulationresearch.lbl.gov/modelica/buildingspy">BuildingsPy</a></li>
+    </br>
+<!--    
+        <li class="nav-item nav-item-0"><a href="index.html">BuildingsPy documentation</a> &#187;</li> -->
+
+        <li class="nav-item nav-item-this"><a href="">FMI</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2011-2024, The Regents of the University of California (through Lawrence Berkeley National Laboratory), subject to receipt of any required approvals from U.S. Department of Energy.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
+    </div>
+  </body>
+</html>

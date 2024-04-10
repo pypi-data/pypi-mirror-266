@@ -1,0 +1,1130 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Running simulations &#8212; BuildingsPy documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Reading output files, plotting results and reporting simulation output" href="io.html" />
+    <link rel="prev" title="Install and Uninstall BuildingsPy" href="install.html" /> 
+  </head><body>
+<div class="headerStyle">
+<img src="_static/lbl-logo.png" alt="LBL logo" />
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="io.html" title="Reading output files, plotting results and reporting simulation output"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="install.html" title="Install and Uninstall BuildingsPy"
+             accesskey="P">previous</a> |</li>
+    <li><a href="http://simulationresearch.lbl.gov/modelica">Home</a> &gt;
+    <a href="http://simulationresearch.lbl.gov/modelica/buildingspy">BuildingsPy</a></li>
+    </br>
+<!--    
+        <li class="nav-item nav-item-0"><a href="index.html">BuildingsPy documentation</a> &#187;</li> -->
+
+        <li class="nav-item nav-item-this"><a href="">Running simulations</a></li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Running simulations</a><ul>
+<li><a class="reference internal" href="#module-buildingspy.simulate.Dymola">Dymola</a></li>
+<li><a class="reference internal" href="#module-buildingspy.simulate.OpenModelica">OpenModelica</a></li>
+<li><a class="reference internal" href="#module-buildingspy.simulate.Optimica">Optimica</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="install.html"
+                        title="previous chapter">Install and Uninstall BuildingsPy</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="io.html"
+                        title="next chapter">Reading output files, plotting results and reporting simulation output</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-buildingspy.simulate">
+<span id="running-simulations"></span><h1>Running simulations<a class="headerlink" href="#module-buildingspy.simulate" title="Permalink to this headline">¶</a></h1>
+<p>This module contains the class
+<a class="reference internal" href="#module-buildingspy.simulate.OpenModelica" title="buildingspy.simulate.OpenModelica"><code class="xref py py-class docutils literal notranslate"><span class="pre">buildingspy.simulate.OpenModelica</span></code></a>,
+<a class="reference internal" href="#module-buildingspy.simulate.Optimica" title="buildingspy.simulate.Optimica"><code class="xref py py-class docutils literal notranslate"><span class="pre">buildingspy.simulate.Optimica</span></code></a>
+and
+<a class="reference internal" href="#module-buildingspy.simulate.Dymola" title="buildingspy.simulate.Dymola"><code class="xref py py-class docutils literal notranslate"><span class="pre">buildingspy.simulate.Dymola</span></code></a>
+that can be used to automate simulations using OpenModelica, Optimica and Dymola,
+respectively.</p>
+<p>Their API is identical where possible, but each
+class may have methods that are only applicable for
+one of the simulators.
+For example, the method
+<a class="reference internal" href="#buildingspy.simulate.Optimica.Simulator.generateHtmlDiagnostics" title="buildingspy.simulate.Optimica.Simulator.generateHtmlDiagnostics"><code class="xref py py-func docutils literal notranslate"><span class="pre">buildingspy.simulate.Optimica.Simulator.generateHtmlDiagnostics()</span></code></a>
+is only available for Optimica.</p>
+<section id="module-buildingspy.simulate.Dymola">
+<span id="dymola"></span><h2>Dymola<a class="headerlink" href="#module-buildingspy.simulate.Dymola" title="Permalink to this headline">¶</a></h2>
+<p>Class that translates and simulates a Modelica model with Dymola.</p>
+<p>For a similar class that uses OPTIMICA, see <a class="reference internal" href="#module-buildingspy.simulate.Optimica" title="buildingspy.simulate.Optimica"><code class="xref py py-func docutils literal notranslate"><span class="pre">buildingspy.simulate.Optimica()</span></code></a>.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="buildingspy.simulate.Dymola.Simulator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">buildingspy.simulate.Dymola.</span></span><span class="sig-name descname"><span class="pre">Simulator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modelName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputDirectory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">packagePath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Dymola.Simulator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">buildingspy.simulate.base_simulator._BaseSimulator</span></code></p>
+<p>Class to simulate a Modelica model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>modelName</strong> – The name of the Modelica model.</p></li>
+<li><p><strong>outputDirectory</strong> – An optional output directory.</p></li>
+<li><p><strong>packagePath</strong> – An optional path where the Modelica <code class="docutils literal notranslate"><span class="pre">package.mo</span></code> file is located.</p></li>
+</ul>
+</dd>
+</dl>
+<p>If the parameter <code class="docutils literal notranslate"><span class="pre">outputDirectory</span></code> is specified, then the
+output files and log files will be moved to this directory
+when the simulation is completed.
+Outputs from the python functions will be written to <code class="docutils literal notranslate"><span class="pre">outputDirectory/BuildingsPy.log</span></code>.</p>
+<p>If the parameter <code class="docutils literal notranslate"><span class="pre">packagePath</span></code> is specified, then this directory
+and all its subdirectories will be copied to a temporary directory when running the simulations.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Dymola.Simulator.addModelModifier">
+<span class="sig-name descname"><span class="pre">addModelModifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modelModifier</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Dymola.Simulator.addModelModifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a model modifier.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>modelModifier</strong> – A model modifier.</p>
+</dd>
+</dl>
+<dl>
+<dt>Usage: Type</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">buildingspy.simulate.Dymola</span> <span class="kn">import</span> <span class="n">Simulator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">=</span><span class="n">Simulator</span><span class="p">(</span><span class="s2">&quot;myPackage.myModel&quot;</span><span class="p">,</span> <span class="n">packagePath</span><span class="o">=</span><span class="s2">&quot;buildingspy/tests/MyModelicaLibrary&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">addModelModifier</span><span class="p">(</span><span class="s1">&#39;redeclare package MediumA = Buildings.Media.IdealGases.SimpleAir&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>This method adds a model modifier. The modifier is added to the list
+of model parameters. For example, the above statement would yield the
+command
+<code class="docutils literal notranslate"><span class="pre">simulateModel(myPackage.myModel(redeclare</span> <span class="pre">package</span> <span class="pre">MediumA</span> <span class="pre">=</span> <span class="pre">Buildings.Media.IdealGases.SimpleAir),</span> <span class="pre">startTime=...</span></code></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Dymola.Simulator.addParameters">
+<span class="sig-name descname"><span class="pre">addParameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictionary</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Dymola.Simulator.addParameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds parameter declarations to the simulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dictionary</strong> – A dictionary with the parameter values</p>
+</dd>
+</dl>
+<dl>
+<dt>Usage: Type</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">buildingspy.simulate.Dymola</span> <span class="kn">import</span> <span class="n">Simulator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">=</span><span class="n">Simulator</span><span class="p">(</span><span class="s2">&quot;myPackage.myModel&quot;</span><span class="p">,</span> <span class="n">packagePath</span><span class="o">=</span><span class="s2">&quot;buildingspy/tests/MyModelicaLibrary&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">addParameters</span><span class="p">({</span><span class="s1">&#39;PID.k&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;valve.m_flow_nominal&#39;</span> <span class="p">:</span> <span class="mf">0.1</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">addParameters</span><span class="p">({</span><span class="s1">&#39;PID.t&#39;</span><span class="p">:</span> <span class="mf">10.0</span><span class="p">})</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>This will add the three parameters <code class="docutils literal notranslate"><span class="pre">PID.k</span></code>, <code class="docutils literal notranslate"><span class="pre">valve.m_flow_nominal</span></code>
+and <code class="docutils literal notranslate"><span class="pre">PID.t</span></code> to the list of model parameters.</p>
+<dl>
+<dt>For parameters that are arrays, use a syntax such as</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">buildingspy.simulate.Dymola</span> <span class="kn">import</span> <span class="n">Simulator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Simulator</span><span class="p">(</span><span class="s2">&quot;MyModelicaLibrary.Examples.Constants&quot;</span><span class="p">,</span> <span class="n">packagePath</span><span class="o">=</span><span class="s2">&quot;buildingspy/tests/MyModelicaLibrary&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">addParameters</span><span class="p">({</span><span class="s1">&#39;const1.k&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">addParameters</span><span class="p">({</span><span class="s1">&#39;const2.k&#39;</span> <span class="p">:</span> <span class="p">[[</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.1</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.1</span><span class="p">,</span> <span class="mf">3.2</span><span class="p">]]})</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>Do not use curly brackets for the values of parameters, such as
+<code class="docutils literal notranslate"><span class="pre">s.addParameters({'const1.k'</span> <span class="pre">:</span> <span class="pre">{2,</span> <span class="pre">3}})</span></code>
+as Python converts this entry to <code class="docutils literal notranslate"><span class="pre">{'const1.k':</span> <span class="pre">set([2,</span> <span class="pre">3])}</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Dymola.Simulator.addPostProcessingStatement">
+<span class="sig-name descname"><span class="pre">addPostProcessingStatement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Dymola.Simulator.addPostProcessingStatement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a post-processing statement to the simulation script.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>statement</strong> – A script statement.</p>
+</dd>
+</dl>
+<p>This will execute <code class="docutils literal notranslate"><span class="pre">command</span></code> after the simulation, and before
+the log file is written.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Dymola.Simulator.addPreProcessingStatement">
+<span class="sig-name descname"><span class="pre">addPreProcessingStatement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Dymola.Simulator.addPreProcessingStatement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a pre-processing statement to the simulation script.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>command</strong> – A script statement.</p>
+</dd>
+</dl>
+<dl>
+<dt>Usage: Type</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">buildingspy.simulate.Dymola</span> <span class="kn">import</span> <span class="n">Simulator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">=</span><span class="n">Simulator</span><span class="p">(</span><span class="s2">&quot;myPackage.myModel&quot;</span><span class="p">,</span> <span class="n">packagePath</span><span class="o">=</span><span class="s2">&quot;buildingspy/tests/MyModelicaLibrary&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">addPreProcessingStatement</span><span class="p">(</span><span class="s2">&quot;Advanced.StoreProtectedVariables:= true;&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">addPreProcessingStatement</span><span class="p">(</span><span class="s2">&quot;Advanced.GenerateTimers = true;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>This will execute the two statements after the <code class="docutils literal notranslate"><span class="pre">openModel</span></code> and
+before the <code class="docutils literal notranslate"><span class="pre">simulateModel</span></code> statement.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Dymola.Simulator.deleteOutputFiles">
+<span class="sig-name descname"><span class="pre">deleteOutputFiles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Dymola.Simulator.deleteOutputFiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes the output files of the simulator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Dymola.Simulator.exitSimulator">
+<span class="sig-name descname"><span class="pre">exitSimulator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exitAfterSimulation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Dymola.Simulator.exitSimulator" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function allows avoiding that the simulator terminates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>exit</strong> – Set to <code class="docutils literal notranslate"><span class="pre">False</span></code> to avoid the simulator from terminating
+after the simulation.</p>
+</dd>
+</dl>
+<p>This function is useful during debugging, as it allows to
+keep the simulator open after the simulation in order to
+inspect results or log messages.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Dymola.Simulator.getOutputDirectory">
+<span class="sig-name descname"><span class="pre">getOutputDirectory</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Dymola.Simulator.getOutputDirectory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the name of the output directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The name of the output directory.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Dymola.Simulator.getPackagePath">
+<span class="sig-name descname"><span class="pre">getPackagePath</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Dymola.Simulator.getPackagePath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the path of the directory containing the Modelica package.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The path of the Modelica package directory.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Dymola.Simulator.getParameters">
+<span class="sig-name descname"><span class="pre">getParameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Dymola.Simulator.getParameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of parameters as (key, value)-tuples.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of parameters as (key, value)-tuples.</p>
+</dd>
+</dl>
+<dl>
+<dt>Usage: Type</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">buildingspy.simulate.Dymola</span> <span class="kn">import</span> <span class="n">Simulator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">=</span><span class="n">Simulator</span><span class="p">(</span><span class="s2">&quot;myPackage.myModel&quot;</span><span class="p">,</span> <span class="n">packagePath</span><span class="o">=</span><span class="s2">&quot;buildingspy/tests/MyModelicaLibrary&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">addParameters</span><span class="p">({</span><span class="s1">&#39;PID.k&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;valve.m_flow_nominal&#39;</span> <span class="p">:</span> <span class="mf">0.1</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">getParameters</span><span class="p">()</span>
+<span class="go">[(&#39;PID.k&#39;, 1.0), (&#39;valve.m_flow_nominal&#39;, 0.1)]</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Dymola.Simulator.getSimulatorSettings">
+<span class="sig-name descname"><span class="pre">getSimulatorSettings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Dymola.Simulator.getSimulatorSettings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of settings for the parameter as (key, value)-tuples.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of parameters (key, value) pairs, as 2-tuples.</p>
+</dd>
+</dl>
+<p>This method is deprecated. Use <code class="xref py py-meth docutils literal notranslate"><span class="pre">getParameters()</span></code> instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Dymola.Simulator.setNumberOfIntervals">
+<span class="sig-name descname"><span class="pre">setNumberOfIntervals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Dymola.Simulator.setNumberOfIntervals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the number of output intervals.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> – The number of output intervals.</p>
+</dd>
+</dl>
+<p>The default is unspecified, which defaults to 500.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Dymola.Simulator.setOutputDirectory">
+<span class="sig-name descname"><span class="pre">setOutputDirectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outputDirectory</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Dymola.Simulator.setOutputDirectory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the name of the output directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>outputDirectory</strong> – The name of the output directory.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The name of the output directory.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Dymola.Simulator.setPackagePath">
+<span class="sig-name descname"><span class="pre">setPackagePath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">packagePath</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Dymola.Simulator.setPackagePath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the path specified by <code class="docutils literal notranslate"><span class="pre">packagePath</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>packagePath</strong> – The path where the Modelica <code class="docutils literal notranslate"><span class="pre">package.mo</span></code> file is located.</p>
+</dd>
+</dl>
+<p>It checks whether the file <code class="docutils literal notranslate"><span class="pre">package.mo</span></code> exists in the directory <code class="docutils literal notranslate"><span class="pre">packagePath</span></code>,
+and then sets the package path.
+Otherwise, a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> is raised.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Dymola.Simulator.setResultFile">
+<span class="sig-name descname"><span class="pre">setResultFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resultFile</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Dymola.Simulator.setResultFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the name of the result file (without extension).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>resultFile</strong> – The name of the result file (without extension).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Dymola.Simulator.setSolver">
+<span class="sig-name descname"><span class="pre">setSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Dymola.Simulator.setSolver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the solver.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>solver</strong> – The name of the solver.</p>
+</dd>
+</dl>
+<p>The default solver is <em>radau</em>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Dymola.Simulator.setStartTime">
+<span class="sig-name descname"><span class="pre">setStartTime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Dymola.Simulator.setStartTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the start time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>t0</strong> – The start time of the simulation in seconds.</p>
+</dd>
+</dl>
+<p>The default start time is 0.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Dymola.Simulator.setStopTime">
+<span class="sig-name descname"><span class="pre">setStopTime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Dymola.Simulator.setStopTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the start time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>t1</strong> – The stop time of the simulation in seconds.</p>
+</dd>
+</dl>
+<p>The default stop time is 1.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Dymola.Simulator.setTimeOut">
+<span class="sig-name descname"><span class="pre">setTimeOut</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Dymola.Simulator.setTimeOut" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the time out in seconds after which the simulation will be killed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sec</strong> – The time out after which the simulation will be killed.</p>
+</dd>
+</dl>
+<p>The default value is <cite>None</cite>, which means that the simulation will
+never be killed. A value of <cite>None</cite>, <cite>0</cite> or negative will never time out.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Dymola.Simulator.setTolerance">
+<span class="sig-name descname"><span class="pre">setTolerance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eps</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Dymola.Simulator.setTolerance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the solver tolerance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>eps</strong> – The solver tolerance.</p>
+</dd>
+</dl>
+<p>The default solver tolerance is 1E-6.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Dymola.Simulator.showGUI">
+<span class="sig-name descname"><span class="pre">showGUI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Dymola.Simulator.showGUI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call this function to show the GUI of the simulator.</p>
+<p>By default, the simulator runs without GUI</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Dymola.Simulator.showProgressBar">
+<span class="sig-name descname"><span class="pre">showProgressBar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Dymola.Simulator.showProgressBar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables or disables the progress bar.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>show</strong> – Set to <em>false</em> to disable the progress bar.</p>
+</dd>
+</dl>
+<p>If this function is not called, then a progress bar will be shown as the simulation runs.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Dymola.Simulator.simulate">
+<span class="sig-name descname"><span class="pre">simulate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Dymola.Simulator.simulate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulates the model.</p>
+<dl class="simple">
+<dt>This method</dt><dd><ol class="arabic simple">
+<li><p>Deletes output files</p></li>
+<li><p>Writes a script to simulate the model.</p></li>
+<li><p>Starts the Modelica simulation environment.</p></li>
+<li><p>Translates and simulates the model.</p></li>
+<li><p>Closes the Modelica simulation environment.</p></li>
+</ol>
+</dd>
+</dl>
+<p>This method requires that the directory that contains the executable <code class="docutils literal notranslate"><span class="pre">dymola</span></code>
+is on the system <code class="docutils literal notranslate"><span class="pre">PATH</span></code> variable.
+If it is not found, the function raises an exception.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Dymola.Simulator.translate">
+<span class="sig-name descname"><span class="pre">translate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Dymola.Simulator.translate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translates the model.</p>
+<dl class="simple">
+<dt>This method</dt><dd><ol class="arabic simple">
+<li><p>Deletes output files</p></li>
+<li><p>Writes a script to simulate the model.</p></li>
+<li><p>Starts the Modelica simulation environment.</p></li>
+<li><p>Translates the model.</p></li>
+<li><p>Closes the Modelica simulation environment.</p></li>
+</ol>
+</dd>
+</dl>
+<p>This method requires that the directory that contains the executable <code class="docutils literal notranslate"><span class="pre">dymola</span></code>
+is on the system <code class="docutils literal notranslate"><span class="pre">PATH</span></code> variable.
+If it is not found, the function raises an exception.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-buildingspy.simulate.OpenModelica">
+<span id="openmodelica"></span><h2>OpenModelica<a class="headerlink" href="#module-buildingspy.simulate.OpenModelica" title="Permalink to this headline">¶</a></h2>
+<p>Class that translates and simulates a Modelica model with OpenModelica.</p>
+<p>For a similar class that uses Dymola, see <a class="reference internal" href="#module-buildingspy.simulate.Dymola" title="buildingspy.simulate.Dymola"><code class="xref py py-func docutils literal notranslate"><span class="pre">buildingspy.simulate.Dymola()</span></code></a>.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="buildingspy.simulate.OpenModelica.Simulator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">buildingspy.simulate.OpenModelica.</span></span><span class="sig-name descname"><span class="pre">Simulator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modelName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputDirectory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">packagePath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.OpenModelica.Simulator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">buildingspy.simulate.base_simulator._BaseSimulator</span></code></p>
+<p>Class to simulate a Modelica model with OpenModelica.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>modelName</strong> – The name of the Modelica model.</p></li>
+<li><p><strong>outputDirectory</strong> – An optional output directory.</p></li>
+<li><p><strong>packagePath</strong> – An optional path where the Modelica <code class="docutils literal notranslate"><span class="pre">package.mo</span></code> file is located.</p></li>
+</ul>
+</dd>
+</dl>
+<p>If the parameter <code class="docutils literal notranslate"><span class="pre">outputDirectory</span></code> is specified, then the
+output files and log files will be moved to this directory
+when the simulation is completed.
+Outputs from the python functions will be written to <code class="docutils literal notranslate"><span class="pre">outputDirectory/BuildingsPy.log</span></code>.</p>
+<p>If the parameter <code class="docutils literal notranslate"><span class="pre">packagePath</span></code> is specified, then this directory
+and all its subdirectories will be copied to a temporary directory when running the simulations.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.OpenModelica.Simulator.addModelModifier">
+<span class="sig-name descname"><span class="pre">addModelModifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modelModifier</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.OpenModelica.Simulator.addModelModifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a model modifier.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>modelModifier</strong> – A model modifier.</p>
+</dd>
+</dl>
+<dl>
+<dt>Usage: Type</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">buildingspy.simulate.OpenModelica</span> <span class="kn">import</span> <span class="n">Simulator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">=</span><span class="n">Simulator</span><span class="p">(</span><span class="s2">&quot;myPackage.myModel&quot;</span><span class="p">,</span> <span class="n">packagePath</span><span class="o">=</span><span class="s2">&quot;buildingspy/tests/MyModelicaLibrary&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">addModelModifier</span><span class="p">(</span><span class="s1">&#39;redeclare package MediumA = Buildings.Media.IdealGases.SimpleAir&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>This method adds a model modifier. The modifier is added to the list
+of model parameters. For example, the above statement would yield the
+command
+<code class="docutils literal notranslate"><span class="pre">simulateModel(myPackage.myModel(redeclare</span> <span class="pre">package</span> <span class="pre">MediumA</span> <span class="pre">=</span> <span class="pre">Buildings.Media.IdealGases.SimpleAir),</span> <span class="pre">startTime=...</span></code></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.OpenModelica.Simulator.addParameters">
+<span class="sig-name descname"><span class="pre">addParameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictionary</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.OpenModelica.Simulator.addParameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds parameter declarations to the simulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dictionary</strong> – A dictionary with the parameter values</p>
+</dd>
+</dl>
+<dl>
+<dt>Usage: Type</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">buildingspy.simulate.OpenModelica</span> <span class="kn">import</span> <span class="n">Simulator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">=</span><span class="n">Simulator</span><span class="p">(</span><span class="s2">&quot;myPackage.myModel&quot;</span><span class="p">,</span> <span class="n">packagePath</span><span class="o">=</span><span class="s2">&quot;buildingspy/tests/MyModelicaLibrary&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">addParameters</span><span class="p">({</span><span class="s1">&#39;PID.k&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;valve.m_flow_nominal&#39;</span> <span class="p">:</span> <span class="mf">0.1</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">addParameters</span><span class="p">({</span><span class="s1">&#39;PID.t&#39;</span><span class="p">:</span> <span class="mf">10.0</span><span class="p">})</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>This will add the three parameters <code class="docutils literal notranslate"><span class="pre">PID.k</span></code>, <code class="docutils literal notranslate"><span class="pre">valve.m_flow_nominal</span></code>
+and <code class="docutils literal notranslate"><span class="pre">PID.t</span></code> to the list of model parameters.</p>
+<dl>
+<dt>For parameters that are arrays, use a syntax such as</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">buildingspy.simulate.OpenModelica</span> <span class="kn">import</span> <span class="n">Simulator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Simulator</span><span class="p">(</span><span class="s2">&quot;MyModelicaLibrary.Examples.Constants&quot;</span><span class="p">,</span> <span class="n">packagePath</span><span class="o">=</span><span class="s2">&quot;buildingspy/tests/MyModelicaLibrary&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">addParameters</span><span class="p">({</span><span class="s1">&#39;const1.k&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">addParameters</span><span class="p">({</span><span class="s1">&#39;const2.k&#39;</span> <span class="p">:</span> <span class="p">[[</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.1</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.1</span><span class="p">,</span> <span class="mf">3.2</span><span class="p">]]})</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>Do not use curly brackets for the values of parameters, such as
+<code class="docutils literal notranslate"><span class="pre">s.addParameters({'const1.k'</span> <span class="pre">:</span> <span class="pre">{2,</span> <span class="pre">3}})</span></code>
+as Python converts this entry to <code class="docutils literal notranslate"><span class="pre">{'const1.k':</span> <span class="pre">set([2,</span> <span class="pre">3])}</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.OpenModelica.Simulator.deleteOutputFiles">
+<span class="sig-name descname"><span class="pre">deleteOutputFiles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.OpenModelica.Simulator.deleteOutputFiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes the output files of the simulator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.OpenModelica.Simulator.getOutputDirectory">
+<span class="sig-name descname"><span class="pre">getOutputDirectory</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.OpenModelica.Simulator.getOutputDirectory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the name of the output directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The name of the output directory.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.OpenModelica.Simulator.getPackagePath">
+<span class="sig-name descname"><span class="pre">getPackagePath</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.OpenModelica.Simulator.getPackagePath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the path of the directory containing the Modelica package.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The path of the Modelica package directory.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.OpenModelica.Simulator.getParameters">
+<span class="sig-name descname"><span class="pre">getParameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.OpenModelica.Simulator.getParameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of parameters as (key, value)-tuples.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of parameters as (key, value)-tuples.</p>
+</dd>
+</dl>
+<dl>
+<dt>Usage: Type</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">buildingspy.simulate.OpenModelica</span> <span class="kn">import</span> <span class="n">Simulator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">=</span><span class="n">Simulator</span><span class="p">(</span><span class="s2">&quot;myPackage.myModel&quot;</span><span class="p">,</span> <span class="n">packagePath</span><span class="o">=</span><span class="s2">&quot;buildingspy/tests/MyModelicaLibrary&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">addParameters</span><span class="p">({</span><span class="s1">&#39;PID.k&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;valve.m_flow_nominal&#39;</span> <span class="p">:</span> <span class="mf">0.1</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">getParameters</span><span class="p">()</span>
+<span class="go">[(&#39;PID.k&#39;, 1.0), (&#39;valve.m_flow_nominal&#39;, 0.1)]</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.OpenModelica.Simulator.setNumberOfIntervals">
+<span class="sig-name descname"><span class="pre">setNumberOfIntervals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.OpenModelica.Simulator.setNumberOfIntervals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the number of output intervals.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> – The number of output intervals.</p>
+</dd>
+</dl>
+<p>The default is unspecified, which defaults to 500.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.OpenModelica.Simulator.setOutputDirectory">
+<span class="sig-name descname"><span class="pre">setOutputDirectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outputDirectory</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.OpenModelica.Simulator.setOutputDirectory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the name of the output directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>outputDirectory</strong> – The name of the output directory.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The name of the output directory.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.OpenModelica.Simulator.setPackagePath">
+<span class="sig-name descname"><span class="pre">setPackagePath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">packagePath</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.OpenModelica.Simulator.setPackagePath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the path specified by <code class="docutils literal notranslate"><span class="pre">packagePath</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>packagePath</strong> – The path where the Modelica <code class="docutils literal notranslate"><span class="pre">package.mo</span></code> file is located.</p>
+</dd>
+</dl>
+<p>It checks whether the file <code class="docutils literal notranslate"><span class="pre">package.mo</span></code> exists in the directory <code class="docutils literal notranslate"><span class="pre">packagePath</span></code>,
+and then sets the package path.
+Otherwise, a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> is raised.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.OpenModelica.Simulator.setResultFile">
+<span class="sig-name descname"><span class="pre">setResultFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resultFile</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.OpenModelica.Simulator.setResultFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the name of the result file (without extension).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>resultFile</strong> – The name of the result file (without extension).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.OpenModelica.Simulator.setSolver">
+<span class="sig-name descname"><span class="pre">setSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.OpenModelica.Simulator.setSolver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the solver.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>solver</strong> – The name of the solver.</p>
+</dd>
+</dl>
+<p>The default solver is <em>dassl</em>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.OpenModelica.Simulator.setStartTime">
+<span class="sig-name descname"><span class="pre">setStartTime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.OpenModelica.Simulator.setStartTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the start time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>t0</strong> – The start time of the simulation in seconds.</p>
+</dd>
+</dl>
+<p>The default start time is 0.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.OpenModelica.Simulator.setStopTime">
+<span class="sig-name descname"><span class="pre">setStopTime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.OpenModelica.Simulator.setStopTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the start time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>t1</strong> – The stop time of the simulation in seconds.</p>
+</dd>
+</dl>
+<p>The default stop time is 1.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.OpenModelica.Simulator.setTimeOut">
+<span class="sig-name descname"><span class="pre">setTimeOut</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.OpenModelica.Simulator.setTimeOut" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the time out in seconds after which the simulation will be killed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sec</strong> – The time out after which the simulation will be killed.</p>
+</dd>
+</dl>
+<p>The default value is <cite>None</cite>, which means that the simulation will
+never be killed. A value of <cite>None</cite>, <cite>0</cite> or negative will never time out.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.OpenModelica.Simulator.setTolerance">
+<span class="sig-name descname"><span class="pre">setTolerance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eps</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.OpenModelica.Simulator.setTolerance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the solver tolerance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>eps</strong> – The solver tolerance.</p>
+</dd>
+</dl>
+<p>The default solver tolerance is 1E-6.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.OpenModelica.Simulator.simulate">
+<span class="sig-name descname"><span class="pre">simulate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.OpenModelica.Simulator.simulate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translates and simulates the model.</p>
+<dl>
+<dt>Usage: Type</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">buildingspy.simulate.OpenModelica</span> <span class="kn">import</span> <span class="n">Simulator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">=</span><span class="n">Simulator</span><span class="p">(</span><span class="s2">&quot;MyModelicaLibrary.Examples.Constants&quot;</span><span class="p">,</span> <span class="n">packagePath</span><span class="o">=</span><span class="s2">&quot;buildingspy/tests/MyModelicaLibrary&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">simulate</span><span class="p">()</span> 
+</pre></div>
+</div>
+</dd>
+<dt>This method</dt><dd><ol class="arabic simple">
+<li><p>Deletes output files</p></li>
+<li><p>Writes a script to simulate the model.</p></li>
+<li><p>Starts the Modelica simulation environment.</p></li>
+<li><p>Translates and simulates the model.</p></li>
+<li><p>Closes the Modelica simulation environment.</p></li>
+</ol>
+</dd>
+</dl>
+<p>This method requires that the directory that contains the executable <code class="docutils literal notranslate"><span class="pre">omc</span></code>
+is on the system <code class="docutils literal notranslate"><span class="pre">PATH</span></code> variable.
+If it is not found, the function raises an exception.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.OpenModelica.Simulator.translate">
+<span class="sig-name descname"><span class="pre">translate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.OpenModelica.Simulator.translate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translates the model to generate a Functional Mockup Unit.</p>
+<dl>
+<dt>Usage: Type</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">buildingspy.simulate.OpenModelica</span> <span class="kn">import</span> <span class="n">Simulator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">=</span><span class="n">Simulator</span><span class="p">(</span><span class="s2">&quot;MyModelicaLibrary.Examples.Constants&quot;</span><span class="p">,</span> <span class="n">packagePath</span><span class="o">=</span><span class="s2">&quot;buildingspy/tests/MyModelicaLibrary&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">translate</span><span class="p">()</span> 
+</pre></div>
+</div>
+</dd>
+<dt>This method</dt><dd><ol class="arabic simple">
+<li><p>Deletes output files</p></li>
+<li><p>Writes a script to simulate the model.</p></li>
+<li><p>Starts the Modelica simulation environment.</p></li>
+<li><p>Translates the model.</p></li>
+<li><p>Closes the Modelica simulation environment.</p></li>
+</ol>
+</dd>
+</dl>
+<p>This method requires that the directory that contains the executable <code class="docutils literal notranslate"><span class="pre">omc</span></code>
+is on the system <code class="docutils literal notranslate"><span class="pre">PATH</span></code> variable.
+If it is not found, the function raises an exception.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-buildingspy.simulate.Optimica">
+<span id="optimica"></span><h2>Optimica<a class="headerlink" href="#module-buildingspy.simulate.Optimica" title="Permalink to this headline">¶</a></h2>
+<p>Class that translates and simulates a Modelica model with OPTIMICA.</p>
+<p>For a similar class that uses Dymola, see <a class="reference internal" href="#module-buildingspy.simulate.Dymola" title="buildingspy.simulate.Dymola"><code class="xref py py-func docutils literal notranslate"><span class="pre">buildingspy.simulate.Dymola()</span></code></a>.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="buildingspy.simulate.Optimica.Simulator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">buildingspy.simulate.Optimica.</span></span><span class="sig-name descname"><span class="pre">Simulator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modelName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputDirectory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">packagePath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Optimica.Simulator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">buildingspy.simulate.base_simulator._BaseSimulator</span></code></p>
+<p>Class to simulate a Modelica model with OPTIMICA.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>modelName</strong> – The name of the Modelica model.</p></li>
+<li><p><strong>outputDirectory</strong> – An optional output directory.</p></li>
+<li><p><strong>packagePath</strong> – An optional path where the Modelica <code class="docutils literal notranslate"><span class="pre">package.mo</span></code> file is located.</p></li>
+</ul>
+</dd>
+</dl>
+<p>If the parameter <code class="docutils literal notranslate"><span class="pre">outputDirectory</span></code> is specified, then the
+output files and log files will be moved to this directory
+when the simulation is completed.
+Outputs from the python functions will be written to <code class="docutils literal notranslate"><span class="pre">outputDirectory/BuildingsPy.log</span></code>.</p>
+<p>If the parameter <code class="docutils literal notranslate"><span class="pre">packagePath</span></code> is specified, then this directory
+and all its subdirectories will be copied to a temporary directory when running the simulations.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Optimica.Simulator.addModelModifier">
+<span class="sig-name descname"><span class="pre">addModelModifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modelModifier</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Optimica.Simulator.addModelModifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a model modifier.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>modelModifier</strong> – A model modifier.</p>
+</dd>
+</dl>
+<dl>
+<dt>Usage: Type</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">buildingspy.simulate.Optimica</span> <span class="kn">import</span> <span class="n">Simulator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">=</span><span class="n">Simulator</span><span class="p">(</span><span class="s2">&quot;myPackage.myModel&quot;</span><span class="p">,</span> <span class="n">packagePath</span><span class="o">=</span><span class="s2">&quot;buildingspy/tests/MyModelicaLibrary&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">addModelModifier</span><span class="p">(</span><span class="s1">&#39;redeclare package MediumA = Buildings.Media.IdealGases.SimpleAir&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>This method adds a model modifier. The modifier is added to the list
+of model parameters. For example, the above statement would yield the
+command
+<code class="docutils literal notranslate"><span class="pre">simulateModel(myPackage.myModel(redeclare</span> <span class="pre">package</span> <span class="pre">MediumA</span> <span class="pre">=</span> <span class="pre">Buildings.Media.IdealGases.SimpleAir),</span> <span class="pre">startTime=...</span></code></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Optimica.Simulator.addParameters">
+<span class="sig-name descname"><span class="pre">addParameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictionary</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Optimica.Simulator.addParameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds parameter declarations to the simulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dictionary</strong> – A dictionary with the parameter values</p>
+</dd>
+</dl>
+<dl>
+<dt>Usage: Type</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">buildingspy.simulate.Optimica</span> <span class="kn">import</span> <span class="n">Simulator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">=</span><span class="n">Simulator</span><span class="p">(</span><span class="s2">&quot;myPackage.myModel&quot;</span><span class="p">,</span> <span class="n">packagePath</span><span class="o">=</span><span class="s2">&quot;buildingspy/tests/MyModelicaLibrary&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">addParameters</span><span class="p">({</span><span class="s1">&#39;PID.k&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;valve.m_flow_nominal&#39;</span> <span class="p">:</span> <span class="mf">0.1</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">addParameters</span><span class="p">({</span><span class="s1">&#39;PID.t&#39;</span><span class="p">:</span> <span class="mf">10.0</span><span class="p">})</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>This will add the three parameters <code class="docutils literal notranslate"><span class="pre">PID.k</span></code>, <code class="docutils literal notranslate"><span class="pre">valve.m_flow_nominal</span></code>
+and <code class="docutils literal notranslate"><span class="pre">PID.t</span></code> to the list of model parameters.</p>
+<dl>
+<dt>For parameters that are arrays, use a syntax such as</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">buildingspy.simulate.Optimica</span> <span class="kn">import</span> <span class="n">Simulator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Simulator</span><span class="p">(</span><span class="s2">&quot;MyModelicaLibrary.Examples.Constants&quot;</span><span class="p">,</span> <span class="n">packagePath</span><span class="o">=</span><span class="s2">&quot;buildingspy/tests/MyModelicaLibrary&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">addParameters</span><span class="p">({</span><span class="s1">&#39;const1.k&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">addParameters</span><span class="p">({</span><span class="s1">&#39;const2.k&#39;</span> <span class="p">:</span> <span class="p">[[</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.1</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.1</span><span class="p">,</span> <span class="mf">3.2</span><span class="p">]]})</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>Do not use curly brackets for the values of parameters, such as
+<code class="docutils literal notranslate"><span class="pre">s.addParameters({'const1.k'</span> <span class="pre">:</span> <span class="pre">{2,</span> <span class="pre">3}})</span></code>
+as Python converts this entry to <code class="docutils literal notranslate"><span class="pre">{'const1.k':</span> <span class="pre">set([2,</span> <span class="pre">3])}</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Optimica.Simulator.deleteOutputFiles">
+<span class="sig-name descname"><span class="pre">deleteOutputFiles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Optimica.Simulator.deleteOutputFiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes the output files of the simulator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Optimica.Simulator.generateHtmlDiagnostics">
+<span class="sig-name descname"><span class="pre">generateHtmlDiagnostics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Optimica.Simulator.generateHtmlDiagnostics" title="Permalink to this definition">¶</a></dt>
+<dd><p>If set to <cite>true</cite>, html diagnostics will be generated.</p>
+<p>The html diagnostics will be generated in
+a directory whose name is equal to the model name,
+with <code class="docutils literal notranslate"><span class="pre">.</span></code> replaced by <code class="docutils literal notranslate"><span class="pre">_</span></code>, and the string
+<code class="docutils literal notranslate"><span class="pre">_html_diagnostics</span></code> appended.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For large models, this can generate huge files
+and increase translation time.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Optimica.Simulator.getOutputDirectory">
+<span class="sig-name descname"><span class="pre">getOutputDirectory</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Optimica.Simulator.getOutputDirectory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the name of the output directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The name of the output directory.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Optimica.Simulator.getPackagePath">
+<span class="sig-name descname"><span class="pre">getPackagePath</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Optimica.Simulator.getPackagePath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the path of the directory containing the Modelica package.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The path of the Modelica package directory.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Optimica.Simulator.getParameters">
+<span class="sig-name descname"><span class="pre">getParameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Optimica.Simulator.getParameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of parameters as (key, value)-tuples.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of parameters as (key, value)-tuples.</p>
+</dd>
+</dl>
+<dl>
+<dt>Usage: Type</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">buildingspy.simulate.Optimica</span> <span class="kn">import</span> <span class="n">Simulator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">=</span><span class="n">Simulator</span><span class="p">(</span><span class="s2">&quot;myPackage.myModel&quot;</span><span class="p">,</span> <span class="n">packagePath</span><span class="o">=</span><span class="s2">&quot;buildingspy/tests/MyModelicaLibrary&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">addParameters</span><span class="p">({</span><span class="s1">&#39;PID.k&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;valve.m_flow_nominal&#39;</span> <span class="p">:</span> <span class="mf">0.1</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">getParameters</span><span class="p">()</span>
+<span class="go">[(&#39;PID.k&#39;, 1.0), (&#39;valve.m_flow_nominal&#39;, 0.1)]</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Optimica.Simulator.setNumberOfIntervals">
+<span class="sig-name descname"><span class="pre">setNumberOfIntervals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Optimica.Simulator.setNumberOfIntervals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the number of output intervals.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> – The number of output intervals.</p>
+</dd>
+</dl>
+<p>The default is unspecified, which defaults to 500.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Optimica.Simulator.setOutputDirectory">
+<span class="sig-name descname"><span class="pre">setOutputDirectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outputDirectory</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Optimica.Simulator.setOutputDirectory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the name of the output directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>outputDirectory</strong> – The name of the output directory.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The name of the output directory.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Optimica.Simulator.setPackagePath">
+<span class="sig-name descname"><span class="pre">setPackagePath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">packagePath</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Optimica.Simulator.setPackagePath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the path specified by <code class="docutils literal notranslate"><span class="pre">packagePath</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>packagePath</strong> – The path where the Modelica <code class="docutils literal notranslate"><span class="pre">package.mo</span></code> file is located.</p>
+</dd>
+</dl>
+<p>It checks whether the file <code class="docutils literal notranslate"><span class="pre">package.mo</span></code> exists in the directory <code class="docutils literal notranslate"><span class="pre">packagePath</span></code>,
+and then sets the package path.
+Otherwise, a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> is raised.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Optimica.Simulator.setResultFile">
+<span class="sig-name descname"><span class="pre">setResultFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resultFile</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Optimica.Simulator.setResultFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the name of the result file (without extension).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>resultFile</strong> – The name of the result file (without extension).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Optimica.Simulator.setResultFilter">
+<span class="sig-name descname"><span class="pre">setResultFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filter</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Optimica.Simulator.setResultFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies a list of variables that should be stored in the result file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filter</strong> – A list of variables that should be stored in the result file.</p>
+</dd>
+</dl>
+<p>Usage: To list only the variables of the instance <cite>myStep.source</cite>, type</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">buildingspy.simulate.Optimica</span> <span class="kn">import</span> <span class="n">Simulator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">=</span><span class="n">Simulator</span><span class="p">(</span><span class="s2">&quot;myPackage.myModel&quot;</span><span class="p">,</span> <span class="n">packagePath</span><span class="o">=</span><span class="s2">&quot;buildingspy/tests/MyModelicaLibrary&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">setResultFilter</span><span class="p">([</span><span class="s2">&quot;myStep.source.*&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>To list all variables whose name ends in <code class="docutils literal notranslate"><span class="pre">y</span></code>, type</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">buildingspy.simulate.Optimica</span> <span class="kn">import</span> <span class="n">Simulator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">=</span><span class="n">Simulator</span><span class="p">(</span><span class="s2">&quot;myPackage.myModel&quot;</span><span class="p">,</span> <span class="n">packagePath</span><span class="o">=</span><span class="s2">&quot;buildingspy/tests/MyModelicaLibrary&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">setResultFilter</span><span class="p">([</span><span class="s2">&quot;*y&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Optimica.Simulator.setSolver">
+<span class="sig-name descname"><span class="pre">setSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Optimica.Simulator.setSolver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the solver.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>solver</strong> – The name of the solver.</p>
+</dd>
+</dl>
+<p>The default solver is <em>CVode</em>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Optimica.Simulator.setStartTime">
+<span class="sig-name descname"><span class="pre">setStartTime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Optimica.Simulator.setStartTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the start time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>t0</strong> – The start time of the simulation in seconds.</p>
+</dd>
+</dl>
+<p>The default start time is 0.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Optimica.Simulator.setStopTime">
+<span class="sig-name descname"><span class="pre">setStopTime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Optimica.Simulator.setStopTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the start time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>t1</strong> – The stop time of the simulation in seconds.</p>
+</dd>
+</dl>
+<p>The default stop time is 1.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Optimica.Simulator.setTimeOut">
+<span class="sig-name descname"><span class="pre">setTimeOut</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Optimica.Simulator.setTimeOut" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the time out in seconds after which the simulation will be killed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sec</strong> – The time out after which the simulation will be killed.</p>
+</dd>
+</dl>
+<p>The default value is <cite>None</cite>, which means that the simulation will
+never be killed. A value of <cite>None</cite>, <cite>0</cite> or negative will never time out.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Optimica.Simulator.setTolerance">
+<span class="sig-name descname"><span class="pre">setTolerance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eps</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Optimica.Simulator.setTolerance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the solver tolerance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>eps</strong> – The solver tolerance.</p>
+</dd>
+</dl>
+<p>The default solver tolerance is 1E-6.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Optimica.Simulator.simulate">
+<span class="sig-name descname"><span class="pre">simulate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Optimica.Simulator.simulate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translates and simulates the model.</p>
+<dl>
+<dt>Usage: Type</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">buildingspy.simulate.Optimica</span> <span class="kn">import</span> <span class="n">Simulator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">=</span><span class="n">Simulator</span><span class="p">(</span><span class="s2">&quot;MyModelicaLibrary.Examples.Constants&quot;</span><span class="p">,</span> <span class="n">packagePath</span><span class="o">=</span><span class="s2">&quot;buildingspy/tests/MyModelicaLibrary&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">simulate</span><span class="p">()</span> 
+</pre></div>
+</div>
+</dd>
+<dt>This method</dt><dd><ol class="arabic simple">
+<li><p>Deletes output files</p></li>
+<li><p>Writes a script to simulate the model.</p></li>
+<li><p>Starts the Modelica simulation environment.</p></li>
+<li><p>Translates and simulates the model.</p></li>
+<li><p>Closes the Modelica simulation environment.</p></li>
+</ol>
+</dd>
+</dl>
+<p>This method requires that the directory that contains the executable <code class="docutils literal notranslate"><span class="pre">jm_ipython.sh</span></code>
+is on the system <code class="docutils literal notranslate"><span class="pre">PATH</span></code> variable.
+If it is not found, the function raises an exception.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="buildingspy.simulate.Optimica.Simulator.translate">
+<span class="sig-name descname"><span class="pre">translate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#buildingspy.simulate.Optimica.Simulator.translate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translates the model to generate a Functional Mockup Unit.</p>
+<dl>
+<dt>Usage: Type</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">buildingspy.simulate.Optimica</span> <span class="kn">import</span> <span class="n">Simulator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">=</span><span class="n">Simulator</span><span class="p">(</span><span class="s2">&quot;MyModelicaLibrary.Examples.Constants&quot;</span><span class="p">,</span> <span class="n">packagePath</span><span class="o">=</span><span class="s2">&quot;buildingspy/tests/MyModelicaLibrary&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">translate</span><span class="p">()</span> 
+</pre></div>
+</div>
+</dd>
+<dt>This method</dt><dd><ol class="arabic simple">
+<li><p>Deletes output files</p></li>
+<li><p>Writes a script to simulate the model.</p></li>
+<li><p>Starts the Modelica simulation environment.</p></li>
+<li><p>Translates the model.</p></li>
+<li><p>Closes the Modelica simulation environment.</p></li>
+</ol>
+</dd>
+</dl>
+<p>This method requires that the directory that contains the executable <code class="docutils literal notranslate"><span class="pre">jm_ipython.sh</span></code>
+is on the system <code class="docutils literal notranslate"><span class="pre">PATH</span></code> variable.
+If it is not found, the function raises an exception.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="io.html" title="Reading output files, plotting results and reporting simulation output"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="install.html" title="Install and Uninstall BuildingsPy"
+             >previous</a> |</li>
+    <li><a href="http://simulationresearch.lbl.gov/modelica">Home</a> &gt;
+    <a href="http://simulationresearch.lbl.gov/modelica/buildingspy">BuildingsPy</a></li>
+    </br>
+<!--    
+        <li class="nav-item nav-item-0"><a href="index.html">BuildingsPy documentation</a> &#187;</li> -->
+
+        <li class="nav-item nav-item-this"><a href="">Running simulations</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2011-2024, The Regents of the University of California (through Lawrence Berkeley National Laboratory), subject to receipt of any required approvals from U.S. Department of Energy.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
+    </div>
+  </body>
+</html>
