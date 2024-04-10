@@ -1,0 +1,110 @@
+Metadata-Version: 2.1
+Name: priority-search-tree
+Version: 0.1.0
+Summary: Priority search tree data structure
+Home-page: https://github.com/yusinv/priority-search-tree
+Author: Valentin Yusin
+Author-email: yusinv@gmail.com
+License: LGPL-3.0-or-later
+Project-URL: Documentation, https://priority-search-tree.readthedocs.io/
+Project-URL: Changelog, https://priority-search-tree.readthedocs.io/en/latest/changelog.html
+Project-URL: Issue Tracker, https://github.com/yusinv/priority-search-tree/issues
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)
+Classifier: Operating System :: Unix
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Topic :: Software Development :: Libraries
+Requires-Python: >=3.8
+License-File: LICENSE
+License-File: AUTHORS.rst
+
+========
+Overview
+========
+
+
+
+The priority search tree (PST) is data structure (mutable mapping {**key**: **priority**}) with the following properties:
+
+* Keys are stored in binary search tree (red-black tree in this case).
+* Maintains max heap properties (can return **key** with max **priority** in constant time).
+* Ability to perform efficient 3-sided search (finds items with **key** in interval `[min_tree_key,max_tree_key]` and **priority** is grater or equal to `bottom_priority`).
+
+For example PST can store 2 dimensional points `P(X,Y)` using X coordinate as **key** and Y coordinate as **priority**.  Such PST can perform 3 sided search to find points with `X in [X_MIN,X_MAX]` and `Y >= Y_BOTTOM`.
+
+Installation
+============
+
+::
+
+    pip install priority-search-tree
+
+You can also install the in-development version with::
+
+    pip install https://github.com/yusinv/priority-search-tree/archive/develop.zip
+
+
+Documentation
+=============
+
+
+https://priority-search-tree.readthedocs.io/
+
+
+Development
+===========
+
+To run all the tests run::
+
+    tox
+
+
+Licence
+=======
+
+Free software: GNU Lesser General Public License v3 or later (LGPLv3+)
+
+
+Changelog
+=========
+
+0.0.0 (2024-03-04)
+------------------
+
+* First release on PyPI.
+
+
+0.0.1 (2024-03-24)
+------------------
+
+* Initial implementation.
+
+
+0.0.2 (2024-03-26)
+------------------
+
+* Added sorted_query method.
+* Added __len__ and __contains__ methods.
+* Added clear method.
+* Fixed issue with not unique heap keys
+
+
+0.1.0 (2024-04-08)
+------------------
+
+* Refactoring
+* Added PrioritySearchSet class
+* Added __iter__ method
