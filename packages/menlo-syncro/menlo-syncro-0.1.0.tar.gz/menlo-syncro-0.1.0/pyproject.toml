@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=64.0", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "menlo-syncro"
+authors = [
+    { name = "Florin Boariu", email = "florin.pt@rootshell.ro" },
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Operating System :: POSIX :: Linux",
+    "Development Status :: 2 - Pre-Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering"
+]
+dependencies = [
+    "pyserial",
+    "pyyaml",
+]
+dynamic = ["version"]
+description = "Unofficial Python framework for communication with the Menlo Syncro RRE laser synchronization unit"
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = []
+
+[project.urls]
+"Source Code" = "https://gitlab.com/codedump2/syncster"
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-cov",
+    "pytest-asyncio",
+    "caproto"
+]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -s"
+log_cli = true
+testpaths = [
+    "tests",
+]
+
+[tool.setuptools_scm]
+write_to = "src/syncster/_version.py"
+
+[project.scripts]
+#moo = "syncster.application:main"

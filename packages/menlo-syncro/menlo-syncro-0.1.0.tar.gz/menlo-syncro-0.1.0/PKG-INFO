@@ -1,0 +1,54 @@
+Metadata-Version: 2.1
+Name: menlo-syncro
+Version: 0.1.0
+Summary: Unofficial Python framework for communication with the Menlo Syncro RRE laser synchronization unit
+Author-email: Florin Boariu <florin.pt@rootshell.ro>
+Project-URL: Source Code, https://gitlab.com/codedump2/syncster
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: COPYING.md
+Requires-Dist: pyserial
+Requires-Dist: pyyaml
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: pytest-cov; extra == "test"
+Requires-Dist: pytest-asyncio; extra == "test"
+Requires-Dist: caproto; extra == "test"
+
+Synster -- Python API for Menlo Syncro box
+==========================================
+
+Dependencies
+------------
+
+Needs:
+  - python3-pyserial
+  - python3-
+
+Quick'n Dirty Snippets
+----------------------
+
+Try this:
+
+```
+>>> from rbp import Message, Device, ControlBytes, Errors, Commands
+>>> dev = Device("/dev/ttyUSB0")
+>>> m = Message(src=0x0, dest=0xff, cmd=Commands.ECHO, data='hi!')
+>>> r = dev.req(m)
+>>> print(r)
+```
+
+Test like this, if you already have a Menlo Syncro attached:
+```
+$ export SYNCSTER_PORT=/dev/ttyUSB0
+$ cd syncster/syncster
+$ pytest-3 -s rbp.py
+```
+
