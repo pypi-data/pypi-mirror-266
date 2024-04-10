@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "ocelot-desy"
+version = "24.03.0"
+authors = ["Ocelot Collab."]
+description = "Accelerator, radiation and x-ray optics simulation framework"
+license = "GNU General Public License v3.0"
+readme = "README.md"
+
+packages = [{ include = "ocelot"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+numpy = "^1.26"
+scipy = "^1"
+matplotlib = "^3"
+h5py = "^3.10"
+pandas = "^2.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
