@@ -1,0 +1,22 @@
+import pytest
+import sourmash_tst_utils as utils
+
+import sourmash
+
+
+def build_lca_db(runtmp):
+    # return the manifest from prot/all.zip
+    filename = utils.get_test_data('prot/all.zip')
+    idx = sourmash.load_file_as_index(filename)
+    mf = idx.manifest
+    assert len(mf) == 8
+    return mf
+    
+
+@pytest.fixture(params=[build_simple_manifest,])
+def manifest_obj(request, runtmp):
+    build_fn = request.param
+
+    return build_fn(runtmp)
+
+

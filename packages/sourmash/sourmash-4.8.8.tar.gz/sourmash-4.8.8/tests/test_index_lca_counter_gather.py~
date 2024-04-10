@@ -1,0 +1,67 @@
+import sourmash
+from sourmash.index import CounterGather
+
+def _consume_all(query_mh, counter, threshold_bp=0):
+    results = []
+    query_mh = query_mh.to_mutable()
+
+    last_intersect_size = None
+    while 1:
+        result = counter.peek(query_mh, threshold_bp)
+        if not result:
+            break
+
+        sr, intersect_mh = result
+        print(sr.signature.name, len(intersect_mh))
+        if last_intersect_size:
+            assert len(intersect_mh) <= last_intersect_size
+
+        last_intersect_size = len(intersect_mh)
+
+        counter.consume(intersect_mh)
+        query_mh.remove_many(intersect_mh.hashes)
+
+        results.append((sr, len(intersect_mh)))
+
+    return results
+
+
+def test_counter_gather_1():
+    # check a contrived set of non-overlapping gather results,
+    # generated via CounterGather
+    query_mh = sourmash.MinHash(n=0, ksize=31, scaled=1)
+    query_mh.add_many(range(0, 20))
+    query_ss = SourmashSignature(query_mh, name='query')
+
+    match_mh_1 = query_mh.copy_and_clear()
+    match_mh_1.add_many(range(0, 10))
+    match_ss_1 = SourmashSignature(match_mh_1, name='match1')
+
+    match_mh_2 = query_mh.copy_and_clear()
+    match_mh_2.add_many(range(10, 15))
+    match_ss_2 = SourmashSignature(match_mh_2, name='match2')
+
+    match_mh_3 = query_mh.copy_and_clear()
+    match_mh_3.add_many(range(15, 17))
+    match_ss_3 = SourmashSignature(match_mh_3, name='match3')
+
+    # load up the counter
+    counter = CounterGather(query_ss.minhash)
+    counter.add(match_ss_1)
+    counter.add(match_ss_2)
+    counter.add(match_ss_3)
+
+    results = _consume_all(query_ss.minhash, counter)
+
+    expected = (['match1', 10],
+                ['match2', 5],
+                ['match3', 2],)
+    assert len(results) == len(expected), results
+
+    for (sr, size), (exp_name, exp_size) in zip(results, expected):
+        sr_name = sr.signature.name.split()[0]
+
+        assert sr_name == exp_name
+        assert size == exp_size
+
+
