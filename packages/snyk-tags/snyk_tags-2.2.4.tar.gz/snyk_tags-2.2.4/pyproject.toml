@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "snyk-tags"
+version = "2.2.4"
+description = "CLI tool designed to manage tags and attributes at scale"
+authors = ["EricFernandezSnyk <eric.fernandez@snyk.io>"]
+license = "MIT"
+readme = "docs/README.md"
+repository = "https://github.com/snyk-labs/snyk-tags-tool"
+keywords =["snyk"]
+
+[tool.poetry.scripts]
+snyk-tags = "snyk_tags.tags:app"
+
+[tool.poetry.dependencies]
+python = ">=3.7,<4.0"
+typer = ">=0.5.0"
+httpx = "^0.24.0"
+colorama = "^0.4.5"
+shellingham = "^1.4.0"
+rich = ">=10.11.0"
+PyGithub = "^1.55"
+pysnyk = "^0.9.13"
+backoff = "^2.2.1"
+pyyaml = "^6.0.1"
+jsonschema = "^4"
+certifi = "2023.7.22"
+pygments = "2.15.0"
+requests = "2.31.0"
+cryptography = "42.0.4"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^6.0.0"
+pytest-httpx = "^0.22.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
