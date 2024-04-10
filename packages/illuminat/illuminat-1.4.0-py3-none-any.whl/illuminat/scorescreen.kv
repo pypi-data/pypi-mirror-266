@@ -1,0 +1,54 @@
+MDScreen:
+    name: "scorescreen"
+    MDFloatLayout:
+        Image:
+            source: app.imageformainmainaaa()
+
+            size_hint: 1,1
+            pos_hint : {"center_x": .5, "center_y": .5}
+
+        Image:
+            id: scoreimg
+            source: app.imageforhmoapicaqstart2hhgapreaaaaaavhjartopysagfghaaplelogineijgo()
+            pos_hint: {"center_x": .50, "center_y": .50}
+            size_hint: 1.75,1.75
+            opacity: .225
+
+        MDLabel:
+            id: finalscore
+            text: ""
+            pos_hint: {"center_y": .8}
+            color: rgba(52, 0, 231, 255)
+            font_size: "200sp"
+            font_name: app.bahnscriptreplace()
+            halign: "center"
+
+        MDLabel:
+            id: finalfeedback
+            text: ""
+            pos_hint: {"center_y": .2}
+            color: rgba(52, 0, 231, 255)
+            font_size: "10sp"
+            font_name: app.notoreplaceforpath()
+            halign: "center"
+
+        Button:
+            id: prevarBtn
+            text: "O B T A I N  S C O R E"
+            size_hint: .66, .065
+            background_color: 0, 0, 0, 0
+            pos_hint: {"center_x": .505, "center_y": .5}
+            color: rgba(52, 0, 231, 255)
+            font_name: "bahnschrift"
+            on_release:
+                app.getfeedback()
+                finalscore.text = str(app.finalScoree)
+                app.scorescreenclick() if prevarBtn.text == "NEXT LESSON" else None
+                prevarBtn.text = "NEXT LESSON"
+
+            canvas.before:
+                Color:
+                    rgb: rgba(52, 0, 231, 255)
+                Line:
+                    width: 1.2
+                    rounded_rectangle: self.x, self.y, self.width, self.height, 5, 5, 5, 5, 100
