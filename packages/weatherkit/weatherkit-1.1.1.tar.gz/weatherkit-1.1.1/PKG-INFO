@@ -1,0 +1,66 @@
+Metadata-Version: 2.1
+Name: weatherkit
+Version: 1.1.1
+Summary: Get weather details of any city or latitude and longitude of the location. without an API key.
+Home-page: https://github.com/suvanbanerjee/weatherkit
+Author: Suvan Banerjee
+Author-email: <banerjeesuvan@gmail.com>
+Keywords: python,weather,weatherkit,openweatherapi
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.5
+Description-Content-Type: text/markdown
+License-File: LICENSE
+License-File: AUTHORS.md
+Requires-Dist: geopy
+
+
+# WeatherKit ☀️
+## What is It?
+WeatherKit is a python pacakge that provides a simple interface to get weather data without any API key or any other credentials. It is a simple and easy to use package that provides the current weather data of any location in the world. It can get weather details from address, city, country, or latitude and longitude of the location.
+
+Currently it Provies the following weather details for current time and forecast for 7 days:
+- Temperature ☀️
+- Humidity 💧
+- Wind Speed 💨
+- Weather Code ⛅️
+- Precipitation ☔️
+
+## Where to get it?
+
+The easy way to get WeatherKit is from pip:
+
+```bash
+pip install weatherkit
+```
+
+## Dependencies
+[geopy](https://pypi.org/project/geopy/) - For getting latitude and longitude of the location if the location is given in address or city format.
+
+## Installing from source
+Download the source code by cloning the repository or by clicking [here](https://github.com/suvanbanerjee/weatherkit/archive/refs/heads/main.zip)
+
+```
+git clone https://github.com/suvanbanerjee/weatherkit.git
+cd weatherkit
+```
+Build the package using the following command:
+```
+python setup.py sdist bdist_wheel
+```
+Install the package using the following command:
+```
+pip install dist/*.whl
+```
+
+## Documentation
+Documentation is available at [WeatherKit Documentation](https://suvanbanerjee.github.io/WeatherKit/)
+
+## Contributing
+Contributions are welcome, and they are greatly appreciated! just fork the repository, make changes and create a pull request.
+
+## License
+WeatherKit is distributed under the MIT License. See the [LICENSE](https://github.com/suvanbanerjee/weatherkit/blob/main/LICENSE) file for more information.
