@@ -1,0 +1,33 @@
+Metadata-Version: 2.1
+Name: tenzir-platform
+Version: 0.2.0
+Summary: Tenzir CLI
+Author: Tenzir
+Author-email: engineering@tenzir.com
+Requires-Python: >=3.10,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: docopt (>=0.6.2,<0.7.0)
+Requires-Dist: pydantic-settings (>=2.2.1,<3.0.0)
+Requires-Dist: pyjwt[crypto] (>=2.8.0,<3.0.0)
+Requires-Dist: requests (>=2.31.0,<3.0.0)
+Requires-Dist: structlog (>=23.1.0,<24.0.0)
+Requires-Dist: types-docopt (>=0.6.11.4,<0.7.0.0)
+Description-Content-Type: text/markdown
+
+# Tenzir Platform CLI
+
+This CLI can be used to interact with the APIs exposed by the Tenzir Platform.
+
+See `docs.tenzir.com` for more detailed user-facing documentation.
+
+For interacting with private instances of the platform, set these
+environment variables to their respective local values:
+
+	TENZIR_PLATFORM_CLI_API_ENDPOINT
+	TENZIR_PLATFORM_CLI_OIDC_ISSUER_URL
+	TENZIR_PLATFORM_CLI_OIDC_CLIENT_ID
+	TENZIR_PLATFORM_CLI_OIDC_AUDIENCE
+
