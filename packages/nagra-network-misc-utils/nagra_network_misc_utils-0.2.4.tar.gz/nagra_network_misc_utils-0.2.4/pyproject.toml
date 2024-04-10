@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "nagra_network_misc_utils"
+version = "0.2.4"
+description = "Miscelleanous utilities for pipeline management"
+authors = ["David Gallay <david.gallay@nagra.com>"]
+readme = "README.md"
+packages = [{include = "nagra_network_misc_utils"}]
+
+# [tool.setuptools.dynamic]
+# version = {attr = "nagra_network_misc_utils.__version__"}
+
+[tool.poetry.scripts]
+pipeline_utils = "nagra_network_misc_utils.__main__:cli"
+
+[tool.poetry.dependencies]
+# https://stackoverflow.com/questions/65945929/poetry-how-to-publish-project-packages-targeting-multiple-python-versions
+python = ">=3.7.0,<4.0.0"
+python-gitlab = "^3.15.0"
+click = "^8.1.7"
+rich = "^13.6.0"
+colorama = "^0.4.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+# [tool.poetry.urls]
+# "Repository" = "https://gitlab.kudelski.com/network/miscellaneous/utils"
