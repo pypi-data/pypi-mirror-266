@@ -1,0 +1,27 @@
+experiment_name: walker_rl_experiment
+n_runs: 10
+n_envs: 6
+n_run_method: series
+seed: 0
+wandb:
+    project: experiments
+    # mode: disabled
+env_config:
+    env_id:
+        - dm_control/walker-stand-v0
+        - dm_control/walker-walk-v0
+        - dm_control/walker-run-v0
+wrapper_cls_lst:
+    - gymnasium.wrappers.FlattenObservation
+total_time_steps: 9000000
+transfer_steps:
+    - 3000000
+    - 6000000
+log: true
+save_model: true
+record_policy_videos: true
+video_freq: 100000
+video_length: 200
+defaults:
+    - rl_config
+    - _self_
