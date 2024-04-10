@@ -1,0 +1,68 @@
+[tool]
+[tool.poetry]
+name = "oxfel"
+version = "0.4.0"
+homepage = "https://github.com/st-walker/esmesim"
+description = "The official UNOFFICIAL model of the EuXFEL in OCELOT"
+authors = ["Stuart Walker <stuart.walker@desy.de>"]
+readme = "README.rst"
+license =  "MIT"
+
+classifiers=[
+    'Development Status :: 2 - Pre-Alpha',
+    'Intended Audience :: Developers',
+    'License :: OSI Approved :: MIT License',
+    'Natural Language :: English',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.9',
+]
+
+# Exclude lots of data files, and then only below include certain files explicitly.
+exclude = ["**/*.dat",
+	   "**/*.m",
+	   "**/*.txt",
+	   "oxfel/astra/*"]
+
+
+include = ["oxfel/accelerator/lattice/conversion-config.toml",
+	   "oxfel/accelerator/lattice/real-linear-config.toml",
+	   "oxfel/accelerator/lattice/real-matched-conf.toml",
+	   "oxfel/accelerator/lattice/tracking-matched-conf.toml",
+
+	   "oxfel/wakes/rf/wake_table_A1.dat",
+	   "oxfel/wakes/rf/wake_table_AH1.dat",
+	   "oxfel/wakes/rf/wake_table_TDS1.dat",
+
+ 	   "oxfel/processes.yaml",
+
+	   "oxfel/astra/euxfel-injector-100k.0320.001.gz",
+	   "oxfel/astra/euxfel-injector-10k.0320.001.gz",
+
+           "oxfel/accelerator/lattice/component_list_2023.07.01.xls"]
+
+
+[tool.poetry.dependencies]
+python = ">=3.10.11,<4.0"
+matplotlib = "^3.7.1"
+pandas = "^2.0.2"
+toml = "^0.10.2"
+numpy = ">=1.24.3,<2.0"
+latdraw = "^0.1.1a0"
+pyyaml = "^6.0.1"
+click = "^8.1.7"
+xlrd = "^2.0.1"
+ocelot-desy = "^24.3.0"
+
+
+
+[tool.poetry.scripts]
+oxfel = 'oxfel.cli:main'
+
+[tool.poetry.group.dev]
+optional = true
+[tool.poetry.group.dev.dependencies]
+poetry-bumpversion = "*"
+ipython = "*"
+
+[tool.poetry_bumpversion.file."oxfel/__init__.py"]
+# Duplicate the line above to add more files to be bumped
