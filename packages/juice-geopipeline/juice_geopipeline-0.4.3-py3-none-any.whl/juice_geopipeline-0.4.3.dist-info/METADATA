@@ -1,0 +1,179 @@
+Metadata-Version: 2.1
+Name: juice-geopipeline
+Version: 0.4.3
+Author: Marc Costa
+Author-email: marc.costa@ext.esa.int
+License: MIT
+Classifier: Programming Language :: Python :: 3.6
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: planetary-coverage
+Requires-Dist: python-dotenv
+Requires-Dist: pandas
+Requires-Dist: matplotlib
+Requires-Dist: pytest
+Requires-Dist: numpy
+Provides-Extra: dev
+Requires-Dist: autoflake ; extra == 'dev'
+Requires-Dist: black ; extra == 'dev'
+Requires-Dist: flake8 ; extra == 'dev'
+Requires-Dist: flake8-bugbear ; extra == 'dev'
+Requires-Dist: flake8-builtins ; extra == 'dev'
+Requires-Dist: flake8-comprehensions ; extra == 'dev'
+Requires-Dist: flake8-debugger ; extra == 'dev'
+Requires-Dist: flake8-eradicate ; extra == 'dev'
+Requires-Dist: isort ; extra == 'dev'
+Requires-Dist: mkdocs-material ; extra == 'dev'
+Requires-Dist: mypy ; extra == 'dev'
+Requires-Dist: pep8-naming ; extra == 'dev'
+Requires-Dist: pre-commit ; extra == 'dev'
+Requires-Dist: pymdown-extensions ; extra == 'dev'
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: pytest-github-actions-annotate-failures ; extra == 'dev'
+Requires-Dist: pytest-cov ; extra == 'dev'
+Requires-Dist: python-kacl ; extra == 'dev'
+Requires-Dist: pyupgrade ; extra == 'dev'
+Requires-Dist: tryceratops ; extra == 'dev'
+Requires-Dist: twine ; extra == 'dev'
+Requires-Dist: mkdocstrings >=0.18 ; (python_version >= "3.9") and extra == 'dev'
+
+# 🪐 geopipeline
+
+JUICE Science Operations Center Geometry Pipeline.
+
+geopipeline is a suite of routines and processes provides: geometrical 
+calculations, science models, science opportunity analysis, high-level 
+operational resources calculations, and ESA validation for external 
+development.
+
+geopipeline is based on heritage from Mars Express and CASSINI (CIRS) 
+routines developed by Nicolas Altobelli (ESAC/ESA).
+
+
+## 🛠️️ Prerequisites
+
+   * A computer based on a 64-bit Unix operating system: Linux or Mac
+   * Python 3.8 (or higher)
+
+
+## ⎆ Python Installation
+
+Install geopipeline with:
+
+```sh
+pip install [--upgrade] juice-geopipeline
+```
+
+You can install geopipeline locally from the repository:
+
+```sh
+git clone https://juigitlab.esac.esa.int/core-system/uplink/geopipeline
+cd geopipeline
+pip install .
+```
+
+## Using the Library
+
+After installing the library can be used with the Python Shell or with its CLI.
+
+
+### Python Shell
+
+A basic test of the library to search for Earth Occultations is provided.
+```
+from geopipeline import geometry_finder as gf
+from planetary_coverage import TourConfig
+logging.basicConfig(level=logging.INFO, format='%(message)s')
+
+tour = TourConfig(
+    mk='juice_crema_5_0b23_1',
+    spacecraft='JUICE', 
+    target='JUPITER',
+    download_kernels=True,
+    load_kernels=True
+)
+
+event = tour.get_event('All mission phases') 
+utc_start = str(event.start)
+utc_end = str(event.stop)
+
+occdict = gf.jovian_system_occultations(utc_start, utc_end, target='EARTH', system=['RINGS'], step=600, verbose=True)
+```
+
+### Command Line Interface
+
+The package has several CLI entry points, classified in General entry points and JUICE SOC internal entry points.
+
+General Entry Points:
+
+ - ``geopipeline-jovian-system-occultations``: Finds occultations for a given object (star, Earth, etc.) by the Jovian System.
+
+JUICE SOC internal:
+
+ - ``geopipeline-jupiter-tour-flip-zaxis-windows``: Augments the Mission Events file with Tour S/C +Z axis flips.
+
+The API signature can be obtained using the following with any of the entry points:
+
+```bash
+geopipeline-jovian-system-occultations -h
+```
+
+
+## JUICE SOC Configuration 
+
+The Configuration below is only required by certain routines used internally by the JUICE SOC.
+
+
+### Setup Environmental Variables 
+
+To setup the required environmental variables. Copy the environmental variables' setup file
+to your home directory and edit the paths with your favorite editor. For example:
+
+```bash
+cp <path_to_repo>/env.txt ~/.env
+vi ~/.env
+```
+The ``CONF_REPO`` variable, that points to your local [JUICE SOC configuration repository (conf)](https://juigitlab.esac.esa.int/core-system/uplink/conf) is mandatory.
+
+### 🧪 Python Tests
+
+To run the tests, first make sure the ``src`` path is in ``PYTHONPATH``. E.g.:
+
+```sh
+cd tests/geopipeline
+export PYTHONPATH=../../
+```
+
+Then run:
+
+```sh
+python3 -m unittest -v
+```
+
+
+## 📄 Documentation
+
+### Generate Documentation    
+
+Install the documentation generation:
+
+    pip3 install sphinx
+    pip3 install sphinx sphinx_rtd_theme
+
+To build the HTML documentation run from the repository 
+root directory:
+    
+    sphinx-apidoc -o docs src/geopipeline
+    cd geopipeline/docs
+    sphinx-build -b html source build
+    
+
+👉 _Note:_ The above commands demonstrate typical usage with a command-line prompt, such as that provided by the popular `bash` shell; your own prompt may appear differently and may vary depending on operating system, shell choice, and so forth.
+
+
+### Restructured Text Format
+
+This documentation is generated with Restructured Text Format (RST). 
+
+   * For full documentation visit [RST|Sphinx|Sublime|GitHub](https://sublime-and-sphinx-guide.readthedocs.io/en/latest/index.html) 
+   * For a cheatsheet visit [RST-cheatsheet](https://github.com/ralsina/rst-cheatsheet/blob/master/rst-cheatsheet.rst)
