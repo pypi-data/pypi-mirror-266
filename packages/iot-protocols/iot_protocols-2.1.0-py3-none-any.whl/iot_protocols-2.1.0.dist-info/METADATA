@@ -1,0 +1,142 @@
+Metadata-Version: 2.1
+Name: iot-protocols
+Version: 2.1.0
+Summary: Generic IIoT protocols package
+Author-email: Adrien Delhaye <adrien.delhaye@memoco.eu>
+Project-URL: Homepage, https://pypi.org/manage/project/iot-protocols
+Keywords: python,iiot,protocols
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX :: Linux
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pyserial >=3.5
+Requires-Dist: pymodbus ==2.5.3
+Requires-Dist: python-snap7 ==1.3
+Requires-Dist: multipledispatch ==1.0.0
+
+---
+author: Delhaye Adrien
+year: 2023
+---
+
+# Iot Protocols
+
+This git contains easy to use module for communication using various IIoT protocols.
+Each subdirectory is a package that can be used independently and downloaded from PyPi.
+
+## Install
+
+```bash
+pip install <name-of-package>
+```
+
+## Upload on Twine
+
+### Upload pyporject.toml
+
+> **More detailled informations on** <https://packaging.python.org/en/latest/tutorials/packaging-projects/>
+
+Open the pyproject.toml file and update at least the _version_ field with your current verion following the template :
+
+```bash
+For alpha release : <version>.<subversion>.<feature>.<fix>-a<i>
+For beta release : <version>.<subversion>.<feature>.<fix>-b<i>
+For relase candidate release : <version>.<subversion>.<feature>.<fix>-rc<i>
+For final release : <version>.<subversion>.<feature>.<fix>
+```
+
+With the following :
+
+- \<version\> defines the core version of the application. This number increase when drastic changes havec been made.
+- \<subversion> defines important changes like addition of modules or large modification but that doesn't change the global structure of the package.
+- \<feature> defines an addition of any feature.
+- \<fix> increase when a fix has been made.
+
+### Save your changes
+
+Save everything.
+
+Test everyting.
+
+Push the files on the gitlab repository with version associated TAG.
+
+### Build the package
+
+Ensure you have upgraded pip:
+
+```bash
+py -m pip install --upgrade pip
+```
+
+Then from the root directory of your module, where the **pyproject.toml** file belongs, execute :
+
+```bash
+py -m build
+```
+
+This will generate your package tar.gz and wheel files into the **build** folder.
+
+### Upload the dist
+
+First ensure you have twine updated:
+
+```bash
+py -m pip install --upgrade twine
+```
+
+Get your username and token from PyPi
+
+Use the following command to upload and gives your username and token to authentify, with username as '\_\_token\_\_':
+
+```bashpy -m twine upload dist/<package-file-to-update>
+```
+
+You can also, if the build package doesn't exists yet on the PyPi registry use :
+
+```bash
+py -m twine upload dist/*
+```
+
+## How to use
+
+### Installation
+
+```shell
+pip install iot-protocols
+```
+
+### Modbus Client
+
+```python
+from iot_protocols.modbus import ModbusClient
+from iot_protocols.modbus import requests
+
+client = ModbusClient.with_serial_client(port: "/dev/ttyO3", method: "rtu", baudrate: 9600, parity: "N", stopbits: 1, bytesize: 8, timeout: int = 5)
+
+request = requests.ReadHoldingRegister(address=30000, unit=1, count=6, encoding="str")
+result = client.request(request)
+```
+
+### IEC62056 Client
+
+```python
+from iot_protocols.iec62056 import SerialClient
+
+client = SerialClient(
+    baudrate=19200,
+    port="COM3",
+    transport="serial",
+    parity="E",
+    bytesize=7,
+    stopbits=1
+)
+result = client.request(device_addres="xxxxx", table=0 timeout=15)
+# If you just want to read the client's identification message :
+identification = client.read_tariff_identification(device_addres="xxxxx", ack_stop=True)
+```
+
+### Snap-7 Client
