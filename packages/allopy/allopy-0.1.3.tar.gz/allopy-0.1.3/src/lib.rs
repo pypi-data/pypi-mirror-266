@@ -1,0 +1,272 @@
+use alloy_dyn_abi::{DynSolType, DynSolValue};
+use alloy_primitives::{Address, FixedBytes};
+use pyo3::exceptions::PyTypeError;
+use pyo3::prelude::*;
+use pyo3::types::{PyBytes, PyList, PyTuple};
+use pyo3::Bound;
+use std::str::FromStr;
+
+fn extract(params: Bound<PyAny>, typ: &DynSolType) -> PyResult<DynSolValue> {
+    match typ {
+        DynSolType::String => params.extract().map(DynSolValue::String),
+        DynSolType::Bool => params.extract().map(DynSolValue::Bool),
+        DynSolType::Address => {
+            let s: &str = params.extract()?;
+            Address::from_str(s)
+                .map(DynSolValue::Address)
+                .map_err(|_| PyTypeError::new_err("Could not parse address"))
+        }
+        DynSolType::Int(size) => {
+            let x: i128 = params.extract()?;
+            x.try_into()
+                .map(|v| DynSolValue::Int(v, *size))
+                .map_err(|_| PyTypeError::new_err("Could not parse integer"))
+        }
+        DynSolType::Uint(size) => {
+            let x: u128 = params.extract()?;
+            x.try_into()
+                .map(|v| DynSolValue::Uint(v, *size))
+                .map_err(|_| PyTypeError::new_err("Could not parse integer"))
+        }
+        DynSolType::Bytes => {
+            let as_bytes: PyResult<Vec<u8>> = params.extract();
+            if let Ok(as_bytes) = as_bytes {
+                Ok(DynSolValue::Bytes(as_bytes))
+            } else {
+                let as_str: String = params.extract()?;
+                let Some(as_str) = as_str.strip_prefix("0x") else {
+                    return Err(PyTypeError::new_err("Got non-hex str"));
+                };
+
+                hex::decode(as_str)
+                    .map(DynSolValue::Bytes)
+                    .map_err(|_| PyTypeError::new_err("Got non-hex str"))
+            }
+        }
+        DynSolType::FixedBytes(size) => {
+            let b: Vec<u8> = params.extract()?;
+            if b.len() != *size {
+                return Err(PyTypeError::new_err("Got wrong number of bytes"));
+            }
+            Ok(DynSolValue::FixedBytes(
+                FixedBytes::try_from(b.as_slice())?,
+                *size,
+            ))
+        }
+        DynSolType::Tuple(types) => {
+            let t = params.downcast::<PyTuple>()?;
+            if t.len() != types.len() {
+                return Err(PyTypeError::new_err("Got wrong number of items for tuple"));
+            }
+
+            t.into_iter()
+                .zip(types.into_iter())
+                .map(|(item, item_type)| extract(item, item_type))
+                .collect::<Result<Vec<DynSolValue>, PyErr>>()
+                .map(DynSolValue::Tuple)
+        }
+        DynSolType::Array(list_type) => {
+            let l = params.downcast::<PyList>()?;
+
+            l.into_iter()
+                .map(|item| extract(item, list_type))
+                .collect::<Result<Vec<DynSolValue>, PyErr>>()
+                .map(DynSolValue::Array)
+        }
+        DynSolType::FixedArray(list_type, size) => {
+            let l = params.downcast::<PyList>()?;
+
+            if l.len() != *size {
+                return Err(PyTypeError::new_err(
+                    "Got wrong number of items for fixed array",
+                ));
+            }
+
+            l.into_iter()
+                .map(|item| extract(item, list_type))
+                .collect::<Result<Vec<DynSolValue>, PyErr>>()
+                .map(DynSolValue::FixedArray)
+        }
+        DynSolType::Function => Err(PyTypeError::new_err("Could not encode solidity function")),
+    }
+}
+
+fn encode_to_vec(params: Bound<PyAny>, signature: &str) -> PyResult<Vec<u8>> {
+    let typ: DynSolType = signature
+        .parse()
+        .map_err(|_| PyTypeError::new_err(format!("Could not parse signature {}", signature)))?;
+
+    let value = extract(params, &typ)?;
+    Ok(value.abi_encode())
+}
+
+#[pyfunction]
+fn encode(params: Bound<PyAny>, signature: &str) -> PyResult<Py<PyBytes>> {
+    let encoded = encode_to_vec(params, signature)?;
+    Python::with_gil(|py| Ok(PyBytes::new_bound(py, &encoded).into()))
+}
+
+#[pymodule]
+fn allopy(_py: Python, m: &PyModule) -> PyResult<()> {
+    m.add_function(wrap_pyfunction!(encode, m)?)?;
+    Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn encode_string() {
+        pyo3::prepare_freethreaded_python();
+
+        Python::with_gil(|py| {
+            let x = "asd".to_object(py).bind(py).clone();
+            let encoded = encode_to_vec(x.as_ref().clone(), "string").unwrap();
+            assert_eq!(encoded, b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00 \x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x03asd\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00");
+        })
+    }
+
+    #[test]
+    fn encode_bool() {
+        pyo3::prepare_freethreaded_python();
+
+        Python::with_gil(|py| {
+            let x = true.to_object(py).bind(py).clone();
+            let encoded = encode_to_vec(x.as_ref().clone(), "bool").unwrap();
+            assert_eq!(encoded, b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01");
+        })
+    }
+
+    #[test]
+    fn encode_address() {
+        pyo3::prepare_freethreaded_python();
+
+        Python::with_gil(|py| {
+            let usdt = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
+            let x = usdt.to_object(py).bind(py).clone();
+            let encoded = encode_to_vec(x.as_ref().clone(), "address").unwrap();
+            assert_eq!(encoded, b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xda\xc1\x7f\x95\x8d.\xe5#\xa2 b\x06\x99E\x97\xc1=\x83\x1e\xc7");
+        })
+    }
+
+    #[test]
+    fn encode_int() {
+        pyo3::prepare_freethreaded_python();
+
+        Python::with_gil(|py| {
+            let big: i128 = 1000 * i128::pow(10, 18);
+            let x = big.to_object(py).bind(py).clone();
+            let encoded = encode_to_vec(x.as_ref().clone(), "int256").unwrap();
+            assert_eq!(encoded, b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0065\xc9\xad\xc5\xde\xa0\x00\x00");
+
+            let x = (-1).to_object(py).bind(py).clone();
+            let encoded = encode_to_vec(x.as_ref().clone(), "int8").unwrap();
+            assert_eq!(encoded, b"\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff");
+        })
+    }
+
+    #[test]
+    fn encode_uint() {
+        pyo3::prepare_freethreaded_python();
+
+        Python::with_gil(|py| {
+            let x = (92834578923475 as u128).to_object(py).bind(py).clone();
+            let encoded = encode_to_vec(x.as_ref().clone(), "uint64").unwrap();
+            assert_eq!(encoded, b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00Tn\xbc\x19\x7f\xd3");
+        })
+    }
+
+    #[test]
+    fn encode_bytes() {
+        pyo3::prepare_freethreaded_python();
+
+        Python::with_gil(|py| {
+            let x = b"\x12\x34".to_object(py).bind(py).clone();
+            let encoded = encode_to_vec(x.as_ref().clone(), "bytes").unwrap();
+            assert_eq!(encoded, b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00 \x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x124\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00");
+
+            let x = "0x1234".to_object(py).bind(py).clone();
+            let encoded = encode_to_vec(x.as_ref().clone(), "bytes").unwrap();
+            assert_eq!(encoded, b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00 \x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x124\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00");
+        })
+    }
+
+    #[test]
+    fn encode_fixed_bytes() {
+        pyo3::prepare_freethreaded_python();
+
+        Python::with_gil(|py| {
+            let b32 = b"\x12\x34\x56\x78\x90\x12\x34\x56\x78\x90\x12\x34\x56\x78\x90\x12\x34\x56\x78\x90\x12\x34\x56\x78\x90\x12\x34\x56\x78\x90\x12\x34";
+            let x = b32.to_object(py).bind(py).clone();
+
+            let encoded = encode_to_vec(x, "bytes32").unwrap();
+            assert_eq!(
+                encoded,
+                b"\x124Vx\x90\x124Vx\x90\x124Vx\x90\x124Vx\x90\x124Vx\x90\x124Vx\x90\x124"
+            );
+        })
+    }
+
+    #[test]
+    fn encode_tuple() {
+        pyo3::prepare_freethreaded_python();
+
+        Python::with_gil(|py| {
+            let x = (1, 2).to_object(py).bind(py).clone();
+            let encoded = encode_to_vec(x, "(int256,int256)").unwrap();
+            assert_eq!(
+                encoded,
+                b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02"
+            );
+        })
+    }
+
+    #[test]
+    fn encode_array() {
+        pyo3::prepare_freethreaded_python();
+
+        Python::with_gil(|py| {
+            let x = vec![1, 2, 3].to_object(py).bind(py).clone();
+            let encoded = encode_to_vec(x, "int256[]").unwrap();
+            assert_eq!(
+                encoded,
+                b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00 \x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x03"
+            );
+        })
+    }
+
+    #[test]
+    fn encode_fixed_array() {
+        pyo3::prepare_freethreaded_python();
+
+        Python::with_gil(|py| {
+            let x = vec![1, 2, 3].to_object(py).bind(py).clone();
+            let encoded = encode_to_vec(x, "int256[3]").unwrap();
+            assert_eq!(
+                encoded,
+                b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x03"
+            );
+        })
+    }
+
+    #[test]
+    fn encode_nested() {
+        pyo3::prepare_freethreaded_python();
+
+        Python::with_gil(|py| {
+            let usdt = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
+            let obj = (
+                usdt,
+                vec![(1, b"\x12"), (2, b"\x34"), (3, b"\x56")],
+                (true, false),
+            );
+            let x = obj.to_object(py).bind(py).clone();
+            let encoded = encode_to_vec(x, "(address,(uint256,bytes)[],(bool,bool))").unwrap();
+            assert_eq!(
+                encoded,
+                b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00 \x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xda\xc1\x7f\x95\x8d.\xe5#\xa2 b\x06\x99E\x97\xc1=\x83\x1e\xc7\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00`\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xe0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01`\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x12\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x014\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01V\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+            );
+        })
+    }
+}
