@@ -1,0 +1,26 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="unitracc">
+
+  <include package="Products.GenericSetup" file="meta.zcml" />
+
+  <genericsetup:registerProfile
+      name="uninstall"
+      title="Remove visaplan.plone.tools profile"
+      directory="profiles/uninstall"
+      description="Remove support for conditional metadata updates (metadata_version column)
+                   Since you might want to switch over to a successor package
+                   (e.g. collective.metadataversion),
+                   we don't delete our catalog metadata column 'metadata_version';
+                   you can do so easily yourself.
+                   "
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <utility
+      factory=".setuphandlers.Hidden"
+      name="visaplan.plone.tools"
+      />
+
+</configure>
