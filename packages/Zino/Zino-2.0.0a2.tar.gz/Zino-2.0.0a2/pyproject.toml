@@ -1,0 +1,115 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Zino"
+description = "Robust network management system for large backbone networks"
+authors = [{name="Sikt - Kunnskapssektorens Tjenesteleverandør", email="kontakt@sikt.no"}]
+readme = "README.md"
+requires-python = ">=3.9"
+license = {file = "LICENSE"}
+classifiers = [
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: System :: Networking :: Monitoring",
+]
+dependencies = [
+    "apscheduler",
+    "pydantic>=2",
+    "pysnmplib",
+    "pyasn1<0.5.0",
+]
+dynamic = ["version"]
+
+[project.urls]
+"Homepage" = "https://github.com/Uninett/zino"
+
+[project.scripts]
+zino = "zino.zino:main"
+
+[project.optional-dependencies]
+docs = ["sphinx>=2.2.0"]
+dev = [
+    "black",
+    "build",
+    "coverage",
+    "ipython",
+    "isort",
+    "pre-commit",
+    "pytest",
+    "pytest-asyncio<0.22.0",
+    "pytest-timeout",
+    "retry",
+    "ruff",
+    "snmpsim",
+    "tox<4",
+    "twine",
+]
+
+[tool.setuptools]
+include-package-data = true
+zip-safe = false
+platforms = ["any"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+exclude = ["tests*"]
+
+[tool.setuptools.package-data]
+"*" = [
+    "*.rst",
+]
+
+[tool.setuptools.exclude-package-data]
+"*" = ["tests/"]
+
+[tool.setuptools_scm]
+write_to = "src/zino/version.py"
+
+[tool.black]
+line-length = 120
+exclude = '''
+(
+  /(
+      \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.hg
+    | \.mypy_cache
+    | \.nox
+    | \.tox
+    | \.venv
+    | \.ve
+    | _build
+    | buck-out
+    | build
+    | dist
+  )
+)
+'''
+
+[tool.ruff]
+line-length = 120
+target-version = "py39"
+exclude = [
+    "mibdumps"
+]
+
+[tool.isort]
+profile = "black"
+src_paths = ["src", "tests"]
+
+[tool.coverage.report]
+# Regexes for lines to exclude from consideration
+exclude_also = [
+    # Don't need coverage for ellipsis used for type annotations
+    "\\.\\.\\.",
+    # Don't complain about lines excluded unless type checking
+    "if TYPE_CHECKING:",
+]
