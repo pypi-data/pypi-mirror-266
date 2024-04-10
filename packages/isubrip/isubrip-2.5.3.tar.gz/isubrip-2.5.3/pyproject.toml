@@ -1,0 +1,140 @@
+[tool.poetry]
+name = "isubrip"
+version = "2.5.3"
+description = "A Python package for scraping and downloading subtitles from AppleTV / iTunes movie pages."
+license = "MIT"
+authors = ["Michael Yochpaz"]
+readme = "README.md"
+homepage = "https://github.com/MichaelYochpaz/iSubRip"
+repository = "https://github.com/MichaelYochpaz/iSubRip"
+keywords = [
+    "iTunes",
+    "AppleTV",
+    "movies",
+    "subtitles",
+    "scrape",
+    "scraper",
+    "download",
+    "m3u8"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: Developers",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: Utilities",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+packages = [
+    { include = "isubrip" },
+]
+include = [
+    "isubrip/resources", "README.md", "LICENSE"
+]
+
+[tool.mypy]
+disallow_untyped_defs = true
+explicit_package_bases = true
+ignore_missing_imports = true
+python_version = "3.8"
+warn_return_any = true
+
+[tool.poetry.scripts]
+isubrip = "isubrip.__main__:main"
+
+[tool.poetry.urls]
+"Bug Reports" = "https://github.com/MichaelYochpaz/iSubRip/issues"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+requests = "^2.31.0"
+httpx = {extras = ["http2"], version = "^0.27.0"}
+m3u8 = "^4.1.0"
+mergedeep = "^1.3.4"
+pydantic = "^2.6.4"
+tomli = "^2.0.1"
+
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.9.0"
+ruff = "^0.3.5"
+types-requests = "^2.31.0.20240406"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry_bumpversion.file."isubrip/constants.py"]
+search = 'PACKAGE_VERSION = "{current_version}"'
+replace = 'PACKAGE_VERSION = "{new_version}"'
+
+[tool.poetry_bumpversion.file."README.md"]
+search = 'Latest version: {current_version}'
+replace = 'Latest version: {new_version}'
+
+
+[tool.ruff]
+line-length = 120
+target-version = "py38"
+
+[tool.ruff.lint]
+select = [
+    "ARG",
+    "ASYNC",
+    "B",
+    "C4",
+    "COM",
+    "E",
+    "F",
+    "FA",
+    "I",
+    "INP",
+    "ISC",
+    "N",
+    "PIE",
+    "PGH",
+    "PT",
+    "PTH",
+    "Q",
+    "RSE",
+    "RET",
+    "RUF",
+    "S",
+    "SIM",
+    "SLF",
+    "T20",
+    "TCH",
+    "TID",
+    "TRY",
+    "UP",
+]
+ignore = [
+    "C416",
+    "Q000",
+    "RUF010",
+    "RUF012",
+    "SIM108",
+    "TD002",
+    "TD003",
+    "TRY003",
+]
+unfixable = ["ARG"]
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.lint.flake8-quotes]
+docstring-quotes = "double"
+
+[tool.ruff.lint.isort]
+force-sort-within-sections = true
+
+[tool.ruff.lint.pyupgrade]
+keep-runtime-typing = true

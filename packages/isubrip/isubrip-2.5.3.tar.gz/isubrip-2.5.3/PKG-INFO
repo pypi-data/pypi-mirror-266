@@ -1,0 +1,109 @@
+Metadata-Version: 2.1
+Name: isubrip
+Version: 2.5.3
+Summary: A Python package for scraping and downloading subtitles from AppleTV / iTunes movie pages.
+Home-page: https://github.com/MichaelYochpaz/iSubRip
+License: MIT
+Keywords: iTunes,AppleTV,movies,subtitles,scrape,scraper,download,m3u8
+Author: Michael Yochpaz
+Requires-Python: >=3.8,<4.0
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Utilities
+Requires-Dist: httpx[http2] (>=0.27.0,<0.28.0)
+Requires-Dist: m3u8 (>=4.1.0,<5.0.0)
+Requires-Dist: mergedeep (>=1.3.4,<2.0.0)
+Requires-Dist: pydantic (>=2.6.4,<3.0.0)
+Requires-Dist: requests (>=2.31.0,<3.0.0)
+Requires-Dist: tomli (>=2.0.1,<3.0.0)
+Project-URL: Bug Reports, https://github.com/MichaelYochpaz/iSubRip/issues
+Project-URL: Repository, https://github.com/MichaelYochpaz/iSubRip
+Description-Content-Type: text/markdown
+
+# iSubRip
+A Python package for scraping and downloading subtitles from AppleTV / iTunes movie pages.  
+Latest version: 2.5.3 ([changelog](https://github.com/MichaelYochpaz/iSubRip/blob/main/CHANGELOG.md))  
+
+<br/>
+  
+[![PyPI - Version](https://img.shields.io/pypi/v/isubrip)](https://python.org/pypi/isubrip)
+[![PyPI - Monthly Downloads](https://pepy.tech/badge/isubrip/month)](https://python.org/pypi/isubrip)
+[![PyPI - Total Downloads](https://pepy.tech/badge/isubrip)](https://python.org/pypi/isubrip)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/isubrip)](https://python.org/pypi/isubrip)
+[![GitHub - License](https://img.shields.io/github/license/MichaelYochpaz/iSubRip)](https://github.com/MichaelYochpaz/iSubRip/blob/main/LICENSE)
+[![GitHub - issues](https://img.shields.io/github/issues/MichaelYochpaz/iSubRip)](https://github.com/MichaelYochpaz/iSubRip/issues)
+[![GitHub - Repo stars](https://img.shields.io/github/stars/MichaelYochpaz/iSubRip.svg?color=yellow)](https://github.com/MichaelYochpaz/iSubRip)
+
+<p align="center">
+  <a href="#"><img src="https://github-production-user-asset-6210df.s3.amazonaws.com/8832013/290989935-e6a17af6-1ebb-456d-a024-dc6e84dd64b2.gif" width="800"></a>
+</p>
+
+
+##  Requirements
+* Python 3.8+
+
+##  Installation
+### PyPI (Recommended)
+```
+python3 -m pip install isubrip
+```
+
+### Git Source Code
+```
+python3 -m pip install -e git+https://github.com/MichaelYochpaz/iSubRip.git#egg=isubrip
+```
+
+## Usage
+```
+isubrip <iTunes movie URL> [iTunes movie URL...]
+```  
+
+## Configuration
+A [TOML](https://toml.io) config file can be created and used to configure different options and features.
+A config file will be looked for in one of the following paths (according to OS): 
+
+**Windows**: `%USERPROFILE%\.isubrip\config.toml`  
+**Linux / macOS**: `$HOME/.isubrip/config.toml`  
+
+### Examples:
+**Windows**: `C:\Users\Michael\.isubrip\config.toml`  
+**Linux**: `/home/Michael/.isubrip/config.toml`  
+**macOS**: `/Users/Michael/.isubrip/config.toml`  
+
+---
+
+### Example Config:
+```toml
+[downloads]
+folder = "C:\\Subtitles\\iTunes"
+languages = ["en-US", "fr-FR", "he"]
+zip = false
+
+[subtitles]
+convert-to-srt = true
+fix-rtl = true
+
+[subtitles.webvtt]
+subrip-alignment-conversion = true
+```
+
+An example config with details and explanations for all available settings can be found [here](https://github.com/MichaelYochpaz/iSubRip/blob/main/config.toml).
+
+## Logs
+A log file, containing debug information, will be created for each run on one of the following paths (according to OS):
+
+**Windows**: `%USERPROFILE%\.isubrip\logs`  
+**Linux / macOS**: `$HOME/.isubrip/logs`  
+
+Log rotation (deletion of old files, once a certain amount of files is reached) can be configured in the config file using the `general.log-rotation-size` setting. The default log rotation value is `15`.
