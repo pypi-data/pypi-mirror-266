@@ -1,0 +1,1 @@
+from .storm import Storm__all__ = ['Storm', 'write_storm_article']async def write_storm_article(*args, **kwargs):    storm_instance = Storm(*args, **kwargs)  # Initialize a Storm instance    return await storm_instance.write_storm_article()  # Call the write_storm_article method
