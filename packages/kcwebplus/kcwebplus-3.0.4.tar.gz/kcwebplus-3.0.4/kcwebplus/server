@@ -1,0 +1,35 @@
+#!/usr/bin/env python3.8kcw_plus
+from kcweb.common import *
+import re,sys,os
+from gunicorn.app.wsgiapp import run
+import getopt
+if __name__ == '__main__':
+    opts, args = getopt.getopt(sys.argv[1:], "h", ["h=","p=","w="])
+    zxtype=None
+    host='0.0.0.0'
+    port='39001'
+    timeout="600" #超时时间
+    w=1
+    for v in args:
+        if v=='start':
+            zxtype=v
+        elif v=='stop':
+            zxtype=v
+        elif v=='restart':
+            zxtype=v
+    for data in opts:
+        if '--h' == data[0]:
+            host=data[1]
+        elif '--p' == data[0]:
+            port=data[1]
+        elif '--w' == data[0]:
+            w=data[1]
+    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$','',sys.argv[0])
+    if zxtype == 'stop': #停止 
+        os.system("pkill -9 python3.8kcw_pl")
+    else:#启动
+        try:
+            Queues.delwhere("code in (2,3)")
+        except:pass
+        sys.argv=[sys.argv[0], '-w', str(w), '-b', host+':'+port,'-t',timeout, 'server:app']
+        sys.exit(run())
