@@ -1,0 +1,37 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="imioweb.core">
+
+  <!-- Set overrides folder for Just-a-Bunch-Of-Templates product -->
+  <include package="z3c.jbot" file="meta.zcml" />
+  <browser:jbot
+      directory="overrides"
+      layer="imioweb.core.interfaces.IImiowebCoreLayer"
+      />
+
+  <!-- Publish static files -->
+  <plone:static
+      name="imioweb.core"
+      type="plone"
+      directory="static"
+      />
+
+  <browser:page
+      name="faceted-map-geojson-popup"
+      for="*"
+      class=".view.FacetedGeoJSONPopup"
+      permission="zope2.View"
+      layer="imioweb.core.interfaces.IImiowebCoreLayer"
+      />
+
+  <browser:page
+      for="*"
+      name="contact-info"
+      class=".contact_info.ContactForm"
+      permission="zope.Public"
+      layer="imioweb.core.interfaces.IImiowebCoreLayer"
+      />
+
+</configure>
