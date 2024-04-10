@@ -1,0 +1,151 @@
+[
+    {
+        "task": "sequence\n         call | RawCode(\"\\n@inline\\ndef make_identity(x..., z) =\\n    hash128({x...}, x..., u) and\\n    hash_value_uint128_convert(u, z)\\n    from u\\n\\n@inline\\ndef pyrel_default[F, c](k..., v) =\\n    F(k..., v) or (not F(k..., _) and v = c)\\n\\nbound __resource\\n\")\n",
+        "name": "pyrel_base",
+        "code": null,
+        "err": "None",
+        "mech": {
+            "id": 1,
+            "type": "sequence",
+            "items": [
+                {
+                    "id": 2,
+                    "type": "compute",
+                    "op": "RawCode",
+                    "args": [],
+                    "ret": "\"\\n@inline\\ndef make_identity(x..., z) =\\n    hash128({x...}, x..., u) and\\n    hash_value_uint128_convert(u, z)\\n    from u\\n\\n@inline\\ndef pyrel_default[F, c](k..., v) =\\n    F(k..., v) or (not F(k..., _) and v = c)\\n\\nbound __resource\\n\""
+                }
+            ]
+        }
+    },
+    {
+        "task": "query\n          get | v | Asthmatic\n         call | union\n                 call | query\n                          get | child | Child age(age)\n                         call | <(age 7)\n                         bind | t(child)\n\n                 call | query\n                          get | senior | Senior\n                         bind | t(senior)\n\n\n         bind | v | ElevatedRisk\n",
+        "name": "rule0",
+        "code": null,
+        "err": "None",
+        "mech": {
+            "id": 5,
+            "type": "sequence",
+            "items": [
+                {
+                    "id": 6,
+                    "type": "get",
+                    "entity": {
+                        "id": 1161,
+                        "name": null
+                    },
+                    "types": [
+                        "Asthmatic"
+                    ],
+                    "props": {}
+                },
+                {
+                    "id": 7,
+                    "type": "union",
+                    "items": [
+                        {
+                            "id": 8,
+                            "type": "sequence",
+                            "items": [
+                                {
+                                    "id": 9,
+                                    "type": "get",
+                                    "entity": {
+                                        "id": 1152,
+                                        "name": "child"
+                                    },
+                                    "types": [
+                                        "Child"
+                                    ],
+                                    "props": {}
+                                },
+                                {
+                                    "id": 10,
+                                    "type": "get",
+                                    "entity": {
+                                        "id": 1152,
+                                        "name": "child"
+                                    },
+                                    "types": [],
+                                    "props": {
+                                        "age": {
+                                            "id": 1155,
+                                            "name": "age"
+                                        }
+                                    }
+                                },
+                                {
+                                    "id": 11,
+                                    "type": "filter",
+                                    "op": "<",
+                                    "args": [
+                                        {
+                                            "id": 1155,
+                                            "name": "age"
+                                        },
+                                        "7"
+                                    ]
+                                },
+                                {
+                                    "id": 12,
+                                    "type": "return",
+                                    "values": [
+                                        {
+                                            "id": 1152,
+                                            "name": "child"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": 13,
+                            "type": "sequence",
+                            "items": [
+                                {
+                                    "id": 14,
+                                    "type": "get",
+                                    "entity": {
+                                        "id": 1166,
+                                        "name": "senior"
+                                    },
+                                    "types": [
+                                        "Senior"
+                                    ],
+                                    "props": {}
+                                },
+                                {
+                                    "id": 15,
+                                    "type": "return",
+                                    "values": [
+                                        {
+                                            "id": 1166,
+                                            "name": "senior"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "result": {
+                        "id": 1161,
+                        "name": null
+                    }
+                },
+                {
+                    "id": 16,
+                    "type": "effect",
+                    "op": "Bind",
+                    "entity": {
+                        "id": 1161,
+                        "name": null
+                    },
+                    "types": [
+                        "ElevatedRisk"
+                    ],
+                    "props": {}
+                }
+            ]
+        }
+    }
+]

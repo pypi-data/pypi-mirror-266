@@ -1,0 +1,55 @@
+name: Run End To End Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+        matrix:
+            python-version: ['3.10', '3.12']
+    steps:
+    - uses: actions/checkout@v3
+      name: Checkout repository
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Create and activate virtual environment
+      run: |
+        python -m venv .venv
+
+    - name: Install dependencies
+      run: |
+        .venv/bin/python -m pip install --upgrade pip
+        .venv/bin/pip install .[dev]
+    
+    - name: Run Test
+      run: |
+        .venv/bin/pytest -s tests/end2end --ddtrace --ddtrace-patch-all --cov=relationalai --cov-report lcov:coverage/lcov.info --cov-report html:coverage/html-report --cov-report term
+      env:
+        RAI_CLIENT_ID: ${{ secrets.RAI_CLIENT_ID }}
+        RAI_CLIENT_SECRET: ${{ secrets.RAI_CLIENT_SECRET }}
+        # datadog CI monitoring
+        DD_SERVICE: pyrel-tests
+        DD_ENV: ci
+        DD_CIVISIBILITY_AGENTLESS_ENABLED: true
+        DD_API_KEY: ${{ secrets.DD_API_KEY }}
+
+    - name: Upload Coverage Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: coverage-artifact-${{ matrix.python-version }}
+        path: coverage/lcov.info
+
+    - name: Upload Coverage Report
+      uses: actions/upload-artifact@v2
+      with:
+        name: coverage-report-${{ matrix.python-version }}
+        path: coverage/html-report

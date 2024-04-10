@@ -1,0 +1,111 @@
+.sidebar {
+  box-sizing: border-box;
+  height: 100vh;
+  position: relative;
+
+  --sidebar-width: 250px;
+  --sidebar-pad: 12px;
+  --sidebar-anim-duration: 0.3s;
+  --sidebar-trigger-direction: 1;
+
+  .sidebar-trigger {
+    position: absolute;
+    top: 0;
+    padding: var(--sidebar-pad);
+
+    .tabler-icon {
+      transform: scaleX(var(--sidebar-trigger-direction));
+      transition: transform var(--sidebar-anim-duration) ease-out;
+    }
+
+    &[data-closed] .tabler-icon {
+      transform: scaleX(calc(var(--sidebar-trigger-direction) * -1));
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .sidebar-content {
+    box-sizing: border-box;
+    height: 100%;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+
+    animation-duration: var(--sidebar-anim-duration);
+    animation-easing-function: ease-out;
+
+    &[data-closed] {
+      // width: 0;
+      animation-name: sidebar_close;
+
+      .sidebar-inner {
+        width: var(--kb-collapsible-content-width);        
+      }
+    }
+
+    &[data-expanded] {
+      animation-name: sidebar_open;
+
+      .sidebar-inner {
+        animation: sidebar_inner_open var(--sidebar-anim-duration) ease-out;
+      }
+    }
+
+    .sidebar-inner {
+      box-sizing: border-box;
+      min-width: auto;      
+      height: 100%;
+      padding: var(--sidebar-pad);
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  &.left {
+    box-shadow: 3px 0 10px #00091033;
+    .sidebar-trigger {
+      left: 100%;
+    }
+    .sidebar-content {
+      align-items: flex-end;
+    }
+  }
+  &.right {
+    box-shadow: 3px 0 10px #00091033;
+    --sidebar-trigger-direction: -1;
+    .sidebar-trigger {
+      right: 100%;
+    }
+  }
+}
+
+@keyframes sidebar_close {
+  from {
+    width: var(--kb-collapsible-content-width);
+  }
+  to {
+    width: 0;
+  }
+}
+
+@keyframes sidebar_open {
+  from {
+    width: 0;
+  }
+  to {
+    width: var(--kb-collapsible-content-width);
+  }
+}
+
+@keyframes sidebar_inner_open {
+  from {
+    width: var(--kb-collapsible-content-width);
+  }
+  to {
+    width: var(--kb-collapsible-content-width);
+  }
+}

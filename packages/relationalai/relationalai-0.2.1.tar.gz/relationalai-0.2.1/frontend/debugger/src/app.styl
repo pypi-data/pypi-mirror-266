@@ -1,0 +1,106 @@
+//------------------------------------------------------------------------------
+// Basic UI
+//------------------------------------------------------------------------------
+
+header {
+  display: flex;
+  align-items: center;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+}
+
+//------------------------------------------------------------------------------
+// Root
+//------------------------------------------------------------------------------
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+//------------------------------------------------------------------------------
+// Chome
+//------------------------------------------------------------------------------
+
+app-chrome {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+
+  .sidebar {
+    flex: 0 0 auto;
+
+    event-list {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 40px 0;
+      flex: 1 1 0;
+      overflow-y: auto;
+    }
+
+    block-item {
+      display: block;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+      padding: 5px 0;
+
+      header {
+        box-sizing: border-box;
+        padding: 0px 20px;
+        justify-content: flex-end;
+        span + span {
+          margin-left: 0.4em;
+        }
+        margin-bottom: 0.5em;
+      }
+
+      code {
+        $height = 5em;
+
+        position: relative;
+        box-sizing: border-box;
+        display: block;
+        margin: 0px 10px;
+        padding: 5px 10px;
+        max-height: $height;
+        overflow-y: hidden;
+        text-overflow: ellipsis;
+        font-family: mono;
+        font-size: 14px;
+        white-space: pre-wrap;
+
+        border: 1px solid var(--schematic-rail-color);
+        border-radius: 4px;
+
+        // &:after {
+        //   display: block;
+        //   content: "";
+        //   position: absolute;
+        //   top: $height - $fade_height;
+        //   left: 0; right: 0;
+        //   height: $fade_height;
+        //   background-image: linear-gradient(to top, white, rgba(white, 0));
+        // }
+      }
+    }
+  }
+
+  main {
+    flex: 1 1 0;
+    height: 100vh;
+    overflow-y: auto;
+
+    app-scroller {
+      box-sizing: border-box;
+      padding: 40px;
+      min-height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
