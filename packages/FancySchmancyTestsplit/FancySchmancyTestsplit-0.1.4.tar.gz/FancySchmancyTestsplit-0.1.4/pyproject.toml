@@ -1,0 +1,57 @@
+# mostly static info -------------------------------------------------------------------
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+# include = ["pkg*"]
+# exclude = ["additional*"]
+namespaces = false # if false, every folder and subfolder without __init__.py is ignored
+
+[project]
+# name must not start or end with an underscore, hyphen or period.
+authors = [
+    {name = "Kevin Pohl", email = "pohl.kevin@gmail.com"},
+    # {name = "Some Person", email = "sp@example.com"},
+    # {name = "Some Other Person", email = "sop@example.com"},
+    # {name = "Another person"},
+    # {email = "different.person@example.com"},
+]
+maintainers = [
+    {name = "Kevin Pohl", email = "pohl.kevin@gmail.com"},
+]
+readme = {file = "README.md", content-type = "text/markdown"}
+# readme = {file = "README.rst", content-type = "text/x-rst"} # alternatively
+license = {text = "MIT"}
+# license = {file = "LICENSE"} # alternatively
+
+# somewhat static info -----------------------------------------------------------------
+name = "FancySchmancyTestsplit"
+description = "a more in-depth testsplit splitting intercategorical"
+keywords = ["test split", "testsplit", "train test split"]
+
+# variable info ------------------------------------------------------------------------
+version = "0.1.4"
+requires-python = ">=3.11"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Education",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "numpy==1.25.2",
+    "pandas==2.1.3",
+    "scikit-learn==1.3.2",
+]
+
+[project.optional-dependencies]
+# pdf = ["ReportLab>=1.2", "RXP"]
+# rest = ["docutils>=0.3", "pack ==1.1, ==1.3"]
+
+[project.scripts]
+# my-script = "my_package.module:function"
+
+# [project.urls] # you can have a urls field under project with a dict, alternatively
+# "Homepage" = "https://github.com/KevinPohl/somerepo"
+
