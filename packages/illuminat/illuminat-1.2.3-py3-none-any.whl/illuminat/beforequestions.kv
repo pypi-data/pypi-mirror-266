@@ -1,0 +1,28 @@
+MDScreen:
+    name: "beforequestions"
+    MDFloatLayout:
+
+        Image:
+            source: app.imageformainmainaa()
+
+            size_hint: 1, 1.2
+            pos_hint: {"center_x": .5, "center_y": .5}
+
+        Button:
+            text: "C O N T I N U E"
+            size_hint: .75, .06
+            background_color: 0, 0, 0, 0
+            pos_hint: {"center_x": .5, "center_y": .485}
+            font_name: app.bahnscriptreplace()
+            font_size: "25sp"
+            on_release:
+                root.manager.transition.direction = "left"
+                root.manager.current = "beforequestionsscreen"
+                app.setbeforequestions()
+            canvas.before:
+                Color:
+                    rgb: rgba(238, 124, 15, 255)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [5]
