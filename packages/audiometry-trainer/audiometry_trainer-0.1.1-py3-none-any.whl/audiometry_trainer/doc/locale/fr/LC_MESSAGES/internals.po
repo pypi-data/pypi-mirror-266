@@ -1,0 +1,66 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023-2024, Samuele Carcagno
+# This file is distributed under the same license as the audiometry_trainer
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: audiometry_trainer 0.0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-04-01 09:35+0200\n"
+"PO-Revision-Date: 2024-04-01 11:30+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#: ../../internals.rst:5
+msgid "Internals"
+msgstr "Fonctionnement interne"
+
+#: ../../internals.rst:8
+msgid ""
+"Estimated thresholds are stored on a dict of the form ``` self."
+"est_aud['unmasked']['bone']['right'] ```"
+msgstr ""
+
+#: ../../internals.rst:13
+msgid ""
+"matplotlib plotting points are stored in a parallel dict with the same "
+"structure: ``` self.pnts['unmasked']['bone']['right'] ```"
+msgstr ""
+
+#: ../../internals.rst:18
+msgid ""
+"another dictionary with a similar structure stores important parameters "
+"regarding the audiometric data and the plots: ``` self."
+"plot_prms['unmasked']['air']['left'] ```"
+msgstr ""
+
+#: ../../internals.rst:23
+msgid ""
+"in particular the `thresh_status` key ``` self.plot_prms['masked']"
+"['bone']['right']['thresh_status'] ``` is used to differentiate between "
+"points marked as thresholds ('found' key), no responses at the maximum "
+"level ('NR' key), and masking dilemmas ('MD' key). Note that in each of "
+"these cases the stimulus level at which the cursor is located when "
+"marking the threshold will be stored in `self.est_aud`. The "
+"`thresh_status` key in the `self.plot_prms` dict allows to treat them "
+"differently according to the cases seen above."
+msgstr ""
+
+#: ../../internals.rst:29
+msgid ""
+"Another key stored in `self.plot_prms` is used to indicate whether "
+"points for a given transducer and masking status should be displayed on "
+"the plot or hidden:"
+msgstr ""
+
+#: ../../internals.rst:31
+msgid "``` self.plot_prms['masked']['bone']['right']['visible'] ```"
+msgstr ""
