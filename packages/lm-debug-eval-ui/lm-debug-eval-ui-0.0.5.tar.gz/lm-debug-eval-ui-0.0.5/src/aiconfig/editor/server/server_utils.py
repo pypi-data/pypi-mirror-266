@@ -1,0 +1,513 @@
+import logging
+import os
+import typing
+from dataclasses import dataclass, field
+from enum import Enum
+from textwrap import dedent
+from threading import Event
+from types import ModuleType
+from typing import Any, Callable, NewType, Type, TypeVar, cast, Optional, Tuple
+
+import lastmile_utils.lib.core.api as core_utils
+import result
+from aiconfig.Config import AIConfigRuntime
+from aiconfig.registry import ModelParserRegistry
+from flask import Flask
+from pydantic import field_validator
+from result import Err, Ok, Result
+from ruamel.yaml import YAML
+
+from aiconfig.schema import Prompt, PromptMetadata
+from aiconfig.editor.server.eval_server_utils import (
+    load_evaluation_module_if_exists,
+)
+from aiconfig.editor.server.server_file_utils import (
+    get_validated_path,
+    import_module_from_path,
+    ValidatedPath,
+)
+
+MethodName = NewType("MethodName", str)
+
+logging.getLogger("werkzeug").disabled = True
+
+logging.basicConfig(format=core_utils.LOGGER_FMT)
+LOGGER = logging.getLogger(__name__)
+
+# TODO: saqadri - use logs directory to save logs
+log_handler = logging.FileHandler("editor_flask_server.log", mode="a")
+formatter = logging.Formatter(core_utils.LOGGER_FMT)
+log_handler.setFormatter(formatter)
+
+LOGGER.addHandler(log_handler)
+
+# TODO unhardcode
+LOGGER.setLevel(logging.INFO)
+
+OpArgs = NewType("OpArgs", dict[str, Any])
+
+
+T = TypeVar("T")
+
+# TODO: protocol
+Operation = Callable[[AIConfigRuntime, OpArgs], Result[T, str]]
+
+
+class ServerMode(Enum):
+    # debug = "DEBUG"
+    DEBUG_SERVERS = "DEBUG_SERVERS"
+    DEBUG_BACKEND = "DEBUG_BACKEND"
+    PROD = "PROD"
+
+
+class EditServerConfig(core_utils.Record):
+    server_port: int = 8080
+    aiconfig_path: str = "my_aiconfig.aiconfig.json"
+    log_level: str | int = "INFO"
+    server_mode: ServerMode = ServerMode.PROD
+    parsers_module_path: str = "aiconfig_model_registry.py"
+    env_file_path: Optional[str] = None
+
+    @field_validator("server_mode", mode="before")
+    def convert_to_mode(
+        cls, value: Any
+    ) -> ServerMode:  # pylint: disable=no-self-argument
+        if isinstance(value, str):
+            try:
+                return ServerMode[value.upper()]
+            except KeyError as e:
+                raise ValueError(f"Unexpected value for mode: {value}") from e
+        return value
+
+
+class StartServerConfig(core_utils.Record):
+    server_port: int = 8080
+    log_level: str | int = "INFO"
+    server_mode: ServerMode = ServerMode.PROD
+    parsers_module_path: str = "aiconfig_model_registry.py"
+    env_file_path: Optional[str] = None
+
+    @field_validator("server_mode", mode="before")
+    def convert_to_mode(
+        cls, value: Any
+    ) -> ServerMode:  # pylint: disable=no-self-argument
+        if isinstance(value, str):
+            try:
+                return ServerMode[value.upper()]
+            except KeyError as e:
+                raise ValueError(f"Unexpected value for mode: {value}") from e
+        return value
+
+
+class EvalServerConfig(EditServerConfig):
+    evaluation_module_path: str = "evaluation_module.py"
+
+
+@dataclass
+class ServerState:
+    aiconfigrc_path: str = os.path.join(os.path.expanduser("~"), ".aiconfigrc")
+    aiconfig: AIConfigRuntime | None = None
+    events: dict[str, Event] = field(default_factory=dict)
+    env_file_path: str | None = None
+    evaluation_module: dict[str, Callable[..., Any]] = field(
+        default_factory=dict
+    )
+    prompt_iteration_config: dict[str, Any] = field(default_factory=dict)
+
+
+class AIConfigRC(core_utils.Record):
+    allow_usage_data_sharing: bool
+
+    class Config:
+        extra = "forbid"
+
+    @classmethod
+    def from_yaml(
+        cls: Type["AIConfigRC"], yaml: str
+    ) -> Result["AIConfigRC", str]:
+        try:
+            loaded = YAML().load(yaml)
+            loaded_dict = dict(loaded)
+            validated_model = cls.model_validate(loaded_dict)
+            return Ok(validated_model)
+        except Exception as e:
+            return core_utils.ErrWithTraceback(e)
+
+
+DEFAULT_AICONFIGRC = YAML().load(
+    dedent(
+        """
+            # Tip: make sure this file is called .aiconfigrc and is in your home directory.
+
+            # Flag allowing or denying telemetry for product development purposes.
+            allow_usage_data_sharing: true
+            """
+    ),
+)
+
+
+FlaskResponse = NewType("FlaskResponse", tuple[core_utils.JSONObject, int])
+
+
+@dataclass(frozen=True)
+class HttpResponseWithAIConfig:
+    message: str
+    aiconfig: AIConfigRuntime | None
+    code: int = 200
+    payload: core_utils.JSONObject | None = None
+
+    EXCLUDE_OPTIONS = {
+        "prompt_index": True,
+        "file_path": True,
+        "callback_manager": True,
+    }
+
+    def to_flask_format(self) -> FlaskResponse:
+        out: core_utils.JSONObject = {
+            "message": self.message,
+            **(self.payload if self.payload is not None else {}),
+        }
+        if self.aiconfig is not None:
+            out["aiconfig"] = self.aiconfig.model_dump(
+                exclude=HttpResponseWithAIConfig.EXCLUDE_OPTIONS
+            )
+
+        return FlaskResponse((out, self.code))
+
+
+def get_server_state(app: Flask) -> ServerState:
+    return app.server_state  # type: ignore
+
+
+def _load_register_fn_from_user_module(
+    user_module: ModuleType,
+) -> Result[Callable[[], None], str]:
+    if not hasattr(user_module, "register_model_parsers"):
+        return Err(
+            f"User module {user_module} does not have a register_model_parsers function."
+        )
+    register_fn = getattr(user_module, "register_model_parsers")
+    if not callable(register_fn):
+        return Err(
+            f"User module {user_module} does not have a register_model_parsers function"
+        )
+    else:
+        return Ok(register_fn)
+
+
+def _register_user_model_parsers(
+    user_register_fn: Callable[[], None]
+) -> Result[None, str]:
+    try:
+        return Ok(user_register_fn())
+    except Exception as e:
+        return core_utils.ErrWithTraceback(e)
+
+
+def load_user_parser_module(path_to_module: str) -> Result[None, str]:
+    LOGGER.info(f"Importing parsers module from {path_to_module}")
+    res_user_module = import_module_from_path(path_to_module)
+    register_result = (
+        res_user_module.and_then(_load_register_fn_from_user_module)  #
+        #
+        .and_then(_register_user_model_parsers)
+    )
+    return register_result
+
+
+def get_http_response_load_user_parser_module(
+    path_to_module: str,
+) -> HttpResponseWithAIConfig:
+    register_result = load_user_parser_module(path_to_module)
+    match register_result:
+        case Ok(_):
+            msg = (
+                f"Successfully registered model parsers from {path_to_module}"
+            )
+            LOGGER.info(msg)
+            return HttpResponseWithAIConfig(message=msg, aiconfig=None)
+        case Err(e):
+            msg = (
+                f"Failed to register model parsers from {path_to_module}: {e}"
+            )
+            LOGGER.error(msg)
+            return HttpResponseWithAIConfig(
+                message=msg, code=400, aiconfig=None
+            )
+
+
+def _load_user_parser_module_if_exists(parsers_module_path: str) -> None:
+    res = get_validated_path(parsers_module_path).and_then(
+        load_user_parser_module
+    )
+    match res:
+        case Ok(_):
+            LOGGER.info(f"Loaded parsers module from {parsers_module_path}")
+        case Err(e):
+            LOGGER.warning(f"Failed to load parsers module: {e}")
+
+
+def safe_load_from_disk(
+    aiconfig_path: ValidatedPath,
+) -> Result[AIConfigRuntime, str]:
+    try:
+        aiconfig = AIConfigRuntime.load(aiconfig_path)  # type: ignore
+        return Ok(aiconfig)
+    except Exception as e:
+        return core_utils.ErrWithTraceback(e)
+
+
+def init_server_state(
+    app: Flask,
+    initialization_settings: (
+        StartServerConfig | EditServerConfig | EvalServerConfig
+    ),
+    aiconfigrc_path: str,
+) -> Result[None, str]:
+    LOGGER.info("Initializing server state for 'edit' command")
+    _load_user_parser_module_if_exists(
+        initialization_settings.parsers_module_path
+    )
+    state = get_server_state(app)
+    state.aiconfigrc_path = aiconfigrc_path
+
+    if isinstance(initialization_settings, EvalServerConfig):
+        state.evaluation_module = load_evaluation_module_if_exists(
+            initialization_settings.evaluation_module_path
+        )
+
+    env_file_path_is_valid, message = validate_env_file_path(
+        initialization_settings.env_file_path
+    )
+    if not env_file_path_is_valid:
+        LOGGER.warning(f"{message}: '{initialization_settings.env_file_path}'")
+    else:
+        state.env_file_path = initialization_settings.env_file_path
+
+    if isinstance(initialization_settings, StartServerConfig):
+        # The aiconfig will be loaded later, when the editor sends the payload.
+        return Ok(None)
+    # else:
+    edit_config = initialization_settings
+
+    assert state.aiconfig is None
+    if os.path.exists(edit_config.aiconfig_path):
+        LOGGER.info(f"Loading AIConfig from {edit_config.aiconfig_path}")
+        val_path = get_validated_path(edit_config.aiconfig_path)
+        aiconfig_runtime = val_path.and_then(safe_load_from_disk)
+        match aiconfig_runtime:
+            case Ok(aiconfig_runtime_):
+                state.aiconfig = aiconfig_runtime_
+                LOGGER.info(
+                    f"Loaded AIConfig from {edit_config.aiconfig_path}"
+                )
+                return Ok(None)
+            case Err(e):
+                LOGGER.error(
+                    f"Failed to load AIConfig from {edit_config.aiconfig_path}: {e}"
+                )
+                return Err(
+                    f"Failed to load AIConfig from {edit_config.aiconfig_path}: {e}"
+                )
+    else:
+        LOGGER.info(f"Creating new AIConfig at {edit_config.aiconfig_path}")
+        aiconfig_runtime = AIConfigRuntime.create()  # type: ignore
+        model_ids = ModelParserRegistry.parser_ids()
+        if len(model_ids) > 0:
+            aiconfig_runtime.add_prompt(
+                "prompt_1",
+                Prompt(
+                    name="prompt_1",
+                    input="",
+                    metadata=PromptMetadata(model=model_ids[0]),
+                ),
+            )
+
+        state.aiconfig = aiconfig_runtime
+        LOGGER.info("Created new AIConfig")
+        try:
+            aiconfig_runtime.save(edit_config.aiconfig_path)
+            aiconfig_runtime.file_path = edit_config.aiconfig_path  # type: ignore[bug in runtime init]
+            LOGGER.info(
+                f"Saved new AIConfig to {edit_config.aiconfig_path} (aiconfig path field: {aiconfig_runtime.file_path})"
+            )
+            state.aiconfig = aiconfig_runtime
+            return Ok(None)
+        except Exception as e:
+            LOGGER.error(
+                f"Failed to create new AIConfig at {edit_config.aiconfig_path}: {e}"
+            )
+            return core_utils.ErrWithTraceback(e)
+
+
+def _safe_run_aiconfig_method(
+    aiconfig: AIConfigRuntime, method_name: MethodName, method_args: OpArgs
+) -> Result[None, str]:
+    # TODO: use `out`
+    try:
+        method = getattr(aiconfig, method_name)
+        out = method(**method_args)
+        LOGGER.info(f"Method result ({method_name}): {out}")
+        return Ok(None)
+    except Exception as e:
+        LOGGER.info(f"Failed to run method ({method_name}): {e}")
+        return core_utils.ErrWithTraceback(e)
+
+
+def safe_run_aiconfig_static_method(
+    method_name: MethodName, method_args: OpArgs, output_typ: Type[T]
+) -> Result[T, str]:
+    try:
+        method = getattr(AIConfigRuntime, method_name)
+        out = method(**method_args)
+        LOGGER.info(f"Method result: {out}")
+        return Ok(out)
+    except Exception as e:
+        LOGGER.info(f"Failed to run method: {e}")
+        return core_utils.ErrWithTraceback(e)
+
+
+def make_op_run_method(method_name: MethodName) -> Operation[None]:
+    def _op(
+        aiconfig: AIConfigRuntime, operation_args: OpArgs
+    ) -> Result[None, str]:
+        LOGGER.info(f"Running method: {method_name}, {operation_args=}")
+        return _safe_run_aiconfig_method(aiconfig, method_name, operation_args)
+
+    return _op
+
+
+def run_aiconfig_operation_with_op_args(
+    aiconfig: AIConfigRuntime | None,
+    operation_name: str,
+    operation: Operation[None],
+    res_op_args: Result[OpArgs, str],
+) -> FlaskResponse:
+    """
+    Use this when you have to do specific logic to map
+    the request JSON to the OpArgs. See "/api/run" for example.
+    Otherwise, use `run_aiconfig_operation_with_request_json`.
+    """
+    if aiconfig is None:
+        LOGGER.info(f"No AIConfig in memory, can't run {operation_name}.")
+        return HttpResponseWithAIConfig(
+            message=f"No AIConfig in memory, can't run {operation_name}.",
+            code=400,
+            aiconfig=None,
+        ).to_flask_format()
+
+    LOGGER.info(f"About to run operation: {operation_name}, {res_op_args=}")
+    res_run = result.do(
+        operation(aiconfig, OpArgs(op_args_ok))
+        #
+        for op_args_ok in res_op_args
+    )
+
+    LOGGER.info(f"{res_run=}")
+
+    match res_run:
+        case Ok(_):
+            return HttpResponseWithAIConfig(
+                message="Done",
+                aiconfig=aiconfig,
+            ).to_flask_format()
+        case Err(e):
+            return HttpResponseWithAIConfig(
+                message=f"Failed run {operation_name}: {e}",
+                code=400,
+                aiconfig=None,
+            ).to_flask_format()
+
+
+def _validated_op_args_from_request_json(
+    request_json: core_utils.JSONObject,
+    signature: dict[str, Type[Any]],
+) -> Result[OpArgs, str]:
+    if signature.keys() != request_json.keys():
+        LOGGER.info(
+            f"Expected keys: {signature.keys()}, got: {request_json.keys()}"
+        )
+        return Err(
+            f"Expected keys: {signature.keys()}, got: {request_json.keys()}"
+        )
+
+    def _resolve(
+        key: str, value: core_utils.JSONValue, signature: dict[str, Type[Any]]
+    ) -> Result[Any, str]:
+        LOGGER.info(f"Resolving: {key}, {value}, {signature[key]}")
+        _type = signature[key]
+        if isinstance(value, typing.Dict):
+            return core_utils.safe_model_validate_json_object(_type, value)
+        else:
+            return Ok(value)
+
+    operation_args_results = {
+        key: _resolve(key, value, signature)
+        for key, value in request_json.items()
+    }
+    LOGGER.info(f"{operation_args_results=}")
+    res_op_args: Result[OpArgs, str] = cast(
+        Result[OpArgs, str],
+        core_utils.result_reduce_dict_all_ok(operation_args_results),
+    )
+
+    return res_op_args
+
+
+def run_aiconfig_operation_with_request_json(
+    aiconfig: AIConfigRuntime | None,
+    request_json: core_utils.JSONObject,
+    operation_name: str,
+    operation: Operation[None],
+    signature: dict[str, Type[Any]],
+) -> FlaskResponse:
+    """
+    Use this when there is no specific logic needed to extract the OpArgs from the request JSON.
+    This is true in cases where the signature is enough to do that automatically
+    (inside this function).
+    Otherwise (when you do need specific logic like extra validation) use
+    `run_aiconfig_operation_with_op_args`.
+    """
+    LOGGER.info(f"{operation_name=}, {signature=}, {request_json=}")
+
+    op_args = _validated_op_args_from_request_json(request_json, signature)
+    match op_args:
+        case Ok(op_args_ok):
+            return run_aiconfig_operation_with_op_args(
+                aiconfig, operation_name, operation, Ok(op_args_ok)
+            )
+        case Err(e):
+            return HttpResponseWithAIConfig(
+                message=f"Failed to run {operation_name}: {e}",
+                code=400,
+                aiconfig=None,
+            ).to_flask_format()
+
+
+def validate_env_file_path(
+    request_env_path: str | None | Any,
+) -> Tuple[bool, str]:
+    """
+    Validates the given env file path. If its not valid, returns a tuple of (False, str) with a message.
+
+    Returns: (bool, str)
+    """
+    if request_env_path is None:
+        return False, "No .env file path provided"
+
+    if not isinstance(request_env_path, str):
+        return False, "Specified .env file path is not a string"
+
+    # Check if path exists / is accessible
+    path_exists = os.path.exists(request_env_path)
+
+    if path_exists is False:
+        return False, "Specified .env file path does not exist"
+
+    # Check if filename format is correct
+    filename_format_correct = request_env_path.endswith(".env")
+
+    if filename_format_correct is False:
+        return False, "Specified env file path is not a .env file"
+
+    return True, f".env file path {request_env_path} is valid"
