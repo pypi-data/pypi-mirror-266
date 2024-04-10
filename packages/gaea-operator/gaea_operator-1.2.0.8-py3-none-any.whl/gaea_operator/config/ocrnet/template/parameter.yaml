@@ -1,0 +1,72 @@
+# 1. PARAMETER: iters
+iters: 300
+
+model:
+  type: OCRNet
+  backbone:
+    type: HRNet_W18
+    pretrained: https://bj.bcebos.com/paddleseg/dygraph/ocrnet_hrnet_w18_ssld.pdparams
+  num_classes: 2
+  backbone_indices: [0]
+
+optimizer:
+  type: adam #adamw
+  weight_decay: 0.01
+
+lr_scheduler:
+  type: PolynomialDecay
+  # 2. PARAMETER: learning_rate
+  learning_rate: 1.0e-03
+  power: 0.9
+
+loss:
+  types:
+    - type: MixedLoss
+      losses:
+        - type: DiceLoss
+        - type: CrossEntropyLoss
+        - type: LovaszSoftmaxLoss
+      coef: [0.6, 0.3, 0.1]
+    - type: MixedLoss
+      losses:
+        - type: DiceLoss
+        - type: CrossEntropyLoss
+        - type: LovaszSoftmaxLoss
+      coef: [0.6, 0.3, 0.1]
+  coef: [1, 0.4]
+
+# 3. PARAMETER: batch_size
+batch_size: 8
+
+train_dataset:
+  type: Dataset
+  dataset_root: dataset
+  train_path: train.txt
+  num_classes: 2
+  transforms:
+    - type: ResizeStepScaling
+      min_scale_factor: 0.5
+      max_scale_factor: 2.0
+      scale_step_size: 0.25
+    - type: RandomPaddingCrop
+      # 4. PARAMETER: 
+      crop_size: [912, 608]
+    - type: RandomHorizontalFlip
+    - type: RandomVerticalFlip
+    - type: RandomDistort
+      brightness_range: 0.4
+      contrast_range: 0.4
+      saturation_range: 0.4
+    - type: Normalize
+  mode: train
+
+val_dataset:
+  type: Dataset
+  dataset_root: dataset
+  val_path: val.txt
+  num_classes: 2
+  transforms:
+    - type: Normalize
+    - type: Resize
+      target_size: [912, 608]
+  mode: val
