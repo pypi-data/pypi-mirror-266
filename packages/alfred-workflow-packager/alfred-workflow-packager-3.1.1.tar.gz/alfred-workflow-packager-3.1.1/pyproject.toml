@@ -1,0 +1,43 @@
+[project]
+name = "alfred-workflow-packager"
+version = "3.1.1"
+description = "A CLI utility for packaging and exporting Alfred workflows"
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [
+    {name = "Caleb Evans", email = "caleb@calebevans.me"}
+]
+maintainers = [
+    {name = 'Caleb Evans', email = 'caleb@calebevans.me'}
+]
+license = {file = 'LICENSE.txt'}
+keywords = ["alfred", "workflow", "package", "export"]
+dependencies=[
+    "jsonschema>=4,<5"
+]
+
+[project.scripts]
+awp = "awp.main:main"
+
+[tool.setuptools.package-data]
+awp = ["data/*.json"]
+
+[project.urls]
+homepage = "https://github.com/caleb531/alfred-workflow-packager"
+documentation = "https://github.com/caleb531/alfred-workflow-packager#readme"
+repository = "https://github.com/caleb531/alfred-workflow-packager"
+changelog = "https://github.com/caleb531/alfred-workflow-packager/releases"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.flake8]
+# Black compatibility
+max-line-length = 88
+extend-ignore = ["E203", "W503"]
+exclude = [".git", "build", "__pycache__", "*.egg-info", ".virtualenv"]
+
+# Per <https://black.readthedocs.io/en/stable/guides/using_black_with_other_tools.html#profile>
+[tool.isort]
+profile = "black"
