@@ -1,0 +1,131 @@
+# Changelog
+
+## [0.6.0](https://github.com/chanzuckerberg/cellxgene-ontology-guide/compare/python-api-v0.5.0...python-api-v0.6.0) (2024-04-09)
+
+
+### Features
+
+* add get_term_children and get_term_parents ([#186](https://github.com/chanzuckerberg/cellxgene-ontology-guide/issues/186)) ([dfcd2c2](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/dfcd2c26f10196adab8bc3233e0f25dc5a214534))
+
+## [0.5.0](https://github.com/chanzuckerberg/cellxgene-ontology-guide/compare/python-api-v0.4.0...python-api-v0.5.0) (2024-04-09)
+
+
+### Features
+
+* add term label to OntologyNode ([#182](https://github.com/chanzuckerberg/cellxgene-ontology-guide/issues/182)) ([326185c](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/326185c0482cbadda691fe3ec9977a11b19ab461))
+* fetch ontology term descriptions, if available ([#181](https://github.com/chanzuckerberg/cellxgene-ontology-guide/issues/181)) ([0120377](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/0120377f798192be6dde64322c10a0ecff935f05))
+
+
+### Misc
+
+* add doctesting to API ([#176](https://github.com/chanzuckerberg/cellxgene-ontology-guide/issues/176)) ([c0aec23](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/c0aec23c2cec48de0ea04b7703f6cb0322a7ec55))
+* deprecate older version of cellxgene schema ([#172](https://github.com/chanzuckerberg/cellxgene-ontology-guide/issues/172)) ([186e762](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/186e76235df3eec6767e3014e48530377d14d21f))
+* move pytest configs to pyproject.toml ([#175](https://github.com/chanzuckerberg/cellxgene-ontology-guide/issues/175)) ([a90341b](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/a90341bdd16ae347f1f5e8b8db698afc38f37b80))
+
+## [0.4.0](https://github.com/chanzuckerberg/cellxgene-ontology-guide/compare/python-api-v0.3.1...python-api-v0.4.0) (2024-03-29)
+
+
+### Features
+
+* build subgraph from term ID ([#156](https://github.com/chanzuckerberg/cellxgene-ontology-guide/issues/156)) ([3f4cd4b](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/3f4cd4b8daf914457e8395bee4b0b21d88ea3abf))
+
+## [0.3.1](https://github.com/chanzuckerberg/cellxgene-ontology-guide/compare/python-api-v0.3.0...python-api-v0.3.1) (2024-03-27)
+
+
+### Misc
+
+* reformat examples in docstrings ([#157](https://github.com/chanzuckerberg/cellxgene-ontology-guide/issues/157)) ([e5528e1](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/e5528e195cceacff33c46c008230c13cccce641e))
+
+
+### BugFixes
+
+* move get_ontology_download_url. ([#152](https://github.com/chanzuckerberg/cellxgene-ontology-guide/issues/152)) ([8365411](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/83654113156a1fbcd5bf3fb3df3ddab7428266b5))
+* ontology_parser.py defaults to latest ([#153](https://github.com/chanzuckerberg/cellxgene-ontology-guide/issues/153)) ([5b94d6e](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/5b94d6e5b3ed815e772e10f64c6e8fd684ce095c))
+
+## [0.3.0](https://github.com/chanzuckerberg/cellxgene-ontology-guide/compare/python-api-v0.2.0...python-api-v0.3.0) (2024-03-25)
+
+
+### Features
+
+* write python API demo notebook ([#101](https://github.com/chanzuckerberg/cellxgene-ontology-guide/issues/101)) ([bfae292](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/bfae292139b94e1f2d46a3d6c7c73774541882b6))
+
+## [0.2.0](https://github.com/chanzuckerberg/cellxgene-ontology-guide/compare/python-api-v0.1.2...python-api-v0.2.0) (2024-03-25)
+
+
+### Features
+
+* add function to fetch curated ontology term lists ([#141](https://github.com/chanzuckerberg/cellxgene-ontology-guide/issues/141)) ([5c7db62](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/5c7db62672512f1b00b1380db77b8f06dbbfb000))
+* set-up docsite ([#99](https://github.com/chanzuckerberg/cellxgene-ontology-guide/issues/99)) ([b7591bc](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/b7591bc03df28567e26569dda01b2c36fb266455))
+
+
+### Misc
+
+* enable code coverage ([#143](https://github.com/chanzuckerberg/cellxgene-ontology-guide/issues/143)) ([c52c436](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/c52c436de8b7c919bcf063dc2c4be79a146ad0f4))
+* use trusted publisher to publish pypi package. ([#137](https://github.com/chanzuckerberg/cellxgene-ontology-guide/issues/137)) ([5fc917b](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/5fc917bc49211acb3c4988e1729a6610b111ffe3))
+
+
+### BugFixes
+
+* make constant.py private ([46d04a4](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/46d04a450f07e7a45e607d379a061f237df2e771))
+* typos ([76ae9fa](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/76ae9fa17862e6087e327892396c3e31905a452a))
+
+## [0.1.2](https://github.com/chanzuckerberg/cellxgene-ontology-guide/compare/python-api-v0.1.1...python-api-v0.1.2) (2024-03-18)
+
+
+### BugFixes
+
+* update README.md for API ([f606073](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/f606073fd5b3783d51010289734b2915939a2e46))
+
+## [0.1.1](https://github.com/chanzuckerberg/cellxgene-ontology-guide/compare/python-api-v0.1.0...python-api-v0.1.1) (2024-03-18)
+
+
+### BugFixes
+
+* python-api release version ([#131](https://github.com/chanzuckerberg/cellxgene-ontology-guide/issues/131)) ([3237651](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/32376519536cfa38e1889e2d185d713d5a46d013))
+
+## [0.1.0](https://github.com/chanzuckerberg/cellxgene-ontology-guide/compare/python-api-v0.0.2...python-api-v0.1.0) (2024-03-15)
+
+
+### Features
+
+* add data to the python package  ([#87](https://github.com/chanzuckerberg/cellxgene-ontology-guide/issues/87)) ([0eb6831](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/0eb68314345e641218b8bae243cff417271dca1b))
+* add is_valid_term_id method to OntologyParser ([#115](https://github.com/chanzuckerberg/cellxgene-ontology-guide/issues/115)) ([72c2073](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/72c2073f0a466d86e4cd40307dc53e3f9e31489f))
+* include license file with python package ([#85](https://github.com/chanzuckerberg/cellxgene-ontology-guide/issues/85)) ([2be3d81](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/2be3d817041a4fbb6d5ab8b169a69b2fd8086e38))
+* refactor ancestry mapping to include distance from descendant node + implement functions to support curated list term mapping ([#96](https://github.com/chanzuckerberg/cellxgene-ontology-guide/issues/96)) ([7fc3562](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/7fc3562b040f7c2962c0a6e751996933727d9206))
+* refer to ontology source filenames in ontology_info and return that in get_ontology_download_url ([#106](https://github.com/chanzuckerberg/cellxgene-ontology-guide/issues/106)) ([ff9d826](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/ff9d82646413b3153daf8e6e60a9c8a1f32a0f61))
+* split all_ontology into individual files. ([#93](https://github.com/chanzuckerberg/cellxgene-ontology-guide/issues/93)) ([ead59e5](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/ead59e5c0fe56c8f1feab9959d75965372c1316e))
+* Support getting download link for ontology from source repo ([#86](https://github.com/chanzuckerberg/cellxgene-ontology-guide/issues/86)) ([fd55b76](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/fd55b760e655d419adcea94ade948347fa95ca6e))
+
+
+### Misc
+
+* automate testpypi releases ([#118](https://github.com/chanzuckerberg/cellxgene-ontology-guide/issues/118)) ([b5a1a66](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/b5a1a6608e44c6347281f6b59404af952a7e999c))
+* clean-up ontology_parser single fetch and bulk fetch methods + account for acceptable non-ontology terms ([#112](https://github.com/chanzuckerberg/cellxgene-ontology-guide/issues/112)) ([2ef7435](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/2ef7435df62a75261fd75c819a76e7dd8f42cb99))
+* **deps-dev:** bump semantic-version from 2.8.5 to 2.10.0 in /api/python ([#98](https://github.com/chanzuckerberg/cellxgene-ontology-guide/issues/98)) ([dfe0b39](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/dfe0b397667cc8c4c6076cd293df576cbff3815f))
+
+
+### BugFixes
+
+* imports for api ([4cd3386](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/4cd33864fa59b3bd5e565a05b5b74414989566a8))
+* update requirements ([#114](https://github.com/chanzuckerberg/cellxgene-ontology-guide/issues/114)) ([9888f3d](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/9888f3dad04e26ffd2bc5434a45645390a8eec01))
+
+## 0.0.1 (2024-02-26)
+
+### Features
+
+- Add API ontology querying module ([68f3168](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/68f3168d164a192d538c987239bc2783decd5b1e))
+- Add API ontology querying module ([#39](https://github.com/chanzuckerberg/cellxgene-ontology-guide/issues/39)) ([239ef2b](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/239ef2b231d2b02051c374491bfee11a7e5d9d8e))
+- **API:** setup python library ([211a099](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/211a099365b4de1ab9ff2dcf0f481a34f62f13c4))
+- **API:** setup python library ([f60f897](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/f60f8975584ed5e8fa9cd6dbe91bb0ba3f4e11bb))
+- **API:** Setup the library for development ([1f7ce03](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/1f7ce0307db25ee553f0f924c872a73d4f0ae90f))
+- implement stubbed query functions ([334deb5](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/334deb57463609d2736e369d188380686880fa9c))
+- set version regex for pyton api ([3720dab](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/3720dabd593b3c6138470bd0b871f32c03f94dcf))
+
+### Misc
+
+- release tsmith/release-assets ([63b782d](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/63b782d2ee8a8bdbdf83e61e0d37674954c802ee))
+- release tsmith/release-assets ([#57](https://github.com/chanzuckerberg/cellxgene-ontology-guide/issues/57)) ([6a6b02a](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/6a6b02a96ab55f204480926ade478b197ff16e4e))
+
+### BugFixes
+
+- README.md ([1eae21d](https://github.com/chanzuckerberg/cellxgene-ontology-guide/commit/1eae21d1143d21fe248d8067671a270e46e54b19))
