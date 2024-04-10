@@ -1,0 +1,41 @@
+[tool.pdm]
+distribution = true
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "pytest",
+    "jupyter",
+    "matplotlib",
+    "pandas",
+    "scikit-learn",
+]
+
+[tool.pdm.build]
+includes = [
+    "src/hypermedia_client",
+    "src/q_alchemy",
+]
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[project]
+name = "q-alchemy-sdk-py"
+version = "0.2.2"
+description = ""
+authors = [
+    { name = "Carsten Blank", email = "blank@data-cybernetics.com" },
+]
+dependencies = [
+    "qiskit>=1.0.2",
+    "pydantic>=2.6.4",
+    "httpx<1.0.0,>=0.25.0",
+]
+requires-python = "<4,>=3.11"
+readme = "README.md"
+
+[project.license]
+text = "Apache"
