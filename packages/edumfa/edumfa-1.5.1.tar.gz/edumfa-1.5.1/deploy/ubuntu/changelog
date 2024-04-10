@@ -1,0 +1,62 @@
+edumfa (1.5.1{{CODENAME}}) {{CODENAME}}; urgency=medium
+
+  * fix: correct location of venv for ubuntu packages 
+  * fix: ignore revoked, disabled webauthn tokens for passkey auth 
+  * fix: correct handling of login mode 
+
+ -- eduMFA <edumfa-dev@listserv.dfn.de>  Fri, 05 Apr 2024 12:00:00 +0200
+
+edumfa (1.5.0{{CODENAME}}) {{CODENAME}}; urgency=medium
+
+  * feat: api: set tokeninfo on init by 
+  * feat: add ubuntu packages 
+  * feat: log passkey usage 
+  * feat: allow customization of passkey label 
+  * feat: more detailed logging for eduMFA migration script 
+  * fix: add missing flask-migrate logging 
+  * fixed typo: Atttributes -> Attributes 
+
+ -- eduMFA <edumfa-dev@listserv.dfn.de>  Tue, 02 Apr 2024 07:00:00 +0100
+
+edumfa (1.4.0{{CODENAME}}) {{CODENAME}}; urgency=medium
+
+  * feat: smstoken: add configurable URL which is called after check, extend test
+  * feat: make result value available in logginghandler, verbosely log set tokeninfo
+  * feat: new API endpoint POST /info/<serial> to bulk modify tokeninfo
+  * feat: token janitor find by user
+  * fix: make ldap connections persistent and restartable
+  * fix: wrong indentation caused false "Action .. requires serial number" line
+  * fix: improve handling of resident keys
+  * fix: rename provider module names in DB on migration
+
+ -- eduMFA <edumfa-dev@listserv.dfn.de>  Tue, 19 Mar 2024 38:57:00 +0100
+
+edumfa (1.3.0{{CODENAME}}) {{CODENAME}}; urgency=medium
+
+  * Corrected ASCII art spacing
+  * Handled Windows credProtect flag
+  * Drop support for CentOS and Red Hat
+
+ -- eduMFA <edumfa-dev@listserv.dfn.de>  Mon, 4 Mar 2024 38:34:00 +0100
+
+edumfa (1.2.0{{CODENAME}}) {{CODENAME}}; urgency=medium
+
+  * Bugfix Release for CI Actions
+
+ -- eduMFA <edumfa-dev@listserv.dfn.de>  Fri, 1 Mar 2024 13:46:00 +0100
+
+edumfa (1.1.0{{CODENAME}}) {{CODENAME}}; urgency=medium
+
+  * Bugfix Release for CI Actions
+
+ -- eduMFA <edumfa-dev@listserv.dfn.de>  Fri, 1 Mar 2024 13:35:00 +0100
+
+edumfa (1.0.0{{CODENAME}}) {{CODENAME}}; urgency=medium
+
+  * Add option to enroll passkeys
+  * Add option to include description in user notifications
+  * Add containers as release artifacts
+  * Add option to filter the user_token_number on a given range instead of constant
+  * Add option to use the Remote-User header behind a reverse proxy
+
+ -- eduMFA <edumfa-dev@listserv.dfn.de>  Fri, 1 Mar 2024 12:45:00 +0100
