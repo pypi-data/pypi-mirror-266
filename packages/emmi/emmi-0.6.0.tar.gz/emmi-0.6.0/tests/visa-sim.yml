@@ -1,0 +1,34 @@
+spec: 1.1
+
+devices:
+  
+  SDS2000X:
+    eom:
+      TCPIP INSTR:
+        q: "\n"
+        r: "\r"
+    error: "Nope."
+      
+    dialogues:
+      - q: "*IDN?"
+        r: "Something something Siglend SDS2000X Plus."
+
+  SMC9300:
+    eom:
+      TCPIP SOCKET:
+        q: "\n"
+        r: "\r"
+        
+    error: "*bwaaahahaha* No."
+
+    dialogues:
+      - q: "*IDN?"
+        r: "Not a Huber SMC9300"
+
+resources:
+  
+  TCPIP::SMC9300::1234::SOCKET:
+    device: SMC9300
+
+  TCPIP::SDS2000X::INSTR:
+    device: SDS2000X

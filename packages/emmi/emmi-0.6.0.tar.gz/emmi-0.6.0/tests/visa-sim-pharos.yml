@@ -1,0 +1,40 @@
+spec: 1.1
+
+devices:
+  PHAROS:
+    eom:
+      TCPIP INSTR:
+        q: "\r"
+        r: "\n"
+
+      ASRL INSTR:
+        q: "\r"
+        r: "\n"
+        
+    error: "Meh. Nope."
+
+    dialogues:
+      - q: "VERSION"
+        r: "Not really a PHAROS UART module ver. 2.12"
+
+    properties:
+
+      baud_rate:
+        default: 38400
+        setter:
+          q: "BAUD_RATE {}"
+          r: "Ok"
+
+      osc_out_state:
+        default: 137
+        getter:
+          q: "OSC_OUT_STATE"
+          r: "OSC_OUT_CTRL: {}"
+
+      shutter_state:
+        default: "1, 2, 4"
+        getter:
+          q: "SHUTTER_STATE"
+          r: "SHUTTER_CTRL: {}"
+
+      

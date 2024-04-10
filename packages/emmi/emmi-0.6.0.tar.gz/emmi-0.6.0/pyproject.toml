@@ -1,0 +1,68 @@
+[build-system]
+requires = ["setuptools>=64.0", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "emmi"
+authors = [
+    { name = "Matthias Rössle", email = "matthias.roessle@helmholtz-berlin.de" },
+    { name = "Florin Boariu", email = "florin.pt@rootshell.ro" },
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Operating System :: POSIX :: Linux",
+    "Development Status :: 2 - Pre-Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering"
+]
+dependencies = [
+    "schema",
+    "pyvisa",
+    "pyvisa-py",
+    "numpy"
+]
+dynamic = ["version"]
+description = "A Selection of Tools for EPICS Monday-Morning Integrations"
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = []
+
+[project.urls]
+#"Homepage"    = "https://emmi.rootshell.ro"
+"Source Code" = "https://gitlab.com/codedump2/emmi/"
+"Bug Tracker" = "https://gitlab.com/codedump2/emmi/-/issues"
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-cov",
+    "pyvisa-sim",
+    "softioc",
+    "pyepics",
+    "pytest-asyncio"
+]
+
+scpi = [
+    "parse",
+    "zeroconf",
+    "psutil",
+    "asyncio"
+]
+
+softioc = [
+    "softioc"
+]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra"
+log_cli = true
+testpaths = [
+    "tests",
+]
+
+[tool.setuptools_scm]
+write_to = "src/emmi/_version.py"

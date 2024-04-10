@@ -1,0 +1,42 @@
+spec: 1.1
+
+devices:
+  SDS2000X:
+    eom:
+      TCPIP INSTR:
+        q: "\n"
+        r: "\n"
+
+      ASRL INSTR:
+        q: "\n"
+        r: "\n"
+
+    error:
+      response:
+        command_error: "Nope."
+      
+    dialogues:
+      - q: "*IDN?"
+        r: "Something something Siglent SDS2000X Plus."
+
+    properties:
+      
+      disp_back:
+        default: 100
+        getter:
+          q: "DISP:BACK?"
+          r: "{}"
+        setter:
+          q: "DISP:BACK {}"
+        specs:
+          min: 1
+          max: 100
+          type: int
+      
+      func_gval:
+        default: -0.0004, -0.0004
+        getter:
+          q: "FUNC:GVAL?"
+          r: "{}"
+        setter:
+          q: "FUNC:GVAL {}"
