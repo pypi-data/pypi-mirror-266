@@ -1,0 +1,84 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools>=64", "setuptools-scm>=8"]
+
+[project]
+name = "sqlalchemy-dlock"
+readme = { file = 'README.md', content-type = 'text/markdown' }
+authors = [{ name = "liu xue yan", email = "liu_xue_yan@foxmail.com" }]
+description = "A distributed lock implementation based on SQLAlchemy"
+keywords = [
+  "SQLAlchemy",
+  "lock",
+  "distributed",
+  "distributed lock",
+  "SQL",
+  "database",
+  "DBMS",
+]
+license = { text = "BSD-3-Clause" }
+classifiers = [
+  "License :: OSI Approved :: BSD License",
+  "Topic :: Database :: Front-Ends",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+dynamic = ["version"]
+
+# requires python version
+requires-python = ">=3.7"
+# requires
+dependencies = [
+  "SQLAlchemy>=1.4,<3.0",
+  "typing-extensions; python_version<'3.10'",
+]
+# extra requires
+[project.optional-dependencies]
+# SQLAlchemy with asyncio, no engines
+asyncio = ["SQLAlchemy[asyncio]>=1.4,<3.0"]
+# MySQL
+mysqlclient = ["mysqlclient"]
+pymysql = ["pymysql"]
+# MySQL asyncio
+aiomysql = ["SQLAlchemy[asyncio]>=1.4,<3.0", "aiomysql"]
+# Postgres
+# psycopg2: sync
+psycopg2 = ["psycopg2>=2.8"] # psycopg2 compiling needed when install
+psycopg2-binary = [
+  "psycopg2-binary>=2.8",
+] # psycopg2 with pre-compiled C library
+# psycopg3: both sync and asyncio
+psycopg3 = ["SQLAlchemy>=2.0,<3.0", "psycopg"] # psycopg3 dynamik link to libpq
+psycopg3-binary = [
+  "SQLAlchemy>=2.0,<3.0",
+  "psycopg[binary]",
+] # psycopg3 with pre-compiled C library
+psycopg3-c = [
+  "SQLAlchemy>=2.0,<3.0",
+  "psycopg[c]",
+] # psycopg3 compiling needed when install
+# Postgres asyncio
+asyncpg = ["SQLAlchemy[asyncio]>=1.4,<3.0", "asyncpg"]
+
+# Project links
+[project.urls]
+homepage = "https://github.com/tanbro/sqlalchemy-dlock"
+documentation = "https://sqlalchemy-dlock.readthedocs.io/"
+repository = "https://github.com/tanbro/sqlalchemy-dlock.git"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools_scm]
+write_to = "src/sqlalchemy_dlock/_version.py"
+
+[tool.setuptools.package-data]
+sqlalchemy_dlock = ["sqlalchemy_dlock/py.typed"]
