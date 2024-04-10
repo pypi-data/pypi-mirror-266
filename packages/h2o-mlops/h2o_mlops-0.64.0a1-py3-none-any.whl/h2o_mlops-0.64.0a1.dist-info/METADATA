@@ -1,0 +1,280 @@
+Metadata-Version: 2.1
+Name: h2o_mlops
+Version: 0.64.0a1
+Summary: Python client for H2O MLOps.
+Author-email: "H2O.ai" <support@h2o.ai>
+License: Proprietary License
+Project-URL: Documentation, https://docs.h2o.ai/mlops/py-client/install
+Project-URL: Changelog, https://docs.h2o.ai/mlops/py-client/changelog
+Keywords: h2o,mlops
+Classifier: Development Status :: 3 - Alpha
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: h2o-authn
+Requires-Dist: h2o-cloud-discovery
+Requires-Dist: httpx
+Requires-Dist: python-dateutil
+Requires-Dist: tabulate
+Requires-Dist: urllib3
+Requires-Dist: yarl
+
+# An H2O MLOps Python Client for Regular Folks
+
+This project is a work in progress and the API may change. Please send questions or feedback to support@h2o.ai.
+
+## Example
+
+
+```
+import h2o_mlops
+import httpx
+import time
+```
+
+First we have to connect to MLOps. In this example the client is detecting credentials and configuration options from the environment. 
+
+
+```
+mlops = h2o_mlops.Client()
+```
+
+### Everything Starts with a Project
+
+A project is the main base of operations for most MLOps activities.
+
+
+```
+project = mlops.projects.create(name="demo")
+```
+
+
+```
+mlops.projects.list(name="demo")
+```
+
+
+
+
+        | name   | uid
+    ----+--------+--------------------------------------
+      0 | demo   | 45e5a888-ec1f-4f9c-85ca-817465344b1f
+
+
+
+You can also do `project = mlops.projects.get(...)`.
+
+### Upload an Experiment
+
+
+```
+experiment = project.experiments.create(
+    data="/Users/jgranados/Downloads/GBM_model_python_1649367037255_1.zip",
+    name="experiment-from-client"
+)
+```
+
+Some experiment attributes of interest.
+
+
+```
+experiment.scoring_artifact_types
+```
+
+
+
+
+    ['h2o3_mojo']
+
+
+
+
+```
+experiment.uid
+```
+
+
+
+
+    'e307aa9f-895f-4b07-9404-b0728d1b7f03'
+
+
+
+Existing experiments can be viewed and retrieved.
+
+
+```
+project.experiments.list()
+```
+
+
+
+
+        | name                   | uid                                  | tags
+    ----+------------------------+--------------------------------------+--------
+      0 | experiment-from-client | e307aa9f-895f-4b07-9404-b0728d1b7f03 |
+
+
+
+You can also do `experiment = projects.experiments.get(...)`.
+
+### Create a Model
+
+
+```
+model = project.models.create(name="model-from-client")
+```
+
+Existing models can be viewed and retrieved.
+
+
+```
+project.models.list()
+```
+
+
+
+
+        | name              | uid
+    ----+-------------------+--------------------------------------
+      0 | model-from-client | d18a677f-b800-4a4b-8642-0f59e202d225
+
+
+
+You can also do `model = projects.models.get(...)`.
+
+### Register an Experiment to a Model
+
+In order to deploy a model, it needs to have experiments registered to it.
+
+
+```
+model.register(experiment=experiment)
+```
+
+
+```
+model.versions()
+```
+
+
+
+
+        |   version | experiment_uid
+    ----+-----------+--------------------------------------
+      0 |         1 | e307aa9f-895f-4b07-9404-b0728d1b7f03
+
+
+
+
+```
+model.get_experiment(model_version="latest").name
+```
+
+
+
+
+    'experiment-from-client'
+
+
+
+### Deployment
+
+#### What is needed for a single model deployment?
+- project
+- model
+- environment
+- scoring runtime
+- name for deployment
+
+We already have a `project` and `model`. Let us look at how to get the `environment`.
+
+
+```
+project.environments.list()
+```
+
+
+
+
+        | name   | uid
+    ----+--------+--------------------------------------
+      0 | DEV    | a6af758e-4a98-4ae2-94bf-1c84e5e5a3ed
+      1 | PROD   | f98afa18-91f9-4a97-a031-4924018a8b8f
+
+
+
+
+```
+environment = project.environments.list(name="DEV")[0]
+```
+
+You can also do `project.environments.get(...)`.
+
+Next we'll get the `scoring_runtime` for our model type. Notice we're using the artifact type from the experiment to filter runtimes.
+
+
+```
+mlops.runtimes.scoring.list(artifact_type=model.get_experiment().scoring_artifact_types[0])
+```
+
+
+
+
+        | name              | artifact_type   | uid
+    ----+-------------------+-----------------+-------------------
+      0 | H2O-3 MOJO scorer | h2o3_mojo       | h2o3_mojo_runtime
+
+
+
+
+```
+scoring_runtime = mlops.runtimes.scoring.list(
+    artifact_type=model.get_experiment().scoring_artifact_types[0]
+)[0]
+```
+
+Now we can create a deployment.
+
+
+```
+deployment = environment.deployments.create_single(
+    name = "deployment-from-client",
+    model = model,
+    scoring_runtime = scoring_runtime
+)
+
+while not deployment.is_healthy():
+    deployment.raise_for_failure()
+    time.sleep(5)
+    
+deployment.status()
+```
+
+
+
+
+    'HEALTHY'
+
+
+
+### Score
+
+Once you have a deployment, you can score with it through the HTTP protocol.
+
+
+```
+response = httpx.post( 
+    url=deployment.url_for_scoring,
+    json=deployment.get_sample_request()
+)
+
+response.json()
+```
+
+
+
+
+    {'fields': ['C11.0', 'C11.1'],
+     'id': 'e307aa9f-895f-4b07-9404-b0728d1b7f03',
+     'score': [['0.49786656666743145', '0.5021334333325685']]}
