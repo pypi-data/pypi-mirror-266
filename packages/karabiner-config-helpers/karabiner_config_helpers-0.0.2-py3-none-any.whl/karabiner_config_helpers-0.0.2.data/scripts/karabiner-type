@@ -1,0 +1,45 @@
+#!python
+import argparse
+import json
+import string
+import sys
+# local
+from karabiner_config_helpers import get_resolver, helper_default_argument_parser_action_handler
+from karabiner_config_helpers.type_utils import type_text_main
+from karabiner_config_helpers.app_layouts import load_app_resolver_map_json
+
+
+def generate_config_json(args) -> dict:
+    if args.stdin:
+        string_to_type = sys.stdin.read()
+    elif args.test:
+        string_to_type = string.printable
+    else:
+        string_to_type = args.type
+
+    keybinding_list = list(sorted([x.lower() for x in args.keybindings]))
+    app_resolver_map = load_app_resolver_map_json()
+    if args.description != None:
+        description = args.description
+    else:
+        description = f"-1 | #{','.join(keybinding_list)} | {' or '.join(keybinding_list)} -> Type the string '{string_to_type}'"
+        if args.back:
+            description += f" and go back {args.back} characters"
+
+    return type_text_main(string_to_type, description, args.back, keybinding_list, app_resolver_map)
+
+
+if __name__ == "__main__":
+    default_layout = "us_mac"
+
+    ap = argparse.ArgumentParser()
+    input_group = ap.add_mutually_exclusive_group(required=True)
+    input_group.add_argument("--stdin", action="store_true", help="read input from standard input stream, so that you can pipe it into this program without needing to worry about escaping")
+    input_group.add_argument("--type", metavar="TEXT_TO_TYPE", help="this is the string that should be typed")
+    input_group.add_argument("--test", action="store_true", help="replace string_to_type with all printable ASCII characters")  
+
+    ap.add_argument("keybindings", nargs="+", help="what key combinations need to be pressed to type the text. Format: <modifier1>+<modifier2...>+<key>. If you specify multiple, only one of them needs to be pressed (example: 'right_command+right_meta+t', 'button4')")
+    ap.add_argument("-b", "--back", type=int, default=0, help="move the cursor backwards by X characters, so that it is within the just typed text (default: 0)")
+    ap.add_argument("-d", "--description", help="use this value as a description instead of automatically generating one")
+
+    helper_default_argument_parser_action_handler(ap, generate_config_json)
