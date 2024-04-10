@@ -1,0 +1,67 @@
+[build-system]
+requires = [
+    "setuptools>=64.0",
+    "setuptools_scm[toml]>=6.2"
+]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "dg645-ioc"
+authors = [
+    { name = "Matthias Rössle", email = "matthias.roessle@helmholtz-berlin.de" },
+    { name = "Florin Boariu", email = "florin.pt@rootshell.ro" },
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Operating System :: POSIX :: Linux",
+    "Development Status :: 2 - Pre-Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering"
+]
+dependencies = [
+    "caproto",
+    "emmi>=0.5.0", # required for async VISA
+    "pyvisa-py",
+    "pyvisa-sim",
+    "parse",
+]
+dynamic = ["version"]
+description = "CAproto-based pure-Python EPICS IOC for the Stanford Research Systems DG645 delay generator."
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = []
+
+
+[project.urls]
+Source = "https://gitlab.com/kmc3-xpp/kronos-ioc"
+Issues = "https://gitlab.com/kmc3-xpp/kronos-ioc/-/issues"
+
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-cov",
+    "pytest-asyncio"
+]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -s"
+log_cli = true
+testpaths = [ "test" ]
+
+[tool.coverage.run]
+branch = true
+command_line = "pytest"
+include = [ "src/kronos/" ]
+source_pkgs = [ "kronos" ]
+omit = [ "./test/*" ]
+
+[tool.setuptools_scm]
+write_to = "src/kronos/_version.py"
+
+[project.scripts]
+dg645-ioc = "kronos.main:main"

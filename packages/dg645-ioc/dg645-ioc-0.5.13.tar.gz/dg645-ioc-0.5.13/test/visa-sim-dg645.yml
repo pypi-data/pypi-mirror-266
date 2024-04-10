@@ -1,0 +1,364 @@
+spec: 1.1
+devices:
+  DG645:
+    eom:
+      ASRL INSTR:
+        q: "\r\n"
+        r: "\r\n"
+
+      TCPIP INSTR:
+        q: "\r\n"
+        r: "\r\n"
+
+    error:
+      response:
+        command_error: "Nope."
+
+    dialogues:
+      - q: "*IDN?"
+        r: "Stanford Research Systems,DG645,s/n001776,verITSA.SIM.BABY"
+
+      - q: "*ESR?"
+        r: "Error register stuff"
+
+      # clear error
+      - q: "*CLS"
+
+      - q: "LERR?"
+        r: "Never gonna give you up"
+        
+      - q: "INSR?"
+        r: "Status register stuff"        
+
+    # Status queries / trigger:
+    #        "ADVT {}", # advanced triggerin: 0 -- off, 1 -- on
+    #        "TLVL {}", # trigger level
+    #        "TSRC {}", # trigger source: 0 internal, 1 external rising, 2 external falling edge
+    #
+    #        "TRAT", # trigger rate (for internal trigger) -- query only?    
+    #
+    # Status queries / setters
+    #        "PRES {ch},{val}", # prescale for advanced triggering
+    #        "LAMP {ch},{val}", # level amplitude (V)
+    #        "LOFF {ch},{val}", # level offset (V)
+    #        "LPOL {ch},{val}", # level polarity: 0 -- neg, 1 -- pos
+    #        "DLAY {ch},0,{val}", # delay    
+    #
+    # Commands:
+    #  DISP {??},{ch}
+
+
+    properties:
+
+      # does nothing, just mocks save/load commands
+      mock_save:
+        default: "0"
+        setter:
+          q: "*SAV {}"
+      mock_load:
+        default: "0"
+        setter:
+          q: "*RCL {}"
+
+      advanced_trigger:
+        default: "0"
+        getter:
+          q: "ADVT?"
+          r: "{}"
+        setter:
+          q: "ADVT {}"
+
+      trigger_level:
+        default: "3.14"
+        getter:
+          q: "TLVL?"
+          r: "{}"
+        setter:
+          q: "TLVL {}"
+
+      trigger_source:
+        default: "0"
+        getter:
+          q: "TSRC?"
+          r: "{}"
+        setter:
+          q: "TSRC {}"
+
+      trigger_rate:
+        default: "104835"
+        getter:
+          q: "TRAT?"
+          r: "{}"
+        setter:
+          q: "TRAT {}"
+          
+      # "mock commands" -- these don't do anything useful, just
+      # make sure just make sure the corresponding command is accepted
+      # and somehow, loosely, resemble the DG645 syntax.
+      mock_display:
+        default: "0"
+        getter:
+          q: "DISP? {}"
+          r: "0"
+        setter:
+          q: "DISP {}"
+
+      # per-channel delay settings; this works by 10 points (0..9),
+      # representing start/end point for a channel (p*2, p*2+1) or so.
+      # values at 8 and 9 are the earliest/latest delay point, but
+      # will be nonsensical here, of course. no setter
+      a_delay_t0:
+        default: 37
+        getter:
+          q: "DLAY? 2"
+          r: "0,{}"
+        setter:
+          q: "DLAY 2,0,{}"
+      #b_delay_t0:
+      #  default: 42
+      #  getter:
+      #    q: "DLAY? 3"
+      #    r: "0,{}"
+      #  setter:
+      #    q: "DLAY 3,0,{}"
+      b_delay_a:
+        default: 42
+        getter:
+          q: "DLAY? 3"
+          r: "2,{}"
+        setter:
+          q: "DLAY 3,2,{}"
+      c_delay_t0:
+        default: 37
+        getter:
+          q: "DLAY? 4"
+          r: "0,{}"
+        setter:
+          q: "DLAY 4,0,{}"
+      #d_delay_t0:
+      #  default: 42
+      #  getter:
+      #    q: "DLAY? 5"
+      #    r: "0,{}"
+      #  setter:
+      #    q: "DLAY 5,0,{}"
+      d_delay_c:
+        default: 42
+        getter:
+          q: "DLAY? 5"
+          r: "4,{}"
+        setter:
+          q: "DLAY 5,2,{}"
+      e_delay_t0:
+        default: 37
+        getter:
+          q: "DLAY? 6"
+          r: "0,{}"
+        setter:
+          q: "DLAY 6,0,{}"
+      #f_delay_t0:
+      #  default: 42
+      #  getter:
+      #    q: "DLAY? 7"
+      #    r: "0,{}"
+      #  setter:
+      #    q: "DLAY 7,0,{}"
+      f_delay_e:
+        default: 42
+        getter:
+          q: "DLAY? 7"
+          r: "6,{}"
+        setter:
+          q: "DLAY 7,2,{}"
+      g_delay_t0:
+        default: 37
+        getter:
+          q: "DLAY? 8"
+          r: "0,{}"
+        setter:
+          q: "DLAY 8,0,{}"
+      #h_delay_t0:
+      #  default: 42
+      #  getter:
+      #    q: "DLAY? 9"
+      #    r: "0,{}"
+      #  setter:
+      #    q: "DLAY 9,0,{}"
+      h_delay_g:
+        default: 42
+        getter:
+          q: "DLAY? 9"
+          r: "8,{}"
+        setter:
+          q: "DLAY 9,2,{}"
+          
+      t0_delay_t0:
+        default: 37
+        getter:
+          q: "DLAY? 0"
+          r: "0,{}"
+      t1_delay_t0:
+        default: 42
+        getter:
+          q: "DLAY? 1"
+          r: "0,{}"
+
+      # per-channel prescale factor
+      prescale_input:
+        default: 12
+        getter:
+          q: "PRES? 0"
+          r: "{}"
+        setter:
+          q: "PRES 0,{}"
+      prescale_ab:
+        default: 1
+        getter:
+          q: "PRES? 1"
+          r: "{}"
+        setter:
+          q: "PRES 1,{}"      
+      prescale_cd:
+        default: 1
+        getter:
+          q: "PRES? 2"
+          r: "{}"
+        setter:
+          q: "PRES 2,{}"
+      prescale_ef:
+        default: 1
+        getter:
+          q: "PRES? 3"
+          r: "{}"
+        setter:
+          q: "PRES 3,{}"
+      prescale_gh:
+        default: 1
+        getter:
+          q: "PRES? 4"
+          r: "{}"
+        setter:
+          q: "PRES 4,{}"
+
+      # per-channel level amplitude
+      level_amplitude_input:
+        default: 12
+        getter:
+          q: "LAMP? 0"
+          r: "{}"
+        setter:
+          q: "LAMP 0,{}"
+      level_amplitude_ab:
+        default: 1
+        getter:
+          q: "LAMP? 1"
+          r: "{}"
+        setter:
+          q: "LAMP 1,{}"      
+      level_amplitude_cd:
+        default: 1
+        getter:
+          q: "LAMP? 2"
+          r: "{}"
+        setter:
+          q: "LAMP 2,{}"
+      level_amplitude_ef:
+        default: 1
+        getter:
+          q: "LAMP? 3"
+          r: "{}"
+        setter:
+          q: "LAMP 3,{}"
+      level_amplitude_gh:
+        default: 1
+        getter:
+          q: "LAMP? 4"
+          r: "{}"
+        setter:
+          q: "LAMP 4,{}"
+
+
+      # per-channel level offset
+      level_offset_input:
+        default: 12
+        getter:
+          q: "LOFF? 0"
+          r: "{}"
+        setter:
+          q: "LOFF 0,{}"
+      level_offset_ab:
+        default: 1
+        getter:
+          q: "LOFF? 1"
+          r: "{}"
+        setter:
+          q: "LOFF 1,{}"      
+      level_offset_cd:
+        default: 1
+        getter:
+          q: "LOFF? 2"
+          r: "{}"
+        setter:
+          q: "LOFF 2,{}"
+      level_offset_ef:
+        default: 1
+        getter:
+          q: "LOFF? 3"
+          r: "{}"
+        setter:
+          q: "LOFF 3,{}"
+      level_offset_gh:
+        default: 1
+        getter:
+          q: "LOFF? 4"
+          r: "{}"
+        setter:
+          q: "LOFF 4,{}"
+            
+
+      # per-channel level polarity
+      level_polarity_input:
+        default: 12
+        getter:
+          q: "LPOL? 0"
+          r: "{}"
+        setter:
+          q: "LPOL 0,{}"
+      level_polarity_ab:
+        default: 1
+        getter:
+          q: "LPOL? 1"
+          r: "{}"
+        setter:
+          q: "LPOL 1,{}"      
+      level_polarity_cd:
+        default: 1
+        getter:
+          q: "LPOL? 2"
+          r: "{}"
+        setter:
+          q: "LPOL 2,{}"
+      level_polarity_ef:
+        default: 1
+        getter:
+          q: "LPOL? 3"
+          r: "{}"
+        setter:
+          q: "LPOL 3,{}"
+      level_polarity_gh:
+        default: 1
+        getter:
+          q: "LPOL? 4"
+          r: "{}"
+        setter:
+          q: "LPOL 4,{}"
+    
+resources:
+  
+  ASRL1::INSTR:
+    device: DG645
+
+  TCPIP::kronos-sim::INSTR:
+    device: DG645
+    
+    
