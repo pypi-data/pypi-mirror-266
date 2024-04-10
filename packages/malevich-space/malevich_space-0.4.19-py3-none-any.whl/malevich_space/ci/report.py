@@ -1,0 +1,20 @@
+from pydantic import BaseModel
+
+from .status import CIStatus
+from .platform import CIPlatform
+
+
+class CIReportSetup(BaseModel):
+    config_path: str
+    comp_dir: str
+    platform: CIPlatform
+
+
+class CIReport(BaseModel):
+    branch: str
+    commit_digest: str
+    commit_message: str
+    status: CIStatus
+    image: str
+    image_user: str | None
+    image_token: str | None
