@@ -1,0 +1,37 @@
+Metadata-Version: 2.1
+Name: asmu
+Version: 0.0.1a4
+Summary: Acoustic Signal Measurement Utilities
+Author-email: felhub <felhub@net4us.at>
+Project-URL: Repository, https://gitlab.com/felhub/asmu
+Classifier: Programming Language :: Python :: 3
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Topic :: Multimedia :: Sound/Audio
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy >=1.26.4
+Requires-Dist: scipy >=1.13.0
+Requires-Dist: sounddevice >=0.4.6
+Requires-Dist: soundfile >=0.12.1
+
+# Acoustic Signal Measurement Utilities
+
+This package provides tools to conduct (acoustic) signal measurements utilizing a multichannel soundcard. One major advantage is the use of a .asm_setup file, to set the basic input and output parameters.
+
+## Recording
+The ASMU package comes with a Recording class, that can be used to record, store and play multichannel audio data.
+
+## Signal generation
+Derived from the Generator class, there are several classes available for real time signal generation used for various measurement applications.
+
+## Signal analysis
+For the time being signal analysis is done manually via Numpy arrays. For future versions there will be several analysis classes and functions available, automatically incorporation calibration data. 
+
+## Real-time processing
+The package structure allows all tools to operate in real time, making additional analysis possible.
+
+## Viewing
+Viewing is not fully implemented yet.
