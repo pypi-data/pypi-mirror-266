@@ -1,0 +1,54 @@
+Metadata-Version: 2.1
+Name: aiorubika
+Version: 0.0.2
+Summary:  Rubika API Framework for Python
+Home-page: https://github.com/metect/rubika
+Author: amirali irvany
+Author-email: dev.amirali.irvany@gmail.com
+Keywords: rubika,aiorubika,chat,bot,robot,asyncio
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)
+Classifier: Topic :: Internet
+Classifier: Topic :: Communications
+Classifier: Topic :: Communications :: Chat
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Software Development :: Libraries :: Application Frameworks
+Requires-Python: ~=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: aiohttp
+Requires-Dist: pycryptodome
+Requires-Dist: pydantic==1.10.12
+Requires-Dist: aiofiles
+Provides-Extra: cv
+Requires-Dist: opencv-python; extra == "cv"
+Provides-Extra: pil
+Requires-Dist: pillow; extra == "pil"
+
+# AIORubika
+Rubika API Framework for Python
+
+### Examples
+```python
+from aiorubika import Client, filters, utils
+from aiorubika.types import Updates
+
+bot = Client(name='rubpy')
+
+@bot.on_message_updates(filters.text)
+async def updates(update: Updates):
+    print(update)
+    await update.reply(utils.Code('hello') + utils.Underline('from') + utils.Bold('rubpy'))
+
+bot.run()
+```
+
+## Install
+```bash
+pip install aiorubika
+```
