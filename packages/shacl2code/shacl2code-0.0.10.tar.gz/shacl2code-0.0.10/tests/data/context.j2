@@ -1,0 +1,9 @@
+{% for url in context.urls -%}
+Context: {{ url }}
+{% endfor -%}
+{% for enum in enums %}
+{{ enum._id }}: {{ context.compact(enum._id) }}
+{% endfor %}
+{% for class in classes %}
+{{ class._id }}: {{ context.compact(class._id) }}
+{% endfor %}
