@@ -1,0 +1,42 @@
+site_name: doXtrings
+nav:
+  - doXtrings: index.md
+  - Getring started: start.md
+  - Usage: usage.md
+  - Contributing: contributing.md
+  - API Reference: reference/
+
+extra_css:
+  - ./overrides/extra.css
+
+theme:
+  name: "material"
+  palette:
+    scheme: bcg
+  custom_dir: ./docs/overrides/templates
+  logo: img/logo.png
+  favicon: img/logo.png
+  features:
+    - content.action.edit
+    - navigation.instant
+    - navigation.tracking
+    - announce.dismiss
+    - content.code.copy
+  icon:
+    edit: material/pencil
+    view: material/eye
+plugins:
+  - search
+  - gen-files:
+      scripts:
+        - docs/gen_ref_pages.py
+  - literate-nav:
+      nav_file: SUMMARY.md
+  - section-index
+  - mkdocstrings
+
+markdown_extensions:
+  - admonition
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      linenums: true
