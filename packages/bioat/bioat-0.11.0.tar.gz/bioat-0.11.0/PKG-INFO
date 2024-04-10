@@ -1,0 +1,71 @@
+Metadata-Version: 2.1
+Name: bioat
+Version: 0.11.0
+Summary: Bioinformatic toolkit with python
+Home-page: https://github.com/hermanzhaozzzz/bioat
+License: MIT
+Author: Herman Zhao
+Author-email: hermanzhaozzzz@gmail.com
+Requires-Python: >=3.10.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: biopython (>=1.80)
+Requires-Dist: bs4 (>=0.0.1)
+Requires-Dist: coloredlogs (>=15.0.1)
+Requires-Dist: fire (>=0.5.0)
+Requires-Dist: matplotlib (>=3.7.1)
+Requires-Dist: numpy (>=1.24.1)
+Requires-Dist: pandas (>=1.5)
+Requires-Dist: psutil (>=5.9.8,<6.0.0)
+Requires-Dist: pysam (>=0.20.0)
+Requires-Dist: requests (>=2.31.0)
+Requires-Dist: statsmodels (>=0.13.5)
+Requires-Dist: tabulate (>=0.9.0)
+Requires-Dist: tqdm (>=4.64.1)
+Project-URL: Repository, https://github.com/hermanzhaozzzz/bioat
+Description-Content-Type: text/markdown
+
+# bioat 
+the Bioinformatic Analysis Tools
+
+![macos](https://github.com/hermanzhaozzzz/bioat/actions/workflows/macos.yml/badge.svg)
+![linux](https://github.com/hermanzhaozzzz/bioat/actions/workflows/linux.yml/badge.svg)
+![windows](https://github.com/hermanzhaozzzz/bioat/actions/workflows/windows.yml/badge.svg)
+
+## about author
+
+> author: [赵华男 | ZHAO Hua-nan](https://scholar.google.com/citations?user=ojSVoWQAAAAJ&hl=en)
+>
+> email: hermanzhaozzzz@gmail.com
+>
+> [Zhihu](https://www.zhihu.com/people/hymanzhaozzzz) | [BLOG](http://zhaohuanan.cc)
+
+## Introduction
+A python **package** & **command line toolkit** for Bioinformatics and data science!
+
+**\<under development\>!!**
+
+## Installation
+```shell
+# supported platform: Linux / MacOS (intel & arm64) / WSL on Windows
+pip install --upgrade bioat
+```
+
+
+## usage
+```shell
+# list commands
+bioat list
+# check version
+bioat version
+# check information about bioat
+bioat about
+
+# example usage
+bioat bam remove_clip --help
+samtools view -h test_sorted_n.bam | bioat bam remove_clip | tail
+```
+[circos plot](docs/demo_circos-plot.ipynb)
