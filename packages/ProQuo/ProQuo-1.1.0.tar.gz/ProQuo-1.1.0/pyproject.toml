@@ -1,0 +1,44 @@
+[build-system]
+requires = [
+    "setuptools>=42",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ProQuo"
+version = "1.1.0"
+authors = [
+    { name = "Frederik Arnold", email = "frederik.arnold@hu-berlin.de"}
+]
+description = "ProQuo is a tool for the detection of short quotations (<= 4 words) between two texts, a source text and a target text. The target text is the text quoting the source text. Quotations in the target text need to be clearly marked with quotations marks."
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3.9"
+keywords = ["quotation detection", "quotation identification", "literal citation extraction",
+    "natural language processing", "nlp", "text reuse"]
+dependencies = [
+    "quid~=2.6.1",
+    "kpcommons~=0.0.2",
+    "transformers~=4.39.3",
+    "torch~=2.2.2",
+    "scikit-learn~=1.2.1",
+    "keras-preprocessing~=1.1.2"
+]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["proquo*"]
+
+[project.scripts]
+proquo = "proquo.cli.ProQuoCLI:main"
+proquolm = "proquo.cli.ProQuoLmCLI:main"
+
+[project.urls]
+"Homepage" = "https://hu.berlin/proquo"
