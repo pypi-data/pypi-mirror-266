@@ -1,0 +1,138 @@
+[tool.althaia]
+upstream_version = "3.21.1"
+
+[tool.poetry]
+name = "althaia"
+version = "3.21.1"
+description = "Marshmallow fork optimized for dumping speed."
+authors = ["Dusko Simidzija <dusko.simidzija@gmail.com>"]
+maintainers = ["Dusko Simidzija <dusko.simidzija@gmail.com>"]
+homepage = "https://dsimidzija.github.io"
+repository = "https://github.com/dsimidzija/python-althaia"
+license = "MIT"
+readme = "README.md"
+keywords = [
+    "serialization",
+    "rest",
+    "json",
+    "api",
+    "marshal",
+    "marshalling",
+    "deserialization",
+    "validation",
+    "schema",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+packages = [
+    { include = 'althaia/**/*.py' },
+]
+include = [
+    { path = "README.md" },
+    { path = "althaia/**/*.py" },
+    { path = "althaia/**/*.so", format = "wheel" },
+    { path = "althaia/**/*.pyd", format = "wheel" },
+]
+exclude = [
+    "**/.gitignore",
+    "althaia/**/*.orig",
+    "althaia/**/*.rej",
+    "upstream",
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+# copied from marshmallow
+packaging = ">=17.0"
+
+[tool.poetry.dev-dependencies]
+cython = "3.0.0"
+dsi-utils = {git = "https://github.com/dsimidzija/python-dsi-utils.git", rev = "master"}
+pep440 = "^0.1.0"
+taskipy = "^1.9.0"
+toml = "^0.10.2"
+twine = "^3.7.1"
+# everything below is needed by upstream marshmallow tests
+pytest = "^6.2.5"
+pytz = "^2021.3"
+simplejson = "^3.17.6"
+
+[tool.poetry.build]
+script = "builder.py"
+generate-setup-file = false
+
+[build-system]
+requires = [
+    "Cython==3.0.0",
+    "poetry",
+    "poetry_core>=1.0.0",
+    "setuptools>=62.3.2",
+]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = [
+    "tests",
+]
+
+[tool.taskipy.tasks]
+version-check = { cmd = "./scripts/version_check.sh" }
+build = { cmd = "task upstream-reset && task build-wheel", help = "Full build, resets upstream submodule, applies patches, builds wheel." }
+build-wheel = { cmd = "poetry build --format wheel", help = "Build a python wheel using the current state of the repo." }
+build-sdist = { cmd = "poetry build --format sdist", help = "Build a sdist package using the current state of the repo." }
+clean = { cmd = "rm -rf ./althaia/marshmallow/*.so", help = "Clean compiled modules." }
+inspect = { cmd = "unzip -l 'dist/*.whl'", help = "List the content of all wheels in dist/ folder." }
+upstream-performance = { cmd = "./scripts/upstream_performance.sh", help = "Run upstream marshmallow performance benchmark on top of Althaia." }
+upstream-reset = { cmd = "./scripts/upstream_reset.sh", help = "Reset upstream submodule to the version defined in pyproject.toml." }
+upstream-test = { cmd = "./scripts/upstream_test.sh", help = "Run upstream marshmallow tests on top of Althaia to check if we're 100% compatible." }
+publish-test = { cmd = "twine upload --skip-existing --repository testpypi dist/*.whl", help = "Publishing dry-run to test PyPI."}
+
+[tool.cibuildwheel]
+build-frontend = "build"
+build-verbosity = 3
+# before-build is necessary, but I'm not sure why, as
+# cibuildwheel is not picking up cython from `build-system.requires`
+before-build = "python -m pip install cython==3.0.0"
+manylinux-x86_64-image = "manylinux2014"
+musllinux-x86_64-image = "musllinux_1_1"
+test-command = [
+    "mkdir -p /tmp/tests",
+    "cp {project}/upstream/tests/*.py /tmp/tests",
+    "cd /tmp",
+    "echo 'import althaia; althaia.patch()'>>tests/__init__.py",
+    "pytest tests",
+    "rm -rf /tmp/tests",
+]
+test-requires = [
+    "poetry",
+    "pytest",
+    "pytz",
+    "simplejson",
+    "taskipy",
+]
+
+[tool.cibuildwheel.linux]
+# 2023-07-27: cargo is needed because installing rpds-py fails on alpine
+# installing cargo with apk installs a *very* old version or rust/cargo, which fails later
+before-all = "scripts/build_alpine_install_rust.sh"
+environment = { LDFLAGS = "-Wl,--strip-debug" }
+
+[tool.cibuildwheel.windows]
+# "-Wl,-S" is equivalent to gcc's "-Wl,--strip-debug"
+environment = { LDFLAGS = "-Wl,-S" }
+test-command = [
+    "mkdir %TEMP%\\althaia\\tests",
+    "xcopy {project}\\upstream\\tests\\*.py %TEMP%\\althaia\\tests",
+    "cd %TEMP%\\althaia",
+    "python -c \"fin = open(\\\"tests\\conftest.py\\\", \\\"r\\\"); cont = fin.read(); fin.close(); cont = cont.replace(\\\"import pytest\\\", \\\"import althaia;althaia.patch();import pytest\\\"); fout = open(\\\"tests\\conftest.py\\\", \\\"w\\\"); fout.write(cont); fout.close();\"",
+    "pytest tests",
+]
