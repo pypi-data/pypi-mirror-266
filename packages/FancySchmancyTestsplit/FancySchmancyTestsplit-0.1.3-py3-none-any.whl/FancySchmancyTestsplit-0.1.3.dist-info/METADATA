@@ -1,0 +1,72 @@
+Metadata-Version: 2.1
+Name: FancySchmancyTestsplit
+Version: 0.1.3
+Summary: a more in-depth testsplit splitting intercategorical
+Author-email: Kevin Pohl <pohl.kevin@gmail.com>
+Maintainer-email: Kevin Pohl <pohl.kevin@gmail.com>
+License: MIT
+Keywords: test split,testsplit,train test split
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Education
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: numpy ==1.25.2
+Requires-Dist: pandas ==2.1.3
+Requires-Dist: scikit-learn ==1.3.2
+
+# fancy schmancy testsplit
+#### it's like a testsplit, but fancy and also schmancy
+----
+for reference:
+ package | fancy | schmancy | testsplit
+ :- | :- | :- | :-
+ sklearn.model_selection | &#128078; | &#128078; | &#128077;
+ fancy schmancy testsplit | &#128077; | &#128077; | &#128077;
+
+a testplit per label category, to ensure that every category is present
+        
+----
+### Examples
+
+Assume the following DataFrame:
+```Python
+df = DataFrame(data= {"Column A":[10, 14, 12, 13, 9, 5, 13, 16, 18, 4, 12],
+"Column B": ["Cat1", "Cat1", "Cat2", "Cat2", "Cat2", "Cat2", "Cat2", "Cat2", "Cat2", "Cat2", "Cat2"]})
+print(df)
+```
+|| Column A | Column B
+:- | -: | -:
+0 | 10 | Cat1
+1 | 14 | Cat1
+2 | 12 | Cat2
+3 | 13 | Cat2
+4 | 9 | Cat2
+5 | 5 | Cat2
+6 | 13 | Cat2
+7 | 16 | Cat2
+8 | 18 | Cat2
+9 | 4 | Cat2
+10 | 12 | Cat2
+
+If we assume further that Column B contains the label categories, we'd
+run the risk of eliminating Cat1 by doing a train test split at 50%.
+
+So, to preserve every existing category, the split will instead be made
+on every single subset of categories.
+
+As an example for Cat1:
+```Python
+subset = df[df["Column B"] == "Cat1"]
+X = subset.drop("Column B", axis= 1)
+y = subset["Column B"]
+if isinstance(y, Series): y = DataFrame(y)
+X_tr, X_te, y_tr, y_te = \
+    train_test_split(X, y, test_size = 0.5, random_state = 42)
+print(y_tr)
+```
+|| Column B
+:- | -:
+0 | Cat1
+
+This is done for every unique entry of the given label column, so that a random pick of train and test data is done for every category.
