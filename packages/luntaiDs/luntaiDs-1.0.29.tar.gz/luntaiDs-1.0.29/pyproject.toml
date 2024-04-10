@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools >= 61.1.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "luntaiDs"
+description = "Make Data Scientist life Easier Tool"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [
+  {name = "Ailun Qian (luntaixia)"},
+  {email = "ailunqian124@gmail.com"}
+]
+requires-python = ">=3.8"
+dynamic = ["version", "dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
