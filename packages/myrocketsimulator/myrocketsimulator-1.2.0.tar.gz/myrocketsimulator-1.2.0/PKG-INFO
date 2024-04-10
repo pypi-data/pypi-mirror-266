@@ -1,0 +1,151 @@
+Metadata-Version: 2.1
+Name: myrocketsimulator
+Version: 1.2.0
+Summary: MyRocketSimulator is a Python package designed to simulate spacecrafts launching from Earth and orbiting around it or flying to the Moon.
+Author-email: Thibault Bautze-Scherff <admin@myrocketsimulator.com>
+License: MIT License
+        
+        Copyright (c) 2023 Thibault Bautze-Scherff
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+Project-URL: repository, https://github.com/ThibaultBS/MyRocketSimulator/tree/main
+Project-URL: changelog, https://github.com/ThibaultBS/MyRocketSimulator/blob/main/changelog.md
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+
+# Welcome to MyRocketSimulator!
+MyRocketSimulator is a Python library for spacecraft orbit propagation around the Earth and missions towards and around the Moon. It provides the simulation environment for
+the author’s plan to replicate the complete trajectory of Apollo 11, from launch to splashdown. Necessary parts for such an undertaking a continuously added to MRS. 
+
+The simulator relies on a high-fidelity propagator that includes all relevant perturbating forces, such as drag, SRP, gravity with spherical harmonics and third body gravity. A published in-depth comparison with GMAT proved its accuracy for Earth orbiting spacecrafts. Download the paper [Spacecraft Orbit Propagation with the MyRocketSimulator Python Package]( https://www.researchgate.net/publication/375293398_Spacecraft_Orbit_Propagation_with_the_MyRocketSimulator_Python_Package).
+
+An early, non-published release of MRS was used to perform a preliminary flight simulation and analysis of the Moon-bound Artemis I mission. Download the paper [Preliminary Launch Trajectory Simulation for Artemis I with the Space Launch System]( https://www.researchgate.net/publication/362270344_Preliminary_Launch_Trajectory_Simulation_for_Artemis_I_with_the_Space_Launch_System).
+
+MRS 1.2 was used to recreate the actual launch trajectory of Artemis I by optimizing control parameters, aiming to reach a known statevector of the spacecraft some time after trans-lunar injection. Read the paper [Artemis I Launch Trajectory Reconstruction with the MyRocketSimulator Python Package](https://www.researchgate.net/publication/379640560_Artemis_I_Launch_Trajectory_Reconstruction_with_the_MyRocketSimulator_Python_Package).
+
+Relevant features of MRS 1.2:
+-	Multi-segment simulations providing distinct force configurations and delta-v maneuvers. 
+-	Earth and Moon gravity with spherical harmonics using [pyshtools]( https://shtools.github.io/SHTOOLS/).
+-	Solid tides for Earth and Moon.
+-	Third bodies (Sun, Venus, Mars, Jupiter, Moon).
+-	Precise ephemeris and coordinate transformations through [Skyfield]( https://rhodesmill.org/skyfield/).
+-	Atmospheric modelling with [PyNRLMSISE-00](https://github.com/st-bender/pynrlmsise00).
+-	DOP853 integration from [SciPy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html).
+-	Data frame export, including more than 60 run-time variables.
+-	Import of external state vectors for 1:1 trajectory comparison.
+-	Spacecraft modelling based on different parts with individual stages and engines.
+-	Attitude control in different frames, such as local ENU, launchsite ENU, VNB, relative to inertial and Earth-fixed velocity.
+-	Delta-v maneuvers in different frames.
+-	Pre-configured visualizations. 
+
+The typical workflow of MRS has three steps:
+- Define the mission settings, e.g. by writing your own mission file or editing a provided file.
+- Run the propagation.
+- Add required data and export the data frame for further use. 
+
+Exemplary visualization of flight with two delta-v maneuvers in order to raise the spacecraft's altitude:
+![GCRF view of satellite with Hohmann transfer to higher altitude](https://raw.githubusercontent.com/ThibaultBS/MyRocketSimulator/main/MRS_examples/MRSoutput/MRSexample3_GCRForbit.svg)
+
+## Installation
+### PyPI
+MRS can be automatically installed trough its release on PyPI ([Link](https://pypi.org/project/myrocketsimulator/)). Simply execute the following command: 
+
+`pip install myrocketsimulator`
+
+### Github
+The MRS library can be manually downloaded from Gibthub ([Link](https://github.com/ThibaultBS/MyRocketSimulator)). After downloading the repository, simply execute the following command in its top folder:
+
+`pip install .`
+
+## Getting started
+After installation, you are ready to start with your first simulation. The following code performs a 24-hour propagation of the ISS, using the included MRS default mission. Please note that Skyfield and spaceweather will require an internet connection to download relevant data, such as ephemeris files.
+
+```python
+# import MRS libraries
+from myrocketsimulator import MRSlib, MRSvislib
+
+# make MRSMission object with the default MRS mission
+MRSdemo0mission = MRSlib.MRSmission('defaultMRSmission')
+
+# run mission
+MRSdemo0mission.run_mission()
+
+# add latitude and longitude data to the data frame 
+MRSdemo0mission.expand_DFname(['EarthLLA'])
+
+# make MRSvislib object with the performed mission
+MRSdemo0viewer = MRSvislib.MRSviewer(MRSdemo0mission)
+
+# show ground track
+MRSdemo0viewer.plot_GroundtrackEarth()
+```
+The console output will be:
+```
+MRS:		Using default mission.
+MRS:		Loading mission object 'defaultMRSmission'.
+MRS:		Mission 'Default MRS Mission (ISS)' loaded.
+MRS:		Checking mission data validity.
+MRS:		Loading Default MRS spacecraft (ISS) as static spacecraft.
+MRS:		Mission data valid.
+MRS:		Running mission Default MRS Mission (ISS).
+MRS:		Processing mission segment 0.
+MRS:		Mission ended. Processing time: 1.301 seconds.
+MRS:		Adding Earth LLA to dataframe.
+MRSviewer:	Loading dataframe of mission Default MRS Mission Update.
+```
+
+The ground track will be shown as a figure:
+![GCRF view of satellite with Hohmann transfer to higher altitude](https://raw.githubusercontent.com/ThibaultBS/MyRocketSimulator/main/MRS_examples/MRSoutput/MRSexample0_GroundtrackEarth.png)
+
+## Demo missions
+The github repository contains demo missions that demonstrate different features of MyRocketSimulator. They can be used as template for your own missions.
+- MRSexample0: simple propagation of the ISS (see Getting started)
+- MRSexample1: satellite propagation and GMAT comparison
+- MRSexample2: high accurate propagation with GMAT orbital element comparison
+- MRSexample3: two delta-v maneuvers to perform a Hohmann transfer
+
+Demo missions including features from MRS 1.2 such as spacecraft modelling and guidance to simulate actual launch trajectories will be added in future.
+
+## Documentation
+MRS does currently not provide its own help function or further documentation, but can be easily learned by using the following resources:
+- Demo missions.
+- The publication [Spacecraft Orbit Propagation with the MyRocketSimulator Python Package]( https://www.researchgate.net/publication/375293398_Spacecraft_Orbit_Propagation_with_the_MyRocketSimulator_Python_Package) contains a good summary of MRS 1.0 features. More features have been added since its publication and may be described in later publications.
+- Read the code of the MRS default mission (myrocketsimulator/data/defaultMRSmission.py).
+- Read the code of the [Artemis I launch trajectory simulation](https://github.com/ThibaultBS/MRS-Missions/tree/main/Artemis_I_Launch_Trajectory).
+- Print the docstrings of all methods used in the demo mission, e.g. through:
+```python
+print(MRSlib.MRSmission.load_mission.__doc__)
+```
+- Read the code of MRSlib's exportDataframes() to learn what data can be added to the data frame.
+- Send your questions to support@myrocketsimulator.com.
+- Follow for updates on X: [www.twitter.com/myrocketsim](https://twitter.com/myrocketsim).
+
+
+
+
+
+
+
+
+
+
+
