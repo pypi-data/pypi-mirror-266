@@ -1,0 +1,1097 @@
+{
+  "src/lib/components/Accordion.react.js": {
+    "description": "A SSB styled expandable accordion",
+    "displayName": "Accordion",
+    "methods": [],
+    "props": {
+      "id": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "Optional id"
+      },
+      "children": {
+        "type": {
+          "name": "node"
+        },
+        "required": false,
+        "description": "Accordion content"
+      },
+      "className": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "Optional container class"
+      },
+      "header": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "Header text"
+      },
+      "openByDefault": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "Will set the open state on init"
+      },
+      "subHeader": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "Renders the header with the sub header design"
+      },
+      "tabIndex": {
+        "type": {
+          "name": "number"
+        },
+        "required": false,
+        "description": "Makes tab elements focusable"
+      },
+      "withoutBorders": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "Default false, Accordion without border on top and bottom if value is true"
+      },
+      "setProps": {
+        "type": {
+          "name": "func"
+        },
+        "required": false,
+        "description": "Dash-assigned callback that should be called to report property changes\nto Dash, to make them available for callbacks."
+      }
+    }
+  },
+  "src/lib/components/Button.react.js": {
+    "description": "SSB styled Button for triggering actions",
+    "displayName": "Button",
+    "methods": [],
+    "props": {
+      "id": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": ""
+      },
+      "n_clicks": {
+        "type": {
+          "name": "number"
+        },
+        "required": false,
+        "description": "Number of times the button has been clicked.",
+        "defaultValue": {
+          "value": "0",
+          "computed": false
+        }
+      },
+      "children": {
+        "type": {
+          "name": "node"
+        },
+        "required": false,
+        "description": "Button text or/and icon"
+      },
+      "className": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "Optional container class",
+        "defaultValue": {
+          "value": "''",
+          "computed": false
+        }
+      },
+      "disabled": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "Decides if the button is disabled",
+        "defaultValue": {
+          "value": "false",
+          "computed": false
+        }
+      },
+      "icon": {
+        "type": {
+          "name": "node"
+        },
+        "required": false,
+        "description": "Renders an icon"
+      },
+      "negative": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "Changes design",
+        "defaultValue": {
+          "value": "false",
+          "computed": false
+        }
+      },
+      "primary": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "Changes style to represent a primary button",
+        "defaultValue": {
+          "value": "false",
+          "computed": false
+        }
+      },
+      "type": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "Button type. Can be 'submit', 'reset', or 'button'. Defaults to 'button'.",
+        "defaultValue": {
+          "value": "'button'",
+          "computed": false
+        }
+      },
+      "ariaLabel": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "",
+        "defaultValue": {
+          "value": "''",
+          "computed": false
+        }
+      },
+      "setProps": {
+        "type": {
+          "name": "func"
+        },
+        "required": false,
+        "description": "Dash-assigned callback that should be called to report property changes\nto Dash, to make them available for callbacks."
+      }
+    }
+  },
+  "src/lib/components/Checkbox.react.js": {
+    "description": "Checkbox is rendered as an input / label pair with value true/false",
+    "displayName": "Checkbox",
+    "methods": [],
+    "props": {
+      "id": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "The ID of this component, used to identify dash components in callbacks.\nThe ID needs to be unique across all of the components in an app."
+      },
+      "className": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "The class of the container (div)"
+      },
+      "style": {
+        "type": {
+          "name": "object"
+        },
+        "required": false,
+        "description": "The style of the container (div)"
+      },
+      "input_style": {
+        "type": {
+          "name": "object"
+        },
+        "required": false,
+        "description": "The style of the <input> checkbox element.",
+        "defaultValue": {
+          "value": "null",
+          "computed": false
+        }
+      },
+      "inputStyle": {
+        "type": {
+          "name": "object"
+        },
+        "required": false,
+        "description": "**DEPRECATED** Use `input_style` instead.\n\nThe style of the <input> checkbox element.",
+        "defaultValue": {
+          "value": "{}",
+          "computed": false
+        }
+      },
+      "label": {
+        "type": {
+          "name": "node"
+        },
+        "required": false,
+        "description": "The label of the <input> element"
+      },
+      "label_id": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "The id of the label"
+      },
+      "label_style": {
+        "type": {
+          "name": "object"
+        },
+        "required": false,
+        "description": "Inline style arguments to apply to the <label> element for each item.",
+        "defaultValue": {
+          "value": "null",
+          "computed": false
+        }
+      },
+      "labelStyle": {
+        "type": {
+          "name": "object"
+        },
+        "required": false,
+        "description": "**DEPRECATED** Use `label_style` instead.\n\nInline style arguments to apply to the <label> element for each item.",
+        "defaultValue": {
+          "value": "{}",
+          "computed": false
+        }
+      },
+      "name": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "The name of the control, which is submitted with the form data."
+      },
+      "disabled": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "Disable the Checkbox.",
+        "defaultValue": {
+          "value": "false",
+          "computed": false
+        }
+      },
+      "value": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "The value of the input.",
+        "defaultValue": {
+          "value": "false",
+          "computed": false
+        }
+      },
+      "showDescription": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "Must be set to show Glossary component"
+      },
+      "description": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "Add explanation text to Glossary"
+      },
+      "persistence": {
+        "type": {
+          "name": "union",
+          "value": [
+            {
+              "name": "bool"
+            },
+            {
+              "name": "string"
+            },
+            {
+              "name": "number"
+            }
+          ]
+        },
+        "required": false,
+        "description": "Used to allow user interactions in this component to be persisted when\nthe component - or the page - is refreshed. If `persisted` is truthy and\nhasn't changed from its previous value, a `value` that the user has\nchanged while using the app will keep that change, as long as\nthe new `value` also matches what was given originally.\nUsed in conjunction with `persistence_type`."
+      },
+      "persisted_props": {
+        "type": {
+          "name": "arrayOf",
+          "value": {
+            "name": "enum",
+            "value": [
+              {
+                "value": "'value'",
+                "computed": false
+              }
+            ]
+          }
+        },
+        "required": false,
+        "description": "Properties whose user interactions will persist after refreshing the\ncomponent or the page. Since only `value` is allowed this prop can\nnormally be ignored.",
+        "defaultValue": {
+          "value": "['value']",
+          "computed": false
+        }
+      },
+      "persistence_type": {
+        "type": {
+          "name": "enum",
+          "value": [
+            {
+              "value": "'local'",
+              "computed": false
+            },
+            {
+              "value": "'session'",
+              "computed": false
+            },
+            {
+              "value": "'memory'",
+              "computed": false
+            }
+          ]
+        },
+        "required": false,
+        "description": "Where persisted user changes will be stored:\nmemory: only kept in memory, reset on page refresh.\nlocal: window.localStorage, data is kept after the browser quit.\nsession: window.sessionStorage, data is cleared once the browser quit.",
+        "defaultValue": {
+          "value": "'local'",
+          "computed": false
+        }
+      },
+      "setProps": {
+        "type": {
+          "name": "func"
+        },
+        "required": false,
+        "description": "Dash-assigned callback that gets fired when the value changes."
+      }
+    }
+  },
+  "src/lib/components/Dialog.react.js": {
+    "description": "SSB styled dialog component.\nA wrapper for displaying a dialog",
+    "displayName": "Dialog",
+    "methods": [],
+    "props": {
+      "id": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": ""
+      },
+      "is_open": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": ""
+      },
+      "title": {
+        "type": {
+          "name": "string"
+        },
+        "required": true,
+        "description": ""
+      },
+      "type": {
+        "type": {
+          "name": "enum",
+          "value": [
+            {
+              "value": "'info'",
+              "computed": false
+            },
+            {
+              "value": "'warning'",
+              "computed": false
+            }
+          ]
+        },
+        "required": false,
+        "description": ""
+      },
+      "children": {
+        "type": {
+          "name": "node"
+        },
+        "required": false,
+        "description": "All rendered content"
+      },
+      "className": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "Optional container class"
+      },
+      "setProps": {
+        "type": {
+          "name": "func"
+        },
+        "required": false,
+        "description": ""
+      }
+    }
+  },
+  "src/lib/components/Dropdown.react.js": {
+    "description": "SSB styled Dropdown list",
+    "displayName": "Dropdown",
+    "methods": [],
+    "props": {
+      "id": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": ""
+      },
+      "ariaLabel": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": ""
+      },
+      "className": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": ""
+      },
+      "error": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": ""
+      },
+      "errorMessage": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": ""
+      },
+      "header": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": ""
+      },
+      "icon": {
+        "type": {
+          "name": "object"
+        },
+        "required": false,
+        "description": ""
+      },
+      "items": {
+        "type": {
+          "name": "arrayOf",
+          "value": {
+            "name": "shape",
+            "value": {
+              "title": {
+                "name": "string",
+                "required": false
+              },
+              "id": {
+                "name": "string",
+                "required": false
+              },
+              "disabled": {
+                "name": "bool",
+                "required": false
+              }
+            }
+          }
+        },
+        "required": false,
+        "description": ""
+      },
+      "open": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": ""
+      },
+      "placeholder": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": ""
+      },
+      "searchable": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": ""
+      },
+      "value": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": ""
+      },
+      "tabIndex": {
+        "type": {
+          "name": "number"
+        },
+        "required": false,
+        "description": ""
+      },
+      "largeSize": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": ""
+      },
+      "showDescription": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "Set true to show glossary"
+      },
+      "description": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "Add explanation text"
+      },
+      "setProps": {
+        "type": {
+          "name": "func"
+        },
+        "required": false,
+        "description": "Dash-assigned callback that should be called to report property changes\nto Dash, to make them available for callbacks."
+      }
+    }
+  },
+  "src/lib/components/Glossary.react.js": {
+    "description": "",
+    "displayName": "Glossary",
+    "methods": [],
+    "props": {
+      "children": {
+        "type": {
+          "name": "node"
+        },
+        "required": false,
+        "description": "Glossary content"
+      },
+      "className": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "Optional container class"
+      },
+      "closeText": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "Tooltip for closing text",
+        "defaultValue": {
+          "value": "'Lukk'",
+          "computed": false
+        }
+      },
+      "explanation": {
+        "type": {
+          "name": "string"
+        },
+        "required": true,
+        "description": "The explanation shown to the user"
+      },
+      "id": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": ""
+      },
+      "iconType": {
+        "type": {
+          "name": "enum",
+          "value": [
+            {
+              "value": "'book'",
+              "computed": false
+            },
+            {
+              "value": "'Book'",
+              "computed": false
+            },
+            {
+              "value": "'info'",
+              "computed": false
+            },
+            {
+              "value": "'Info'",
+              "computed": false
+            },
+            {
+              "value": "'help'",
+              "computed": false
+            },
+            {
+              "value": "'Help'",
+              "computed": false
+            }
+          ]
+        },
+        "required": false,
+        "description": "Choose either: Book, Info or Help icon",
+        "defaultValue": {
+          "value": "'book'",
+          "computed": false
+        }
+      },
+      "setProps": {
+        "type": {
+          "name": "func"
+        },
+        "required": false,
+        "description": "Dash-assigned callback that should be called to report property changes\nto Dash, to make them available for callbacks."
+      }
+    }
+  },
+  "src/lib/components/Header.react.js": {
+    "description": "SSB styled Header component.\nA wrapper for displaying a header",
+    "displayName": "Header",
+    "methods": [],
+    "props": {
+      "children": {
+        "type": {
+          "name": "node"
+        },
+        "required": false,
+        "description": "All rendered content"
+      },
+      "className": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "Optional container class"
+      }
+    }
+  },
+  "src/lib/components/Input.react.js": {
+    "description": "SSB styled Input field and search field",
+    "displayName": "Input",
+    "methods": [],
+    "props": {
+      "role": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": ""
+      },
+      "ariaLabelWrapper": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": ""
+      },
+      "ariaLabel": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": ""
+      },
+      "ariaLabelledBy": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": ""
+      },
+      "ariaLabelSearchButton": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "",
+        "defaultValue": {
+          "value": "'search'",
+          "computed": false
+        }
+      },
+      "name": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": ""
+      },
+      "className": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "",
+        "defaultValue": {
+          "value": "''",
+          "computed": false
+        }
+      },
+      "disabled": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "",
+        "defaultValue": {
+          "value": "false",
+          "computed": false
+        }
+      },
+      "error": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "",
+        "defaultValue": {
+          "value": "false",
+          "computed": false
+        }
+      },
+      "errorMessage": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": ""
+      },
+      "id": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": ""
+      },
+      "label": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": ""
+      },
+      "negative": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "",
+        "defaultValue": {
+          "value": "false",
+          "computed": false
+        }
+      },
+      "placeholder": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": ""
+      },
+      "searchField": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "",
+        "defaultValue": {
+          "value": "false",
+          "computed": false
+        }
+      },
+      "size": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": ""
+      },
+      "type": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "",
+        "defaultValue": {
+          "value": "'text'",
+          "computed": false
+        }
+      },
+      "value": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "",
+        "defaultValue": {
+          "value": "''",
+          "computed": false
+        }
+      },
+      "n_submit": {
+        "type": {
+          "name": "number"
+        },
+        "required": false,
+        "description": ""
+      },
+      "showDescription": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "Set true to show description"
+      },
+      "description": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "Add explanation text"
+      },
+      "readOnly": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "Use this attribute on non editable input fields",
+        "defaultValue": {
+          "value": "false",
+          "computed": false
+        }
+      },
+      "debounce": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "If this is set to True, then values will only be sent when Enter is pressed or focus is lost.",
+        "defaultValue": {
+          "value": "false",
+          "computed": false
+        }
+      },
+      "setProps": {
+        "type": {
+          "name": "func"
+        },
+        "required": false,
+        "description": "Dash-assigned callback that should be called to report property changes\nto Dash, to make them available for callbacks."
+      }
+    }
+  },
+  "src/lib/components/Paragraph.react.js": {
+    "description": "A SSB styled paragraph",
+    "displayName": "Paragraph",
+    "methods": [],
+    "props": {
+      "id": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": ""
+      },
+      "children": {
+        "type": {
+          "name": "node"
+        },
+        "required": false,
+        "description": ""
+      },
+      "className": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": ""
+      },
+      "negative": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": ""
+      },
+      "setProps": {
+        "type": {
+          "name": "func"
+        },
+        "required": false,
+        "description": "Dash-assigned callback that should be called to report property changes\nto Dash, to make them available for callbacks."
+      }
+    }
+  },
+  "src/lib/components/Tabs.react.js": {
+    "description": "A SSB styled tab selector component",
+    "displayName": "Tabs",
+    "methods": [],
+    "props": {
+      "activeOnInit": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "Will set an item to be active on init"
+      },
+      "className": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "Optional container class"
+      },
+      "items": {
+        "type": {
+          "name": "arrayOf",
+          "value": {
+            "name": "shape",
+            "value": {
+              "title": {
+                "name": "string",
+                "required": false
+              },
+              "path": {
+                "name": "string",
+                "required": false
+              }
+            }
+          }
+        },
+        "required": false,
+        "description": "Sets label and path of buttons"
+      },
+      "id": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": ""
+      },
+      "active": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": ""
+      },
+      "setProps": {
+        "type": {
+          "name": "func"
+        },
+        "required": false,
+        "description": "Dash-assigned callback that should be called to report property changes\nto Dash, to make them available for callbacks."
+      }
+    }
+  },
+  "src/lib/components/Title.react.js": {
+    "description": "TitleComponent is a SSB component handling header elements.",
+    "displayName": "Title",
+    "methods": [],
+    "props": {
+      "children": {
+        "type": {
+          "name": "node"
+        },
+        "required": false,
+        "description": ""
+      },
+      "className": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": ""
+      },
+      "id": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": ""
+      },
+      "negative": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "Toggles text color"
+      },
+      "size": {
+        "type": {
+          "name": "enum",
+          "value": [
+            {
+              "value": "1",
+              "computed": false
+            },
+            {
+              "value": "2",
+              "computed": false
+            },
+            {
+              "value": "3",
+              "computed": false
+            },
+            {
+              "value": "4",
+              "computed": false
+            },
+            {
+              "value": "5",
+              "computed": false
+            },
+            {
+              "value": "6",
+              "computed": false
+            }
+          ]
+        },
+        "required": false,
+        "description": "Change header element size according to rules for Heading ranks"
+      },
+      "setProps": {
+        "type": {
+          "name": "func"
+        },
+        "required": false,
+        "description": "Dash-assigned callback that should be called to report property changes\nto Dash, to make them available for callbacks."
+      }
+    }
+  }
+}
