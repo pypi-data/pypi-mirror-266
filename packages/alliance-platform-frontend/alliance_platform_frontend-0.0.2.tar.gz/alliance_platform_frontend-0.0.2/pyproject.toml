@@ -1,0 +1,81 @@
+[project]
+authors = [
+    { name = "Alliance Software", email = "support@alliancesoftware.com.au" },
+]
+requires-python = "<4.0,>=3.11"
+dependencies = [
+    "alliance-platform-codegen",
+    "alliance-platform-core",
+    "Django<5.0.0,>=4.2.11",
+    "djangorestframework",
+    "django-allianceutils<5.0,>=4.0",
+    "requests",
+    "typing-extensions<5.0.0,>=4.5.0",
+]
+name = "alliance-platform-frontend"
+dynamic = []
+description = "Django integration for Frontend Bundlers & React"
+readme = "README.md"
+keywords = [
+    "django",
+    "alliance",
+    "alliancesoftware",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.0",
+    "Intended Audience :: Developers",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Typing :: Typed",
+]
+include = [
+    "alliance_platform/frontend/py.typed",
+]
+version = "0.0.2"
+
+[project.license]
+text = "BSD-2-Clause"
+
+[project.urls]
+issues = "https://github.com/AllianceSoftware/alliance-platform-py/issues"
+homepage = "https://github.com/AllianceSoftware/alliance-platform-py/packages/ap-frontend"
+repository = "https://github.com/AllianceSoftware/alliance-platform-py"
+
+[tool.pdm.build]
+includes = [
+    "alliance_platform",
+]
+
+[tool.pdm.version]
+source = "call"
+getter = "extract_version:get_version()"
+
+[tool.mypy]
+python_version = "3.11"
+plugins = [
+    "mypy_django_plugin.main",
+    "mypy_drf_plugin.main",
+]
+explicit_package_bases = true
+overrides = [
+    { module = "isort", ignore_missing_imports = true },
+    { module = "isort.api", no_implicit_reexport = false },
+    { module = "logging_tree", ignore_missing_imports = true },
+    { module = "rules", ignore_missing_imports = true },
+]
+
+[tool.django-stubs]
+django_settings_module = "test_alliance_platform_frontend.settings"
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
