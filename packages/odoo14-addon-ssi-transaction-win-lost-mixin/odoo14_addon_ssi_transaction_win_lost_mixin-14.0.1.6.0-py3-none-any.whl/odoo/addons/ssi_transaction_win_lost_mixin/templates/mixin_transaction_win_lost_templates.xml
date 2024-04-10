@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+<template id="win_policy_field">
+    <field name="win_ok" />
+</template>
+
+<template id="lost_policy_field">
+    <field name="lost_ok" />
+</template>
+
+<template id="button_win">
+    <button
+            name="action_win"
+            string="Win"
+            type="object"
+            class="oe_highlight"
+            attrs="{'invisible':[('win_ok','!=',True)]}"
+            confirm="Mark as Win. Are you sure?"
+        />
+</template>
+
+<template id="button_lost">
+    <button
+            name="%(ssi_transaction_win_lost_mixin.base_select_lost_reason_action)d"
+            string="Lost"
+            type="action"
+            attrs="{'invisible':[('lost_ok','!=',True)]}"
+        />
+</template>
+
+<template id="tree_button_win">
+    <button
+            name="action_win"
+            string="Win"
+            type="object"
+            confirm="Mark as Win. Are you sure?"
+        />
+</template>
+
+<template id="tree_button_lost">
+    <button
+            name="%(ssi_transaction_win_lost_mixin.base_select_lost_reason_action)d"
+            string="Lost"
+            type="action"
+        />
+</template>
+
+<template id="lost_reason">
+    <h2 attrs="{'invisible': [('state', '!=', 'lost')]}">
+        <label for="lost_reason_id" string="Lost reason:" />
+        <field name="lost_reason_id" class="oe_inline" />
+    </h2>
+</template>
+
+<template id="win_filter">
+    <filter name="dom_win" string="Win" domain="[('state', '=', 'win')]" />
+</template>
+
+<template id="lost_filter">
+    <filter name="dom_lost" string="Lost" domain="[('state', '=', 'lost')]" />
+</template>
+</odoo>

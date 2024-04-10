@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+<record id="base_select_lost_reason_view_form" model="ir.ui.view">
+    <field name="name">Select Lost Reason</field>
+    <field name="model">base.select_lost_reason</field>
+    <field name="arch" type="xml">
+        <form>
+            <group name="group_1" colspan="4" col="2">
+                <field name="model_id" invisible="1" />
+                <field name="lost_reason_ids" widget="many2many_tags" invisible="1" />
+                <field
+                        name="lost_reason_id"
+                        widget="radio"
+                        domain="[('id','in',lost_reason_ids)]"
+                    />
+            </group>
+            <footer>
+                <button
+                        string="Confirm"
+                        name="action_confirm"
+                        type="object"
+                        class="oe_highlight"
+                        confirm="Are you sure?"
+                    />
+                or
+                <button string="Cancel" class="oe_link" special="cancel" />
+            </footer>
+        </form>
+    </field>
+</record>
+
+<record id="base_select_lost_reason_action" model="ir.actions.act_window">
+    <field name="name">Select Lost Reason</field>
+    <field name="res_model">base.select_lost_reason</field>
+    <field name="view_mode">form</field>
+    <field name="view_id" ref="base_select_lost_reason_view_form" />
+    <field name="target">new</field>
+</record>
+
+</odoo>
