@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gvec-to-python"
+version = "1.2.2"
+readme = "README.md"
+requires-python = ">=3.7"
+license = {file = "LICENSE"}
+authors = [
+  { name = "Tin Kei Cheng"},
+  { name = "Florian Hindenlang"},
+  { name = "Stefan Possanner"}, 
+  { email = "stefan.possanner@ipp.mpg.de"},
+  { email = "florian.hindenlang@ipp.mpg.de"}
+]
+description = "Parse GVEC output in Python"
+keywords = ["plasma physics", "fusion", "numerical modeling", "mhd equilibrium"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    ]
+dependencies = [
+    'matplotlib',
+    'numpy',
+    'pandas',
+    'pyccel',
+    'scipy',
+    'tqdm',
+    'vtk', 
+    'argcomplete',
+]
+
+[project.urls]
+repository = "https://gitlab.mpcdf.mpg.de/gvec-group/gvec_to_python"
+"Bug Tracker" = "https://gitlab.mpcdf.mpg.de/gvec-group/gvec_to_python/-/issues"
+
+[project.scripts]
+compile-gvec-tp = "gvec_to_python.console.compile:compile_gvec_to_python"
+
+[tool.setuptools.package-data]
+'gvec_to_python.testcases' = [
+            'circ_tok/*.dat',
+            'circ_tok/*.ini',
+            'ellipstell/newBC_E1D6_M6N6/*.dat',
+            'ellipstell/newBC_E1D6_M6N6/*.ini',
+            'ellipstell/newBC_E4D6_M6N6/*.dat',
+            'ellipstell/newBC_E4D6_M6N6/*.ini',
+            'ellipstell_v2/newBC_E1D6_M6N6/*.dat',
+            'ellipstell_v2/newBC_E1D6_M6N6/*.ini',
+            'ellipstell_v2/newBC_E4D6_M6N6/*.dat',
+            'ellipstell_v2/newBC_E4D6_M6N6/*.ini',
+            'ellipstell_v2/oldBC_E40D5M6N6/*.dat',
+            'ellipstell_v2/oldBC_E40D5M6N6/*.ini',
+        ]
+gvec_to_python = ['Makefile']
+
+
+
