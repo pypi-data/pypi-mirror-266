@@ -1,0 +1,33 @@
+name: package
+env:
+  PYTHON_VERSION: 3.7
+  NAME_ENVIRONMENT_ARTIFACT: environment-artifact
+
+
+on:
+  workflow_call:
+    secrets:
+      KPLER_BOT_PAT:
+        required: true
+
+jobs:
+
+  package:
+    name: Package
+    runs-on: ubuntu-latest
+
+    steps:
+
+     - name: Checkout code
+       uses: actions/checkout@v3
+       with:
+         fetch-depth: 0
+         token: ${{ secrets.KPLER_BOT_PAT }}
+     - name: Build the Python source package based on scm
+       run: |
+          python setup.py sdist
+     - name: Store artifacts
+       uses: actions/upload-artifact@v3
+       with:
+          name: package-artifact
+          path: dist

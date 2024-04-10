@@ -1,0 +1,67 @@
+name: test
+env:
+  NAME_ENVIRONMENT_ARTIFACT: environment-artifact
+  KPLER_ACTIONS_BRANCH: v1.0.2
+  MAIN_BRANCH_NAME: master
+  PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
+on:
+  workflow_call:
+    inputs:
+      PYTHON_VERSION:
+        required: true
+        type: string
+    secrets:
+      KPLER_BOT_PAT:
+        required: true
+      PACKAGECLOUD_TOKEN:
+        required: true
+      INTEGRATION_TEST_SDK_USER_PASSWORD:
+        required: true
+
+
+jobs:
+
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.KPLER_BOT_PAT }}
+
+      - uses: actions/checkout@v3
+        with:
+          repository: Kpler/github-actions
+          ref: ${{ env.KPLER_ACTIONS_BRANCH }}
+          token: ${{ secrets.KPLER_BOT_PAT }}
+          path: ./kpler-github-actions
+      - uses: ./kpler-github-actions/actions/python/get-or-create-environment
+        with:
+          python-version: ${{ inputs.PYTHON_VERSION }}
+          name-environment-artifact: ${{ env.NAME_ENVIRONMENT_ARTIFACT }}
+
+      - name: Restore Cache
+        uses: actions/cache@v3
+        with:
+          path: ./setup.py
+          key: v1-venv-${{ hashFiles('setup.py') }}
+      - name: install dependencies
+        run: |
+            python${{ env.PYTHON_VERSION }} -m venv venv
+            . venv/bin/activate
+            pip install -e .[test,doc,publish]
+      - name: run tests
+        run: |
+          source venv/bin/activate
+          pytest --reruns 20 --reruns-delay 3 tests/
+        env:
+          PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
+          INTEGRATION_TEST_SDK_USER_LOGIN: "sdkuser@kpler.com"
+          INTEGRATION_TEST_SDK_USER_PASSWORD: ${{ secrets.INTEGRATION_TEST_SDK_USER_PASSWORD }}
+      - name: Save Cache
+        uses: actions/cache@v3
+        with:
+          path: ./venv
+          key: v1-venv-${{ hashFiles('setup.py') }}

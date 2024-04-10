@@ -1,0 +1,58 @@
+name: validate-code
+env:
+  PYTHON_VERSION: 3.7
+  NAME_ENVIRONMENT_ARTIFACT: environment-artifact
+  KPLER_ACTIONS_BRANCH: v1.0.2
+  MAIN_BRANCH_NAME: master
+
+
+on:
+  workflow_call:
+    secrets:
+      KPLER_BOT_PAT:
+        required: true
+      PACKAGECLOUD_TOKEN:
+        required: true
+
+jobs:
+
+  validate-code:
+    name: Validate Code
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.KPLER_BOT_PAT }}
+      - uses: actions/checkout@v3
+        with:
+          repository: Kpler/github-actions
+          ref: ${{ env.KPLER_ACTIONS_BRANCH }}
+          token: ${{ secrets.KPLER_BOT_PAT }}
+          path: ./kpler-github-actions
+      - uses: ./kpler-github-actions/actions/python/install-and-export-environment
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          name-environment-artifact: ${{ env.NAME_ENVIRONMENT_ARTIFACT }}
+          packagecloud-read-token: ${{ secrets.PACKAGECLOUD_TOKEN }}
+      - uses: ./kpler-github-actions/actions/python/get-or-create-environment
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          name-environment-artifact: ${{ env.NAME_ENVIRONMENT_ARTIFACT }}
+      - name: Restore Cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pre-commit
+          key: v1-pre-commit-py371-${{ hashFiles('.pre-commit-config.yaml') }}
+      - name: Install Pre-commit
+        uses: pre-commit/action@v2.0.3
+        with:
+          extra_args: --show-diff-on-failure --color=always --all-files --hook-stage push
+          token: ${{ secrets.KPLER_BOT_PAT }}
+      - name: Save Cache
+        uses: actions/cache@v3
+        with:
+          key: v1-pre-commit-py371-${{ hashFiles('.pre-commit-config.yaml') }}
+          path: ~/.cache/pre-commit

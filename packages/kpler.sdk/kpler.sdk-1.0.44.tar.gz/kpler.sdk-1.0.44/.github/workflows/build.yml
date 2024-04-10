@@ -1,0 +1,89 @@
+name: build
+env:
+  NAME_ENVIRONMENT_ARTIFACT: environment-artifact
+  KPLER_ACTIONS_BRANCH: v1.0.2
+  MAIN_BRANCH_NAME: master
+
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+    branches-ignore:
+      - 'master'
+
+jobs:
+
+  validate-code:
+    uses: ./.github/workflows/validate-code.yml
+    secrets:
+      KPLER_BOT_PAT: ${{ secrets.KPLER_BOT_PAT }}
+      PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
+
+  test-37:
+    needs: validate-code
+    uses: ./.github/workflows/test.yml
+    with:
+      PYTHON_VERSION: 3.7
+    secrets:
+      KPLER_BOT_PAT: ${{ secrets.KPLER_BOT_PAT }}
+      PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
+      INTEGRATION_TEST_SDK_USER_PASSWORD: ${{ secrets.INTEGRATION_TEST_SDK_USER_PASSWORD }}
+
+  test-38:
+    needs: validate-code
+    uses: ./.github/workflows/test.yml
+    with:
+      PYTHON_VERSION: 3.8
+    secrets:
+      KPLER_BOT_PAT: ${{ secrets.KPLER_BOT_PAT }}
+      PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
+      INTEGRATION_TEST_SDK_USER_PASSWORD: ${{ secrets.INTEGRATION_TEST_SDK_USER_PASSWORD }}
+
+  test-39:
+    needs: validate-code
+    uses: ./.github/workflows/test.yml
+    with:
+      PYTHON_VERSION: 3.9
+    secrets:
+      KPLER_BOT_PAT: ${{ secrets.KPLER_BOT_PAT }}
+      PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
+      INTEGRATION_TEST_SDK_USER_PASSWORD: ${{ secrets.INTEGRATION_TEST_SDK_USER_PASSWORD }}
+
+  test-310:
+    needs: validate-code
+    uses: ./.github/workflows/test.yml
+    with:
+      PYTHON_VERSION: '3.10'
+    secrets:
+      KPLER_BOT_PAT: ${{ secrets.KPLER_BOT_PAT }}
+      PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
+      INTEGRATION_TEST_SDK_USER_PASSWORD: ${{ secrets.INTEGRATION_TEST_SDK_USER_PASSWORD }}
+
+  test-311:
+    needs: validate-code
+    uses: ./.github/workflows/test.yml
+    with:
+      PYTHON_VERSION: '3.11'
+    secrets:
+      KPLER_BOT_PAT: ${{ secrets.KPLER_BOT_PAT }}
+      PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
+      INTEGRATION_TEST_SDK_USER_PASSWORD: ${{ secrets.INTEGRATION_TEST_SDK_USER_PASSWORD }}
+
+  generate-documentation:
+    needs: [test-37, test-38, test-39, test-310, test-311]
+    uses: ./.github/workflows/generate-documentation.yml
+    secrets:
+      KPLER_BOT_PAT: ${{ secrets.KPLER_BOT_PAT }}
+
+  package:
+    needs: generate-documentation
+    uses: ./.github/workflows/package.yml
+    secrets:
+      KPLER_BOT_PAT: ${{ secrets.KPLER_BOT_PAT }}
+
+  package-cloud-and-push:
+    needs: package
+    uses: ./.github/workflows/package-cloud-and-push.yml
+    secrets:
+      KPLER_BOT_PAT: ${{ secrets.KPLER_BOT_PAT }}
+      PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
