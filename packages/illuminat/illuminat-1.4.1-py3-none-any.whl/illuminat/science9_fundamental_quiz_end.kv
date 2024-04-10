@@ -1,0 +1,58 @@
+MDScreen:
+    name: "science_fundamental_quiz_end"
+    MDFloatLayout:
+        MDLabel:
+            id: "questiontxt"
+            text: app.marks_fundamental_9science()
+            pos_hint: {"center_y": .75}
+            color: rgba(52, 0, 231, 255)
+            font_size: "17sp"
+            font_name: app.bahnscriptreplace()
+            halign: "center"
+
+        MDLabel:
+            text: "Great! You got"
+            pos_hint: {"center_y": .85}
+            color: rgba(169,169,169, 255)
+            font_size: "19sp"
+            font_name: app.bahnscriptreplace()
+            halign: "center"
+
+
+        Button:
+            text: "GO TO HOME"
+            size_hint: .66, .065
+            background_color: 0, 0, 0, 0
+            pos_hint: {"center_x": .505, "center_y": .2}
+            color: rgba(52, 0, 231, 255)
+            font_name: "bahnschrift"
+            on_release:
+                root.manager.transition.direction = "right"
+                root.manager.current = "home"
+            canvas.before:
+                Color:
+                    rgb: rgba(52, 0, 231, 255)
+                Line:
+                    width: 1.2
+                    rounded_rectangle: self.x, self.y, self.width, self.height, 5, 5, 5, 5, 100
+
+        Button:
+            text: "MOVE ONTO NEXT CHAPTER"
+            size_hint: .66, .065
+            background_color: 0, 0, 0, 0
+            pos_hint: {"center_x": .505, "center_y": .2}
+            color: rgba(52, 0, 231, 255)
+            font_name: "bahnschrift"
+            on_release:
+
+                root.manager.transition.direction = "right"
+                root.manager.current = "question4_science_poor_fundamental"
+            canvas.before:
+                Color:
+                    rgb: rgba(52, 0, 231, 255)
+                Line:
+                    width: 1.2
+                    rounded_rectangle: self.x, self.y, self.width, self.height, 5, 5, 5, 5, 100
+
+
+

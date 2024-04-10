@@ -1,0 +1,153 @@
+MDScreen:
+    name: "signup"
+    MDFloatLayout:
+        id: mdfloatlayoutttt
+        md_bg_color: 1, 1, 1, 1
+        Image:
+            source: app.imageforclairtytoihjy()
+
+            size_hint: 1,1
+            pos_hint : {"center_x": .67, "center_y": .47}
+
+        Image:
+            source: app.imageforhmoapicastartsignupqstart2hhgapreaaaaaavhjartopysagfghaaplelogineijgo()
+            size_hint: 1.25,1.25
+            pos_hint: {"center_x": .5, "center_y": .35}
+            opacity: 0.15
+
+        MDIconButton:
+            icon: "arrow-left"
+            pos_hint: {"center_y": .95}
+            user_font_size: "30sp"
+            theme_text_color: "Custom"
+            text_color: rgba(26, 24, 58, 255)
+            on_release:
+                root.manager.transition.direction = "right"
+                root.manager.current = "main"
+                signup_email.text = ""
+                signup_pass.text = ""
+
+        MDLabel:
+            text : "H i !"
+            font_name : app.bahnscriptreplace()
+            font_size : "26sp"
+            pos_hint : {"center_x": .6, "center_y": .85}
+            color: rgba(0, 0, 59, 255)
+
+        MDLabel:
+            text : "Create a new account"
+            font_name : app.bahnscriptlightreplace()
+            font_size : "18sp"
+            pos_hint : {"center_x": .6, "center_y": .80}
+            color: rgba(135, 133, 193, 255)
+
+        MDFloatLayout:
+            size_hint: .7, .07
+            pos_hint: {"center_x": .5, "center_y": .68}
+            TextInput:
+                id: signup_email
+                hint_text: "Enter your Email"
+                font_name: "bahnschrift"
+                size_hint_y: .75
+                pos_hint:{"center_x": .43, "center_y": .5}
+                background_color: 1, 1, 1, 0
+                foreground_color: rgba(0, 0, 59, 255)
+                cursor_color: rgba(0, 0, 59, 255)
+                font_size: "14sp"
+                cursor_width: "2sp"
+                multiline: False
+
+            MDFloatLayout:
+                pos_hint: {"center_x": .45, "center_y": 0}
+                size_hint_y:.03
+                md_bg_color: rgba(178, 178, 178, 255)
+
+        MDFloatLayout:
+            size_hint: .7, .07
+            pos_hint: {"center_x": .5, "center_y": .53}
+            TextInput:
+                id: signup_pass
+                hint_text: "Enter your Password"
+                font_name: "bahnschrift"
+                size_hint_y: .75
+                pos_hint:{"center_x": .43, "center_y": .5}
+                background_color: 1, 1, 1, 0
+                foreground_color: rgba(0, 0, 59, 255)
+                cursor_color: rgba(0, 0, 59, 255)
+                font_size: "14sp"
+                cursor_width: "2sp"
+                multiline: False
+                password: True
+            MDFloatLayout:
+                pos_hint: {"center_x": .45, "center_y": 0}
+                size_hint_y:.03
+                md_bg_color: rgba(178, 178, 178, 255)
+
+        Button:
+            id: signupbtn
+            text: "SIGN UP"
+            size_hint: .66, .065
+            background_color: 0, 0, 0, 0
+            pos_hint: {"center_x": .5, "center_y": .38}
+            font_name: "bahnschrift"
+            on_release:
+                app.handle_signupbutton()
+                signup_email.text = ""
+                signup_pass.text = ""
+            canvas.before:
+                Color:
+                    rgb: rgba(52, 0, 231, 255)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [5]
+
+        MDLabel:
+            text: "or"
+            pos_hint: {"center_y": .27}
+            color: rgba(52, 0, 231, 255)
+            font_size: "13sp"
+            font_name: app.bahnscriptreplace()
+            halign: "center"
+
+        MDFloatLayout:
+            md_bg_color: rgba(178, 178, 178, 255)
+            size_hint: .3, .002
+            pos_hint: {"center_x": .3, "center_y": .25}
+
+        MDFloatLayout:
+            md_bg_color: rgba(178, 178, 178, 255)
+            size_hint: .3, .002
+            pos_hint: {"center_x": .7, "center_y": .25}
+
+        MDLabel:
+            text: "Sign up using social media"
+            font_size: "13sp"
+            font_name: app.bahnscriptlightreplace()
+            halign: "center"
+            pos_hint: {"center_y": .24}
+            color: rgba(135, 133, 193, 255)
+
+        MDGridLayout:
+            cols: 3
+            size_hint: .75, .1325
+            pos_hint: {"center_x": .5, "center_y":  .15}
+            Button:
+                background_normal: app.imageforhmogooglemlogineijgo()
+                # on_press: app.googlesignup()
+            Button:
+                background_normal: app.imageforhmofblogineijgo()
+            Button:
+                background_normal: app.imageforhmoapplelogineijgo()
+
+        MDTextButton:
+            text: "Already have an account? \n Login"
+            font_name: app.bahnscriptlightreplace()
+            font_size: "13.5sp"
+            halign: "center"
+            pos_hint: {"center_y": .05, "center_x": .51}
+            color: rgba(135, 133, 193, 255)
+            on_release:
+                root.manager.transition.direction = "right"
+                root.manager.current = "login"
+
