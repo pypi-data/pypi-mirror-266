@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "bhatools"
+version = "0.1.0"
+description = "Various tools used by Vaibhav"
+authors = ["Vaibhav Bhandari <vaibhavb@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.1.1"
+
+
+[[tool.poetry.source]]
+name = "vtools"
+url = "https://pypi.org/project/vtools"
+priority = "explicit"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
