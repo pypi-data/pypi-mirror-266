@@ -1,0 +1,219 @@
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling", "hatch-vcs>=0.3", "setuptools-scm>=7.1"]
+
+[project]
+dependencies = [
+  "keyring",
+  "pkce",
+  "python-dotenv",
+  "pydantic",
+  "pyjwt",
+  "requests",
+  "cryptography>=3.4.0",  # see pyjwt
+  "semver<4"
+]
+description = "A client auth library for Anaconda.cloud APIs"
+dynamic = ["version"]
+license = {text = "BSD-3-Clause"}
+name = "anaconda-cloud-auth"
+readme = "README.md"
+requires-python = ">=3.8"
+
+[project.entry-points.conda]
+anaconda-cloud-auth = "anaconda_cloud_auth._conda.plugins"
+
+[project.entry-points."panel.auth"]
+anaconda_cloud = "anaconda_cloud_auth.panel:AnacondaCloudLoginHandler"
+
+[project.optional-dependencies]
+cli = ["anaconda-cloud-cli"]
+dev = [
+  "mypy",
+  "pytest",
+  "pytest-cov",
+  "pytest-mock",
+  "responses",
+  "tox",
+  "types-requests"
+]
+publish = [
+  "build",
+  "twine",
+  "wheel"
+]
+
+[tool.coverage]
+paths.source = [
+  "src",
+  ".tox*/*/lib/python*/site-packages"
+]
+report.omit = [
+  "src/anaconda_cloud_auth/_version.py"
+]
+
+[tool.distutils.bdist_wheel]
+universal = true
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/anaconda_cloud_auth/_version.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "/src/anaconda_cloud_auth",
+  "/.env.template",
+  "/pyproject.toml",
+  "/tests",
+  "/Makefile",
+  "/environment-dev.yml"
+]
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.version.raw-options]
+git_describe_command = "git describe --dirty --tags --long --match 'anaconda-cloud-auth-*'"
+root = "../.."
+
+[tool.mypy]
+disallow_untyped_defs = true
+files = [
+  "src/**/*.py"
+]
+python_version = "3.8"
+
+[[tool.mypy.overrides]]
+ignore_errors = true
+module = "*._version"
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = "anaconda_anon_usage.*"
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = "semver.*"
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = "anaconda_navigator.*"
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = "jaraco.classes.properties.*"
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = "panel.*"
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = "conda.*"
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = "conda_token.*"
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = "ruamel.*"
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = "pydantic.v1.*"
+
+[tool.pytest.ini_options]
+addopts = [
+  "--cov",
+  "--color=yes",
+  "--cov-append",
+  "--cov-branch",
+  "--cov-report=html:./cov_html",
+  "--cov-report=term-missing",
+  "--cov-report=xml:./coverage.xml",
+  "--durations=5",
+  "-vv"
+]
+markers = [
+  "integration: Integration tests requiring a browser"
+]
+norecursedirs = ["env", "envs", ".tox"]
+pythonpath = "src/"
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = py38,py39,py310-{old-keyring,new-keyring,pydantic1,pydantic2,semver2,semver3,conda},py311,py312,mypy,report
+isolated_build = True
+
+[gh-actions]
+python =
+    3.8: py38, mypy
+    3.9: py39, mypy
+    3.10: py310, mypy
+    3.11: py311
+    3.12: py312
+
+[testenv]
+pass_env =
+  TEST_AUTOMATION_USER_EMAIL
+  TEST_AUTOMATION_USER_PASSWORD
+  CF_CLIENT_ID
+  CF_CLIENT_SECRET
+deps =
+    mypy
+    pytest
+    pytest-cov
+    pytest-mock
+    responses
+    # Exclude a release with a bug: see https://github.com/tiangolo/typer/discussions/795
+    typer !=0.12.2
+    # This is to test the removal of jaraco.classes in earlier versions, so we don't explicitly depend
+    # on an import from that library and instead rely on `keyring.backend.properties`.
+    old-keyring: keyring <=23.4.0
+    pydantic1: pydantic <2.0
+    pydantic2: pydantic >=2.0
+    # Keep testing semver<3 until version 3+ released to defaults
+    semver2: semver<3
+    semver3: semver>=3,<4
+conda_deps =
+    anaconda-anon-usage
+    # Optionally install conda to test plugins
+    conda: conda
+    conda: conda-token
+conda_channels =
+    anaconda-cloud
+    defaults
+    conda-forge
+commands = pytest {posargs}
+
+[testenv:mypy]
+deps =
+    mypy
+    pytest
+    pytest-cov
+    pytest-mock
+    types-requests
+    anaconda-cli-base
+    anaconda-cloud-cli  # Needed for typer
+commands = mypy
+
+[testenv:report]
+deps = coverage[toml]
+skip_install = true
+commands =
+    coverage report
+    coverage xml -o coverage.xml
+"""
+
+[tool.vendoring]
+destination = "src/anaconda_cloud_auth/_vendor/"
+namespace = "anaconda_cloud_auth._vendor"
+protected-files = ["__init__.py", "requirements.txt"]
+requirements = "src/anaconda_cloud_auth/_vendor/requirements.txt"
+
+[tool.vendoring.license.directories]
+setuptools = "pkg_resources"
+
+[tool.vendoring.license.fallback-urls]
+pkce = "https://github.com/RomeoDespres/pkce/raw/master/LICENSE"
