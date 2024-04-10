@@ -1,0 +1,11 @@
+## Include
+include README.md COPYING COPYING.lesser NOTICE requirements.txt
+recursive-include compiler *.py *.tl *.tsv *.txt
+recursive-include tests *.py
+
+## Exclude
+prune cybergram/errors/exceptions
+prune cybergram/raw/functions
+prune cybergram/raw/types
+prune cybergram/raw/base
+exclude cybergram/raw/all.py
