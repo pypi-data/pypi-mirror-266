@@ -1,0 +1,135 @@
+Metadata-Version: 2.1
+Name: gimmetool
+Version: 0.1.18
+Summary: The multi-repo manager
+Author: Jeff
+Author-email: jeffhilton.code@gmail.com
+Requires-Python: >=3.10,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: argparse (>=1.4.0,<2.0.0)
+Requires-Dist: gitpython (>=3.1.43,<4.0.0)
+Requires-Dist: setuptools (>=69.2.0,<70.0.0)
+Requires-Dist: termcolor (>=2.4.0,<3.0.0)
+Description-Content-Type: text/markdown
+
+# Gimme: The Multi-Repo Manager
+
+This is a utility designed to help developers quickly hop between and manage the many repositories they keep on their workstations.
+
+The main function of this util is jumping between repos with the base command, `gimme [repo]`, but it also provides a few other simple utils.
+
+checkout `gimme -h` for more info.
+
+## Installation and Setup
+
+Install this package globally:
+```
+~$ sudo -H pip3 install gimmetool
+```
+
+Then run initialization:
+```
+~$ gimme init
+where do all of your repositories live (default: ~/)? ~/code
+shell config file [~/.zshrc]:
+Initialization successful.
+~$
+```
+
+After gimme is initialized, you should be able to hop between any repo under the folder you specified during initialization:
+
+```shell
+~$ gimme front
+~/code/frontend$ gimme back
+~/code/backend$
+```
+
+## Other Tools
+There are a few other tricks `gimme` has up its sleeve. Some help streamline jumps between your most common repos. Others help manage and prune large sets of repositories.
+
+### Favorites
+
+Let's say you have the following repos:
+```shell
+/Users/bob/code/
+- lib-alphabet/
+- lib-alphafont/
+- alphabeta/
+```
+
+But you spend most of your time in `alphabeta.`
+Jumping with `gimme alpha` might result in a jump to a repo you don't actually want to. 
+
+```shell
+~$ gimme alpha
+~/code/lib-alphabet$ # really? >:(
+```
+
+But, by adding the repo you want as a favorite, `gimme` will prioritize it.
+
+```
+gimme config add favorite /User/bob/code/alphabeta
+```
+
+Now, the jump is unambiguous:
+
+```shell
+~$ gimme alpha
+~/code/alphabeta$ # :D
+```
+
+### Aliases
+
+Sometimes, there are repos with longer names that you'd rather not change, but that you'd also rather not type out.
+
+```shell
+/User/bob/code/legacy-backend-2013
+```
+
+You can create an alias that maps a shortcut to a more specific search.
+
+```shell
+~$ gimme config add alias back2018 legacy-backend-2018
+```
+
+Now, you don't have to be as specific with your jumps to get to the repo you want, and you don't have to change the name of the directory and inevitably forget the name of the remote origin it actually belongs to.
+
+```shell
+~$ gimme back13
+~/code/legacy-backend-2013$ 
+```
+
+### Listing Repositories
+
+Gimme also lets you list all repositories and reports on what branches exist in them locally.
+
+```
+~$ gimme list (or gimme ls)
+/Users/bob/code:
+    my-backend
+      * master
+      - dev
+      - working-branch
+    my-frontend
+      - new-homepage
+      * main
+      - temp-wip-changes
+    my-database
+      * main
+```
+
+### Mass Updates
+
+A little tired of having to pull multiple times on a bunch of separate repos? `gimme` will update the default branch of every repo in your groups!
+
+```
+~$ gimme updates
+- Updating 'my-backend'...done
+- Updating 'my-frontend'...done
+- Updating 'my-database'...done
+...
+```
+
