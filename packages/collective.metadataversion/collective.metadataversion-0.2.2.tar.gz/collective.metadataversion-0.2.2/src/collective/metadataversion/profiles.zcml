@@ -1,0 +1,29 @@
+<configure
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns="http://namespaces.zope.org/zope">
+
+  <include package="Products.GenericSetup" file="meta.zcml" />
+
+  <genericsetup:registerProfile
+      name="default"
+      title="collective.metadataversion"
+      directory="profiles/default"
+      description="Add a simple metadata version feature to a Plone site."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <genericsetup:registerProfile
+      name="uninstall"
+      title="Remove collective.metadataversion"
+      directory="profiles/uninstall"
+      description="Doesn't remove the metadata_version column; you may do this yourself easily."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <!-- [ Upgrade steps ... [
+       - current version in ./profiles/default/metadata.xml
+       - see <http://maurits.vanrees.org/weblog/archive/2009/12/catalog>
+    -->
+  <!-- ] ... Upgrade steps ] -->
+  
+</configure>
