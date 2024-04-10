@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "pyrecipes"
+authors = [
+    {name = "Chris Adams", email = "cfh1990@msn.com"},
+]
+description = "A CLI tool to display useful Python recipes."
+readme = "README.md"
+requires-python = ">=3.7"
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: MIT License"
+]
+dependencies = [
+    "requests>=2.31",
+    "click",
+    "colorama",
+    "numpy",
+    "pytz"
+]
+dynamic = ["version"]
+
+
+[project.scripts]
+recipes = "pyrecipes.cli:main"
+
+
+[project.urls]
+"Homepage" = "https://pypi.org/project/pyrecipes/"
+"Repository" = "https://github.com/ChrisA87/pyrecipes"
+
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["pyrecipes*"]
+
+
+[tool.setuptools.dynamic]
+version = {attr = "pyrecipes.__version__"}
+
+
+[tool.coverage.run]
+command_line = "-m pytest tests"
+source = [
+    "pyrecipes"
+    ]
+omit = [
+    "**/pyrecipes/template.py",
+    "**/__init__.py",
+    "**/pyrecipes/recipes/*"
+    ]
+
+
+[tool.coverage.report]
+exclude_also = [
+    "if __name__ == .__main__.:"
+    ]
+
+
+[tool.coverage.html]
+directory = "htmlcov"
