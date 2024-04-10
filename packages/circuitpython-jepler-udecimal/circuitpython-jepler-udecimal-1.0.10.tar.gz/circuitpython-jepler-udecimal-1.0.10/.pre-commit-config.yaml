@@ -1,0 +1,46 @@
+# SPDX-FileCopyrightText: 2020 Diego Elio Pettenò
+#
+# SPDX-License-Identifier: Unlicense
+
+repos:
+-   repo: https://github.com/psf/black
+    rev: 24.3.0
+    hooks:
+    - id: black
+-   repo: https://github.com/fsfe/reuse-tool
+    rev: v3.0.2
+    hooks:
+    - id: reuse
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+    -   id: check-yaml
+    -   id: end-of-file-fixer
+    -   id: trailing-whitespace
+-   repo: https://github.com/pycqa/pylint
+    rev: v3.1.0
+    hooks:
+    -   id: pylint
+        name: lint (examples)
+        types: [python]
+        files: ^examples/
+        args:
+        - --disable=missing-docstring,invalid-name,bad-whitespace
+    -   id: pylint
+        name: lint (code)
+        types: [python]
+        exclude: "^(docs/|examples/|setup.py$)"
+- repo: local
+  hooks:
+    - id: mypy
+      name: mypy
+      entry: "mypy --no-warn-unused-ignores jepler_udecimal"
+      language: python
+      additional_dependencies: ["mypy==0.910"]
+      types: [python]
+      # use require_serial so that script
+      # is only called once per commit
+      require_serial: true
+      # Print the number of files as a sanity-check
+      verbose: true
+      pass_filenames: false
