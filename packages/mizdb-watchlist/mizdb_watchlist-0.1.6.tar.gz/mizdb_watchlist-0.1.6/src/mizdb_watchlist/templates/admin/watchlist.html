@@ -1,0 +1,12 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'mizdb_watchlist/css/watchlist.css' %}">
+  <script src="{% static 'mizdb_watchlist/js/watchlist.js' %}"></script>
+{% endblock extrahead %}
+
+{% block content %}
+    {% include "mizdb_watchlist/watchlist.html" %}
+{% endblock %}
