@@ -1,0 +1,466 @@
+result None
+getResult does
+	global result 
+	result is x 
+from x
+$ defprint = getResult
+
+int failed working max 0
+
+$ inline start = max++
+
+$ inline failed = + ' failed' into print then failed++
+$ inline worked = then working++
+
+# setup ^^
+
+$start
+if 5 to float to str == '5.0' $worked
+else 'Basic piping' $failed
+
+$start
+if (5*2+1) to float to str == '11.0' $worked
+else 'Parenthesis piping' $failed
+
+$ ifVersion = 3.9
+	# the version check is mainly for MicroPython, not CPython
+	# MicroPython has a NotImplementedError
+	$start
+	reverse does return x[::-1] from str x
+	if ((6 to str * 3)+' wow') to reverse == 'wow 666' do working+=1
+	else 'Nested parenthesis piping + define function' $failed
+
+$start
+2+(4-2)//2
+if result 3 $worked
+else 'Default expression' $failed
+
+$start
+not 12
+if result False $worked
+else 'Default expression on not' $failed
+
+$start
+a b c d e f g 12
+if all of a,b,c,d,e,f,g are 12 $worked
+else 'Multi-assign and all-of check' $failed
+
+$start
+if 12///3 == (4,0) $worked
+else 'Divmod' $failed
+
+$start
+12///3
+if result is (4,0) $worked
+else 'DefaultExpression on Divmod' $failed
+
+
+$start
+checkList []
+loop 6 i checkList.append(i)
+if checkList == 6 $worked
+else 'Loop append' $failed
+
+$start
+a is 6 ; tmp False
+loop 0..a i if i is 6 then tmp True
+if tmp $worked
+else 'Ruby style range' $failed
+
+$start
+for xx in 0...5 xx+2
+if result is 6 $worked
+else 'NRange assume indent' $failed
+
+$start
+a is 6 ; tmp False
+loop 0 to a + 1 i if i is 6 then tmp True
+if tmp $worked
+else 'Pipe to range' $failed
+
+$start
+loop 12 xzi xzi to getResult
+if result is 11 $worked
+else 'Loop to function' $failed
+
+$start
+if True loop 12 xyz
+if result is 11 $worked
+else 'Loop is new-expression/new-line' $failed
+
+$start
+loop 12 nn f"{nn}"
+if result is '11' $worked
+else 'Fstring DefExp after loop' $failed
+
+
+$start
+a is 3 if True else 6
+b is if True then 6 else 12
+c is if a < b then 12 else 21
+d is if True then (24*2)//2 else 24*2
+if a is 3 and b is 6 and c is 12 and d is 24 $worked
+else 'Tenary assignmment' $failed
+
+$start
+f"{if 5 > 1 then 0 else 2}"
+if result is '0' then $worked
+else 'Tenary inside fstring' $failed
+
+
+
+$start
+if True
+    if 6 < 3
+    or 7 == 7
+    and 7 > 6
+    $worked
+    else 'Multiline conditionals' $failed
+else 'Multiline conditionals' $failed
+
+
+$start
+a is 0
+if ++a is 1 $worked
+else 'Conditional pre-increment' $failed
+
+$start
+a is 0
+if a++ is 0 then if a is 1 $worked
+else 'Conditional after-increment' $failed
+
+$start
+a is 0
+while a++ less than 10 do a
+if result is 9 $worked
+else 'Loop increment-after-iteration' $failed
+
+$start
+a is 0
+while ++a less than 10 do a
+if result is 10 $worked
+else 'Loop increment-before-iteration' $failed
+
+# ^ increment | decrement v   (both are the same, just difference in ++ and --)
+
+$start
+a is 0
+if --a is -1 $worked
+else 'Conditional pre-decrement' $failed
+
+$start
+a is 0
+if a-- is 0 then if a is -1 $worked
+else 'Conditional after-decrement' $failed
+
+$start
+a is 0
+while a-- greater than -10 do a
+if result is -9 $worked
+else 'Loop decrement-after-iteration' $failed
+
+$start
+a is 0
+while --a greater than -10 do a
+if result is -10 $worked
+else 'Loop decrement-before-iteration' $failed
+
+$start
+a is 0
+a is ++a+++a+a+++a++
+if a is 10 then $worked
+else 'Multiple Increments one line' $failed
+
+$start
+ix = 0
+iy = 0
+++ix + ix++ + ++iy + iy++ + ++ix + ix++ + ++iy + iy++
+if result is 16 and ix iy is 4 $worked
+else 'Multiple Increments one line 2' $failed
+
+
+$start
+a is 5
+for xx in a do xx
+if result is 4 $worked
+else 'int to range' $failed
+
+
+$start
+ฯ€ is 3.14
+if ฯ€ is 3.14 $worked
+else 'non-ascii variable' $failed
+
+$start
+๐ค๐’๐งก is 'love'
+if ๐ค๐’๐งก is 'love' $worked
+else '(multi) emoji variable' $failed
+
+
+$start
+x is 12
+if f"{x+2}" is '14' $worked
+else 'basic f-string parsing' $failed
+
+$start
+x is 12
+if f"{x 
+	then 
+		x}" is '1212' $worked
+else 'f-string indent and then' $failed
+
+
+$start
+test does return x+12 from int x
+if test(2) is 14 $worked
+else 'one line asnake function' $failed
+
+$start
+test does f"test{1+3}"
+test
+if result is 'test4' $worked
+else 'default print for fstring on asnake function' $failed
+
+$start
+xint = 3
+match xint
+of 1 do result is False
+of 2 do result is False
+of 3 do result is True
+of 4 do result is False
+else result is False
+if result is True $worked
+else 'basic asnake case switch' $failed
+
+$ ifVersion = 3.10
+	$start
+	xint = 3
+	match xint
+	case 1 do result is False
+	case 2 do result is False
+	case 3 do result is True
+	case 4 do result is False
+	case _ do result is False
+	if result is True $worked
+	else 'basic python case switch' $failed
+
+
+$start
+xlist is 12 : _
+if xlist greater than 10 $worked
+else 'basic list-comp shortcut + len check' $failed
+
+$start
+n 2
+xlist is 12 n: _
+if xlist less than 10 $worked
+else 'list-comp shortcut stepping' $failed
+
+$start
+xlist is 12 -: _
+if xlist[-1] is 1 $worked
+else 'list-comp shortcut backwards' $failed
+
+
+
+increment does return z+1 from int z
+
+$start
+increment(1)+2
+if result is 4 $worked
+else 'function default expression when not bare (starting with function)' $failed
+
+$start
+2+increment(2)
+if result is 5 $worked
+else 'function default expression when not bare (starting with literal)' $failed
+
+$start
+result = 6
+increment(2)
+if result is 6 $worked
+else 'bare function shouldnt trigger default expression' $failed
+
+class Thing():
+	value = 1
+	def blah(self)
+		return 2
+classObject = Thing()
+
+$start
+classObject.value
+if result is 1 $worked
+else 'object attribute trigger default expression' $failed
+
+$start
+classObject.blah()
+if result isnt 2 $worked
+else 'object function shouldnt trigger default expression' $failed
+
+
+
+$start
+xstr = "abcdefg"
+y = 4
+if xstr > y do $worked
+else 'str vs int compares len' $failed
+
+$start
+xstr = "hijklmn"
+y = 12
+if y > xstr do $worked
+else 'int vs str compares len' $failed
+
+$ ifVersion = 3.8
+	$start
+	y = 4
+	if (xstr := "abcdefg") > y do $worked
+	else 'walrus str vs int compares len' $failed
+
+	$start
+	y = 12
+	if y > (xstr := "hijklmn") do $worked
+	else 'int vs walrus str compares len' $failed
+
+
+
+$start
+3
+giveTheNumberTwo does return 2
+giveTheNumberTwo
+if result is 3 do $worked
+else 'bare function call shouldnt trigger default expression' $failed
+
+$start
+3
+giveTheNumberTwo+2
+if result is 4 do $worked
+else 'non-bare function triggers default expression' $failed
+
+
+
+$start
+z = (1,2)
+int ix , iy = z
+if ix is 1 and iy is 2 do $worked
+else 'type declaration on unpack' $failed
+
+
+$start
+ix = 12
+if ix to str into float is 12.0 do $worked
+else 'pipe to into' $failed
+
+$start
+if ix into str into float is 12.0 do $worked
+else 'pipe double into' $failed
+
+$start
+f"{69 to chr}"
+if result is 'E' do $worked
+else 'pipe number in fstring' $failed
+
+
+$ ignoreIndent = True
+
+$start
+ix = 3
+if True
+	if False
+		pass
+	ix = 2
+	end
+end
+if ix is 3 do $worked end
+else 'basic ignoreIndent' $failed end
+
+$start
+def test()
+${
+    if (1 == 1) ${'hi';return 0;$}
+	return 1
+$}
+if test() is 0 and result is 'hi' do $worked end
+else 'basic metaBracket alias' $failed end
+
+$ ignoreIndent = False
+	
+
+$start
+if '1' isnt in '23456' do $worked
+else 'isn\'t in to not in syntax alias' $failed
+
+
+$start
+sx  f"{12}"
+if sx f"{12}" do $worked
+else 'assume assign/compare on fstring' $failed
+
+
+$start
+$ def x = 'x'
+$ def y = 'y'
+$ def xy = $x + $y
+$xy
+if result is "xy" do $worked
+else 'recursive inline' $failed
+
+
+$start
+9 * 2 + 4**2 // 5 - 8
+if result is 13 do $worked
+else 'order of operations lookahead for compile time optimization' $failed
+
+
+$start
+double does int return x*2 from int x
+getResult double 2
+if result is 4 do $worked
+else 'function line wrap' $failed
+
+$start
+if 4 == double 2 :
+	$worked
+else 'function line wrap in conditional' $failed
+
+$start
+del double
+def double(x: int) -> int: return x*2
+getResult double 3
+if result is 6 do $worked
+else 'function line wrap when using python function define' $failed
+
+$start
+test1 does 3
+test1 = 12
+test1
+if result is 12 do $worked
+else 'function line wrap redefined as variable' $failed
+
+$start
+$functionWrap = off
+if double 2 do 'function line wrap meta off failed' ; failed++
+else $worked
+
+$start
+$functionWrap = on
+if double 2 do $worked
+else 'function line wrap meta on' $failed
+
+$start
+1
+test2 does 2
+$functionPass = on
+x = test2
+if result is 1 do $worked
+else 'functionPass meta on' $failed
+
+$start
+$functionPass = off
+test2
+if result is 2 do $worked
+else 'functionPass meta off' $failed
+
+
+
+f"Failed={failed} Working={working} out of {max}" to print
