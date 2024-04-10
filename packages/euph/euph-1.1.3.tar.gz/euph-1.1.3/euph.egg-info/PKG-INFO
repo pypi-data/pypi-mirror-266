@@ -1,0 +1,71 @@
+Metadata-Version: 2.1
+Name: euph
+Version: 1.1.3
+Summary: Module for fast initialization of packages
+Author-email: Markada <markada.py@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2024 Markada
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+Keywords: markada,euph,euphoria,pack
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: colorama
+
+# Euphoria 1.1.3
+* Euphoria is a small CLI library for quick initialization and support of projects in Python project format
+* Euphoria shell - a small, additional utility for more detailed editing of projects
+
+
+## Euphoria Commands
+* Creating a project without specifying the project name: `py -m euph init <mod>`
+* Create a project by specifying the project name: `py -m euph init <mod> <name>`, where `<name>` is the folder/file name and `<mod>` is to create a package (insert `i`) or Python module (`m`, can be launched with `python -m`)
+* Help: `py -m euph help`
+* Launch Euphoria shell: `py -m euph shell`
+
+After executing the `init` command, a folder with the following structure appears in the current directory:
+```
+/<project>
+    /src
+        /<project>
+            /__init__.py or __main__.py
+        /.pypirc
+        /CHANGELOG
+        /LICENSE
+        /pyproject.toml
+        /README.md
+```
+
+
+## Euphoria shell
+* To exit the shell: `#q` or `#exit`
+* Shows Euphoria help: `#help`
+* Displays a list of created modules to the console: `#ls`
+* Adding a package to a directory: `#add <mod> <name>`
+* Delete module: `#del <name>`
+* Delete all modules: `#del all`
+* Delete all modules of a specific type: `#del all <mod>`
