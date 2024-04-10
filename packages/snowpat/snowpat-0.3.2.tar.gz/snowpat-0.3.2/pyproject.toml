@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "snowpat"
+version = "0.3.2"
+description = ""
+authors = ["leibersp <patrick.leibersperger@slf.ch>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pandas = "^2"
+h5py = "^3.5"
+numpy = "^1.26"
+matplotlib = "^3.8.3"
+
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.29.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry_bumpversion.file."snowpat/__init__.py"]
