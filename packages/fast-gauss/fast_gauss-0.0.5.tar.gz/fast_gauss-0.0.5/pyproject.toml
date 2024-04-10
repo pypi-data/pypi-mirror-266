@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fast_gauss"
+version = "0.0.5"
+description = "CUDA global sort + CUDA-GL interop + geometry shader quad emitting + hardware rasterization + CUDA-GL interop = fast gaussian splatting"
+readme = "readme.md"
+license = { file = "license" }
+authors = [{ email = "zhenx@zju.edu.cn" }, { name = "Zhen Xu" }]
+requires-python = ">=3.9"
+dynamic = ["dependencies"]
+
+[project.urls]
+homepage = "https://github.com/dendenxu/fast-gaussian-rasterization"
+
+[tool.setuptools.package-data]
+"*" = ["*.*"]
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
