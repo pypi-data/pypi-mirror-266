@@ -1,0 +1,11 @@
+digraph {
+	graph [compound=false concentrate=false rankdir=TB ranksep=0.4]
+	process_data [label=process_data shape=box style=rounded]
+	train_model [label=train_model shape=box style=rounded]
+	validate_model [label=validate_model shape=box style=rounded]
+	best_model [label=best_model shape=box style=rounded]
+	process_data -> train_model [style=solid]
+	train_model -> validate_model [style=solid]
+	validate_model -> best_model [label="iterations>100" style=dashed]
+	validate_model -> train_model [style=solid]
+}

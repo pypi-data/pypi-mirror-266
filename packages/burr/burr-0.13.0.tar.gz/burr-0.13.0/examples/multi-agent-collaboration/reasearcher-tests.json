@@ -1,0 +1,39 @@
+[
+  {
+    "action": "researcher",
+    "name": "researcher_f90ad34b_0",
+    "input_state": {
+      "messages": [
+        {
+          "type": "human",
+          "data": {
+            "content": "Fetch the UK's GDP over the past 5 years, then draw a line graph of it. Once you code it up, finish.",
+            "additional_kwargs": {},
+            "type": "human",
+            "example": false
+          }
+        },
+        {
+          "type": "human",
+          "data": {
+            "content": "",
+            "additional_kwargs": {
+              "function_call": {
+                "arguments": "{\"query\":\"UK GDP past 5 years\"}",
+                "name": "tavily_search_results_json"
+              }
+            },
+            "type": "human",
+            "example": false,
+            "name": "Researcher"
+          }
+        }
+      ],
+      "sender": "Researcher",
+      "__SEQUENCE_ID": 0
+    },
+    "expected_state": {
+      "TODO:": "fill this in"
+    }
+  }
+]

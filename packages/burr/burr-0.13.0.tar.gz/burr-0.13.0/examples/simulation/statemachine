@@ -1,0 +1,11 @@
+digraph {
+	graph [compound=false concentrate=false rankdir=TB ranksep=0.4]
+	prepare_data [label=prepare_data shape=box style=rounded]
+	build_model [label=build_model shape=box style=rounded]
+	forecast [label=forecast shape=box style=rounded]
+	terminate [label=terminate shape=box style=rounded]
+	prepare_data -> build_model [style=solid]
+	build_model -> forecast [style=solid]
+	forecast -> forecast [label="current_timestep<simulation_end" style=dashed]
+	forecast -> terminate [label="current_timestep>=simulation_end" style=dashed]
+}

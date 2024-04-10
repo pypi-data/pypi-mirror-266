@@ -1,0 +1,15 @@
+digraph {
+	graph [compound=false concentrate=false rankdir=TB ranksep=0.4]
+	researcher [label=researcher shape=box style=rounded]
+	charter [label=charter shape=box style=rounded]
+	call_tool [label=call_tool shape=box style=rounded]
+	terminal [label=terminal shape=box style=rounded]
+	researcher -> call_tool [label="'function_call' in messages[-1].additional_kwargs" style=dashed]
+	researcher -> terminal [label="'FINAL ANSWER' in messages[-1].content" style=dashed]
+	researcher -> charter [style=solid]
+	charter -> call_tool [label="'function_call' in messages[-1].additional_kwargs" style=dashed]
+	charter -> terminal [label="'FINAL ANSWER' in messages[-1].content" style=dashed]
+	charter -> researcher [style=solid]
+	call_tool -> researcher [label="sender == 'Researcher'" style=dashed]
+	call_tool -> charter [label="sender == 'Chart Generator'" style=dashed]
+}

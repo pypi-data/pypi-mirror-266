@@ -1,0 +1,11 @@
+digraph {
+	graph [compound=false concentrate=false rankdir=TB ranksep=0.4]
+	caption [label=caption shape=box style=rounded]
+	analysis [label=analysis shape=box style=rounded]
+	generate [label=generate shape=box style=rounded]
+	terminal [label=terminal shape=box style=rounded]
+	caption -> terminal [label="len(image_caption_history) == 5" style=dashed]
+	caption -> analysis [style=solid]
+	analysis -> generate [style=solid]
+	generate -> caption [style=solid]
+}
