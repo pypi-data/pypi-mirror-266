@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "strangeworks"
+version = "0.5.6"
+description = "Strangeworks Python SDK"
+readme = "DESCRIPTION.md"
+authors = ["Strange Devs <hello@strangeworks.com>"]
+license = "Apache-2.0"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+requests = "^2.30.0"
+pyyaml = "^6.0.0"
+tomlkit = "^0.11.1"
+gql = "^3.4.1"
+requests-toolbelt = "^1.0.0"
+strangeworks-core = "^0.3.5"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.2.0"
+black = "^22.1.0"
+flake8 = "^4.0.1"
+pytest-cov = "^3.0.0"
+flake8-docstrings = "^1.6.0"
+debugpy = "^1.6.2"
+python-dotenv = "^0.21.0"
+ipykernel = "^6.21.2"
+pre-commit = "^3.1.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "setuptools", "wheel"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--disable-warnings"
+testpaths = ["tests"]
