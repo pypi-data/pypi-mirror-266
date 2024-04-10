@@ -1,0 +1,52 @@
+[project]
+name = "django-includecontents"
+version = "0.3"
+description = "Django includecontents component-like tag"
+authors = [
+    { name = "Chris Beaven", email = "smileychris@gmail.com" },
+]
+dependencies = [
+    "django",
+]
+requires-python = ">=3.8"
+readme = "README.md"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Framework :: Django",
+    "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.0",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[project.license]
+text = "MIT"
+
+[project.urls]
+Repository = "https://github.com/SmileyChris/django-includecontents"
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-django",
+]
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[tool.pdm]
+distribution = true
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "tests.settings"
+django_find_project = false
+pythonpath = "."
