@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>The bio package</title>
+  <meta name="description" content="The bio package" />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="The bio package" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="The bio package" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+<link rel="next" href="bio-install.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link rel="shortcut icon" href="assets/favicon.ico" />
+
+<script src="assets/prism.js"></script>
+
+<link rel="stylesheet" type="text/css" href="assets/bio.css" />
+
+<link rel="stylesheet" type="text/css" href="assets/asciinema-player.css" />
+
+<link rel="stylesheet" type="text/css" href="assets/prism.css" />
+
+
+<script>
+
+    $(document).ready(function () {
+        $('pre').addClass('language-bash');
+        Prism.highlightAll();
+    });
+
+</script>
+
+
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="index.html">bio: making bioinformatics fun again</a></li>
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome to bio</a></li>
+<li class="chapter" data-level="" data-path="bio-install.html"><a href="bio-install.html"><i class="fa fa-check"></i>How to install bio</a></li>
+<li class="part"><span><b>I BIO TASKS</b></span></li>
+<li class="chapter" data-level="" data-path="bio-search.html"><a href="bio-search.html"><i class="fa fa-check"></i>bio search: find information</a></li>
+<li class="chapter" data-level="" data-path="bio-fetch.html"><a href="bio-fetch.html"><i class="fa fa-check"></i>bio fetch: download data</a></li>
+<li class="chapter" data-level="" data-path="bio-fasta.html"><a href="bio-fasta.html"><i class="fa fa-check"></i>bio fasta: convert to FASTA</a></li>
+<li class="chapter" data-level="" data-path="bio-gff.html"><a href="bio-gff.html"><i class="fa fa-check"></i>bio gff: convert to GFF</a></li>
+<li class="chapter" data-level="" data-path="bio-table.html"><a href="bio-table.html"><i class="fa fa-check"></i>bio table: convert to table</a></li>
+<li class="chapter" data-level="" data-path="bio-align.html"><a href="bio-align.html"><i class="fa fa-check"></i>bio align: perform alignments</a></li>
+<li class="chapter" data-level="" data-path="bio-format.html"><a href="bio-format.html"><i class="fa fa-check"></i>bio format: reformat alignments</a></li>
+<li class="chapter" data-level="" data-path="bio-taxonomy.html"><a href="bio-taxonomy.html"><i class="fa fa-check"></i>bio taxon: show taxonomies</a></li>
+<li class="chapter" data-level="" data-path="bio-explain.html"><a href="bio-explain.html"><i class="fa fa-check"></i>bio explain: show definitions</a></li>
+<li class="chapter" data-level="" data-path="bio-meta-obtain-viral-metadata.html"><a href="bio-meta-obtain-viral-metadata.html"><i class="fa fa-check"></i>bio meta: obtain viral metadata</a></li>
+<li class="part"><span><b>II MORE INFORMATION</b></span></li>
+<li class="chapter" data-level="" data-path="bio-tips.html"><a href="bio-tips.html"><i class="fa fa-check"></i>bio: general tips</a></li>
+<li class="chapter" data-level="" data-path="bio-examples.html"><a href="bio-examples.html"><i class="fa fa-check"></i>bio: additional examples</a></li>
+<li class="part"><span><b>III OTHER UTILITIES</b></span></li>
+<li class="chapter" data-level="" data-path="bio-comm.html"><a href="bio-comm.html"><i class="fa fa-check"></i>bio comm: find common values</a></li>
+<li class="chapter" data-level="" data-path="bio-uniq.html"><a href="bio-uniq.html"><i class="fa fa-check"></i>bio uniq: find unique elements</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">The bio package</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">The bio package</h1>
+</div>
+<div id="bio-intro" class="section level1 hasAnchor">
+<h1>Welcome to bio<a href="index.html#bio-intro" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><code>bio</code> is a bioinformatics toy to play with.</p>
+<p>Like LEGO pieces that match one another <code>bio</code> aims to provide you with commands that naturally fit together and let you express your intent with short, explicit and simple commands. It is a project in an exploratory phase, we’d welcome input and suggestions on what it should grow up into.</p>
+<p>If you’ve ever done bioinformatics you know how even seemingly straightforward tasks often require multiple steps, searching the web, reading documentation, clicking around various websites that all together can slow down your progress.</p>
+<p>Time and again, I found myself not pursuing ideas because getting to the fun part was too tedious. The <code>bio</code> package was designed to solve that tedium by making bioinformatics explorations more enjoyable. The software lets users quickly answer questions such as:</p>
+<ul>
+<li>How do I download data by an accession number? <code>bio fetch NC_045512 &gt; genome.gb</code></li>
+<li>How do I view the sequence annotation of the data? <code>bio gff genome.gb</code></li>
+<li>How do I get the coding sequence for a specific gene? <code>bio fasta --gene S genome.gb</code></li>
+<li>What is the taxid for SARS-COV-2? <code>bio taxon sars2</code></li>
+<li>What is the lineage of SARS-COV-2? <code>bio taxon 2697049 --lineage</code></li>
+<li>At what date were viral samples collected? <code>bio data 2697049 | head</code></li>
+<li>What is a microsatellite? <code>bio explain microsatellite</code></li>
+<li>What genes match the word <code>HBB</code>? <code>bio search HBB --species human</code></li>
+</ul>
+<p><code>bio</code> combines data from different sources: <a href="https://www.ncbi.nlm.nih.gov/genbank/">GenBank</a>,<a href="https://www.ensembl.org">Ensembl</a>,<a href="http://geneontology.org/">Gene Ontology</a>,<a href="http://www.sequenceontology.org/">Sequence Ontology</a>,
+<a href="https://www.ncbi.nlm.nih.gov/taxonomy">NCBI Taxonomy</a> and provides an unified, consistent interface.</p>
+<p>The software is also used to demonstrate and teach bioinformatics and is the companion software to the <a href="https://www.biostarhandbook.com/">Biostar Handbook</a>.</p>
+<div id="quick-start" class="section level2 hasAnchor">
+<h2>Quick start<a href="index.html#quick-start" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Install <code>bio</code>:</p>
+<pre><code>pip install bio --upgrade</code></pre>
+</div>
+<div id="code-and-info" class="section level2 hasAnchor">
+<h2>Code and info<a href="index.html#code-and-info" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li>Source code: <a href="https://github.com/ialbert/bio" class="uri">https://github.com/ialbert/bio</a></li>
+<li>Documentation: <a href="https://www.bioinfo.help" class="uri">https://www.bioinfo.help</a></li>
+<li>Report errors: <a href="https://github.com/ialbert/bio/issues" class="uri">https://github.com/ialbert/bio/issues</a></li>
+<li>Discussion board (new): <a href="https://github.com/ialbert/bio/discussions" class="uri">https://github.com/ialbert/bio/discussions</a></li>
+</ul>
+</div>
+<div id="usage-examples" class="section level2 hasAnchor">
+<h2>Usage examples<a href="index.html#usage-examples" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Suppose we found the accession number to data of interest: <code>NC_045512</code> representing the Wuhan-Hu-1 isolate of the coronavirus and
+<code>MN996532</code> that stores information on the most similar bat coronavirus. We would like to investigate the differences in the S protein betweeen the two organisms. Here is how you could do it with <code>bio</code>:</p>
+<div id="fetch-data" class="section level3 hasAnchor">
+<h3>Fetch data<a href="index.html#fetch-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>bio fetch MN996532 NC_045512 &gt; genomes.gb</code></pre>
+</div>
+<div id="extract-sequences-of-interest" class="section level3 hasAnchor">
+<h3>Extract sequences of interest<a href="index.html#extract-sequences-of-interest" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Look at the first 10 bases for the coding sequence of gene S:</p>
+<pre><code>bio fasta genomes.gb --end 10  --gene S | head</code></pre>
+<p>prints:</p>
+<pre><code>&gt;YP_009724390.1 CDS gene S, surface glycoprotein [1:10]
+ATGTTTGTTT
+&gt;QHU36824.1 CDS gene S, surface glycoprotein [1:10]
+ATGTTTGTTT</code></pre>
+</div>
+<div id="align-sequences" class="section level3 hasAnchor">
+<h3>Align sequences<a href="index.html#align-sequences" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Let’s align the protein sequences for the <code>S</code> gene</p>
+<pre><code>cat genomes.gb | bio fasta --gene S --protein | bio align | head</code></pre>
+<p>prints:</p>
+<pre><code># PEP: YP_009724390.1 (1,273) vs QHR63300.2 (1,269) score=6541.0
+# Alignment: length=1273 ident=1240/1273(97.4%) mis=29 del=4 ins=0 gap=4
+# Parameters: matrix=BLOSUM62 gap-open=11 gap-extend=1
+
+MFVFLVLLPLVSSQCVNLTTRTQLPPAYTNSFTRGVYYPDKVFRSSVLHSTQDLFLPFFSNVTWFHAIHVSGTNGTKRFDN
+|||||||||||||||||||||||||||||||.|||||||||||||||||.|||||||||||||||||||||||||.||||| 81
+MFVFLVLLPLVSSQCVNLTTRTQLPPAYTNSSTRGVYYPDKVFRSSVLHLTQDLFLPFFSNVTWFHAIHVSGTNGIKRFDN</code></pre>
+</div>
+<div id="show-alignment-as-mutations" class="section level3 hasAnchor">
+<h3>Show alignment as mutations<a href="index.html#show-alignment-as-mutations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Pairwise alignments can be overly verbose, let’s look at mutations alone:</p>
+<pre><code>cat genomes.gb | bio fasta --gene S --protein | bio align --mut | tail</code></pre>
+<p>prints the type and variant at each location:</p>
+<pre><code>Y493Q   SNP     493     Y       Q
+R494S   SNP     494     R       S
+Y498Q   SNP     498     Y       Q
+D501N   SNP     501     D       N
+H505Y   SNP     505     H       Y
+N519H   SNP     519     N       H
+A604T   SNP     604     A       T
+S680SPRRA       INS     680     S       SPRRA
+S1121N  SNP     1121    S       N
+I1224V  SNP     1224    I       V</code></pre>
+<p>It shows that at position <code>680</code> the coronavirus has a four aminoacid insertion <code>PRRA</code>, the so called furin-cleavage.</p>
+</div>
+<div id="visualize-the-genome-data" class="section level3 hasAnchor">
+<h3>Visualize the genome data<a href="index.html#visualize-the-genome-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Convert to GFF</p>
+<pre><code>bio gff genomes.gb | head</code></pre>
+<p>prints:</p>
+<pre><code>##gff-version 3
+MN996532.2      .       gene    266     21552   .       +       .       ID=1;Name=orf1ab;Parent=orf1ab;color=#cb7a77
+MN996532.2      .       CDS     266     13465   .       +       .       ID=2;Name=QHR63299.2;Parent=QHR63299.2
+MN996532.2      .       CDS     13465   21552   .       +       .       ID=3;Name=QHR63299.2;Parent=QHR63299.2
+MN996532.2      .       gene    21560   25369   .       +       .       ID=4;Name=S;Parent=S;color=#cb7a77
+MN996532.2      .       CDS     21560   25369   .       +       .       ID=5;Name=QHR63300.2;Parent=QHR63300.2</code></pre>
+<p>Load and view the resulting files in IGV</p>
+<p><img src="images/igv-index.png" style="display: block; margin: auto;" /></p>
+<p>Among the many useful features, <code>bio</code> is also able to generate informative gene models from a GenBank file.</p>
+</div>
+</div>
+<div id="where-to-go-next" class="section level2 hasAnchor">
+<h2>Where to go next<a href="index.html#where-to-go-next" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Look at the sidebar for detailed documentation on additional commands that <code>bio</code> supports.</p>
+
+</div>
+</div>
+
+<script src="assets/asciinema-player.js"></script>
+
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="bio-install.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "none"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

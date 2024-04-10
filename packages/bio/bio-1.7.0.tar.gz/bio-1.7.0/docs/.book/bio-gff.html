@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>bio gff: convert to GFF | The bio package</title>
+  <meta name="description" content="bio gff: convert to GFF | The bio package" />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="bio gff: convert to GFF | The bio package" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="bio gff: convert to GFF | The bio package" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="bio-fasta.html"/>
+<link rel="next" href="bio-table.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link rel="shortcut icon" href="assets/favicon.ico" />
+
+<script src="assets/prism.js"></script>
+
+<link rel="stylesheet" type="text/css" href="assets/bio.css" />
+
+<link rel="stylesheet" type="text/css" href="assets/asciinema-player.css" />
+
+<link rel="stylesheet" type="text/css" href="assets/prism.css" />
+
+
+<script>
+
+    $(document).ready(function () {
+        $('pre').addClass('language-bash');
+        Prism.highlightAll();
+    });
+
+</script>
+
+
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="index.html">bio: making bioinformatics fun again</a></li>
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome to bio</a></li>
+<li class="chapter" data-level="" data-path="bio-install.html"><a href="bio-install.html"><i class="fa fa-check"></i>How to install bio</a></li>
+<li class="part"><span><b>I BIO TASKS</b></span></li>
+<li class="chapter" data-level="" data-path="bio-search.html"><a href="bio-search.html"><i class="fa fa-check"></i>bio search: find information</a></li>
+<li class="chapter" data-level="" data-path="bio-fetch.html"><a href="bio-fetch.html"><i class="fa fa-check"></i>bio fetch: download data</a></li>
+<li class="chapter" data-level="" data-path="bio-fasta.html"><a href="bio-fasta.html"><i class="fa fa-check"></i>bio fasta: convert to FASTA</a></li>
+<li class="chapter" data-level="" data-path="bio-gff.html"><a href="bio-gff.html"><i class="fa fa-check"></i>bio gff: convert to GFF</a></li>
+<li class="chapter" data-level="" data-path="bio-table.html"><a href="bio-table.html"><i class="fa fa-check"></i>bio table: convert to table</a></li>
+<li class="chapter" data-level="" data-path="bio-align.html"><a href="bio-align.html"><i class="fa fa-check"></i>bio align: perform alignments</a></li>
+<li class="chapter" data-level="" data-path="bio-format.html"><a href="bio-format.html"><i class="fa fa-check"></i>bio format: reformat alignments</a></li>
+<li class="chapter" data-level="" data-path="bio-taxonomy.html"><a href="bio-taxonomy.html"><i class="fa fa-check"></i>bio taxon: show taxonomies</a></li>
+<li class="chapter" data-level="" data-path="bio-explain.html"><a href="bio-explain.html"><i class="fa fa-check"></i>bio explain: show definitions</a></li>
+<li class="chapter" data-level="" data-path="bio-meta-obtain-viral-metadata.html"><a href="bio-meta-obtain-viral-metadata.html"><i class="fa fa-check"></i>bio meta: obtain viral metadata</a></li>
+<li class="part"><span><b>II MORE INFORMATION</b></span></li>
+<li class="chapter" data-level="" data-path="bio-tips.html"><a href="bio-tips.html"><i class="fa fa-check"></i>bio: general tips</a></li>
+<li class="chapter" data-level="" data-path="bio-examples.html"><a href="bio-examples.html"><i class="fa fa-check"></i>bio: additional examples</a></li>
+<li class="part"><span><b>III OTHER UTILITIES</b></span></li>
+<li class="chapter" data-level="" data-path="bio-comm.html"><a href="bio-comm.html"><i class="fa fa-check"></i>bio comm: find common values</a></li>
+<li class="chapter" data-level="" data-path="bio-uniq.html"><a href="bio-uniq.html"><i class="fa fa-check"></i>bio uniq: find unique elements</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">The bio package</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="bio-gff" class="section level1 hasAnchor">
+<h1>bio gff: convert to GFF<a href="bio-gff.html#bio-gff" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="building-a-nicer-gene-model" class="section level2 hasAnchor">
+<h2>Building a nicer gene model<a href="bio-gff.html#building-a-nicer-gene-model" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><code>bio</code> creates more meaningful and nicer GFF visualizations. Get data for chromosome 2L for Drosophila melanogaster (fruit-fly)</p>
+<pre><code>bio fetch NT_033779 &gt; chrom2L.gb</code></pre>
+<p>Convert it to gff:</p>
+<pre><code>bio gff chrom2L.gb &gt; chrom2L.gff</code></pre>
+</div>
+<div id="gff-created-with-bio" class="section level2 hasAnchor">
+<h2>GFF created with <code>bio</code><a href="bio-gff.html#gff-created-with-bio" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Here is a region from the GFF file created with the code above as visualized in IGV:</p>
+<p><img src="images/gff-model-bio.png" style="display: block; margin: auto;" /></p>
+<ul>
+<li>Exons will have <code>transcript_id</code> and <code>gene_id</code> attributes set.</li>
+<li>CDS features have <code>protein_id</code> and <code>gene_id</code> attributes set.</li>
+</ul>
+<div id="get-a-dataset" class="section level3 hasAnchor">
+<h3>Get a dataset<a href="bio-gff.html#get-a-dataset" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Get SARS-COV-2 data:</p>
+<pre><code>bio fetch NC_045512 MN996532 &gt; genomes.gb</code></pre>
+</div>
+<div id="convert-all-features-to-gff" class="section level3 hasAnchor">
+<h3>Convert all features to GFF:<a href="bio-gff.html#convert-all-features-to-gff" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>cat genomes.gb | bio gff | head -5</code></pre>
+</div>
+<div id="convert-to-gff-only-the-features-with-type-cds" class="section level3 hasAnchor">
+<h3>Convert to GFF only the features with type <code>CDS</code><a href="bio-gff.html#convert-to-gff-only-the-features-with-type-cds" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>cat genomes.gb | bio gff --type gene,CDS | head -5 </code></pre>
+</div>
+<div id="convert-to-gff-only-the-features-tagged-with-gene-s" class="section level3 hasAnchor">
+<h3>Convert to GFF only the features tagged with gene <code>S</code><a href="bio-gff.html#convert-to-gff-only-the-features-tagged-with-gene-s" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>bio gff --gene S  genomes.gb | head -5</code></pre>
+
+</div>
+</div>
+</div>
+
+<script src="assets/asciinema-player.js"></script>
+
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="bio-fasta.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="bio-table.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "none"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

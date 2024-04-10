@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>bio meta: obtain viral metadata | The bio package</title>
+  <meta name="description" content="bio meta: obtain viral metadata | The bio package" />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="bio meta: obtain viral metadata | The bio package" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="bio meta: obtain viral metadata | The bio package" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="bio-explain.html"/>
+<link rel="next" href="bio-tips.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link rel="shortcut icon" href="assets/favicon.ico" />
+
+<script src="assets/prism.js"></script>
+
+<link rel="stylesheet" type="text/css" href="assets/bio.css" />
+
+<link rel="stylesheet" type="text/css" href="assets/asciinema-player.css" />
+
+<link rel="stylesheet" type="text/css" href="assets/prism.css" />
+
+
+<script>
+
+    $(document).ready(function () {
+        $('pre').addClass('language-bash');
+        Prism.highlightAll();
+    });
+
+</script>
+
+
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="index.html">bio: making bioinformatics fun again</a></li>
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome to bio</a></li>
+<li class="chapter" data-level="" data-path="bio-install.html"><a href="bio-install.html"><i class="fa fa-check"></i>How to install bio</a></li>
+<li class="part"><span><b>I BIO TASKS</b></span></li>
+<li class="chapter" data-level="" data-path="bio-search.html"><a href="bio-search.html"><i class="fa fa-check"></i>bio search: find information</a></li>
+<li class="chapter" data-level="" data-path="bio-fetch.html"><a href="bio-fetch.html"><i class="fa fa-check"></i>bio fetch: download data</a></li>
+<li class="chapter" data-level="" data-path="bio-fasta.html"><a href="bio-fasta.html"><i class="fa fa-check"></i>bio fasta: convert to FASTA</a></li>
+<li class="chapter" data-level="" data-path="bio-gff.html"><a href="bio-gff.html"><i class="fa fa-check"></i>bio gff: convert to GFF</a></li>
+<li class="chapter" data-level="" data-path="bio-table.html"><a href="bio-table.html"><i class="fa fa-check"></i>bio table: convert to table</a></li>
+<li class="chapter" data-level="" data-path="bio-align.html"><a href="bio-align.html"><i class="fa fa-check"></i>bio align: perform alignments</a></li>
+<li class="chapter" data-level="" data-path="bio-format.html"><a href="bio-format.html"><i class="fa fa-check"></i>bio format: reformat alignments</a></li>
+<li class="chapter" data-level="" data-path="bio-taxonomy.html"><a href="bio-taxonomy.html"><i class="fa fa-check"></i>bio taxon: show taxonomies</a></li>
+<li class="chapter" data-level="" data-path="bio-explain.html"><a href="bio-explain.html"><i class="fa fa-check"></i>bio explain: show definitions</a></li>
+<li class="chapter" data-level="" data-path="bio-meta-obtain-viral-metadata.html"><a href="bio-meta-obtain-viral-metadata.html"><i class="fa fa-check"></i>bio meta: obtain viral metadata</a></li>
+<li class="part"><span><b>II MORE INFORMATION</b></span></li>
+<li class="chapter" data-level="" data-path="bio-tips.html"><a href="bio-tips.html"><i class="fa fa-check"></i>bio: general tips</a></li>
+<li class="chapter" data-level="" data-path="bio-examples.html"><a href="bio-examples.html"><i class="fa fa-check"></i>bio: additional examples</a></li>
+<li class="part"><span><b>III OTHER UTILITIES</b></span></li>
+<li class="chapter" data-level="" data-path="bio-comm.html"><a href="bio-comm.html"><i class="fa fa-check"></i>bio comm: find common values</a></li>
+<li class="chapter" data-level="" data-path="bio-uniq.html"><a href="bio-uniq.html"><i class="fa fa-check"></i>bio uniq: find unique elements</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">The bio package</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="bio-meta-obtain-viral-metadata" class="section level1 hasAnchor">
+<h1>bio meta: obtain viral metadata<a href="bio-meta-obtain-viral-metadata.html#bio-meta-obtain-viral-metadata" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>TODO: Work in progress.</p>
+<p>Display metadata on a taxonomical id (with a header):</p>
+<pre><code>bio meta 11138 -H | head</code></pre>
+<p>prints:</p>
+<pre><code>accession,species,host,date,location,isolate,species_name
+NC_048217.1,11138,,,,,Murine hepatitis virus
+NC_001846.1,11138,,,,,Murine hepatitis virus
+AC_000192.1,11144,,,,,Murine hepatitis virus strain JHM
+JQ173883.1,1163669,,,,,Murine hepatitis virus strain S/3239-17
+AY700211.1,11138,,,,,Murine hepatitis virus
+AF208067.1,11138,,,,,Murine hepatitis virus
+AF208066.1,11138,,,,,Murine hepatitis virus
+AF201929.1,76344,,,,,Murine hepatitis virus strain 2
+AF029248.1,11138,,,,,Murine hepatitis virus</code></pre>
+<p>The column order is:</p>
+<ul>
+<li>accession</li>
+<li>species</li>
+<li>host,date</li>
+<li>location</li>
+<li>isolate</li>
+<li>species_name</li>
+</ul>
+
+</div>
+
+
+
+</div>
+
+<script src="assets/asciinema-player.js"></script>
+
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="bio-explain.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="bio-tips.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "none"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

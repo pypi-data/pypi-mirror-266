@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>bio comm: find common values | The bio package</title>
+  <meta name="description" content="bio comm: find common values | The bio package" />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="bio comm: find common values | The bio package" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="bio comm: find common values | The bio package" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="bio-examples.html"/>
+<link rel="next" href="bio-uniq.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link rel="shortcut icon" href="assets/favicon.ico" />
+
+<script src="assets/prism.js"></script>
+
+<link rel="stylesheet" type="text/css" href="assets/bio.css" />
+
+<link rel="stylesheet" type="text/css" href="assets/asciinema-player.css" />
+
+<link rel="stylesheet" type="text/css" href="assets/prism.css" />
+
+
+<script>
+
+    $(document).ready(function () {
+        $('pre').addClass('language-bash');
+        Prism.highlightAll();
+    });
+
+</script>
+
+
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="index.html">bio: making bioinformatics fun again</a></li>
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome to bio</a></li>
+<li class="chapter" data-level="" data-path="bio-install.html"><a href="bio-install.html"><i class="fa fa-check"></i>How to install bio</a></li>
+<li class="part"><span><b>I BIO TASKS</b></span></li>
+<li class="chapter" data-level="" data-path="bio-search.html"><a href="bio-search.html"><i class="fa fa-check"></i>bio search: find information</a></li>
+<li class="chapter" data-level="" data-path="bio-fetch.html"><a href="bio-fetch.html"><i class="fa fa-check"></i>bio fetch: download data</a></li>
+<li class="chapter" data-level="" data-path="bio-fasta.html"><a href="bio-fasta.html"><i class="fa fa-check"></i>bio fasta: convert to FASTA</a></li>
+<li class="chapter" data-level="" data-path="bio-gff.html"><a href="bio-gff.html"><i class="fa fa-check"></i>bio gff: convert to GFF</a></li>
+<li class="chapter" data-level="" data-path="bio-table.html"><a href="bio-table.html"><i class="fa fa-check"></i>bio table: convert to table</a></li>
+<li class="chapter" data-level="" data-path="bio-align.html"><a href="bio-align.html"><i class="fa fa-check"></i>bio align: perform alignments</a></li>
+<li class="chapter" data-level="" data-path="bio-format.html"><a href="bio-format.html"><i class="fa fa-check"></i>bio format: reformat alignments</a></li>
+<li class="chapter" data-level="" data-path="bio-taxonomy.html"><a href="bio-taxonomy.html"><i class="fa fa-check"></i>bio taxon: show taxonomies</a></li>
+<li class="chapter" data-level="" data-path="bio-explain.html"><a href="bio-explain.html"><i class="fa fa-check"></i>bio explain: show definitions</a></li>
+<li class="chapter" data-level="" data-path="bio-meta-obtain-viral-metadata.html"><a href="bio-meta-obtain-viral-metadata.html"><i class="fa fa-check"></i>bio meta: obtain viral metadata</a></li>
+<li class="part"><span><b>II MORE INFORMATION</b></span></li>
+<li class="chapter" data-level="" data-path="bio-tips.html"><a href="bio-tips.html"><i class="fa fa-check"></i>bio: general tips</a></li>
+<li class="chapter" data-level="" data-path="bio-examples.html"><a href="bio-examples.html"><i class="fa fa-check"></i>bio: additional examples</a></li>
+<li class="part"><span><b>III OTHER UTILITIES</b></span></li>
+<li class="chapter" data-level="" data-path="bio-comm.html"><a href="bio-comm.html"><i class="fa fa-check"></i>bio comm: find common values</a></li>
+<li class="chapter" data-level="" data-path="bio-uniq.html"><a href="bio-uniq.html"><i class="fa fa-check"></i>bio uniq: find unique elements</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">The bio package</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="bio-comm" class="section level1 hasAnchor">
+<h1>bio comm: find common values<a href="bio-comm.html#bio-comm" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>The need to find identical elements within columns of different files is surprisingly common (pun intended).</p>
+<p>Thus <code>bio</code> packages another utility called <code>comm</code>. It is a tool that prints the common elements from two files.’</p>
+<div id="using-bio-comm" class="section level2 hasAnchor">
+<h2>Using <code>bio comm</code><a href="bio-comm.html#using-bio-comm" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>If file 1 contains:</p>
+<pre><code>A
+B
+C</code></pre>
+<p>and file 2 contains</p>
+<pre><code>A
+C
+D</code></pre>
+<p>then the command:</p>
+<pre><code>bio comm file1 file2</code></pre>
+<p>will print the common elements present in the first column of both files:</p>
+<pre><code>A
+C</code></pre>
+<p>This is the main usecase of the <code>bio comm</code> software.</p>
+</div>
+<div id="other-features" class="section level2 hasAnchor">
+<h2>Other features<a href="bio-comm.html#other-features" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><code>bio comm</code> has a number of convenience parameters:</p>
+<ul>
+<li><code>-1</code> will print elements unique to file 1: <code>B</code></li>
+<li><code>-2</code> will print elements unique to file 2: <code>D</code></li>
+<li><code>-3</code> will print the union of elements: <code>A</code>, <code>C</code>, <code>B</code>, <code>D</code></li>
+<li><code>-x 1</code> reads a different column from file 1</li>
+<li><code>-y 1</code> reads a different column from file 2</li>
+<li><code>-t</code> treats the files as tab delimited rather than CSV</li>
+</ul>
+<p>The content for either file may come from standard input. In that case the <code>-</code> symbol should be used instead of file name.</p>
+</div>
+<div id="why-does-bio-comm-exist" class="section level2 hasAnchor">
+<h2>Why does <code>bio comm</code> exist?<a href="bio-comm.html#why-does-bio-comm-exist" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We could use the UNIX tool called <code>comm</code> to find common or distinct elements. When used properly <code>comm</code> allows you to answer a wide variety of interesting questions.</p>
+<p>Unfortunately using <code>comm</code> properly is no easy task.</p>
+<p>First for <code>comm</code> to work the values must be on a single column and must be sorted. Then instead of telling <code>comm</code> what we want, we have to tell it what we don’t want (what columns to suppress). That usage is completely backwards of how I like to think.</p>
+<p>I don’t usually advocate rewriting UNIX tools, in this case, writing a better <code>comm</code> makes a lot of sense.</p>
+</div>
+<div id="potential-limitations" class="section level2 hasAnchor">
+<h2>Potential limitations<a href="bio-comm.html#potential-limitations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>With <code>bio comm</code> most operations will be quicker to do, simpler to perform and easier to understand. The primary limitation of <code>bio comm</code> vs <code>comm</code> is that <code>bio comm</code> loads all elements into memory.</p>
+<p>For most use-cases <code>bio comm</code> will work exceedingly well.</p>
+</div>
+<div id="usage-2" class="section level2 hasAnchor">
+<h2>Usage<a href="bio-comm.html#usage-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre class="bash"><code>bio comm -h</code></pre>
+<pre><code>usage: bio [-h] [-1] [-2] [-3] [-t] [-x 1] [-y 1] file1 file2
+
+A better &#39;comm&#39; command. Prints elements common from columns from two files.
+
+positional arguments:
+  file1           input file 1
+  file2           input file 2
+
+optional arguments:
+  -h, --help      show this help message and exit
+  -1, --uniq1     prints elements unique to file 1
+  -2, --uniq2     prints elements unique to file 2
+  -3, --union     prints elements present in both files
+  -t, --tab       tab delimited (default is csv)
+  -x 1, --col1 1  column index for file 1 [default=1]
+  -y 1, --col2 1  column index for file 2 [default=1]</code></pre>
+
+</div>
+</div>
+
+<script src="assets/asciinema-player.js"></script>
+
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="bio-examples.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="bio-uniq.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "none"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

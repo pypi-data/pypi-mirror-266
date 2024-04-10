@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>bio: additional examples | The bio package</title>
+  <meta name="description" content="bio: additional examples | The bio package" />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="bio: additional examples | The bio package" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="bio: additional examples | The bio package" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="bio-tips.html"/>
+<link rel="next" href="bio-comm.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link rel="shortcut icon" href="assets/favicon.ico" />
+
+<script src="assets/prism.js"></script>
+
+<link rel="stylesheet" type="text/css" href="assets/bio.css" />
+
+<link rel="stylesheet" type="text/css" href="assets/asciinema-player.css" />
+
+<link rel="stylesheet" type="text/css" href="assets/prism.css" />
+
+
+<script>
+
+    $(document).ready(function () {
+        $('pre').addClass('language-bash');
+        Prism.highlightAll();
+    });
+
+</script>
+
+
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="index.html">bio: making bioinformatics fun again</a></li>
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome to bio</a></li>
+<li class="chapter" data-level="" data-path="bio-install.html"><a href="bio-install.html"><i class="fa fa-check"></i>How to install bio</a></li>
+<li class="part"><span><b>I BIO TASKS</b></span></li>
+<li class="chapter" data-level="" data-path="bio-search.html"><a href="bio-search.html"><i class="fa fa-check"></i>bio search: find information</a></li>
+<li class="chapter" data-level="" data-path="bio-fetch.html"><a href="bio-fetch.html"><i class="fa fa-check"></i>bio fetch: download data</a></li>
+<li class="chapter" data-level="" data-path="bio-fasta.html"><a href="bio-fasta.html"><i class="fa fa-check"></i>bio fasta: convert to FASTA</a></li>
+<li class="chapter" data-level="" data-path="bio-gff.html"><a href="bio-gff.html"><i class="fa fa-check"></i>bio gff: convert to GFF</a></li>
+<li class="chapter" data-level="" data-path="bio-table.html"><a href="bio-table.html"><i class="fa fa-check"></i>bio table: convert to table</a></li>
+<li class="chapter" data-level="" data-path="bio-align.html"><a href="bio-align.html"><i class="fa fa-check"></i>bio align: perform alignments</a></li>
+<li class="chapter" data-level="" data-path="bio-format.html"><a href="bio-format.html"><i class="fa fa-check"></i>bio format: reformat alignments</a></li>
+<li class="chapter" data-level="" data-path="bio-taxonomy.html"><a href="bio-taxonomy.html"><i class="fa fa-check"></i>bio taxon: show taxonomies</a></li>
+<li class="chapter" data-level="" data-path="bio-explain.html"><a href="bio-explain.html"><i class="fa fa-check"></i>bio explain: show definitions</a></li>
+<li class="chapter" data-level="" data-path="bio-meta-obtain-viral-metadata.html"><a href="bio-meta-obtain-viral-metadata.html"><i class="fa fa-check"></i>bio meta: obtain viral metadata</a></li>
+<li class="part"><span><b>II MORE INFORMATION</b></span></li>
+<li class="chapter" data-level="" data-path="bio-tips.html"><a href="bio-tips.html"><i class="fa fa-check"></i>bio: general tips</a></li>
+<li class="chapter" data-level="" data-path="bio-examples.html"><a href="bio-examples.html"><i class="fa fa-check"></i>bio: additional examples</a></li>
+<li class="part"><span><b>III OTHER UTILITIES</b></span></li>
+<li class="chapter" data-level="" data-path="bio-comm.html"><a href="bio-comm.html"><i class="fa fa-check"></i>bio comm: find common values</a></li>
+<li class="chapter" data-level="" data-path="bio-uniq.html"><a href="bio-uniq.html"><i class="fa fa-check"></i>bio uniq: find unique elements</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">The bio package</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="bio-examples" class="section level1 hasAnchor">
+<h1>bio: additional examples<a href="bio-examples.html#bio-examples" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>The following script is a test file that we use to verify the various functionalities of <code>bio</code>. To run all tests execute:</p>
+<pre><code>bio test</code></pre>
+<p>The file lists the various usage modes of <code>bio</code> and is the most up to date demonstration of the usage</p>
+<div id="code-on-github" class="section level2 hasAnchor">
+<h2>Code on GitHub:<a href="bio-examples.html#code-on-github" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li><a href="https://github.com/ialbert/bio/blob/master/biorun/data/usage.sh" class="uri">https://github.com/ialbert/bio/blob/master/biorun/data/usage.sh</a></li>
+</ul>
+<p>The location for the data:</p>
+<ul>
+<li><a href="https://github.com/ialbert/bio/tree/master/biorun/data" class="uri">https://github.com/ialbert/bio/tree/master/biorun/data</a></li>
+</ul>
+</div>
+<div id="usage-1" class="section level2 hasAnchor">
+<h2>Usage<a href="bio-examples.html#usage-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre class="bash"><code>#
+# This script is used to generate Python tests.
+#
+# The output generated by each test can be seen at:
+#
+# https://github.com/ialbert/bio/tree/master/test/data
+#
+
+# Stop on errors.
+set -uex
+
+# Selecting by gene id
+bio fasta genomes.gb --type gene --id N --end 10 &gt; fasta_ids.fa
+
+# Match with regular expression
+cat genomes.gb | bio fasta -m glyco -end 10 &gt; fasta_match.fa
+
+# Last ten sequences of all entries.
+bio fasta genomes.gb -end 10 --features &gt; fasta_all1.fa
+
+# Should produce the same output as above
+cat genomes.gb | bio fasta --end  10 --features &gt; fasta_all2.fa
+
+# No muterence between outputs.
+diff fasta_all1.fa fasta_all2.fa &gt; nodiff.txt
+
+# Generate a JSON out[put
+cat genomes.gb | bio json &gt; genomes.json
+
+# Last ten sequences of all entries.
+cat genomes.json | bio fasta -end 10  --features &gt; fasta_all3.fa
+
+# No muterence between outputs.
+diff fasta_all1.fa fasta_all3.fa &gt; nodiff.txt
+
+# Renaming with patterns
+bio fasta genomes.gb --end 100  --rename {isolate} &gt; fasta_rename1.fa
+
+# Renaming with a file
+bio fasta genomes.gb --end 100  --rename alias.txt &gt; fasta_alias1.fa
+
+# Outputs overlapping features in FASTA
+cat genomes.gb | bio fasta --features --olap 29514 -e 10 --type CDS &gt; fasta_olap1.fa
+
+# Outputs overlapping features as GFF
+cat genomes.gb | bio gff --olap 29514 &gt; gff_olap1.gff
+
+# Compute sizes
+cat genomes.gb | bio table --type CDS --olap 3778,8388,8987 --fields id,gene,size  &gt; table_1.txt
+
+# Generate default table.
+cat genomes.gb | bio table &gt; table_2.txt
+
+# Generate features only.
+bio fasta genomes.gb --end 10 --type CDS &gt; fasta_cds.fa
+
+# Translate the features.
+bio fasta genomes.gb --type CDS --translate &gt; fasta_translate.fa
+
+# Translate in a frame
+bio fasta GATTACA --frame -3 --translate &gt; fasta_frame.fa
+
+# Extract the proteins.
+bio fasta genomes.gb --protein &gt; fasta_protein.fa
+
+# Start codons
+cat fasta_cds.fa | bio fasta -e -3 &gt; fasta_start.fa
+
+# Last codons
+cat fasta_cds.fa | bio fasta -s -3 &gt; fasta_stop.fa
+
+# Default alignment.
+bio align GATTACA GATCA &gt; align_default.txt
+
+# Default alignment.
+bio align GATTACA GATCA --global &gt; align_global.txt
+
+# Default alignment.
+bio align GATTACA GATCA --local &gt; align_local.txt
+
+# Running variants.
+bio align GATTACA GATCA --vcf &gt; align_default.vcf
+
+# Running variants.
+bio align GATTACA GATCA --diff  &gt; align_default.diff
+
+# Running on FASTA files.
+bio align align_input.fa --vcf &gt; align_input.vcf
+
+# Creating the pileup output.
+bio fasta GATTACA GTTAACA GTTTATA GTTT &gt; fasta_multi.fa
+
+# Creating the pileup output.
+bio align GATTACA GTTAACA GTTTATA GTTT --pile &gt; align_pile1.txt
+
+# Format to pairwise
+bio format mafft.fa &gt; format_mafft1.txt
+
+# Format to VCF
+bio format mafft.fa --vcf &gt; format_mafft1.vcf
+
+# Format to differences
+bio format mafft.fa --diff &gt; format_mafft1.diff.txt
+
+# Select S proteins
+bio fasta --gene S --protein  genomes.gb &gt; fasta_s.fa
+
+# Align proteins.
+bio align fasta_s.fa &gt; align_s.txt
+
+# Alignment as a table.
+bio align fasta_s.fa --table &gt; align_s.tsv
+
+# Align as variants.
+bio align fasta_s.fa --vcf &gt; align_s.vcf
+
+# Convert genbank files to GFF
+bio gff genomes.gb &gt; gff_all.gff
+
+# Convert genbank files to GFF
+bio gff genomes.gb --type CDS &gt; gff_CDS.gff
+
+# Slice the GFF file.
+bio gff -s 300 -e 10k genomes.gb &gt; gff_slice.gff
+
+# Taxonomy listing.
+bio taxon 117565 -d 5 &gt; taxon1.txt
+
+# Taxonomy lineage. from file TODO
+# bio taxon genomes.gb --lineage &gt; lineage.txt
+
+# Getting some metadata for taxon 11138 (Murine hepatitis virus)
+bio meta 11138 -H &gt; meta.txt
+
+# Define exact SO term
+bio explain exon &gt; explain_exon.txt
+
+# Define exact SO term
+bio explain food vacuole &gt; explain_food.txt
+
+# Search for terms
+bio explain neutral &gt; explain_neutral.txt
+
+# Running comm.py
+bio comm file1.txt file2.txt &gt; comm0.txt
+bio comm -1 file1.txt file2.txt &gt; comm1.txt
+bio comm -2 file1.txt file2.txt &gt; comm2.txt
+
+# Running uniq.py
+cat file1.txt file2.txt | bio  uniq &gt; uniq0.txt
+cat file1.txt file2.txt | bio  uniq -f 2 &gt; uniq1.txt
+cat file1.txt file2.txt | bio  uniq -c -f 2  &gt; uniq3.txt
+
+# Get data from SRA (can be spotty)
+bio search SRR1972976 &gt; search_srr.json
+
+# Get bioproject information
+bio search PRJNA661333 &gt; search_prjn.json
+
+# Get assembly information
+bio search GCF_000003085 &gt; search_assembly.json
+
+# Search mygene info
+bio search symbol:HAD --species 1316788 &gt; search_mygene.json
+
+# Access a transcript from ensembl.
+bio fetch ENST00000288602  &gt; fetch_enst.txt
+
+# Get a GFF from NCBI
+bio fetch NC_045512 --format gff &gt; fetch_gff.gff
+
+# Get a protein.
+bio fetch YP_009724390 &gt; fetch_prot.fa
+
+# Get data from NCBI
+bio fetch NC_045512 MN996532 &gt; genomes.gb</code></pre>
+
+</div>
+</div>
+
+
+
+</div>
+
+<script src="assets/asciinema-player.js"></script>
+
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="bio-tips.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="bio-comm.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "none"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

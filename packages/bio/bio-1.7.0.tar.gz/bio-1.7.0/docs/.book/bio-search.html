@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>bio search: find information | The bio package</title>
+  <meta name="description" content="bio search: find information | The bio package" />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="bio search: find information | The bio package" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="bio search: find information | The bio package" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="bio-install.html"/>
+<link rel="next" href="bio-fetch.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link rel="shortcut icon" href="assets/favicon.ico" />
+
+<script src="assets/prism.js"></script>
+
+<link rel="stylesheet" type="text/css" href="assets/bio.css" />
+
+<link rel="stylesheet" type="text/css" href="assets/asciinema-player.css" />
+
+<link rel="stylesheet" type="text/css" href="assets/prism.css" />
+
+
+<script>
+
+    $(document).ready(function () {
+        $('pre').addClass('language-bash');
+        Prism.highlightAll();
+    });
+
+</script>
+
+
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="index.html">bio: making bioinformatics fun again</a></li>
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome to bio</a></li>
+<li class="chapter" data-level="" data-path="bio-install.html"><a href="bio-install.html"><i class="fa fa-check"></i>How to install bio</a></li>
+<li class="part"><span><b>I BIO TASKS</b></span></li>
+<li class="chapter" data-level="" data-path="bio-search.html"><a href="bio-search.html"><i class="fa fa-check"></i>bio search: find information</a></li>
+<li class="chapter" data-level="" data-path="bio-fetch.html"><a href="bio-fetch.html"><i class="fa fa-check"></i>bio fetch: download data</a></li>
+<li class="chapter" data-level="" data-path="bio-fasta.html"><a href="bio-fasta.html"><i class="fa fa-check"></i>bio fasta: convert to FASTA</a></li>
+<li class="chapter" data-level="" data-path="bio-gff.html"><a href="bio-gff.html"><i class="fa fa-check"></i>bio gff: convert to GFF</a></li>
+<li class="chapter" data-level="" data-path="bio-table.html"><a href="bio-table.html"><i class="fa fa-check"></i>bio table: convert to table</a></li>
+<li class="chapter" data-level="" data-path="bio-align.html"><a href="bio-align.html"><i class="fa fa-check"></i>bio align: perform alignments</a></li>
+<li class="chapter" data-level="" data-path="bio-format.html"><a href="bio-format.html"><i class="fa fa-check"></i>bio format: reformat alignments</a></li>
+<li class="chapter" data-level="" data-path="bio-taxonomy.html"><a href="bio-taxonomy.html"><i class="fa fa-check"></i>bio taxon: show taxonomies</a></li>
+<li class="chapter" data-level="" data-path="bio-explain.html"><a href="bio-explain.html"><i class="fa fa-check"></i>bio explain: show definitions</a></li>
+<li class="chapter" data-level="" data-path="bio-meta-obtain-viral-metadata.html"><a href="bio-meta-obtain-viral-metadata.html"><i class="fa fa-check"></i>bio meta: obtain viral metadata</a></li>
+<li class="part"><span><b>II MORE INFORMATION</b></span></li>
+<li class="chapter" data-level="" data-path="bio-tips.html"><a href="bio-tips.html"><i class="fa fa-check"></i>bio: general tips</a></li>
+<li class="chapter" data-level="" data-path="bio-examples.html"><a href="bio-examples.html"><i class="fa fa-check"></i>bio: additional examples</a></li>
+<li class="part"><span><b>III OTHER UTILITIES</b></span></li>
+<li class="chapter" data-level="" data-path="bio-comm.html"><a href="bio-comm.html"><i class="fa fa-check"></i>bio comm: find common values</a></li>
+<li class="chapter" data-level="" data-path="bio-uniq.html"><a href="bio-uniq.html"><i class="fa fa-check"></i>bio uniq: find unique elements</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">The bio package</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="bio-search" class="section level1 hasAnchor">
+<h1>bio search: find information<a href="bio-search.html#bio-search" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><code>bio search</code> provides command line interface to SRA and MyGene. Install <code>bio</code> with:</p>
+<pre><code># Install the package
+pip install bio --upgrade
+
+# Update the database
+bio --download</code></pre>
+<p>The full documentation for <code>bio</code> is maintained at <a href="https://www.bioinfo.help/" class="uri">https://www.bioinfo.help/</a>.</p>
+<div id="quick-start-1" class="section level2 hasAnchor">
+<h2>Quick start<a href="bio-search.html#quick-start-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The <code>search</code> command attempts to provide a unified interface into a multitude of data source:</p>
+<pre><code># Search nucleotide GenBank
+bio search AF086833
+
+# Search protein GenBank
+bio search NP_000509
+
+# Search SRA for a bioproject information
+# Return max of 10 rows in tab delimited format
+bio search  PRJNA257197 --limit 10 -tab
+
+# Search SRA for a run information
+bio search SRR14575325
+
+# Search SRR and format output as comma separated values
+bio search SRR14575325 --csv
+
+# Search MyGene for gene symbol.
+bio search symbol:HBB --limit 1
+
+# Search MyGene and annotate with Ensembly ids.
+bio search symbol:HBB --species human --fields ensembl
+
+# Search the NCBI assemblies by a genome build number
+bio search GCA_000002415
+
+# Search the NCBI assemblies by an organism name, return tab delimited results.
+bio search yoelii -tab</code></pre>
+<p>The returned value will be in JSON. For some searches it may also be comma separated values (<code>-csv</code>) or tab separated values (<code>-tab</code>)</p>
+</div>
+<div id="how-does-this-tool-work" class="section level2 hasAnchor">
+<h2>How does this tool work?<a href="bio-search.html#how-does-this-tool-work" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><code>bio search</code> attempts to recognize the search words with bioinformatics signficance (like accession numbers) and attempts to look them up in the most appropriate database. If the search term does not match any known format, it searches the GenBank assemblies for regular expression matches. First install the downloadable database withL</p>
+<p>Then start searching for information:</p>
+<pre><code>bio search AF086833</code></pre>
+<p>will produce the output:</p>
+<pre><code>[
+    {
+        &quot;accessionversion&quot;: &quot;AF086833.2&quot;,
+        &quot;assemblyacc&quot;: &quot;&quot;,
+        &quot;assemblygi&quot;: &quot;&quot;,
+        &quot;biomol&quot;: &quot;cRNA&quot;,
+        &quot;biosample&quot;: &quot;&quot;,
+        &quot;caption&quot;: &quot;AF086833&quot;,
+        &quot;completeness&quot;: &quot;complete&quot;,
+        &quot;createdate&quot;: &quot;1999/02/10&quot;,
+        &quot;extra&quot;: &quot;gi|10141003|gb|AF086833.2|&quot;,
+        &quot;flags&quot;: &quot;&quot;,
+        &quot;geneticcode&quot;: &quot;1&quot;,
+        &quot;genome&quot;: &quot;&quot;,
+        &quot;gi&quot;: 10141003,
+        &quot;moltype&quot;: &quot;rna&quot;,
+        &quot;organism&quot;: &quot;Ebola virus - Mayinga, Zaire, 1976&quot;,
+        &quot;projectid&quot;: &quot;0&quot;,
+        &quot;segsetsize&quot;: &quot;&quot;,
+        &quot;slen&quot;: 18959,
+        &quot;sourcedb&quot;: &quot;insd&quot;,
+        &quot;strain&quot;: &quot;Mayinga&quot;,
+        &quot;strand&quot;: &quot;&quot;,
+        &quot;subname&quot;: &quot;Mayinga|EBOV-May&quot;,
+        &quot;subtype&quot;: &quot;strain|gb_acronym&quot;,
+        &quot;taxid&quot;: 128952,
+        &quot;tech&quot;: &quot;&quot;,
+        &quot;term&quot;: &quot;10141003&quot;,
+        &quot;title&quot;: &quot;Ebola virus - Mayinga, Zaire, 1976, complete genome&quot;,
+        &quot;topology&quot;: &quot;linear&quot;,
+        &quot;uid&quot;: &quot;10141003&quot;,
+        &quot;updatedate&quot;: &quot;2012/02/13&quot;
+    }
+]</code></pre>
+<p>You may also turn the output into comma separated or tab delimited formats:</p>
+<pre><code>bio search AF086833 --csv</code></pre>
+<p>produces CSV files:</p>
+<pre><code>AF086833.2,,,cRNA,,AF086833,complete,1999/02/10,gi|10141003|gb|AF086833.2|,,1,,10141003,rna,&quot;Ebola virus - Mayinga, Zaire, 1976&quot;,0,,18959,insd,Mayinga,,Mayinga|EBOV-May,strain|gb_acronym,128952,,10141003,&quot;Ebola virus - Mayinga, Zaire, 1976, complete genome&quot;,linear,10141003,2012/02/13</code></pre>
+<p>whereas to produce tab delimited formats use:</p>
+<pre><code>bio search AF086833 --tab</code></pre>
+<p>prints:</p>
+<pre><code>AF086833.2  cRNA  AF086833  complete  1999/02/10  gi|10141003|gb|AF086833.2|  1  10141003  rna  Ebola  virus  -  Mayinga,  Zaire,  1976  0  18959  insd  Mayinga  Mayinga|EBOV-May  strain|gb_acronym  128952  10141003  Ebola  virus  -  Mayinga,  Zaire,  1976,  complete  genome  linear  10141003  2012/02/13</code></pre>
+</div>
+<div id="search-of-srr-numbers" class="section level2 hasAnchor">
+<h2>Search of SRR numbers<a href="bio-search.html#search-of-srr-numbers" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre><code>bio search SRR14575325</code></pre>
+<p>produces:</p>
+<pre><code>[
+    {
+        &quot;run_accession&quot;: &quot;SRR14575325&quot;,
+        &quot;sample_accession&quot;: &quot;SAMN19241174&quot;,
+        &quot;first_public&quot;: &quot;2021-05-20&quot;,
+        &quot;country&quot;: &quot;&quot;,
+        &quot;sample_alias&quot;: &quot;GSM5320434&quot;,
+        &quot;fastq_bytes&quot;: &quot;612817621&quot;,
+        &quot;read_count&quot;: &quot;19439295&quot;,
+        &quot;library_name&quot;: &quot;&quot;,
+        &quot;library_strategy&quot;: &quot;miRNA-Seq&quot;,
+        &quot;library_source&quot;: &quot;TRANSCRIPTOMIC&quot;,
+        &quot;library_layout&quot;: &quot;SINGLE&quot;,
+        &quot;instrument_platform&quot;: &quot;ILLUMINA&quot;,
+        &quot;instrument_model&quot;: &quot;Illumina HiSeq 2000&quot;,
+        &quot;study_title&quot;: &quot;Identification of 5&#39;isomiR in HCC patients.&quot;,
+        &quot;fastq_ftp&quot;: &quot;ftp.sra.ebi.ac.uk/vol1/fastq/SRR145/025/SRR14575325/SRR14575325.fastq.gz&quot;
+    }
+]</code></pre>
+<p>To search the MyGene interface add a type to the word:</p>
+<pre><code>bio search symbol:HBB --limit 1</code></pre>
+<p>it will print:</p>
+<pre><code>[
+    {
+        &quot;name&quot;: &quot;hemoglobin subunit beta&quot;,
+        &quot;refseq&quot;: {
+            &quot;genomic&quot;: [
+                &quot;NC_000011.10&quot;,
+                &quot;NG_000007.3&quot;,
+                &quot;NG_059281.1&quot;
+            ],
+            &quot;protein&quot;: &quot;NP_000509.1&quot;,
+            &quot;rna&quot;: &quot;NM_000518.5&quot;,
+            &quot;translation&quot;: {
+                &quot;protein&quot;: &quot;NP_000509.1&quot;,
+                &quot;rna&quot;: &quot;NM_000518.5&quot;
+            }
+        },
+        &quot;symbol&quot;: &quot;HBB&quot;,
+        &quot;taxid&quot;: 9606,
+        &quot;taxname&quot;: &quot;Homo sapiens&quot;
+    }
+]
+#  showing 1 out of 30 results.</code></pre>
+<p>If the query word does not seem to match any known format a regular expression search will applied on the GenBank assembly reports:</p>
+<pre><code>bio search plasmodium</code></pre>
+<p>prints:</p>
+<pre><code>[
+    {
+        &quot;assembly_accession&quot;: &quot;GCA_000002415.2&quot;,
+        &quot;bioproject&quot;: &quot;PRJNA150&quot;,
+        &quot;biosample&quot;: &quot;SAMN02953638&quot;,
+        &quot;wgs_master&quot;: &quot;AAKM00000000.1&quot;,
+        &quot;refseq_category&quot;: &quot;representative genome&quot;,
+        &quot;taxid&quot;: &quot;5855&quot;,
+        &quot;species_taxid&quot;: &quot;5855&quot;,
+        &quot;organism_name&quot;: &quot;Plasmodium vivax&quot;,
+        &quot;infraspecific_name&quot;: &quot;&quot;,
+        &quot;isolate&quot;: &quot;Salvador I&quot;,
+        &quot;version_status&quot;: &quot;latest&quot;,
+        &quot;assembly_level&quot;: &quot;Chromosome&quot;,
+        &quot;release_type&quot;: &quot;Minor&quot;,
+        &quot;genome_rep&quot;: &quot;Full&quot;,
+        &quot;seq_rel_date&quot;: &quot;2009/05/06&quot;,
+        &quot;asm_name&quot;: &quot;ASM241v2&quot;,
+        &quot;submitter&quot;: &quot;TIGR&quot;,
+        &quot;gbrs_paired_asm&quot;: &quot;GCF_000002415.2&quot;,
+        &quot;paired_asm_comp&quot;: &quot;different&quot;,
+        &quot;ftp_path&quot;: &quot;https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/002/415/GCA_000002415.2_ASM241v2&quot;,
+        &quot;excluded_from_refseq&quot;: &quot;&quot;,
+        &quot;relation_to_type_materialasm_not_live_date&quot;: &quot;&quot;
+    },
+    ...
+]</code></pre>
+</div>
+<div id="other-outputs" class="section level2 hasAnchor">
+<h2>Other outputs<a href="bio-search.html#other-outputs" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The output may be set to comma separated values or tab delimited values</p>
+<pre><code>bio search plasmodium --csv
+
+bio search plasmodium --tab</code></pre>
+</div>
+<div id="how-to-transform-json-into-other-formats" class="section level2 hasAnchor">
+<h2>How to transform JSON into other formats<a href="bio-search.html#how-to-transform-json-into-other-formats" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Our tabular formats may be insufficient when to content is nested. In those cases you will need to transform the JSON into other formats.</p>
+<p>The output of the <code>bio search</code> command is produced the so called JSON (JavaScript Object Notation) format. JSON is not biology specific, instead, you can think of it as a generic, lightweight, human readable approach to represent diverse and hierarchical information.</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/JSON" class="uri">https://en.wikipedia.org/wiki/JSON</a></li>
+</ul>
+<p>A tool called <code>jq</code> may be used to extract information from JSON data in various ways.</p>
+<pre><code>mamba install jq</code></pre>
+<p>We use <code>jq</code> by forming extraction patterns with the following rules:</p>
+<ul>
+<li>key names are specified with a period <code>.</code></li>
+<li>lists with square brackets <code>[]</code>.</li>
+</ul>
+<p>We build the extraction command left to right, matching various aspects of it. Since the output is always a list, our first pattern will usually be <code>.[]</code> that visits all elements in the list.</p>
+<p>For example, the pattern <code>.[].run_accession</code> instructs <code>jq</code> to fetch the list for the root key <code>.[]</code>, then visit each element and extract the value for the key named <code>run_accession</code>. Use the pattern it like so:</p>
+<pre><code># Produce a JSON output.
+bio search PRJNA257197 &gt; data.json
+
+# Extract information from the JSON.
+cat data.json | jq -r .[].run_accession | head -5</code></pre>
+<p>prints the accession numbers:</p>
+<pre><code>SRR1553416
+SRR1553417
+SRR1553418
+SRR1553419
+SRR1553420</code></pre>
+<p>To extract two colums <code>run_accession</code> and <code>read_count</code> into a table:</p>
+<pre><code>cat data.json | jq -r &#39;.[]|[.run_accession,.read_count]|@tsv&#39; | head -5</code></pre>
+<p>prints:</p>
+<pre><code>SRR1553416  1014800
+SRR1553417  1865865
+SRR1553418  18323
+SRR1553419  281432
+SRR1553420  223206</code></pre>
+<p>When I don’t use <code>jq</code> for a while, I forget how it works. I found that the example above helps remind me and is a good starting point to build other patterns.</p>
+</div>
+<div id="how-to-learn-jq" class="section level2 hasAnchor">
+<h2>How to learn <code>jq</code><a href="bio-search.html#how-to-learn-jq" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The way <code>jq</code> works may not be everyone’s cup of tea. On the other hand you can do wondrous things with <code>jq</code> if you put in some effort to learn it. Stick with it! Once you get it, making patterns becomes that puzzle-solving kind of fun.</p>
+<p>There are numerous resources on learning <code>jq</code>. Search and find one that suits you. I found the page below quite useful:</p>
+<ul>
+<li><a href="https://earthly.dev/blog/jq-select/" class="uri">https://earthly.dev/blog/jq-select/</a></li>
+</ul>
+</div>
+<div id="the-mygene-interface" class="section level2 hasAnchor">
+<h2>The MyGene interface<a href="bio-search.html#the-mygene-interface" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>If the search terms do not match the SRA number format the search proceeds with querying the MyGene interface. The <code>mygene</code> service was published in <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-016-0953-9">High-performance web services for querying gene and variant annotation, Genome Research, 2016</a> and is an amazingly potent query interface that focuses on returning data rather than web pages.</p>
+<p>Our search is a command line convenience function that stands on the shoulders of the giants that created the <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-016-0953-9">mygene service</a> in the first place.</p>
+</div>
+<div id="usage-example" class="section level2 hasAnchor">
+<h2>Usage example<a href="bio-search.html#usage-example" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre><code>bio search HBB --limit 1</code></pre>
+<p>will print:</p>
+<pre><code>[
+    {
+        &quot;name&quot;: &quot;hemoglobin subunit beta&quot;,
+        &quot;symbol&quot;: &quot;HBB&quot;,
+        &quot;taxid&quot;: 9606,
+        &quot;taxname&quot;: &quot;Homo sapiens&quot;
+    }
+]
+#  showing 1 out of 148 results.</code></pre>
+<p>The same search for <code>HBB</code> will return a lot more data as we add fields to it. Lets focus the search on symbol only <code>symbol:HBB</code> human as species, and request Ensembl annotations:</p>
+<pre><code>bio search symbol:HBB --species human --fields ensembl</code></pre>
+<p>the query will now produce a much larger dataset:</p>
+<pre><code>[
+    {
+        &quot;ensembl&quot;: {
+            &quot;gene&quot;: &quot;ENSG00000244734&quot;,
+            &quot;protein&quot;: [
+                &quot;ENSP00000333994&quot;,
+                &quot;ENSP00000369671&quot;,
+                &quot;ENSP00000488004&quot;,
+                &quot;ENSP00000494175&quot;,
+                &quot;ENSP00000496200&quot;
+            ],
+            &quot;transcript&quot;: [
+                &quot;ENST00000335295&quot;,
+                &quot;ENST00000380315&quot;,
+                &quot;ENST00000475226&quot;,
+                &quot;ENST00000485743&quot;,
+                &quot;ENST00000633227&quot;,
+                &quot;ENST00000647020&quot;
+            ],
+            &quot;translation&quot;: [
+                {
+                    &quot;protein&quot;: &quot;ENSP00000333994&quot;,
+                    &quot;rna&quot;: &quot;ENST00000335295&quot;
+                },
+                {
+                    &quot;protein&quot;: &quot;ENSP00000494175&quot;,
+                    &quot;rna&quot;: &quot;ENST00000647020&quot;
+                },
+                {
+                    &quot;protein&quot;: &quot;ENSP00000488004&quot;,
+                    &quot;rna&quot;: &quot;ENST00000633227&quot;
+                },
+                {
+                    &quot;protein&quot;: &quot;ENSP00000496200&quot;,
+                    &quot;rna&quot;: &quot;ENST00000485743&quot;
+                },
+                {
+                    &quot;protein&quot;: &quot;ENSP00000369671&quot;,
+                    &quot;rna&quot;: &quot;ENST00000380315&quot;
+                }
+            ],
+            &quot;type_of_gene&quot;: &quot;protein_coding&quot;
+        },
+        &quot;name&quot;: &quot;hemoglobin subunit beta&quot;,
+        &quot;symbol&quot;: &quot;HBB&quot;,
+        &quot;taxid&quot;: 9606,
+        &quot;taxname&quot;: &quot;Homo sapiens&quot;
+    }
+]</code></pre>
+<p>Below is a more complicated construct with <code>jq</code> that pairs up fields into a tab-delimited table.</p>
+<pre><code>cat data.json | jq -r &#39;.[].ensembl.translation[]|[.protein,.rna]| @tsv&#39;
+
+ENSP00000333994    ENST00000335295
+ENSP00000494175    ENST00000647020
+ENSP00000488004    ENST00000633227
+ENSP00000496200    ENST00000485743
+ENSP00000369671    ENST00000380315</code></pre>
+</div>
+<div id="additional-examples" class="section level2 hasAnchor">
+<h2>Additional examples<a href="bio-search.html#additional-examples" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Often examples are more useful than words</p>
+<pre><code># Limiting searches
+bio search HBB --limit 10
+
+# Adding summary
+bio search HBB -f summary --limit 1 --species human
+
+# Adding additional fields.
+bio search symbol:HBB --species human --fields Ensembl,RefSeq
+
+# Gene products with the function in human
+bio search go:0000307 --species human
+
+# Text search for a concept.
+bio search insulin
+
+# Genes with insulin in the summary then also print the summary field
+bio search summary:insulin -f summary
+
+# Find aliases, produces the same output
+bio search symbol:XRCC2 -f alias --species human
+bio search alias:SPGF50 -f alias --species human</code></pre>
+</div>
+<div id="field-documention" class="section level2 hasAnchor">
+<h2>Field documention<a href="bio-search.html#field-documention" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>See the fields listed at API documentation site:</p>
+<ul>
+<li><p><a href="https://docs.mygene.info/en/latest/index.html" class="uri">https://docs.mygene.info/en/latest/index.html</a></p></li>
+<li><p><a href="https://docs.mygene.info/en/latest/doc/query_service.html#available_fields" class="uri">https://docs.mygene.info/en/latest/doc/query_service.html#available_fields</a></p></li>
+</ul>
+
+</div>
+</div>
+
+<script src="assets/asciinema-player.js"></script>
+
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="bio-install.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="bio-fetch.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "none"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

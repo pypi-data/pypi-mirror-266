@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>bio taxon: show taxonomies | The bio package</title>
+  <meta name="description" content="bio taxon: show taxonomies | The bio package" />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="bio taxon: show taxonomies | The bio package" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="bio taxon: show taxonomies | The bio package" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="bio-format.html"/>
+<link rel="next" href="bio-explain.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link rel="shortcut icon" href="assets/favicon.ico" />
+
+<script src="assets/prism.js"></script>
+
+<link rel="stylesheet" type="text/css" href="assets/bio.css" />
+
+<link rel="stylesheet" type="text/css" href="assets/asciinema-player.css" />
+
+<link rel="stylesheet" type="text/css" href="assets/prism.css" />
+
+
+<script>
+
+    $(document).ready(function () {
+        $('pre').addClass('language-bash');
+        Prism.highlightAll();
+    });
+
+</script>
+
+
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="index.html">bio: making bioinformatics fun again</a></li>
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome to bio</a></li>
+<li class="chapter" data-level="" data-path="bio-install.html"><a href="bio-install.html"><i class="fa fa-check"></i>How to install bio</a></li>
+<li class="part"><span><b>I BIO TASKS</b></span></li>
+<li class="chapter" data-level="" data-path="bio-search.html"><a href="bio-search.html"><i class="fa fa-check"></i>bio search: find information</a></li>
+<li class="chapter" data-level="" data-path="bio-fetch.html"><a href="bio-fetch.html"><i class="fa fa-check"></i>bio fetch: download data</a></li>
+<li class="chapter" data-level="" data-path="bio-fasta.html"><a href="bio-fasta.html"><i class="fa fa-check"></i>bio fasta: convert to FASTA</a></li>
+<li class="chapter" data-level="" data-path="bio-gff.html"><a href="bio-gff.html"><i class="fa fa-check"></i>bio gff: convert to GFF</a></li>
+<li class="chapter" data-level="" data-path="bio-table.html"><a href="bio-table.html"><i class="fa fa-check"></i>bio table: convert to table</a></li>
+<li class="chapter" data-level="" data-path="bio-align.html"><a href="bio-align.html"><i class="fa fa-check"></i>bio align: perform alignments</a></li>
+<li class="chapter" data-level="" data-path="bio-format.html"><a href="bio-format.html"><i class="fa fa-check"></i>bio format: reformat alignments</a></li>
+<li class="chapter" data-level="" data-path="bio-taxonomy.html"><a href="bio-taxonomy.html"><i class="fa fa-check"></i>bio taxon: show taxonomies</a></li>
+<li class="chapter" data-level="" data-path="bio-explain.html"><a href="bio-explain.html"><i class="fa fa-check"></i>bio explain: show definitions</a></li>
+<li class="chapter" data-level="" data-path="bio-meta-obtain-viral-metadata.html"><a href="bio-meta-obtain-viral-metadata.html"><i class="fa fa-check"></i>bio meta: obtain viral metadata</a></li>
+<li class="part"><span><b>II MORE INFORMATION</b></span></li>
+<li class="chapter" data-level="" data-path="bio-tips.html"><a href="bio-tips.html"><i class="fa fa-check"></i>bio: general tips</a></li>
+<li class="chapter" data-level="" data-path="bio-examples.html"><a href="bio-examples.html"><i class="fa fa-check"></i>bio: additional examples</a></li>
+<li class="part"><span><b>III OTHER UTILITIES</b></span></li>
+<li class="chapter" data-level="" data-path="bio-comm.html"><a href="bio-comm.html"><i class="fa fa-check"></i>bio comm: find common values</a></li>
+<li class="chapter" data-level="" data-path="bio-uniq.html"><a href="bio-uniq.html"><i class="fa fa-check"></i>bio uniq: find unique elements</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">The bio package</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="bio-taxonomy" class="section level1 hasAnchor">
+<h1>bio taxon: show taxonomies<a href="bio-taxonomy.html#bio-taxonomy" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>The <code>bio</code> package provides utilities to visualize NCBI taxonomies. See the help with:</p>
+<pre><code>bio taxon -h</code></pre>
+<div id="download-or-build-the-taxonomy" class="section level2 hasAnchor">
+<h2>Download or build the taxonomy<a href="bio-taxonomy.html#download-or-build-the-taxonomy" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Before using the taxonomy related database needs to downloaded with:</p>
+<pre><code>bio --download </code></pre>
+</div>
+<div id="check-database" class="section level2 hasAnchor">
+<h2>Check database<a href="bio-taxonomy.html#check-database" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre><code>bio taxon</code></pre>
+<p>prints:</p>
+<pre><code>Content: 2,359,690 taxon names; 209,096 parent ranks</code></pre>
+<p>There are a total of <code>2,353,384</code> nodes (taxonomical entries) out of which <code>207,447</code> are nodes that are non-terminal (non-leaf) nodes. For these numbers we see that the vast majority of the taxonomy annotations are for terminal, leaf nodes.</p>
+</div>
+<div id="searching-for-taxids" class="section level2 hasAnchor">
+<h2>Searching for taxids<a href="bio-taxonomy.html#searching-for-taxids" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Searches the taxonomy for a word</p>
+<pre><code>bio taxon jawed </code></pre>
+<p>prints:</p>
+<pre><code># searching taxonomy for: jawed
+clade, Gnathostomata (jawed vertebrates), 7776
+species, Gillichthys mirabilis (long-jawed mudsucker), 8222
+species, Pseudamia amblyuroptera (white-jawed cardinalfish), 1431476
+species, Myctophum brachygnathum (short-jawed lanternfish), 1519985
+species, Oryzias orthognathus (sharp-jawed buntingi), 1645897
+species, Longjawed orbweaver circular virus 1, 2293294
+species, Longjawed orbweaver circular virus 2, 2293295</code></pre>
+<p>The search words may use regular expression control characters, selecting species names starting with <code>jawed</code>:</p>
+<pre><code>bio taxon &#39;^jawed&#39;</code></pre>
+<p>produces:</p>
+<pre><code># searching taxonomy for: ^jawed
+clade, Gnathostomata (jawed vertebrates), 7776</code></pre>
+</div>
+<div id="view-taxonomy-for-data" class="section level2 hasAnchor">
+<h2>View taxonomy for data<a href="bio-taxonomy.html#view-taxonomy-for-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Once you fetch the data</p>
+<pre><code>bio fetch NC_045512 &gt; genome.gb
+    </code></pre>
+<p>you can view the lineage of the taxonomical id in the GenBank</p>
+<pre><code>bio taxon genome.gb --lineage</code></pre>
+<p>that prints:</p>
+<pre><code>superkingdom, 10239, Viruses
+  clade, 2559587, Riboviria
+    kingdom, 2732396, Orthornavirae
+      phylum, 2732408, Pisuviricota
+        class, 2732506, Pisoniviricetes
+          order, 76804, Nidovirales
+            suborder, 2499399, Cornidovirineae
+              family, 11118, Coronaviridae
+                subfamily, 2501931, Orthocoronavirinae
+                  genus, 694002, Betacoronavirus
+                    subgenus, 2509511, Sarbecovirus
+                      species, 694009, Severe acute respiratory syndrome-related coronavirus
+                        no rank, 2697049, Severe acute respiratory syndrome coronavirus 2</code></pre>
+</div>
+<div id="view-taxonomy-by-tax-id" class="section level2 hasAnchor">
+<h2>View taxonomy by tax id<a href="bio-taxonomy.html#view-taxonomy-by-tax-id" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Pass a NCBI taxonomical id to see all the descendants of it:</p>
+<pre><code>bio taxon 117565 | head</code></pre>
+<p>prints:</p>
+<pre><code>class, 117565, Myxini
+  order, 7761, Myxiniformes
+    family, 7762, Myxinidae
+      subfamily, 30309, Eptatretinae
+        genus, 7763, Eptatretus
+          species, 7764, Eptatretus burgeri
+          species, 7765, Eptatretus stoutii
+          species, 7767, Eptatretus okinoseanus
+          species, 50612, Eptatretus atami
+          species, 78394, Eptatretus cirrhatus</code></pre>
+<p>we can limit the depth (how many levels to show):</p>
+<pre><code>bio taxon 117565 -d 3</code></pre>
+<p>prints:</p>
+<pre><code>class, 117565, Myxini
+  order, 7761, Myxiniformes
+    family, 7762, Myxinidae
+    no rank, 727487, unclassified Myxiniformes</code></pre>
+</div>
+<div id="print-lineage" class="section level2 hasAnchor">
+<h2>Print lineage<a href="bio-taxonomy.html#print-lineage" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre><code>bio taxon 564286 --lineage</code></pre>
+<p>prints:</p>
+<pre><code>no rank, 131567, cellular organisms
+  superkingdom, 2, Bacteria
+    clade, 1783272, Terrabacteria group
+      phylum, 1239, Firmicutes
+        class, 91061, Bacilli
+          order, 1385, Bacillales
+            family, 186817, Bacillaceae
+              genus, 1386, Bacillus
+                species group, 653685, Bacillus subtilis group
+                  species, 1423, Bacillus subtilis
+                    strain, 564286, Bacillus subtilis str. 10</code></pre>
+</div>
+<div id="filter-results-by-taxonomic-clades" class="section level2 hasAnchor">
+<h2>Filter results by taxonomic clades<a href="bio-taxonomy.html#filter-results-by-taxonomic-clades" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In bioinformatics we frequently have files where a column corresponds to taxonomic ids and we wish to filter rows
+by clades. For example keep all rows where the taxid is belongs to a subtree in the taxonomy. Here is a file</p>
+<pre><code>11138,AB008939.1
+11138,AB008940.1
+215681,AB242262.1
+215681,AB242263.1
+215681,AB242264.1
+229992,AB257344.1
+391355,AB263618.1
+11128,AB277098.1
+422141,AB277099.1
+11133,AB277100.1</code></pre>
+<p>We can summarize the taxonomies in the file with:</p>
+<pre><code>cat data.txt | bio taxon -d 1</code></pre>
+<p>to print:</p>
+<pre><code>no rank,11138,Murine hepatitis virus
+no rank,215681,Canine respiratory coronavirus
+no rank,229992,SARS coronavirus Frankfurt 1
+no rank,391355,SARS coronavirus Frankfurt1-v01
+no rank,11128,Bovine coronavirus
+no rank,422141,Giraffe coronavirus US/OH3-TC/2006
+no rank,11133,Bovine coronavirus strain Quebec</code></pre>
+<p>Which data are a kind of “Bovine Coronavirus”?</p>
+<pre><code>cat data.txt | bio taxon -d 1 -keep 11128</code></pre>
+<p>prints:</p>
+<pre><code>11128,AB277098.1
+422141,AB277099.1
+11133,AB277100.1</code></pre>
+<p>Which data are not a kind of “Bovine Coronavirus”?</p>
+<pre><code>cat data.txt | bio taxon -d 1 -remove 11128</code></pre>
+<p>prints:</p>
+<pre><code>11138,AB008939.1
+11138,AB008940.1
+215681,AB242262.1
+215681,AB242263.1
+215681,AB242264.1
+229992,AB257344.1
+391355,AB263618.1</code></pre>
+</div>
+<div id="chain-the-actions" class="section level2 hasAnchor">
+<h2>Chain the actions<a href="bio-taxonomy.html#chain-the-actions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre><code>cat data.txt | bio taxon -d 1 -remove 11128 | bio taxon -d 1</code></pre>
+<p>prints:</p>
+<pre><code>no rank,11138,Murine hepatitis virus
+no rank,215681,Canine respiratory coronavirus
+no rank,229992,SARS coronavirus Frankfurt 1
+no rank,391355,SARS coronavirus Frankfurt1-v01</code></pre>
+</div>
+<div id="list-the-content-of-the-database" class="section level2 hasAnchor">
+<h2>List the content of the database:<a href="bio-taxonomy.html#list-the-content-of-the-database" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre><code>bio taxon --list | head</code></pre>
+<p>prints:</p>
+<pre><code>no rank, root, 1
+superkingdom, Bacteria (eubacteria), 2
+genus, Azorhizobium, 6
+species, Azorhizobium caulinodans, 7
+species, Buchnera aphidicola, 9
+genus, Cellvibrio, 10
+species, Cellulomonas gilvus, 11
+genus, Dictyoglomus, 13
+species, Dictyoglomus thermophilum, 14
+genus, Methylophilus, 16</code></pre>
+<p>Note: this command benefits greatly from using <code>--preload</code>. This command will only finish in reasonable time (in 10 seconds) with preload. Since the entire database is visited, it has to be loaded into memory for it to be fast.</p>
+<pre><code>bio taxon --list --preload | wc -l</code></pre>
+</div>
+<div id="update-the-taxonomy" class="section level2 hasAnchor">
+<h2>Update the taxonomy<a href="bio-taxonomy.html#update-the-taxonomy" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>You may build the newest version locally:</p>
+<pre><code>bio taxon --build</code></pre>
+<p>The command will download and build a new taxonomy using the latest NCBI taxonomy data. The efficiency of the process depends on the speed of the hard drive and takes around 20 minutes.</p>
+</div>
+<div id="preloading-data" class="section level2 hasAnchor">
+<h2>Preloading data<a href="bio-taxonomy.html#preloading-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>For many use cases, the default behavior is plenty fast and can produce family, genus and species level information in a fraction of a second.</p>
+<p>Internally, during operation, the software will query the database for each child node. When selecting a rank where the number of descendant nodes is large (over 10,000 nodes) the run time of the independent queries adds up to a substantial overhead.</p>
+<p>For example the command below attempts to render the complete NCBI taxonomic tree with over 2.2 million (!) descendant nodes. When run like so it will take a very long time to produce the output (more than two hours):</p>
+<pre><code>bio taxon 1  | head</code></pre>
+<p>The data starts scrolling immediately, but the individual queries add up to potentially hours of runtime.</p>
+<p>The software can operate in a different mode to speed up the process by preloading all the data into memory at the cost of imposing a 8 second pre-loading penalty.</p>
+<pre><code>bio taxon 1 --preload | wc -l</code></pre>
+<p>When run with the <code>--preload</code> flag the command takes a total of just 11 seconds to generate the same large tree of the entire NCBI taxonomical tree. We don’t apply this mode by default because all queries would then take at least 6 seconds, even those that currently finish very quickly.</p>
+<p>For queries that take more than 10 seconds to complete (have more than 10,000 descendant nodes) we recommend applying the <code>--preload</code> flag.</p>
+</div>
+<div id="build-the-newest-version-locally" class="section level2 hasAnchor">
+<h2>Build the newest version locally<a href="bio-taxonomy.html#build-the-newest-version-locally" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>You may build the newest version locally, will take about an hour:</p>
+<pre><code>bio taxon --build</code></pre>
+
+</div>
+</div>
+
+<script src="assets/asciinema-player.js"></script>
+
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="bio-format.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="bio-explain.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "none"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

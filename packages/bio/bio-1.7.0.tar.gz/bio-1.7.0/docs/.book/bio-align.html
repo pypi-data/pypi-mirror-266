@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>bio align: perform alignments | The bio package</title>
+  <meta name="description" content="bio align: perform alignments | The bio package" />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="bio align: perform alignments | The bio package" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="bio align: perform alignments | The bio package" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="bio-table.html"/>
+<link rel="next" href="bio-format.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link rel="shortcut icon" href="assets/favicon.ico" />
+
+<script src="assets/prism.js"></script>
+
+<link rel="stylesheet" type="text/css" href="assets/bio.css" />
+
+<link rel="stylesheet" type="text/css" href="assets/asciinema-player.css" />
+
+<link rel="stylesheet" type="text/css" href="assets/prism.css" />
+
+
+<script>
+
+    $(document).ready(function () {
+        $('pre').addClass('language-bash');
+        Prism.highlightAll();
+    });
+
+</script>
+
+
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="index.html">bio: making bioinformatics fun again</a></li>
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome to bio</a></li>
+<li class="chapter" data-level="" data-path="bio-install.html"><a href="bio-install.html"><i class="fa fa-check"></i>How to install bio</a></li>
+<li class="part"><span><b>I BIO TASKS</b></span></li>
+<li class="chapter" data-level="" data-path="bio-search.html"><a href="bio-search.html"><i class="fa fa-check"></i>bio search: find information</a></li>
+<li class="chapter" data-level="" data-path="bio-fetch.html"><a href="bio-fetch.html"><i class="fa fa-check"></i>bio fetch: download data</a></li>
+<li class="chapter" data-level="" data-path="bio-fasta.html"><a href="bio-fasta.html"><i class="fa fa-check"></i>bio fasta: convert to FASTA</a></li>
+<li class="chapter" data-level="" data-path="bio-gff.html"><a href="bio-gff.html"><i class="fa fa-check"></i>bio gff: convert to GFF</a></li>
+<li class="chapter" data-level="" data-path="bio-table.html"><a href="bio-table.html"><i class="fa fa-check"></i>bio table: convert to table</a></li>
+<li class="chapter" data-level="" data-path="bio-align.html"><a href="bio-align.html"><i class="fa fa-check"></i>bio align: perform alignments</a></li>
+<li class="chapter" data-level="" data-path="bio-format.html"><a href="bio-format.html"><i class="fa fa-check"></i>bio format: reformat alignments</a></li>
+<li class="chapter" data-level="" data-path="bio-taxonomy.html"><a href="bio-taxonomy.html"><i class="fa fa-check"></i>bio taxon: show taxonomies</a></li>
+<li class="chapter" data-level="" data-path="bio-explain.html"><a href="bio-explain.html"><i class="fa fa-check"></i>bio explain: show definitions</a></li>
+<li class="chapter" data-level="" data-path="bio-meta-obtain-viral-metadata.html"><a href="bio-meta-obtain-viral-metadata.html"><i class="fa fa-check"></i>bio meta: obtain viral metadata</a></li>
+<li class="part"><span><b>II MORE INFORMATION</b></span></li>
+<li class="chapter" data-level="" data-path="bio-tips.html"><a href="bio-tips.html"><i class="fa fa-check"></i>bio: general tips</a></li>
+<li class="chapter" data-level="" data-path="bio-examples.html"><a href="bio-examples.html"><i class="fa fa-check"></i>bio: additional examples</a></li>
+<li class="part"><span><b>III OTHER UTILITIES</b></span></li>
+<li class="chapter" data-level="" data-path="bio-comm.html"><a href="bio-comm.html"><i class="fa fa-check"></i>bio comm: find common values</a></li>
+<li class="chapter" data-level="" data-path="bio-uniq.html"><a href="bio-uniq.html"><i class="fa fa-check"></i>bio uniq: find unique elements</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">The bio package</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="bio-align" class="section level1 hasAnchor">
+<h1>bio align: perform alignments<a href="bio-align.html#bio-align" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<blockquote>
+<p><strong>Note:</strong> alignments in <code>bio</code> are primarily designed for exploratory use, for aligning relatively short (up to ~30Kb long sequences), visually investigating the alignments, interacting with the sequences before and after alignment.</p>
+<p>Use software that relies on heuristics when investigating large datasets. Specialized software will operate (many) orders of magnitude faster. Depending on your needs you may want to use: <code>blast</code>, <code>blat</code>, <code>mummer</code>, <code>minimap2</code>, <code>lastz</code>, <code>lastal</code>, <code>exonerate</code>, <code>vsearch</code>, <code>diamond</code>.</p>
+</blockquote>
+<p>Install <code>bio</code> with:</p>
+<pre><code>pip install bio --upgrade</code></pre>
+<p>The full documentation for <code>bio</code> is maintained at <a href="https://www.bioinfo.help/" class="uri">https://www.bioinfo.help/</a>.</p>
+<div id="quick-start-2" class="section level2 hasAnchor">
+<h2>Quick start<a href="bio-align.html#quick-start-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Input may be given from command line:</p>
+<pre><code>bio align GATTACA GATCA</code></pre>
+<p>the first sequence is the target, all following sequences are aligned considered queries. The command prints:</p>
+<pre class="r"><code># seq1 (7) vs seq2 (5)
+# pident=57.1% len=7 ident=4 mis=1 del=2 ins=0
+# semiglobal: score=2.0 match=1 mismatch=2 gapopen=11 gapextend=1
+
+GATTACA
+|||.|--
+GATCA--</code></pre>
+</div>
+<div id="alignment-as-a-table" class="section level2 hasAnchor">
+<h2>Alignment as a table<a href="bio-align.html#alignment-as-a-table" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>When generating alignment providing output in different formats is important. Here is the alignment formatted as a table:</p>
+<pre><code>bio align GATTACA GATCA --table</code></pre>
+<p>prints:</p>
+<pre class="r"><code>target  query  pident  len  match  mism  ins  del
+seq1    seq2   57.1    7    4      1     0    2</code></pre>
+</div>
+<div id="alignment-as-vcf" class="section level2 hasAnchor">
+<h2>Alignment as VCF<a href="bio-align.html#alignment-as-vcf" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre><code>bio align GATTACA GATCA --vcf</code></pre>
+<p>prints:</p>
+<pre class="r"><code>##fileformat=VCFv4.2
+##FORMAT=&lt;ID=GT,Number=1,Type=String,Description=&quot;Genotype&quot;&gt;
+##FILTER=&lt;ID=PASS,Description=&quot;All filters passed&quot;&gt;
+##INFO=&lt;ID=TYPE,Number=1,Type=String,Description=&quot;Type of the variant&quot;&gt;
+##contig=&lt;ID=seq1,length=7,assembly=seq1&gt;
+#CHROM  POS ID  REF ALT QUAL    FILTER  INFO    FORMAT  seq2
+seq1    4   4_SNP_T/C   T   C   .   PASS    TYPE=SNP    GT  1
+seq1    5   5_DEL_2 ACA A   .   PASS    TYPE=DEL    GT  1</code></pre>
+</div>
+<div id="alignment-as-differences" class="section level2 hasAnchor">
+<h2>Alignment as differences<a href="bio-align.html#alignment-as-differences" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The output may be formatted in as differences (mutations) between the reference (second sequence) and the query (first sequence):</p>
+<pre><code>bio align GATTACA GATCA --diff</code></pre>
+<p>prints:</p>
+<pre class="r"><code>T4C    SNP  4  T    C  seq1  seq2
+ACA5A  DEL  5  ACA  A  seq1  seq2</code></pre>
+<p>You can think of the mutations output can be thought of as a simplified VCF.</p>
+</div>
+<div id="alignment-types" class="section level2 hasAnchor">
+<h2>Alignment types<a href="bio-align.html#alignment-types" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The default alignment is semi-global (global alignment with no end gap penalies). To perform a global alignment write:</p>
+<pre><code>bio align GATTACA GATCA --global</code></pre>
+<p>the output is:</p>
+<pre class="r"><code># seq1 (7) vs seq2 (5)
+# pident=71.4% len=7 ident=5 mis=0 del=2 ins=0
+# global: score=-7.0 match=1 mismatch=2 gapopen=11 gapextend=1
+
+GATTACA
+|||--||
+GAT--CA</code></pre>
+<p>Available ptions are : <code>--global</code>, <code>--local</code>, <code>--semi-global</code></p>
+</div>
+<div id="align-realistic-data" class="section level2 hasAnchor">
+<h2>Align realistic data<a href="bio-align.html#align-realistic-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Fetches two genomic files:</p>
+<pre><code>bio fetch MN996532 NC_045512 &gt; genomes.gb</code></pre>
+<p>Align two genomes, the first is the target, all following sequences are considered queries and are aligned against the target. Here we are looking at what mutations would need to be made to the bat genome to turn it into the coronavirus genome:</p>
+<pre><code>cat genomes.gb | bio fasta --genome | bio align | head</code></pre>
+<p>the command aligns two 30KB sequences and takes about 15 seconds on my system, it will print:</p>
+<pre><code># MN996532.2 (29855) vs NC_045512.2 (29903)
+# pident=96.0% len=29908 ident=28725 mis=1125 del=5 ins=53
+# semiglobal: score=139005.0 gap open=11 extend=1  matrix=NUC.4.4
+
+ATTAAAGGTTTATACCTTTCCAGGTAACAAACCAACGAACTCTCGATCTCTTGTAGATCTGTTCTCTAAACGAACTTTAAA
+||||||||||||||||||.|||||||||||||||||.||||.|||||||||||||||||||||||||||||||||||||||
+ATTAAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTCTTGTAGATCTGTTCTCTAAACGAACTTTAAA</code></pre>
+<p>The <code>bio align</code> method takes the first file that it sees as target and aligns all other sequences to it as queries.</p>
+</div>
+<div id="align-coding-sequences" class="section level2 hasAnchor">
+<h2>Align coding sequences<a href="bio-align.html#align-coding-sequences" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Align the DNA corresponding to protein <code>S</code></p>
+<pre><code>cat genomes.gb | bio fasta --gene S | bio align | head</code></pre>
+<p>prints:</p>
+<pre class="r"><code># QHR63300.2 (3810) vs YP_009724390.1 (3822)
+# pident=92.9% len=3822 ident=3549 mis=261 del=0 ins=12
+# semiglobal: score=3005.0 match=1 mismatch=2 gapopen=11 gapextend=1
+
+ATGTTTGTTTTTCTTGTTTTATTGCCACTAGTTTCTAGTCAGTGTGTTAATCTAACAACTAGAACTCAGTTACCTCCTGCA
+||||||||||||||||||||||||||||||||.||||||||||||||||||||.|||||.||||||||.|||||.||||||
+ATGTTTGTTTTTCTTGTTTTATTGCCACTAGTCTCTAGTCAGTGTGTTAATCTTACAACCAGAACTCAATTACCCCCTGCA</code></pre>
+</div>
+<div id="align-protein-sequences" class="section level2 hasAnchor">
+<h2>Align protein sequences<a href="bio-align.html#align-protein-sequences" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Align the protein sequences that prints:</p>
+<pre><code>cat genomes.gb | bio fasta --gene S --protein |  head</code></pre>
+<p>that prints:</p>
+<pre class="r"><code>S32F    SNP 32  S   F   QHR63300.2  YP_009724390.1
+L50S    SNP 50  L   S   QHR63300.2  YP_009724390.1
+I76T    SNP 76  I   T   QHR63300.2  YP_009724390.1
+P218Q   SNP 218 P   Q   QHR63300.2  YP_009724390.1
+D324E   SNP 324 D   E   QHR63300.2  YP_009724390.1
+T346R   SNP 346 T   R   QHR63300.2  YP_009724390.1
+T372A   SNP 372 T   A   QHR63300.2  YP_009724390.1
+T403R   SNP 403 T   R   QHR63300.2  YP_009724390.1</code></pre>
+</div>
+<div id="alignment-showing-mutations" class="section level2 hasAnchor">
+<h2>Alignment showing mutations<a href="bio-align.html#alignment-showing-mutations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre><code>cat genomes.gb | bio fasta --gene S --protein | bio align --diff | tail -5</code></pre>
+<p>prints the variations:</p>
+<pre class="r"><code>N519H      SNP  519   N  H      QHR63300.2  YP_009724390.1
+A604T      SNP  604   A  T      QHR63300.2  YP_009724390.1
+S680SPRRA  INS  680   S  SPRRA  QHR63300.2  YP_009724390.1
+S1121N     SNP  1121  S  N      QHR63300.2  YP_009724390.1
+I1224V     SNP  1224  I  V      QHR63300.2  YP_009724390.1</code></pre>
+</div>
+<div id="alignment-with-tabular-output" class="section level2 hasAnchor">
+<h2>Alignment with tabular output<a href="bio-align.html#alignment-with-tabular-output" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>You can produce a column based table output</p>
+<pre><code>cat genomes.gb | bio fasta --gene S --protein | bio align --table</code></pre>
+<p>prints:</p>
+<pre class="r"><code>target      query           pident  len   match  mism  ins  del
+QHR63300.2  YP_009724390.1  97.4    1273  1240   29    4    0</code></pre>
+</div>
+<div id="different-scoring-matrices" class="section level2 hasAnchor">
+<h2>Different scoring matrices<a href="bio-align.html#different-scoring-matrices" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre><code>cat genomes.gb | bio fasta --gene S --translate | bio align --matrix PAM30 | head</code></pre>
+<p>prints:</p>
+<pre class="r"><code># QHR63300.2 (1270) vs YP_009724390.1 (1274)
+# pident=97.4% len=1274 ident=1241 mis=29 del=0 ins=4
+# semiglobal: score=9339.0 matrix=PAM30 gapopen=11 gapextend=1
+
+MFVFLVLLPLVSSQCVNLTTRTQLPPAYTNSSTRGVYYPDKVFRSSVLHLTQDLFLPFFSNVTWFHAIHVSGTNGIKRFDN
+|||||||||||||||||||||||||||||||.|||||||||||||||||.|||||||||||||||||||||||||.|||||
+MFVFLVLLPLVSSQCVNLTTRTQLPPAYTNSFTRGVYYPDKVFRSSVLHSTQDLFLPFFSNVTWFHAIHVSGTNGTKRFDN</code></pre>
+<div id="scoring-matrices" class="section level3 hasAnchor">
+<h3>Scoring matrices<a href="bio-align.html#scoring-matrices" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The scoring matrix may be a builtin name or a file with a scoring matrix format. See the scoring with:</p>
+<pre><code>bio align --matrix PAM30</code></pre>
+<p>prints:</p>
+<pre><code>#
+# This matrix was produced by &quot;pam&quot; Version 1.0.6 [28-Jul-93]
+#
+# PAM 30 substitution matrix, scale = ln(2)/2 = 0.346574
+#
+# Expected score = -5.06, Entropy = 2.57 bits
+#
+# Lowest score = -17, Highest score = 13
+#
+    A   R   N   D   C   Q   E   G   H   I   L   K   M   F   P   S   T   W   Y   V   B   Z   X   *
+A   6  -7  -4  -3  -6  -4  -2  -2  -7  -5  -6  -7  -5  -8  -2   0  -1 -13  -8  -2  -3  -3  -3 -17
+R  -7   8  -6 -10  -8  -2  -9  -9  -2  -5  -8   0  -4  -9  -4  -3  -6  -2 -10  -8  -7  -4  -6 -17
+N  -4  -6   8   2 -11  -3  -2  -3   0  -5  -7  -1  -9  -9  -6   0  -2  -8  -4  -8   6  -3  -3 -17
+D  -3 -10   2   8 -14  -2   2  -3  -4  -7 -12  -4 -11 -15  -8  -4  -5 -15 -11  -8   6   1  -5 -17
+...</code></pre>
+</div>
+</div>
+<div id="exercises" class="section level2 hasAnchor">
+<h2>Exercises<a href="bio-align.html#exercises" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="align-genomic-dna-to-cdna" class="section level3 hasAnchor">
+<h3>Align genomic DNA to CDNA<a href="bio-align.html#align-genomic-dna-to-cdna" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>bio fetch ENST00000288602 | head &gt; genomic.fa
+
+bio fetch ENST00000288602 --type cdna | head &gt; cdna.fa</code></pre>
+<p>Is this a good alignment?</p>
+<pre><code>bio align genomic.fa cdna.fa</code></pre>
+<p>Try local alignment</p>
+<pre><code>bio align genomic.fa cdna.fa --local</code></pre>
+
+</div>
+</div>
+</div>
+
+<script src="assets/asciinema-player.js"></script>
+
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="bio-table.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="bio-format.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "none"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

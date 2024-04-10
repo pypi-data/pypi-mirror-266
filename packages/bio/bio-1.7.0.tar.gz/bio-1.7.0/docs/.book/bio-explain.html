@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>bio explain: show definitions | The bio package</title>
+  <meta name="description" content="bio explain: show definitions | The bio package" />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="bio explain: show definitions | The bio package" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="bio explain: show definitions | The bio package" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="bio-taxonomy.html"/>
+<link rel="next" href="bio-meta-obtain-viral-metadata.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link rel="shortcut icon" href="assets/favicon.ico" />
+
+<script src="assets/prism.js"></script>
+
+<link rel="stylesheet" type="text/css" href="assets/bio.css" />
+
+<link rel="stylesheet" type="text/css" href="assets/asciinema-player.css" />
+
+<link rel="stylesheet" type="text/css" href="assets/prism.css" />
+
+
+<script>
+
+    $(document).ready(function () {
+        $('pre').addClass('language-bash');
+        Prism.highlightAll();
+    });
+
+</script>
+
+
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="index.html">bio: making bioinformatics fun again</a></li>
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome to bio</a></li>
+<li class="chapter" data-level="" data-path="bio-install.html"><a href="bio-install.html"><i class="fa fa-check"></i>How to install bio</a></li>
+<li class="part"><span><b>I BIO TASKS</b></span></li>
+<li class="chapter" data-level="" data-path="bio-search.html"><a href="bio-search.html"><i class="fa fa-check"></i>bio search: find information</a></li>
+<li class="chapter" data-level="" data-path="bio-fetch.html"><a href="bio-fetch.html"><i class="fa fa-check"></i>bio fetch: download data</a></li>
+<li class="chapter" data-level="" data-path="bio-fasta.html"><a href="bio-fasta.html"><i class="fa fa-check"></i>bio fasta: convert to FASTA</a></li>
+<li class="chapter" data-level="" data-path="bio-gff.html"><a href="bio-gff.html"><i class="fa fa-check"></i>bio gff: convert to GFF</a></li>
+<li class="chapter" data-level="" data-path="bio-table.html"><a href="bio-table.html"><i class="fa fa-check"></i>bio table: convert to table</a></li>
+<li class="chapter" data-level="" data-path="bio-align.html"><a href="bio-align.html"><i class="fa fa-check"></i>bio align: perform alignments</a></li>
+<li class="chapter" data-level="" data-path="bio-format.html"><a href="bio-format.html"><i class="fa fa-check"></i>bio format: reformat alignments</a></li>
+<li class="chapter" data-level="" data-path="bio-taxonomy.html"><a href="bio-taxonomy.html"><i class="fa fa-check"></i>bio taxon: show taxonomies</a></li>
+<li class="chapter" data-level="" data-path="bio-explain.html"><a href="bio-explain.html"><i class="fa fa-check"></i>bio explain: show definitions</a></li>
+<li class="chapter" data-level="" data-path="bio-meta-obtain-viral-metadata.html"><a href="bio-meta-obtain-viral-metadata.html"><i class="fa fa-check"></i>bio meta: obtain viral metadata</a></li>
+<li class="part"><span><b>II MORE INFORMATION</b></span></li>
+<li class="chapter" data-level="" data-path="bio-tips.html"><a href="bio-tips.html"><i class="fa fa-check"></i>bio: general tips</a></li>
+<li class="chapter" data-level="" data-path="bio-examples.html"><a href="bio-examples.html"><i class="fa fa-check"></i>bio: additional examples</a></li>
+<li class="part"><span><b>III OTHER UTILITIES</b></span></li>
+<li class="chapter" data-level="" data-path="bio-comm.html"><a href="bio-comm.html"><i class="fa fa-check"></i>bio comm: find common values</a></li>
+<li class="chapter" data-level="" data-path="bio-uniq.html"><a href="bio-uniq.html"><i class="fa fa-check"></i>bio uniq: find unique elements</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">The bio package</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="bio-explain" class="section level1 hasAnchor">
+<h1>bio explain: show definitions<a href="bio-explain.html#bio-explain" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>We implemented the <code>bio explain</code> command to facilitate the quick explorations of the Gene and Sequence Ontologies.</p>
+<p>For more information on ontologies, consult <a href="https://www.biostarhandbook.com">The Biostar Handbook</a> chapter <a href="https://www.biostarhandbook.com/what-do-the-words-mean.html">Sequence and Gene Ontology: What do the words mean?</a>. To install <code>bio</code> use:</p>
+<pre><code>pip install bio --upgrade
+bio --download</code></pre>
+<p>The full documentation for <code>bio</code> is maintained at <a href="https://www.bioinfo.help/" class="uri">https://www.bioinfo.help/</a>.</p>
+<div id="database-information" class="section level2 hasAnchor">
+<h2>Database information<a href="bio-explain.html#database-information" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre><code>bio explain</code></pre>
+<p>Prints the contents of the database:</p>
+<pre><code># Content: 43,878 gene ontology terms; 2,354 sequence ontology terms</code></pre>
+<p>As we can see the database currently contains <code>43,878</code> gene ontology and <code>2,354</code> sequence ontology terms.</p>
+</div>
+<div id="explain-a-term" class="section level2 hasAnchor">
+<h2>Explain a term<a href="bio-explain.html#explain-a-term" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre><code>bio explain exon</code></pre>
+<p>prints that the term is part of the Sequence Ontology (SO) with number <code>SO:0000147</code> and is defined as:</p>
+<pre><code>## exon (SO:0000147)
+
+A region of the transcript sequence within a gene which is not removed from the
+primary RNA transcript by RNA splicing.
+
+Parents:
+- transcript_region
+
+Children:
+- coding_exon
+- noncoding_exon
+- interior_exon
+- decayed_exon (non_functional_homolog_of)
+- pseudogenic_exon (non_functional_homolog_of)
+- exon_region (part_of)
+- exon_of_single_exon_gene</code></pre>
+<p>You can now query the parent or child relationships:</p>
+<pre><code>bio explain transcript_region</code></pre>
+<p>or</p>
+<pre><code>bio explain coding_exon</code></pre>
+</div>
+<div id="explain-term-by-identifier" class="section level2 hasAnchor">
+<h2>Explain term by identifier<a href="bio-explain.html#explain-term-by-identifier" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>If you know the identifier then you may use it directly <code>bio explain SO:0000147</code> or <code>bio explain GO:2000147</code></p>
+</div>
+<div id="explain-more-complex-terms" class="section level2 hasAnchor">
+<h2>Explain more complex terms<a href="bio-explain.html#explain-more-complex-terms" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>All words have to match exactly; thus, try simpler terms before going full length.</p>
+<pre><code>bio explain regulation
+
+bio explain positive regulation
+
+bio explain positive regulation of x
+
+bio explain positive regulation of xanthophore differentiation</code></pre>
+<p>What is xantophore?</p>
+<pre><code>bio explain xanthophore</code></pre>
+<p>prints:</p>
+<pre><code>## xanthophore (GO:0031633)
+
+A chromatophore containing yellow pigment.
+
+Parents:
+- plasma membrane-derived chromatophore</code></pre>
+</div>
+<div id="showing-the-term-lineage" class="section level2 hasAnchor">
+<h2>Showing the term lineage<a href="bio-explain.html#showing-the-term-lineage" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre><code>bio explain exon --lineage</code></pre>
+<p>prints:</p>
+<pre><code>SO:0000110  sequence_feature
+  SO:0000001  region
+    SO:0001411  biological_region
+      SO:0000833  transcript_region
+
+        ## exon (SO:0000147)
+
+        A region of the transcript sequence within a gene which is not removed from the
+        primary RNA transcript by RNA splicing.
+
+
+        Children:
+        - coding_exon
+        - noncoding_exon
+        - interior_exon
+        - decayed_exon (non_functional_homolog_of)
+        - pseudogenic_exon (non_functional_homolog_of)
+        - exon_region (part_of)
+        - exon_of_single_exon_gene</code></pre>
+</div>
+<div id="searching-the-database" class="section level2 hasAnchor">
+<h2>Searching the database<a href="bio-explain.html#searching-the-database" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Any query that is not matched will be searched for. The <code>-go</code> flag restricts tje search for gene ontology while <code>-so</code> restricts the search for sequence ontology. To search for both sequence and gene ontology:</p>
+<pre><code># Searces both ontologies
+bio explain histone | head
+
+# Search gene ontology only
+bio explain histone --go | head
+
+# Search gene ontology only
+bio explain histone --so |head</code></pre>
+</div>
+<div id="build-the-newest-version-locally-1" class="section level2 hasAnchor">
+<h2>Build the newest version locally<a href="bio-explain.html#build-the-newest-version-locally-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>You may build a database with the newest data:</p>
+<pre><code>bio explain --build</code></pre>
+<p>The command will download the most up-to-date ontology data and build a new database. The process might take about half an hour - through the completion speed depends on the hard drive write speed, solid-state drives finish much faster.</p>
+
+</div>
+</div>
+
+<script src="assets/asciinema-player.js"></script>
+
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="bio-taxonomy.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="bio-meta-obtain-viral-metadata.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "none"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

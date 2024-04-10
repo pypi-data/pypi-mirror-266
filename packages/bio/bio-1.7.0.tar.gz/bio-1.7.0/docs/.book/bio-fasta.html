@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>bio fasta: convert to FASTA | The bio package</title>
+  <meta name="description" content="bio fasta: convert to FASTA | The bio package" />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="bio fasta: convert to FASTA | The bio package" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="bio fasta: convert to FASTA | The bio package" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="bio-fetch.html"/>
+<link rel="next" href="bio-gff.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link rel="shortcut icon" href="assets/favicon.ico" />
+
+<script src="assets/prism.js"></script>
+
+<link rel="stylesheet" type="text/css" href="assets/bio.css" />
+
+<link rel="stylesheet" type="text/css" href="assets/asciinema-player.css" />
+
+<link rel="stylesheet" type="text/css" href="assets/prism.css" />
+
+
+<script>
+
+    $(document).ready(function () {
+        $('pre').addClass('language-bash');
+        Prism.highlightAll();
+    });
+
+</script>
+
+
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="index.html">bio: making bioinformatics fun again</a></li>
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome to bio</a></li>
+<li class="chapter" data-level="" data-path="bio-install.html"><a href="bio-install.html"><i class="fa fa-check"></i>How to install bio</a></li>
+<li class="part"><span><b>I BIO TASKS</b></span></li>
+<li class="chapter" data-level="" data-path="bio-search.html"><a href="bio-search.html"><i class="fa fa-check"></i>bio search: find information</a></li>
+<li class="chapter" data-level="" data-path="bio-fetch.html"><a href="bio-fetch.html"><i class="fa fa-check"></i>bio fetch: download data</a></li>
+<li class="chapter" data-level="" data-path="bio-fasta.html"><a href="bio-fasta.html"><i class="fa fa-check"></i>bio fasta: convert to FASTA</a></li>
+<li class="chapter" data-level="" data-path="bio-gff.html"><a href="bio-gff.html"><i class="fa fa-check"></i>bio gff: convert to GFF</a></li>
+<li class="chapter" data-level="" data-path="bio-table.html"><a href="bio-table.html"><i class="fa fa-check"></i>bio table: convert to table</a></li>
+<li class="chapter" data-level="" data-path="bio-align.html"><a href="bio-align.html"><i class="fa fa-check"></i>bio align: perform alignments</a></li>
+<li class="chapter" data-level="" data-path="bio-format.html"><a href="bio-format.html"><i class="fa fa-check"></i>bio format: reformat alignments</a></li>
+<li class="chapter" data-level="" data-path="bio-taxonomy.html"><a href="bio-taxonomy.html"><i class="fa fa-check"></i>bio taxon: show taxonomies</a></li>
+<li class="chapter" data-level="" data-path="bio-explain.html"><a href="bio-explain.html"><i class="fa fa-check"></i>bio explain: show definitions</a></li>
+<li class="chapter" data-level="" data-path="bio-meta-obtain-viral-metadata.html"><a href="bio-meta-obtain-viral-metadata.html"><i class="fa fa-check"></i>bio meta: obtain viral metadata</a></li>
+<li class="part"><span><b>II MORE INFORMATION</b></span></li>
+<li class="chapter" data-level="" data-path="bio-tips.html"><a href="bio-tips.html"><i class="fa fa-check"></i>bio: general tips</a></li>
+<li class="chapter" data-level="" data-path="bio-examples.html"><a href="bio-examples.html"><i class="fa fa-check"></i>bio: additional examples</a></li>
+<li class="part"><span><b>III OTHER UTILITIES</b></span></li>
+<li class="chapter" data-level="" data-path="bio-comm.html"><a href="bio-comm.html"><i class="fa fa-check"></i>bio comm: find common values</a></li>
+<li class="chapter" data-level="" data-path="bio-uniq.html"><a href="bio-uniq.html"><i class="fa fa-check"></i>bio uniq: find unique elements</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">The bio package</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="bio-fasta" class="section level1 hasAnchor">
+<h1>bio fasta: convert to FASTA<a href="bio-fasta.html#bio-fasta" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Install <code>bio</code> with:</p>
+<pre><code>pip install bio --upgrade</code></pre>
+<p>The full documentation for <code>bio</code> is maintained at <a href="https://www.bioinfo.help/" class="uri">https://www.bioinfo.help/</a>.</p>
+<div id="rationale-1" class="section level2 hasAnchor">
+<h2>Rationale<a href="bio-fasta.html#rationale-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>GenBank/EMBL files represents sequence information in multiple sections:</p>
+<ol style="list-style-type: decimal">
+<li>Genomic sequences (the entire genomic sequence)</li>
+<li>Feature annotation (intervals relative to the genome)</li>
+</ol>
+<p><code>bio fasta</code> can operate on GenBank/EMBL files, filter and extract various subsets of the data.</p>
+</div>
+<div id="get-a-genbank-file" class="section level2 hasAnchor">
+<h2>Get a GenBank file<a href="bio-fasta.html#get-a-genbank-file" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre><code>bio fetch NC_045512 MN996532 &gt; genomes.gb</code></pre>
+</div>
+<div id="convert-to-fasta" class="section level2 hasAnchor">
+<h2>Convert to FASTA<a href="bio-fasta.html#convert-to-fasta" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The default behavior is to convert the genome the GenBank file to FASTA:</p>
+<pre><code>bio fasta genomes.gb &gt; genomes.fa</code></pre>
+<p>to convert the features component pass the <code>--features</code> flag or use any of <code>--type</code>, <code>--gene</code> or other feature specific selectors.</p>
+<pre><code>bio fasta genomes.gb --features &gt; features.fa</code></pre>
+</div>
+<div id="inputs" class="section level2 hasAnchor">
+<h2>Inputs<a href="bio-fasta.html#inputs" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The input may be GENBANK, FASTA, EMBL or FASTQ.</p>
+</div>
+<div id="what-gets-converted" class="section level2 hasAnchor">
+<h2>What gets converted?<a href="bio-fasta.html#what-gets-converted" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>GenBank and EMBL files contain both genomes and features all features are extracted.</p>
+<pre><code>cat genomes.gb | bio fasta &gt; genomes.fa</code></pre>
+<p>pass any feature matcher to limit to certain types:</p>
+<pre><code>bio fasta --type CDS genomes.gb -e 10 | head</code></pre>
+<p>prints:</p>
+<pre><code>&gt;YP_009724389.1 {&quot;type&quot;: &quot;CDS&quot;, &quot;gene&quot;: &quot;ORF1ab&quot;, &quot;product&quot;: &quot;ORF1ab polyprotein&quot;, &quot;locus&quot;: &quot;GU280_gp01&quot;}
+ATGGAGAGCC
+&gt;YP_009725295.1 {&quot;type&quot;: &quot;CDS&quot;, &quot;gene&quot;: &quot;ORF1ab&quot;, &quot;product&quot;: &quot;ORF1a polyprotein&quot;, &quot;locus&quot;: &quot;GU280_gp01&quot;}
+ATGGAGAGCC</code></pre>
+</div>
+<div id="select-by-name" class="section level2 hasAnchor">
+<h2>Select by name<a href="bio-fasta.html#select-by-name" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><code>-m</code> or <code>--match</code> performs a regular expression match on sequence ids:</p>
+<pre><code>cat genomes.gb | bio fasta -m glyco -end 10</code></pre>
+<p>prints:</p>
+<pre><code>&gt;YP_009724390.1 {&quot;type&quot;: &quot;CDS&quot;, &quot;gene&quot;: &quot;S&quot;, &quot;product&quot;: &quot;surface glycoprotein&quot;, &quot;locus&quot;: &quot;GU280_gp02&quot;}
+ATGTTTGTTT
+&gt;YP_009724393.1 {&quot;type&quot;: &quot;CDS&quot;, &quot;gene&quot;: &quot;M&quot;, &quot;product&quot;: &quot;membrane glycoprotein&quot;, &quot;locus&quot;: &quot;GU280_gp05&quot;}T</code></pre>
+<p><code>-i</code> or <code>--id</code> performs an exact match on sequence ids:</p>
+<pre><code>cat genomes.gb | bio fasta -i YP_009724390.1  -end 10</code></pre>
+<p>prints:</p>
+<pre><code>&gt;YP_009724390.1 {&quot;type&quot;: &quot;CDS&quot;, &quot;gene&quot;: &quot;S&quot;, &quot;product&quot;: &quot;surface glycoprotein&quot;, &quot;locus&quot;: &quot;GU280_gp02&quot;}
+ATGTTTGTTT</code></pre>
+<p>pass multiple ids to match multiple sequences:</p>
+<pre><code>cat genomes.gb | bio fasta -i YP_009724390.1,QHR63300.2  -end 10</code></pre>
+<p>prints:</p>
+<pre><code>&gt;YP_009724390.1 {&quot;type&quot;: &quot;CDS&quot;, &quot;gene&quot;: &quot;S&quot;, &quot;product&quot;: &quot;surface glycoprotein&quot;, &quot;locus&quot;: &quot;GU280_gp02&quot;}
+ATGTTTGTTT
+&gt;QHR63300.2 {&quot;type&quot;: &quot;CDS&quot;, &quot;gene&quot;: &quot;S&quot;, &quot;product&quot;: &quot;spike glycoprotein&quot;, &quot;locus&quot;: &quot;&quot;}
+ATGTTTGTTT</code></pre>
+</div>
+<div id="selecting-features" class="section level2 hasAnchor">
+<h2>Selecting features<a href="bio-fasta.html#selecting-features" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>If any feature selector is passed the FASTA conversion operates on the features in the GenBank:</p>
+<pre><code>bio fasta --type CDS genomes.gb</code></pre>
+<p>will convert to fasta the coding sequences alone.</p>
+</div>
+<div id="manipulate-a-genomic-subsequence" class="section level2 hasAnchor">
+<h2>Manipulate a genomic subsequence<a href="bio-fasta.html#manipulate-a-genomic-subsequence" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre><code>bio fasta genomes.gb --start 100 --end 10kb</code></pre>
+</div>
+<div id="extract-the-sequences-for-annotations-of-a-certain-type" class="section level2 hasAnchor">
+<h2>Extract the sequences for annotations of a certain type<a href="bio-fasta.html#extract-the-sequences-for-annotations-of-a-certain-type" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre><code>bio fasta genomes.gb --type CDS | head -3</code></pre>
+<div id="extract-cds-sequences-by-gene-name" class="section level3 hasAnchor">
+<h3>Extract CDS sequences by gene name<a href="bio-fasta.html#extract-cds-sequences-by-gene-name" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>bio fasta --gene S--end 60 genomes.gb </code></pre>
+</div>
+<div id="extract-sequence-by-feature-accession-number" class="section level3 hasAnchor">
+<h3>Extract sequence by feature accession number<a href="bio-fasta.html#extract-sequence-by-feature-accession-number" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>cat genomes.gb | bio fasta --end 10 --id QHR63308.1</code></pre>
+</div>
+<div id="translate-the-sequence" class="section level3 hasAnchor">
+<h3>Translate the sequence<a href="bio-fasta.html#translate-the-sequence" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>This command translates the DNA sequence to peptides:</p>
+<pre><code>bio fasta --end 30 --translate --gene S genomes.gb</code></pre>
+<p>The slice to 30 is applied on the DNA sequence before the translation.</p>
+</div>
+<div id="extract-the-protein-sequence" class="section level3 hasAnchor">
+<h3>Extract the protein sequence<a href="bio-fasta.html#extract-the-protein-sequence" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>This flag extracts the protein sequence embedded in the original GenBank file:</p>
+<pre><code>bio fasta --end 10 --protein --gene S genomes.gb</code></pre>
+<p>Note how in this case the slice to 10 is applied on the protein sequence.</p>
+</div>
+</div>
+<div id="other-tools" class="section level2 hasAnchor">
+<h2>Other tools<a href="bio-fasta.html#other-tools" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>My first choice when needing functionality not present in <code>bio fasta</code> would be to look at:</p>
+<ul>
+<li><code>seqkit</code> a cross-platform and ultrafast toolkit for FASTA/Q file manipulation <a href="https://bioinf.shenwei.me/seqkit/" class="uri">https://bioinf.shenwei.me/seqkit/</a></li>
+</ul>
+<p>and</p>
+<ul>
+<li><code>seqtk</code> a fast and lightweight tool for processing sequences in the FASTA or FASTQ format. It seamlessly parses both FASTA and FASTQ files which can also be optionally compressed by gzip. <a href="https://github.com/lh3/seqtk" class="uri">https://github.com/lh3/seqtk</a></li>
+</ul>
+<div id="other-potentially-useful-software" class="section level3 hasAnchor">
+<h3>Other potentially useful software<a href="bio-fasta.html#other-potentially-useful-software" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The following software may be installed with <code>conda/mamba</code>:</p>
+<ul>
+<li><code>any2fasta</code> converts various outputs to FASTA see <a href="https://github.com/tseemann/any2fasta" class="uri">https://github.com/tseemann/any2fasta</a></li>
+<li><code>pyfasta</code> pythonic access to fasta sequence files <a href="https://github.com/brentp/pyfasta" class="uri">https://github.com/brentp/pyfasta</a></li>
+<li><code>pyfastq</code> Python3 script to manipulate FASTA and FASTQ (and other format) files, plus API for developers <a href="https://github.com/sanger-pathogens/Fastaq" class="uri">https://github.com/sanger-pathogens/Fastaq</a><br />
+</li>
+<li><code>seqret</code> part the EMBOSS suite <a href="https://www.bioinformatics.nl/cgi-bin/emboss/help/seqret" class="uri">https://www.bioinformatics.nl/cgi-bin/emboss/help/seqret</a></li>
+<li><code>bam2fasta</code> Convert 10x bam file or fastq.gz files to individual FASTA files per cell barcode convert large bam files to fastq.gz format before the individual fasta files per cell barcode conversion <a href="https://github.com/czbiohub/bam2fasta" class="uri">https://github.com/czbiohub/bam2fasta</a></li>
+</ul>
+
+</div>
+</div>
+</div>
+
+<script src="assets/asciinema-player.js"></script>
+
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="bio-fetch.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="bio-gff.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "none"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

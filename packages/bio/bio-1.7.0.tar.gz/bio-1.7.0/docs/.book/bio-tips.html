@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>bio: general tips | The bio package</title>
+  <meta name="description" content="bio: general tips | The bio package" />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="bio: general tips | The bio package" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="bio: general tips | The bio package" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="bio-meta-obtain-viral-metadata.html"/>
+<link rel="next" href="bio-examples.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link rel="shortcut icon" href="assets/favicon.ico" />
+
+<script src="assets/prism.js"></script>
+
+<link rel="stylesheet" type="text/css" href="assets/bio.css" />
+
+<link rel="stylesheet" type="text/css" href="assets/asciinema-player.css" />
+
+<link rel="stylesheet" type="text/css" href="assets/prism.css" />
+
+
+<script>
+
+    $(document).ready(function () {
+        $('pre').addClass('language-bash');
+        Prism.highlightAll();
+    });
+
+</script>
+
+
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="index.html">bio: making bioinformatics fun again</a></li>
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome to bio</a></li>
+<li class="chapter" data-level="" data-path="bio-install.html"><a href="bio-install.html"><i class="fa fa-check"></i>How to install bio</a></li>
+<li class="part"><span><b>I BIO TASKS</b></span></li>
+<li class="chapter" data-level="" data-path="bio-search.html"><a href="bio-search.html"><i class="fa fa-check"></i>bio search: find information</a></li>
+<li class="chapter" data-level="" data-path="bio-fetch.html"><a href="bio-fetch.html"><i class="fa fa-check"></i>bio fetch: download data</a></li>
+<li class="chapter" data-level="" data-path="bio-fasta.html"><a href="bio-fasta.html"><i class="fa fa-check"></i>bio fasta: convert to FASTA</a></li>
+<li class="chapter" data-level="" data-path="bio-gff.html"><a href="bio-gff.html"><i class="fa fa-check"></i>bio gff: convert to GFF</a></li>
+<li class="chapter" data-level="" data-path="bio-table.html"><a href="bio-table.html"><i class="fa fa-check"></i>bio table: convert to table</a></li>
+<li class="chapter" data-level="" data-path="bio-align.html"><a href="bio-align.html"><i class="fa fa-check"></i>bio align: perform alignments</a></li>
+<li class="chapter" data-level="" data-path="bio-format.html"><a href="bio-format.html"><i class="fa fa-check"></i>bio format: reformat alignments</a></li>
+<li class="chapter" data-level="" data-path="bio-taxonomy.html"><a href="bio-taxonomy.html"><i class="fa fa-check"></i>bio taxon: show taxonomies</a></li>
+<li class="chapter" data-level="" data-path="bio-explain.html"><a href="bio-explain.html"><i class="fa fa-check"></i>bio explain: show definitions</a></li>
+<li class="chapter" data-level="" data-path="bio-meta-obtain-viral-metadata.html"><a href="bio-meta-obtain-viral-metadata.html"><i class="fa fa-check"></i>bio meta: obtain viral metadata</a></li>
+<li class="part"><span><b>II MORE INFORMATION</b></span></li>
+<li class="chapter" data-level="" data-path="bio-tips.html"><a href="bio-tips.html"><i class="fa fa-check"></i>bio: general tips</a></li>
+<li class="chapter" data-level="" data-path="bio-examples.html"><a href="bio-examples.html"><i class="fa fa-check"></i>bio: additional examples</a></li>
+<li class="part"><span><b>III OTHER UTILITIES</b></span></li>
+<li class="chapter" data-level="" data-path="bio-comm.html"><a href="bio-comm.html"><i class="fa fa-check"></i>bio comm: find common values</a></li>
+<li class="chapter" data-level="" data-path="bio-uniq.html"><a href="bio-uniq.html"><i class="fa fa-check"></i>bio uniq: find unique elements</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">The bio package</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="bio-tips" class="section level1 hasAnchor">
+<h1>bio: general tips<a href="bio-tips.html#bio-tips" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Substantial effort has been devoted to making the command line more error-tolerant and user friendly.</p>
+<div id="see-the-help" class="section level2 hasAnchor">
+<h2>See the help<a href="bio-tips.html#see-the-help" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Each command, when invoked with no parameters, will produce help:</p>
+<pre><code>bio</code></pre>
+</div>
+<div id="all-commands-can-read-the-standard-input" class="section level2 hasAnchor">
+<h2>All commands can read the standard input<a href="bio-tips.html#all-commands-can-read-the-standard-input" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre><code>bio fetch AF086833  KJ660346 &gt; genome.gb</code></pre>
+<p>or if the file <code>ids.txt</code> contains:</p>
+<pre><code>AF086833
+KJ660346</code></pre>
+<p>you can run:</p>
+<pre><code>cat ids.txt | bio fetch &gt; genome.gb</code></pre>
+</div>
+<div id="some-commands-can-create-sequences-on-the-fly" class="section level2 hasAnchor">
+<h2>Some commands can create sequences on the fly<a href="bio-tips.html#some-commands-can-create-sequences-on-the-fly" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre><code>bio align GATCA GATTACA</code></pre>
+<p>or</p>
+<pre><code>bio fasta GATTACA --translate</code></pre>
+</div>
+<div id="parameter-order-does-not-matter" class="section level2 hasAnchor">
+<h2>Parameter order does not matter<a href="bio-tips.html#parameter-order-does-not-matter" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>You may write:</p>
+<pre><code>bio fasta --type CDS --end 10 genomes.gb</code></pre>
+<p>or:</p>
+<pre><code>cat genomes.gb | bio fasta --type CDS --end 10</code></pre>
+<p>both will work and produce the same results.</p>
+</div>
+<div id="parameter-action" class="section level2 hasAnchor">
+<h2>Parameter action<a href="bio-tips.html#parameter-action" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Each parameter will be applied sequentially in an internally determined order that makes the most sense:</p>
+<pre><code>bio fasta --type CDS --end 10  --translate genomes.gb</code></pre>
+<p>will produce the same results as:</p>
+<pre><code>bio fasta --translate --end 10 --type CDS  genomes.gb</code></pre>
+<p>Both commands first select <code>CDS</code> types, apply a slice on each sequence, and then use the translation operator.</p>
+</div>
+<div id="multiple-accession-numbers" class="section level2 hasAnchor">
+<h2>Multiple accession numbers<a href="bio-tips.html#multiple-accession-numbers" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Many commands allow using multiple accession numbers; in that case, the operations will take place sequentially on each.</p>
+<pre><code>bio fetch NC_045512 MN996532</code></pre>
+<p>or comma separated:</p>
+<pre><code>bio fetch NC_045512,MN996532</code></pre>
+</div>
+<div id="parameter-forms" class="section level2 hasAnchor">
+<h2>Parameter forms<a href="bio-tips.html#parameter-forms" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>You may use single or double dashes on parameters:</p>
+<pre><code>bio fasta genomes.gb --end 100</code></pre>
+<p>The command above is equivalent to:</p>
+<pre><code>bio fasta genomes.gb -end 100</code></pre>
+</div>
+<div id="the-coordinate-system-is-1-based" class="section level2 hasAnchor">
+<h2>The coordinate system is 1 based<a href="bio-tips.html#the-coordinate-system-is-1-based" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Coordinates are one based (inclusive on both ends) identical to GFF coordinate formats.</p>
+<pre><code>bio fasta --start 10 --end 20 genomes.gb</code></pre>
+<p>The interval of 10 to 20 is 11 bases long! To make a single base long slice start and end on the same value:</p>
+<pre><code>bio fasta --start 10 --end 10 genomes.gb</code></pre>
+</div>
+<div id="number-formatting" class="section level2 hasAnchor">
+<h2>Number formatting<a href="bio-tips.html#number-formatting" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Numbers for start and end coordinates may be written in human-friendly forms, like so:</p>
+<pre><code>bio fasta -start 1kb -end 2kb genomes.gb</code></pre>
+<p>accepted formats:</p>
+<ul>
+<li><code>5000</code></li>
+<li><code>5,000</code></li>
+<li><code>5k</code> or <code>5kb</code></li>
+<li><code>5K</code> or <code>5KB</code></li>
+</ul>
+
+</div>
+</div>
+
+<script src="assets/asciinema-player.js"></script>
+
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="bio-meta-obtain-viral-metadata.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="bio-examples.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "none"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

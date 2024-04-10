@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>bio fetch: download data | The bio package</title>
+  <meta name="description" content="bio fetch: download data | The bio package" />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="bio fetch: download data | The bio package" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="bio fetch: download data | The bio package" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="bio-search.html"/>
+<link rel="next" href="bio-fasta.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link rel="shortcut icon" href="assets/favicon.ico" />
+
+<script src="assets/prism.js"></script>
+
+<link rel="stylesheet" type="text/css" href="assets/bio.css" />
+
+<link rel="stylesheet" type="text/css" href="assets/asciinema-player.css" />
+
+<link rel="stylesheet" type="text/css" href="assets/prism.css" />
+
+
+<script>
+
+    $(document).ready(function () {
+        $('pre').addClass('language-bash');
+        Prism.highlightAll();
+    });
+
+</script>
+
+
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="index.html">bio: making bioinformatics fun again</a></li>
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome to bio</a></li>
+<li class="chapter" data-level="" data-path="bio-install.html"><a href="bio-install.html"><i class="fa fa-check"></i>How to install bio</a></li>
+<li class="part"><span><b>I BIO TASKS</b></span></li>
+<li class="chapter" data-level="" data-path="bio-search.html"><a href="bio-search.html"><i class="fa fa-check"></i>bio search: find information</a></li>
+<li class="chapter" data-level="" data-path="bio-fetch.html"><a href="bio-fetch.html"><i class="fa fa-check"></i>bio fetch: download data</a></li>
+<li class="chapter" data-level="" data-path="bio-fasta.html"><a href="bio-fasta.html"><i class="fa fa-check"></i>bio fasta: convert to FASTA</a></li>
+<li class="chapter" data-level="" data-path="bio-gff.html"><a href="bio-gff.html"><i class="fa fa-check"></i>bio gff: convert to GFF</a></li>
+<li class="chapter" data-level="" data-path="bio-table.html"><a href="bio-table.html"><i class="fa fa-check"></i>bio table: convert to table</a></li>
+<li class="chapter" data-level="" data-path="bio-align.html"><a href="bio-align.html"><i class="fa fa-check"></i>bio align: perform alignments</a></li>
+<li class="chapter" data-level="" data-path="bio-format.html"><a href="bio-format.html"><i class="fa fa-check"></i>bio format: reformat alignments</a></li>
+<li class="chapter" data-level="" data-path="bio-taxonomy.html"><a href="bio-taxonomy.html"><i class="fa fa-check"></i>bio taxon: show taxonomies</a></li>
+<li class="chapter" data-level="" data-path="bio-explain.html"><a href="bio-explain.html"><i class="fa fa-check"></i>bio explain: show definitions</a></li>
+<li class="chapter" data-level="" data-path="bio-meta-obtain-viral-metadata.html"><a href="bio-meta-obtain-viral-metadata.html"><i class="fa fa-check"></i>bio meta: obtain viral metadata</a></li>
+<li class="part"><span><b>II MORE INFORMATION</b></span></li>
+<li class="chapter" data-level="" data-path="bio-tips.html"><a href="bio-tips.html"><i class="fa fa-check"></i>bio: general tips</a></li>
+<li class="chapter" data-level="" data-path="bio-examples.html"><a href="bio-examples.html"><i class="fa fa-check"></i>bio: additional examples</a></li>
+<li class="part"><span><b>III OTHER UTILITIES</b></span></li>
+<li class="chapter" data-level="" data-path="bio-comm.html"><a href="bio-comm.html"><i class="fa fa-check"></i>bio comm: find common values</a></li>
+<li class="chapter" data-level="" data-path="bio-uniq.html"><a href="bio-uniq.html"><i class="fa fa-check"></i>bio uniq: find unique elements</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">The bio package</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="bio-fetch" class="section level1 hasAnchor">
+<h1>bio fetch: download data<a href="bio-fetch.html#bio-fetch" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>We have implemented the <code>bio fetch</code> command to facilitate data download from GenBank, Ensembl and other sources. If you need additional functionality beyond of what <code>bio fetch</code> offers see the end of the page for a list of alternatives. Install <code>bio</code> with:</p>
+<pre><code>pip install bio --upgrade</code></pre>
+<p>The full documentation for <code>bio</code> is maintained at <a href="https://www.bioinfo.help/" class="uri">https://www.bioinfo.help/</a>.</p>
+<div id="rationale" class="section level2 hasAnchor">
+<h2>Rationale<a href="bio-fetch.html#rationale" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><code>bio fetch</code> was written to provide simpler data access. As in most cases the accession numbers uniquely define the data type <code>bio fetch</code> can automatically resolve the correct destination and will download data in the most appropriate format. Examples:</p>
+<pre><code># Obtains nucleotidedata from GenBank
+bio fetch NC_045512
+
+# Obtains protein data from GenBank
+bio fetch YP_009724390
+
+# Obtains SRR run information from the Short Read Archive
+bio fetch SRR1972976
+
+# Obtains FASTA sequence files from Ensembl
+bio fetch ENSG00000157764
+
+# Obtain the coding sequence segments of a transcript
+bio fetch ENST00000288602 --type cds | head</code></pre>
+<p>Read on for more details.</p>
+</div>
+<div id="fetch-data-from-genbank" class="section level2 hasAnchor">
+<h2>Fetch data from GenBank<a href="bio-fetch.html#fetch-data-from-genbank" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>To get a Genbank nucleotides by accession number run:</p>
+<pre><code># Obtains nucleotidedata from GenBank
+bio fetch NC_045512 | head</code></pre>
+<p>The default format is GenBank. You may also list multiple accession numbers at once:</p>
+<pre><code># Obtains mulitple entries from GenBank
+bio fetch NC_045512 MN996532 &gt; genomes.gb</code></pre>
+<p>you may also fetch FASTA and GFF data directly from GenBank. The command</p>
+<pre><code>bio fetch NC_045512 --format fasta  | head -3</code></pre>
+<p>returns a FASTA file:</p>
+<pre><code>&gt;NC_045512.2 Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1, complete genome
+ATTAAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTCTTGTAGATCTGTTCTCTAAA
+CGAACTTTAAAATCTGTGTGGCTGTCACTCGGCTGCATGCTTAGTGCACTCACGCAGTATAATTAATAAC</code></pre>
+<p>whereas:</p>
+<pre><code>bio fetch NC_045512 --format gff  | head -3</code></pre>
+<p>returns a GFF file:</p>
+<pre><code>##sequence-region NC_045512.2 1 29903
+##species https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=2697049
+NC_045512.2 RefSeq  region  1   29903   .   +   .   ID=NC_045512.2:1..29903;Dbxref=taxon:2697049;collection-date=Dec-2019;country=China;gb-acronym=SARS-CoV-2;gbkey=Src;genome=genomic;isolate=Wuhan-Hu-1;mol_type=genomic RNA;nat-host=Homo sapiens;old-name=Wuhan seafood market pneumonia virus</code></pre>
+</div>
+<div id="fetching-genome-assemblies" class="section level2 hasAnchor">
+<h2>Fetching genome assemblies<a href="bio-fetch.html#fetching-genome-assemblies" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Genome assemblies at NCBI are also accessible with:</p>
+<pre><code># Produces a GenBank file
+bio search GCA_000006155
+
+# Produces a FASTA file
+bio search GCA_000006155 --format fasta
+
+# Produces a GFF file.
+bio search GCA_000006155 --format gff</code></pre>
+</div>
+<div id="fetch-data-from-ensembl" class="section level2 hasAnchor">
+<h2>Fetch data from Ensembl<a href="bio-fetch.html#fetch-data-from-ensembl" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><code>bio fetch</code> recognizes Ensemble accessions (ENSG, ENST) and will automatically connect to the Ensembl REST API:</p>
+<pre><code># Ensenble gene
+bio fetch ENSG00000157764 | head
+
+# Transcript data in genomic context
+bio fetch ENST00000288602  | head
+
+# Transcript data as CDNA
+bio fetch ENST00000288602 --type cdna | head
+
+# Transcript data as CDS
+bio fetch ENST00000288602 --type cds | head
+
+# Transcript data as protein
+bio fetch ENST00000288602 --type protein | head</code></pre>
+<p>These commands fetch data in FASTA formats. For more information see the Ensembl REST API:</p>
+<ul>
+<li><a href="https://rest.ensembl.org/" class="uri">https://rest.ensembl.org/</a></li>
+</ul>
+<p>And the <a href="https://github.com/enasequence/enaBrowserTools">enaBrowserTools: interface with the ENA web services to download data from ENA</a></p>
+</div>
+<div id="fetch_similar" class="section level2 hasAnchor">
+<h2>Tools with similar utility<a href="bio-fetch.html#fetch_similar" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><code>bio fetch</code> is primarily a convenience function that simplifies the use of Entrez and ENA in certain simple and well defined cases.</p>
+<p>See also the related tools that may have expanded functionality:</p>
+<ul>
+<li><a href="https://www.ncbi.nlm.nih.gov/books/NBK179288/">Entrez Direct: E-utilities on the Unix Command Line</a></li>
+<li><a href="https://github.com/enasequence/enaBrowserTools">enaBrowserTools: interface with the ENA web services to download data from ENA</a></li>
+<li><a href="https://github.com/pachterlab/ffq">ffq: Fetch run information from the European Nucleotide Archive (ENA)</a></li>
+</ul>
+<p>From <a href="https://www.biostars.org/p/9492531/#9492581" class="uri">https://www.biostars.org/p/9492531/#9492581</a> use the <a href="https://www.ebi.ac.uk/ena/portal/api/">ENA portal API</a></p>
+<pre><code># Get information
+curl -X GET &quot;https://www.ebi.ac.uk/ena/portal/api/filereport?accession=PRJNA374918&amp;fields=run_accession,library_name,library_layout,fastq_ftp&amp;result=read_run&quot;
+
+# What fields are acceptable
+curl -X GET &quot;https://www.ebi.ac.uk/ena/portal/api/returnFields?dataPortal=ena&amp;result=read_run&quot;</code></pre>
+
+</div>
+</div>
+
+<script src="assets/asciinema-player.js"></script>
+
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="bio-search.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="bio-fasta.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "none"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
