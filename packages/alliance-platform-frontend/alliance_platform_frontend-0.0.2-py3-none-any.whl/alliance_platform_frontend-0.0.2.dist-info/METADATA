@@ -1,0 +1,137 @@
+Metadata-Version: 2.1
+Name: alliance-platform-frontend
+Version: 0.0.2
+Summary: Django integration for Frontend Bundlers & React
+Keywords: django alliance alliancesoftware
+Home-page: https://github.com/AllianceSoftware/alliance-platform-py/packages/ap-frontend
+Author-Email: Alliance Software <support@alliancesoftware.com.au>
+License: BSD-2-Clause
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 4.2
+Classifier: Framework :: Django :: 5.0
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Typing :: Typed
+Project-URL: Issues, https://github.com/AllianceSoftware/alliance-platform-py/issues
+Project-URL: Homepage, https://github.com/AllianceSoftware/alliance-platform-py/packages/ap-frontend
+Project-URL: Repository, https://github.com/AllianceSoftware/alliance-platform-py
+Requires-Python: <4.0,>=3.11
+Requires-Dist: alliance-platform-codegen
+Requires-Dist: alliance-platform-core
+Requires-Dist: Django<5.0.0,>=4.2.11
+Requires-Dist: djangorestframework
+Requires-Dist: django-allianceutils<5.0,>=4.0
+Requires-Dist: requests
+Requires-Dist: typing-extensions<5.0.0,>=4.5.0
+Description-Content-Type: text/markdown
+
+# Alliance Platform Django Frontend
+
+A library for integrating the [Alliance Platform React library](https://github.com/AllianceSoftware/alliance-platform-js) into a Django project.
+
+Uses [Vite](https://vitejs.dev/) to bundle Javascript and perform server-side rendering, and supplies a number of templatetags to easily embed Alliance Platform React components into Django templates.
+
+* [Installation](#installation)
+* [Usage](#usage)
+    * [Alliance UI](#alliance-ui)
+    * [Bundler](#bundler)
+    * [Templates](#templates)
+    * [Template Tags](#template-tags)
+* [Release](#release-process)
+
+## Installation
+
+`pip install alliance-platform-frontend`
+
+## System Requirements
+
+* Supports django 4.2 and 5.0
+* Python >=3.11
+
+## Usage
+
+### Alliance UI
+
+A collection of built-in template tags for easily using Alliance UI React components in Django templates.
+
+
+A templatetag (for example, Button) can be inserted in a template using the syntax:
+```html
+{% Button variant="outlined" type="submit" %}Submit{% endButton %}
+```
+Components can be nested, e.g.
+```html
+{% MenuBar %}
+    {% Menubar.SubMenu %}
+        {% Menubar.Item %}Item{% endMenubar.Item %}
+    {% endMenubar.SubMenu %}
+{% endMenuBar %}
+```
+
+Keyword arguments to the tag will be automatically passed as props to the React component.
+
+#### Available Tags
+
+* Button
+* ButtonGroup
+* DatePicker
+* Icon
+* InlineAlert
+* Menubar
+* Menubar.SubMenu
+* Menubar.Item
+* Menubar.Section
+* Pagination
+* Table
+* TableHeader
+* TableBody
+* ColumnHeaderLink
+* Column
+* Row
+* Cell
+* TimeInput
+* Fragment
+* raw_html
+
+The following functions are also available:
+
+# utils.get_module_import_source
+
+Given the name of the export within `alliance-platform-js/ui`, creates the javascript import specification for the specified component.
+
+### Bundler
+### Templates
+### Template Tags
+
+
+## Release Process
+
+### Poetry Config
+* Add test repository
+    * `poetry config repositories.testpypi https://test.pypi.org/legacy/`
+    * Generate an account API token at https://test.pypi.org/manage/account/token/
+    * `poetry config pypi-token.testpypi ${TOKEN}`
+        * On macs this will be stored in the `login` keychain at `poetry-repository-testpypi`
+* Main pypi repository
+    * Generate an account API token at https://pypi.org/manage/account/token/
+    * `poetry config pypi-token.pypi ${TOKEN}`
+        * On macs this will be stored in the `login` keychain at `poetry-repository-pypi`
+
+### Publishing a New Release
+* Update CHANGELOG.md with details of changes and new version
+* Run `bin/build.py`. This will extract version from CHANGELOG.md, bump version in `pyproject.toml` and generate a build for publishing
+* Tag with new version and update the version branch:
+    * `ver=$( poetry version --short ) && echo "Version: $ver"`
+    * `git tag v/frontend/$ver`
+    * `git push --tags`
+* To publish to test.pypi.org
+    * `poetry publish --repository testpypi`
+* To publish to pypi.org
+    * `poetry publish`
+
