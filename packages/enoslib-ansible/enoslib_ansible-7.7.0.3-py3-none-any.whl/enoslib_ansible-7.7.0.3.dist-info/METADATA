@@ -1,0 +1,61 @@
+Metadata-Version: 2.1
+Name: enoslib-ansible
+Version: 7.7.0.3
+Summary: Radically simple IT automation -- For EnOSlib !
+Home-page: https://discovery.gitlabpages.inria.fr/enoslib/
+Author: EnOSlib team
+Author-email: enoslib.contact@inria.fr
+License: GPLv3+
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Console
+Classifier: Framework :: Ansible
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Natural Language :: English
+Classifier: Operating System :: POSIX
+Classifier: Topic :: System :: Installation/Setup
+Classifier: Topic :: System :: Systems Administration
+Classifier: Topic :: Utilities
+License-File: LICENCE
+Requires-Dist: ansible-core ~=2.14.0
+
+****************
+EnOSlib-Ansible
+****************
+
+enoslib-ansible repackages `ansible <https://pypi.org/project/ansible/>`_
+(GPLv3) exclusively tailored for the `EnOSlib project <https://discovery.gitlabpages.inria.fr>`_.
+
+The rationale behind this is that ``ansible`` includes too much collections with
+regards to what is actually needed by the EnOSlib users.
+
+
+Versionning
+===========
+
+We follow the versionning numbers of the ``ansible`` package but we append an
+internal revision number.  So for instance ``enoslib-ansible==7.5.0.1`` repackages
+the same version of a subset of collections from ``ansible==7.5.0``. 
+
+Each major version is kept in dedicated branch:  for instance ``ansible_6`` for
+repackaging ``ansible~=6``.
+
+Building
+========
+
+.. code:: bash
+
+   python setup bdist_wheel
+
+
+How to
+======
+
+- This project is based on `Antsibull project <https://github.com/ansible-community/antsibull>`_.
+
+- Exact collection / ansible-core version number are kept in the `ansible-build-data <https://github.com/ansible-community/ansible-build-data>`_.
+
+
+
