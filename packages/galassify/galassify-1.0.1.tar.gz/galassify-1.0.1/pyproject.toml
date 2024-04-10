@@ -1,0 +1,92 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "galassify"
+version = "1.0.1"
+authors = [
+  { name="Manuel Alcázar-Laynez", email="manalclay@ugr.es"},
+  { name="Andoni Jimenez", email="andonijimenez@ugr.es"},
+  { name="Salvador Duarte Puertas", email="sduarte@ugr.es"},
+  { name="Cristian Pozo González", email="cpozo@ugr.es"},
+  { name="Jesús Domínguez-Gómez", email="jesusdg@ugr.es"},
+  { name="Guillermo Blázquez", email="gblazquez@iaa.es"},
+  { name="Maria del Carmen Argudo-Fernández", email="margudo@ugr.es"},
+  { name="Simon Verley", email="simon@ugr.es"},
+  { name="Daniel Espada", email="despada@ugr.es"},
+  { name="Estrella Florido", email="estrella@ugr.es"},
+  { name="Isabel Pérez", email="isa@ugr.es"},
+  { name="Tomás Ruiz-Lara", email="tomasruizlara@gmail.com"},
+  { name="Almudena Zurita", email="azurita@ugr.es"}
+]
+maintainers = [
+  { name="Manuel Alcázar-Laynez", email="manalclay@ugr.es"},
+  { name="Andoni Jimenez", email="andonijimenez@ugr.es"},
+  { name="Salvador Duarte Puertas", email="sduarte@ugr.es"},
+  { name="Cristian Pozo González", email="cpozo@ugr.es"},
+  { name="Jesús Domínguez-Gómez", email="jesusdg@ugr.es"},
+  { name="Guillermo Blázquez", email="gblazquez@iaa.es"},
+  { name="Maria del Carmen Argudo-Fernández", email="margudo@ugr.es"},
+  { name="Simon Verley", email="simon@ugr.es"}
+]
+description = "A tool to manually classify galaxies"
+readme = {file = "README.md", content-type = "text/markdown"}
+license = {file = "LICENSE"}
+requires-python = ">=3.8"
+keywords = ["astronomy", "astrophysics", "classification", "galaxies"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: X11 Applications :: Qt",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Astronomy",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Visualization"
+]
+dependencies = [
+  'pandas>=2.0',
+  'PyQt5>=5.15',
+  'matplotlib>=3.7',
+  'astropy>=5.3',
+  'requests>=2.31',
+  'Pillow>=9.5',
+  'PyConsoleMenu>=1.0'
+]
+
+[project.optional-dependencies]
+ds9 = ['pyds9>=1.8.1']
+
+[tools.setuptools]
+include_package_data = true
+
+[tool.setuptools.package-dir]
+galassify = "src/galassify"
+get_images_sdss = 'src/get_images_sdss'
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["galassify*", "get_images_sdss*"]
+
+[tool.setuptools.package-data]
+galassify = [
+  "img/*.jpeg",
+  "img/fits/*.fits",
+  "img/nog/*.jpeg",
+  "files/*.csv",
+  "res/*.png",
+  "*.ui",
+  "config"
+]
+
+[project.gui-scripts]
+galassify = "galassify.galassify:main"
+
+[project.scripts]
+get_images_sdss = "get_images_sdss.get_images_sdss:main"
+
+[project.urls]
+Homepage = "https://gitlab.com/astrogal/GALAssify"
+Issues = "https://gitlab.com/astrogal/GALAssify/-/issues"
