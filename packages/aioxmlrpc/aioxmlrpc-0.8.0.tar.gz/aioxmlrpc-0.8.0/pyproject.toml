@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "aioxmlrpc"
+version = "0.8.0"
+description = "XML-RPC client for asyncio"
+readme = "README.rst"
+homepage = "https://github.com/mardiros/aioxmlrpc"
+license = "BSD-3-Clause License"
+authors = ["Guillaume Gauvrit <guillaume@gauvr.it>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+httpx = [
+  {python = "3.7", version = "^0.24.1"},
+  {python = ">=3.8", version = ">=0.24, <1"},
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+
+[tool.poetry.dev-dependencies]
+black = "^22.3.0"
+isort = "^5.9.3"
+pytest = "^7.3.1"
+pytest-asyncio = "^0.21.0"
+pytest-cov = "^4.0.0"
