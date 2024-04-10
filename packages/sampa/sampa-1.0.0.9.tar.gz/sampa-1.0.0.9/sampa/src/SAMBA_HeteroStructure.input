@@ -1,0 +1,38 @@
+#=========================================================================================================================
+# Observações importantes !!! ============================================================================================
+#=========================================================================================================================
+# Utilize apenas redes 2D cujos vetores (A1,A2) estejam no plano KxKy, e cujo vetor A3 esteja na direção do eixo-z -------
+# A1 = (A1x, A1y, 0.0)  |  A2 = (A2x, A2y, 0.0)  |  A3 = (0.0, 0.0, A3z)
+#-------------------------------------------------------------------------------------------------------------------------
+# Utilize para cada material a célula unitária 2D, células não-unitárias limitaram a quantidade de estruturas geradas, 
+# além de aumentar a "lentidão" de execução do código --------------------------------------------------------------------
+#=========================================================================================================================
+
+#=========================================================================================================================
+# Parâmetros a serem ajustados: ==========================================================================================
+#=========================================================================================================================
+n_Lattice = 2                          # nº de materiais a serem empilhados, utilize 2 ou 3.
+Lattice1  = 'POSCAR/POSCAR_Jacutinga.vasp'           # 1º Material  "Substrato: Material a principio mantido fixo (sem deformação)"
+Lattice2  = 'POSCAR/POSCAR_Jacutinga.vasp'          # 2º Material  "Material a ser depositado sobe o Subtrato e sofrer deformação"
+Lattice3  = 'POSCAR_SnTe.vasp'         # 3º Material  "Material a ser depositado sobe o 2º Material e sofrer deformação"
+separacao1 = 1.617                     # Distância de separação (em Angs.) entre o 1º e 2º material.
+separacao2 = 3.00                      # Distância de separação (em Angs.) entre o 2º e 3º material.
+vacuum     = 15.0                      # Vacuo (em Angs.) a ser introduzido na célula da Heteroestrutura.
+#----------------------------------
+cell_fator = [10, 10, 1]               # Fator de multiplicação da célula unitária em função dos vetores A1, A2 e A3.
+                                       # Observação: Valores muito elevados pode levar a lentidão excessiva do código.
+#----------------------------------
+crit_mismatch = 3                      # Mismatch 1 (em %):  Descasamento de Rede permitido entre os dois materiais. 
+                                       # O Mismatch utilizado corresponde a diferença percentual entre o módulo dos vetores (A e B) de cada rede.
+#---------------------------------                                     
+crit_angle    = 3                      # Mismatch 2 (em %):  Diferença percentual do ângulo formado entre o vetores (A e B) de cada rede.
+#----------------------------------
+ions_crit  = 300                       # Critério para o nº total de átomos permitido na Heteroestrutura.                         
+#----------------------------------
+                                       # Por padrão sempre teremos: angle > 0.0 and angle < 180.0
+angle_min = 15.0                       # Angulo minímo de abertura entre os vetores A1 e A2
+angle_max = 165.0                      # Angulo máximo de abertura entre os vetores A1 e A2                                     
+#----------------------------------
+# !!! Não implementado ainda !!!       # Deformação aplicada: [0] 2º|3º Material,  [1] 1º Material (Substrato)
+# mismatch type = 0                    #                      [2] Distribuida proporcionalmente entre os materiais.                                     
+#----------------------------------

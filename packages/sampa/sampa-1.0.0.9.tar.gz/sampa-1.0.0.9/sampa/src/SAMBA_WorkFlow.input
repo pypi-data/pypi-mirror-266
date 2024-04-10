@@ -1,0 +1,19 @@
+#================================================
+tasks = ['relax', 'scf', 'bands', 'dos', 'bader']          # As tarefas são executadas em sequência, logo: 'relax' e 'scf' devem estar na 1º e 2º posições, respectivamentety.
+type  = ['sem_SO','com_SO']                                # Define se as tarefas serão realizadas sem e/ou com SO. 'relax' sempre é executados sem SO.
+# tasks = ['relax', 'scf', 'bands', 'dos', 'bader']
+# type  = ['sem_SO','com_SO']    
+#============================
+type_k_dens  = 1            # [1] KPOINTS (Monkhorst-Pack);  [2]  KPOINTS (Gamma);  [3] INCAR (KSPACING Monkhorst-Pack);  [4] INCAR (KSPACING Gamma)
+k_dens_relax = 12           # Cálculo de relaxação:            nº de pontos-k por Angs^-1
+k_dens_scf   = 12           # Cálculo auto-consistente (scf):  nº de pontos-k por Angs^-1
+k_dens_dos   = 12           # Cálculo da DOS:                  nº de pontos-k por Angs^-1
+k_dens_bader = 12           # Cálculo da Carga de Bader:       nº de pontos-k por Angs^-1
+n_kpoints    = 50           # Cálculo das bandas (nscf):       nº de pontos-k em cada trecho do plot da banda
+nions_split  = 100          # nº de ions no arquivo POSCAR, para que o cálculo da banda seja executado em etapas (splitado) 
+
+#=======================================================
+# !!!!! Verificar diretório abaixo antes de rodar !!!!!!
+dir_virtual_python = '/home/dlelis/codes/python_virtual'
+# !!!!! Verificar diretório abaixo antes de rodar !!!!!!
+#=======================================================
