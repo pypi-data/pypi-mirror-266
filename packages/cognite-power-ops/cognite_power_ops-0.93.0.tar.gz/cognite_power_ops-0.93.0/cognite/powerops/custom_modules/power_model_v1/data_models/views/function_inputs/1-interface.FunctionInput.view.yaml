@@ -1,0 +1,56 @@
+space: "{{powerops_models}}"
+externalId: FunctionInput
+name: FunctionInput
+description: Base class for all function inputs
+filter:
+  and:
+    - hasData:
+        - type: container
+          space: "{{powerops_models}}"
+          externalId: FunctionMetadata
+    - equals:
+        property:
+          - node
+          - space
+        value: "{{powerops_instance_space}}"
+        # - not:
+        #     in:
+        #       property:
+        #         - node
+        #         - type
+        #       value: FunctionOutput
+implements: []
+version: "{{version}}"
+properties:
+  processId:
+    container:
+      space: "{{powerops_models}}"
+      externalId: FunctionMetadata
+      type: container
+    containerPropertyIdentifier: processId
+    name: processId
+    description: The process associated with the function execution
+  processStep:
+    container:
+      space: "{{powerops_models}}"
+      externalId: FunctionMetadata
+      type: container
+    containerPropertyIdentifier: processStep
+    name: processStep
+    description: This is the step in the process.
+  functionName:
+    container:
+      space: "{{powerops_models}}"
+      externalId: FunctionMetadata
+      type: container
+    containerPropertyIdentifier: functionName
+    name: functionName
+    description: The name of the function
+  functionCallId:
+    container:
+      space: "{{powerops_models}}"
+      externalId: FunctionMetadata
+      type: container
+    containerPropertyIdentifier: functionCallId
+    name: functionCallId
+    description: The function call id
