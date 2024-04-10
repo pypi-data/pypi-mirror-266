@@ -1,0 +1,50 @@
+
+
+
+
+[build-system]
+requires = [ "setuptools>=61.0",]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "apoplast"
+version = "1.1.2"
+dependencies = [ 
+	"volts", 
+	"ships", 
+	"sphene",
+	
+	"sanic",
+	"pymongo",
+	"pydash",
+	"rich", 
+	"tinydb",
+	"numpy", 
+	
+]
+description = "The search for an abundant panacea of vivaciously invigorating utopian vegan absorbables."
+readme = "readme.md"
+
+
+[project.scripts]
+#
+#	https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#creating-executable-scripts
+#	from apoplast import clique; clique ()
+#
+apoplast = "apoplast:clique"
+
+[project.license]
+text = "GPL 3.0 + vegan"
+
+[project.urls]
+GitLab = "https://gitlab.com/reptilian_climates/modules_series_4/apoplast"
+
+[tool.setuptools.package-data]
+"*" = [ "*.HTML", "*.html", "*.JSON", "*.json",]
+
+[tool.setuptools.packages.find]
+where = [ "venues/stages",]
+exclude = [ "apoplast/data_nodes/ingredients/_data" ] 
+
+#[tool.setuptools]
+#exclude = ["directory_to_exclude"]
