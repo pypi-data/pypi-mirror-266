@@ -1,0 +1,42 @@
+Metadata-Version: 2.1
+Name: cascadis
+Version: 0.1.0
+Summary: A simple content-addressed storage service.
+Home-page: https://github.com/frozflame/cascadis
+Author: frozflame
+Author-email: frozflame@outlook.com
+License: GNU General Public License (GPL)
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Description-Content-Type: text/markdown
+Requires-Dist: flask~=3.0.2
+Requires-Dist: joker-cast~=0.5.2
+Requires-Dist: joker-filesys~=0.2.2
+Requires-Dist: joker-flasky~=0.6.0
+Requires-Dist: joker~=0.3.3
+Requires-Dist: pymongo~=4.6.2
+Requires-Dist: redis~=5.0.2
+Requires-Dist: requests~=2.31.0
+Requires-Dist: setuptools~=68.2.0
+Requires-Dist: volkanic~=0.5.1
+Requires-Dist: werkzeug~=3.0.1
+Requires-Dist: python-magic~=0.4.27
+
+Cascadis
+=========
+
+A content-addressed storage service.
+
+This project is currently at experimental stage.
+
+Install with `pip`:
+
+    pip install cascadis
+
+For deployment, you may want to use `gunicorn`:
+
+    pip install gunicorn
+    gunicorn -w 8 cascadis.api:app -b 0.0.0.0:16000 
