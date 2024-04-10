@@ -1,0 +1,48 @@
+[tool.poetry]
+name = "github-random-star"
+version = "0.0.5"
+description = "Simple CLI tool to fetch a random starred items from a users GitHub profile."
+authors = ["David Kasakaitis <davidkasakaitis@proton.me>"]
+readme = "README.md"
+license = "MIT"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Utilities",   
+    "License :: OSI Approved :: MIT License",
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "Natural Language :: English",
+    "Typing :: Typed",
+    "Topic :: Software Development :: Version Control :: Git"
+    ]
+
+keywords = [
+    "python",
+    "python3",
+    "cli",
+    "github",
+    "git"
+]
+
+[tool.poetry.urls]
+"Homepage" = "https://github.com/ddkasa/github-random-star"
+"Source" = "https://github.com/ddkasa/github-random-star"
+"Bug Tracker" = "https://github.com/ddkasa/github-random-star/issues"
+
+[tool.poetry.scripts]
+gh-star = "github_random_star:main"
+
+
+[tool.poetry.dependencies]
+python = "^3.12"
+httpx = "^0.26.0"
+fire = "^0.5.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
