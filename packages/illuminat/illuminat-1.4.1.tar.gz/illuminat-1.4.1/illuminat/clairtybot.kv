@@ -1,0 +1,109 @@
+<Illuminat>:
+MDScreen:
+    name: "clairtybot"
+    MDFloatLayout:
+        md_bg_color: 1, 1, 1, 1
+
+        Image:
+            source: app.imageforclairtytoihjy()
+
+            size_hint: 1,1
+            pos_hint : {"center_x": .6, "center_y": .5}
+
+        Image:
+            source: app.imageforclairtytoihjybot()
+            size_hint: 6,6
+            pos_hint: {"center_x": .5, "center_y": .5}
+            opacity: 0.15
+
+        MDLabel:
+            text : "W e l c o m e "
+            font_name : app.bahnscriptreplace()
+            font_size : "35sp"
+            pos_hint : {"center_x": .6, "center_y": .85}
+            color: rgba(0, 0, 59, 255)
+        MDLabel:
+            text : "To clAIrty!"
+            font_name : app.bahnscriptreplace()
+            font_size : "45sp"
+            pos_hint : {"center_x": .6, "center_y": .75}
+            color: rgba(0, 0, 59, 255)
+
+        MDLabel:
+            text : "clAIrty's Response:"
+            font_name : app.bahnscriptreplace()
+            font_size : "18sp"
+            pos_hint : {"center_x": .62, "center_y": .53}
+            color: rgba(52, 0, 231, 255)
+
+
+
+        MDIconButton:
+            icon: "arrow-left"
+            pos_hint: {"center_y": .95}
+            user_font_size: "30sp"
+            theme_text_color: "Custom"
+            text_color: rgba(26, 24, 58, 255)
+            on_release:
+                root.manager.transition.direction = "left"
+                root.manager.current = "home"
+
+        MDFloatLayout:
+            id: textInput
+            size_hint: .7, .07
+            pos_hint: {"center_x": .5, "center_y": .6}
+            TextInput:
+                id: textEnteredWidget
+                hint_text: "Enter your Question"
+                font_name: app.bahnscriptreplace()
+                size_hint_y: .75
+                pos_hint:{"center_x": .43, "center_y": .5}
+                background_color: 1, 1, 1, 0
+                foreground_color: rgba(0, 0, 59, 255)
+                cursor_color: rgba(0, 0, 59, 255)
+                font_size: "14sp"
+                cursor_width: "2sp"
+                multiline: False
+
+            MDFloatLayout:
+                pos_hint: {"center_x": .45, "center_y": 0}
+                size_hint_y:.03
+                md_bg_color: rgba(178, 178, 178, 255)
+
+        Button:
+            text: "SEND"
+            size_hint: .66, .065
+            background_color: 0, 0, 0, 0
+            pos_hint: {"center_x": .45, "center_y": .16}
+            color: rgba(52, 0, 231, 255)
+            font_name: app.bahnscriptreplace()
+            on_release:
+                app.getResponse()
+            canvas.before:
+                Color:
+                    rgb: rgba(52, 0, 231, 255)
+                Line:
+                    width: 1.2
+                    rounded_rectangle: self.x, self.y, self.width, self.height, 5, 5, 5, 5, 100
+
+        MDLabel:
+            id: ansTxt
+            text: ""
+            font_name: app.bahnscriptlightreplace()
+            size_hint: .7, 1
+            pos_hint: {"center_x": .45, "center_y": .34}
+            font_size: "15sp"
+            halign: "center"
+            color: rgba(0, 0, 0, 255)
+
+        MDIconButton:
+            icon: "microphone"
+            size_hint: .065, .065
+            color: rgba(52, 0, 231, 255)
+            background_color: 0, 0, 0, 0
+            pos_hint: {"center_x": .71, "center_y": .16}
+
+            on_release:
+                app.speaktextforai()
+
+

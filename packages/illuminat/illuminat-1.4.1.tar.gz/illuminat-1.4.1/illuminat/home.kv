@@ -1,0 +1,147 @@
+MDScreen:
+    name: "home"
+    MDFloatLayout:
+
+        MDFloatLayout:
+            md_bg_color: rgba(52, 0, 231, 255)
+            size_hint: 1, .2
+            pos_hint: {"center_x": 0.5, "center_y": 0}
+        Image:
+            source: app.imageforhmomeijgo()
+            size_hint: 1,1
+            pos_hint : {"center_x": .5, "center_y": .5}
+
+        Button:
+            id: btn4home
+            text: "A1"
+            size_hint: .23, .135
+            background_color: rgba(69,114,201, 255)
+            pos_hint: {"center_x": .33, "center_y": .795}
+            color: rgba(255,255,255,255)
+            font_name: app.notoreplaceforpath()
+            font_size: "18sp"
+            font_color: rgba(255,255,255,255)
+            on_release:
+                root.manager.transition.direction = "left"
+                root.manager.current = "clairtybot"
+            canvas.before:
+                Color:
+                    rgb: rgba(69,114,201, 255)
+                Line:
+                    width: 2
+                    rounded_rectangle: self.x, self.y, self.width, self.height, 5, 5, 5, 5, 100
+
+        Button:
+            id: coursehome
+            text: "A1"
+            size_hint: .23, .135
+            background_color: rgba(69,114,201, 255)
+            pos_hint: {"center_x": .68, "center_y": .795}
+            color: rgba(255,255,255,255)
+            font_name: app.notoreplaceforpath()
+            font_color: rgba(255,255,255,255)
+            font_size: "18sp"
+            on_release:
+                root.manager.transition.direction = "right"
+                root.manager.current = "home"
+            canvas.before:
+                Color:
+                    rgb: rgba(69,114,201, 255)
+                Line:
+                    width: 2
+                    rounded_rectangle: self.x, self.y, self.width, self.height, 5, 5, 5, 5, 100
+
+        #Button:
+            #id: profhome
+            #source: 'trial for icys clairty reojhtyjtyijyopjkyjkoypj.png'
+            #text: "A1"
+            #size_hint: .175, .175
+            #background_color: 0, 0, 0, 0
+            #pos_hint: {"center_x": .75, "center_y": .795}
+            #color: rgba(238, 124, 15, 255)
+            #font_name: app.notoreplaceforpath()
+            #font_color: rgba(0,0,0,255)
+            #on_release:
+                #root.manager.transition.direction = "left"
+                #root.manager.current = "profile"
+            #canvas.before:
+                #Color:
+                    #rgb: rgba(238, 124, 15, 255)
+                #Line:
+                    #width: 2
+                    #rounded_rectangle: self.x, self.y, self.width, self.height, 5, 5, 5, 5, 100
+
+        Image:
+            source: app.imageforclairtytoihaajy()
+
+            #size_hint: 1,1
+            pos_hint : {"center_x": .5, "center_y": .915}
+
+        Button:
+            id: btn1home
+            text: "S1CIENCE"
+            size_hint: .68, .065
+            background_color: 0, 0, 0, 0
+            pos_hint: {"center_x": .5, "center_y": .53}
+            font_name: app.bahnscriptreplace()
+            on_release:
+                app.prevarscript_which(1)
+
+            canvas.before:
+                Color:
+                    rgb: rgba(238,124,15, 255)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [5]
+
+        Button:
+            id: btn2home
+            text: "C1OMP"
+            size_hint: .68, .065
+            background_color: 0, 0, 0, 0
+            pos_hint: {"center_x": .5, "center_y": .43}
+            font_name: app.bahnscriptreplace()
+            on_release:
+
+                app.prevarscript_which(3)
+                app.checkvisibility()
+
+
+            canvas.before:
+                Color:
+                    rgb: rgba(69,114,201, 255)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [5]
+
+
+        Button:
+            id: btn3home
+            text: "S1ST"
+            size_hint: .68, .065
+            background_color: 0, 0, 0, 0
+            pos_hint: {"center_x": .5, "center_y": .33}
+            font_name: app.bahnscriptreplace()
+            on_release:
+                app.prevarscript_which(2)
+
+            canvas.before:
+                Color:
+                    rgb: rgba(238,124,15, 255)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [5]
+
+        MDLabel:
+            text : "What do you want to study today?"
+            font_name : app.bahnscriptreplace()
+            font_size : "20sp"
+            pos_hint : {"center_x": .53, "center_y": .63}
+            color: rgba(69,113,194, 255)
+
+
+
+

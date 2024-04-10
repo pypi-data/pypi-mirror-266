@@ -1,0 +1,61 @@
+<VideoScreen>
+MDScreen:
+    name: "varscript"
+
+    MDFloatLayout:
+        MDIconButton:
+            id: arrowback
+            icon: "arrow-left"
+            pos_hint: {"center_x": .05, "center_y": .95}
+            user_font_size: "30sp"
+            theme_text_color: "Custom"
+            text_color: rgba(26, 24, 58, 255)
+            on_release:
+                root.generate_and_download_images_list(["Microscopic life"], "microscopic_life")
+                root.generate_and_download_images_list(["Cell originating"], "cell_originating")
+
+                root.image_to_video_science()
+
+
+
+        MDLabel:
+            text: "Ch - 1"
+            font_name: app.bahnscriptlightreplace()
+            font_size: "15sp"
+            pos_hint: {"center_x": .615, "center_y": .9477}
+            color: rgba(52, 0, 231, 255)
+
+        VideoLayout:
+            id: video_layout
+            pos_hint: {"center_x": .5, "center_y": .7}
+
+
+        MDLabel:
+            text : "Let us start learning about linear equations in two variables. Imagine you have two friends, let's call them x and y. A linear equation is like a rule for these friends. For example, 2x + 3y = 10. This rule says that if x has 2 things and y has 3 things, their total should be 10 things. In a linear equation with two variables, you deal with two unknowns, usually represented as x and y. The general form of a linear equation in two variables is ax+by=c, where a, b, and c are constants."
+            font_name : app.bahnscriptlightreplace()
+            font_size : "15sp"
+            pos_hint : {"center_x": .5, "center_y": .35}
+            color: rgba(68, 78, 132, 255)
+            halign: "center"
+
+        MDIconButton:
+            id: play_pause_button
+            icon: 'play'
+            user_font_size: '56sp'
+
+        Button:
+            text: "CONTINUE TO QUIZ"
+            size_hint: .66, .065
+            background_color: 0, 0, 0, 0
+            pos_hint: {"center_x": .5, "center_y": .38}
+            font_name: "bahnschrift"
+            on_release:
+                root.manager.transition.direction = "right"
+                root.manager.current = "question1_screen_top_var"
+            canvas.before:
+                Color:
+                    rgb: rgba(52, 0, 231, 255)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [5]
