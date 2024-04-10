@@ -1,0 +1,75 @@
+[build-system]
+requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pypigeon"
+dynamic = ["version"]
+description = "an easy-to-use Python client for Pigeon"
+readme = "README.md"
+authors = [{name = "BioTeam", email="contact@bioteam.net"}]
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "httpx>=0.20.0,<0.26.0",
+    "attrs>=21.3.0",
+    "python-dateutil",
+    "pyarrow",
+    "pandas",
+    "tqdm",
+    "tabulate",
+]
+
+[project.optional-dependencies]
+dev = [
+    "sphinx",
+    "pytest",
+    "pytest-httpx>=0.20.0,<0.26.0",
+    "openapi-python-client==0.17.2",
+    "reorder-python-imports",
+    "ruff",
+    "black==23.12.1",
+    "mypy",
+    "types-python-dateutil",
+    "pandas-stubs",
+    "types-tqdm",
+    "types-PyYAML",
+    "types-tabulate",
+    "build",
+    "twine",
+]
+doc = [
+    "sphinx",
+]
+
+[project.scripts]
+pcmd = "pypigeon.pcmd.cli:main"
+
+[tool.mypy]
+warn_unreachable = true
+
+[tool.setuptools]
+packages = ["pypigeon"]
+
+[tool.setuptools_scm]
+root = "../.."
+
+[tool.black]
+
+[tool.ruff]
+extend-safe-fixes = ["F841"]
+
+[tool.ruff.per-file-ignores]
+"pypigeon/pigeon_core/**/*.py" = ["E501"]
+
+[tool.pytest.ini_options]
+addopts = "--doctest-modules"
+testpaths = [
+    "pypigeon",
+    "tests",
+]
