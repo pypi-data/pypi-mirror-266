@@ -1,0 +1,48 @@
+
+.calendar-wrapper {
+  display: flex;
+  flex-direction: row;
+  min-height: calc(100vh - 270px);
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  &.transposed {
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+}
+
+.calendar {
+  font-size: 85%;
+
+  >.fc-header-toolbar {
+    flex-wrap: wrap;
+
+    >.fc-toolbar-chunk {
+      white-space: nowrap;
+    }
+    >.fc-toolbar-chunk:first-child {
+      width: 100%;
+      font-size: 70%;
+      margin-bottom: 1em;
+    }
+  }
+
+  .fc-daygrid-event {
+    flex-direction: column;
+    white-space: normal;
+  }
+
+  .fc-col-header-cell {
+    white-space: normal;
+  }
+
+  .fc-event {
+    .action {
+      position: absolute;
+      right: 2px;
+      bottom: 0;
+    }
+  }
+}
