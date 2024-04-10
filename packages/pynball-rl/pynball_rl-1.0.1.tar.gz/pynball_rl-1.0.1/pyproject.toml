@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "pynball-rl"
+version = "1.0.1"
+description = "A python implementation of the classic reinforcement learning domain pinball: http://irl.cs.brown.edu/pinball/"
+license = "MIT"
+authors = ["Tom Smith <tmssmith@gmail.com>"]
+readme = "README.md"
+repository = "https://github.com/tmssmith/pynball-rl"
+exclude = ["./tests/*"]
+include = ["./pynball_rl/configs/*"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+matplotlib = "^3.8.3"
+pygame = "^2.5.2"
+tomli = { version = "^2.0.1", python = "<3.11" }
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.0.2"
+
+[tool.pylint]
+disable="C0114"
+max-line-length="88"
+extension-pkg-whitelist="pygame"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
