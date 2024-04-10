@@ -1,0 +1,47 @@
+# --------------------------------------------------------------------------------------------------
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-FileCopyrightText: (C) 2022 Jayesh Badwaik <j.badwaik@fz-juelich.de>
+# --------------------------------------------------------------------------------------------------
+
+####################################################################################################
+# Code Quality Checking
+####################################################################################################
+quality.typecheck:
+  image: python:latest
+  before_script:
+    - python -m venv /root/venv
+    - source /root/venv/bin/activate
+    - pip install --upgrade pip
+    - pip install hatch
+    - pip install mypy
+    - pip install types-PyYAML
+    - hatch env create types
+  script:
+    - hatch env run --env types mypy .
+
+####################################################################################################
+# Compatibility Checking
+####################################################################################################
+compat.latest:
+  image: python:latest
+  before_script:
+    - python -m venv /root/venv
+    - source /root/venv/bin/activate
+    - pip install --upgrade pip
+    - pip install hatch pytest
+    - hatch env create test
+  script:
+    - hatch env run --env test --  pytest
+
+####################################################################################################
+# License Check
+####################################################################################################
+license.check:
+  stage: .post
+  tags: ["docker"]
+  dependencies: []
+  image:
+    name: fsfe/reuse
+    entrypoint: ["/bin/sh", "-c"]
+  script:
+    - reuse lint
