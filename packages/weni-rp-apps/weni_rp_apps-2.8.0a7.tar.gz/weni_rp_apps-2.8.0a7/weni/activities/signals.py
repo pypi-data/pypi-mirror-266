@@ -1,0 +1,84 @@
+from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+from temba.channels.models import Channel
+from temba.flows.models import Flow
+from temba.triggers.models import Trigger
+from temba.campaigns.models import Campaign
+from temba.event_driven.publisher.rabbitmq_publisher import RabbitmqPublisher
+
+
+def create_recent_activity(instance: models.Model, created: bool, delete=None):
+    if instance.is_active:
+        rabbitmq_publisher = RabbitmqPublisher()
+        if delete:
+            action = "DELETE"
+            rabbitmq_publisher.send_message(
+            body=dict(
+                action=action,
+                entity=instance.__class__.__name__.upper(),
+                entity_name=getattr(instance, "name", None),
+                entity_uuid=str(instance.uuid),
+                project_uuid=str(instance.org.project.project_uuid),
+                user=instance.modified_by.email,
+                flow_organization=str(instance.org.uuid),
+            ),
+            exchange="recent-activities.topic",
+            routing_key="flow-delete",
+        )
+        else:
+            action = "CREATE" if created else "UPDATE"
+            rabbitmq_publisher.send_message(
+                body=dict(
+                    action=action,
+                    entity=instance.__class__.__name__.upper(),
+                    entity_name=getattr(instance, "name", None),
+                    project_uuid=str(instance.org.project.project_uuid),
+                    user=instance.modified_by.email,
+                    flow_organization=str(instance.org.uuid),
+                ),
+                exchange="recent-activities.topic",
+                routing_key="",
+            )
+
+@receiver(post_save, sender=Channel)
+def channel_recent_activity_signal(sender, instance: Channel, created: bool, **kwargs):
+    update_fields = kwargs.get("update_fields")
+    if instance.channel_type not in ["WA", "WAC"] or update_fields != frozenset(
+        {
+            "config",
+        },
+    ):
+        create_recent_activity(instance, created)
+
+
+@receiver(post_save, sender=Flow)
+def flow_recent_activity_signal(sender, instance: Flow, created: bool, **kwargs):
+    update_fields = kwargs.get("update_fields")
+    if update_fields != frozenset(
+        {
+            "version_number",
+            "modified_on",
+            "saved_on",
+            "modified_by",
+            "metadata",
+            "saved_by",
+            "base_language",
+            "has_issues",
+        }
+    ):
+        # This condition prevents two events from being sent when creating a flow
+        create_recent_activity(instance, created)
+
+
+@receiver(post_save, sender=Trigger)
+def trigger_recent_activity_signal(sender, instance: Trigger, created: bool, **kwargs):
+    create_recent_activity(instance, created)
+
+
+@receiver(post_save, sender=Campaign)
+def campaign_recent_activity_signal(
+    sender, instance: Campaign, created: bool, **kwargs
+):
+    create_recent_activity(instance, created)
