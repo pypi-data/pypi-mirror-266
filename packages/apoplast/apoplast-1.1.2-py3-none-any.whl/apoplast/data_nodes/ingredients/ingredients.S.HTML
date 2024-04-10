@@ -1,0 +1,103 @@
+
+
+
+
+
+
+<pre>
+
+	<h1>ingredients</h1>
+	
+		Don't upload the mongo_data,
+		dump the mongo data to a JSON archive
+		before uploading.
+
+
+	<h2>structure</h2>
+	
+		port: 
+		DB: 
+	
+		DB:ingredients
+			collection: "essential_nutrients" [{
+				
+				
+			}]
+			
+			
+			collection: "cautionary_ingredients" [{
+				
+				
+			}]
+			
+			#
+			#	any ingredients
+			#	thorough
+			#
+			#
+			collection: "glossary" [{
+				
+				
+			}]
+			
+
+	<h2>itinerary</h2>
+	
+		#
+		#	the variables
+		#
+		from apoplast._variables import prepare_variables
+		apoplast_variables = prepare_variables ()
+	
+		#
+		#	open the database
+		#
+		from apoplast.data_nodes.ingredients.DB.open import open_DB
+		open_DB (
+			apoplast_variables = apoplast_variables
+		)
+		
+		#
+		#	connect to the database
+		#
+		import apoplast.data_nodes.DB.open as ingredient_DB
+		essential_nutrients_collection = ingredient_DB.connect (collection = "essential_nutrients")
+		cautionary_ingredients_collection = ingredient_DB.connect (collection = "cautionary_ingredients")
+		
+		#
+		#	add an ingredient
+		#
+		essential_nutrients_collection.insert_one ({
+			"names": [
+				"protein"
+			],
+			"accepts names": [],
+			"includes": []	
+		})
+		
+		essential_nutrients_collection.insert_one ({
+			"names": [
+				"carbohydrates"
+			],
+			"accepts names": [],
+			"includes": []	
+		})
+		
+		#
+		#	create an index of ingredient names
+		#
+		
+		
+		#
+		#	find an ingredient
+		#	
+		essential_nutrients_collection.find_one ({
+			"names": [
+				"protein"
+			],
+			"accepts names": [],
+			"includes": []	
+		})
+</pre>
+
+
