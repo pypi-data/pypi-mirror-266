@@ -1,0 +1,19 @@
+
+Input:
+    .doc: """
+An Input, ie a receiver of signals.
+- Each Input should have a type-attribute, e.g. InputType.Torque, Angle, AngularVelocity or any of above.
+- Use type Composite when the Input receives a Signal with multiple values.
+- reference_id is optional and must be unique within each Robot and can be used to identify the sensor, e.g. when communicating using Click or ROS. Typically the full name will be used if not set.
+"""
+    type is Int
+    reference_id is String: ""
+
+const InputType:
+    Position is Int: 1
+    Velocity is Int: 2
+    Angle is Int: 3
+    AngularVelocity is Int: 4
+    Torque is Int: 5
+    Composite is Int: 6
+    ControlEvent is Int: 7

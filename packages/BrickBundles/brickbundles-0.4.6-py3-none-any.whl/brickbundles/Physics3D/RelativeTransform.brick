@@ -1,0 +1,14 @@
+
+RelativeTransform is Math.AffineTransform:
+    .obj: """
+    A RelativeTransform provides a way to define a transform that is relative to a rigidbodys local_transform. 
+    It is typically part of a System
+
+    Example given we have a bucket where we want to add a cutting direction as a RelativeTransform:
+
+    CuttingDirection is Physics3D.RelativeTransform:
+        rigid_body: bucket
+        position: Math.Vec3.fromXYZ(0.36, 0.01, 0.00)
+        rotation: Math.Quat.fromXYZW(0.17, 0.70, 0.67, 0.16)
+    """
+    rigid_body is Physics3D.Bodies.RigidBody

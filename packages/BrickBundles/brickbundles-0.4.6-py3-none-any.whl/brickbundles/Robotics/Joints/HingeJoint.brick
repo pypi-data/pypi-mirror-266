@@ -1,0 +1,10 @@
+HingeJoint is ActuatedJoint:
+    mate becomes Physics3D.Interactions.Hinge
+    angle_output is Physics3D.Signals.HingeAngleOutput:
+        hinge: mate
+    angular_velocity_output is Physics3D.Signals.HingeAngularVelocityOutput:
+        hinge: mate
+    range is Physics3D.Interactions.RotationalRange:
+        start: Math.NEG_INF
+        end: Math.INF
+        charges: mate.charges
