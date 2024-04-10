@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pkl-python"
+dynamic = ["version"]
+description = "Python library for Apple's PKL."
+authors = [
+    { name = "Jungwoo Yang", email = "jwyang0213@gmail.com" },
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "msgpack >= 1.0.8",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.dynamic]
+version = {file = "src/pkl/VERSION"}
+
+[project.optional-dependencies]
+dev = [
+    "pre-commit",
+    "black",
+    "isort",
+    "mypy",
+    "pylint",
+    "pytest",
+    "pytest-cov",
+    "tox",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/jw-y/pkl-python"
+"Bug Reports" = "https://github.com/jw-y/pkl-python/issues"
+"Source" = "https://github.com/jw-y/pkl-python"
+
+[project.scripts]
+pkl-gen-python = "pkl_gen_python:main"
+
+[tool.twine]
+repository = "pypi"
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+force-exclude = 'codegen/snippet-tests/output/'
+
+[tool.isort]
+profile = "black"
+skip = ["codegen/snippet-tests/output/*"]
+
+[tool.autoflake]
+exclude = ["codegen/snippet-tests/output/*"]
+
+[tool.pytest.ini_options]
+addopts = "-ra -q"
