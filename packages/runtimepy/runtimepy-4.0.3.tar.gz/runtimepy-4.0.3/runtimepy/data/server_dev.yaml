@@ -1,0 +1,19 @@
+---
+includes:
+  - package://runtimepy/dummy_load.yaml
+
+config:
+  localhost: true
+
+  # Ensures the HTML document is always re-rendered (e.g. for JavaScript
+  # source-file updates).
+  caching: false
+
+  # Enables work-in-progress UI elements.
+  # experimental: true
+
+  # This is the default.
+  # html_method: runtimepy.net.server.app.channel_environments
+
+port_overrides:
+  runtimepy_http_server: 8000
