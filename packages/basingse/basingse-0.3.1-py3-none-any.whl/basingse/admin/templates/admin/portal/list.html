@@ -1,0 +1,18 @@
+{% extends base_template %}
+
+{% block main %}
+<div class="row me-5">
+    <div class="col">
+        {% if table %}
+        {{ render(table(rows)) }}
+        {% endif %}
+        <div class="px-2">
+            {% block controls %}
+            <a href="{{ url_for('.new') }}" class="btn btn-secondary">
+                New
+            </a>
+            {% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}

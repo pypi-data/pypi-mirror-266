@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}
+{{ page.title }} | {{ site_settings.title }}
+{% endblock %}
+
+{% block main %}
+<div class="container page {{page.slug}}">
+    {% for blk in page.blocks.blocks %}
+    {% include blk.render() %}
+    {% endfor %}
+</div>
+{% endblock %}
