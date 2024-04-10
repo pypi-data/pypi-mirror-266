@@ -1,0 +1,124 @@
+service com.robotraconteur.image
+
+stdver 0.10
+
+import com.robotraconteur.sensordata
+import com.robotraconteur.identifier
+import com.robotraconteur.resource
+
+using com.robotraconteur.sensordata.SensorDataHeader
+using com.robotraconteur.identifier.Identifier
+using com.robotraconteur.resource.ResourceIdentifier
+
+enum ImageEncoding
+    unknown = 0,
+    rgb888 = 0x1000,
+    rgba8888,
+    bgr888,
+    bgra8888,
+    rgba16_16_16_16,
+    bgra16_16_16_16,
+    mono8 = 0x2000,
+    mono16,
+    mono32,
+    mono_f16,
+    mono_f32,
+    mono_f64,
+    bayer_rggb8888 = 0x3000,
+    bayer_bggr8888,
+    bayer_gbrg8888,
+    bayer_grbg8888,
+    depth_u16 = 0x4000,
+    depth_i16,
+    depth_u32,
+    depth_i32,
+    depth_u64,
+    depth_i64,
+    depth_f32,
+    depth_f64,
+    freeform = 0x5000,
+    compressed = 0x6000,
+    other = 0x8000
+end
+
+namedarray PixelRGB
+    field uint8 r
+    field uint8 g
+    field uint8 b
+end
+
+namedarray PixelRGBA
+    field uint8 r
+    field uint8 g
+    field uint8 b
+    field uint8 a
+end
+
+# Used with laser scan and point cloud
+namedarray PixelRGBFloatPacked
+    field double rgb
+end
+namedarray PixelRGBFloatPackedf
+    field single rgb
+end
+
+struct ImageInfo
+    field SensorDataHeader data_header
+    field uint32 height
+    field uint32 width
+    field uint32 step
+    field ImageEncoding encoding
+    field varvalue{string} extended
+end
+
+struct FreeformImageInfo
+    field ImageInfo image_info
+    field string encoding
+    field varvalue{string} extended
+end
+
+struct Image
+    field ImageInfo image_info
+    # Data is always little-endian
+    field uint8[] data
+end
+
+struct CompressedImage
+    field ImageInfo image_info
+    # Use magic to determine data type
+    field uint8[] data
+end
+
+struct FreeformImage
+    field FreeformImageInfo image_info
+    field varvalue data
+    field varvalue{string} extended
+end
+
+struct ImagePart
+    field ImageInfo image_info
+    # Data is always little-endian
+    field uint32 data_offset
+    field uint32 data_total_len
+    field uint8[] data_part
+end
+
+struct CompressedImagePart
+    field ImageInfo image_info
+    # Data is always little-endian
+    field uint32 data_offset
+    field uint32 data_total_len
+    field uint8[] data_part
+end
+
+struct FreeformImagePart
+    field FreeformImageInfo image_info
+    field uint32 data_offset
+    field uint32 data_total_len
+    field varvalue data_part
+    field varvalue{string} extended
+end
+
+struct ImageResource
+    field ResourceIdentifier image_resource
+end

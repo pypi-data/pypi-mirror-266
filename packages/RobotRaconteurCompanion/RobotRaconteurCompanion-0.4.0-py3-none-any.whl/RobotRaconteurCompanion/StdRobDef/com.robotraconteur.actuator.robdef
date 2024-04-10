@@ -1,0 +1,94 @@
+service com.robotraconteur.actuator
+
+stdver 0.10
+
+import com.robotraconteur.device
+import com.robotraconteur.param
+import com.robotraconteur.units
+import com.robotraconteur.datatype
+import com.robotraconteur.datetime
+
+using com.robotraconteur.device.DeviceInfo
+using com.robotraconteur.device.Device
+using com.robotraconteur.param.ParameterInfo
+using com.robotraconteur.units.SIUnit
+using com.robotraconteur.datatype.DataType
+using com.robotraconteur.datetime.TimeSpec3
+
+enum ActuatorTypeCode
+    unknown = 0,
+    generic,
+    position,
+    velocity,
+    acceleration,
+    effort,
+    motor_position,
+    motor_velocity,
+    motor_acceleration,
+    motor_effort,
+    solenoid,
+    voice_coil,
+    piezoelectric,
+    pneumatic_pressure,
+    vacuum_pressure,
+    heater_power,
+    chiller_power,
+    valve,
+    conveyor,
+    voltage,
+    current,
+    pneumatic_cylinder,
+    hydraulic_cylinder
+end
+
+enum ActuatorMode
+    error = -2,
+    disabled = -1,
+    halt = 0,
+    reduced_performance = 1,
+    normal = 2
+end
+
+enum ActuatorStateFlags
+    unknown = 0,
+    ready = 0x1,
+    streaming = 0x2,
+    warning = 0x4,
+    error = 0x8,
+    fatal_error = 0x10,
+    e_stop = 0x20,
+    homed = 0x40,
+    homing_required = 0x80,
+    communication_failure = 0x100,
+    valid_command = 0x200,
+    enabled = 0x400
+end
+
+struct ActuatorState
+    field TimeSpec3 ts
+    field uint64 seqno
+    field uint32 actuator_state_flags
+    field double[] actuator_command
+end
+
+struct ActuatorInfo
+    field DeviceInfo device_info
+    field ActuatorTypeCode actuator_type
+    field SIUnit{list} command_units
+    field DataType command_data_type
+    field double[] command_resolution
+    field bool analog_output
+    field ParameterInfo{list} parameter_info
+    field varvalue{string} extended
+end
+
+object Actuator
+    implements Device
+    property DeviceInfo device_info [readonly,nolock]
+    property ActuatorInfo actuator_info [readonly,nolock]
+    property ActuatorMode actuator_mode [nolockread]
+    wire double[] actuator_command [writeonly]
+    wire ActuatorState actuator_state [readonly,nolock]
+    function varvalue getf_param(string param_name)
+    function void setf_param(string param_name, varvalue value)
+end
