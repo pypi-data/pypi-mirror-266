@@ -1,0 +1,27 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "gsadz"
+readme = "README.md"
+keywords = ['gsadz', 'sentiment analysis', 'SentiLex-PT']
+authors = [
+    { name = "duarte", email="duarte.g.parente@gmail.com" },
+    { name = "goncalo", email="goncalocp02@gmail.com" },
+    { name = "topzN", email="jose.moreira.um@gmail.com" }
+]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+]
+requires-python = ">=3.8"
+dynamic = ["description"]
+version = "0.0.2"
+
+dependencies = [
+    "spacy>=3.7.4",
+    "jjcli"
+]
+
+[project.scripts]
+gsadz = "gsadz:main"
