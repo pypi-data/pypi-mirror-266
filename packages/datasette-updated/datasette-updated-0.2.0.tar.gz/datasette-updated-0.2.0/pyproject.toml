@@ -1,0 +1,31 @@
+[project]
+name = "datasette-updated"
+version = "0.2.0"
+description = "Display the date your data was updated"
+readme = "README.md"
+authors = [{ name = "Ryan Caught", email = "rcaught@gmail.com" }]
+license = { text = "Apache-2.0" }
+classifiers = [
+  "Framework :: Datasette",
+  "License :: OSI Approved :: Apache Software License",
+]
+requires-python = ">=3.8"
+dependencies = ["datasette", "deepmerge"]
+
+[project.urls]
+Homepage = "https://github.com/rcaught/datasette-updated"
+Changelog = "https://github.com/rcaught/datasette-updated/releases"
+Issues = "https://github.com/rcaught/datasette-updated/issues"
+CI = "https://github.com/rcaught/datasette-updated/actions"
+
+[project.entry-points.datasette]
+updated = "datasette_updated"
+
+[project.optional-dependencies]
+test = ["pytest", "pytest-asyncio", "sqlite-utils"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "strict"
+
+[tool.setuptools.package-data]
+datasette_updated = ["templates/*"]
