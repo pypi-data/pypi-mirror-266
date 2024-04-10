@@ -1,0 +1,33 @@
+version: "3.8"
+name: lookout
+
+services:
+  lookout_core:
+    ports:
+      - 4001:4001
+    networks:
+      - vessel
+
+  lookout_ui:
+    ports:
+      - "4000:4000"
+    networks:
+      - vessel
+
+  lookout_greenstream:
+    ports:
+      - 8000:8000
+      - 8443:8443
+    networks:
+      - vessel
+
+  lookout_docs:
+    ports:
+      - "4010:3000"
+    networks:
+      - vessel
+
+networks:
+  vessel:
+    external: true
+    name: gama_vessel
