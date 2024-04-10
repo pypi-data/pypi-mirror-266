@@ -1,0 +1,206 @@
+import MyAMS from "./_utils";
+
+
+const createMap = (map, config, options, callback) => {
+
+	return new Promise((resolve, reject) => {
+
+		const data = map.data();
+		let settings = {
+			preferCanvas: data.mapLeafletPreferCanvas || false,
+			attributionControl: data.mapLeafletAttributionControl === undefined ?
+				config.attributionControl : data.mapLeafletAttributionControl,
+			zoomControl: data.mapLeafletZoomControl === undefined ?
+				config.zoomControl : data.mapLeafletZoomControl,
+			crs: data.mapLeafletCrs || MyAMS.getObject(config.crs) || L.CRS.EPSG3857,
+			center: data.mapLeafletCenter || config.center,
+			zoom: data.mapLeafletZoom || config.zoom,
+			gestureHandling: data.mapLeafletWheelZoom === undefined ?
+				!config.scrollWheelZoom : data.mapLeafletWheelZoom,
+			keyboard: data.mapLeafletKeyboard === undefined ?
+				config.keyboard && !L.Browser.mobile : data.amsLeafletKeyboard
+		};
+		settings = $.extend({}, settings, options);
+		map.trigger('map.init', [map, settings, config]);
+		const
+			leafmap = L.map(map.attr('id'), settings),
+			layersConfig = [];
+		if (config.layers) {
+			for (const layerConfig of config.layers) {
+				map.trigger('map.layer.init', [map, layerConfig]);
+				layersConfig.push(PyAMS_GIS.getLayer(map, leafmap, layerConfig));
+			}
+		} else {
+			layersConfig.push(L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				maxZoom: 19,
+				id: 'osm',
+				attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+			}));
+		}
+		$.when.apply($, layersConfig).then(function(...layers) {
+			for (const idx in layers) {
+				layers[idx].addTo(leafmap);
+			}
+			if (config.zoomControl && (data.mapLeafletHideZoomControl !== true)) {
+				L.control.scale().addTo(leafmap);
+			}
+			if (config.center) {
+				leafmap.setView(new L.LatLng(config.center.lat, config.center.lon),
+					config.zoom || 13);
+			} else if (config.bounds) {
+				leafmap.fitBounds(config.bounds);
+			}
+			if (config.marker) {
+				const icon = L.icon({
+					iconUrl: '/--static--/pyams_gis/img/marker-icon.png',
+					iconSize: [25, 41],
+					iconAnchor: [12, 39]
+				});
+				const marker = L.marker();
+				marker.setIcon(icon);
+				marker.setLatLng({
+					lon: config.marker.lon,
+					lat: config.marker.lat
+				});
+				marker.addTo(leafmap);
+			}
+			map.data('leafmap', leafmap);
+			map.data('leafmap.config', config);
+			map.trigger('map.finishing', [map, leafmap, config]);
+			if (callback) {
+				callback(leafmap, config);
+			}
+			map.trigger('map.finished', [map, leafmap, config]);
+			resolve(leafmap);
+		});
+	});
+};
+
+
+const PyAMS_GIS = {
+
+	/**
+	 * Map initialization
+	 *
+	 * @param maps: maps elements
+	 * @param options: optional maps configuration settings
+	 * @param callback: maps initialization callback
+	 */
+	init: (maps, options, callback) => {
+
+		window.PyAMS_GIS = PyAMS_GIS;
+		import('leaflet').then(() => {
+			import('leaflet-gesture-handling').then(() => {
+
+				import("../../../../../node_modules/leaflet/dist/leaflet.css");
+				import("../../../../../node_modules/leaflet-gesture-handling/dist/leaflet-gesture-handling.css");
+
+				const $maps = $.map(maps, (elt) => {
+					return new Promise((resolve, reject) => {
+						const
+							map = $(elt),
+							data = map.data(),
+							config = data.mapConfiguration;
+						if (config) {
+							resolve(createMap(map, config, options, callback));
+						} else {
+							$.get(data.mapConfigurationUrl || 'get-map-configuration.json', (config) => {
+								resolve(createMap(map, config, options, callback));
+							});
+						}
+					})
+				});
+				$.when.apply($, $maps).then();
+			});
+		});
+	},
+
+	/**
+	 * Get layer definition
+	 *
+	 * @param map: source map element
+	 * @param leafmap: current Leaflet map
+	 * @param layer: current layer definition
+	 */
+	getLayer: (map, leafmap, layer) => {
+		const factory = MyAMS.getObject(layer.factory);
+		if (factory !== undefined) {
+			delete layer.factory;
+			const deferred = [];
+			if (layer.dependsOn) {
+				for (const name in layer.dependsOn) {
+					if (!layer.dependsOn.hasOwnProperty(name)) {
+						continue;
+					}
+					if (MyAMS.getObject(name) === undefined) {
+						deferred.push(MyAMS.getScript(layer.dependsOn[name]));
+					}
+				}
+				delete layer.dependsOn;
+			}
+			if (deferred.length > 0) {
+				$.when.apply($, deferred);
+			}
+			return factory(map, leafmap, layer);
+		}
+	},
+
+	/**
+	 * Layers factories
+	 */
+	factory: {
+
+		GeoJSON: (map, leafmap, layer) => {
+			const url = layer.url;
+			delete layer.url;
+			const result = L.geoJSON(null, layer);
+			map.on('map.finished', (evt, map, leafmap, config) => {
+				$.get(url, (data) => {
+					result.addData(data.geometry, {
+						style: layer.style
+					});
+					if (config.fitLayer === layer.name) {
+						leafmap.fitBounds(result.getBounds());
+					}
+				});
+			});
+			return result;
+		},
+
+		TileLayer: (map, leafmap, layer) => {
+			const url = layer.url;
+			delete layer.url;
+			return L.tileLayer(url, layer);
+		},
+
+		WMS: function(map, leafmap, layer) {
+			const url = layer.url;
+			delete layer.url;
+			return L.tileLayer.wms(url, layer);
+		},
+
+		Geoportal: {
+			WMS: (map, leafmap, layer) => {
+				MyAMS.getCSS('/--static--/pyams_gis/css/leaflet-gp-3.0.2.min.css', 'geoportal');
+				return L.geoportalLayer.WMS(layer);
+			}
+		},
+		ESRI: {
+			Feature: (map, leafmap, layer) => {
+				return L.esri.featureLayer(layer);
+			}
+		},
+
+		Google: (map, leafmap, layer) => {
+			const apiKey = layer.apiKey;
+			delete layer.apiKey;
+			if (MyAMS.getObject('window.google.maps') === undefined) {
+				const script = MyAMS.getScript('https://maps.googleapis.com/maps/api/js?key=' + apiKey);
+				$.when.apply($, [script]);
+			}
+			return L.gridLayer.googleMutant(layer);
+		}
+	}
+};
+
+export default PyAMS_GIS;
