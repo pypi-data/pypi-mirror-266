@@ -1,0 +1,3 @@
+from typing import Any
+
+def encode(params: Any, signature: str) -> bytes: ...
