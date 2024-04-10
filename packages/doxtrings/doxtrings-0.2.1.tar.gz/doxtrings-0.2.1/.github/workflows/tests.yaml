@@ -1,0 +1,35 @@
+name: Test doXtrings library
+
+on:
+  pull_request:
+    branches:
+      - "*"
+
+env:
+  PYTHON_VERSION: 3.9
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies and lint
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install --upgrade setuptools flit wheel
+          flit install --deps all
+          pre-commit run --all-files
+
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        python_version: ["3.8", "3.9", "3.10", "3.11"]
+    uses: ./.github/workflows/test_run.yaml
+    with:
+      python_version: ${{ matrix.python_version }}

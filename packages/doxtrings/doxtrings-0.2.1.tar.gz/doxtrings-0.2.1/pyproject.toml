@@ -1,0 +1,66 @@
+[build-system]
+build-backend = "flit_core.buildapi"
+requires = ["flit_core >=3.2,<4"]
+
+[project]
+name = "doxtrings"
+authors = [{ name = "Lucas Pereira", email = "pereira.lucas@bcg.com" }]
+dynamic = ["version", "description"]
+readme = "README.md"
+requires-python = "~=3.8"
+dependencies = ["tomli==2.*", "docstring-parser==0.15"]
+
+[project.scripts]
+doxtrings = "doxtrings.cli.scan:scan"
+
+[project.optional-dependencies]
+dev = ["pre-commit==3.2.2", "black==23.3.0", "pyright==1.1.309", "isort"]
+
+test = ["pytest==7.3.1", "pytest-cov==4.0.0"]
+
+docs = [
+    "mkdocstrings[python]==0.22.0",
+    "mkdocs-gen-files==0.5.0",
+    "mkdocs-literate-nav==0.5.0",
+    "mkdocs-section-index==0.3.5",
+    "mkdocs-material==9.2.5",
+]
+
+ci = ["bump2version==1.0.1"]
+
+[tool.flit.sdist]
+exclude = ["test"]
+
+
+[tool.pyright]
+include = ["src"]
+exclude = ["**/__pycache__"]
+venvPath = "."
+venv = ".venv"
+reportMissingImports = true
+reportMissingTypeStubs = false
+typeCheckingMode = "strict"
+pythonVersion = "3.9"
+extraPaths = ["./src"]
+
+[tool.pytest.ini_options]
+addopts = """
+    --cov doxtrings
+    --no-cov-on-fail
+    --cov-report term-missing
+    --cov-fail-under=90
+"""
+testpaths = ["test"]
+
+[tool.isort]
+profile = "black"
+
+[tool.doxtrings]
+path = "./src/doxtrings"
+
+[tool.doxtrings.ignore_rules.default]
+ignore_prefixes_rules = ["_"]
+include_prefixes_rules = ["__init__"]
+
+[tool.doxtrings.ignore_rules.variables]
+ignore_matches = ["logger"]

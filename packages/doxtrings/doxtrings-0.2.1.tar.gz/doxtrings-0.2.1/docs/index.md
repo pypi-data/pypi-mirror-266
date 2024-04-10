@@ -1,0 +1,3 @@
+# doXtrings
+
+The doXtrings package is a powerful tool for ensuring the accuracy of your docstrings through automated testing. Docstrings are an essential component of maintaining a well-documented codebase, as they can be seamlessly converted into actual documentation and integrate smoothly with IDEs. However, docstrings are not code, so it can be challenging to detect errors, making them prone to going unnoticed. This is where doXtrings comes in handy. It analyzes all your docstrings, checking for any discrepancies with the method signature, and helps you maintain your docstrings as if they were code. By using doXtrings, you can rest assured that your docstrings are accurate and reliable.
