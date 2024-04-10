@@ -1,0 +1,52 @@
+Metadata-Version: 2.1
+Name: instagram-dlpy
+Version: 1.1.0
+Summary: A python package to download Instagram posts by URL without needing to login
+Home-page: https://github.com/Fluxticks/InstagramDL
+Download-URL: https://github.com/Fluxticks/InstagramDL/archive/v1.1.0.tar.gz
+Author: Fluxticks
+Keywords: instagram,api
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests
+
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/instagram-dlpy)
+
+# InstagramDL
+
+A python package to download Instagram posts by URL without needing to login.
+
+## Usage
+
+1. Install the package
+
+```bash
+$ pip install instagram-dlpy
+```
+
+2. Import the package
+
+```python
+from instagramdl.api import get_post_data
+from instagramdl.parser import parse_api_response
+```
+
+3. Get the post info and then parse it
+
+```python
+post_url = ""
+raw_data = get_post_data(post_url)
+parsed_data = parse_api_response(raw_data)
+```
+
+4. Download the associated media
+
+```python
+parsed_data.download(download_path="./")
+```
