@@ -1,0 +1,78 @@
+Metadata-Version: 2.1
+Name: pytransloadit
+Version: 0.2.2
+Summary: A Python Integration for Transloadit’s file uploading and encoding service.
+Home-page: https://github.com/transloadit/python-sdk
+License: MIT
+Author: Ifedapo Olarewaju
+Maintainer: Florian Kuenzig
+Requires-Python: >=3.7,<3.12
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Communications :: File Sharing
+Classifier: Topic :: Internet :: File Transfer Protocol (FTP)
+Classifier: Topic :: Multimedia :: Sound/Audio :: Conversion
+Classifier: Topic :: Multimedia :: Video :: Conversion
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Dist: requests (>=2.30.0,<3.0.0)
+Requires-Dist: tuspy (>=1.0.0,<2.0.0)
+Project-URL: Documentation, https://transloadit.readthedocs.io
+Project-URL: Repository, https://github.com/transloadit/python-sdk
+Description-Content-Type: text/markdown
+
+[![Build status](https://github.com/transloadit/python-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/transloadit/python-sdk/actions/workflows/ci.yml)
+
+# Transloadit python-sdk
+
+A **Python** Integration for [Transloadit](https://transloadit.com)'s file uploading and encoding service.
+
+## Intro
+
+[Transloadit](https://transloadit.com) is a service that helps you handle file uploads, resize, crop and watermark your images, make GIFs, transcode your videos, extract thumbnails, generate audio waveforms, and so much more. In short, [Transloadit](https://transloadit.com) is the Swiss Army Knife for your files.
+
+This is a **Python** SDK to make it easy to talk to the [Transloadit](https://transloadit.com) REST API.
+
+Only Python 3.7+ versions are supported.
+
+## Install
+
+```bash
+pip install pytransloadit
+```
+
+## Usage
+
+```python
+from transloadit import client
+
+tl = client.Transloadit('TRANSLOADIT_KEY', 'TRANSLOADIT_SECRET')
+assembly = tl.new_assembly()
+assembly.add_file(open('PATH/TO/FILE.jpg', 'rb'))
+assembly.add_step('resize', '/image/resize', {'width': 70, 'height': 70})
+assembly_response = assembly.create(retries=5, wait=True)
+
+print(assembly_response.data.get('assembly_id'))
+
+# or
+print(assembly_response.data['assembly_id'])
+```
+
+## Example
+
+For fully working examples, take a look at [`examples/`](https://github.com/transloadit/python-sdk/tree/HEAD/examples).
+
+## Documentation
+
+See [readthedocs](https://transloadit.readthedocs.io) for full API documentation.
+
