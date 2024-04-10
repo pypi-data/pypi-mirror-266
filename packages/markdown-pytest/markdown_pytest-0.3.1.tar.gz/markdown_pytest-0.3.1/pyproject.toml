@@ -1,0 +1,51 @@
+[tool.poetry]
+name = "markdown-pytest"
+version = "0.3.1"
+license = "Apache-2.0"
+description = "Pytest plugin for runs tests directly from Markdown files"
+authors = ["Dmitry Orlov <me@mosquito.su>"]
+readme = "README.md"
+keywords=["pytest", "markdown", "documentation"]
+homepage = "https://github.com/mosquito/markdown-pytest"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Plugins",
+    "Framework :: Pytest",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Natural Language :: English",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft",
+    "Operating System :: POSIX",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Programming Language :: Python",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development",
+]
+packages = [{include = "markdown_pytest.py"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pytest-subtests = ">=0.12.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = ">=8.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins.pytest11]
+markdown-pytest = "markdown_pytest"
+
+[tool.poetry.urls]
+"Source" = "https://github.com/mosquito/markdown-pytest"
+"Tracker" = "https://github.com/mosquito/markdown-pytest/issues"
+"Documentation" = "https://github.com/mosquito/markdown-pytest/blob/master/README.rst"
