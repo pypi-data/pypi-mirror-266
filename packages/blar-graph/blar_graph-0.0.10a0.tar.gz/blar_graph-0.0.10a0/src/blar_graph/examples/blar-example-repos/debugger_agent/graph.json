@@ -1,0 +1,2781 @@
+{
+  "nodes": [
+    {
+      "id": 9,
+      "properties": {
+        "path": "src/",
+        "name": "src",
+        "node_id": "<function uuid4 at 0x727ab6ee6c20>",
+        "label": "PACKAGE"
+      }
+    },
+    {
+      "id": 10,
+      "properties": {
+        "path": "src.run",
+        "name": "run.py",
+        "text": "from graph_construction.graph_builder import GraphConstructor\nfrom graph_construction.db_manager import Neo4jManager\n\ngraph_manager = Neo4jManager()\ngraph_constructor = GraphConstructor(graph_manager)\ngraph_constructor.build_graph(\"src\", \"python\")",
+        "directory": "src/",
+        "node_id": "4d628a0b-08eb-4c21-accb-b300d80e53ab",
+        "label": "FILE_ROOT"
+      }
+    },
+    {
+      "id": 12,
+      "properties": {
+        "path": "src/test_documents/",
+        "name": "test_documents",
+        "node_id": "<function uuid4 at 0x727ab6ee6c20>",
+        "label": "FOLDER"
+      }
+    },
+    {
+      "id": 13,
+      "properties": {
+        "path": "src.test_documents.test",
+        "name": "test.py",
+        "text": "class Test:\n    # Code replaced for brevity. See node_id b0614953-8a04-4039-9652-64afb0e43573\n\n\ntest = Test()\ntest.hello()",
+        "directory": "src/test_documents/",
+        "node_id": "71349afe-40c2-45f5-b406-fd63840d8e11",
+        "label": "FILE_ROOT"
+      }
+    },
+    {
+      "id": 21,
+      "properties": {
+        "path": "src/graph_construction/",
+        "name": "graph_construction",
+        "node_id": "<function uuid4 at 0x727ab6ee6c20>",
+        "label": "PACKAGE"
+      }
+    },
+    {
+      "id": 22,
+      "properties": {
+        "path": "src/graph_construction/__pycache__/",
+        "name": "__pycache__",
+        "node_id": "<function uuid4 at 0x727ab6ee6c20>",
+        "label": "FOLDER"
+      }
+    },
+    {
+      "id": 28,
+      "properties": {
+        "path": "src.graph_construction.db_manager",
+        "name": "db_manager.py",
+        "text": "import os\nfrom typing import Any, List\n\nfrom dotenv import load_dotenv\nfrom neo4j import GraphDatabase\n\nload_dotenv()\n\nclass Neo4jManager:\n    # Code replaced for brevity. See node_id 871c9676-fba8-4ed8-a3e7-4ee51c246d38",
+        "directory": "src/graph_construction/",
+        "node_id": "85fbea3b-6b7e-4a6f-96d7-0777c39e7ffe",
+        "label": "FILE_ROOT"
+      }
+    },
+    {
+      "id": 60,
+      "properties": {
+        "path": "src.graph_construction.graph_file_parser",
+        "name": "graph_file_parser.py",
+        "text": "import os\nfrom pathlib import Path\nimport tree_sitter_languages\nfrom ..utils import format_nodes, tree_parser\nfrom llama_index.core import SimpleDirectoryReader\nfrom llama_index.core.schema import NodeRelationship, BaseNode\nfrom llama_index.core.text_splitter import CodeSplitter\nfrom llama_index.packs.code_hierarchy import CodeHierarchyNodeParser\n\n\nclass GraphFileParser:\n    # Code replaced for brevity. See node_id 87f88f4f-f107-4bca-8b23-20b2aba582c1",
+        "directory": "src/graph_construction/",
+        "node_id": "ee457f48-71fa-4517-b546-aeb5c41c9492",
+        "label": "FILE_ROOT"
+      }
+    },
+    {
+      "id": 67,
+      "properties": {
+        "path": "src.graph_construction.graph_builder",
+        "name": "graph_builder.py",
+        "text": "import os\nimport uuid\nfrom pathlib import Path\nimport tree_sitter_languages\nfrom llama_index.core import SimpleDirectoryReader\nfrom llama_index.core.schema import NodeRelationship, BaseNode\nfrom llama_index.core.text_splitter import CodeSplitter\nfrom llama_index.packs.code_hierarchy import CodeHierarchyNodeParser\nfrom utils import format_nodes, tree_parser\n\nclass GraphConstructor:\n    # Code replaced for brevity. See node_id c102f435-6dc5-483b-b6ba-e4fac3fb009c",
+        "directory": "src/graph_construction/",
+        "node_id": "c5d78107-6a06-42d6-9d73-a7670c3c55b5",
+        "label": "FILE_ROOT"
+      }
+    },
+    {
+      "id": 77,
+      "properties": {
+        "path": "src/utils/",
+        "name": "utils",
+        "node_id": "<function uuid4 at 0x727ab6ee6c20>",
+        "label": "PACKAGE"
+      }
+    },
+    {
+      "id": 78,
+      "properties": {
+        "path": "src/utils/__pycache__/",
+        "name": "__pycache__",
+        "node_id": "<function uuid4 at 0x727ab6ee6c20>",
+        "label": "FOLDER"
+      }
+    },
+    {
+      "id": 85,
+      "properties": {
+        "path": "src.utils.language_extensions",
+        "name": "language_extensions.py",
+        "text": "LANGUAGE_EXTENSIONS = {\n    \"Python\": [\".py\", \".pyc\", \".pyd\", \".pyo\", \".pyw\", \".pyx\"],\n    \"C\": [\".c\", \".h\"],\n    \"C++\": [\".cpp\", \".cc\", \".cxx\", \".hpp\", \".h\", \".hxx\"],\n    \"Java\": [\".java\", \".jar\"],\n    \"JavaScript\": [\".js\"],\n    \"HTML\": [\".html\", \".htm\"],\n    \"CSS\": [\".css\"],\n    \"PHP\": [\".php\"],\n    \"Ruby\": [\".rb\"],\n    \"Swift\": [\".swift\"],\n    \"Kotlin\": [\".kt\", \".kts\"],\n    \"Go\": [\".go\"],\n    \"Rust\": [\".rs\"],\n    \"SQL\": [\".sql\"],\n    \"Shell\": [\".sh\"],\n    \"Perl\": [\".pl\"],\n    \"Scala\": [\".scala\"],\n    \"TypeScript\": [\".ts\"],\n    \"Lua\": [\".lua\"],\n    \"C#\": [\".cs\"],\n    \"Objective-C\": [\".m\"],\n    \"R\": [\".r\"],\n    \"Dart\": [\".dart\"],\n    \"Haskell\": [\".hs\"],\n    \"Julia\": [\".jl\"],\n    \"MATLAB\": [\".m\"],\n    \"Erlang\": [\".erl\"],\n    \"Groovy\": [\".groovy\"],\n    \"Clojure\": [\".clj\", \".cljs\"],\n    \"F#\": [\".fs\", \".fsx\"],\n    \"VBA\": [\".vba\"],\n    \"VBScript\": [\".vbs\"],\n    \"TeX\": [\".tex\"],\n    \"Assembly\": [\".asm\", \".s\"],\n    \"OCaml\": [\".ml\", \".mli\"],\n    \"ActionScript\": [\".as\"],\n    \"Pascal\": [\".pas\"],\n    \"Scheme\": [\".scm\", \".ss\"],\n    \"D\": [\".d\"],\n    \"Ada\": [\".ada\", \".adb\", \".ads\"],\n    \"Prolog\": [\".pl\", \".pro\"],\n    \"COBOL\": [\".cob\", \".cbl\"],\n    \"Forth\": [\".forth\", \".fth\", \".fs\"],\n    \"Verilog\": [\".v\", \".vh\", \".sv\", \".svh\"],\n    \"VHDL\": [\".vhd\", \".vhdl\"],\n    \"Lisp\": [\".lisp\", \".lsp\"],\n    \"Smalltalk\": [\".st\"],\n    \"Fortran\": [\".f\", \".for\", \".f90\", \".f95\"],\n    \"PowerShell\": [\".ps1\"],\n    \"Elixir\": [\".ex\", \".exs\"],\n    \"Ada\": [\".ada\", \".adb\", \".ads\"],\n    \"ABAP\": [\".abap\"],\n    \"Batch\": [\".bat\", \".cmd\"],\n    \"CMake\": [\".cmake\"],\n    \"CoffeeScript\": [\".coffee\"],\n    \"Crystal\": [\".cr\"],\n    \"Dylan\": [\".dylan\", \".dyl\", \".intr\", \".lid\"],\n    \"Eiffel\": [\".e\"],\n    \"Elm\": [\".elm\"],\n    \"Erlang\": [\".erl\", \".hrl\"],\n    \"F#\": [\".fs\", \".fsi\", \".fsx\", \".fsscript\"],\n    \"Forth\": [\".fth\", \".4th\", \".f\"],\n    \"Freemarker\": [\".ftl\"],\n    \"Fortran\": [\".f90\", \".f95\", \".f03\", \".f08\"],\n    \"GDScript\": [\".gd\"],\n    \"Gosu\": [\".gs\"],\n    \"GraphQL\": [\".graphql\", \".gql\"],\n    \"Groovy\": [\".groovy\", \".grt\", \".gtpl\", \".gvy\"],\n    \"HTML\": [\".html\", \".htm\", \".shtml\"],\n    \"IDL\": [\".idl\"],\n    \"Idris\": [\".idr\", \".lidr\"],\n    \"JSON\": [\".json\"],\n    \"Java\": [\".java\", \".properties\", \".jsp\", \".jspx\", \".wss\", \".wssx\"],\n    \"Kotlin\": [\".kt\", \".kts\", \".ktm\", \".ktt\"],\n    \"LLVM\": [\".ll\"],\n    \"Lasso\": [\".lasso\", \".lasso8\", \".las\", \".lasso9\", \".ldml\"],\n    \"MATLAB\": [\".m\"],\n    \"Makefile\": [\".mk\", \".mak\", \".make\", \".mkfile\"],\n    \"Markdown\": [\".md\", \".markdown\", \".mkd\"],\n    \"Max\": [\".maxpat\", \".maxhelp\", \".maxproj\", \".maxpresets\", \".mxt\"],\n    \"Nim\": [\".nim\", \".nimble\"],\n    \"Nix\": [\".nix\"],\n    \"OCaml\": [\".ml\", \".mli\", \".mll\", \".mly\"],\n    \"Objective-C\": [\".m\", \".h\"],\n    \"OpenEdge\": [\".p\"],\n    \"Pascal\": [\".pas\", \".p\"],\n    \"Perl\": [\".pl\", \".pm\", \".t\"],\n    \"PHP\": [\".php\", \".phpt\", \".php3\", \".php4\", \".php5\", \".phps\", \".phtml\"],\n    \"PLSQL\": [\".plsql\", \".pck\", \".pkb\", \".pks\"],\n    \"Pascal\": [\".pas\", \".pp\", \".dpr\", \".dfm\", \".lpr\", \".lpk\"],\n    \"Pawn\": [\".p\", \".pwn\"],\n    \"PureScript\": [\".purs\"],\n    \"Python\": [\".py\", \".pyw\", \".pyc\", \".pyd\"],\n    \"QML\": [\".qml\", \".qbs\", \".qbsqmldir\"],\n    \"Racket\": [\".rkt\", \".rktl\", \".scrbl\"],\n    \"Reason\": [\".re\"],\n    \"Red\": [\".red\", \".reds\"],\n    \"Regular\": [\".regex\", \".regexp\", \".rg\", \".rpl\", \".re\"],\n    \"Ring\": [\".ring\"],\n    \"Ruby\": [\".rb\", \".rhtml\", \".rjs\", \".gemspec\", \".podspec\", \".thor\", \".irbrc\", \".capfile\", \".gemrc\", \".ru\", \".prawn\", \".prawnx\"],\n    \"Rust\": [\".rs\", \".rlib\", \".toml\"],\n    \"SQL\": [\".sql\", \".ddl\", \".dml\", \".dcl\", \".dtl\", \".sqlj\"],\n    \"Scala\": [\".scala\", \".sc\"],\n    \"Shell\": [\".sh\", \".bash\", \".zsh\", \".fish\"],\n    \"Solidity\": [\".sol\"],\n    \"Standard\": [\".stg\"],\n    \"Stylus\": [\".styl\"],\n    \"SuperCollider\": [\".sc\", \".scd\"],\n    \"Swift\": [\".swift\"],\n    \"TeX\": [\".tex\"],\n    \"Toml\": [\".toml\"],\n    \"TypeScript\": [\".ts\", \".tsx\"]}",
+        "directory": "src/utils/",
+        "node_id": "c14db898-1042-485c-93f9-685a87f99dc1",
+        "label": "FILE_ROOT"
+      }
+    },
+    {
+      "id": 86,
+      "properties": {
+        "path": "src.utils.format_nodes",
+        "name": "format_nodes.py",
+        "text": "from llama_index.core.schema import BaseNode\nimport os\nimport uuid\n\n\ndef format_function_node(\n    node: BaseNode, scope: dict, function_calls: list[str]\n) -> dict:\n    # Code replaced for brevity. See node_id 94a9c838-f8f0-4fca-92f7-115dc757b8a3\n\n\ndef format_class_node(node: BaseNode, scope: dict) -> dict:\n    # Code replaced for brevity. See node_id 5ba4c87f-cdf4-49e0-9415-db0cda007352\n\n\ndef format_file_node(node: BaseNode) -> dict:\n    # Code replaced for brevity. See node_id 6eb1a8b7-996c-4adb-ae45-fdb6fe323b16\n\n\ndef format_directory_node(path: str, package: bool) -> dict:\n    # Code replaced for brevity. See node_id 08e93c87-6562-486a-9ec1-a561c3b650d6",
+        "directory": "src/utils/",
+        "node_id": "5e0b54a4-55f3-4350-bd42-18464a88926d",
+        "label": "FILE_ROOT"
+      }
+    },
+    {
+      "id": 102,
+      "properties": {
+        "path": "src.utils.tree_parser",
+        "name": "tree_parser.py",
+        "text": "import tree_sitter_languages\nimport re\n\n\ndef traverse_tree(tree):\n    # Code replaced for brevity. See node_id d19b2b2c-ddaf-4344-92e2-18412166c9e7\n\n\ndef count_parameters(params_str):\n    # Count parameters considering string literals and ignoring commas within them.\n    # This simplistic approach assumes balanced quotes and no escaped quotes within strings.\n    # Code replaced for brevity. See node_id ac5ba7c4-9fd2-47a8-8db5-3f1969d76e6c\n\n\ndef parse_function_call(func_call_bytes: bytes, inclusive_scopes) -> tuple[str, int]:\n    # Regular expression to match a single function call.\n    # It captures the function name and its parameters.\n    # Code replaced for brevity. See node_id 9e6eeefd-1cff-4568-af2f-0f7b8bd8fe66\n\n\ndef get_function_calls(node) -> list[str]:\n    # Code replaced for brevity. See node_id c7efb6f4-5ed3-4cec-b408-a6d8f58235a7",
+        "directory": "src/utils/",
+        "node_id": "14ee48b0-2c31-4607-8309-58a3924c882c",
+        "label": "FILE_ROOT"
+      }
+    },
+    {
+      "id": 11,
+      "properties": {
+        "path": "src/__init__.py",
+        "name": "__init__.py",
+        "node_id": "6c835ab9-fbf7-408c-92cf-d6fb493f3ac3",
+        "label": "FILE"
+      }
+    },
+    {
+      "id": 23,
+      "properties": {
+        "path": "src/graph_construction/__pycache__/graph_builder.cpython-310.pyc",
+        "name": "graph_builder.cpython-310.pyc",
+        "node_id": "eee48393-dd09-4c13-ae36-34d6be9f6396",
+        "label": "FILE"
+      }
+    },
+    {
+      "id": 25,
+      "properties": {
+        "path": "src/graph_construction/__pycache__/__init__.cpython-310.pyc",
+        "name": "__init__.cpython-310.pyc",
+        "node_id": "7b3a4d2c-8e46-4c97-8f29-134d76b2c59c",
+        "label": "FILE"
+      }
+    },
+    {
+      "id": 26,
+      "properties": {
+        "path": "src/graph_construction/__pycache__/db_manager.cpython-310.pyc",
+        "name": "db_manager.cpython-310.pyc",
+        "node_id": "0eca7596-7eb3-439b-bc50-2351e507989f",
+        "label": "FILE"
+      }
+    },
+    {
+      "id": 66,
+      "properties": {
+        "path": "src/graph_construction/__init__.py",
+        "name": "__init__.py",
+        "node_id": "1085f28c-1dc0-4499-afe5-86f156d179e4",
+        "label": "FILE"
+      }
+    },
+    {
+      "id": 79,
+      "properties": {
+        "path": "src/utils/__pycache__/__init__.cpython-310.pyc",
+        "name": "__init__.cpython-310.pyc",
+        "node_id": "6d8b8ae5-3dd1-4d31-830f-187cce5b59c2",
+        "label": "FILE"
+      }
+    },
+    {
+      "id": 80,
+      "properties": {
+        "path": "src/utils/__pycache__/tree_parser.cpython-310.pyc",
+        "name": "tree_parser.cpython-310.pyc",
+        "node_id": "1c830fa8-8e5c-4e25-b001-a14cff3be8e6",
+        "label": "FILE"
+      }
+    },
+    {
+      "id": 81,
+      "properties": {
+        "path": "src/utils/__pycache__/format_nodes.cpython-310.pyc",
+        "name": "format_nodes.cpython-310.pyc",
+        "node_id": "0eb911f9-ddae-4356-991f-f30030426c05",
+        "label": "FILE"
+      }
+    },
+    {
+      "id": 101,
+      "properties": {
+        "path": "src/utils/__init__.py",
+        "name": "__init__.py",
+        "node_id": "63ddad65-b92b-404b-bbc0-088e6757f50b",
+        "label": "FILE"
+      }
+    },
+    {
+      "id": 29,
+      "properties": {
+        "path": "src.graph_construction.db_manager.Neo4jManager",
+        "signature": "class Neo4jManager:",
+        "name": "Neo4jManager",
+        "text": "class Neo4jManager:\n    def __init__(self):\n        # Code replaced for brevity. See node_id 833e4eea-aa8e-41dd-9104-cc411954a9d3\n\n\n    def create_function_name_index(self):\n        # Creates a fulltext index on the name and path properties of the nodes\n        # Code replaced for brevity. See node_id 488776c3-ee5a-40d6-9232-dd21b7d22fb7\n\n    def close(self):\n        # Close the connection to the database\n        # Code replaced for brevity. See node_id 9f02c83a-6585-43d4-98d9-f79989369477\n\n    def create_nodes(self, nodeList: List[Any]):\n        # Function to create nodes in the Neo4j database\n        # Code replaced for brevity. See node_id 4a2fe0ad-af5a-4329-ade2-ec894ed8ab09\n\n    def create_edges(self, edgesList: List[Any]):\n        # Function to create edges between nodes in the Neo4j database\n        # Code replaced for brevity. See node_id 55d66dd6-ad19-4871-880d-6ea705751ee5\n\n    def  format_query(self, query: str):\n        # Function to format the query to be used in the fulltext index\n        # Code replaced for brevity. See node_id 185e9687-1131-458b-9dc1-8bfbf06b0728\n    \n    def get_code(self, query: str):\n        # Function to get code from the Neo4j database based on a keyword query\n        # Code replaced for brevity. See node_id 7c2673ab-e6a0-4fe0-894b-2a665ed42da2\n\n    def get_n_hop_neighbours(self, node_id: str, num_hops: int):\n        # Function to get code from the Neo4j database based on a keyword query\n        # Code replaced for brevity. See node_id cad0c1ae-0794-4697-b0bf-a8ef82b7b15a\n\n    @staticmethod\n    def _create_nodes_txn(tx, nodeList: List[Any]):\n        # Transaction function for creating nodes with dynamic labels\n        # Code replaced for brevity. See node_id ee196e39-8a7b-4b88-88d1-edf39a8c3a85\n\n\n    @staticmethod\n    def _create_edges_txn(tx, edgesList: List[Any]):\n        # Transaction function for creating edges\n        # Code replaced for brevity. See node_id b3870ca6-c521-4841-be59-ae70e050fa50",
+        "node_id": "871c9676-fba8-4ed8-a3e7-4ee51c246d38",
+        "label": "CLASS"
+      }
+    },
+    {
+      "id": 68,
+      "properties": {
+        "path": "src.graph_construction.graph_builder.GraphConstructor",
+        "signature": "class GraphConstructor:",
+        "name": "GraphConstructor",
+        "text": "class GraphConstructor:\n    RELATIONS_TYPES_MAP = {\n        \"function_definition\": \"FUNCTION_DEFINITION\",\n        \"class_definition\": \"CLASS_DEFINITION\",\n    }\n\n    def __init__(self, graph_manager):\n        # Code replaced for brevity. See node_id 273d5bdd-d5ae-4d63-bb21-1cbef273a7de\n\n    def _process_file(self, file_path, language, directory_path):\n        # Code replaced for brevity. See node_id d01e5127-bad2-4d28-8bf7-e94fcec60f98\n\n    def __process_node__(self, node: BaseNode, no_extension_path: str):\n        # Code replaced for brevity. See node_id 12499fef-6a34-4c19-be1a-242c75fd5d5e\n\n    def _scan_directory(\n        self,\n        path,\n        language=\"python\",\n        nodes=[],\n        relationships=[],\n        parent_id=None,\n    ):\n        # Code replaced for brevity. See node_id 8b57dc62-a2cf-4b2c-87be-113c29461ed4\n\n    def _relate_imports(self, node_list):\n        # Code replaced for brevity. See node_id ca2ae36c-2a57-4a27-9a31-1ce935d801fc\n\n\n    def _get_imports(self, path):\n        # Code replaced for brevity. See node_id 36cc3641-6371-4520-b72f-875fc3ec685e\n\n    def _relate_function_calls(self, node_list):\n        # Code replaced for brevity. See node_id 1b503970-7e9f-4f96-84d4-a6bdaf6a79c4\n\n    def build_graph(self, path, language):\n\n        # process every node to create the graph structure\n        # Code replaced for brevity. See node_id 752d1926-be18-4571-aeff-daa72ce6266b",
+        "node_id": "c102f435-6dc5-483b-b6ba-e4fac3fb009c",
+        "label": "CLASS"
+      }
+    },
+    {
+      "id": 14,
+      "properties": {
+        "path": "src.test_documents.test.Test",
+        "signature": "class Test:",
+        "name": "Test",
+        "text": "class Test:\n    def hello(self):\n        # Code replaced for brevity. See node_id 49b3cf15-d1e0-4bbf-bc1b-47e1f9654123\n\n    def factorial(self, n):\n        # Code replaced for brevity. See node_id 7ae44a2a-065d-4513-9d66-ea435b915750\n\n    def fibonacci(self, n):\n        # Code replaced for brevity. See node_id 50081583-a7d5-4b4f-a71e-f6fdc874bc08\n\n    def hello2(self):\n        # Code replaced for brevity. See node_id 30a4ca29-e6c6-4063-be8b-c5b53d74d2ac",
+        "node_id": "b0614953-8a04-4039-9652-64afb0e43573",
+        "label": "CLASS"
+      }
+    },
+    {
+      "id": 15,
+      "properties": {
+        "path": "src.test_documents.test.Test.hello",
+        "signature": "def hello(self):",
+        "name": "hello",
+        "text": "def hello(self):\n        def hello2():\n                # Code replaced for brevity. See node_id 5b68e0a4-ffcd-445c-83e7-71fd0cc58bbe\n\n        hello2()\n        self.hello2()\n        a = 1\n        print(\"Hello, world!\")",
+        "node_id": "49b3cf15-d1e0-4bbf-bc1b-47e1f9654123",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 17,
+      "properties": {
+        "path": "src.test_documents.test.Test.factorial",
+        "signature": "def factorial(self, n):",
+        "name": "factorial",
+        "text": "def factorial(self, n):\n        result = 1\n        for i in range(1, n + 1):\n            result *= i\n        return result",
+        "node_id": "7ae44a2a-065d-4513-9d66-ea435b915750",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 18,
+      "properties": {
+        "path": "src.test_documents.test.Test.fibonacci",
+        "signature": "def fibonacci(self, n):",
+        "name": "fibonacci",
+        "text": "def fibonacci(self, n):\n        a, b = 0, 1\n        while a < n:\n            print(a, end=\" \")\n            a, b = b, a + b",
+        "node_id": "50081583-a7d5-4b4f-a71e-f6fdc874bc08",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 20,
+      "properties": {
+        "path": "src.test_documents.test.Test.hello2",
+        "signature": "def hello2(self):",
+        "name": "hello2",
+        "text": "def hello2(self):\n        print(\"hc\")",
+        "node_id": "30a4ca29-e6c6-4063-be8b-c5b53d74d2ac",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 16,
+      "properties": {
+        "path": "src.test_documents.test.Test.hello.hello2",
+        "signature": "def hello2():",
+        "name": "hello2",
+        "text": "def hello2():\n            self.fibonacci(2)\n            print(\"Hello, world! 2\")",
+        "node_id": "5b68e0a4-ffcd-445c-83e7-71fd0cc58bbe",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 30,
+      "properties": {
+        "path": "src.graph_construction.db_manager.Neo4jManager.__init__",
+        "signature": "def __init__(self):",
+        "name": "__init__",
+        "text": "def __init__(self):\n        uri = os.getenv(\"NEO4J_URI\")\n        user = os.getenv(\"NEO4J_USERNAME\")\n        password = os.getenv(\"NEO4J_PASSWORD\")\n\n        self.driver = GraphDatabase.driver(uri, auth=(user, password))\n        self.create_function_name_index()",
+        "node_id": "833e4eea-aa8e-41dd-9104-cc411954a9d3",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 42,
+      "properties": {
+        "path": "src.graph_construction.db_manager.Neo4jManager.create_function_name_index",
+        "signature": "def create_function_name_index(self):\n        # Creates a fulltext index on the name and path properties of the nodes",
+        "name": "create_function_name_index",
+        "text": "def create_function_name_index(self):\n        # Creates a fulltext index on the name and path properties of the nodes\n        with self.driver.session() as session:\n            node_query = \"\"\"\n            CREATE FULLTEXT INDEX functionNames IF NOT EXISTS FOR (n:CLASS|FUNCTION|FILE_ROOT) ON EACH [n.name, n.path, n.node_id]\"\"\"\n            \n            session.run(node_query)",
+        "node_id": "488776c3-ee5a-40d6-9232-dd21b7d22fb7",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 52,
+      "properties": {
+        "path": "src.graph_construction.db_manager.Neo4jManager.close",
+        "signature": "def close(self):\n        # Close the connection to the database",
+        "name": "close",
+        "text": "def close(self):\n        # Close the connection to the database\n        self.driver.close()",
+        "node_id": "9f02c83a-6585-43d4-98d9-f79989369477",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 53,
+      "properties": {
+        "path": "src.graph_construction.db_manager.Neo4jManager.create_nodes",
+        "signature": "def create_nodes(self, nodeList: List[Any]):\n        # Function to create nodes in the Neo4j database",
+        "name": "create_nodes",
+        "text": "def create_nodes(self, nodeList: List[Any]):\n        # Function to create nodes in the Neo4j database\n        with self.driver.session() as session:\n            session.write_transaction(self._create_nodes_txn, nodeList)",
+        "node_id": "4a2fe0ad-af5a-4329-ade2-ec894ed8ab09",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 54,
+      "properties": {
+        "path": "src.graph_construction.db_manager.Neo4jManager.create_edges",
+        "signature": "def create_edges(self, edgesList: List[Any]):\n        # Function to create edges between nodes in the Neo4j database",
+        "name": "create_edges",
+        "text": "def create_edges(self, edgesList: List[Any]):\n        # Function to create edges between nodes in the Neo4j database\n        with self.driver.session() as session:\n            session.write_transaction(self._create_edges_txn, edgesList)",
+        "node_id": "55d66dd6-ad19-4871-880d-6ea705751ee5",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 55,
+      "properties": {
+        "path": "src.graph_construction.db_manager.Neo4jManager.format_query",
+        "signature": "def  format_query(self, query: str):\n        # Function to format the query to be used in the fulltext index",
+        "name": "format_query",
+        "text": "def  format_query(self, query: str):\n        # Function to format the query to be used in the fulltext index\n        special_characters = ['+', '-', '&&', '||', '!', '(', ')', '{', '}', '[', ']', '^', '\"', '~', '*', '?', ':', '\\\\', '/']\n        for character in special_characters:\n            query = query.replace(character, f\"\\\\{character}\")\n        return query",
+        "node_id": "185e9687-1131-458b-9dc1-8bfbf06b0728",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 56,
+      "properties": {
+        "path": "src.graph_construction.db_manager.Neo4jManager.get_code",
+        "signature": "def get_code(self, query: str):\n        # Function to get code from the Neo4j database based on a keyword query",
+        "name": "get_code",
+        "text": "def get_code(self, query: str):\n        # Function to get code from the Neo4j database based on a keyword query\n        formatted_query = self.format_query(query)\n        node_query = f\"\"\"\n    CALL db.index.fulltext.queryNodes(\"functionNames\", \"*{formatted_query}\") YIELD node, score\n    RETURN node.text, node.node_id, node.name, score\n        \"\"\"\n        node_query2 = f\"\"\"\n    CALL db.index.fulltext.queryNodes(\"functionNames\", \"{formatted_query}\") YIELD node, score\n    RETURN node.text, node.node_id, node.name, score\n        \"\"\"\n        with self.driver.session() as session:\n            result = session.run(node_query)\n            first_result = result.peek()\n            if first_result is None:\n                result = session.run(node_query2)\n                first_result = result.peek()\n            neighbours = self.get_n_hop_neighbours(first_result['node.node_id'], 1)\n            return first_result, neighbours",
+        "node_id": "7c2673ab-e6a0-4fe0-894b-2a665ed42da2",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 57,
+      "properties": {
+        "path": "src.graph_construction.db_manager.Neo4jManager.get_n_hop_neighbours",
+        "signature": "def get_n_hop_neighbours(self, node_id: str, num_hops: int):\n        # Function to get code from the Neo4j database based on a keyword query",
+        "name": "get_n_hop_neighbours",
+        "text": "def get_n_hop_neighbours(self, node_id: str, num_hops: int):\n        # Function to get code from the Neo4j database based on a keyword query\n        with self.driver.session() as session:\n            result = session.run(\n                \"\"\"\n                MATCH (p {node_id: $node_id})\n                CALL apoc.neighbors.byhop(p, \">\", $num_hops)\n                YIELD nodes\n                UNWIND nodes AS all_nodes\n                RETURN all_nodes.node_id AS node_id, all_nodes.name AS function_name, labels(all_nodes) AS labels\n                \"\"\",\n                node_id=node_id,\n                num_hops=num_hops\n            )\n            data = result.data()\n            # Construct list of objects containing node_id and function_name\n            nodes_info = [{\"node_id\": record[\"node_id\"], \"function_name\": record[\"function_name\"], \"labels\": record[\"labels\"]} for record in data]\n            return nodes_info",
+        "node_id": "cad0c1ae-0794-4697-b0bf-a8ef82b7b15a",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 58,
+      "properties": {
+        "path": "src.graph_construction.db_manager.Neo4jManager._create_nodes_txn",
+        "signature": "def _create_nodes_txn(tx, nodeList: List[Any]):\n        # Transaction function for creating nodes with dynamic labels",
+        "name": "_create_nodes_txn",
+        "text": "def _create_nodes_txn(tx, nodeList: List[Any]):\n        # Transaction function for creating nodes with dynamic labels\n        node_query = f\"\"\"\n    UNWIND $nodeList AS node\n    CALL apoc.create.node([node.type], node.attributes)\n    YIELD node as n\n    RETURN count(n) as createdNodesCount\n    \"\"\"\n        result = tx.run(node_query, nodeList=nodeList)\n\n        for record in result:\n            print(f\"Created {record['createdNodesCount']} nodes\")",
+        "node_id": "ee196e39-8a7b-4b88-88d1-edf39a8c3a85",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 59,
+      "properties": {
+        "path": "src.graph_construction.db_manager.Neo4jManager._create_edges_txn",
+        "signature": "def _create_edges_txn(tx, edgesList: List[Any]):\n        # Transaction function for creating edges",
+        "name": "_create_edges_txn",
+        "text": "def _create_edges_txn(tx, edgesList: List[Any]):\n        # Transaction function for creating edges\n        edge_query = \"\"\"\n    WITH $edgesList AS edges\n    UNWIND edges AS edgeObject\n    MATCH (node1 {node_id: edgeObject.sourceId})\n    MATCH (node2 {node_id: edgeObject.targetId})\n    CALL apoc.create.relationship(node1, edgeObject.type, {}, node2)\n    YIELD rel\n    RETURN rel;\n    \"\"\"\n        tx.run(edge_query, edgesList=edgesList)",
+        "node_id": "b3870ca6-c521-4841-be59-ae70e050fa50",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 61,
+      "properties": {
+        "path": "src.graph_construction.graph_file_parser.GraphFileParser",
+        "signature": "class GraphFileParser:",
+        "name": "GraphFileParser",
+        "text": "class GraphFileParser:\n    RELATIONS_TYPES_MAP = {\n        \"function_definition\": \"FUNCTION_DEFINITION\",\n        \"class_definition\": \"CLASS_DEFINITION\",\n    }\n\n    def __init__(\n        self,\n        file_path: str,\n        root_path: str,\n        language: str,\n        directory_path: str,\n        visited_nodes: dict,\n        global_imports: dict,\n    ):\n        # Code replaced for brevity. See node_id 72e7854e-7ec5-4e42-b16c-93063e4ada5e\n\n    def parse(self):\n        # Code replaced for brevity. See node_id 7e97935e-4c1b-41b5-99ca-05c5310f1367\n\n    def __process_node__(\n        self, node: BaseNode, no_extension_path: str, file_node_id: str\n    ):\n        # Code replaced for brevity. See node_id ee72714e-bb02-4d2f-8e00-c949e3ad5d18\n\n    def _get_imports(self, path: str, file_node_id: str) -> dict:\n        # Code replaced for brevity. See node_id 5808f251-a3ab-422b-95f4-9390ec3916db",
+        "node_id": "87f88f4f-f107-4bca-8b23-20b2aba582c1",
+        "label": "CLASS"
+      }
+    },
+    {
+      "id": 62,
+      "properties": {
+        "path": "src.graph_construction.graph_file_parser.GraphFileParser.__init__",
+        "function_calls": [],
+        "signature": "def __init__(\n        self,\n        file_path: str,\n        root_path: str,\n        language: str,\n        directory_path: str,\n        visited_nodes: dict,\n        global_imports: dict,\n    ):",
+        "name": "__init__",
+        "text": "def __init__(\n        self,\n        file_path: str,\n        root_path: str,\n        language: str,\n        directory_path: str,\n        visited_nodes: dict,\n        global_imports: dict,\n    ):\n        self.file_path = file_path\n        self.language = language\n        self.directory_path = directory_path\n        self.visited_nodes = visited_nodes\n        self.global_imports = global_imports\n        self.root_path = root_path",
+        "node_id": "72e7854e-7ec5-4e42-b16c-93063e4ada5e",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 63,
+      "properties": {
+        "path": "src.graph_construction.graph_file_parser.GraphFileParser.parse",
+        "signature": "def parse(self):",
+        "name": "parse",
+        "text": "def parse(self):\n        path = Path(self.file_path)\n        if not path.exists():\n            print(f\"File {self.file_path} does not exist.\")\n            return\n        documents = SimpleDirectoryReader(\n            input_files=[path],\n            file_metadata=lambda x: {\"filepath\": x},\n        ).load_data()\n\n        code = CodeHierarchyNodeParser(\n            language=self.language,\n            chunk_min_characters=3,\n            code_splitter=CodeSplitter(\n                language=self.language, max_chars=10000, chunk_lines=10\n            ),\n        )\n        no_extension_path = self.file_path.replace(\".py\", \"\")\n\n        split_nodes = code.get_nodes_from_documents(documents)\n        node_list = []\n        edges_list = []\n\n        file_node, file_relations = self.__process_node__(\n            split_nodes.pop(0), no_extension_path, \"\"\n        )\n        file_node[\"directory\"] = self.directory_path\n        file_node[\"name\"] = os.path.basename(self.file_path)\n        node_list.append(file_node)\n        edges_list.extend(file_relations)\n\n        for node in split_nodes:\n            processed_node, relationships = self.__process_node__(\n                node, no_extension_path, file_node[\"attributes\"][\"node_id\"]\n            )\n            node_list.append(processed_node)\n            edges_list.extend(relationships)\n\n        imports = self._get_imports(str(path), node_list[0][\"attributes\"][\"node_id\"])\n\n        return node_list, edges_list, imports",
+        "node_id": "7e97935e-4c1b-41b5-99ca-05c5310f1367",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 64,
+      "properties": {
+        "path": "src.graph_construction.graph_file_parser.GraphFileParser.__process_node__",
+        "signature": "def __process_node__(\n        self, node: BaseNode, no_extension_path: str, file_node_id: str\n    ):",
+        "name": "__process_node__",
+        "text": "def __process_node__(\n        self, node: BaseNode, no_extension_path: str, file_node_id: str\n    ):\n        relationships = []\n        asignments_dict = {}\n        scope = (\n            node.metadata[\"inclusive_scopes\"][-1]\n            if node.metadata[\"inclusive_scopes\"]\n            else None\n        )\n        type_node = \"file\"\n        if scope:\n            type_node = scope[\"type\"]\n\n        if type_node == \"function_definition\":\n            function_calls = tree_parser.get_function_calls(node, asignments_dict)\n            processed_node = format_nodes.format_function_node(\n                node, scope, function_calls, file_node_id\n            )\n        elif type_node == \"class_definition\":\n            processed_node = format_nodes.format_class_node(node, scope, file_node_id)\n        else:\n            function_calls = tree_parser.get_function_calls(node, asignments_dict)\n            processed_node = format_nodes.format_file_node(\n                node, no_extension_path, function_calls\n            )\n\n        for relation in node.relationships.items():\n            if relation[0] == NodeRelationship.CHILD:\n                for child in relation[1]:\n                    relation_type = (\n                        child.metadata[\"inclusive_scopes\"][-1][\"type\"]\n                        if child.metadata[\"inclusive_scopes\"]\n                        else \"\"\n                    )\n                    relationships.append(\n                        {\n                            \"sourceId\": node.node_id,\n                            \"targetId\": child.node_id,\n                            \"type\": self.RELATIONS_TYPES_MAP.get(\n                                relation_type, \"UNKNOWN\"\n                            ),\n                        }\n                    )\n            elif relation[0] == NodeRelationship.PARENT:\n                if relation[1]:\n                    parent_path = self.visited_nodes.get(\n                        relation[1].node_id, no_extension_path\n                    ).replace(\"/\", \".\")\n                    node_path = f\"{parent_path}.{processed_node['attributes']['name']}\"\n                else:\n                    node_path = no_extension_path.replace(\"/\", \".\")\n        processed_node[\"attributes\"][\"path\"] = node_path\n        self.global_imports[node_path] = {\n            \"id\": processed_node[\"attributes\"][\"node_id\"],\n            \"type\": processed_node[\"type\"],\n        }\n        self.visited_nodes[node.node_id] = node_path\n        return processed_node, relationships",
+        "node_id": "ee72714e-bb02-4d2f-8e00-c949e3ad5d18",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 65,
+      "properties": {
+        "path": "src.graph_construction.graph_file_parser.GraphFileParser._get_imports",
+        "signature": "def _get_imports(self, path: str, file_node_id: str) -> dict:",
+        "name": "_get_imports",
+        "text": "def _get_imports(self, path: str, file_node_id: str) -> dict:\n        parser = tree_sitter_languages.get_parser(\"python\")\n        with open(path, \"r\") as file:\n            code = file.read()\n        tree = parser.parse(bytes(code, \"utf-8\"))\n\n        imports = {}\n        for node in tree.root_node.children:\n            if node.type == \"import_from_statement\":\n                import_statements = node.named_children\n\n                from_statement = import_statements[0]\n                from_text = from_statement.text.decode()\n                for import_statement in import_statements[1:]:\n                    imports[import_statement.text.decode()] = (\n                        tree_parser.resolve_import_path(from_text, path, self.root_path)\n                    )\n\n            elif node.type == \"import_statement\":\n                import_statement = node.named_children[0]\n                imports[\"global\"] = import_statement.text.decode()\n\n        return {file_node_id: imports}",
+        "node_id": "5808f251-a3ab-422b-95f4-9390ec3916db",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 97,
+      "properties": {
+        "path": "src.utils.format_nodes.format_function_node",
+        "function_calls": [],
+        "signature": "def format_function_node(\n    node: BaseNode, scope: dict, function_calls: list[str]\n) -> dict:",
+        "name": "format_function_node",
+        "text": "def format_function_node(\n    node: BaseNode, scope: dict, function_calls: list[str]\n) -> dict:\n    name = scope[\"name\"]\n    signature = scope[\"signature\"]\n\n    processed_node = {\n        \"type\": \"FUNCTION\",\n        \"attributes\": {\n            \"name\": name,\n            \"signature\": signature,\n            \"text\": node.text,\n            \"node_id\": node.node_id,\n            \"function_calls\": function_calls,\n        },\n    }\n\n    return processed_node",
+        "node_id": "94a9c838-f8f0-4fca-92f7-115dc757b8a3",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 98,
+      "properties": {
+        "path": "src.utils.format_nodes.format_class_node",
+        "function_calls": [],
+        "signature": "def format_class_node(node: BaseNode, scope: dict) -> dict:",
+        "name": "format_class_node",
+        "text": "def format_class_node(node: BaseNode, scope: dict) -> dict:\n    name = scope[\"name\"]\n    signature = scope[\"signature\"]\n\n    processed_node = {\n        \"type\": \"CLASS\",\n        \"attributes\": {\n            \"name\": name,\n            \"signature\": signature,\n            \"text\": node.text,\n            \"node_id\": node.node_id,\n        },\n    }\n\n    return processed_node",
+        "node_id": "5ba4c87f-cdf4-49e0-9415-db0cda007352",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 99,
+      "properties": {
+        "path": "src.utils.format_nodes.format_file_node",
+        "function_calls": [],
+        "signature": "def format_file_node(node: BaseNode) -> dict:",
+        "name": "format_file_node",
+        "text": "def format_file_node(node: BaseNode) -> dict:\n    processed_node = {\n        \"type\": \"FILE_ROOT\",\n        \"attributes\": {\n            \"text\": node.text,\n            \"node_id\": node.node_id,\n        },\n    }\n\n    return processed_node",
+        "node_id": "6eb1a8b7-996c-4adb-ae45-fdb6fe323b16",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 106,
+      "properties": {
+        "path": "src.utils.tree_parser.get_function_calls",
+        "signature": "def get_function_calls(node) -> list[str]:",
+        "name": "get_function_calls",
+        "text": "def get_function_calls(node) -> list[str]:\n    code_text = node.text\n\n    parser = tree_sitter_languages.get_parser(\"python\")\n    tree = parser.parse(bytes(code_text, \"utf-8\"))\n    node_names = map(lambda node: node, traverse_tree(tree))\n    function_calls = []\n    for tree_node in node_names:\n        if tree_node.type == \"call\":\n            function_calls.append(tree_node.text)\n\n    parsed_function_calls = map(\n        lambda x: parse_function_call(x, node.metadata[\"inclusive_scopes\"]),\n        function_calls,\n    )\n    \n\n    file_path = node.metadata[\"filepath\"].replace(\".py\", \"\").replace(\"/\", \".\")\n    filtered_calls = filter(lambda x: x[0] is not None, parsed_function_calls)\n    return list(map(lambda x: x[0], filtered_calls))",
+        "node_id": "c7efb6f4-5ed3-4cec-b408-a6d8f58235a7",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 69,
+      "properties": {
+        "path": "src.graph_construction.graph_builder.GraphConstructor.__init__",
+        "function_calls": [],
+        "signature": "def __init__(self, graph_manager):",
+        "name": "__init__",
+        "text": "def __init__(self, graph_manager):\n        self.graph_manager = graph_manager\n        self.directories_map = {}\n        self.visited_nodes = {}\n        self.global_imports = {}\n        self.root = None",
+        "node_id": "273d5bdd-d5ae-4d63-bb21-1cbef273a7de",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 70,
+      "properties": {
+        "path": "src.graph_construction.graph_builder.GraphConstructor._process_file",
+        "signature": "def _process_file(self, file_path, language, directory_path):",
+        "name": "_process_file",
+        "text": "def _process_file(self, file_path, language, directory_path):\n        path = Path(file_path)\n        if not path.exists():\n            print(f\"File {file_path} does not exist.\")\n            return\n        documents = SimpleDirectoryReader(\n            input_files=[path],\n            file_metadata=lambda x: {\"filepath\": x},\n        ).load_data()\n\n        code = CodeHierarchyNodeParser(\n            language=language,\n            chunk_min_characters=3,\n            code_splitter=CodeSplitter(\n                language=language, max_chars=10000, chunk_lines=10\n            ),\n        )\n        no_extension_path = file_path.replace(\".py\", \"\")\n\n        split_nodes = code.get_nodes_from_documents(documents)\n        node_list = []\n        edges_list = []\n        for node in split_nodes:\n            processed_node, relationships = self.__process_node__(node, no_extension_path)\n            node_list.append(processed_node)\n            edges_list.extend(relationships)\n        imports, _ = self._get_imports(path)\n\n        node_list[0][\"attributes\"][\"directory\"] = directory_path\n        node_list[0][\"imports\"] = imports\n        node_list[0][\"attributes\"][\"name\"] = os.path.basename(file_path)\n\n        return node_list, edges_list",
+        "node_id": "d01e5127-bad2-4d28-8bf7-e94fcec60f98",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 71,
+      "properties": {
+        "path": "src.graph_construction.graph_builder.GraphConstructor.__process_node__",
+        "signature": "def __process_node__(self, node: BaseNode, no_extension_path: str):",
+        "name": "__process_node__",
+        "text": "def __process_node__(self, node: BaseNode, no_extension_path: str):\n        relationships = []\n        scope = (\n            node.metadata[\"inclusive_scopes\"][-1]\n            if node.metadata[\"inclusive_scopes\"]\n            else None\n        )\n        type_node = \"file\"\n        if scope:\n            type_node = scope[\"type\"]\n\n        if type_node == \"function_definition\":\n            function_calls = tree_parser.get_function_calls(node)\n            processed_node = format_nodes.format_function_node(\n                node, scope, function_calls\n            )\n        elif type_node == \"class_definition\":\n            processed_node = format_nodes.format_class_node(node, scope)\n        else:\n            processed_node = format_nodes.format_file_node(node)\n\n        for relation in node.relationships.items():\n            if relation[0] == NodeRelationship.CHILD:\n                for child in relation[1]:\n                    relation_type = (\n                        child.metadata[\"inclusive_scopes\"][-1][\"type\"]\n                        if child.metadata[\"inclusive_scopes\"]\n                        else \"\"\n                    )\n                    relationships.append(\n                        {\n                            \"sourceId\": node.node_id,\n                            \"targetId\": child.node_id,\n                            \"type\": self.RELATIONS_TYPES_MAP.get(\n                                relation_type, \"UNKNOWN\"\n                            ),\n                        }\n                    )\n            elif relation[0] == NodeRelationship.PARENT:\n                if relation[1]:\n                    parent_path = self.visited_nodes.get(relation[1].node_id, no_extension_path).replace(\"/\", \".\")\n                    node_path = f\"{parent_path}.{processed_node['attributes']['name']}\"\n                else:\n                    node_path = no_extension_path.replace(\"/\", \".\")\n        processed_node['attributes'][\"path\"] = node_path\n        self.global_imports[node_path] = node.node_id\n        self.visited_nodes[node.node_id] = node_path\n        return processed_node, relationships",
+        "node_id": "12499fef-6a34-4c19-be1a-242c75fd5d5e",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 72,
+      "properties": {
+        "path": "src.graph_construction.graph_builder.GraphConstructor._scan_directory",
+        "signature": "def _scan_directory(\n        self,\n        path,\n        language=\"python\",\n        nodes=[],\n        relationships=[],\n        parent_id=None,\n    ):",
+        "name": "_scan_directory",
+        "text": "def _scan_directory(\n        self,\n        path,\n        language=\"python\",\n        nodes=[],\n        relationships=[],\n        parent_id=None,\n    ):\n        if self.root is None:\n            self.root = path\n        package = False\n        init_py_path = os.path.join(path, \"__init__.py\")\n        if os.path.exists(init_py_path):\n            package = True\n\n        directory_node = format_nodes.format_directory_node(path, package)\n        directory_path = directory_node[\"attributes\"][\"path\"]\n        directory_node_id = directory_node[\"attributes\"][\"node_id\"]\n\n        if parent_id is not None:\n            relationships.append(\n                {\n                    \"sourceId\": parent_id,\n                    \"targetId\": directory_node_id,\n                    \"type\": \"contains\",\n                }\n            )\n\n        nodes.append(directory_node)\n        for entry in os.scandir(path):\n            if entry.is_file():\n                if entry.name.endswith(\".py\") and not entry.name == (\"__init__.py\"):\n                    entry_name = entry.name.split(\".py\")[0]\n                    processed_nodes, relations = self._process_file(\n                        entry.path, language, directory_node[\"attributes\"][\"path\"]\n                    )\n                    file_root_node_id = processed_nodes[0][\"attributes\"][\"node_id\"]\n\n                    nodes.extend(processed_nodes)\n                    relationships.extend(relations)\n                    relationships.append(\n                        {\n                            \"sourceId\": directory_node_id,\n                            \"targetId\": file_root_node_id,\n                            \"type\": \"contains\",\n                        }\n                    )\n                    global_import_key = (directory_path + entry_name).replace(\"/\", \".\")\n                    self.global_imports[global_import_key] = file_root_node_id\n                else:\n                    file_node = {\n                        \"type\": \"FILE\",\n                        \"attributes\": {\n                            \"path\": entry.path,\n                            \"name\": entry.name,\n                            \"node_id\": str(uuid.uuid4()),\n                        },\n                    }\n                    nodes.append(file_node)\n                    relationships.append(\n                        {\n                            \"sourceId\": directory_node_id,\n                            \"targetId\": file_node[\"attributes\"][\"node_id\"],\n                            \"type\": \"CONTAINS\",\n                        }\n                    )\n            if entry.is_dir():\n                nodes, relationships = self._scan_directory(\n                    entry.path,\n                    language,\n                    nodes,\n                    relationships,\n                    directory_node_id,\n                )\n        return nodes, relationships",
+        "node_id": "8b57dc62-a2cf-4b2c-87be-113c29461ed4",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 73,
+      "properties": {
+        "path": "src.graph_construction.graph_builder.GraphConstructor._relate_imports",
+        "signature": "def _relate_imports(self, node_list):",
+        "name": "_relate_imports",
+        "text": "def _relate_imports(self, node_list):\n        import_edges = []\n        for node in node_list:\n            if node.get(\"imports\") is not None:\n                for imp in node[\"imports\"]:\n                    for key in self.global_imports.keys():\n                        if key.endswith(imp):\n                            import_edges.append(\n                                {\n                                    \"sourceId\": node[\"attributes\"][\"node_id\"],\n                                    \"targetId\": self.global_imports[key],\n                                    \"type\": \"IMPORTS\",\n                                }\n                            )\n                            print(\"added edge\", key)\n                del node[\"imports\"]\n\n        return import_edges",
+        "node_id": "ca2ae36c-2a57-4a27-9a31-1ce935d801fc",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 74,
+      "properties": {
+        "path": "src.graph_construction.graph_builder.GraphConstructor._get_imports",
+        "signature": "def _get_imports(self, path):",
+        "name": "_get_imports",
+        "text": "def _get_imports(self, path):\n        parser = tree_sitter_languages.get_parser(\"python\")\n        with open(path, \"r\") as file:\n            code = file.read()\n        tree = parser.parse(bytes(code, \"utf-8\"))\n\n        imports = set()\n        relative_imports = set()\n        for node in tree.root_node.children:\n            if node.type == \"import_from_statement\":\n                from_import = \"\"\n                for child in node.children:\n                    if not from_import:\n                        if child.type == \"dotted_name\":\n                            from_import = child.text.decode()\n                        elif child.type == \"relative_import\":\n                            relative_imports.add(child.text.decode())\n                            from_import = child.text.decode()\n\n                    else:\n                        if child.type == \"dotted_name\":\n                            imports.add(f\"{from_import}.{child.text.decode()}\")\n\n            elif node.type == \"import_statement\":\n                for child in node.children:\n                    if child.type == \"dotted_name\":\n                        imports.add(child.text.decode())\n        return imports, relative_imports",
+        "node_id": "36cc3641-6371-4520-b72f-875fc3ec685e",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 75,
+      "properties": {
+        "path": "src.graph_construction.graph_builder.GraphConstructor._relate_function_calls",
+        "signature": "def _relate_function_calls(self, node_list):",
+        "name": "_relate_function_calls",
+        "text": "def _relate_function_calls(self, node_list):\n        function_calls_relations = []\n        for node in node_list:\n            function_calls = node[\"attributes\"].get(\"function_calls\")\n            if function_calls:\n                for call in function_calls:\n                    for key in self.global_imports.keys():\n                        if key.endswith(call):\n                            function_calls_relations.append(\n                                {\n                                    \"sourceId\": node[\"attributes\"][\"node_id\"],\n                                    \"targetId\": self.global_imports[key],\n                                    \"type\": \"CALLS\",\n                                }\n                            )\n                            print(\"added edge\", call)\n                del node[\"attributes\"][\"function_calls\"]\n\n        return function_calls_relations",
+        "node_id": "1b503970-7e9f-4f96-84d4-a6bdaf6a79c4",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 76,
+      "properties": {
+        "path": "src.graph_construction.graph_builder.GraphConstructor.build_graph",
+        "signature": "def build_graph(self, path, language):\n\n        # process every node to create the graph structure",
+        "name": "build_graph",
+        "text": "def build_graph(self, path, language):\n\n        # process every node to create the graph structure\n        nodes, relationships = self._scan_directory(path, language)\n        # relate imports between file nodes\n        relationships.extend(self._relate_imports(nodes))\n        # relate functions calls\n        relationships.extend(self._relate_function_calls(nodes))\n\n        self.graph_manager.create_nodes(nodes)\n        self.graph_manager.create_edges(relationships)",
+        "node_id": "752d1926-be18-4571-aeff-daa72ce6266b",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 100,
+      "properties": {
+        "path": "src.utils.format_nodes.format_directory_node",
+        "signature": "def format_directory_node(path: str, package: bool) -> dict:",
+        "name": "format_directory_node",
+        "text": "def format_directory_node(path: str, package: bool) -> dict:\n    processed_node = {\n        \"attributes\": {\n            \"path\": path + \"/\",\n            \"name\": os.path.basename(path),\n            \"node_id\": str(uuid.uuid4),\n        },\n        \"type\": \"PACKAGE\" if package else \"FOLDER\",\n    }\n\n    return processed_node",
+        "node_id": "08e93c87-6562-486a-9ec1-a561c3b650d6",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 103,
+      "properties": {
+        "path": "src.utils.tree_parser.traverse_tree",
+        "signature": "def traverse_tree(tree):",
+        "name": "traverse_tree",
+        "text": "def traverse_tree(tree):\n    cursor = tree.walk()\n    visited_children = False\n    while True:\n        if not visited_children:\n            yield cursor.node\n            if not cursor.goto_first_child():\n                visited_children = True\n        elif cursor.goto_next_sibling():\n            visited_children = False\n        elif not cursor.goto_parent():\n            break",
+        "node_id": "d19b2b2c-ddaf-4344-92e2-18412166c9e7",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 104,
+      "properties": {
+        "path": "src.utils.tree_parser.count_parameters",
+        "signature": "def count_parameters(params_str):\n    # Count parameters considering string literals and ignoring commas within them.\n    # This simplistic approach assumes balanced quotes and no escaped quotes within strings.",
+        "name": "count_parameters",
+        "text": "def count_parameters(params_str):\n    # Count parameters considering string literals and ignoring commas within them.\n    # This simplistic approach assumes balanced quotes and no escaped quotes within strings.\n    in_string = False\n    param_count = (\n        0 if not params_str else 1\n    )  # Start with 1 parameter if the string is not empty\n\n    for char in params_str:\n        if char == '\"':\n            in_string = not in_string  # Toggle state\n        elif char == \",\" and not in_string:\n            param_count += (\n                1  # Count commas outside of string literals as parameter separators\n            )\n\n    # Edge case for empty parameter list or only spaces\n    if param_count == 1 and not params_str.strip():\n        return 0\n\n    return param_count",
+        "node_id": "ac5ba7c4-9fd2-47a8-8db5-3f1969d76e6c",
+        "label": "FUNCTION"
+      }
+    },
+    {
+      "id": 105,
+      "properties": {
+        "path": "src.utils.tree_parser.parse_function_call",
+        "signature": "def parse_function_call(func_call_bytes: bytes, inclusive_scopes) -> tuple[str, int]:\n    # Regular expression to match a single function call.\n    # It captures the function name and its parameters.",
+        "name": "parse_function_call",
+        "text": "def parse_function_call(func_call_bytes: bytes, inclusive_scopes) -> tuple[str, int]:\n    # Regular expression to match a single function call.\n    # It captures the function name and its parameters.\n    pattern = re.compile(r\"^([\\w\\.]+)\\(([^)]*)\\)$\")\n\n    func_call_str = func_call_bytes.decode(\"utf-8\")\n    match = pattern.match(func_call_str)\n    if match:\n        func_name = match.group(1)  # The function name\n        params_str = match.group(2)  # The parameters as a single string\n\n        num_params = count_parameters(params_str)\n        if \"self.\" in func_name:\n            for parent in reversed(inclusive_scopes[:-1]):\n                if parent[\"type\"] == \"class_definition\":\n                    func_name = func_name.replace(\"self.\", parent[\"name\"] + \".\")\n                    break\n\n        return func_name, num_params\n    else:\n        return None, None",
+        "node_id": "9e6eeefd-1cff-4568-af2f-0f7b8bd8fe66",
+        "label": "FUNCTION"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": 1152923703630102537,
+      "start": 9,
+      "end": 10,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1157427303257473033,
+      "start": 9,
+      "end": 12,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1173189901953269769,
+      "start": 9,
+      "end": 12,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1186700700835381257,
+      "start": 9,
+      "end": 12,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1206966899158548489,
+      "start": 9,
+      "end": 12,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1220477698040659977,
+      "start": 9,
+      "end": 12,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1168686302325899273,
+      "start": 9,
+      "end": 13,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1159679103071158281,
+      "start": 9,
+      "end": 21,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1175441701766955017,
+      "start": 9,
+      "end": 21,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1188952500649066505,
+      "start": 9,
+      "end": 21,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1209218698972233737,
+      "start": 9,
+      "end": 21,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1222729497854345225,
+      "start": 9,
+      "end": 21,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1161930902884843529,
+      "start": 9,
+      "end": 22,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1177693501580640265,
+      "start": 9,
+      "end": 22,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1191204300462751753,
+      "start": 9,
+      "end": 22,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1211470498785918985,
+      "start": 9,
+      "end": 22,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1224981297668030473,
+      "start": 9,
+      "end": 22,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1197959699903807497,
+      "start": 9,
+      "end": 28,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1200211499717492745,
+      "start": 9,
+      "end": 60,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1202463299531177993,
+      "start": 9,
+      "end": 67,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1164182702698528777,
+      "start": 9,
+      "end": 77,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1179945301394325513,
+      "start": 9,
+      "end": 77,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1193456100276437001,
+      "start": 9,
+      "end": 77,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1213722298599604233,
+      "start": 9,
+      "end": 77,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1227233097481715721,
+      "start": 9,
+      "end": 77,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1166434502512214025,
+      "start": 9,
+      "end": 78,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1182197101208010761,
+      "start": 9,
+      "end": 78,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1195707900090122249,
+      "start": 9,
+      "end": 78,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1215974098413289481,
+      "start": 9,
+      "end": 78,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1229484897295400969,
+      "start": 9,
+      "end": 78,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1231736697109086217,
+      "start": 9,
+      "end": 85,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1233988496922771465,
+      "start": 9,
+      "end": 86,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1236240296736456713,
+      "start": 9,
+      "end": 102,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1155175503443787785,
+      "start": 9,
+      "end": 9,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1170938102139584521,
+      "start": 9,
+      "end": 9,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1184448901021696009,
+      "start": 9,
+      "end": 9,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1204715099344863241,
+      "start": 9,
+      "end": 9,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1218225898226974729,
+      "start": 9,
+      "end": 9,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1152927002164985865,
+      "start": 9,
+      "end": 11,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1155178801978671113,
+      "start": 9,
+      "end": 23,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1157430601792356361,
+      "start": 9,
+      "end": 25,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1159682401606041609,
+      "start": 9,
+      "end": 26,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1161934201419726857,
+      "start": 9,
+      "end": 66,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1164186001233412105,
+      "start": 9,
+      "end": 79,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1166437801047097353,
+      "start": 9,
+      "end": 80,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1168689600860782601,
+      "start": 9,
+      "end": 81,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1170941400674467849,
+      "start": 9,
+      "end": 101,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1152928101676613642,
+      "start": 10,
+      "end": 29,
+      "properties": { "label": "IMPORTS" }
+    },
+    {
+      "id": 1155179901490298890,
+      "start": 10,
+      "end": 68,
+      "properties": { "label": "IMPORTS" }
+    },
+    {
+      "id": 1155175503443787788,
+      "start": 12,
+      "end": 9,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1170938102139584524,
+      "start": 12,
+      "end": 9,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1184448901021696012,
+      "start": 12,
+      "end": 9,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1204715099344863244,
+      "start": 12,
+      "end": 9,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1218225898226974732,
+      "start": 12,
+      "end": 9,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1152923703630102540,
+      "start": 12,
+      "end": 10,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1168686302325899276,
+      "start": 12,
+      "end": 13,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1159679103071158284,
+      "start": 12,
+      "end": 21,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1175441701766955020,
+      "start": 12,
+      "end": 21,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1188952500649066508,
+      "start": 12,
+      "end": 21,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1209218698972233740,
+      "start": 12,
+      "end": 21,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1222729497854345228,
+      "start": 12,
+      "end": 21,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1161930902884843532,
+      "start": 12,
+      "end": 22,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1177693501580640268,
+      "start": 12,
+      "end": 22,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1191204300462751756,
+      "start": 12,
+      "end": 22,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1211470498785918988,
+      "start": 12,
+      "end": 22,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1224981297668030476,
+      "start": 12,
+      "end": 22,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1197959699903807500,
+      "start": 12,
+      "end": 28,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1200211499717492748,
+      "start": 12,
+      "end": 60,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1202463299531177996,
+      "start": 12,
+      "end": 67,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1164182702698528780,
+      "start": 12,
+      "end": 77,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1179945301394325516,
+      "start": 12,
+      "end": 77,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1193456100276437004,
+      "start": 12,
+      "end": 77,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1213722298599604236,
+      "start": 12,
+      "end": 77,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1227233097481715724,
+      "start": 12,
+      "end": 77,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1166434502512214028,
+      "start": 12,
+      "end": 78,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1182197101208010764,
+      "start": 12,
+      "end": 78,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1195707900090122252,
+      "start": 12,
+      "end": 78,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1215974098413289484,
+      "start": 12,
+      "end": 78,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1229484897295400972,
+      "start": 12,
+      "end": 78,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1231736697109086220,
+      "start": 12,
+      "end": 85,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1233988496922771468,
+      "start": 12,
+      "end": 86,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1236240296736456716,
+      "start": 12,
+      "end": 102,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1157427303257473036,
+      "start": 12,
+      "end": 12,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1173189901953269772,
+      "start": 12,
+      "end": 12,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1186700700835381260,
+      "start": 12,
+      "end": 12,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1206966899158548492,
+      "start": 12,
+      "end": 12,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1220477698040659980,
+      "start": 12,
+      "end": 12,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1152927002164985868,
+      "start": 12,
+      "end": 11,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1155178801978671116,
+      "start": 12,
+      "end": 23,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1157430601792356364,
+      "start": 12,
+      "end": 25,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1159682401606041612,
+      "start": 12,
+      "end": 26,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1161934201419726860,
+      "start": 12,
+      "end": 66,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1164186001233412108,
+      "start": 12,
+      "end": 79,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1166437801047097356,
+      "start": 12,
+      "end": 80,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1168689600860782604,
+      "start": 12,
+      "end": 81,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1170941400674467852,
+      "start": 12,
+      "end": 101,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1152924803141730317,
+      "start": 13,
+      "end": 14,
+      "properties": { "label": "CLASS_DEFINITION" }
+    },
+    {
+      "id": 1152925902653358094,
+      "start": 14,
+      "end": 15,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1155177702467043342,
+      "start": 14,
+      "end": 17,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1157429502280728590,
+      "start": 14,
+      "end": 18,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1159681302094413838,
+      "start": 14,
+      "end": 20,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1152925902653358095,
+      "start": 15,
+      "end": 16,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1152929201188241423,
+      "start": 15,
+      "end": 16,
+      "properties": { "label": "CALLS" }
+    },
+    {
+      "id": 1155181001001926671,
+      "start": 15,
+      "end": 20,
+      "properties": { "label": "CALLS" }
+    },
+    {
+      "id": 1157432800815611919,
+      "start": 15,
+      "end": 20,
+      "properties": { "label": "CALLS" }
+    },
+    {
+      "id": 1152929201188241424,
+      "start": 16,
+      "end": 18,
+      "properties": { "label": "CALLS" }
+    },
+    {
+      "id": 1155175503443787797,
+      "start": 21,
+      "end": 9,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1170938102139584533,
+      "start": 21,
+      "end": 9,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1184448901021696021,
+      "start": 21,
+      "end": 9,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1204715099344863253,
+      "start": 21,
+      "end": 9,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1218225898226974741,
+      "start": 21,
+      "end": 9,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1152923703630102549,
+      "start": 21,
+      "end": 10,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1157427303257473045,
+      "start": 21,
+      "end": 12,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1173189901953269781,
+      "start": 21,
+      "end": 12,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1186700700835381269,
+      "start": 21,
+      "end": 12,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1206966899158548501,
+      "start": 21,
+      "end": 12,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1220477698040659989,
+      "start": 21,
+      "end": 12,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1168686302325899285,
+      "start": 21,
+      "end": 13,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1161930902884843541,
+      "start": 21,
+      "end": 22,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1177693501580640277,
+      "start": 21,
+      "end": 22,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1191204300462751765,
+      "start": 21,
+      "end": 22,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1211470498785918997,
+      "start": 21,
+      "end": 22,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1224981297668030485,
+      "start": 21,
+      "end": 22,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1197959699903807509,
+      "start": 21,
+      "end": 28,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1200211499717492757,
+      "start": 21,
+      "end": 60,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1202463299531178005,
+      "start": 21,
+      "end": 67,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1164182702698528789,
+      "start": 21,
+      "end": 77,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1179945301394325525,
+      "start": 21,
+      "end": 77,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1193456100276437013,
+      "start": 21,
+      "end": 77,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1213722298599604245,
+      "start": 21,
+      "end": 77,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1227233097481715733,
+      "start": 21,
+      "end": 77,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1166434502512214037,
+      "start": 21,
+      "end": 78,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1182197101208010773,
+      "start": 21,
+      "end": 78,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1195707900090122261,
+      "start": 21,
+      "end": 78,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1215974098413289493,
+      "start": 21,
+      "end": 78,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1229484897295400981,
+      "start": 21,
+      "end": 78,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1231736697109086229,
+      "start": 21,
+      "end": 85,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1233988496922771477,
+      "start": 21,
+      "end": 86,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1236240296736456725,
+      "start": 21,
+      "end": 102,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1159679103071158293,
+      "start": 21,
+      "end": 21,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1175441701766955029,
+      "start": 21,
+      "end": 21,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1188952500649066517,
+      "start": 21,
+      "end": 21,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1209218698972233749,
+      "start": 21,
+      "end": 21,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1222729497854345237,
+      "start": 21,
+      "end": 21,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1152927002164985877,
+      "start": 21,
+      "end": 11,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1155178801978671125,
+      "start": 21,
+      "end": 23,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1157430601792356373,
+      "start": 21,
+      "end": 25,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1159682401606041621,
+      "start": 21,
+      "end": 26,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1161934201419726869,
+      "start": 21,
+      "end": 66,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1164186001233412117,
+      "start": 21,
+      "end": 79,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1166437801047097365,
+      "start": 21,
+      "end": 80,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1168689600860782613,
+      "start": 21,
+      "end": 81,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1170941400674467861,
+      "start": 21,
+      "end": 101,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1155175503443787798,
+      "start": 22,
+      "end": 9,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1170938102139584534,
+      "start": 22,
+      "end": 9,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1184448901021696022,
+      "start": 22,
+      "end": 9,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1204715099344863254,
+      "start": 22,
+      "end": 9,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1218225898226974742,
+      "start": 22,
+      "end": 9,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1152923703630102550,
+      "start": 22,
+      "end": 10,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1157427303257473046,
+      "start": 22,
+      "end": 12,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1173189901953269782,
+      "start": 22,
+      "end": 12,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1186700700835381270,
+      "start": 22,
+      "end": 12,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1206966899158548502,
+      "start": 22,
+      "end": 12,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1220477698040659990,
+      "start": 22,
+      "end": 12,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1168686302325899286,
+      "start": 22,
+      "end": 13,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1159679103071158294,
+      "start": 22,
+      "end": 21,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1175441701766955030,
+      "start": 22,
+      "end": 21,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1188952500649066518,
+      "start": 22,
+      "end": 21,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1209218698972233750,
+      "start": 22,
+      "end": 21,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1222729497854345238,
+      "start": 22,
+      "end": 21,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1197959699903807510,
+      "start": 22,
+      "end": 28,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1200211499717492758,
+      "start": 22,
+      "end": 60,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1202463299531178006,
+      "start": 22,
+      "end": 67,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1164182702698528790,
+      "start": 22,
+      "end": 77,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1179945301394325526,
+      "start": 22,
+      "end": 77,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1193456100276437014,
+      "start": 22,
+      "end": 77,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1213722298599604246,
+      "start": 22,
+      "end": 77,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1227233097481715734,
+      "start": 22,
+      "end": 77,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1166434502512214038,
+      "start": 22,
+      "end": 78,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1182197101208010774,
+      "start": 22,
+      "end": 78,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1195707900090122262,
+      "start": 22,
+      "end": 78,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1215974098413289494,
+      "start": 22,
+      "end": 78,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1229484897295400982,
+      "start": 22,
+      "end": 78,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1231736697109086230,
+      "start": 22,
+      "end": 85,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1233988496922771478,
+      "start": 22,
+      "end": 86,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1236240296736456726,
+      "start": 22,
+      "end": 102,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1161930902884843542,
+      "start": 22,
+      "end": 22,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1177693501580640278,
+      "start": 22,
+      "end": 22,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1191204300462751766,
+      "start": 22,
+      "end": 22,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1211470498785918998,
+      "start": 22,
+      "end": 22,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1224981297668030486,
+      "start": 22,
+      "end": 22,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1152927002164985878,
+      "start": 22,
+      "end": 11,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1155178801978671126,
+      "start": 22,
+      "end": 23,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1157430601792356374,
+      "start": 22,
+      "end": 25,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1159682401606041622,
+      "start": 22,
+      "end": 26,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1161934201419726870,
+      "start": 22,
+      "end": 66,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1164186001233412118,
+      "start": 22,
+      "end": 79,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1166437801047097366,
+      "start": 22,
+      "end": 80,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1168689600860782614,
+      "start": 22,
+      "end": 81,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1170941400674467862,
+      "start": 22,
+      "end": 101,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1152924803141730332,
+      "start": 28,
+      "end": 29,
+      "properties": { "label": "CLASS_DEFINITION" }
+    },
+    {
+      "id": 1152925902653358109,
+      "start": 29,
+      "end": 30,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1155177702467043357,
+      "start": 29,
+      "end": 42,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1157429502280728605,
+      "start": 29,
+      "end": 52,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1159681302094413853,
+      "start": 29,
+      "end": 53,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1161933101908099101,
+      "start": 29,
+      "end": 54,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1164184901721784349,
+      "start": 29,
+      "end": 55,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1166436701535469597,
+      "start": 29,
+      "end": 56,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1168688501349154845,
+      "start": 29,
+      "end": 57,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1170940301162840093,
+      "start": 29,
+      "end": 58,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1173192100976525341,
+      "start": 29,
+      "end": 59,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1152929201188241438,
+      "start": 30,
+      "end": 42,
+      "properties": { "label": "CALLS" }
+    },
+    {
+      "id": 1152929201188241464,
+      "start": 56,
+      "end": 55,
+      "properties": { "label": "CALLS" }
+    },
+    {
+      "id": 1155181001001926712,
+      "start": 56,
+      "end": 57,
+      "properties": { "label": "CALLS" }
+    },
+    {
+      "id": 1152924803141730364,
+      "start": 60,
+      "end": 61,
+      "properties": { "label": "CLASS_DEFINITION" }
+    },
+    {
+      "id": 1152925902653358141,
+      "start": 61,
+      "end": 62,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1155177702467043389,
+      "start": 61,
+      "end": 63,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1157429502280728637,
+      "start": 61,
+      "end": 64,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1159681302094413885,
+      "start": 61,
+      "end": 65,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1152929201188241471,
+      "start": 63,
+      "end": 64,
+      "properties": { "label": "CALLS" }
+    },
+    {
+      "id": 1155181001001926720,
+      "start": 64,
+      "end": 97,
+      "properties": { "label": "CALLS" }
+    },
+    {
+      "id": 1157432800815611968,
+      "start": 64,
+      "end": 98,
+      "properties": { "label": "CALLS" }
+    },
+    {
+      "id": 1161936400442982464,
+      "start": 64,
+      "end": 99,
+      "properties": { "label": "CALLS" }
+    },
+    {
+      "id": 1152929201188241472,
+      "start": 64,
+      "end": 106,
+      "properties": { "label": "CALLS" }
+    },
+    {
+      "id": 1159684600629297216,
+      "start": 64,
+      "end": 106,
+      "properties": { "label": "CALLS" }
+    },
+    {
+      "id": 1152924803141730371,
+      "start": 67,
+      "end": 68,
+      "properties": { "label": "CLASS_DEFINITION" }
+    },
+    {
+      "id": 1152928101676613699,
+      "start": 67,
+      "end": 86,
+      "properties": { "label": "IMPORTS" }
+    },
+    {
+      "id": 1155179901490298947,
+      "start": 67,
+      "end": 102,
+      "properties": { "label": "IMPORTS" }
+    },
+    {
+      "id": 1152925902653358148,
+      "start": 68,
+      "end": 69,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1155177702467043396,
+      "start": 68,
+      "end": 70,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1157429502280728644,
+      "start": 68,
+      "end": 71,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1159681302094413892,
+      "start": 68,
+      "end": 72,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1161933101908099140,
+      "start": 68,
+      "end": 73,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1164184901721784388,
+      "start": 68,
+      "end": 74,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1166436701535469636,
+      "start": 68,
+      "end": 75,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1168688501349154884,
+      "start": 68,
+      "end": 76,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1152929201188241478,
+      "start": 70,
+      "end": 71,
+      "properties": { "label": "CALLS" }
+    },
+    {
+      "id": 1155181001001926726,
+      "start": 70,
+      "end": 74,
+      "properties": { "label": "CALLS" }
+    },
+    {
+      "id": 1155181001001926727,
+      "start": 71,
+      "end": 97,
+      "properties": { "label": "CALLS" }
+    },
+    {
+      "id": 1157432800815611975,
+      "start": 71,
+      "end": 98,
+      "properties": { "label": "CALLS" }
+    },
+    {
+      "id": 1159684600629297223,
+      "start": 71,
+      "end": 99,
+      "properties": { "label": "CALLS" }
+    },
+    {
+      "id": 1152929201188241479,
+      "start": 71,
+      "end": 106,
+      "properties": { "label": "CALLS" }
+    },
+    {
+      "id": 1155181001001926728,
+      "start": 72,
+      "end": 70,
+      "properties": { "label": "CALLS" }
+    },
+    {
+      "id": 1152929201188241480,
+      "start": 72,
+      "end": 100,
+      "properties": { "label": "CALLS" }
+    },
+    {
+      "id": 1157432800815611976,
+      "start": 72,
+      "end": 72,
+      "properties": { "label": "CALLS" }
+    },
+    {
+      "id": 6924292123663532104,
+      "start": 76,
+      "end": 72,
+      "properties": { "label": "CALLS" }
+    },
+    {
+      "id": 1152929201188241484,
+      "start": 76,
+      "end": 73,
+      "properties": { "label": "CALLS" }
+    },
+    {
+      "id": 1155181001001926732,
+      "start": 76,
+      "end": 75,
+      "properties": { "label": "CALLS" }
+    },
+    {
+      "id": 1155175503443787853,
+      "start": 77,
+      "end": 9,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1170938102139584589,
+      "start": 77,
+      "end": 9,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1184448901021696077,
+      "start": 77,
+      "end": 9,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1204715099344863309,
+      "start": 77,
+      "end": 9,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1218225898226974797,
+      "start": 77,
+      "end": 9,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1152923703630102605,
+      "start": 77,
+      "end": 10,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1157427303257473101,
+      "start": 77,
+      "end": 12,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1173189901953269837,
+      "start": 77,
+      "end": 12,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1186700700835381325,
+      "start": 77,
+      "end": 12,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1206966899158548557,
+      "start": 77,
+      "end": 12,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1220477698040660045,
+      "start": 77,
+      "end": 12,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1168686302325899341,
+      "start": 77,
+      "end": 13,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1159679103071158349,
+      "start": 77,
+      "end": 21,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1175441701766955085,
+      "start": 77,
+      "end": 21,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1188952500649066573,
+      "start": 77,
+      "end": 21,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1209218698972233805,
+      "start": 77,
+      "end": 21,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1222729497854345293,
+      "start": 77,
+      "end": 21,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1161930902884843597,
+      "start": 77,
+      "end": 22,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1177693501580640333,
+      "start": 77,
+      "end": 22,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1191204300462751821,
+      "start": 77,
+      "end": 22,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1211470498785919053,
+      "start": 77,
+      "end": 22,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1224981297668030541,
+      "start": 77,
+      "end": 22,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1197959699903807565,
+      "start": 77,
+      "end": 28,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1200211499717492813,
+      "start": 77,
+      "end": 60,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1202463299531178061,
+      "start": 77,
+      "end": 67,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1166434502512214093,
+      "start": 77,
+      "end": 78,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1182197101208010829,
+      "start": 77,
+      "end": 78,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1195707900090122317,
+      "start": 77,
+      "end": 78,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1215974098413289549,
+      "start": 77,
+      "end": 78,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1229484897295401037,
+      "start": 77,
+      "end": 78,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1231736697109086285,
+      "start": 77,
+      "end": 85,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1233988496922771533,
+      "start": 77,
+      "end": 86,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1236240296736456781,
+      "start": 77,
+      "end": 102,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1164182702698528845,
+      "start": 77,
+      "end": 77,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1179945301394325581,
+      "start": 77,
+      "end": 77,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1193456100276437069,
+      "start": 77,
+      "end": 77,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1213722298599604301,
+      "start": 77,
+      "end": 77,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1227233097481715789,
+      "start": 77,
+      "end": 77,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1152927002164985933,
+      "start": 77,
+      "end": 11,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1155178801978671181,
+      "start": 77,
+      "end": 23,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1157430601792356429,
+      "start": 77,
+      "end": 25,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1159682401606041677,
+      "start": 77,
+      "end": 26,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1161934201419726925,
+      "start": 77,
+      "end": 66,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1164186001233412173,
+      "start": 77,
+      "end": 79,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1166437801047097421,
+      "start": 77,
+      "end": 80,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1168689600860782669,
+      "start": 77,
+      "end": 81,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1170941400674467917,
+      "start": 77,
+      "end": 101,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1155175503443787854,
+      "start": 78,
+      "end": 9,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1170938102139584590,
+      "start": 78,
+      "end": 9,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1184448901021696078,
+      "start": 78,
+      "end": 9,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1204715099344863310,
+      "start": 78,
+      "end": 9,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1218225898226974798,
+      "start": 78,
+      "end": 9,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1152923703630102606,
+      "start": 78,
+      "end": 10,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1157427303257473102,
+      "start": 78,
+      "end": 12,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1173189901953269838,
+      "start": 78,
+      "end": 12,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1186700700835381326,
+      "start": 78,
+      "end": 12,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1206966899158548558,
+      "start": 78,
+      "end": 12,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1220477698040660046,
+      "start": 78,
+      "end": 12,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1168686302325899342,
+      "start": 78,
+      "end": 13,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1159679103071158350,
+      "start": 78,
+      "end": 21,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1175441701766955086,
+      "start": 78,
+      "end": 21,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1188952500649066574,
+      "start": 78,
+      "end": 21,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1209218698972233806,
+      "start": 78,
+      "end": 21,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1222729497854345294,
+      "start": 78,
+      "end": 21,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1161930902884843598,
+      "start": 78,
+      "end": 22,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1177693501580640334,
+      "start": 78,
+      "end": 22,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1191204300462751822,
+      "start": 78,
+      "end": 22,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1211470498785919054,
+      "start": 78,
+      "end": 22,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1224981297668030542,
+      "start": 78,
+      "end": 22,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1197959699903807566,
+      "start": 78,
+      "end": 28,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1200211499717492814,
+      "start": 78,
+      "end": 60,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1202463299531178062,
+      "start": 78,
+      "end": 67,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1164182702698528846,
+      "start": 78,
+      "end": 77,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1179945301394325582,
+      "start": 78,
+      "end": 77,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1193456100276437070,
+      "start": 78,
+      "end": 77,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1213722298599604302,
+      "start": 78,
+      "end": 77,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1227233097481715790,
+      "start": 78,
+      "end": 77,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1231736697109086286,
+      "start": 78,
+      "end": 85,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1233988496922771534,
+      "start": 78,
+      "end": 86,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1236240296736456782,
+      "start": 78,
+      "end": 102,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1166434502512214094,
+      "start": 78,
+      "end": 78,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1182197101208010830,
+      "start": 78,
+      "end": 78,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1195707900090122318,
+      "start": 78,
+      "end": 78,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1215974098413289550,
+      "start": 78,
+      "end": 78,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1229484897295401038,
+      "start": 78,
+      "end": 78,
+      "properties": { "label": "contains" }
+    },
+    {
+      "id": 1152927002164985934,
+      "start": 78,
+      "end": 11,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1155178801978671182,
+      "start": 78,
+      "end": 23,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1157430601792356430,
+      "start": 78,
+      "end": 25,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1159682401606041678,
+      "start": 78,
+      "end": 26,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1161934201419726926,
+      "start": 78,
+      "end": 66,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1164186001233412174,
+      "start": 78,
+      "end": 79,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1166437801047097422,
+      "start": 78,
+      "end": 80,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1168689600860782670,
+      "start": 78,
+      "end": 81,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1170941400674467918,
+      "start": 78,
+      "end": 101,
+      "properties": { "label": "CONTAINS" }
+    },
+    {
+      "id": 1152925902653358166,
+      "start": 86,
+      "end": 97,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1155177702467043414,
+      "start": 86,
+      "end": 98,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1157429502280728662,
+      "start": 86,
+      "end": 99,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1159681302094413910,
+      "start": 86,
+      "end": 100,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1152925902653358182,
+      "start": 102,
+      "end": 103,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1155177702467043430,
+      "start": 102,
+      "end": 104,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1157429502280728678,
+      "start": 102,
+      "end": 105,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1159681302094413926,
+      "start": 102,
+      "end": 106,
+      "properties": { "label": "FUNCTION_DEFINITION" }
+    },
+    {
+      "id": 1152929201188241513,
+      "start": 105,
+      "end": 104,
+      "properties": { "label": "CALLS" }
+    },
+    {
+      "id": 1152929201188241514,
+      "start": 106,
+      "end": 103,
+      "properties": { "label": "CALLS" }
+    },
+    {
+      "id": 1155181001001926762,
+      "start": 106,
+      "end": 105,
+      "properties": { "label": "CALLS" }
+    }
+  ]
+}
