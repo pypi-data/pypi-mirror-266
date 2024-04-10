@@ -1,0 +1,5 @@
+============
+imioweb.core
+============
+
+User documentation
