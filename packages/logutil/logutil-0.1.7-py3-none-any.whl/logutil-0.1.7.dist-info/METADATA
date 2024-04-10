@@ -1,0 +1,95 @@
+Metadata-Version: 2.1
+Name: logutil
+Version: 0.1.7
+Summary: Easy initialization of standard python logging and loguru
+Home-page: UNKNOWN
+Author: Yaroslav Kopotilov
+Author-email: datascience@tuta.io
+License: Apache License, Version 2.0
+Keywords: logging loguru
+Platform: UNKNOWN
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Provides-Extra: all
+Requires-Dist: loguru ; extra == 'all'
+Requires-Dist: notifiers ; extra == 'all'
+Requires-Dist: sentry-sdk ; extra == 'all'
+Provides-Extra: loguru
+Requires-Dist: loguru ; extra == 'loguru'
+Provides-Extra: notifiers
+Requires-Dist: notifiers ; extra == 'notifiers'
+Requires-Dist: sentry-sdk ; extra == 'notifiers'
+
+# Logutil
+
+(Extremely) easy initialization for `logging` and `loguru`
+
+## Why
+
+This packages makes it (extremely) easy to send `logging` and `loguru` logs to 
+- streams
+- files
+- sentry
+- pushover
+- slack
+
+## Installation
+
+- Logging only: `pip install logutil`
+- ... + loguru: `pip install logutil[loguru]`
+- ... + pushover/sentry/slack: `pip install logutil[notifiers]`
+- ... + loguru + pushover/sentry/slack: `pip install logutil[all]`
+
+## Examples
+
+### Standard python logging
+
+```python
+from logutil import init_logging, get_logging_logger
+init_logging(
+    name='data_feeds',
+    sentry_on=True,
+    sentry_dsn='<your sentry dsn string>',
+    sentry_breadcramp_level='INFO',
+    sentry_event_level='WARNING',
+)
+logger = get_logging_logger('data_feeds')
+logger.info('Test INFO message (logging)')
+logger.warning('Test WARNING message (logging)')
+```
+```
+2020-07-19T12:59:18.740Z data_feeds INFO: Test INFO message (logging)
+2020-07-19T12:59:18.740Z data_feeds WARNING: Test WARNING message (logging)
+```
+
+### Loguru
+
+```python
+from logutil import init_loguru, get_loguru_logger
+init_loguru()
+logger = get_loguru_logger(
+    slack_on=True,
+    slack_level='WARNING',
+    slack_webhook_url='<your slack app webhook url string>',
+)
+logger.info('Test INFO message (loguru)')
+logger.warning('Test WARNING message (loguru)')
+```
+```
+2020-07-19T12:56:20.771Z __main__ INFO: Test INFO message (loguru)
+2020-07-19T12:56:20.771Z __main__ WARNING: Test WARNING message (loguru)
+```
+
+## Notes
+
+- Formatting is ignored for `sentry` notifications with `logging`
+
+
