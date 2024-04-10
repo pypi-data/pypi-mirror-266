@@ -1,0 +1,158 @@
+Metadata-Version: 2.1
+Name: pyams_thesaurus
+Version: 2.1.2
+Summary: PyAMS thesaurus management package
+Home-page: https://pyams.readthedocs.io
+Author: Thierry Florac
+Author-email: tflorac@ulthar.net
+License: ZPL
+Keywords: Pyramid PyAMS
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: Zope Public License
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: Framework :: Pyramid
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Provides-Extra: test
+License-File: LICENSE
+
+=======================
+PyAMS thesaurus package
+=======================
+
+.. contents::
+
+
+What is PyAMS?
+==============
+
+PyAMS (Pyramid Application Management Suite) is a small suite of packages written for applications
+and content management with the Pyramid framework.
+
+**PyAMS** is actually mainly used to manage web sites through content management applications (CMS,
+see PyAMS_content package), but many features are generic and can be used inside any kind of web
+application.
+
+All PyAMS documentation is available on `ReadTheDocs <https://pyams.readthedocs.io>`_; source code
+is available on `Gitlab <https://gitlab.com/pyams>`_ and pushed to `Github
+<https://github.com/py-ams>`_. Doctests are available in the *doctests* source folder.
+
+
+What is PyAMS thesaurus?
+========================
+
+PyAMS_thesaurus is an extension package for PyAMS which can be used to manage thesaurus. A
+thesaurus is a hierarchical structure of terms, which can also handle synonyms and horizontal
+associations between terms. Thesaurus can be used to classify documents, and to search contents
+based on those terms associations.
+
+Thesaurus terms can be entered manually, but also loaded from external sources like XML files
+using SKOS/RDF namespace.
+
+
+Changelog
+=========
+
+2.1.2
+-----
+ - updated terms tree module resources
+ - updated CSS
+ - updated Gulp task names
+
+2.1.1
+-----
+ - updated doctests
+
+2.1.0
+-----
+ - updated thesaurus extracts interface
+
+2.0.2
+-----
+ - updated REST API route name and path configuration setting name
+
+2.0.1
+-----
+ - updated modal forms title
+
+2.0.0
+-----
+ - migrated to Pyramid 2.0
+
+1.3.5
+-----
+ - updated API usage permission
+ - updated context actions viewlet manager name
+ - added thesaurus names title factory
+
+1.3.4
+-----
+ - updated Colander API schemas for better OpenAPI specifications
+
+1.3.3
+-----
+ - version mismatch
+
+1.3.2
+-----
+ - added check for undefined thesaurus name in terms selection widget
+ - added support for Python 3.11
+
+1.3.1
+-----
+ - added missing IAttributeAnnotatable base interface to terms
+
+1.3.0
+-----
+ - added thesaurus method to remove terms
+ - small updates in management interface
+
+1.2.2
+-----
+ - added CORS validators and OPTIONS handler to REST services
+
+1.2.1
+-----
+ - updated internal properties of thesaurus widget base class
+ - updated thesaurus terms tree widget template
+ - PyAMS_security interfaces refactoring
+ - added support for Python 3.10
+
+1.2.0
+-----
+ - added REST API to get thesaurus extracts
+ - updated thesaurus vocabularies
+ - updated thesaurus terms tree widget template
+
+1.1.1
+-----
+ - updated terms election widget CSS classes and styles
+
+1.1.0
+-----
+ - added thesaurus index type
+ - updated MyAMS module registration
+ - use new context base add action
+
+1.0.3
+-----
+ - updated thesaurus manager attribute name used to display menu in ZMI home page
+
+1.0.2.1
+-------
+ - updated release tag
+
+1.0.2
+-----
+ - updated package description
+ - JS code cleanup
+
+1.0.1
+-----
+ - initialize NLTK library in doctests
+
+1.0.0
+-----
+ - initial release
+
+
