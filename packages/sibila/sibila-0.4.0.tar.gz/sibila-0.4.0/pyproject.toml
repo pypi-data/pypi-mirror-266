@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = 'sibila'
+description='Structured queries from local or online LLM models'
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [
+    { name = "Jorge Diogo", email = "jndiogo@gmail.com" },
+]
+keywords = [
+    "llama.cpp",
+    "AI",
+    "Transformers",
+    "GPT",
+    "LLM"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "llama-cpp-python >= 0.2",
+    "openai >= 1.1",
+    "tiktoken",
+    "mistralai",
+    "jinja2 >= 3.0",
+    "jsonschema",
+    "pydantic >= 2.0",
+    "typing_extensions",
+    "tqdm",
+]
+dynamic = ["version"]
+
+
+[tool.setuptools.dynamic]
+version = {attr = "sibila.__version__"}
+
+[tool.setuptools]
+packages = ["sibila", "sibila.res"]
+
+[tool.setuptools.package-data]
+"sibila.res" = ["*.json"]
+
+
+[project.scripts]
+sibila = "sibila.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/jndiogo/sibila"
+Documentation = "https://jndiogo.github.io/sibila"
+Issues = "https://github.com/jndiogo/sibila/issues"
+
+
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+# addopts = "-ra -q"
+# testpaths = ["tests"]
