@@ -1,0 +1,56 @@
+Metadata-Version: 2.1
+Name: fiddle
+Version: 0.3.0
+Summary: Fiddle: A Python-first configuration library
+Home-page: https://github.com/google/fiddle
+Author: The Fiddle Team
+Author-email: noreply@google.com
+License: Apache 2.0
+Project-URL: Documentation, https://github.com/google/fiddle/docs
+Project-URL: Bug Reports, https://github.com/google/fiddle/issues
+Project-URL: Source, https://github.com/google/fiddle
+Keywords: fiddle python configuration machine learning
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: absl-py
+Requires-Dist: graphviz
+Requires-Dist: libcst
+Requires-Dist: typing-extensions
+Provides-Extra: flags
+Requires-Dist: absl-py ; extra == 'flags'
+Requires-Dist: etils[epath] ; extra == 'flags'
+Provides-Extra: testing
+Requires-Dist: cloudpickle ; extra == 'testing'
+Requires-Dist: fiddle[flags] ; extra == 'testing'
+Requires-Dist: flax ; extra == 'testing'
+Requires-Dist: graphviz ; extra == 'testing'
+Requires-Dist: pytest ; extra == 'testing'
+Requires-Dist: pytype ; extra == 'testing'
+Requires-Dist: seqio ; extra == 'testing'
+Requires-Dist: tfds-nightly >=4.9.2.dev202308090034 ; extra == 'testing'
+
+
+# Fiddle
+
+Fiddle is a Python-first configuration library particularly well suited to ML
+applications. Fiddle enables deep configurability of parameters in a program,
+while allowing configuration to be expressed in readable and maintainable
+Python code.
+
+**Authors**: Dan Holtmann-Rice, Brennan Saeta, Sergio Guadarrama
