@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package komodo.proto.generated.collection_pb2;
+
+// Komodo Collections
+// protoc -I. --python_out=./generated --pyi_out=./generated ./collection.proto
+
+
+message Collection {
+    string shortcode = 1;
+    string name = 2;
+    string description = 3;
+    string path = 4;
+    string created_at = 5;
+    string modified_at = 6;
+    repeated File files = 7;
+
+    string summary = 32;
+    string query = 51;
+    repeated QnA questions = 52;
+}
+
+message File {
+    string guid = 1;
+    string name = 2;
+    string path = 3;
+    string description = 4;
+    string magic = 5;
+    string checksum = 6;
+    int64 size = 7;
+    string created_at = 8;
+    string modified_at = 9;
+    string indexed_at = 10;
+
+    string text = 30;
+    string purpose = 31;
+    string summary = 32;
+    string entities = 33;
+    string topics = 34;
+    string toc = 35;
+    string keywords = 36;
+    repeated QnA questions = 37;
+
+    map<string, string> summary_by_section = 40;
+    map<string, string> summary_by_page = 41;
+    map<string, string> summary_by_topic = 42;
+    map<string, string> summary_by_tables = 43;
+
+    SearchResult search_result = 51;
+
+}
+
+message SearchResult {
+    string url = 1;
+    string title = 2;
+    string snippet = 3;
+    string source = 4;
+    string summary = 5;
+    string source_date = 6;
+}
+
+message QnA {
+    string question = 1;
+    string answer = 2;
+    string title = 3;
+    string snippet = 4;
+    string source = 5;
+    string source_date = 6;
+    string source_url = 7;
+}

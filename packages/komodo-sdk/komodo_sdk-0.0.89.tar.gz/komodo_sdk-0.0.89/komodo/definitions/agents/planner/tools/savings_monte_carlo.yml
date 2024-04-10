@@ -1,0 +1,42 @@
+shortcode: "savings_mc_tool"
+name: "Saving Monte Carlo Tool"
+purpose: >
+  Computes the contributions to underlying assets for each year taking into account the savings each year and parameters. These parameters (interest rate and market returns) will be loaded from files and will be provided to run the simulation.
+parameters:
+  total_assets:
+    type: "number"
+    description: "Initial portfolio value"
+  years:
+    type: "integer"
+    description: "Number of years to simulate"
+  portfolio_composition:
+    type: "string"
+    description: "Three comma separated values representing the percentage of the portfolio in each asset class (cash, bonds, stocks). For example, '10,30,60'."
+  interest_rate:
+    type: "number"
+    description: "Interest rate to be used in the simulation. For example, 0.03 for 3% interest rate."
+  market_returns:
+    type: "number"
+    description: "Market returns to be used in the simulation. For example, 0.07 for 7% market returns."
+  inflation_rate:
+    type: "number"
+    description: "Inflation rate to be used in the simulation. For example, 0.02 for 2% inflation rate."
+  contributions_by_year:
+    type: "string"
+    description: "Yearly contributions to the portfolio (comma separated) for the number of years of simulation. For example, '10000,11000,12000,15000'."
+  withdrawals_by_year:
+    type: "string"
+    description: "Withdrawals from the portfolio (comma separated) for the number of years of simulation. For example, '0,0,10000,1200'."
+  precision:
+    type: "number"
+    description: "Number of decimal places to round to"
+    default: "2"
+required:
+  - "total_assets"
+  - "years"
+  - "portfolio_composition"
+  - "interest_rate"
+  - "market_returns"
+  - "inflation_rate"
+  - "contributions_by_year"
+  - "withdrawals_by_year"
