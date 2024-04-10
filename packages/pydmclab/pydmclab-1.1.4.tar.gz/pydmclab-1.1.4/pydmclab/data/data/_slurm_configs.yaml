@@ -1,0 +1,12 @@
+nodes: 1 # how many nodes per launched sequence of calcs
+ntasks: 8 # how many total cores
+time: 1440 # how long in minutes before hitting walltime 
+error: log.e # where to write slurm errors to in launch_dir
+output: log.o # where to write slurm output to in launch_dir
+account: cbartel # account to charge
+partition: msismall # partition to use
+job-name: # unique job name; if none provided, will default to formula.id.standard.mag.xc
+mem-per-cpu: # specify mem per core
+mem-per-gpu: # specify mem per gpu core
+constraint: # may not need this ever on MSI
+qos: # may not need this ever on MSI
