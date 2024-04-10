@@ -1,0 +1,40 @@
+
+
+@import "_variables.scss";
+
+
+.form-group {
+  &.required-field {
+    >label {
+      &::after {
+        content: ' * ';
+        color: $danger;
+        font-weight: bold;
+      }
+    }
+    .control-label {
+      &::after {
+        content: '*';
+        display: inline-block;
+        color: $danger;
+      }
+    }
+  }
+
+  .input {
+    .error {
+      color: $danger;
+    }
+  }
+}
+
+.datepicker {
+  table {
+    thead {
+      th,
+      td {
+        background-color: $page-bg;
+      }
+    }
+  }
+}
