@@ -1,0 +1,129 @@
+Metadata-Version: 2.1
+Name: everyvoice
+Version: 0.1.0a0.dev0
+Summary: Text-to-Speech Synthesis for the Speech Generation for Indigenous Language Education Small Teams Project
+Home-page: https://github.com/roedoejet/EveryVoice
+Author: Aidan Pine
+Author-email: hello@aidanpine.ca
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: MacOS
+Requires-Python: >=3.10, <3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: clipdetect>=0.1.3
+Requires-Dist: deepdiff>=6.5.0
+Requires-Dist: anytree>=2.8.0
+Requires-Dist: einops==0.5.0
+Requires-Dist: g2p~=2.0.0
+Requires-Dist: librosa==0.9.2
+Requires-Dist: lightning>=2.0.0
+Requires-Dist: loguru==0.6.0
+Requires-Dist: matplotlib==3.6.0
+Requires-Dist: merge-args
+Requires-Dist: nltk==3.7
+Requires-Dist: pandas~=2.0
+Requires-Dist: panphon==0.20.0
+Requires-Dist: pycountry==22.3.5
+Requires-Dist: pydantic[email]>=2.4.2
+Requires-Dist: pympi-ling
+Requires-Dist: pysdtw==0.0.5
+Requires-Dist: pyworld==0.3.4
+Requires-Dist: PyYAML>=5.1
+Requires-Dist: questionary==1.10.0
+Requires-Dist: simple-term-menu==1.5.2
+Requires-Dist: setuptools==59.5.0
+Requires-Dist: tabulate==0.9.0
+Requires-Dist: tensorboard>=2.14.1
+Requires-Dist: torch==2.1.0
+Requires-Dist: torchaudio==2.1.0
+Requires-Dist: torchinfo==1.8.0
+Requires-Dist: typer[all]>=0.9.0
+
+:construction: :construction: Warning! This repository is not quite ready yet. We're releasing it publicly in alpha, but it should be expected to change drastically over the coming months. :construction: :construction:
+
+# EveryVoice TTS Toolkit 💬
+
+[![codecov](https://codecov.io/gh/roedoejet/EveryVoice/branch/main/graph/badge.svg?token=yErCxf64IU)](https://codecov.io/gh/roedoejet/EveryVoice)
+[![Documentation](https://github.com/roedoejet/EveryVoice/actions/workflows/docs.yml/badge.svg)](https://docs.everyvoice.ca)
+[![Build Status](https://github.com/roedoejet/EveryVoice/actions/workflows/test.yml/badge.svg)](https://github.com/roedoejet/EveryVoice/actions)
+[![license](https://img.shields.io/badge/Licence-MIT-green)](LICENSE)
+
+This is the Text-to-Speech (TTS) toolkit used by the Small Teams "Speech Generation for Indigenous Language Education" project.
+
+## Quickstart
+
+### Install conda
+
+First, you'll need to install [miniconda](https://docs.conda.io/en/latest/miniconda.html) or [conda](https://docs.conda.io/projects/conda/en/stable/).
+
+### Clone the repo
+
+```sh
+git clone https://github.com/roedoejet/EveryVoice.git
+cd EveryVoice
+git submodule update --init
+```
+
+### Environment and installation – automated
+
+To run EveryVoice, you need to create a new environment using Conda and Python 3.10, install all our dependencies and EveryVoice itself.
+
+We have automated the procedure required to do all this in the script `make-everyvoice-env`, which you can run like this:
+
+```sh
+./make-everyvoice-env --name <env-name-of-your-choice>
+conda activate <env-name-of-your-choice>
+```
+
+Add the option `--cuda CUDA_VERSION` if you need to override the default CUDA version, or `--cpu` to use Torch compiled for CPU use only.
+
+### Environment and installation – manual
+
+If the automated installation process does not work for you, or if you prefer to do the full installation manually, please refer to [EveryVoice / Installation](https://docs.everyvoice.ca/latest/install/#manual-installation).
+
+### Documentation
+
+Read the full [EveryVoice documentation](https://docs.everyvoice.ca/).
+
+In particular, read the [Guides](https://docs.everyvoice.ca/latest/guides/custom/) to get familiar with the whole process.
+
+## Contributing
+
+Feel free to dive in! [Open an issue](https://github.com/roedoejet/EveryVoice/issues/new) or submit PRs.
+
+This repo follows the [Contributor Covenant](http://contributor-covenant.org/version/1/3/0/) Code of Conduct.
+
+Please make sure our standard Git hooks are activated, by running these commands in your sandbox (if you used our `make-everyvoice-env` script then this step is already done for you):
+
+```sh
+pip install -r requirements.dev.txt
+pre-commit install
+gitlint install-hook
+git submodule foreach 'pre-commit install'
+git submodule foreach 'gitlint install-hook'
+```
+
+Have a look at [Contributing.md](Contributing.md) for the full details on the
+Conventional Commit messages we prefer, our code formatting conventions, and
+our Git hooks.
+
+## Acknowledgements
+
+This repository draws on many other wonderful code bases.
+Many thanks to:
+
+- https://github.com/nocotan/pytorch-lightning-gans
+- https://github.com/rishikksh20/iSTFTNet-pytorch
+- https://github.com/jik876/hifi-gan
+- https://github.com/ming024/FastSpeech2
+- https://github.com/MiniXC/LightningFastSpeech2
+- https://github.com/DigitalPhonetics/IMS-Toucan
+
+## Tests
+
+Run unit tests by `python -m unittest tests/test_configs.py` or suites of tests by running `everyvoice test dev` if you have the package installed interactively.
