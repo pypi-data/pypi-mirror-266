@@ -1,0 +1,69 @@
+#!/usr/bin/env python3
+import argparse
+import json
+import sys
+# local
+from karabiner_config_helpers import KarabinerConfigFileError
+from karabiner_config_helpers.rules import load_config, store_config, replace_or_insert_rule, sort_rules, delete_rule_by_description, delete_rule_by_name, debug_main, CONFIG_PATH
+
+
+if __name__ == "__main__":
+    ap = argparse.ArgumentParser(description="Reads a complex modification JSON from stdin and insert it into the targeted profile. If a rule with the same description already exists, it will be replaced")
+    ap.add_argument("-p", "--profile", default="Default profile", help="the profile to modify")
+    sp = ap.add_subparsers(dest="cmd")
+
+    insert_parser = sp.add_parser("insert", description="insert a new rule or overwrite it if it already exists")
+    insert_parser.add_argument("file", nargs="?", help="file with the rule to add. If none is supplied, then stdin will be read from instead")
+
+    sort_parser = sp.add_parser("sort", description="sort the existing rules based on their priorities")
+
+    debug_parser = sp.add_parser("debug", description="does not modify the rules, but just checks if they can be properly parsed")
+
+    remove_parser = sp.add_parser("remove", description="remove a rule")
+    remove_selector_group = remove_parser.add_mutually_exclusive_group()
+    remove_selector_group.add_argument("-d", "--description", help="delete all rules with this description")
+    remove_selector_group.add_argument("-i", "--id", help="remove the rule with this it (without the # character)")
+
+    args = ap.parse_args()
+
+    try:
+        config_json = load_config(CONFIG_PATH)
+
+        if not args.cmd:
+            ap.print_help()
+            exit(1)
+        elif args.cmd == "insert":
+            try:
+                new_rule_json = load_config(args.file) if args.file else json.load(sys.stdin)
+            except Exception as ex:
+                print("Failed to parse new rule's JSON:", ex)
+
+            if "description" not in new_rule_json:
+                print("The following JSON (for the new rule to insert) is missing a top level 'description' attribute:")
+                json.dump(new_rule_json, indent=4)
+                sys.exit(1)
+
+            replace_or_insert_rule(config_json, args.profile, new_rule_json)
+        elif args.cmd == "sort":
+            sort_rules(config_json, args.profile)
+        elif args.cmd == "debug":
+            debug_main(config_json, args.profile)
+        elif args.cmd == "remove":
+            if args.description != None:
+                delete_rule_by_description(config_json, args.profile, args.description)
+            elif args.id:
+                delete_rule_by_name(config_json, args.profile, "#"+args.id)
+            else:
+                print("Rule needs to be selected by id (like #NAME) or description")
+        else:
+            print(f"[!] Unknown command: {args.cmd}")
+            ap.print_usage()
+            exit(1)
+
+        store_config(config_json)
+    except KarabinerConfigFileError as e:
+        print(f"[!] Could not parse karabiner config file {CONFIG_PATH} due to the following error:")
+        print(e)
+                    
+
+
