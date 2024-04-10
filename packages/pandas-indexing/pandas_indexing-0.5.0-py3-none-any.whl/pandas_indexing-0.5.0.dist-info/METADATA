@@ -1,0 +1,129 @@
+Metadata-Version: 2.1
+Name: pandas-indexing
+Version: 0.5.0
+Summary: Helpers to facilitate working with pandas indices in particular multiindices
+Author-email: Jonas Hörsch <coroa@posteo.de>
+License: MIT
+Project-URL: changelog, https://github.com/coroa/pandas-indexing/blob/main/CHANGELOG.rst
+Project-URL: documentation, https://pandas-indexing.readthedocs.io/en/latest/
+Project-URL: homepage, https://github.com/coroa/pandas-indexing
+Project-URL: repository, https://github.com/coroa/pandas-indexing.git
+Keywords: pandas
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Intended Audience :: Science/Research
+Classifier: Natural Language :: English
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: Microsoft
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: <4,>=3.8
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+Requires-Dist: pandas >=1.2
+Requires-Dist: deprecated
+Requires-Dist: attrs
+Provides-Extra: docs
+Requires-Dist: sphinx >=2.2 ; extra == 'docs'
+Requires-Dist: sphinx-argparse ; extra == 'docs'
+Requires-Dist: sphinx-rtd-theme ; extra == 'docs'
+Requires-Dist: myst-nb ; extra == 'docs'
+Requires-Dist: ipython ; extra == 'docs'
+Provides-Extra: lint
+Requires-Dist: ruff ; extra == 'lint'
+Provides-Extra: test
+Requires-Dist: coverage ; extra == 'test'
+Requires-Dist: pytest ; extra == 'test'
+Requires-Dist: pytest-cov ; extra == 'test'
+Requires-Dist: hypothesis ; extra == 'test'
+Provides-Extra: units
+Requires-Dist: pint >=0.21 ; extra == 'units'
+Requires-Dist: openscm-units ; extra == 'units'
+
+pandas-indexing helper
+======================
+
+.. image:: https://github.com/coroa/pandas-indexing/workflows/ci/badge.svg?branch=main
+    :target: https://github.com/coroa/pandas-indexing/actions?workflow=ci
+    :alt: CI
+
+.. image:: https://codecov.io/gh/coroa/pandas-indexing/branch/main/graph/badge.svg
+    :target: https://codecov.io/gh/coroa/pandas-indexing
+    :alt: Codecov
+
+.. image:: https://img.shields.io/readthedocs/pandas-indexing/latest?label=Read%20the%20Docs
+    :target: https://pandas-indexing.readthedocs.io/en/latest/
+    :alt: Read the Docs
+
+.. image:: https://img.shields.io/pypi/v/pandas-indexing
+    :target: https://pypi.org/project/pandas-indexing/
+    :alt: PyPI
+
+
+Summary
+-------
+
+``pandas-indexing`` is a helpers package to make interacting with pandas multi-indices less
+painful. It contains functions, that
+
+* filter easily into multi indices: ``isin``, ``ismatch``
+* add or update levels in a multiindex: ``assignlevel``
+* select one or multiple specific levels: ``projectlevel``
+
+Usage
+-----
+
+Given you have a time-series like dataframe with several multi index levels, like ``model``, ``scenario``, ``variable``:
+then you can select a subset with:
+
+.. code:: python
+
+    df.loc[isin(model="m1", scenario=["s1", "s2"])]
+
+or with shell like glob-patterns:
+
+.. code:: python
+
+    df.loc[
+        ismatch(
+            model="REMIND*", variable="Emissions|**", unit=["Mt CO2/yr", "kt N2O/yr"]
+        )
+    ]
+
+You can overwrite index levels:
+
+.. code:: python
+
+    assignlevel(df, selected=1)
+
+or project your data to only a few desired index levels:
+
+.. code:: python
+
+    projectlevel(df, ["model", "scenario"])
+
+
+All commands are described in detail in the API reference in `documentation`_ and are
+togehter with introductions for installing and using this package, but they are mostly
+bare-bones atm.
+
+Issues and Discussions
+----------------------
+
+As usual for any GitHub-based project, raise an `issue`_ if you find any bug or
+want to suggest an improvement, or open a discussion if you want to discuss.
+
+
+.. _PyPI: https://pypi.org
+.. _latest branch: https://github.com/coroa/pandas-indexing/tree/latest
+.. _master branch: https://github.com/coroa/pandas-indexing/tree/master
+.. _tox: https://tox.readthedocs.io/en/latest/
+.. _ReadTheDocs: https://readthedocs.org/
+.. _issue: htts://github.com/coroa/pandas-indexing/issues/new
+.. _documentation: https://pandas-indexing.readthedocs.io/en/latest/
