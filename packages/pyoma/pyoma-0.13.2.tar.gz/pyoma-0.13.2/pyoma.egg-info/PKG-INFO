@@ -1,0 +1,84 @@
+Metadata-Version: 2.1
+Name: pyoma
+Version: 0.13.2
+Summary: library to interact and build OMA hdf5 files
+Author: DessimozLab
+Author-email: contact@omabrowser.org
+License: MPL 2.0
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Classifier: License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy>=1.20
+Requires-Dist: tables>=3.8.0
+Requires-Dist: future
+Requires-Dist: fuzzyset2>=0.1.1
+Requires-Dist: tqdm
+Requires-Dist: pyopa>=0.8
+Requires-Dist: pandas>=0.22
+Requires-Dist: biopython>=1.76; python_version >= "3.6"
+Requires-Dist: biopython==1.76; python_version < "3.6"
+Requires-Dist: datasketch
+Requires-Dist: ete3
+Requires-Dist: networkx
+Requires-Dist: property_manager
+Provides-Extra: create-db
+Requires-Dist: PySAIS; extra == "create-db"
+Requires-Dist: familyanalyzer>=0.7.3; extra == "create-db"
+Requires-Dist: matplotlib; extra == "create-db"
+Requires-Dist: scikit-learn; extra == "create-db"
+Requires-Dist: scikit-fuzzy; extra == "create-db"
+Requires-Dist: pebble; extra == "create-db"
+Requires-Dist: lark-parser; extra == "create-db"
+Requires-Dist: pyham; extra == "create-db"
+Provides-Extra: enrichment
+Requires-Dist: plotly; extra == "enrichment"
+Requires-Dist: scikit-learn; extra == "enrichment"
+Requires-Dist: statsmodels; extra == "enrichment"
+Requires-Dist: scipy; extra == "enrichment"
+Provides-Extra: notebooks
+Requires-Dist: jupyter; extra == "notebooks"
+Requires-Dist: matplotlib; extra == "notebooks"
+Requires-Dist: seaborn; extra == "notebooks"
+Provides-Extra: docs
+Requires-Dist: sphinx; extra == "docs"
+
+pyOMA - python library to interact with OMA hdf5 files
+======================================================
+
+PyOMA is a python library that enables access to the hdf5 database of the
+[OMA project]. Report problems to the [github issue] tracker.
+
+Installing pyoma
+----------------
+
+    pip install pyoma
+
+for support to build oma hdf5 files from either oma standalone runs or production files use
+
+    pip install pyoma[create_db]
+
+Quick tour
+----------
+
+
+    import pyoma.browser.db
+    db = pyoma.browser.db.Database("OmaServer.h5")
+    db.get_release_name()
+
+Documentation
+-------------
+
+The documentation is available on https://zoo.cs.ucl.ac.uk/doc/pyoma
+
+[OMA project]: https://omabrowser.org
+[github issue]: https://github.com/DessimozLab/pyoma/issues
