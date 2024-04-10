@@ -1,0 +1,100 @@
+Metadata-Version: 2.1
+Name: fused
+Version: 1.5.3
+Summary: 
+Requires-Python: >=3.8,<3.12
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: affine (>=2,<3)
+Requires-Dist: aiohttp (>=3.8.3,<4.0.0)
+Requires-Dist: bottleneck (>=1.3.7,<2.0.0)
+Requires-Dist: cftime (>=1.6.2,<2.0.0)
+Requires-Dist: click (>=8,<9)
+Requires-Dist: contextily (>=1.3.0)
+Requires-Dist: fsspec (>=2023.6.0,<2024.0.0)
+Requires-Dist: geopandas (>=0.12,<0.13)
+Requires-Dist: h5netcdf (>=1.0,<2.0)
+Requires-Dist: httpx (>=0.23,<1)
+Requires-Dist: importlib-resources (>=5.12.0,<6.0.0)
+Requires-Dist: ipywidgets (>=8,<9)
+Requires-Dist: jinja2 (>=3.1.2,<4.0.0)
+Requires-Dist: loguru (>=0.6.0,<0.7.0)
+Requires-Dist: matplotlib (>=3.5,<4.0)
+Requires-Dist: mkdocs-exclude-search (>=0.6.6,<0.7.0)
+Requires-Dist: mkdocs-open-in-new-tab (>=1.0.3,<2.0.0)
+Requires-Dist: nest-asyncio (>=1.5,<2.0)
+Requires-Dist: netcdf4 (>=1.6,<2.0)
+Requires-Dist: pandas (<2) ; python_version == "3.8"
+Requires-Dist: pandas (>=2.0.2,<3.0.0) ; python_version >= "3.9"
+Requires-Dist: pyarrow (>=11)
+Requires-Dist: pydantic (>=1.10,<2.0)
+Requires-Dist: pygments (>=2.17.2,<3.0.0)
+Requires-Dist: pyproj (>=3.3,<4.0)
+Requires-Dist: rasterio (>=1.2,<1.3.8)
+Requires-Dist: requests (>=2.25,<3.0)
+Requires-Dist: rich (>=13,<14)
+Requires-Dist: rio-stac (>=0.8.0,<0.9.0)
+Requires-Dist: rioxarray (>=0.14.1,<0.15.0) ; python_version >= "3.9" and python_version < "4.0"
+Requires-Dist: rtoml (>=0.9.0,<0.10.0)
+Requires-Dist: scipy (>=1.9,<2.0)
+Requires-Dist: shapely (>=2,<3)
+Requires-Dist: stac-geoparquet (>=0.2.1,<0.3.0)
+Requires-Dist: urlpath (>=1.2.0,<2.0.0)
+Requires-Dist: xarray (==2023.6.0) ; python_version >= "3.9"
+Requires-Dist: xarray (>=2023.01.0,<2024.0.0) ; python_version == "3.8"
+Requires-Dist: zarr (>=2.15.0,<3.0.0)
+Description-Content-Type: text/markdown
+
+<h1 align="center">
+  Fused Public Python package
+</h1>
+<h3 align="center">
+  🌎 Code to Map. Instantly.
+</h3>
+<br><br>
+
+**Fused** is a Python library to code, scale, and ship geospatial workflows of any size. Express workflows as shareable UDFs (user defined functions) without thinking about the underlying compute. The Fused Python library is maintained by [Fused.io](https://fused.io).
+
+## Prerequisites
+
+Python >= 3.8
+
+## Install
+
+```
+pip install fused
+```
+
+## Quickstart
+
+```python3
+import fused
+
+# Declare UDF
+@fused.udf()
+def my_udf():
+    import pandas as pd
+    return pd.DataFrame({'hello': ['world']})
+
+df = fused.run(my_udf)
+print(df)
+
+dc_file_udf = fused.load('https://github.com/fusedio/udfs/tree/main/public/DC_File_Example')
+
+df2 = fused.run(dc_file_udf)
+print(df2)
+```
+
+## Resources
+
+- [Open source UDF catalog](https://github.com/fusedio/udfs/tree/main)
+- [Fused Discord community](https://discord.com/invite/BxS5wMzdRk)
+- [Twitter/X](https://twitter.com/Fused_io)
+- [LinkedIn](https://www.linkedin.com/company/fusedio)
+
+## Changelog
+See the [changelog](https://docs.fused.io/python-sdk/changelog/) for the latest changes.
+
