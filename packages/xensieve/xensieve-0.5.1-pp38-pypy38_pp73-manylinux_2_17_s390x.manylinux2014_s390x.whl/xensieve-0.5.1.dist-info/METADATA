@@ -1,0 +1,54 @@
+Metadata-Version: 2.3
+Name: xensieve
+Version: 0.5.1
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Topic :: Artistic Software
+Classifier: Programming Language :: Rust
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Typing :: Typed
+License-File: LICENSE
+Summary: An Rust-backed implementation of the Xenakis Sieve
+Keywords: sieve,residual,modulus,set,xenakis
+Author: Christopher Ariza
+Maintainer: Christopher Ariza
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown; charset=UTF-8; variant=GFM
+Project-URL: Homepage, https://github.com/flexatone/xensieve-py
+Project-URL: Repository, https://github.com/flexatone/xensieve-py.git
+Project-URL: Issues, https://github.com/flexatone/xensieve-py/issues
+
+# xensieve-py
+
+
+<a href="https://github.com/flexatone/xensieve-py/actions/workflows/ci.yml">
+    <img style="display: inline!important" src="https://img.shields.io/github/actions/workflow/status/flexatone/xensieve-py/ci.yml?branch=default&label=CI&logo=Github"></img>
+</a>
+
+<a href="https://codecov.io/gh/flexatone/xensieve-py">
+    <img style="display: inline!important" src="https://codecov.io/gh/flexatone/xensieve-py/branch/default/graph/badge.svg"></img>
+</a>
+
+
+An implementation of the Xenakis Sieve, providing a Sieve from a string expression that filters integer sequences into iterators of integers, Boolean states, or interval widths. Sieves are built from Residuals, defined as a modulus (M) and a shift (S), notated `M@S`. Sieve string expressions, and Sieve structs, support complementation, intersection, symmetric difference, and union operations on Residuals with operators `!`, `&`, `^` and `|`, respectively.
+
+The Xenakis Sieve is tool for generating discrete interval patterns. Such patterns have boundless applications in creative domains: the Xenakis Sieve can be used to generate scales or multi-octave pitch sequences, rhythms and polyrhythms, and used to control countless other aspects of pictorial or architectural design.
+
+This Rust implementation follows the Python implementation in Ariza (2005), with significant performance and interface enhancements: https://direct.mit.edu/comj/article/29/2/40/93957
+
+Code: https://github.com/flexatone/xensieve-py
+
+<!-- Crate: https://crates.io/crates/xensieve -->
+
+
+# Rust Implementation
+
+The Python implementation is built with PyO3, which wraps the Rust core library `xensieve`.
+
+Code: https://github.com/flexatone/xensieve-rs
+
+Docs: https://docs.rs/xensieve
+
+Crate: https://crates.io/crates/xensieve
+
