@@ -1,0 +1,41 @@
+[build-system]
+requires = ["flit_core >=2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "tcr-roboclaw"
+description = "An easy to install version of Basicmicro's RoboClaw Python library"
+authors = [{ name = "damienlarocque", email = "phicoltan@gmail.com" }]
+dependencies = ["pyserial"]
+readme = "README.md"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+dev = ["black", "pylint", "bump2version"]
+
+[project.urls]
+Homepage = "https://gitlab.com/team-chat-robotique/libraries/team-chat-robotique-roboclaw-python"
+"Repository on GitLab" = "https://gitlab.com/team-chat-robotique/libraries/team-chat-robotique-roboclaw-python"
+
+[tool.isort]
+profile = "black"
+
+[tool.black]
+line-length = 90
+
+[tool.pylint.messages_control]
+disable = "C0330, C0326, C0103"
+
+[tool.pylint.format]
+max-line-length = "90"
