@@ -1,0 +1,320 @@
+Metadata-Version: 2.3
+Name: dycw-utilities
+Version: 0.26.28
+Author-email: Derek Wan <d.wan@icloud.com>
+License-File: LICENSE
+Requires-Python: >=3.10
+Requires-Dist: typing-extensions
+Provides-Extra: cacher
+Requires-Dist: atomicwrites; extra == 'cacher'
+Requires-Dist: cachetools; extra == 'cacher'
+Provides-Extra: dev
+Requires-Dist: ast-comments; extra == 'dev'
+Requires-Dist: atomicwrites; extra == 'dev'
+Requires-Dist: beartype; extra == 'dev'
+Requires-Dist: beautifulsoup4; extra == 'dev'
+Requires-Dist: bidict; extra == 'dev'
+Requires-Dist: bottleneck; extra == 'dev'
+Requires-Dist: cachetools; extra == 'dev'
+Requires-Dist: click; extra == 'dev'
+Requires-Dist: coverage-conditional-plugin; extra == 'dev'
+Requires-Dist: cryptography; extra == 'dev'
+Requires-Dist: cvxpy; extra == 'dev'
+Requires-Dist: exceptiongroup; extra == 'dev'
+Requires-Dist: fastapi; extra == 'dev'
+Requires-Dist: fpdf2; extra == 'dev'
+Requires-Dist: freezegun; extra == 'dev'
+Requires-Dist: frozendict; extra == 'dev'
+Requires-Dist: hatch; extra == 'dev'
+Requires-Dist: holoviews; extra == 'dev'
+Requires-Dist: hypothesis; extra == 'dev'
+Requires-Dist: loguru; extra == 'dev'
+Requires-Dist: luigi; extra == 'dev'
+Requires-Dist: mdutils; extra == 'dev'
+Requires-Dist: memory-profiler; extra == 'dev'
+Requires-Dist: more-itertools; extra == 'dev'
+Requires-Dist: numbagg; extra == 'dev'
+Requires-Dist: numpy; extra == 'dev'
+Requires-Dist: optuna; extra == 'dev'
+Requires-Dist: pandas; extra == 'dev'
+Requires-Dist: pathvalidate; extra == 'dev'
+Requires-Dist: polars-lts-cpu; extra == 'dev'
+Requires-Dist: pqdm; extra == 'dev'
+Requires-Dist: psutil; extra == 'dev'
+Requires-Dist: pydantic; extra == 'dev'
+Requires-Dist: pyhumps; extra == 'dev'
+Requires-Dist: pyinstrument; extra == 'dev'
+Requires-Dist: pypiserver[passlib]; extra == 'dev'
+Requires-Dist: pytest; extra == 'dev'
+Requires-Dist: pytest-check; extra == 'dev'
+Requires-Dist: pytest-cov; extra == 'dev'
+Requires-Dist: pytest-instafail; extra == 'dev'
+Requires-Dist: pytest-only; extra == 'dev'
+Requires-Dist: pytest-randomly; extra == 'dev'
+Requires-Dist: pytest-rerunfailures; extra == 'dev'
+Requires-Dist: pytest-xdist; extra == 'dev'
+Requires-Dist: scipy; extra == 'dev'
+Requires-Dist: selenium; extra == 'dev'
+Requires-Dist: semver; extra == 'dev'
+Requires-Dist: sqlalchemy; extra == 'dev'
+Requires-Dist: streamlit; extra == 'dev'
+Requires-Dist: typed-settings; extra == 'dev'
+Requires-Dist: win32-setctime; extra == 'dev'
+Requires-Dist: xarray; extra == 'dev'
+Requires-Dist: xlrd; extra == 'dev'
+Requires-Dist: zarr; extra == 'dev'
+Provides-Extra: scripts-clean-dir
+Requires-Dist: click; extra == 'scripts-clean-dir'
+Requires-Dist: loguru; extra == 'scripts-clean-dir'
+Requires-Dist: typed-settings; extra == 'scripts-clean-dir'
+Provides-Extra: scripts-csv-to-markdown
+Requires-Dist: click; extra == 'scripts-csv-to-markdown'
+Requires-Dist: loguru; extra == 'scripts-csv-to-markdown'
+Requires-Dist: mdutils; extra == 'scripts-csv-to-markdown'
+Requires-Dist: typed-settings; extra == 'scripts-csv-to-markdown'
+Provides-Extra: scripts-generate-snippets
+Requires-Dist: ast-comments; extra == 'scripts-generate-snippets'
+Requires-Dist: click; extra == 'scripts-generate-snippets'
+Requires-Dist: loguru; extra == 'scripts-generate-snippets'
+Requires-Dist: pyhumps; extra == 'scripts-generate-snippets'
+Requires-Dist: typed-settings; extra == 'scripts-generate-snippets'
+Provides-Extra: scripts-luigi-server
+Requires-Dist: click; extra == 'scripts-luigi-server'
+Requires-Dist: loguru; extra == 'scripts-luigi-server'
+Requires-Dist: luigi; extra == 'scripts-luigi-server'
+Requires-Dist: typed-settings; extra == 'scripts-luigi-server'
+Provides-Extra: scripts-monitor-memory
+Requires-Dist: click; extra == 'scripts-monitor-memory'
+Requires-Dist: loguru; extra == 'scripts-monitor-memory'
+Requires-Dist: psutil; extra == 'scripts-monitor-memory'
+Requires-Dist: typed-settings; extra == 'scripts-monitor-memory'
+Provides-Extra: scripts-pypi-server
+Requires-Dist: click; extra == 'scripts-pypi-server'
+Requires-Dist: loguru; extra == 'scripts-pypi-server'
+Requires-Dist: pypiserver[passlib]; extra == 'scripts-pypi-server'
+Requires-Dist: typed-settings; extra == 'scripts-pypi-server'
+Provides-Extra: test
+Requires-Dist: exceptiongroup; extra == 'test'
+Requires-Dist: hypothesis; extra == 'test'
+Requires-Dist: pytest; extra == 'test'
+Requires-Dist: pytest-randomly; extra == 'test'
+Requires-Dist: pytest-rerunfailures; extra == 'test'
+Requires-Dist: pytest-xdist; extra == 'test'
+Provides-Extra: zzz-test-ast
+Provides-Extra: zzz-test-atomicwrites
+Requires-Dist: atomicwrites; extra == 'zzz-test-atomicwrites'
+Provides-Extra: zzz-test-beartype
+Requires-Dist: beartype; extra == 'zzz-test-beartype'
+Provides-Extra: zzz-test-bs4
+Requires-Dist: beautifulsoup4; extra == 'zzz-test-bs4'
+Requires-Dist: polars; extra == 'zzz-test-bs4'
+Provides-Extra: zzz-test-cacher
+Requires-Dist: atomicwrites; extra == 'zzz-test-cacher'
+Requires-Dist: cachetools; extra == 'zzz-test-cacher'
+Provides-Extra: zzz-test-cachetools
+Requires-Dist: cachetools; extra == 'zzz-test-cachetools'
+Provides-Extra: zzz-test-click
+Requires-Dist: click; extra == 'zzz-test-click'
+Requires-Dist: sqlalchemy; extra == 'zzz-test-click'
+Provides-Extra: zzz-test-cryptography
+Requires-Dist: cryptography; extra == 'zzz-test-cryptography'
+Provides-Extra: zzz-test-cvxpy
+Requires-Dist: cvxpy; extra == 'zzz-test-cvxpy'
+Requires-Dist: pandas; extra == 'zzz-test-cvxpy'
+Provides-Extra: zzz-test-dataclasses
+Provides-Extra: zzz-test-datetime
+Provides-Extra: zzz-test-defaults
+Requires-Dist: coverage-conditional-plugin; extra == 'zzz-test-defaults'
+Requires-Dist: exceptiongroup; extra == 'zzz-test-defaults'
+Requires-Dist: hypothesis; extra == 'zzz-test-defaults'
+Requires-Dist: pytest; extra == 'zzz-test-defaults'
+Requires-Dist: pytest-cov; extra == 'zzz-test-defaults'
+Requires-Dist: pytest-randomly; extra == 'zzz-test-defaults'
+Requires-Dist: pytest-rerunfailures; extra == 'zzz-test-defaults'
+Provides-Extra: zzz-test-email
+Provides-Extra: zzz-test-enum
+Provides-Extra: zzz-test-errors
+Provides-Extra: zzz-test-fastapi
+Requires-Dist: fastapi; extra == 'zzz-test-fastapi'
+Provides-Extra: zzz-test-fpdf2
+Requires-Dist: fpdf2; extra == 'zzz-test-fpdf2'
+Requires-Dist: holoviews; extra == 'zzz-test-fpdf2'
+Provides-Extra: zzz-test-functions
+Provides-Extra: zzz-test-functools
+Provides-Extra: zzz-test-getpass
+Provides-Extra: zzz-test-git
+Provides-Extra: zzz-test-hashlib
+Provides-Extra: zzz-test-hatch
+Requires-Dist: hatch; extra == 'zzz-test-hatch'
+Provides-Extra: zzz-test-holoviews
+Requires-Dist: holoviews; extra == 'zzz-test-holoviews'
+Requires-Dist: numbagg; extra == 'zzz-test-holoviews'
+Requires-Dist: xarray; extra == 'zzz-test-holoviews'
+Provides-Extra: zzz-test-humps
+Requires-Dist: bidict; extra == 'zzz-test-humps'
+Requires-Dist: pyhumps; extra == 'zzz-test-humps'
+Provides-Extra: zzz-test-ipython
+Requires-Dist: ipython; extra == 'zzz-test-ipython'
+Provides-Extra: zzz-test-iterables
+Provides-Extra: zzz-test-json
+Requires-Dist: sqlalchemy; extra == 'zzz-test-json'
+Provides-Extra: zzz-test-jupyter
+Requires-Dist: jupyterlab; extra == 'zzz-test-jupyter'
+Requires-Dist: pandas; extra == 'zzz-test-jupyter'
+Requires-Dist: polars; extra == 'zzz-test-jupyter'
+Provides-Extra: zzz-test-locale
+Provides-Extra: zzz-test-logging
+Provides-Extra: zzz-test-loguru
+Requires-Dist: loguru; extra == 'zzz-test-loguru'
+Provides-Extra: zzz-test-luigi
+Requires-Dist: freezegun; extra == 'zzz-test-luigi'
+Requires-Dist: luigi; extra == 'zzz-test-luigi'
+Requires-Dist: semver; extra == 'zzz-test-luigi'
+Requires-Dist: sqlalchemy; extra == 'zzz-test-luigi'
+Provides-Extra: zzz-test-math
+Provides-Extra: zzz-test-memory-profiler
+Requires-Dist: memory-profiler; extra == 'zzz-test-memory-profiler'
+Provides-Extra: zzz-test-modules
+Requires-Dist: ast-comments; extra == 'zzz-test-modules'
+Requires-Dist: atomicwrites; extra == 'zzz-test-modules'
+Requires-Dist: beartype; extra == 'zzz-test-modules'
+Requires-Dist: bs4; extra == 'zzz-test-modules'
+Requires-Dist: cachetools; extra == 'zzz-test-modules'
+Requires-Dist: click; extra == 'zzz-test-modules'
+Requires-Dist: cryptography; extra == 'zzz-test-modules'
+Requires-Dist: cvxpy; extra == 'zzz-test-modules'
+Requires-Dist: fastapi; extra == 'zzz-test-modules'
+Requires-Dist: fpdf2; extra == 'zzz-test-modules'
+Requires-Dist: hatch; extra == 'zzz-test-modules'
+Requires-Dist: holoviews; extra == 'zzz-test-modules'
+Requires-Dist: loguru; extra == 'zzz-test-modules'
+Requires-Dist: luigi; extra == 'zzz-test-modules'
+Requires-Dist: mdutils; extra == 'zzz-test-modules'
+Requires-Dist: memory-profiler; extra == 'zzz-test-modules'
+Requires-Dist: more-itertools; extra == 'zzz-test-modules'
+Requires-Dist: numpy; extra == 'zzz-test-modules'
+Requires-Dist: pathvalidate; extra == 'zzz-test-modules'
+Requires-Dist: polars; extra == 'zzz-test-modules'
+Requires-Dist: pqdm; extra == 'zzz-test-modules'
+Requires-Dist: pydantic; extra == 'zzz-test-modules'
+Requires-Dist: pyhumps; extra == 'zzz-test-modules'
+Requires-Dist: pyinstrument; extra == 'zzz-test-modules'
+Requires-Dist: pytest-check; extra == 'zzz-test-modules'
+Requires-Dist: scipy; extra == 'zzz-test-modules'
+Requires-Dist: semver; extra == 'zzz-test-modules'
+Requires-Dist: sqlalchemy; extra == 'zzz-test-modules'
+Requires-Dist: streamlit; extra == 'zzz-test-modules'
+Requires-Dist: typed-settings; extra == 'zzz-test-modules'
+Requires-Dist: xarray; extra == 'zzz-test-modules'
+Requires-Dist: xlrd; extra == 'zzz-test-modules'
+Requires-Dist: zarr; extra == 'zzz-test-modules'
+Provides-Extra: zzz-test-more-itertools
+Requires-Dist: more-itertools; extra == 'zzz-test-more-itertools'
+Provides-Extra: zzz-test-numpy
+Requires-Dist: bottleneck; extra == 'zzz-test-numpy'
+Requires-Dist: numbagg; extra == 'zzz-test-numpy'
+Requires-Dist: pandas; extra == 'zzz-test-numpy'
+Provides-Extra: zzz-test-optuna
+Requires-Dist: optuna; extra == 'zzz-test-optuna'
+Provides-Extra: zzz-test-os
+Provides-Extra: zzz-test-pandas
+Requires-Dist: pandas; extra == 'zzz-test-pandas'
+Provides-Extra: zzz-test-pathlib
+Requires-Dist: pathvalidate; extra == 'zzz-test-pathlib'
+Provides-Extra: zzz-test-pathvalidate
+Requires-Dist: pathvalidate; extra == 'zzz-test-pathvalidate'
+Provides-Extra: zzz-test-pickle
+Requires-Dist: atomicwrites; extra == 'zzz-test-pickle'
+Provides-Extra: zzz-test-platform
+Provides-Extra: zzz-test-polars
+Requires-Dist: polars; extra == 'zzz-test-polars'
+Provides-Extra: zzz-test-pqdm
+Requires-Dist: pqdm; extra == 'zzz-test-pqdm'
+Provides-Extra: zzz-test-pydantic
+Requires-Dist: atomicwrites; extra == 'zzz-test-pydantic'
+Requires-Dist: pydantic; extra == 'zzz-test-pydantic'
+Provides-Extra: zzz-test-pyinstrument
+Requires-Dist: atomicwrites; extra == 'zzz-test-pyinstrument'
+Requires-Dist: pyinstrument; extra == 'zzz-test-pyinstrument'
+Provides-Extra: zzz-test-pytest
+Requires-Dist: atomicwrites; extra == 'zzz-test-pytest'
+Provides-Extra: zzz-test-pytest-check
+Requires-Dist: pytest-check; extra == 'zzz-test-pytest-check'
+Provides-Extra: zzz-test-random
+Provides-Extra: zzz-test-re
+Provides-Extra: zzz-test-scipy
+Requires-Dist: scipy; extra == 'zzz-test-scipy'
+Provides-Extra: zzz-test-scripts-clean-dir
+Requires-Dist: click; extra == 'zzz-test-scripts-clean-dir'
+Requires-Dist: freezegun; extra == 'zzz-test-scripts-clean-dir'
+Requires-Dist: loguru; extra == 'zzz-test-scripts-clean-dir'
+Requires-Dist: typed-settings; extra == 'zzz-test-scripts-clean-dir'
+Provides-Extra: zzz-test-scripts-csv-to-markdown
+Requires-Dist: click; extra == 'zzz-test-scripts-csv-to-markdown'
+Requires-Dist: loguru; extra == 'zzz-test-scripts-csv-to-markdown'
+Requires-Dist: mdutils; extra == 'zzz-test-scripts-csv-to-markdown'
+Requires-Dist: typed-settings; extra == 'zzz-test-scripts-csv-to-markdown'
+Provides-Extra: zzz-test-scripts-generate-snippets
+Requires-Dist: ast-comments; extra == 'zzz-test-scripts-generate-snippets'
+Requires-Dist: click; extra == 'zzz-test-scripts-generate-snippets'
+Requires-Dist: loguru; extra == 'zzz-test-scripts-generate-snippets'
+Requires-Dist: pyhumps; extra == 'zzz-test-scripts-generate-snippets'
+Requires-Dist: typed-settings; extra == 'zzz-test-scripts-generate-snippets'
+Provides-Extra: zzz-test-scripts-luigi-server
+Requires-Dist: click; extra == 'zzz-test-scripts-luigi-server'
+Requires-Dist: loguru; extra == 'zzz-test-scripts-luigi-server'
+Requires-Dist: luigi; extra == 'zzz-test-scripts-luigi-server'
+Requires-Dist: typed-settings; extra == 'zzz-test-scripts-luigi-server'
+Provides-Extra: zzz-test-scripts-monitor-memory
+Requires-Dist: click; extra == 'zzz-test-scripts-monitor-memory'
+Requires-Dist: loguru; extra == 'zzz-test-scripts-monitor-memory'
+Requires-Dist: psutil; extra == 'zzz-test-scripts-monitor-memory'
+Requires-Dist: typed-settings; extra == 'zzz-test-scripts-monitor-memory'
+Provides-Extra: zzz-test-scripts-pypi-server
+Requires-Dist: click; extra == 'zzz-test-scripts-pypi-server'
+Requires-Dist: loguru; extra == 'zzz-test-scripts-pypi-server'
+Requires-Dist: pypiserver[passlib]; extra == 'zzz-test-scripts-pypi-server'
+Requires-Dist: typed-settings; extra == 'zzz-test-scripts-pypi-server'
+Provides-Extra: zzz-test-semver
+Requires-Dist: semver; extra == 'zzz-test-semver'
+Provides-Extra: zzz-test-sentinel
+Provides-Extra: zzz-test-socket
+Provides-Extra: zzz-test-sqlalchemy
+Requires-Dist: bidict; extra == 'zzz-test-sqlalchemy'
+Requires-Dist: pyhumps; extra == 'zzz-test-sqlalchemy'
+Requires-Dist: sqlalchemy; extra == 'zzz-test-sqlalchemy'
+Provides-Extra: zzz-test-sqlalchemy-polars
+Requires-Dist: polars; extra == 'zzz-test-sqlalchemy-polars'
+Requires-Dist: pyhumps; extra == 'zzz-test-sqlalchemy-polars'
+Requires-Dist: sqlalchemy; extra == 'zzz-test-sqlalchemy-polars'
+Provides-Extra: zzz-test-subprocess
+Provides-Extra: zzz-test-sys
+Provides-Extra: zzz-test-tempfile
+Provides-Extra: zzz-test-text
+Provides-Extra: zzz-test-timer
+Provides-Extra: zzz-test-typed-settings
+Requires-Dist: click; extra == 'zzz-test-typed-settings'
+Requires-Dist: sqlalchemy; extra == 'zzz-test-typed-settings'
+Requires-Dist: typed-settings; extra == 'zzz-test-typed-settings'
+Provides-Extra: zzz-test-xarray
+Requires-Dist: bottleneck; extra == 'zzz-test-xarray'
+Requires-Dist: numbagg; extra == 'zzz-test-xarray'
+Requires-Dist: xarray; extra == 'zzz-test-xarray'
+Provides-Extra: zzz-test-xlrd
+Requires-Dist: xlrd; extra == 'zzz-test-xlrd'
+Provides-Extra: zzz-test-zarr
+Requires-Dist: atomicwrites; extra == 'zzz-test-zarr'
+Requires-Dist: zarr; extra == 'zzz-test-zarr'
+Description-Content-Type: text/markdown
+
+[![PyPI version](https://badge.fury.io/py/dycw-utilities.svg)](https://badge.fury.io/py/dycw-utilities)
+
+# `dycw-utilities`
+
+[All the Python functions I don't want to write twice.](https://github.com/nvim-lua/plenary.nvim)
+
+## Installation
+
+- `pip install dycw-utilities`
+
+or with [extras](https://github.com/dycw/python-utilities/blob/master/pyproject.toml).
