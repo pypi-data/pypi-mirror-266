@@ -1,0 +1,20 @@
+[package]
+name = "haplo"
+version = "0.2.0"
+edition = "2021"
+
+[dependencies]
+image = "0.23.14"
+tract-onnx = "^0.21.1"
+anyhow = "1.0"
+libc = "*"
+toml = "0.7.2"
+
+[lib]
+name = "haplo"
+path = "src/lib.rs"
+crate-type = ["staticlib"]
+
+[[bin]]
+name = "haplo_main"
+path = "src/main.rs"
