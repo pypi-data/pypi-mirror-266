@@ -1,0 +1,26 @@
+Metadata-Version: 2.1
+Name: MachSysS
+Version: 0.6.5
+Summary: Machinery System Structure for interface
+Home-page: https://github.com/SINTEF/FEEMS
+Author: Kevin Koosup Yum
+Author-email: kevinkoosup.yum@sintef.no
+License: Apache Software License 2.0
+Keywords: FEEMS protobuf system structure
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3.10
+Classifier: License :: OSI Approved :: Apache Software License
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pip
+Requires-Dist: packaging
+Requires-Dist: protobuf
+Provides-Extra: dev
+
+# Creating python classes for protobuf
+```
+protoc -I=proto --python_out=system_structure/proto proto/system_structure.proto
+```
