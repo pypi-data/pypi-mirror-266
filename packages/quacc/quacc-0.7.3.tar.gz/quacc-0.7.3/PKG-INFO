@@ -1,0 +1,137 @@
+Metadata-Version: 2.1
+Name: quacc
+Version: 0.7.3
+Summary: A platform to enable high-throughput, database-driven quantum chemistry and computational materials science
+Author-email: "Andrew S. Rosen" <asrosen@princeton.edu>
+Maintainer-email: "Andrew S. Rosen" <asrosen@princeton.edu>
+License: BSD-3
+Project-URL: repository, https://github.com/Quantum-Accelerators/quacc
+Project-URL: documentation, https://quantum-accelerators.github.io/quacc/
+Project-URL: changelog, https://github.com/Quantum-Accelerators/quacc/blob/main/CHANGELOG.md
+Keywords: high-throughput,automated,workflow,dft
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: Unix
+Classifier: Operating System :: MacOS
+Requires-Python: <3.13,>=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE.md
+Requires-Dist: ase>3.22.1
+Requires-Dist: cclib>=1.8
+Requires-Dist: custodian>=2024.3.12
+Requires-Dist: emmet-core>=0.80.0
+Requires-Dist: maggma<=0.63.4
+Requires-Dist: monty>=2024.2.26
+Requires-Dist: numpy>=1.25.0
+Requires-Dist: psutil
+Requires-Dist: pydantic>=2.0.1
+Requires-Dist: pydantic-settings>=2.2.0
+Requires-Dist: pymatgen>=2024.2.20
+Requires-Dist: typer>=0.12.1
+Provides-Extra: covalent
+Requires-Dist: covalent>=0.234.0rc0; extra == "covalent"
+Requires-Dist: covalent-cloud>=0.39.0; extra == "covalent"
+Provides-Extra: dask
+Requires-Dist: dask[distributed]>=2023.12.1; extra == "dask"
+Requires-Dist: dask-jobqueue>=0.8.2; extra == "dask"
+Provides-Extra: defects
+Requires-Dist: pymatgen-analysis-defects>=2023.8.22; extra == "defects"
+Requires-Dist: shakenbreak>=3.2.0; extra == "defects"
+Provides-Extra: jobflow
+Requires-Dist: jobflow>=0.1.14; extra == "jobflow"
+Requires-Dist: jobflow-remote>=0.1.0; extra == "jobflow"
+Requires-Dist: fireworks>=2.0.3; extra == "jobflow"
+Provides-Extra: mlp
+Requires-Dist: matgl>=1.0.0; extra == "mlp"
+Requires-Dist: chgnet>=0.3.3; extra == "mlp"
+Requires-Dist: mace-torch>=0.3.3; extra == "mlp"
+Requires-Dist: torch-dftd>=0.4.0; extra == "mlp"
+Requires-Dist: torch<=2.2.1; extra == "mlp"
+Provides-Extra: mp
+Requires-Dist: pymatgen-io-validation>=0.0.1; extra == "mp"
+Provides-Extra: newtonnet
+Requires-Dist: newtonnet>=1.1; extra == "newtonnet"
+Provides-Extra: parsl
+Requires-Dist: parsl[monitoring]>=2023.10.23; extra == "parsl"
+Provides-Extra: phonons
+Requires-Dist: phonopy>=2.20.0; extra == "phonons"
+Requires-Dist: seekpath>=2.1.0; extra == "phonons"
+Provides-Extra: prefect
+Requires-Dist: prefect>=2.14.14; extra == "prefect"
+Requires-Dist: prefect-dask>=0.2.6; extra == "prefect"
+Requires-Dist: dask-jobqueue>=0.8.2; extra == "prefect"
+Provides-Extra: redun
+Requires-Dist: redun>=0.16.2; extra == "redun"
+Provides-Extra: sella
+Requires-Dist: sella>=2.3.3; extra == "sella"
+Provides-Extra: tblite
+Requires-Dist: tblite[ase]>=0.3.0; platform_system == "Linux" and extra == "tblite"
+Provides-Extra: dev
+Requires-Dist: codecov-cli>=0.4.1; extra == "dev"
+Requires-Dist: pytest>=7.4.0; extra == "dev"
+Requires-Dist: pytest-cov>=3.0.0; extra == "dev"
+Requires-Dist: ruff>=0.0.285; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: blacken-docs>=1.16.0; extra == "docs"
+Requires-Dist: mkdocs-material>=9.5.16; extra == "docs"
+Requires-Dist: mkdocstrings[python]>=0.22.0; extra == "docs"
+Requires-Dist: mkdocs-gen-files>=0.5.0; extra == "docs"
+Requires-Dist: mkdocs-literate-nav>=0.6.0; extra == "docs"
+Requires-Dist: pillow>=10.0.0; extra == "docs"
+Requires-Dist: cairosvg>=2.7.1; extra == "docs"
+
+<div align="center">
+  <img src=https://github.com/Quantum-Accelerators/quacc/blob/main/docs/images/quacc_logo_wide.png width="300"><br>
+</div>
+
+# `quacc` – The Quantum Accelerator 🦆
+
+[![codecov](https://codecov.io/gh/Quantum-Accelerators/quacc/branch/main/graph/badge.svg?token=OJaOZAH30u&precision=1)](https://codecov.io/gh/Quantum-Accelerators/quacc)
+[![DeepSource](https://app.deepsource.com/gh/Quantum-Accelerators/quacc.svg/?label=active+issues&token=Y1NxOLIuFFEqWdjawIYnJNde)](https://app.deepsource.com/gh/Quantum-Accelerators/quacc/?ref=repository-badge)
+![Python - Version](https://img.shields.io/pypi/pyversions/quacc)
+![PyPI - Version](https://img.shields.io/pypi/v/quacc?color=blue&link=https%3A%2F%2Fpypi.org%2Fproject%2Fquacc%2F)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7720998.svg)](https://doi.org/10.5281/zenodo.7720998)
+
+`quacc` is a flexible platform for computational materials science 💎 and quantum chemistry 🧪 that is built for the big data era 🔥. It is maintained by the [Rosen Research Group](https://rosen.cbe.princeton.edu/) at Princeton University.
+
+- `quacc` makes it possible to easily run pre-made [computational materials science workflows](https://quantum-accelerators.github.io/quacc/user/recipes/recipes_list.html) that can be efficiently dispatched anywhere: locally, HPC, the cloud, or any combination thereof.
+
+- `quacc` gives you the freedom of choice. Through a single, unified interface to several [workflow management solutions](https://quantum-accelerators.github.io/quacc/user/basics/wflow_overview.html), you can use what best suits your unique computing needs.
+
+- `quacc` leverages community resources so we don't reinvent the wheel. It is built around the Atomic Simulation Environment and much of the software infrastructure powering the Materials Project.
+
+## Documentation 📖
+
+<p align="center">
+     <a href="https://quantum-accelerators.github.io/quacc/"><b><i>Learn More Here!</i></b></a>
+</p>
+
+... or skip straight to one of the following sections:
+
+- 🔧 [Installation Guide](https://quantum-accelerators.github.io/quacc/install/install.html)
+- 🧠 [User Guide](https://quantum-accelerators.github.io/quacc/user/recipes/recipes_intro.html)
+- 🤝 [Developer Guide](https://quantum-accelerators.github.io/quacc/dev/contributing.html)
+
+## Visual Example ✨
+
+🚀 Representative `quacc` workflow using [Covalent](https://github.com/AgnostiqHQ/covalent) as one of the several supported workflow managers.
+
+![](https://github.com/Quantum-Accelerators/quacc/blob/main/docs/images/start/start.gif)
+
+## Citation 📝
+
+If you use `quacc` in your work, please cite it as follows:
+
+- quacc – The Quantum Accelerator, https://doi.org/10.5281/zenodo.7720998.
+
+## License ⚖️
+
+`quacc` is released under a [BSD 3-Clause license](https://github.com/quantum-accelerators/quacc/blob/main/LICENSE.md).
