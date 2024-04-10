@@ -1,0 +1,394 @@
+#
+
+# build-system
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling"]
+
+# project
+[project]
+authors = [{name = "Derek Wan", email = "d.wan@icloud.com"}]
+dependencies = ["typing-extensions"]
+dynamic = ["version"]
+name = "dycw-utilities"
+readme = "README.md"
+requires-python = ">= 3.10"
+
+[project.optional-dependencies]
+cacher = ["atomicwrites", "cachetools"]
+dev = [
+  "ast-comments",
+  "atomicwrites",
+  "beartype",
+  "beautifulsoup4",
+  "bidict",
+  "bottleneck",
+  "cachetools",
+  "click",
+  "cryptography",
+  "cvxpy",
+  "fastapi",
+  "fpdf2",
+  "frozendict",
+  "hatch",
+  "holoviews",
+  "hypothesis",
+  "loguru",
+  "luigi",
+  "mdutils",
+  "memory-profiler",
+  "more-itertools",
+  "numbagg",
+  "numpy",
+  "optuna",
+  "pandas",
+  "pathvalidate",
+  "polars-lts-cpu",  # for CI
+  "pqdm",
+  "psutil",
+  "pydantic",
+  "pyhumps",
+  "pyinstrument",
+  "pypiserver[passlib]",
+  "pytest",
+  "pytest-check",
+  "scipy",
+  "selenium",
+  "semver",
+  "sqlalchemy",
+  "streamlit",
+  "typed-settings",
+  "xarray",
+  "xlrd",
+  "zarr",
+  # test
+  "coverage-conditional-plugin",
+  "exceptiongroup",
+  "freezegun",
+  "pytest-cov",
+  "pytest-instafail",
+  "pytest-only",
+  "pytest-randomly",
+  "pytest-rerunfailures",
+  "pytest-xdist",
+  # CI
+  "win32_setctime",  # https://github.com/Delgan/loguru/issues/147
+]
+scripts-clean-dir = ["click", "loguru", "typed-settings"]
+scripts-csv-to-markdown = ["click", "loguru", "mdutils", "typed-settings"]
+scripts-generate-snippets = [
+  "ast-comments",
+  "click",
+  "loguru",
+  "pyhumps",
+  "typed-settings",
+]
+scripts-luigi-server = ["click", "loguru", "luigi", "typed-settings"]
+scripts-monitor-memory = ["click", "loguru", "psutil", "typed-settings"]
+scripts-pypi-server = [
+  "click",
+  "loguru",
+  "pypiserver[passlib]",
+  "typed-settings",
+]
+test = [
+  "exceptiongroup",
+  "hypothesis",
+  "pytest",
+  "pytest-randomly",
+  "pytest-rerunfailures",
+  "pytest-xdist",
+]
+zzz-test-ast = []
+zzz-test-atomicwrites = ["atomicwrites"]
+zzz-test-beartype = ["beartype"]
+zzz-test-bs4 = ["beautifulsoup4", "polars"]
+zzz-test-cacher = ["atomicwrites", "cachetools"]
+zzz-test-cachetools = ["cachetools"]
+zzz-test-click = ["click", "sqlalchemy"]
+zzz-test-cryptography = ["cryptography"]
+zzz-test-cvxpy = ["cvxpy", "pandas"]
+zzz-test-dataclasses = []
+zzz-test-datetime = []
+zzz-test-defaults = [
+  "coverage-conditional-plugin",
+  "exceptiongroup",
+  "hypothesis",
+  "pytest",
+  "pytest-cov",
+  "pytest-randomly",
+  "pytest-rerunfailures",
+]
+zzz-test-email = []
+zzz-test-enum = []
+zzz-test-errors = []
+zzz-test-fastapi = ["fastapi"]
+zzz-test-fpdf2 = ["fpdf2", "holoviews"]
+zzz-test-functions = []
+zzz-test-functools = []
+zzz-test-getpass = []
+zzz-test-git = []
+zzz-test-hashlib = []
+zzz-test-hatch = ["hatch"]
+zzz-test-holoviews = ["holoviews", "numbagg", "xarray"]
+zzz-test-humps = ["bidict", "pyhumps"]
+zzz-test-ipython = ["ipython"]
+zzz-test-iterables = []
+zzz-test-json = ["sqlalchemy"]
+zzz-test-jupyter = ["jupyterlab", "pandas", "polars"]
+zzz-test-locale = []
+zzz-test-logging = []
+zzz-test-loguru = ["loguru"]
+zzz-test-luigi = ["freezegun", "luigi", "semver", "sqlalchemy"]
+zzz-test-math = []
+zzz-test-memory-profiler = ["memory-profiler"]
+zzz-test-modules = [
+  "atomicwrites",
+  "ast-comments",
+  "beartype",
+  "bs4",
+  "cachetools",
+  "click",
+  "cryptography",
+  "cvxpy",
+  "fastapi",
+  "fpdf2",
+  "hatch",
+  "holoviews",
+  "loguru",
+  "luigi",
+  "memory-profiler",
+  "mdutils",
+  "more-itertools",
+  "numpy",
+  "pathvalidate",
+  "polars",
+  "pqdm",
+  "pydantic",
+  "pyhumps",
+  "pyinstrument",
+  "pytest-check",
+  "scipy",
+  "semver",
+  "sqlalchemy",
+  "streamlit",
+  "typed-settings",
+  "xarray",
+  "xlrd",
+  "zarr",
+]
+zzz-test-more-itertools = ["more-itertools"]
+zzz-test-numpy = ["bottleneck", "numbagg", "pandas"]
+zzz-test-optuna = ["optuna"]
+zzz-test-os = []
+zzz-test-pandas = ["pandas"]
+zzz-test-pathlib = ["pathvalidate"]
+zzz-test-pathvalidate = ["pathvalidate"]
+zzz-test-pickle = ["atomicwrites"]
+zzz-test-platform = []
+zzz-test-polars = ["polars"]
+zzz-test-pqdm = ["pqdm"]
+zzz-test-pydantic = ["atomicwrites", "pydantic"]
+zzz-test-pyinstrument = ["atomicwrites", "pyinstrument"]
+zzz-test-pytest = ["atomicwrites"]
+zzz-test-pytest-check = ["pytest-check"]
+zzz-test-random = []
+zzz-test-re = []
+zzz-test-scipy = ["scipy"]
+zzz-test-scripts-clean-dir = ["click", "freezegun", "loguru", "typed-settings"]
+zzz-test-scripts-csv-to-markdown = [
+  "click",
+  "loguru",
+  "mdutils",
+  "typed-settings",
+]
+zzz-test-scripts-generate-snippets = [
+  "ast-comments",
+  "click",
+  "loguru",
+  "pyhumps",
+  "typed-settings",
+]
+zzz-test-scripts-luigi-server = ["click", "loguru", "luigi", "typed-settings"]
+zzz-test-scripts-monitor-memory = [
+  "click",
+  "loguru",
+  "psutil",
+  "typed-settings",
+]
+zzz-test-scripts-pypi-server = [
+  "click",
+  "loguru",
+  "pypiserver[passlib]",
+  "typed-settings",
+]
+zzz-test-semver = ["semver"]
+zzz-test-sentinel = []
+zzz-test-socket = []
+zzz-test-sqlalchemy = ["bidict", "pyhumps", "sqlalchemy"]
+zzz-test-sqlalchemy-polars = ["polars", "pyhumps", "sqlalchemy"]
+zzz-test-subprocess = []
+zzz-test-sys = []
+zzz-test-tempfile = []
+zzz-test-text = []
+zzz-test-timer = []
+zzz-test-typed-settings = ["click", "sqlalchemy", "typed-settings"]
+zzz-test-xarray = ["bottleneck", "numbagg", "xarray"]
+zzz-test-xlrd = ["xlrd"]
+zzz-test-zarr = ["atomicwrites", "zarr"]
+
+[project.scripts]
+clean-dir = "utilities.scripts.clean_dir:main"
+csv-to-markdown = "utilities.scripts.csv_to_markdown:main"
+generate-snippets = "utilities.scripts.generate_snippets:main"
+monitor-memory = "utilities.scripts.monitor_memory:main"
+start-luigi-server = "utilities.scripts.luigi.server:main"
+start-pypi-server = "utilities.scripts.pypi_server:main"
+
+# coverage
+[tool.coverage]
+
+[tool.coverage.coverage_conditional_plugin.rules]
+os-eq-linux = 'sys_platform == "linux"'
+os-eq-macos = 'sys_platform == "darwin"'
+os-eq-windows = 'sys_platform == "windows"'
+os-ne-linux = 'sys_platform != "linux"'
+os-ne-macos = 'sys_platform != "darwin"'
+os-ne-windows = 'sys_platform != "windows"'
+version-ge-311 = "sys_version_info >= (3, 11)"
+
+[tool.coverage.html]
+directory = ".coverage/html"
+
+[tool.coverage.report]
+exclude_also = [
+  "@overload",
+  "assert_never",
+  "case _ as never:",
+  "if TYPE_CHECKING:",
+]
+fail_under = 100.0
+skip_covered = true
+skip_empty = true
+
+[tool.coverage.run]
+branch = true
+data_file = ".coverage/data"
+omit = ["src/utilities/clean_dir/__main__.py", "src/utilities/streamlit.py"]
+parallel = true
+plugins = ["coverage_conditional_plugin"]
+
+# hatch
+[tool.hatch]
+
+[tool.hatch.build]
+sources = ["src"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/utilities"]
+
+[tool.hatch.version]
+path = "src/utilities/__init__.py"
+
+# nitpick
+[tool.nitpick]
+style = [
+  "https://raw.githubusercontent.com/dycw/nitpick/master/styles/3.10.toml",
+  "https://raw.githubusercontent.com/dycw/nitpick/master/styles/common.toml",
+]
+
+# pyright
+[tool.pyright]
+executionEnvironments = [{root = "src"}]
+include = ["src"]
+pythonVersion = "3.10"
+reportImplicitOverride = "error"
+reportImportCycles = "error"
+reportMissingSuperCall = "error"
+reportMissingTypeArgument = false
+reportMissingTypeStubs = false
+reportPrivateImportUsage = false
+reportPrivateUsage = false
+reportPropertyTypeMismatch = "error"
+reportShadowedImports = "error"
+reportUninitializedInstanceVariable = "error"
+reportUnknownArgumentType = false
+reportUnknownMemberType = false
+reportUnknownParameterType = false
+reportUnknownVariableType = false
+reportUnnecessaryTypeIgnoreComment = "error"
+reportUntypedBaseClass = false
+reportUnusedCallResult = "error"
+typeCheckingMode = "strict"
+
+# pytest
+[tool.pytest]
+
+[tool.pytest.ini_options]
+addopts = [
+  "-ra",
+  "-vv",
+  "--color=auto",
+  "--cov=utilities",
+  "--cov-config=pyproject.toml",
+  "--cov-report=html",
+  "--strict-markers",
+]
+filterwarnings = [
+  "error",
+  "ignore:Implicitly cleaning up <TemporaryDirectory '.*'>:ResourceWarning",
+]
+minversion = "8.0"
+testpaths = ["src/tests"]
+xfail_strict = true
+
+# ruff
+[tool.ruff]
+src = ["src"]
+target-version = "py310"
+unsafe-fixes = true
+
+[tool.ruff.lint]
+ignore = [
+  "ANN101",  # missing-type-self
+  "ANN102",  # missing-type-cls
+  "ANN401",  # dynamically-typed-expression
+  "D",  # pydocstyle
+  "E501",  # line-too-long
+  "PLR0913",  # too-many-arguments
+  # formatter
+  "W191",  # tab-indentation
+  "E111",  # indentation-with-invalid-multiple
+  "E114",  # indentation-with-invalid-multiple-comment
+  "E117",  # over-indented
+  "D206",  # indent-with-spaces
+  "D300",  # triple-single-quotes
+  "Q000",  # bad-quotes-inline-string
+  "Q001",  # bad-quotes-multiline-string
+  "Q002",  # bad-quotes-docstring
+  "Q003",  # avoidable-escaped-quote
+  "COM812",  # missing-trailing-comma
+  "COM819",  # prohibited-trailing-comma
+  "ISC001",  # single-line-implicit-string-concatenation
+  "ISC002",  # multi-line-implicit-string-concatenation
+]
+select = ["ALL"]
+
+[tool.ruff.lint.extend-per-file-ignores]
+"src/tests/**/*.py" = [
+  "FBT001",  # boolean-positional-arg-in-function-definition
+  "FBT003",  # boolean-positional-value-in-function-call
+  "PD901",  # pandas-df-variable-name
+  "PLR2004",  # magic-value-comparison
+  "S101",  # assert-used
+]
+"src/tests/test_typed_settings.py" = ["I002"]  # missing-required-import
+
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = ["utilities.typed_settings.click_field"]
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.lint.isort]
+required-imports = ["from __future__ import annotations"]
