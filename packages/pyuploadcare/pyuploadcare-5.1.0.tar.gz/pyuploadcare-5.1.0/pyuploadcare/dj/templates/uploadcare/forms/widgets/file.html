@@ -1,0 +1,48 @@
+{% if value %}
+    <script>
+        window.addEventListener('DOMContentLoaded', (e) => {
+            const uploaderCtx = document.querySelector('#uploaderctx_{{ name }}');
+            {% if options.multiple == "true" %}
+                {# FileGroup #}
+                {% for file in value %}
+                    uploaderCtx.addFileFromCdnUrl("{{ file.cdn_url }}")
+                {% endfor %}
+            {% else %}
+                {# File #}
+                uploaderCtx.addFileFromCdnUrl("{{ value.cdn_url }}")
+            {% endif %}
+        });
+    </script>
+{% endif %}
+
+<div style="position: relative; display: flex;">
+
+    <script type="module">
+        import * as LR from "{{ uploadcare_js }}";
+        LR.registerBlocks(LR);
+    </script>
+
+    <lr-config
+        ctx-name="{{ name }}"
+        pubkey="{{ pub_key }}"
+        {% for k, v in options.items %}
+        {{ k|escape }}="{{ v|escape }}"{% endfor %}
+    ></lr-config>
+
+    <lr-upload-ctx-provider
+        id="uploaderctx_{{ name }}"
+        ctx-name="{{ name }}"
+    ></lr-upload-ctx-provider>
+
+    <lr-file-uploader-{{ variant }}
+        css-src="{{ uploadcare_css }}"
+        ctx-name="{{ name }}"
+    >
+        <lr-form-input
+            ctx-name="{{ name }}"
+        ></lr-form-input>
+    </lr-file-uploader-{{ variant }}>
+
+
+</div>
+
