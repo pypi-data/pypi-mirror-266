@@ -1,0 +1,106 @@
+Metadata-Version: 2.1
+Name: django-composed-configuration
+Version: 0.24.0
+Summary: Turnkey Django settings for data management applications.
+Home-page: https://github.com/girder/django-composed-configuration
+Author: Kitware, Inc.
+Author-email: kitware@kitware.com
+License: Apache 2.0
+Project-URL: Bug Reports, https://github.com/girder/django-composed-configuration/issues
+Project-URL: Source, https://github.com/girder/django-composed-configuration
+Keywords: django girder configuration configurations setting settings
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django :: 4
+Classifier: Framework :: Django :: 4.0
+Classifier: Framework :: Django :: 4.1
+Classifier: Framework :: Django
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: django-configurations[database,email]
+Provides-Extra: dev
+Requires-Dist: django >=4 ; extra == 'dev'
+Requires-Dist: django-allauth >=0.56.0 ; extra == 'dev'
+Requires-Dist: django-auth-style ; extra == 'dev'
+Requires-Dist: django-cors-headers ; extra == 'dev'
+Requires-Dist: django-extensions ; extra == 'dev'
+Requires-Dist: django-filter ; extra == 'dev'
+Requires-Dist: django-girder-utils >=0.9.0 ; extra == 'dev'
+Requires-Dist: django-oauth-toolkit >=1.4.0 ; extra == 'dev'
+Requires-Dist: drf-yasg ; extra == 'dev'
+Requires-Dist: psycopg2 ; extra == 'dev'
+Requires-Dist: rich ; extra == 'dev'
+Requires-Dist: whitenoise[brotli] ; extra == 'dev'
+Requires-Dist: django-debug-toolbar ; extra == 'dev'
+Requires-Dist: django-minio-storage ; extra == 'dev'
+Provides-Extra: prod
+Requires-Dist: django >=4 ; extra == 'prod'
+Requires-Dist: django-allauth >=0.56.0 ; extra == 'prod'
+Requires-Dist: django-auth-style ; extra == 'prod'
+Requires-Dist: django-cors-headers ; extra == 'prod'
+Requires-Dist: django-extensions ; extra == 'prod'
+Requires-Dist: django-filter ; extra == 'prod'
+Requires-Dist: django-girder-utils >=0.9.0 ; extra == 'prod'
+Requires-Dist: django-oauth-toolkit >=1.4.0 ; extra == 'prod'
+Requires-Dist: drf-yasg ; extra == 'prod'
+Requires-Dist: psycopg2 ; extra == 'prod'
+Requires-Dist: rich ; extra == 'prod'
+Requires-Dist: whitenoise[brotli] ; extra == 'prod'
+Requires-Dist: django-storages[boto3] ; extra == 'prod'
+Requires-Dist: sentry-sdk ; extra == 'prod'
+
+# django-composed-configuration
+[![PyPI](https://img.shields.io/pypi/v/django-composed-configuration)](https://pypi.org/project/django-composed-configuration/)
+
+Turnkey Django settings for data management applications.
+
+## Installation
+Add to your project's requirements:
+```
+django-composed-configuration[dev,prod]
+```
+
+In your project's `settings.py`:
+```python
+from composed_configuration import (
+    ComposedConfiguration,
+    ConfigMixin,
+    DevelopmentBaseConfiguration,
+    ProductionBaseConfiguration,
+)
+
+
+class _ProjectMixin(ConfigMixin):
+    # Define additional project-specific settings or overrides here
+    pass
+
+    @staticmethod
+    def mutate_configuration(configuration: ComposedConfiguration) -> None:
+        # Perform any non-overriding mutation of existing settings here
+        # The "configuration" variable contains the flattened settings
+        # For example:
+        #   configuration.INSTALLED_APPS += ['my_extra_app']
+        pass
+
+
+class DevelopmentConfiguration(_ProjectMixin, DevelopmentBaseConfiguration):
+    pass
+
+
+class ProductionConfiguration(_ProjectMixin, ProductionBaseConfiguration):
+    pass
+```
+
+At runtime:
+* continue to set the `DJANGO_SETTINGS_MODULE` environment variable (pointing to `settings.py`)
+* also set `DJANGO_CONFIGURATION`, with a value of
+  either `DevelopmentConfiguration` or `ProductionConfiguration`
