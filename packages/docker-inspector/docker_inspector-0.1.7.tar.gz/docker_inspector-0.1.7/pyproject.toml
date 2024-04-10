@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "docker-inspector"
+version = "0.1.7"
+description = ""
+authors = ["antonio <mr.antonsilin@gmail.com>"]
+readme = "README.md"
+packages = [
+    { include = "docker_inspector"},
+]
+
+
+[tool.poetry.scripts]
+docker-inspector = 'docker_inspector.app:run'
+
+
+[tool.poetry.dependencies]
+python = "^3.9"
+textual = "^0.56.3"
+
+
+[tool.poetry.group.dev.dependencies]
+textual-dev = "^1.5.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
