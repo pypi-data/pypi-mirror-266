@@ -1,0 +1,19 @@
+<div class="tree px-3"
+	 data-ams-location="${tales:absolute_url(context)}">
+	<ul role="tree">
+		<li tal:repeat="node view.tree"
+			role="treeitem" class="parent_li">
+			<span tal:define="term node.context"
+				  data-ams-url="${tales:absolute_url(term)}/properties.html"
+				  class="label ${node.css_class}"
+				  data-toggle="modal">
+				<i tal:condition="node.has_children"
+				   class="fas fa-fw fa-plus-circle"
+				   data-ams-click-handler="MyAMS.thesaurus.tree.expandOrCollapse"
+				   data-ams-stop-propagation="true"></i>
+				<span class="term">${node.label}</span>
+			</span>
+			<ul class="hidden group"></ul>
+		</li>
+	</ul>
+</div>

@@ -1,0 +1,61 @@
+<section class="rounded-lg" i18n:domain="pyams_thesaurus">
+	<h2 class="d-flex flex-wrap pl-3">
+		<span class="flex-grow-1" i18n:translate="">${view.title}</span>
+		<i tal:omit-tag="">${structure:provider:pyams.toolbar}</i>
+	</h2>
+	<i tal:omit-tag="">${structure:provider:pyams.help}</i>
+	<div tal:define="js tales:resource_path('pyams_thesaurus.zmi:thesaurus_js');
+					 css tales:resource_path('pyams_thesaurus.zmi:thesaurus_css');"
+		 data-ams-modules='{
+			"thesaurus": {
+				"src": "${js}",
+				"css": "${css}"
+			}
+		 }'
+		 data-ams-callback="MyAMS.thesaurus.tree.init">
+		<div class="ams-form col-md-5 offset-md-6 mb-3">
+			<div class="input bordered">
+				<div class="select2-parent">
+					<select class="select2"
+							name="terms-tree-search"
+							data-placeholder="Search term..."
+							data-allow-clear="true"
+							data-minimum-input-length="2"
+							data-ajax--url="/api/thesaurus/terms"
+							data-ajax--params="${view.search_query_params}"
+							data-ams-change-handler="MyAMS.thesaurus.tree.search"
+							i18n:attributes="data-placeholder"></select>
+				</div>
+			</div>
+		</div>
+		<div class="tree px-3"
+			 data-ams-location="${tales:absolute_url(context)}"
+			 tal:define="extracts view.extracts">
+			<ul role="tree">
+				<li tal:repeat="node view.tree"
+					role="treeitem" class="parent_li">
+					<tal:loop repeat="extract reversed(extracts.values())">
+						<div class="float-right mr-2"
+							 tal:define="selected extract.name in node.context.extracts;
+										 klass 'fas fa-square used' if selected else 'far fa-square'">
+							<i class="fa-fw ${klass} extract-checker"
+							   data-ams-extract-name="${extract.name}"
+							   style="color: #${extract.color};"></i>
+						</div>
+					</tal:loop>
+					<span tal:define="term node.context"
+						  data-ams-url="${tales:absolute_url(term)}/properties.html"
+						  class="label py-1 ${node.css_class}"
+						  data-toggle="modal">
+						<i tal:condition="node.has_children"
+						   class="fas fa-fw fa-plus-circle"
+						   data-ams-click-handler="MyAMS.thesaurus.tree.expandOrCollapse"
+						   data-ams-stop-propagation="true"></i>
+						<span class="term">${node.label}</span>
+					</span>
+					<ul class="hidden group"></ul>
+				</li>
+			</ul>
+		</div>
+	</div>
+</section>

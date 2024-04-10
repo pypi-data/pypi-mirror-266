@@ -1,0 +1,58 @@
+<div class="row"
+	 tal:define="js tales:resource_path('pyams_thesaurus.zmi:thesaurus_js');
+				 css tales:resource_path('pyams_thesaurus.zmi:thesaurus_css');
+				 fieldname view.field.__name__;"
+	 data-ams-modules='{
+		"thesaurus": {
+			"src": "${js}",
+			"css": "${css}"
+		}
+	 }'
+	 data-ams-callback="MyAMS.thesaurus.widget.init"
+	 data-ams-reset-callback="MyAMS.thesaurus.widget.updateSelection">
+	<tal:loop repeat="term view.top_terms">
+		<div class="col col-xs-6 col-sm-4 col-md-3 col-lg-3 mb-2">
+			<div id="term_${repeat['term'].index}"
+				 class="terms-widget border">
+				<header class="px-2 py-1 bg-secondary border-bottom">
+					<h6 class="mb-0">
+						${term.alt or term.label}
+						<tal:if condition="term.note">
+							<b tal:define="note tales:html(term.note);"
+							   class="fa fa-fw fa-question-circle hint"
+							   title="${structure:note}" data-ams-hint-html="true"></b>
+						</tal:if>
+					</h6>
+				</header>
+				<div class="terms-box p-2 vp-y vp-200 vp-x-none"
+					 style="height: 200px; width: calc(100% - 2px);">
+					<tal:loop repeat="subterm view.get_subterms(term)">
+						<div style="padding-left: ${(subterm.level - 2) * 15}px"
+							 tal:define="published subterm.status == 'published'">
+							<div class="${'custom-control custom-switch' if published else None}">
+								<input tal:condition="published"
+									   type="checkbox"
+									   class="custom-control-input"
+									   id="term_${fieldname}_${subterm.label}"
+									   name="${view.name}"
+									   value="${subterm.label}"
+									   checked="${'checked' if subterm.label in (view.value or ()) else None}"
+									   disabled="${'disabled' if not published else None}"
+									   data-ams-change-handler="MyAMS.thesaurus.widget.updateSelection" />
+								<label class="${'custom-control-label' if published else 'font-weight-bold mt-2 mb-0'}"
+									   for="term_${fieldname}_${subterm.label}">
+									${subterm.alt or subterm.label}
+									<tal:if condition="subterm.note">
+										<b tal:define="note tales:html(subterm.note);"
+										   class="fa fa-fw fa-question-circle hint"
+										   title="${structure:note}" data-ams-hint-html="true"></b>
+									</tal:if>
+								</label>
+							</div>
+						</div>
+					</tal:loop>
+				</div>
+			</div>
+		</div>
+	</tal:loop>
+</div>
