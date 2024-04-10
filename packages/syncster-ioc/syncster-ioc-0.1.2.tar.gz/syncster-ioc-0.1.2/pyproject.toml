@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=64.0", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "syncster-ioc"
+authors = [
+    { name = "Florin Boariu", email = "florin.pt@rootshell.ro" },
+    { name = "Matthias Rössle", email = "matthias.roessle@helmholtz-berlin.de" },
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Operating System :: POSIX :: Linux",
+    "Development Status :: 2 - Pre-Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering"
+]
+dependencies = [
+    "emmi>=0.6.0",
+    "caproto",
+    "menlo-syncro",
+]
+dynamic = ["version"]
+description = "EPICS IOC for syncronisation applications in Pump-Probe X-ray diffraction"
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = []
+
+[project.urls]
+"Source Code" = "https://gitlab.com/kmc3-xpp/syncster-ioc"
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-cov",
+    "pytest-asyncio",
+]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -s"
+log_cli = true
+testpaths = [
+    "test",
+]
+
+[tool.setuptools_scm]
+write_to = "src/syncster_ioc/_version.py"
+
+[project.scripts]
+syncster-ioc = "syncster_ioc.main:main"

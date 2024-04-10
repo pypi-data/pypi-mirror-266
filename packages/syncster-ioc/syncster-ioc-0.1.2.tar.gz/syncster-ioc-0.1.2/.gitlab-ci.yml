@@ -1,0 +1,125 @@
+stages:
+  - build
+  - test
+  - deploy
+
+cache:
+  paths:
+    - .cache/pip
+    - venv
+
+variables:
+  SYNCSTER_PORT: ""
+  SYNCSTER_SYNC_TIMEOUT: "5"
+
+build_image:
+  stage: build
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_COMMIT_BRANCH == "release"
+  image:
+    name: gcr.io/kaniko-project/executor:v1.9.2-debug
+    entrypoint: [""]
+  script:
+    - export
+    - |
+      /kaniko/executor --context "$CI_PROJECT_DIR" \
+          --build-arg SYNCSTER_FROM_PIP="yes" \
+          --build-arg SYNCSTER_IOC_FROM_PIP="no" \
+          --build-arg SYNCSTER_IOC_SRC="$CI_PROJECT_DIR" \
+          --dockerfile "$CI_PROJECT_DIR/Dockerfile" \
+          --destination "$CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH"
+
+unit_tests:
+  stage: test
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_COMMIT_BRANCH == "release"
+  image:
+    name: "$CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH"
+    entrypoint: [""]
+  script:
+    - export
+    - id
+    - pwd
+    - ls -l /home
+    - git config --global --add safe.directory "$CI_PROJECT_DIR"
+    - if git describe --tags --exact-match --match v[0-9]\*; then 
+    -   git describe --tags --exact-match --match v[0-9]\*
+    -   export PACKAGE_DESCRIBE=`git describe --tags --exact-match --match v[0-9]\*`
+    -   echo -n "" > package.env
+    -   export PACKAGE_VERSION=${PACKAGE_DESCRIBE##v}
+    -   echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> package.env
+    -   echo "PACKAGE_FAMILY=${PACKAGE_VERSION%.*}" >> package.env
+    -   echo "PACKAGE_COMMIT=$CI_COMMIT_SHA" >> package.env
+    -   echo Package version and family follows
+    -   cat package.env
+    - else
+    -   echo "No matching version tag found. This is ok for testing, but we cannot release."
+    - fi
+    - python --version
+    - pip install coverage
+    - coverage run -m pytest
+    - coverage report
+    - coverage xml
+  coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage.xml
+      dotenv: package.env
+
+publish_latest:
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == "release"
+  image:
+    name: gcr.io/kaniko-project/executor:v1.9.2-debug
+    entrypoint: [""]
+  script:
+    - export
+    - if [ ! -z "$PACKAGE_VERSION" ]; then
+    -   export RELEASE_VERSION=$PACKAGE_VERSION
+    -   export RELEASE_FAMILY=$PACKAGE_FAMILY
+    -   export RELEASE_COMMIT=$PACKAGE_COMMIT
+    - elif [ ! -z "$CI_COMMIT_TAG" ]; then
+    -   export RELEASE_VERSION=${CI_COMMIT_TAG##v}
+    -   export RELEASE_FAMILY=${RELEASE_VERSION%.*}
+    -   export RELAASE_COMMIT=$CI_COMMIT_SHA
+    - fi    
+    - echo "Package release version is $RELEASE_VERSION from commit $CI_COMMIT_SHA"
+    - if [ ! -z "$RELEASE_VERSION" ]; then
+    -   echo "FROM $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH" | /kaniko/executor --dockerfile /dev/stdin --destination "$CI_REGISTRY_IMAGE:latest" --destination "$CI_REGISTRY_IMAGE:$RELEASE_VERSION" --destination "$CI_REGISTRY_IMAGE:$RELEASE_FAMILY"
+    - else
+    -   echo "Cannot determine release tag."
+    - fi
+
+
+create_release:
+  stage: deploy
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  rules:
+    - if: $CI_COMMIT_BRANCH == "release"
+  script:
+    - export
+    - if [ ! -z "$PACKAGE_VERSION" ]; then
+    -   export RELEASE_VERSION=$PACKAGE_VERSION
+    -   export RELEASE_FAMILY=$PACKAGE_FAMILY
+    - elif [ ! -z "$CI_COMMIT_TAG" ]; then
+    -   export RELEASE_VERSION="${CI_COMMIT_TAG##v}"
+    -   export RELEASE_FAMILY="${RELEASE_VERSION%.*}"
+    - fi
+    - echo "Package release version is $RELEASE_VERSION"
+    - if [ -z "$RELEASE_VERSION" ]; then
+    -   echo "Cannot determine release tag, no release created."
+    -   "/bin/false"
+    - fi
+    - echo "Releasing version $RELEASE_VERSION"
+    - echo -e "Description follows\n$CI_COMMIT_TITLE\n$CI_COMMIT_DESCRIPTION"
+    - |
+      release-cli create \
+          --name "v$RELEASE_VERSION" \
+          --tag-name "v$RELEASE_VERSION" \
+          --description "$CI_COMMIT_TITLE<br/>$CI_COMMIT_DESCRIPTION" \
+          --ref "$CI_COMMIT_SHA"

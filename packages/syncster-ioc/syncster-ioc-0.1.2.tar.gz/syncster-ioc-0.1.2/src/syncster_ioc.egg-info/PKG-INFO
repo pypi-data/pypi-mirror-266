@@ -1,0 +1,167 @@
+Metadata-Version: 2.1
+Name: syncster-ioc
+Version: 0.1.2
+Summary: EPICS IOC for syncronisation applications in Pump-Probe X-ray diffraction
+Author-email: Florin Boariu <florin.pt@rootshell.ro>, Matthias Rössle <matthias.roessle@helmholtz-berlin.de>
+Project-URL: Source Code, https://gitlab.com/kmc3-xpp/syncster-ioc
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: emmi>=0.6.0
+Requires-Dist: caproto
+Requires-Dist: menlo-syncro
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: pytest-cov; extra == "test"
+Requires-Dist: pytest-asyncio; extra == "test"
+
+Synchro-State Tracking IOC
+==========================
+
+![release](https://gitlab.com/kmc3-xpp/syncster-ioc/-/badges/release.svg)
+![pipeline](https://gitlab.com/kmc3-xpp/syncster-ioc/badges/release/pipeline.svg)
+![coverage](https://gitlab.com/kmc3-xpp/syncster-ioc/badges/release/coverage.svg)
+
+This is a simple IOC that tracks the timing synchronization state on
+specific laser repetition-control hardware. It was written with the
+[Menly Syncro RRE](https://www.menlosystems.com/products/synchronization-stabilization-and-asops-systems/rre-syncro)
+in mind, but the structure is fairly clean and can likely be extended
+to other devices easily.
+
+About Repetion Control
+----------------------
+
+Repetition control usually determines when a pulsed laser fires.
+This is at the base of many scientific applications, e.g. pump-probe
+experiments. It coordinates the firing rate, and point in time, 
+with an external signal -- typically a driving, gate or marker frequency
+of another device.
+
+The idea is to have a simple state variable exported as an
+[EPICS process variable](https://docs.epics-controls.org/en/latest/getting-started/EPICS_Intro.html)
+which indicates whether the system is in a "synchronized" state
+with the external frequency, and to take limited action as to whether
+to force or pause the synchronized state.
+
+Quick Start
+-----------
+
+Either install locally with `pip`, then start directly from the
+command line:
+
+```
+$ pip install syncster-ioc
+$ syncster-ioc [args]
+```
+
+or start the pre-built image via Podman (or Docker)
+```
+$ podman run -ti --rm registry.gitlab.com:kmc3-xpp/syncster-ioc:latest [args]
+```
+
+The IOC State Diagram
+---------------------
+
+The syncro hardware operation is tracked and reflected in the IOC through
+the following state automaton:
+
+```mermaid
+stateDiagram-v2
+    [*] --> INIT
+    SYNCED --> OFF
+    INIT --> OFF
+    INIT --> SYNCED
+    STRAY --> SYNCED
+    OFF --> STRAY
+    ERROR --> OFF
+    SYNCED --> ERROR
+    STRAY --> ERROR
+    INIT --> ERROR
+    OFF --> ERROR
+```
+
+The state definition is as follows:
+
+ - `INIT`: IOC initialization, determines the state of the synchronization
+   hardware (i.e. whether it's synchronized to the control frequency)
+   
+ - `SYNCED`: this is the *actual* state we're most interested in: it
+   indicates that the hardware is synchronized and any processes depending
+   on it can continue. Showing this is the main purpose of this IOC.
+   
+ - `OFF`: if the hardware indicates being non-synchronized, we enter this
+   state. This is a defined "do not rely on synchronization"-state, and,
+   as far as we can control, no synchronization is attempted. (Beware that
+   at this point, `syncster-ioc` may not have control over whether the
+   hardware *actually* attempts any synchronization, but in any case,
+   we're not expecting it and not tracking it; we're well-defined "turned
+   off" and stay that way.)
+   
+ - `STRAY`: if synchronization is required / requsted / expected (e.g. by
+   user request), we enter this state to wait for it. We only leave this
+   when synchronization is achieved.
+   
+ - `ERROR`: can be entered from any state if (defined) erronous behavior
+   is detected. Most commonly this happens if error flags of the hardware
+   are set, or if we've spent too long in `STRAY` without any synchronization
+   occuring and a timeout was set. We leave `ERROR` only on explicit user
+   action ("clearing"), and we enter in `OFF`, where we wait for yet
+   another request as to whether to attempt (to detect or perform)
+   a new synchronization.
+   
+ - `FAIL`: for clarity purposed, this state is not indicated in the diagram.
+   However, it exists, and is very similar to `ERROR` -- the only difference
+   being that there is no returning from `FAIL`. It indicates a fundamentally
+   broken situation that led to inconsistencies and cannot be solved within
+   the current state of the IOC. Severe manual intervention
+   with IOC restart is required.
+
+State Exported via EPICS PVs
+----------------------------
+
+The following EPICS process variables (PVs) are exported:
+
+- `{prefix}state`: string, indicates one of the above states.
+- `{prefix}error`: string, shows a human-readable error description.
+  This is only valid if `...:state` is `"ERROR"`.
+- `{prefix}clear`: if `1` is written here, the error state is
+  cleared, which will trigger the IOC once to proceed away from the
+  `"ERROR"` state into `"OFF"`.
+- `{prefox}stray`: if `1` is written here, the IOC is triggered to
+  to proceed from `"OFF"` into `"STRAY"`.
+  
+
+Environment Variables
+---------------------
+
+The IOC reacts to the following (shell) environment variables:
+
+- `SYNCSTER_LOG_LEVEL`: one of `"debug"`, "`info"`, `"warning"` or `"error"`
+- `SYNCSTER_PREFIX`: the IOC EPICS prefix to use (see above). You should
+  include the `:` character at the end of the prefix, if you intend to
+  use it.
+- `SYNCSTER_RRE_PORT`: USB device to use with the Menly Syncro RRE,
+  e.g. `/dev/ttyUSB0`.
+- `SYNCSTER_AUTO_STRAY`: if set to `"yes"`, the state automaton will 
+  always automatically advance from `"OFF"` to `"STRAY"`; this will
+  make it easier e.g. to recover from errors (requiring a single
+  write to a PV instead of two), but will essentially make it imposible
+  to purposely stay in `"OFF"`. Default behavior is not to.
+- `SYNCSTER_SYNC_TIMEOUT`: the number of seconds to wait in `"STRAY"`
+  for the synchronization to occur in hardware. Defaults to `300`, which
+  may be too short for manual synchronization. Setting this to `-1` will
+  wait forever, which may not exactly be what you want if you have an
+  automatic synchronization routine and want fall into a defined error
+  state if it fails to produce intended results.
+  
+Bugs & Caveats
+--------------
+
+"[Bugs? Where we're going, we don't have... 😎 ...*bugs*!](https://www.youtube.com/watch?v=NhSC4C43wgc)"
+
