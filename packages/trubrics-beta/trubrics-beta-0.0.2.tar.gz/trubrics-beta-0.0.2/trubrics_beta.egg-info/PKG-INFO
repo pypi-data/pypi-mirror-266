@@ -1,0 +1,28 @@
+Metadata-Version: 2.1
+Name: trubrics-beta
+Version: 0.0.2
+Summary: Python SDK to track events in Trubrics.
+Author-email: Jeff Kayne <jeff.kayne@trubrics.com>
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+
+# trubrics-sdk
+
+> [!IMPORTANT]  
+> We are currently in beta.
+
+To track events:
+
+```python
+trubrics = Trubrics(api_key="YOUR_TRUBRICS_API_KEY")
+
+trubrics.track(
+    event="User prompt",
+    role="user",
+    role_id="test_user_id",
+    properties={"$text": "Hello, Trubrics! Tell me a joke?"},
+    session_id="test_id",
+)
+```
