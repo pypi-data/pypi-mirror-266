@@ -1,0 +1,56 @@
+/*
+pyodide-mkdocs-theme
+Copyleft GNU GPLv3 🄯 2024 Frédéric Zinelli
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.
+If not, see <https://www.gnu.org/licenses/>.
+*/
+
+
+/* Common to all terminales.
+   --n-lines is defined on the parent, through the terminal macro */
+.py_mk_terminal {
+  --color: var(--main-theme);
+  --background: var(--gutter-theme);
+  --size: 1.3;
+  width: 100%;
+  position: relative;
+  overflow: auto;
+}
+
+.term_editor, .py_mk_terminal_solo {
+  height: calc( 1em * var(--n-lines) * var(--size) * 0.95 );
+  /* min-width: this is a bad idea, because if a terminal is inside an admonition, the terminal
+     will go out of the admonition (which is ignoring its content...)
+  */
+}
+
+
+
+.py_mk_terminal_solo {
+  border: solid 1px;
+  border-radius: 0 8px 0 8px;
+  border-color: var(--main-theme);
+}
+
+
+.stdout-ctrl {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  right: 7px;
+  top: 5px;
+  z-index: 101;   /* lol XD */
+  font-family: var(--md-text-font-family);    /* for the tooltips */
+}
