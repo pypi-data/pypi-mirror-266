@@ -1,0 +1,29 @@
+{% extends "admin/base/edit.html" %}
+
+{% block navbar %}
+{% set active_endpoint = 'admin.pages' %}
+{% include "admin/_sidebar.html" %}
+{% endblock %}
+
+{% block title %}
+{% if page.title %}
+Edit Page {{ page.title }} | {{ super() }}
+{% else %}
+New Page | {{ super() }}
+{% endif %}
+{% endblock %}
+
+{% block breadcrumbs %}
+{% call bread.trail() %}
+{{ bread.crumb('Pages', url_for('.list')) }}
+{% if page.title %}
+{{ bread.crust('Edit ' + page.title) }}
+{% else %}
+{{ bread.crust('New Page') }}
+{% endif %}
+{% endcall %}
+{% endblock %}
+
+{% block form %}
+{% include "admin/page/_form.html" %}
+{% endblock %}

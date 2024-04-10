@@ -1,0 +1,13 @@
+{% set active_endpoint = active_endpoint | default(request.endpoint) %}
+
+<div class="position-fixed start-0 d-flex vh-100">
+    <div class="d-flex flex-column flex-shrink-0 px-3" style="width: 280px">
+        <div class="my-3 mx-auto">
+            {% include "_devbar.html" %}
+        </div>
+        <hr>
+        {{ nav | safe }}
+        <hr>
+        {% include "admin/sidebar/user.html" %}
+    </div>
+</div>
