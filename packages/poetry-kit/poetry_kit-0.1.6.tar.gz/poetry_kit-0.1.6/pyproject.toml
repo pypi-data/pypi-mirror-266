@@ -1,0 +1,25 @@
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "poetry-kit"
+version = "0.1.6"
+description = ""
+authors = []
+readme = "readme.md"
+packages = [
+    { include = "poetry_kit", from = "venues/stages" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+volts = "^1.0.9"
+click = "^8.1.7"
+
+[tool.poetry.scripts]
+poetry_kit = 'poetry_kit:clique'
+
+
+
