@@ -1,0 +1,152 @@
+MDScreen:
+    name: "signupdetails"
+    MDFloatLayout:
+        Image:
+            source: app.imageforhmoapicysplelogineijgo()
+
+            size_hint: 1,1
+            pos_hint : {"center_x": .5, "center_y": .5}
+
+        Image:
+            source: app.imageforhmoapicastarsignulelogineijgo()
+            size_hint: 5,5
+            pos_hint: {"center_x": .5, "center_y": .45}
+            opacity: 0.15
+
+        MDLabel:
+            text: "Please provide us with some more details"
+            pos_hint: {"center_y": .91}
+            color: rgba(52, 0, 231, 255)
+            font_size: "17sp"
+            font_name: app.bahnscriptreplace()
+            halign: "center"
+
+        MDLabel:
+            text: "Language"
+            pos_hint: {"center_x": .53, "center_y": .82}
+            color: rgba(149, 162, 180, 255)
+            font_size: "17sp"
+            font_name: app.bahnscriptreplace()
+
+        MDFloatLayout:
+            md_bg_color: rgba(149, 162, 180, 255)
+            size_hint: .6, .002
+            pos_hint: {"center_x": .65, "center_y": .817}
+
+        Button:
+            text: "English"
+            size_hint: .27, .065
+            background_color: (0, 0, 0, 0)
+            pos_hint: {"center_x": .18, "center_y": .75}
+            color: rgba(52, 0, 231, 255)
+            font_name: "bahnschrift"
+            on_release:
+                app.btnclickornot()
+
+            canvas.before:
+                Color:
+                    rgb: rgba(52, 0, 231, 255)
+                Line:
+                    width: 1.2
+                    rounded_rectangle: self.x, self.y, self.width, self.height, 5, 5, 5, 5, 100
+
+        Button:
+            text: "हिंदी"
+            size_hint: .3, .065
+            background_color: (0, 0, 0, 0)
+            pos_hint: {"center_x": .485, "center_y": .75}
+            color: rgba(52, 0, 231, 255)
+
+            font_name: app.notoreplaceforpath()
+
+            on_release:
+                app.btnclickornot_hindi()
+
+            canvas.before:
+                Color:
+                    rgb: rgba(52, 0, 231, 255)
+                Line:
+                    width: 1.2
+                    rounded_rectangle: self.x, self.y, self.width, self.height, 5, 5, 5, 5, 100
+
+        Button:
+            text: "தமிழ்"
+            size_hint: .3, .065
+            background_color: (0, 0, 0, 0)
+            pos_hint: {"center_x": .795, "center_y": .75}
+            color: rgba(52, 0, 231, 255)
+            font_name: app.nototamilreplaceforpath()
+
+            on_release:
+                app.btnclickornot_tamil()
+
+            canvas.before:
+                Color:
+                    rgb: rgba(52, 0, 231, 255)
+                Line:
+                    width: 1.2
+                    rounded_rectangle: self.x, self.y, self.width, self.height, 5, 5, 5, 5, 100
+
+        MDLabel:
+            text: "Your Age"
+            pos_hint: {"center_x": .53, "center_y": .67}
+            color: rgba(149, 162, 180, 255)
+            font_size: "17sp"
+            font_name: app.bahnscriptreplace()
+
+        MDFloatLayout:
+            md_bg_color: rgba(149, 162, 180, 255)
+            size_hint: .65, .002
+            pos_hint: {"center_x": .63, "center_y": .67}
+
+
+        MDFloatLayout:
+            size_hint: .7, .07
+            pos_hint: {"center_x": .5, "center_y": .615}
+            TextInput:
+                id: signup_age
+                hint_text: "Enter your Age"
+                font_name: "bahnschrift"
+                size_hint_y: .75
+                pos_hint:{"center_x": .43, "center_y": .5}
+                background_color: 1, 1, 1, 0
+                foreground_color: rgba(0, 0, 59, 255)
+                cursor_color: rgba(0, 0, 59, 255)
+                font_size: "14sp"
+                cursor_width: "2sp"
+                multiline: False
+                on_text: app.filter_input(self, 'int')
+            MDFloatLayout:
+                pos_hint: {"center_x": .45, "center_y": 0}
+                size_hint_y:.03
+                md_bg_color: rgba(178, 178, 178, 255)
+
+
+        Button:
+            text: "SUBMIT"
+            size_hint: .66, .065
+            background_color: 0, 0, 0, 0
+            pos_hint: {"center_x": .5, "center_y": .475}
+            font_name: "bahnschrift"
+            on_release:
+                app.senddetailsfromsignup()
+                root.manager.transition.direction = "left"
+                root.manager.current = "beforequestions"
+
+            canvas.before:
+                Color:
+                    rgb: rgba(52, 0, 231, 255)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [5]
+
+        Image:
+            source: app.imageforhmoadetailsrsignulelogineijgo()
+            pos_hint: {"center_x": .50, "center_y": .215}
+
+
+
+
+
+

@@ -1,0 +1,61 @@
+MDScreen:
+    name: "question4_science_poor_fundamental"
+    MDFloatLayout:
+        MDLabel:
+            id: "questiontxt"
+            text: "Which type of cells lack a defined nucleus?"
+            pos_hint: {"center_y": .75}
+            color: rgba(52, 0, 231, 255)
+            font_size: "17sp"
+            font_name: app.bahnscriptreplace()
+            halign: "center"
+
+        MDLabel:
+            text: "Q4/5"
+            pos_hint: {"center_y": .85}
+            color: rgba(169,169,169, 255)
+            font_size: "19sp"
+            font_name: app.bahnscriptreplace()
+            halign: "center"
+
+        MDFloatLayout:
+            size_hint: .7, .07
+            pos_hint: {"center_x": .5, "center_y": .68}
+            TextInput:
+                id: q4_science_fundamental_ans
+                hint_text: "Enter the answer here"
+                font_name: "bahnschrift"
+                size_hint_y: .75
+                pos_hint:{"center_x": .43, "center_y": .5}
+                background_color: 1, 1, 1, 0
+                foreground_color: rgba(0, 0, 59, 255)
+                cursor_color: rgba(0, 0, 59, 255)
+                font_size: "14sp"
+                cursor_width: "2sp"
+                multiline: False
+
+            MDFloatLayout:
+                pos_hint: {"center_x": .45, "center_y": 0}
+                size_hint_y:.03
+                md_bg_color: rgba(178, 178, 178, 255)
+
+        Button:
+            text: "N E X T"
+            size_hint: .66, .065
+            background_color: 0, 0, 0, 0
+            pos_hint: {"center_x": .505, "center_y": .2}
+            color: rgba(52, 0, 231, 255)
+            font_name: "bahnschrift"
+            on_release:
+                root.check_text_q4()
+                root.manager.transition.direction = "right"
+                root.manager.current = "question5_science_poor_fundamental"
+            canvas.before:
+                Color:
+                    rgb: rgba(52, 0, 231, 255)
+                Line:
+                    width: 1.2
+                    rounded_rectangle: self.x, self.y, self.width, self.height, 5, 5, 5, 5, 100
+
+
+

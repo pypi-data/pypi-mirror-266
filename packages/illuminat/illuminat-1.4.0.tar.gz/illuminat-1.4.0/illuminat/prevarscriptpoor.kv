@@ -1,0 +1,99 @@
+<Illuminat>
+MDScreen:
+    name: "prevarscriptpoor"
+
+    MDFloatLayout:
+        id: float_layout
+        Image:
+            source: app.imageforhmoapicysplelogineijgo()
+
+            size_hint: 1, 1.2
+            pos_hint: {"center_x": .5, "center_y": .5}
+
+        Image:
+            source: app.imageforhmoapicaaprevaravgysaaaplelogineijgo()
+            size_hint: 3,3
+            pos_hint: {"center_x": .5, "center_y": .5}
+            opacity: 0.15
+
+        MDLabel:
+            text: "Choose the Lesson"
+            font_name: app.bahnscriptlightreplace()
+            font_size: "53sp"
+            halign: "left"
+            pos_hint: {"center_x": .53, "center_y": .8}
+            color: rgba(52, 0, 231, 255)
+
+        MDIconButton:
+            icon: "arrow-left"
+            pos_hint: {"center_y": .95}
+            user_font_size: "30sp"
+            theme_text_color: "Custom"
+            text_color: rgba(26, 24, 58, 255)
+            on_release:
+                app.setsubjecttozero()
+                root.manager.transition.direction = "left"
+                root.manager.current = "home"
+
+
+        Button:
+            id: whichchapter
+            text: "CH1"
+            size_hint: .8, .15
+            background_color: 0, 0, 0, 0
+            pos_hint: {"center_x": .5, "center_y": .58}
+            font_name: app.bahnscriptreplace()
+            text_size: self.size
+            multiline: True
+            halign: 'center'
+            valign: 'middle'
+            on_release:
+                app.gettextch1(1)
+                root.manager.transition.direction = "right"
+                root.manager.current = "varscript"
+                app.on_button_click()
+                app.reducequestiontoone()
+                app.gettextpara()
+                app.convertTextpara()
+                app.make_mastervariable()
+            canvas.before:
+                Color:
+                    rgb: rgba(52, 0, 231, 255)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [5]
+
+        Button:
+            id: whichchapter2
+            text: "CH2"
+            size_hint: .8, .15
+            background_color: 0, 0, 0, 0
+            pos_hint: {"center_x": .5, "center_y": .4}
+            font_name: app.bahnscriptreplace()
+            text_size: self.size
+            multiline: True
+            halign: 'center'
+            valign: 'middle'
+            on_release:
+                app.gettextch1(2)
+                app.on_button_click()
+                print("hello, here is my button, hello thanjk 4jhiothjtyiojhiiohyjthojtohotijh")
+                app.reducequestiontoone()
+                app.make_mastervariable()
+                app.gettextpara()
+                app.convertTextpara()
+                root.manager.transition.direction = "right"
+                root.manager.current = "varscript"
+            canvas.before:
+                Color:
+                    rgb: rgba(238, 124, 15, 255)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [5]
+        Image:
+            source: app.imageforhmoapicaapreaavaravgysaaaplelogineijgo()
+            pos_hint: {"center_x": .52, "center_y": .16}
+            size_hint: .7, .7
+
