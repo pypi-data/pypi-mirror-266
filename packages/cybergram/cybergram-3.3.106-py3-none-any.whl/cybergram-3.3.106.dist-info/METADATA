@@ -1,0 +1,118 @@
+Metadata-Version: 2.1
+Name: cybergram
+Version: 3.3.106
+Summary: Elegant, modern and asynchronous Telegram MTProto API framework in Python for users and bots
+Home-page: https://github.com/rizaldevs
+Download-URL: https://github.com/rizaldevs/cybergram/releases/latest
+Author: rizal
+Author-email: rizaldaitona@gmail.com
+License: LGPLv3
+Project-URL: Tracker, https://github.com/rizaldevs/cybergram/issues
+Project-URL: Community, https://t.me/halopyrogram
+Project-URL: Source, https://github.com/rizaldevs/cybergram
+Project-URL: Documentation, https://docs.pyrogram.org
+Keywords: telegram chat messenger mtproto api client library python
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: English
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: Implementation
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Topic :: Internet
+Classifier: Topic :: Communications
+Classifier: Topic :: Communications :: Chat
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Software Development :: Libraries :: Application Frameworks
+Requires-Python: ~=3.7
+Description-Content-Type: text/markdown
+License-File: COPYING
+License-File: COPYING.lesser
+License-File: NOTICE
+Requires-Dist: pyaes (==1.6.1)
+Requires-Dist: pysocks (==1.7.1)
+
+<p align="center">
+    <a href="https://github.com/rizaldevs/cybergram">
+        <img src="https://docs.cybergram.org/_static/cybergram.png" alt="cybergram" width="128">
+    </a>
+    <br>
+    <b>Telegram MTProto API Framework for Python</b>
+    <br>
+    <a href="https://cybergram.org">
+        Homepage
+    </a>
+    •
+    <a href="https://docs.cybergram.org">
+        Documentation
+    </a>
+    •
+    <a href="https://docs.cybergram.org/releases">
+        Releases
+    </a>
+    •
+    <a href="https://t.me/cybergram">
+        News
+    </a>
+</p>
+
+## cybergram
+
+> Elegant, modern and asynchronous Telegram MTProto API framework in Python for users and bots
+
+``` python
+from cybergram import Client, filters
+
+app = Client("my_account")
+
+
+@app.on_message(filters.private)
+async def hello(client, message):
+    await message.reply("Hello from cybergram!")
+
+
+app.run()
+```
+
+**cybergram** is a modern, elegant and asynchronous [MTProto API](https://docs.cybergram.org/topics/mtproto-vs-botapi)
+framework. It enables you to easily interact with the main Telegram API through a user account (custom client) or a bot
+identity (bot API alternative) using Python.
+
+### Support
+
+If you'd like to support cybergram, you can consider:
+
+- [Become a GitHub sponsor](https://github.com/sponsors/rizaldevs).
+- [Become a LiberaPay patron](https://liberapay.com/rizaldevs).
+- [Become an OpenCollective backer](https://opencollective.com/cybergram).
+
+### Key Features
+
+- **Ready**: Install cybergram with pip and start building your applications right away.
+- **Easy**: Makes the Telegram API simple and intuitive, while still allowing advanced usages.
+- **Elegant**: Low-level details are abstracted and re-presented in a more convenient way.
+- **Fast**: Boosted up by [tgcyber](https://github.com/rizaldevs/tgcyber), a high-performance cryptography library written in C.  
+- **Type-hinted**: Types and methods are all type-hinted, enabling excellent editor support.
+- **Async**: Fully asynchronous (also usable synchronously if wanted, for convenience).
+- **Powerful**: Full access to Telegram's API to execute any official client action and more.
+
+### Installing
+
+``` bash
+pip3 install cybergram
+```
+
+### Resources
+
+- Check out the docs at https://docs.cybergram.org to learn more about cybergram, get started right
+away and discover more in-depth material for building your client applications.
+- Join the official channel at https://t.me/cybergram and stay tuned for news, updates and announcements.
