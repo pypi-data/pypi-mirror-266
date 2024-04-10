@@ -1,0 +1,59 @@
+Metadata-Version: 2.1
+Name: provisio
+Version: 0.1.7
+Summary: Small utility library containing city provision metric used in other projects
+Author: Danila
+Author-email: 63115678+DDonnyy@users.noreply.github.com
+Requires-Python: >=3.9,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: geopandas (>=0.14.3,<0.15.0)
+Requires-Dist: loguru (>=0.7.2,<0.8.0)
+Requires-Dist: momepy (>=0.6.0,<0.7.0)
+Requires-Dist: networkit (>=11.0,<12.0)
+Requires-Dist: networkx (>=3.2.1,<4.0.0)
+Requires-Dist: numpy (>=1.23.5,<2.0.0)
+Requires-Dist: osm2geojson (>=0.2.5,<0.3.0)
+Requires-Dist: osmnx (>=1.9.2,<2.0.0)
+Requires-Dist: pandas (>=2.2.0,<3.0.0)
+Requires-Dist: pulp (>=2.8.0,<3.0.0)
+Requires-Dist: pydantic (>=2.6.1,<3.0.0)
+Requires-Dist: tqdm (>=4.66.2,<5.0.0)
+Description-Content-Type: text/markdown
+
+
+
+# Provisio
+
+Small utility library containing city provision metric used in other projects
+
+
+## Base usage example
+Use [dongraphio](https://github.com/DDonnyy/dongraphio) to get city's Intermodal Graph and adjacency matrix between two geodataframes
+
+```pip install provisio```
+
+```python
+import pandas as pd
+import geopandas as gpd
+from provisio import *
+buildings: gpd.GeoDataFrame = gpd.read_file("test_data/buildings.geojson").rename(
+        columns={"your_demand_value_column": "demand"}
+    )
+services: gpd.GeoDataFrame = gpd.read_file("services.geojson")
+
+matrix = pd.read_csv("test_data/matrix.csv")
+
+prvs_buildings, prvs_services, prvs_links = get_service_provision(
+    services=services, demanded_buildings=buildings, adjacency_matrix=matrix, threshold=10
+)
+prvs_buildings.to_file("result_buildings.geojson")
+prvs_services.to_file("result_services.geojson")
+prvs_links.to_file("result_links.geojson")
+
+```
+
+
