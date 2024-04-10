@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>64.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ConservedWaterSearch"
+version = "0.4.0"
+authors = [
+    { name = "Domagoj Fijan" },
+    { name = "Jelena Tosovic", email = "jecat_90@live.com" },
+    { name = "Marko Jukic" },
+    { name = "Urban Bren" },
+]
+description = "Conserved water search is a tool for finding conserved water molecules from MD trajectories."
+readme = { file = "README.rst", content-type = "text/x-rst" }
+license = { file = "LICENSE" }
+keywords = [
+    "simulation",
+    "analysis",
+    "molecular dynamics",
+    "biosimulation",
+    "conserved water",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+requires-python = ">=3.9"
+dynamic = ["dependencies"]
+
+[project.urls]
+Homepage = "https://github.com/JecaTosovic/ConservedWaterSearch"
+Documentation = "https://ConservedWaterSearch.readthedocs.io/"
+Source = "https://github.com/JecaTosovic/ConservedWaterSearch"
+Issue = "https://github.com/JecaTosovic/ConservedWaterSearch/issues"
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements/requirements.txt"] }
+optional-dependencies = { debug = { file = [
+    "requirements/requirements-debug.txt",
+] }, nglview = { file = [
+    "requirements/requirements-nglview.txt",
+] } }
