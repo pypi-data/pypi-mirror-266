@@ -1,0 +1,80 @@
+Metadata-Version: 2.1
+Name: naja-atra-wsgi
+Version: 1.0.0
+Summary: This is a simple http server, use MVC like design.
+Author-email: keijack <keijack.wu@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2018 Keijack Wu
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+Project-URL: homepage, https://github.com/naja-atra/naja-atra-wsgi
+Project-URL: repository, https://github.com/naja-atra/naja-atra-wsgi
+Keywords: http-server,websocket,http,web,web-server
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: naja-atra
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+
+# Naja Atra WSGI
+
+This ia a WSGI proxy that proxies requests to Naja Atra.
+
+# Usage
+
+```python
+from naja_atra import route
+from naja_atra_wsgi import app
+from wsgiref.simple_server import make_server
+
+@route("/hello")
+def hello(name: str):
+    return {"messag": f"Hello, {name}!"}
+
+if __name__ == '__main__':
+    server = make_server('0.0.0.0', 8080, app)
+    server.serve_forever()
+
+```
+
+You can use `server.scan()` to import routes from other modules. And also you can use `naja_atra_wsgi.config()` to function to sepecify the static resources routes.
+
+```python
+import os
+import naja_atra.server as server
+
+from wsgiref.simple_server import make_server
+from naja_atra_wsgi import config, app
+
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+
+if __name__ == '__main__':
+    
+    server.scan(base_dir="tests/ctrls", regx=r'.*controllers.*')
+    config(resources={"/public/*": f"{PROJECT_ROOT}/tests/static",
+                    "/*": f"{PROJECT_ROOT}/tests/static"})
+
+    wsgi_server = make_server("", 9090, app)
+    wsgi_server.serve_forever()
+```
