@@ -1,0 +1,169 @@
+name: UbuntuStressTest
+
+on:
+  pull_request:
+
+jobs:
+  test_ubuntu:
+    name: Ubuntu
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python: [ 3.8, 3.9, "3.10", "3.11", "3.12" ]
+        os:  [ ubuntu-22.04 ]
+        compiler: [gcc, clang14]
+        rust: [1.62.1]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.12.1
+        with:
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: ${{ matrix.rust }}
+
+      - name: Install apt dependencies
+        run: |
+            sudo apt install --fix-missing -y libgsl-dev cmake autoconf libboost-test-dev libboost-program-options-dev
+
+      - name: Install cbindgen
+        uses: baptiste0928/cargo-install@v3
+        with:
+          crate: cbindgen
+          version: "=0.24.3" 
+          locked: true
+          cache-key: ${{ matrix.os }}
+
+      - name: rustc version
+        run: |
+            rustc --version
+      - name: cbindgen version
+        run: |
+            cbindgen --version
+
+      - name: Edit PATH
+        run: |
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Set GCC as compiler
+        if: matrix.compiler == 'gcc'
+        run: |
+          echo "CC=gcc" >> $GITHUB_ENV
+          echo "CXX=g++" >> $GITHUB_ENV
+
+      - name: Install clang-14
+        if: matrix.compiler == 'clang14'
+        run: |
+          sudo apt-get install clang-14 clang++-14
+          echo "CC=clang-14" >> $GITHUB_ENV
+          echo "CXX=clang++-14" >> $GITHUB_ENV
+
+      - name: Discover llvm-config
+        run: |
+          dpkg -S llvm-config
+
+      - name: Set LLVM_CONFIG on 22.04
+        if: matrix.os == 'ubuntu-22.04'
+        run: |
+            echo "LLVM_CONFIG=/usr/bin/llvm-config" >> $GITHUB_ENV
+
+      # - name: Set LLVM_CONFIG on 18.04
+      #   if: matrix.os == 'ubuntu-18.04'
+      #   run: |
+      #       echo "LLVM_CONFIG=/usr/lib/llvm-9/bin/llvm-config" >> $GITHUB_ENV
+
+      - name: Python version
+        run: |
+          python --version
+
+      - name: Cache pip dependancies
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.local
+          key: ${{ runner.os }}-${{ matrix.python }}-ubuntu-V4-${{ hashFiles('requirements/development.txt') }}
+
+      - name: Install pip dependencies
+        # if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+            python -m pip install --user --upgrade pip
+            # These are needed to install black:
+            python -m pip install --user --upgrade setuptools wheel 
+            python -m pip install --user -r requirements/development.txt
+            # For sdist validation
+            python -m pip install --user --upgrade twine build
+
+      # Needed so that we don't affect building any pip dependencies with these flags
+      - name: Set CPPFLAGS for C++ builds
+        run: |
+          echo "CPPFLAGS=-Wextra -Weffc++ -Woverloaded-virtual -Wold-style-cast -Werror=effc++ -Werror=old-style-cast -Werror=overloaded-virtual -Werror=unused-parameter" >> $GITHUB_ENV
+
+      - name: Build
+        run: |
+          cmake -E env CPPFLAGS="$CPPFLAGS" \
+            cmake -E env CC="$CC" \
+            cmake -E env CXX="$CXX" cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release -DBUILD_CPP_UNIT_TESTS=ON -DBUILD_CPP_BENCHMARK=ON -DBUILD_PYTHON_UNIT_TESTS=ON -DDISABLE_LTO=ON
+          cmake --build build -j 4
+
+      - name: Run C++ tests
+        run: |
+          cmake --build build -t test
+
+      - name: Clean cmake build
+        run: |
+          rm -rf build
+
+      - name: Manualy run setuptools_scm
+        run: |
+          python -m setuptools_scm
+
+      - name: Run Python tests
+        run: |
+            python -m pytest -n 2 tests
+            python -m pytest -n 2 tests_with_cpp
+
+      - name: Build and run examples/plugin
+        run: |
+          CPPFLAGS=$CPPFLAGS CC=$CC CXX=$CXX PYTHONPATH=. cmake examples/plugin
+          make
+          PYTHONPATH=. python -We examples/plugin/test_plugin.py
+
+      - name: Run Python divergent optima example
+        run: |
+          PYTHONPATH=. python -We examples/gss_divergent_optima/gss_divergent_optima.py 100 0
+
+      - name: Validate the sdist
+        run: |
+            python -m build -s .
+            #python setup.py check
+            python -m twine check dist/*.tar.gz
+            rm -rf dist/*.tar.gz
+
+      - name: Test pip install from dist in fresh venv
+        run: |
+            python -m build -o dist -w .
+            cd dist
+            python -m venv venv
+            source venv/bin/activate
+            which python
+            # The CPPFLAGS contain stuff for C++ that makes no sense for C.
+            # The flags are also too strict for tskit to build under Py 3.12
+            ls
+            CPPFLAGS= python -m pip install --no-cache-dir ./fwdpy11*-*linux*.whl
+            python -m fwdpy11 --includes
+            python -c "import fwdpy11;print(fwdpy11.__version__)"
+            python -c "import fwdpy11;print(fwdpy11.__file__)"
+

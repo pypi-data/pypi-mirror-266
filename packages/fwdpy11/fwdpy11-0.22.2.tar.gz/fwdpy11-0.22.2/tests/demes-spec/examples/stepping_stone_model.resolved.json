@@ -1,0 +1,91 @@
+{
+  "time_units": "years",
+  "generation_time": 25,
+  "doi": [],
+  "description": "Stepping stone model illustrating default value propagation.",
+  "metadata": {},
+  "demes": [
+    {
+      "name": "deme1",
+      "description": "",
+      "start_time": "Infinity",
+      "epochs": [
+        {
+          "end_time": 0,
+          "start_size": 1000,
+          "end_size": 1000,
+          "size_function": "constant",
+          "selfing_rate": 0,
+          "cloning_rate": 0
+        }
+      ],
+      "proportions": [],
+      "ancestors": []
+    },
+    {
+      "name": "deme2",
+      "description": "",
+      "start_time": "Infinity",
+      "epochs": [
+        {
+          "end_time": 0,
+          "start_size": 1000,
+          "end_size": 1000,
+          "size_function": "constant",
+          "selfing_rate": 0,
+          "cloning_rate": 0
+        }
+      ],
+      "proportions": [],
+      "ancestors": []
+    },
+    {
+      "name": "deme3",
+      "description": "",
+      "start_time": "Infinity",
+      "epochs": [
+        {
+          "end_time": 0,
+          "start_size": 1000,
+          "end_size": 1000,
+          "size_function": "constant",
+          "selfing_rate": 0,
+          "cloning_rate": 0
+        }
+      ],
+      "proportions": [],
+      "ancestors": []
+    }
+  ],
+  "migrations": [
+    {
+      "rate": 0.1,
+      "start_time": "Infinity",
+      "end_time": 0,
+      "source": "deme1",
+      "dest": "deme2"
+    },
+    {
+      "rate": 0.1,
+      "start_time": "Infinity",
+      "end_time": 0,
+      "source": "deme2",
+      "dest": "deme1"
+    },
+    {
+      "rate": 0.1,
+      "start_time": "Infinity",
+      "end_time": 0,
+      "source": "deme2",
+      "dest": "deme3"
+    },
+    {
+      "rate": 0.1,
+      "start_time": "Infinity",
+      "end_time": 0,
+      "source": "deme3",
+      "dest": "deme2"
+    }
+  ],
+  "pulses": []
+}

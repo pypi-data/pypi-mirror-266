@@ -1,0 +1,117 @@
+{
+  "time_units": "generations",
+  "generation_time": 1,
+  "doi": [],
+  "description": "An example demography with one main population that is unchanged, that spawns multiple offshoot populations.",
+  "metadata": {},
+  "demes": [
+    {
+      "name": "ancestral",
+      "description": "Main population",
+      "start_time": "Infinity",
+      "epochs": [
+        {
+          "end_time": 0,
+          "start_size": 1000,
+          "end_size": 1000,
+          "size_function": "constant",
+          "selfing_rate": 0,
+          "cloning_rate": 0
+        }
+      ],
+      "proportions": [],
+      "ancestors": []
+    },
+    {
+      "name": "offshoot1",
+      "description": "More recent offshoot population",
+      "start_time": 500,
+      "epochs": [
+        {
+          "end_time": 0,
+          "start_size": 100,
+          "end_size": 100,
+          "size_function": "constant",
+          "selfing_rate": 0,
+          "cloning_rate": 0
+        }
+      ],
+      "proportions": [
+        1
+      ],
+      "ancestors": [
+        "ancestral"
+      ]
+    },
+    {
+      "name": "offshoot2",
+      "description": "More ancient offshoot population",
+      "start_time": 1000,
+      "epochs": [
+        {
+          "end_time": 0,
+          "start_size": 200,
+          "end_size": 200,
+          "size_function": "constant",
+          "selfing_rate": 0,
+          "cloning_rate": 0
+        }
+      ],
+      "proportions": [
+        1
+      ],
+      "ancestors": [
+        "ancestral"
+      ]
+    }
+  ],
+  "migrations": [
+    {
+      "rate": 0.0001,
+      "start_time": 200,
+      "end_time": 100,
+      "source": "ancestral",
+      "dest": "offshoot1"
+    },
+    {
+      "rate": 1e-05,
+      "start_time": 1000,
+      "end_time": 0,
+      "source": "ancestral",
+      "dest": "offshoot2"
+    },
+    {
+      "rate": 1e-05,
+      "start_time": 1000,
+      "end_time": 0,
+      "source": "offshoot2",
+      "dest": "ancestral"
+    },
+    {
+      "rate": 2e-05,
+      "start_time": 500,
+      "end_time": 0,
+      "source": "offshoot1",
+      "dest": "offshoot2"
+    },
+    {
+      "rate": 2e-05,
+      "start_time": 500,
+      "end_time": 0,
+      "source": "offshoot2",
+      "dest": "offshoot1"
+    }
+  ],
+  "pulses": [
+    {
+      "sources": [
+        "offshoot1"
+      ],
+      "dest": "ancestral",
+      "time": 50,
+      "proportions": [
+        0.1
+      ]
+    }
+  ]
+}
