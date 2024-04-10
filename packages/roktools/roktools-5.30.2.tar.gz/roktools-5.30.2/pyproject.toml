@@ -1,0 +1,43 @@
+[tool.poetry]
+name = "roktools"
+version = "5.30.2"
+description = "Package with utilities and tools for GNSS data processing"
+authors = ["Rokubun <info@rokubun.cat>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+numpy = "^1.26.4"
+pandas = "^2.2.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.1"
+pytest-mocha = "^0.4.0"
+python-semantic-release = "^9.4.0"
+flake8 = "^7.0.0"
+
+[tool.poetry.scripts]
+cl = "roktools.cl:entry_point"
+tensorial = "roktools.tensorial:entry_point"
+compute_cdf = "roktools.stats:cdf_cli"
+rinex_from_tle = "roktools.rinex:rinex_from_tle"
+merge_rinex_nav = "roktools.rinex:merge_nav_cli"
+
+[tool.semantic_release]
+version_variables = [
+    "roktools/__init__.py:__version__"
+]
+version_toml = [
+    "pyproject.toml:tool.poetry.version"
+]
+branch = "main"
+upload_to_pypi = true
+upload_to_release = true
+build_command = "pip install poetry && poetry build"
+
+[tool.semantic_release.changelog]
+exclude_commit_patterns = ["build", "ci", "doc", "chore"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
