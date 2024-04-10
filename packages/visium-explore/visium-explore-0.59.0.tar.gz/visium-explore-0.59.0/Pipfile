@@ -1,0 +1,33 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+typer = "<=0.9.0"  # Enforcing a specific version constraint for Typer to maintain compatibility with the visiumlint package
+scikit-learn = "*"
+dvc = "*"
+"streamlit" = "*"
+"plotly" = "*"
+"pydantic" = "*"
+"pyyaml" = "*"
+visium-explore = {editable = true, path = "."}
+streamlit-option-menu = "*"
+mlflow = "*"
+phik = "*"
+pandera = "*"
+pylance = "*"
+umap-learn = "*"
+
+[dev-packages]
+pre-commit = "*"
+setuptools-scm = "*"
+visiumlint = "*"
+semver = "*"
+build = "*"
+twine = "*"
+pytest = "*"
+ipykernel = "*"
+
+[requires]
+python_version = "3.9"
