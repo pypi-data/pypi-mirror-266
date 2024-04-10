@@ -1,0 +1,38 @@
+version: "3.8"
+name: lookout
+
+services:
+  lookout_core:
+    container_name: lookout_core
+    image: ghcr.io/greenroom-robotics/lookout_core:${LOOKOUT_VERSION:-latest}
+    volumes:
+      - /dev:/dev
+      - ~/.config/greenroom:/home/ros/.config/greenroom
+      - ~/lookout/rosbags:/home/ros/rosbags
+    command: ${LOOKOUT_CORE_COMMAND:-tail -f /dev/null}
+    privileged: true
+    ipc: host
+    pid: host
+    environment:
+      - ROS_DOMAIN_ID
+
+  lookout_ui:
+    container_name: lookout_ui
+    image: ghcr.io/greenroom-robotics/lookout_ui:${LOOKOUT_VERSION:-latest}
+
+  lookout_greenstream:
+    container_name: lookout_greenstream
+    image: ghcr.io/greenroom-robotics/lookout_greenstream
+    volumes:
+      - /dev:/dev
+      - ~/.config/greenroom:/home/ros/.config/greenroom
+    privileged: true
+    ipc: host
+    pid: host
+    environment:
+      - ROS_DOMAIN_ID
+
+  lookout_docs:
+    container_name: lookout_docs
+    image: ghcr.io/greenroom-robotics/lookout_docs:${LOOKOUT_VERSION:-latest}
+
