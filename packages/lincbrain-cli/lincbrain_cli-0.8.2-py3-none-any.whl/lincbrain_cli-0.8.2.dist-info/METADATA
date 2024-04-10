@@ -1,0 +1,188 @@
+Metadata-Version: 2.1
+Name: lincbrain-cli
+Version: 0.8.2
+Summary: Command line client for interaction with LINC Brain archive elements
+Home-page: http://lincbrain.org
+Author: LINC developers
+Author-email: team@lincbrain.org
+Maintainer: Aaron Kanzer
+Maintainer-email: akanzer@mit.edu
+License: Apache 2.0
+Project-URL: Source Code, https://github.com/lincbrain/linc-cli
+Project-URL: Documentation, https://dandi.readthedocs.io
+Platform: OS Independent
+Classifier: Development Status :: 1 - Planning
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown; charset=UTF-8
+License-File: LICENSE
+Requires-Dist: bidsschematools ~=0.7.0
+Requires-Dist: click >=7.1
+Requires-Dist: click-didyoumean
+Requires-Dist: dandischema <0.11,>=0.9.0
+Requires-Dist: etelemetry >=0.2.2
+Requires-Dist: fasteners
+Requires-Dist: fscacher >=0.3.0
+Requires-Dist: hdmf !=3.5.0
+Requires-Dist: humanize
+Requires-Dist: interleave ~=0.1
+Requires-Dist: joblib
+Requires-Dist: keyring !=23.9.0
+Requires-Dist: keyrings.alt
+Requires-Dist: packaging
+Requires-Dist: platformdirs
+Requires-Dist: pycryptodomex
+Requires-Dist: pydantic ~=2.0
+Requires-Dist: pynwb !=1.1.0,!=2.3.0,>=1.0.3
+Requires-Dist: nwbinspector !=0.4.32,>=0.4.28
+Requires-Dist: pyout !=0.6.0,>=0.5
+Requires-Dist: python-dateutil
+Requires-Dist: requests ~=2.20
+Requires-Dist: ruamel.yaml <1,>=0.15
+Requires-Dist: semantic-version
+Requires-Dist: tenacity
+Requires-Dist: yarl ~=1.9
+Requires-Dist: zarr ~=2.10
+Requires-Dist: zarr-checksum ~=0.4.0
+Provides-Extra: all
+Requires-Dist: allensdk ; extra == 'all'
+Requires-Dist: duecredit ; extra == 'all'
+Requires-Dist: fsspec[http] ; extra == 'all'
+Requires-Dist: flake8 ; extra == 'all'
+Requires-Dist: pre-commit ; extra == 'all'
+Requires-Dist: anys ~=0.2 ; extra == 'all'
+Requires-Dist: coverage ; extra == 'all'
+Requires-Dist: opencv-python ; extra == 'all'
+Requires-Dist: pytest ; extra == 'all'
+Requires-Dist: pytest-cov ; extra == 'all'
+Requires-Dist: pytest-mock ; extra == 'all'
+Requires-Dist: pytest-rerunfailures ; extra == 'all'
+Requires-Dist: responses !=0.24.0 ; extra == 'all'
+Requires-Dist: vcrpy ; extra == 'all'
+Requires-Dist: boto3 ; extra == 'all'
+Provides-Extra: extensions
+Requires-Dist: allensdk ; extra == 'extensions'
+Provides-Extra: extras
+Requires-Dist: duecredit ; extra == 'extras'
+Requires-Dist: fsspec[http] ; extra == 'extras'
+Provides-Extra: style
+Requires-Dist: flake8 ; extra == 'style'
+Requires-Dist: pre-commit ; extra == 'style'
+Provides-Extra: test
+Requires-Dist: anys ~=0.2 ; extra == 'test'
+Requires-Dist: coverage ; extra == 'test'
+Requires-Dist: opencv-python ; extra == 'test'
+Requires-Dist: pytest ; extra == 'test'
+Requires-Dist: pytest-cov ; extra == 'test'
+Requires-Dist: pytest-mock ; extra == 'test'
+Requires-Dist: pytest-rerunfailures ; extra == 'test'
+Requires-Dist: responses !=0.24.0 ; extra == 'test'
+Requires-Dist: vcrpy ; extra == 'test'
+Provides-Extra: tools
+Requires-Dist: boto3 ; extra == 'tools'
+
+# LINC Brain Client
+
+[![Tests](https://github.com/lincbrain/linc-cli/workflows/Tests/badge.svg)](https://github.com/lincbrain/linc-cli/actions?query=workflow%3ATests)
+[![codecov.io](https://codecov.io/github/lincbrain/linc-cli/coverage.svg?branch=master)](https://codecov.io/github/lincbrain/linc-cli?branch=master)
+[![Conda](https://anaconda.org/conda-forge/dandi/badges/version.svg)](https://anaconda.org/conda-forge/dandi)
+[![Gentoo (::science)](https://repology.org/badge/version-for-repo/gentoo_ovl_science/dandi-cli.svg?header=Gentoo%20%28%3A%3Ascience%29)](https://repology.org/project/dandi-cli/versions)
+[![GitHub release](https://img.shields.io/github/release/dandi/dandi-cli.svg)](https://GitHub.com/dandi/dandi-cli/releases/)
+[![PyPI version fury.io](https://badge.fury.io/py/dandi.svg)](https://pypi.python.org/pypi/dandi/)
+[![Documentation Status](https://readthedocs.org/projects/dandi/badge/?version=latest)](https://dandi.readthedocs.io/en/latest/?badge=latest)
+
+The [LINC Brain Python client](https://pypi.org/project/lincbrain-cli/) allows you to:
+
+* Download `Datasets` and individual subject folders or files
+* Validate data to locally conform to standards
+* Organize your data locally before upload
+* Upload `Datasets`
+* Interact with the LINC Brain archive's web API from Python
+* Delete data in the LINC Brain archive
+* Perform other auxiliary operations with data or the LINC Brain archive
+
+**Note**: This project is under heavy development. See [the issues log](https://github.com/linc/linc-cli/issues) or
+[Work-in-Progress (WiP)](https://github.com/linc/linc-cli/pulls).
+
+## Installation
+
+LINC Brain Client releases are [available from PyPI](https://pypi.org/project/lincbrain-cli)
+and [conda-forge](https://anaconda.org/conda-forge/lincbrain-cli).  Install them in your Python (native, virtualenv, or
+conda) environment via
+
+    pip install lincbrain-cli
+
+or
+
+    conda install -c conda-forge lincbrain-cli
+
+
+## CLI Tool
+
+This package provides a command line utility with a basic interface
+to help you prepare and upload your data to, or obtain data from, the [LINC Brain archive](http://lincbrain.org).
+
+
+```bash
+$> lincbrain
+Usage: lincbrain [OPTIONS] COMMAND [ARGS]...
+
+  A client to support interactions with LINC Brain archive
+  (https://lincbrain.org).
+
+  To see help for a specific command, run
+
+      lincbrain COMMAND --help
+
+  e.g. lincbrain upload --help
+
+Options:
+  --version
+  -l, --log-level [DEBUG|INFO|WARNING|ERROR|CRITICAL]
+                                  Log level (case insensitive).  May be
+                                  specified as an integer.  [default: INFO]
+  --pdb                           Fall into pdb if errors out
+  --help                          Show this message and exit.
+
+Commands:
+  delete            Delete datasets and assets from the server.
+  digest            Calculate file digests
+  download          Download a file or entire folder from LINC Brain Archive.
+  instances         List known LINC Brain Archive instances that the CLI can...
+  ls                List .nwb files and datasets metadata.
+  move              Move or rename assets in a local Dataset and/or on...
+  organize          (Re)organize files according to the metadata.
+  shell-completion  Emit shell script for enabling command completion.
+  upload            Upload Dataset files to LINC Brain Archive.
+  validate          Validate files for NWB and LINC Brain compliance.
+  validate-bids     Validate BIDS paths.
+```
+Run `lincbrain --help` or `lincbrain <subcommand> --help` (e.g. `lincbrain upload --help`) to see manual pages.
+
+## Resources
+
+The LINC Brain ecosystem is forked from the [DANDI Archive project](https://github.com/dandi). Resources there should point
+you towards common questions encountered within the LINC Brain project.
+
+* To learn how to interact with the LINC Brain Archive (e.g. a forked DANDI archive) and for examples on how to use the DANDI Client in various use cases,
+see [the handbook](https://www.dandiarchive.org/handbook/)
+  (specifically the sections on using the CLI to
+[download](https://www.dandiarchive.org/handbook/12_download/) and
+[upload](https://www.dandiarchive.org/handbook/13_upload/) `Dandisets`).
+
+* To get help:
+  - ask a question: https://github.com/dandi/helpdesk/discussions
+  - file a feature request or bug report: https://github.com/dandi/helpdesk/issues/new/choose
+  - contact the DANDI team: help@dandiarchive.org
+
+* To understand how to contribute to the dandi-cli repository, see the [DEVELOPMENT.md](./DEVELOPMENT.md) file.
