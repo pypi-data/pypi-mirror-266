@@ -1,0 +1,86 @@
+experiment_name: fashion_mnist_supervised_experiment
+seed: 0
+n_runs: 1
+n_run_method: series
+wandb:
+    project: experiments
+    # mode: disabled
+dataset:
+    _target_: torch.utils.data.ConcatDataset
+    datasets:
+        - _target_: torchvision.datasets.FashionMNIST
+          root: ./data/supervised/fashion_mnist
+          download: true
+          train: true
+          transform:
+              _target_: torchvision.transforms.ToTensor
+        - _target_: torchvision.datasets.FashionMNIST
+          root: ./data/supervised/fashion_mnist
+          download: true
+          train: false
+          transform:
+              _target_: torchvision.transforms.ToTensor
+train_ratio: 0.7
+val_ratio: 0.15
+test_ratio: 0.15
+data_loader_kwargs:
+    batch_size: 64
+    shuffle: true
+model:
+    _target_: torch.nn.Sequential
+    _args_:
+        - _target_: experiment_lab.common.networks.create_network
+          layer_cls: experiment_lab.common.networks.blocks.Convolution
+          n_layers: 2
+          layer_kwargs:
+              - conv_kwargs:
+                    in_channels: 1
+                    out_channels: 4
+                    kernel_size: 5
+                    stride: 1
+              - conv_kwargs:
+                    in_channels: 4
+                    out_channels: 8
+                    kernel_size: 5
+                    stride: 1
+          constant_layer_kwargs:
+              max_pooling_kwargs:
+                  kernel_size: 2
+                  stride: 2
+              nd: 2
+          layer_activations:
+              _target_: torch.nn.ReLU
+          final_activation:
+              _target_: torch.nn.ReLU
+        - _target_: torch.nn.Flatten
+        - _target_: experiment_lab.common.networks.create_mlp_network
+          layer_sizes:
+              - 128
+              - 100
+              - 10
+          layer_activations:
+              _target_: torch.nn.ReLU
+          final_activation:
+              _target_: torch.nn.Sigmoid
+          dropout_p:
+              - 0.0
+              - 0.2
+# load_model_path: ./outputs/2024-03-12/14-36-41/fashion_mnist_supervised_experiment_1710268601_0_1/models/final_model_epoch_3.pl
+optimizer:
+    _target_: torch.optim.Adam
+    lr: 0.01
+scheduler: null
+loss:
+    _target_: torch.nn.NLLLoss
+num_epochs: 3
+save_model_freq: 1
+logging_schedule:
+    log_type: batches_and_epochs
+    log_freq: 1
+    wandb_log_type: batches_and_epochs
+    wandb_log_freq: 1
+device: mps
+gpu_idx: null
+defaults:
+    - supervised_config
+    - _self_
