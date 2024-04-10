@@ -1,0 +1,33 @@
+<div i18n:domain="pyams_darkgreen_theme"
+	 tal:define="settings view.settings;
+				 items settings.get_items(request);
+				 (has_items, results) tales:boolean_iter(items);"
+	 tal:condition="has_items">
+	<h3 tal:define="title i18n:settings.title"
+		tal:condition="title"
+		class="position-relative border-bottom pb-2 mt-4">
+		${title}
+		<span class="position-absolute underline"></span>
+	</h3>
+	<div tal:define="renderer_settings view.renderer_settings;
+					 selections renderer_settings.thumb_selection;"
+		 class="row ${tales:bs-cols(selections=selections, prefix='row-cols')} mx-0 mb-3">
+		<tal:loop repeat="item results">
+			<div class="p-1"
+				 tal:define="illustration tales:pyams_illustration(item);
+							 target view.get_url(item);"
+				 tal:condition="illustration">
+				<a href="${target}">
+					<tal:if define="image i18n:illustration.data;
+									alt_title i18n:illustration.alt_title;"
+							condition="image">
+						${structure:tales:picture(image,
+												  selections=selections,
+												  alt=alt_title,
+												  css_class='w-100')}
+					</tal:if>
+				</a>
+			</div>
+		</tal:loop>
+	</div>
+</div>
