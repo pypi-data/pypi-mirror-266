@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true, // so that opencv is copied to /lib during tsc build
+    "composite": true,
+    "declaration": true,
+    "esModuleInterop": true,
+    "incremental": true,
+    "jsx": "react",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noEmitOnError": true,
+    "noImplicitAny": false,
+    "noUnusedLocals": false, // TODO revert to true
+    "skipLibCheck": true,
+    "strictPropertyInitialization": false, // TODO remove/revert to true
+    "preserveWatchOutput": true,
+    "resolveJsonModule": true,
+    "outDir": "lib",
+    "rootDir": "src",
+    "strict": true,
+    "strictNullChecks": true,
+    "lib": ["es2022", "dom", "es2017"],
+    "target": "ES2018",
+    "types": ["jest"]
+  },
+  "include": ["src/**/*"]
+}
