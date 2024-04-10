@@ -1,0 +1,108 @@
+Metadata-Version: 2.1
+Name: pyams-content
+Version: 1.99.1
+Summary: PyAMS content management package
+Home-page: https://pyams.readthedocs.io
+Author: Thierry Florac
+Author-email: tflorac@ulthar.net
+License: ZPL
+Keywords: Pyramid PyAMS CMS
+Classifier: License :: OSI Approved :: Zope Public License
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: Framework :: Pyramid
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+License-File: LICENSE
+Requires-Dist: setuptools
+Requires-Dist: fanstatic
+Requires-Dist: hypatia
+Requires-Dist: persistent
+Requires-Dist: pyams-catalog
+Requires-Dist: pyams-fields
+Requires-Dist: pyams-file
+Requires-Dist: pyams-form >=2.1.0
+Requires-Dist: pyams-i18n
+Requires-Dist: pyams-i18n-views
+Requires-Dist: pyams-layer
+Requires-Dist: pyams-mail
+Requires-Dist: pyams-pagelet
+Requires-Dist: pyams-portal
+Requires-Dist: pyams-scheduler
+Requires-Dist: pyams-security >=2.2.1
+Requires-Dist: pyams-security-views
+Requires-Dist: pyams-sequence
+Requires-Dist: pyams-site
+Requires-Dist: pyams-skin
+Requires-Dist: pyams-template
+Requires-Dist: pyams-thesaurus
+Requires-Dist: pyams-utils >=2.3.1
+Requires-Dist: pyams-viewlet
+Requires-Dist: pyams-workflow
+Requires-Dist: pyahocorasick
+Requires-Dist: pyramid
+Requires-Dist: transaction
+Requires-Dist: zope.annotation
+Requires-Dist: zope.component
+Requires-Dist: zope.container
+Requires-Dist: zope.contentprovider
+Requires-Dist: zope.copy
+Requires-Dist: zope.dublincore
+Requires-Dist: zope.interface
+Requires-Dist: zope.intid
+Requires-Dist: zope.lifecycleevent
+Requires-Dist: zope.location
+Requires-Dist: zope.schema
+Requires-Dist: zope.traversing
+Provides-Extra: test
+Requires-Dist: pyams-security-views ; extra == 'test'
+Requires-Dist: pyams-zmi ; extra == 'test'
+Requires-Dist: pyramid-zcml ; extra == 'test'
+Requires-Dist: zope.exceptions ; extra == 'test'
+
+=====================
+PyAMS content package
+=====================
+
+.. contents::
+
+
+What is PyAMS?
+==============
+
+PyAMS (Pyramid Application Management Suite) is a small suite of packages written for applications
+and content management with the Pyramid framework.
+
+**PyAMS** is actually mainly used to manage websites through content management applications (CMS,
+see PyAMS_content package), but many features are generic and can be used inside any kind of web
+application.
+
+All PyAMS documentation is available on `ReadTheDocs <https://pyams.readthedocs.io>`_; source code
+is available on `Gitlab <https://gitlab.com/pyams>`_ and pushed to `Github
+<https://github.com/py-ams>`_. Doctests are available in the *doctests* source folder.
+
+
+What is PyAMS content?
+======================
+
+PyAMS_content is the main "content management" package. It provides sites, blogs and content
+types which allows you to manage a whole website. It relies on several packages like
+PyAMS_workflow for workflow management, PyAMS_portal to handle presentation templates, or
+PyAMS_elastic to handle Elasticsearch integration.
+
+Please note that PyAMS_content only provide a basic Bootstrap based skin, so you will have to
+include other extension packages (like PyAMS_content_themes) to get more advanced graphical themes.
+
+
+Changelog
+=========
+
+1.99.1
+------
+ - added edit forms content getters
+ - added alerts types
+ - added vocabulary to handle shared contents which can be used by views and search folders
+ - minor updates
+
+1.99.0
+------
+ - first preliminary release
