@@ -1,0 +1,40 @@
+Metadata-Version: 2.1
+Name: navam
+Version: 1.0.0
+Summary: Encrypt and decrypt any file using Navam's Encryption Technique
+Home-page: https://github.com/Navam9530/Navams_Encryption_Technique
+Author: Nava Teja
+Author-email: mushamnavam9530@gmail.com
+License: MIT
+Keywords: Encryption Bit-Manipulation Cryptography
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Information Technology
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Security :: Cryptography
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# Navam's Encryption Technique (NET)
+
+## Encrypting
+
+```python
+from navam import encrypt
+encrypt('path_to_file')
+```
+
+The encrypted file is stored as `encrypted.nvm`
+
+## Decrypting
+
+```python
+from navam import decrypt
+decrypt('encrypted.nvm')
+```
+
+> [!NOTE]
+> NET encrypts a single file. So, consider zipping a folder you want to encrypt.  
+> The encrypted file can be many times larger than the original file.
