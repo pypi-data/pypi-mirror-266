@@ -1,0 +1,51 @@
+[build-system]
+requires = ['setuptools==68.0.0']
+build-backend = 'setuptools.build_meta'
+
+[project]
+name = 'escaping'
+version = '0.0.12'
+authors = [
+  { name='Evgeniy Blinov', email='zheni-b@yandex.ru' },
+]
+description = 'Try not to stand out'
+readme = 'README.md'
+requires-python = '>=3.7'
+dependencies = [
+    'emptylog>=0.0.4',
+]
+classifiers = [
+    'Operating System :: OS Independent',
+    'Operating System :: MacOS :: MacOS X',
+    'Operating System :: Microsoft :: Windows',
+    'Operating System :: POSIX',
+    'Operating System :: POSIX :: Linux',
+    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'License :: OSI Approved :: MIT License',
+    'Intended Audience :: Developers',
+    'Topic :: Software Development :: Libraries',
+    'Typing :: Typed',
+]
+keywords = [
+    'exception handling',
+    'exception logging',
+    'containerized code',
+    'safe code',
+    'callbacks',
+]
+
+[tool.setuptools.package-data]
+"escape" = ["py.typed"]
+
+[tool.mutmut]
+paths_to_mutate="escape"
+runner="pytest"
+
+[project.urls]
+'Source' = 'https://github.com/pomponchik/escaping'
+'Tracker' = 'https://github.com/pomponchik/escaping/issues'
