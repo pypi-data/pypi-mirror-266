@@ -1,0 +1,26 @@
+[build-system]
+requires = [ "poetry-core>=1.0.0",]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "minnwest-pipeline-test"
+version = "1.0.1"
+description = "A client library for accessing Minnwest ESB"
+authors = [ "Jared Horack <jaredh@minnwestbankgroup.com>",]
+readme = "README.md"
+include = [ "CHANGELOG.md", "minnwest_pipeline_test/py.typed",]
+classifiers = [ "Programming Language :: Python :: 3", "License :: OSI Approved :: MIT License", "Operating System :: OS Independent",]
+[[tool.poetry.packages]]
+include = "minnwest_pipeline_test"
+
+[tool.ruff]
+line-length = 120
+
+[tool.poetry.dependencies]
+python = "^3.8"
+httpx = ">=0.20.0,<0.28.0"
+attrs = ">=21.3.0"
+python-dateutil = "^2.8.0"
+
+[tool.ruff.lint]
+select = [ "F", "I", "UP",]
