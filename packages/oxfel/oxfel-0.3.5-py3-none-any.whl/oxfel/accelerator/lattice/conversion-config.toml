@@ -1,0 +1,194 @@
+# Order of precedence in the switchyard:
+# First we go to TLD
+# Then we go to SA2 (t5d)
+# Then we go to SA1/3. (t4d)
+# Really it could not be any other way.
+
+[models]
+[models.i1d]
+sections = ["i1", "i1d"]
+[models.b1d]
+sections = ["i1", "l1", "bld"]
+[models.b2d]
+sections = ["i1", "l1", "l2", "b2d"]
+[models.tld]
+sections = ["i1", "l1", "l2", "l3", "cl", "tld"]
+[models.t5d]
+sections = ["i1", "l1", "l2", "l3", "cl", ""]
+
+[sections]
+
+[sections.I1]
+start_name1 = "STSEC.23.I1"
+stop_name1 = "ENSUB.62.I1"
+
+[sections.I1.new_markers]
+"stop_astra" = {s = 3.2} # If current S is more than this s, append this first and then consume
+"start_ocelot" = {s = 3.2}
+"a1_sim_stop" = {ref="C.A1.1.8.I1", location = "after"} # If previous element was this elemnet, append and then consume a
+"ah1_sim_start" = {ref="C.A1.1.8.I1", location = "after"}
+"a1_1_stop" = {ref="C.A1.1.1.I1", location = "after"}
+"lh_start" = {ref="U74.49.I1", location="before"} # If current element is this element, then append and consume
+"lh_stop" = {ref="U74.49.I1", location="after"}
+# "DUMP.CSR.START" = {ref='ENSUB.62.I1', delta_s=-0.1}
+"DUMP.CSR.START" = {s = 38.789005}
+
+[sections.I1D]
+start_name1 = "STSEC.62.I1D"
+stop_name1 = "ENSEC.66.I1D"
+
+[sections.L1]
+start_name1 = "STSUB.62.I1"
+stop_name1 = "ENSUB.229.B1"
+
+[sections.L1.new_markers]
+dogleg_start = { ref='CIX.65.I1', location = "before"}
+dogleg_stop_bc0_start = { ref = "STLAT.96.I1", location = "before" }
+bc0_stop_l1_start = { ref = "QI.103.I1", location = "before" }
+l1_stop_bc1_start = { ref = "STLAT.182.B1", location= "before" }
+bc1_stop_l2_start = { ref = "TORA.203.B1", location = "after" }
+
+
+[sections.B1D]
+start_name1 = "STSEC.229.B1D"
+stop_name1 = "ENSEC.237.B1D"
+
+[sections.L2]
+start_name1 = "STSUB.229.B1"
+stop_name1 = "ENSUB.466.B2"
+
+[sections.L2.new_markers]
+l2_stop_bc2_start = { ref = "STLAT.393.B2", location = "before" }
+bc2_stop_b2d_start = { ref = "TORA.415.B2", location = "after" }
+
+[sections.B2D]
+start_name1 = "STSEC.466.B2D"
+stop_name1 = "ENSEC.480.B2D"
+
+[sections.L3]
+start_name1 = "STSUB.466.B2"
+stop_name1 = "ENSEC.1652.L3"
+
+#        csr_start = t4.t4_start_csr  #!!
+
+[sections.L3.new_markers]
+stop_l3 = { ref = "CFY.1651.L3", location = "before"}
+
+[sections.CL]
+start_name1 = "STSEC.1652.CL"
+stop_name1 = "ENSEC.1854.CL"
+
+
+# SWITCHYARD SECTOIN
+
+[sections.TL1TL2]
+# Starts after CL and goes as far as possible branch to TLD
+start_name1 = "STSEC.1854.TL"
+stop_name1 = "ENSUB.1980.TL"
+
+
+[sections.TL3TL4]
+# Starts at end of TL1TL2 and goes as far as branch to T1 (ultimately SA2 and beyond)
+start_name1 = "STSUB.1980.TL"
+stop_name1 = "ENSUB.2025.TL"
+
+[sections.TL5] # Goes to SA1
+# Starts at end of TL3TL4 and ultimately heads to SA1 and beyond
+start_name1 = "STSUB.2025.TL"
+stop_name1 = "ENSEC.2058.TL"
+
+
+# TLD BRANCH
+
+[sections.TLD]
+# Starts at end of TL1TL2 and goes to dump
+start_name1 = "STSEC.1980.TLD"
+stop_name1 = "ENSEC.2130.TLD"
+
+# SASE2 BRANCH
+
+[sections.T1]
+start_name1 = "STSEC.2025.T1"
+stop_name1 = "ENSEC.2197.T1"
+
+[sections.SA2]
+start_name1 = "STSEC.2197.SA2"
+stop_name1 = "ENSEC.2423.SA2"
+
+[sections.T3]
+start_name1 = "STSEC.2423.T3"
+stop_name1 = "ENSEC.2743.UN1"
+
+[sections.T5]
+start_name1 = "STSEC.2743.T5"
+stop_name1 = "ENSEC.3039.UN2"
+
+[sections.T5D]
+start_name1 = "STSEC.3039.T5D"
+stop_name1 = "ENSEC.3189.T5D"
+
+# [sections.T2SA1]
+# start_name
+
+
+# 17:all_sections = [A1, AH1, LH, DL,  BC0, L1, BC1, L2, BC2, L3, CL1, CL2, CL3, STN10, SASE1, T4]#, SASE3, T4D]
+
+
+# [sections.sase1]
+# start_name1 =
+
+# [sections.sa1]
+# start_name1 = "STSUB.2025.TL"
+# stop_name1 = "ENSEC.2461.SA1"
+
+# [sections.t4]
+# start_name1 = "STSEC.2461.T4"
+# stop_name1 = "ENSUB.2800.T4"
+
+# [sections.sa3]
+# start_name1 = "STSEC.2800.T4"
+# stop_name1 = "ENSEC.2955.SA3"
+
+# [sections.t4d]
+# start_name1 = "STSEC.2955.T4D"
+# stop_name1 = "ENSEC.3106.T4D"
+
+# [sections.t5d]
+# start_name1 = "STSEC.2025.T1"
+# stop_name1 = "ENSEC.3189.T5D"
+
+[extras.design]
+[extras.design."TDSA.52.I1"]
+tilt = 1.570796327
+
+[extras.design."U74.49.I1"]
+nperiods = 10
+
+[extras.real]
+[extras.real.components."U74.49.I1"]
+Kx = 1.315
+Ky = 0.0
+
+
+# [processes.csr.lh]
+# start = "Asdasd"
+# stop = "asdasd"
+# sigma_min = 0.55
+
+# [extras.real.hlc.LH]
+# angle = 5.7 deg
+# r56 = -4.34mm
+
+# [extras.real.hlc.BC0]
+# -6.85
+# -50mm
+
+# [extras.real.hlc.BC1]
+# -2.86
+# -50.11mm
+
+# [extras.real.hlc.BC2]
+# -2.39
+# r56 = -29.97mm
+
+# [extras.real.tracking]
