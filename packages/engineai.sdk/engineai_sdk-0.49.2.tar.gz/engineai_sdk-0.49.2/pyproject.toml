@@ -1,0 +1,89 @@
+[tool.poetry]
+name = "engineai.sdk"
+version = "0.49.2"
+description = "EngineAI's Platform SDK"
+authors = ["Pedro Rodrigues <pedro@dystematic.com>"]
+maintainers = [
+  "Pedro Cunha <cunha@dystematic.com>",
+  "Pedro Feiteira <feiteira@dystematic.com>",
+  "Li Zixiang <li.zixiang@dystematic.com>",
+  "Joao Matos <matos@dystematic.com>",
+]
+packages = [{ include = "engineai" }]
+license = "MIT"
+documentation = "https://docs.engineai.com/"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+numpy = "^1"
+pandas = "^1.0 || ^2.0"
+environs = "^9.3.2"
+azure-storage-blob = "^12"
+pyjwt = "^2.3.0"
+more-itertools = "^9"
+beartype = "^0.12.0"
+tenacity = "^8.2.1"
+tqdm = "^4.64.1"
+pync = "^2.0.3"
+toml = "^0.10.2"
+click = "^8.1.3"
+typing-extensions = "^4.5.0"
+networkx = "^3.1"
+
+dataclasses-json = "^0.5.2"
+toposort = "^1.5"
+
+orjson = "^3.6.6"
+brotli = "^1.0.9"
+fsspec = "^2023.1.0"
+adlfs = "^2023.10.0"
+aiohttp = "^3.9.0b0"
+
+
+[tool.poetry.dev-dependencies]
+types-backports = "^0.1.3"
+bandit = "^1.6.2"
+black = "^23.1.0"
+blacken-docs = "^1.16.0"
+coverage = "^7.2.0"
+flake8 = "^5.0.0"
+flake8-black = "^0.3"
+flake8-breakpoint = "^1.1.0"
+flake8-bugbear = "^23.2.13"
+flake8-builtins = "^2.0.1"
+flake8-comprehensions = "^3.2.3"
+flake8-docstrings = "^1.5.0"
+flake8-eradicate = "^1.0.0"
+flake8-mutable = "^1.2.0"
+flake8-print = "^5.0.0"
+flake8-markdown = "^0.4.0"
+mypy = "^1.7"
+pep8-naming = "^0.13.3"
+pre-commit = "^2.8.2"
+pylint = "^2.7.0"
+pytest = "^7.2.0"
+radon = "^5.1.0"
+safety = "^2.3.1"
+isort = "^5.10.1"
+furo = "^2022.04.07"
+faker = "^17.0.0"
+tox = "^4.4.11"
+mkdocs = "^1.4.3"
+mkdocs-material = "^9.1.17"
+mkdocs-click = "^0.8.0"
+mkdocstrings = { extras = ["python"], version = "^0.22.0" }
+mkdocs-macros-plugin = "^1.0.4"
+pygments = "^2.15.1"
+types-toposort = "^1.10"
+
+[[tool.poetry.source]]
+name = "dystematicpypidev"
+url = "https://nexus.dystematic.dev/repository/pypi-dystematic-dev/simple"
+priority = "default"
+
+[build-system]
+requires = ["poetry>=1.1.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+engineai = "engineai.sdk.cli.console:process"

@@ -1,0 +1,19 @@
+"""Configuration module."""
+import os
+from typing import Optional
+
+from environs import Env
+
+env = Env()
+env.read_env(f"{os.getcwd()}/.env", recurse=False)
+
+DASHBOARD_API_URL: Optional[str] = env.str("DASHBOARD_API_URL", None)
+
+SKIP_DATA_VALIDATION = env.bool("SKIP_DATA_VALIDATION", False)
+"""Skip dashboard validation."""
+
+DASHBOARD_VERSION: Optional[str] = env.str("DASHBOARD_VERSION", None)
+"""Set Dashboard Version."""
+
+TOTAL_WORKERS: Optional[int] = env.int("TOTAL_WORKERS", 4)
+"""Set Graph total workers."""

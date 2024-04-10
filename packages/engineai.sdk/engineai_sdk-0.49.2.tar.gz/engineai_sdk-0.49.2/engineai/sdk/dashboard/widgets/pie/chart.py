@@ -1,0 +1,82 @@
+"""Spec for Pie Chart."""
+
+import warnings
+from typing import Any
+from typing import Optional
+
+import pandas as pd
+
+from engineai.sdk.dashboard.base import AbstractFactory
+from engineai.sdk.dashboard.utils import generate_input
+from engineai.sdk.dashboard.widgets.components.charts.typing import TooltipItem
+from engineai.sdk.dashboard.widgets.components.charts.typing import TooltipItems
+
+from .series.typings import ChartSeries
+from .tooltip import Tooltip
+
+
+class Chart(AbstractFactory):
+    """Spec for Pie Chart."""
+
+    def __init__(
+        self,
+        series: ChartSeries,
+        tooltips: Optional[TooltipItems] = None,
+    ):
+        """Construct spec for Pie Chart.
+
+        Args:
+            series: spec for series.
+            tooltips: tooltip items to be displayed at Chart level.
+        """
+        self._series = series
+        self._tooltip = Tooltip(
+            category_column=series.category_column,
+            tooltips=tooltips,
+        )
+
+    def add_tooltips(self, *tooltips: TooltipItem) -> None:
+        """Add tooltip item(s) to Pie Widget.
+
+        Args:
+            tooltips (TooltipItem): item(s) to be added to the Pie Widget.
+
+        Returns:
+            Pie: reference to this widget to facilitate
+                inline manipulation
+        """
+        self._tooltip.add_tooltips(*tooltips)
+        warnings.warn(
+            "`add_tooltips` is deprecated. Use `tooltips` in constructor, instead.",
+            DeprecationWarning,
+        )
+
+    def prepare(self, dependency_id: str, json_data: Any = None) -> None:
+        """Prepare Widget Spec to be validated."""
+        self._series.prepare(dependency_id=dependency_id, json_data=json_data)
+        self._tooltip.prepare(dependency_id=dependency_id, json_data=json_data)
+
+    def validate(self, *, data: pd.DataFrame) -> None:
+        """Validates Pie Series Widget and the inner components specs.
+
+        Raises:
+            PieValidateValueError if `data_column`, `category_column`, not in data.
+            ChartStylingNoDataColumnError if data_column is provided in styling and
+                not in data.
+        """
+        self._series.validate(
+            data=data,
+        )
+        self._tooltip.validate(data=data)
+
+    def build(self) -> Any:
+        """Builds spec for dashboard API.
+
+        Returns:
+            Input object for Dashboard API
+        """
+        return generate_input(
+            "PieWidgetChartInput",
+            series_temp=self._series.build(),
+            tooltip=self._tooltip.build() if self._tooltip else None,
+        )
