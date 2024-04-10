@@ -1,0 +1,114 @@
+MDScreen:
+    name: "questionsscreen"
+    MDFloatLayout:
+        md_bg_color: 1, 1, 1, 1
+        Image:
+            source: app.imageforclairtytoihjy()
+
+            size_hint: 1,1.5
+            pos_hint : {"center_x": .55, "center_y": .35}
+        Image:
+            id: questionsimg
+            source: app.imageforhmoapicahhgapreaaaavhjartopysaaaplelogineijgo()
+            size_hint: 6,6
+            pos_hint: {"center_x": .5, "center_y": .5}
+            opacity: 0.15
+
+        Image:
+            id: questionStart
+            source: app.imageforhmoapicaqstarthhgapreaaaavhjartopysaaaplelogineijgo()
+            pos_hint: {"center_x": .50, "center_y": .45}
+            size: 2, 2
+            opacity: 1
+
+
+        Image:
+            id: questionStart2
+            source: app.imageforhmoapicaqstart2hhgapreaaaaaavhjartopysaaaplelogineijgo()
+            pos_hint: {"center_x": .50, "center_y": .45}
+            size: 2, 2
+            opacity: 0
+
+        MDIconButton:
+            icon: "arrow-left"
+            pos_hint: {"center_y": .95}
+            user_font_size: "30sp"
+            theme_text_color: "Custom"
+            text_color: rgba(26, 24, 58, 255)
+            on_release:
+                root.manager.transition.direction = "left"
+                root.manager.current = "home"
+
+        MDLabel:
+            id: txtStart
+            text: "Let's check your progress!"
+            font_name: app.bahnscriptlightreplace()
+            font_size: "45sp"
+            halign: "left"
+            pos_hint: {"center_x": .55, "center_y": .8}
+            color: rgba(52, 0, 231, 255)
+            opacity: 1
+
+        MDLabel:
+            id: questiontxt
+            text: ""
+            pos_hint: {"center_y": .6}
+            color: rgba(52, 0, 231, 255)
+            font_size: "17sp"
+            font_name: app.notoreplaceforpath()
+            halign: "center"
+            opacity: 0
+
+        MDLabel:
+            id: questionno
+            text: ""
+            pos_hint: {"center_y": .7}
+            color: rgba(52, 0, 231, 255)
+            font_size: "19sp"
+            font_name: app.notoreplaceforpath()
+            halign: "center"
+            opacity: 0
+
+        MDFloatLayout:
+            size_hint: .7, .07
+            pos_hint: {"center_x": .5, "center_y": .4}
+            TextInput:
+                id: ansHere
+                hint_text: "Enter your Answer here"
+                font_name: app.bahnscriptreplace()
+                size_hint_y: .75
+                pos_hint:{"center_x": .43, "center_y": .5}
+                background_color: 1, 1, 1, 0
+                foreground_color: rgba(0, 0, 59, 255)
+                cursor_color: rgba(0, 0, 59, 255)
+                font_size: "14sp"
+                cursor_width: "2sp"
+                multiline: False
+                opacity: 0
+
+            MDFloatLayout:
+                pos_hint: {"center_x": .5, "center_y": 0}
+                size_hint_y:.03
+                md_bg_color: rgba(178, 178, 178, 255)
+
+
+        Button:
+            id: submitBtn
+            text: "N E X T"
+            size_hint: .66, .065
+            background_color: 0, 0, 0, 0
+            pos_hint: {"center_x": .505, "center_y": .15}
+            color: rgba(52, 0, 231, 255)
+            font_name: app.bahnscriptreplace()
+            opacity: 1
+            on_release:
+                app.clickdo()
+                app.convertText()
+                app.questionsscreenstartwidget()
+
+            canvas.before:
+                Color:
+                    rgb: rgba(52, 0, 231, 255)
+                Line:
+                    width: 1.2
+                    rounded_rectangle: self.x, self.y, self.width, self.height, 5, 5, 5, 5, 100
