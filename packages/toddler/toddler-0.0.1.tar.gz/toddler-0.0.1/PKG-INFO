@@ -1,0 +1,104 @@
+Metadata-Version: 2.1
+Name: toddler
+Version: 0.0.1
+Summary: Tools and Operations for Data, Diagnostics, Light, and other Electromagnetic Radiation
+Author-email: "M.D. Ruijzendaal" <martijn.ruijzendaal@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2018 Real Python
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+Project-URL: Homepage, https://github.com/mruijzendaal/toddler
+Project-URL: Bug Reports, https://github.com/mruijzendaal/toddler/issues
+Project-URL: Source, https://github.com/mruijzendaal/toddler/
+Keywords: toddler,optical diagnostics,numpy
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Image Processing
+Classifier: Topic :: Scientific/Engineering :: Physics
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3 :: Only
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: numpy
+Requires-Dist: sif_parser
+Requires-Dist: pandas
+Requires-Dist: scipy
+
+![image](./assets/hero_256x256.png)
+
+# Toddler: Tools and Operations for Diagnostics, Data, Light, and other Electromagnetic Radiation
+_Starting physicists are often limited by their data processing abilities. 
+With this library,  I try to make it so easy a toddler can do it._
+
+<br />
+
+## Functionality
+This module is split up into physics (e.g. conversion of units) and data processing (e.g. filtering images)
+
+
+### Data
+`toddler.data.spectrum.Spectrum` has the most utility of this library. It makes iterative processing on numpy arrays and its coordinates much simpler. The code below loads data of an optical spectrometer, applies some heavy processing, and plots the result. The equivalent code with out-of-the-box numpy would be much more convoluted.
+
+```python
+from toddler.data.spectrum import Spectrum
+import matplotlib.pyplot as plt 
+
+s = Spectrum.from_file("some_file.csv")
+s = s.median(axis=2)
+     .mean(axis=1)
+     .slice(lambda_start=534e-9, lambda_end=600e-9)
+     .filter("movmean", N=5)
+     .squeeze()
+
+plt.figure()
+plt.plot(s.lambdanm, s.data)
+plt.show()
+```
+
+### Physics
+`toddler.physics.const` constains all [scipy constants](https://docs.scipy.org/doc/scipy/reference/constants.html). 
+
+`toddler.physics.energy` contains utility functions related to energy (e.g. conversion from eV to J)
+
+`toddler.physics.flow` contains utility functions related to flow (e.g. conversion from slm to mass flux)
+
+`toddler.physics.kinetics` is an empty work-in-progress.
+
+`toddler.physics.light` contains utility functions related to the intensity and unit of light (e.g. conversion from wavenumbers to wavelength)
+
+`toddler.physics.thermodynamics` contains utilities for thermodynamic properties (e.g. pressure to gas density)
+
+`toddler.physics.transport` is a work-in-progress.
+
+
+## See also
+For other tools for researchers and scientists, see
+- [wedme](https://github.com/mruijzendaal/wedme-plots): Journal-quality stylesheets for papers, posters and presentations
+- [pypdfplot](https://github.com/dcmvdbekerom/pypdfplot): Embedding in a figure its generating Pythons script.
