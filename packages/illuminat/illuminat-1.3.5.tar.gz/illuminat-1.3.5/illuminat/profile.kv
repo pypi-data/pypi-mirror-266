@@ -1,0 +1,38 @@
+MDScreen:
+    name: "profile"
+    MDFloatLayout:
+        MDIconButton:
+            icon: "arrow-left"
+            pos_hint: {"center_y": .95}
+            user_font_size: "30sp"
+            theme_text_color: "Custom"
+            text_color: rgba(26, 24, 58, 255)
+            on_release:
+                root.manager.transition.direction = "left"
+                root.manager.current = "home"
+
+        MDLabel:
+            id: txtEmail
+            text: "Mail ID"
+            font_name: app.bahnscriptlightreplace()
+            font_size: "22sp"
+            halign: "left"
+            pos_hint: {"center_x": .55, "center_y": .6}
+            color: rgba(52, 0, 231, 255)
+            opacity: 1
+            halign: "center"
+
+
+        MDLabel:
+            id: txtPass
+            text: "Password"
+            font_name: app.bahnscriptlightreplace()
+            font_size: "22sp"
+            halign: "left"
+            pos_hint: {"center_x": .55, "center_y": .3}
+            color: rgba(52, 0, 231, 255)
+            opacity: 1
+            password: True
+            halign: "center"
+
+
