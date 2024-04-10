@@ -1,0 +1,38 @@
+Metadata-Version: 2.1
+Name: pythio
+Version: 0.0.2
+Summary: A library for bot development in Telegram messengers
+Author-email: amirali irvany <dev.amirali.irvany@gmail.com>
+Project-URL: Homepage, https://github.com/metect/pythio
+Project-URL: Issues, https://github.com/metect/pythio/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# pythio
+A library for bot development in Telegram messengers
+
+# Example
+```python
+from pythio import Client
+import asyncio
+
+
+client = Client('YOUR_TOKEN_HERE')
+
+async def main():
+    async for message in client.on_message():
+        print(message.text)
+        await message.reply('Hello World!')
+
+
+if __name__ == '__main__':
+    asyncio.run(main())
+
+```
+
+## Documents
+- [Telegram Channel](https://t.me/pythio)
