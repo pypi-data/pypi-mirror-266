@@ -1,0 +1,48 @@
+# Comprehensive Library of Variational LSE Solvers
+
+This repo contains the code for the `qiskit-torch-module` introduced in 
+"Qiskit-Torch-Module: Fast Prototyping of Quantum Neural Networks", N. Meyer et al. (2024).
+
+## Setup and Installation
+
+The library requires an installation of `python 3.12`, and following libraries:
+- `qiskit~=1.0.0`, backward compatible up to `qiskit v0.44.0`
+- `qiskit-algorithms~=0.3.0`
+- `torch~=2.2.1`
+- `threadpoolctl~=3.3.0`
+
+We recommend setting up a conda environment:
+
+```
+conda create --name ENV_NAME python=3.12
+conda activate ENV_NAME
+```
+
+The package `qiskit-torch-module` can be installed locally via:
+```
+pip install qiskit-torch-module
+```
+
+## Usage and Further Information
+
+For further usage details and examples please refer to the repository https://github.com/nicomeyer96/qiskit-torch-module
+
+## Acknowledgements
+
+The backbone of our implementation is the ``qiskit`` software framework: https://github.com/Qiskit
+
+Furthermore, we git inspired by ``qiskit-machine-learning``: https://github.com/qiskit-community/qiskit-machine-learning
+
+## Citation
+
+If you use the `qiskit-torch-module` or results from the paper, please cite
+"Qiskit-Torch-Module: Fast Prototyping of Quantum Neural Networks", N. Meyer et al. (2024).
+
+## Version History
+
+Initial release (v1.0): April 2024
+
+## License
+
+Apache 2.0 License
+  
