@@ -1,0 +1,61 @@
+Metadata-Version: 2.1
+Name: poetry-plugin-sembump
+Version: 1.0.1
+Summary: Bump the version of a poetry project dependencies.
+Home-page: https://github.com/nullswan/poetry-plugin-sembump
+License: MIT
+Author: nullswan
+Author-email: dev@nullswan.io
+Requires-Python: >=3.8,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: poetry (>=1.5.0,<2.0.0)
+Project-URL: Repository, https://github.com/nullswan/poetry-plugin-sembump
+Description-Content-Type: text/markdown
+
+# Sembump
+
+Poetry plugin to semantically bump the version of your project.
+
+## Installation
+
+The easiest way to install the export plugin is via the self add command of Poetry.
+
+```
+poetry self add poetry-plugin-sembump
+```
+
+If you used pipx to install Poetry you can add the plugin via the pipx inject command.
+
+```
+pipx inject poetry poetry-plugin-sembump
+```
+
+Otherwise, if you used pip to install Poetry you can add the plugin packages via the pip install command.
+
+```
+pip install poetry-plugin-sembump
+```
+
+## Usage
+
+```
+poetry bump -h
+
+Description:
+  Bump the version of the project dependencies.
+
+Usage:
+  bump [options]
+
+Options:
+  -r, --recursive            Bump the dependencies of all pyproject.toml files found in subdirectories.
+  -d, --dry-run              Do not write any changes to the files.
+  -D, --dev-dependencies     Update dev dependencies as well.
+```
+
