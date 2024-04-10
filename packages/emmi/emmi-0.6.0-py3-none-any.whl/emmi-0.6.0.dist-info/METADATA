@@ -1,0 +1,53 @@
+Metadata-Version: 2.1
+Name: emmi
+Version: 0.6.0
+Summary: A Selection of Tools for EPICS Monday-Morning Integrations
+Author-email: Matthias Rössle <matthias.roessle@helmholtz-berlin.de>, Florin Boariu <florin.pt@rootshell.ro>
+Project-URL: Source Code, https://gitlab.com/codedump2/emmi/
+Project-URL: Bug Tracker, https://gitlab.com/codedump2/emmi/-/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: schema
+Requires-Dist: pyvisa
+Requires-Dist: pyvisa-py
+Requires-Dist: numpy
+Provides-Extra: scpi
+Requires-Dist: parse ; extra == 'scpi'
+Requires-Dist: zeroconf ; extra == 'scpi'
+Requires-Dist: psutil ; extra == 'scpi'
+Requires-Dist: asyncio ; extra == 'scpi'
+Provides-Extra: softioc
+Requires-Dist: softioc ; extra == 'softioc'
+Provides-Extra: test
+Requires-Dist: pytest ; extra == 'test'
+Requires-Dist: pytest-cov ; extra == 'test'
+Requires-Dist: pyvisa-sim ; extra == 'test'
+Requires-Dist: softioc ; extra == 'test'
+Requires-Dist: pyepics ; extra == 'test'
+Requires-Dist: pytest-asyncio ; extra == 'test'
+
+# The EPIC Monday-Morning Integration Toolkit
+
+[![pipeline status](https://codebase.helmholtz.cloud/emmitools/emmi/badges/master/pipeline.svg)](https://codebase.helmholtz.cloud/emmitools/emmi/-/commits/master)
+[![coverage report](https://codebase.helmholtz.cloud/emmitools/emmi/badges/master/coverage.svg)](https://codebase.helmholtz.cloud/emmitools/emmi/-/commits/master)
+[![Latest Release](https://codebase.helmholtz.cloud/emmitools/emmi/-/badges/release.svg)](https://codebase.helmholtz.cloud/emmitools/emmi/-/releases)
+[![pylint](https://codebase.helmholtz.cloud/emmitools/emmi/-/badges/pylint.svg)](https://codebase.helmholtz.cloud/emmitools/emmi/-/lint/)
+
+EMMItool is aiming to be the "Swiss army knife" for rapid ad-hoc
+integration of
+scientific instrumentation into [EPICS](https://epics.anl.gov/)-based
+[beamline control sytems](https://blueskyproject.io/).
+
+But currently, it's more like "the chaotic toolbox of a confused craftsman".
+
+See [the documentation](./doc/index.md) for a rapid introduction about
+the structure and what's in the box.
+
