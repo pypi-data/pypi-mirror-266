@@ -1,0 +1,3 @@
+from gnomes_at_night_gym.envs.gnomesAtNightEnv_5A import GnomesAtNightEnv5A
+from gnomes_at_night_gym.envs.gnomesAtNightEnv_9A import GnomesAtNightEnv9A
+from gnomes_at_night_gym.envs.gnomesAtNightEnv_9_multistep import GnomesAtNightEnv9_multistep
