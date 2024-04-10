@@ -1,0 +1,797 @@
+from __future__ import annotations
+
+from collections import defaultdict
+from typing import Any, Literal, Optional
+
+import numpy as np
+import pyqtgraph as pg
+from bec_lib import MessageEndpoints
+from bec_lib.scan_data import ScanData
+from pydantic import BaseModel, Field, ValidationError
+from pyqtgraph import mkBrush
+from qtpy import QtCore
+from qtpy.QtCore import Signal as pyqtSignal
+from qtpy.QtCore import Slot as pyqtSlot
+from qtpy.QtWidgets import QWidget
+
+from bec_widgets.utils import BECConnector, Colors, ConnectionConfig, EntryValidator
+from bec_widgets.widgets.plots.plot_base import BECPlotBase, WidgetConfig
+
+
+class SignalData(BaseModel):
+    """The data configuration of a signal in the 1D waveform widget for x and y axis."""
+
+    name: str
+    entry: str
+    unit: Optional[str] = None  # todo implement later
+    modifier: Optional[str] = None  # todo implement later
+    limits: Optional[list[float]] = None  # todo implement later
+
+
+class Signal(BaseModel):
+    """The configuration of a signal in the 1D waveform widget."""
+
+    source: str
+    x: SignalData  # TODO maybe add metadata for config gui later
+    y: SignalData
+    z: Optional[SignalData] = None
+
+
+class CurveConfig(ConnectionConfig):
+    parent_id: Optional[str] = Field(None, description="The parent plot of the curve.")
+    label: Optional[str] = Field(None, description="The label of the curve.")
+    color: Optional[Any] = Field(None, description="The color of the curve.")
+    symbol: Optional[str] = Field("o", description="The symbol of the curve.")
+    symbol_color: Optional[str] = Field(None, description="The color of the symbol of the curve.")
+    symbol_size: Optional[int] = Field(5, description="The size of the symbol of the curve.")
+    pen_width: Optional[int] = Field(2, description="The width of the pen of the curve.")
+    pen_style: Optional[Literal["solid", "dash", "dot", "dashdot"]] = Field(
+        "solid", description="The style of the pen of the curve."
+    )
+    source: Optional[str] = Field(None, description="The source of the curve.")
+    signals: Optional[Signal] = Field(None, description="The signal of the curve.")
+    colormap: Optional[str] = Field("plasma", description="The colormap of the curves z gradient.")
+
+
+class Waveform1DConfig(WidgetConfig):
+    color_palette: Literal["plasma", "viridis", "inferno", "magma"] = Field(
+        "plasma", description="The color palette of the figure widget."
+    )  # TODO can be extended to all colormaps from current pyqtgraph session
+    curves: dict[str, CurveConfig] = Field(
+        {}, description="The list of curves to be added to the 1D waveform widget."
+    )
+
+
+class BECCurve(BECConnector, pg.PlotDataItem):
+    USER_ACCESS = [
+        "set",
+        "set_data",
+        "set_color",
+        "set_colormap",
+        "set_symbol",
+        "set_symbol_color",
+        "set_symbol_size",
+        "set_pen_width",
+        "set_pen_style",
+        "get_data",
+    ]
+
+    def __init__(
+        self,
+        name: Optional[str] = None,
+        config: Optional[CurveConfig] = None,
+        gui_id: Optional[str] = None,
+        **kwargs,
+    ):
+        if config is None:
+            config = CurveConfig(label=name, widget_class=self.__class__.__name__)
+            self.config = config
+        else:
+            self.config = config
+            # config.widget_class = self.__class__.__name__
+        super().__init__(config=config, gui_id=gui_id)
+        pg.PlotDataItem.__init__(self, name=name)
+
+        self.apply_config()
+        if kwargs:
+            self.set(**kwargs)
+
+    def apply_config(self):
+        pen_style_map = {
+            "solid": QtCore.Qt.SolidLine,
+            "dash": QtCore.Qt.DashLine,
+            "dot": QtCore.Qt.DotLine,
+            "dashdot": QtCore.Qt.DashDotLine,
+        }
+        pen_style = pen_style_map.get(self.config.pen_style, QtCore.Qt.SolidLine)
+
+        pen = pg.mkPen(color=self.config.color, width=self.config.pen_width, style=pen_style)
+        self.setPen(pen)
+
+        if self.config.symbol:
+            symbol_color = self.config.symbol_color or self.config.color
+            brush = mkBrush(color=symbol_color)
+            self.setSymbolBrush(brush)
+            self.setSymbolSize(self.config.symbol_size)
+            self.setSymbol(self.config.symbol)
+
+    def set_data(self, x, y):
+        if self.config.source == "custom":
+            self.setData(x, y)
+        else:
+            raise ValueError(f"Source {self.config.source} do not allow custom data setting.")
+
+    def set(self, **kwargs):
+        """
+        Set the properties of the curve.
+        Args:
+            **kwargs: Keyword arguments for the properties to be set.
+        Possible properties:
+            - color: str
+            - symbol: str
+            - symbol_color: str
+            - symbol_size: int
+            - pen_width: int
+            - pen_style: Literal["solid", "dash", "dot", "dashdot"]
+        """
+
+        # Mapping of keywords to setter methods
+        method_map = {
+            "color": self.set_color,
+            "colormap": self.set_colormap,
+            "symbol": self.set_symbol,
+            "symbol_color": self.set_symbol_color,
+            "symbol_size": self.set_symbol_size,
+            "pen_width": self.set_pen_width,
+            "pen_style": self.set_pen_style,
+        }
+        for key, value in kwargs.items():
+            if key in method_map:
+                method_map[key](value)
+            else:
+                print(f"Warning: '{key}' is not a recognized property.")
+
+    def set_color(self, color: str, symbol_color: Optional[str] = None):
+        """
+        Change the color of the curve.
+        Args:
+            color(str): Color of the curve.
+            symbol_color(str, optional): Color of the symbol. Defaults to None.
+        """
+        self.config.color = color
+        self.config.symbol_color = symbol_color or color
+        self.apply_config()
+
+    def set_symbol(self, symbol: str):
+        """
+        Change the symbol of the curve.
+        Args:
+            symbol(str): Symbol of the curve.
+        """
+        self.config.symbol = symbol
+        self.apply_config()
+
+    def set_symbol_color(self, symbol_color: str):
+        """
+        Change the symbol color of the curve.
+        Args:
+            symbol_color(str): Color of the symbol.
+        """
+        self.config.symbol_color = symbol_color
+        self.apply_config()
+
+    def set_symbol_size(self, symbol_size: int):
+        """
+        Change the symbol size of the curve.
+        Args:
+            symbol_size(int): Size of the symbol.
+        """
+        self.config.symbol_size = symbol_size
+        self.apply_config()
+
+    def set_pen_width(self, pen_width: int):
+        """
+        Change the pen width of the curve.
+        Args:
+            pen_width(int): Width of the pen.
+        """
+        self.config.pen_width = pen_width
+        self.apply_config()
+
+    def set_pen_style(self, pen_style: Literal["solid", "dash", "dot", "dashdot"]):
+        """
+        Change the pen style of the curve.
+        Args:
+            pen_style(Literal["solid", "dash", "dot", "dashdot"]): Style of the pen.
+        """
+        self.config.pen_style = pen_style
+        self.apply_config()
+
+    def set_colormap(self, colormap: str):
+        """
+        Set the colormap for the scatter plot z gradient.
+        Args:
+            colormap(str): Colormap for the scatter plot.
+        """
+        self.config.colormap = colormap
+
+    def get_data(self) -> tuple[np.ndarray, np.ndarray]:
+        """
+        Get the data of the curve.
+        Returns:
+            tuple[np.ndarray,np.ndarray]: X and Y data of the curve.
+        """
+        x_data, y_data = self.getData()
+        return x_data, y_data
+
+
+class BECWaveform(BECPlotBase):
+    USER_ACCESS = [
+        "add_curve_scan",
+        "add_curve_custom",
+        "remove_curve",
+        "scan_history",
+        "curves",
+        "get_curve",
+        "get_curve_config",
+        "apply_config",
+        "get_all_data",
+        "get_config",
+        "set",
+        "set_title",
+        "set_x_label",
+        "set_y_label",
+        "set_x_scale",
+        "set_y_scale",
+        "set_x_lim",
+        "set_y_lim",
+        "set_grid",
+        "lock_aspect_ratio",
+        "plot",
+        "remove",
+    ]
+    scan_signal_update = pyqtSignal()
+
+    def __init__(
+        self,
+        parent: Optional[QWidget] = None,
+        parent_figure=None,
+        config: Optional[Waveform1DConfig] = None,
+        client=None,
+        gui_id: Optional[str] = None,
+    ):
+        if config is None:
+            config = Waveform1DConfig(widget_class=self.__class__.__name__)
+        super().__init__(
+            parent=parent, parent_figure=parent_figure, config=config, client=client, gui_id=gui_id
+        )
+
+        self._curves_data = defaultdict(dict)
+        self.scan_id = None
+
+        # Scan segment update proxy
+        self.proxy_update_plot = pg.SignalProxy(
+            self.scan_signal_update, rateLimit=25, slot=self._update_scan_segment_plot
+        )
+
+        # Get bec shortcuts dev, scans, queue, scan_storage, dap
+        self.get_bec_shortcuts()
+
+        # Connect dispatcher signals
+        self.bec_dispatcher.connect_slot(self.on_scan_segment, MessageEndpoints.scan_segment())
+
+        self.entry_validator = EntryValidator(self.dev)
+
+        self.add_legend()
+        self.apply_config(self.config)
+
+    def find_widget_by_id(self, item_id: str) -> BECCurve:
+        """
+        Find the curve by its ID.
+        Args:
+            item_id(str): ID of the curve.
+
+        Returns:
+            BECCurve: The curve object.
+        """
+        for curve in self.plot_item.curves:
+            if curve.gui_id == item_id:
+                return curve
+
+    def apply_config(self, config: dict | WidgetConfig, replot_last_scan: bool = False):
+        """
+        Apply the configuration to the 1D waveform widget.
+        Args:
+            config(dict|WidgetConfig): Configuration settings.
+            replot_last_scan(bool, optional): If True, replot the last scan. Defaults to False.
+        """
+        if isinstance(config, dict):
+            try:
+                config = Waveform1DConfig(**config)
+            except ValidationError as e:
+                print(f"Validation error when applying config to BECWaveform1D: {e}")
+                return
+
+        self.config = config
+        self.plot_item.clear()  # TODO not sure if on the plot or layout level
+
+        self.apply_axis_config()
+        # Reset curves
+        self._curves_data = defaultdict(dict)
+        self._curves = self.plot_item.curves
+        for curve_id, curve_config in self.config.curves.items():
+            self.add_curve_by_config(curve_config)
+        if replot_last_scan:
+            self.scan_history(scan_index=-1)
+
+    def change_gui_id(self, new_gui_id: str):
+        """
+        Change the GUI ID of the waveform widget and update the parent_id in all associated curves.
+
+        Args:
+            new_gui_id (str): The new GUI ID to be set for the waveform widget.
+        """
+        # Update the gui_id in the waveform widget itself
+        self.gui_id = new_gui_id
+        self.config.gui_id = new_gui_id
+
+        for curve in self.curves:
+            curve.config.parent_id = new_gui_id
+
+    def add_curve_by_config(self, curve_config: CurveConfig | dict) -> BECCurve:
+        """
+        Add a curve to the plot widget by its configuration.
+        Args:
+            curve_config(CurveConfig|dict): Configuration of the curve to be added.
+        Returns:
+            BECCurve: The curve object.
+        """
+        if isinstance(curve_config, dict):
+            curve_config = CurveConfig(**curve_config)
+        curve = self._add_curve_object(
+            name=curve_config.label, source=curve_config.source, config=curve_config
+        )
+        return curve
+
+    def get_curve_config(self, curve_id: str, dict_output: bool = True) -> CurveConfig | dict:
+        """
+        Get the configuration of a curve by its ID.
+        Args:
+            curve_id(str): ID of the curve.
+        Returns:
+            CurveConfig|dict: Configuration of the curve.
+        """
+        for source, curves in self._curves_data.items():
+            if curve_id in curves:
+                if dict_output:
+                    return curves[curve_id].config.model_dump()
+                else:
+                    return curves[curve_id].config
+
+    @property
+    def curves(self) -> list[BECCurve]:
+        """
+        Get the curves of the plot widget as a list
+        Returns:
+            list: List of curves.
+        """
+        return self._curves
+
+    @curves.setter
+    def curves(self, value: list[BECCurve]):
+        self._curves = value
+
+    def get_curve(self, identifier) -> BECCurve:
+        """
+        Get the curve by its index or ID.
+        Args:
+            identifier(int|str): Identifier of the curve. Can be either an integer (index) or a string (curve_id).
+        Returns:
+            BECCurve: The curve object.
+        """
+        if isinstance(identifier, int):
+            return self.plot_item.curves[identifier]
+        elif isinstance(identifier, str):
+            for source_type, curves in self._curves_data.items():
+                if identifier in curves:
+                    return curves[identifier]
+            raise ValueError(f"Curve with ID '{identifier}' not found.")
+        else:
+            raise ValueError("Identifier must be either an integer (index) or a string (curve_id).")
+
+    def add_curve_custom(
+        self,
+        x: list | np.ndarray,
+        y: list | np.ndarray,
+        label: str = None,
+        color: str = None,
+        **kwargs,
+    ) -> BECCurve:
+        """
+        Add a custom data curve to the plot widget.
+        Args:
+            x(list|np.ndarray): X data of the curve.
+            y(list|np.ndarray): Y data of the curve.
+            label(str, optional): Label of the curve. Defaults to None.
+            color(str, optional): Color of the curve. Defaults to None.
+            **kwargs: Additional keyword arguments for the curve configuration.
+
+        Returns:
+            BECCurve: The curve object.
+        """
+        curve_source = "custom"
+        curve_id = label or f"Curve {len(self.plot_item.curves) + 1}"
+
+        curve_exits = self._check_curve_id(curve_id, self._curves_data)
+        if curve_exits:
+            raise ValueError(
+                f"Curve with ID '{curve_id}' already exists in widget '{self.gui_id}'."
+            )
+
+        color = (
+            color
+            or Colors.golden_angle_color(
+                colormap=self.config.color_palette, num=len(self.plot_item.curves) + 1, format="HEX"
+            )[-1]
+        )
+
+        # Create curve by config
+        curve_config = CurveConfig(
+            widget_class="BECCurve",
+            parent_id=self.gui_id,
+            label=curve_id,
+            color=color,
+            source=curve_source,
+            **kwargs,
+        )
+
+        curve = self._add_curve_object(
+            name=curve_id, source=curve_source, config=curve_config, data=(x, y)
+        )
+        return curve
+
+    def _add_curve_object(
+        self,
+        name: str,
+        source: str,
+        config: CurveConfig,
+        data: tuple[list | np.ndarray, list | np.ndarray] = None,
+    ) -> BECCurve:
+        """
+        Add a curve object to the plot widget.
+        Args:
+            name(str): ID of the curve.
+            source(str): Source of the curve.
+            config(CurveConfig): Configuration of the curve.
+            data(tuple[list|np.ndarray,list|np.ndarray], optional): Data (x,y) to be plotted. Defaults to None.
+        Returns:
+            BECCurve: The curve object.
+        """
+        curve = BECCurve(config=config, name=name)
+        self._curves_data[source][name] = curve
+        self.plot_item.addItem(curve)
+        self.config.curves[name] = curve.config
+        if data is not None:
+            curve.setData(data[0], data[1])
+        return curve
+
+    def add_curve_scan(
+        self,
+        x_name: str,
+        y_name: str,
+        z_name: Optional[str] = None,
+        x_entry: Optional[str] = None,
+        y_entry: Optional[str] = None,
+        z_entry: Optional[str] = None,
+        color: Optional[str] = None,
+        color_map_z: Optional[str] = "plasma",
+        label: Optional[str] = None,
+        validate_bec: bool = True,
+        **kwargs,
+    ) -> BECCurve:
+        """
+        Add a curve to the plot widget from the scan segment.
+        Args:
+            x_name(str): Name of the x signal.
+            x_entry(str): Entry of the x signal.
+            y_name(str): Name of the y signal.
+            y_entry(str): Entry of the y signal.
+            z_name(str): Name of the z signal.
+            z_entry(str): Entry of the z signal.
+            color(str, optional): Color of the curve. Defaults to None.
+            color_map_z(str): The color map to use for the z-axis.
+            label(str, optional): Label of the curve. Defaults to None.
+            **kwargs: Additional keyword arguments for the curve configuration.
+
+        Returns:
+            BECCurve: The curve object.
+        """
+        # Check if curve already exists
+        curve_source = "scan_segment"
+
+        # Get entry if not provided and validate
+        x_entry, y_entry, z_entry = self._validate_signal_entries(
+            x_name, y_name, z_name, x_entry, y_entry, z_entry, validate_bec
+        )
+
+        if z_name is not None and z_entry is not None:
+            label = label or f"{z_name}-{z_entry}"
+        else:
+            label = label or f"{y_name}-{y_entry}"
+
+        curve_exits = self._check_curve_id(label, self._curves_data)
+        if curve_exits:
+            raise ValueError(f"Curve with ID '{label}' already exists in widget '{self.gui_id}'.")
+
+        color = (
+            color
+            or Colors.golden_angle_color(
+                colormap=self.config.color_palette, num=len(self.plot_item.curves) + 1, format="HEX"
+            )[-1]
+        )
+
+        # Create curve by config
+        curve_config = CurveConfig(
+            widget_class="BECCurve",
+            parent_id=self.gui_id,
+            label=label,
+            color=color,
+            color_map=color_map_z,
+            source=curve_source,
+            signals=Signal(
+                source=curve_source,
+                x=SignalData(name=x_name, entry=x_entry),
+                y=SignalData(name=y_name, entry=y_entry),
+                z=SignalData(name=z_name, entry=z_entry) if z_name else None,
+            ),
+            **kwargs,
+        )
+        curve = self._add_curve_object(name=label, source=curve_source, config=curve_config)
+        return curve
+
+    def _validate_signal_entries(
+        self,
+        x_name: str,
+        y_name: str,
+        z_name: str | None,
+        x_entry: str | None,
+        y_entry: str | None,
+        z_entry: str | None,
+        validate_bec: bool = True,
+    ) -> tuple[str, str, str | None]:
+        """
+        Validate the signal name and entry.
+        Args:
+            x_name(str): Name of the x signal.
+            y_name(str): Name of the y signal.
+            z_name(str): Name of the z signal.
+            x_entry(str|None): Entry of the x signal.
+            y_entry(str|None): Entry of the y signal.
+            z_entry(str|None): Entry of the z signal.
+            validate_bec(bool, optional): If True, validate the signal with BEC. Defaults to True.
+        Returns:
+            tuple[str,str,str|None]: Validated x, y, z entries.
+        """
+        if validate_bec:
+            x_entry = self.entry_validator.validate_signal(x_name, x_entry)
+            y_entry = self.entry_validator.validate_signal(y_name, y_entry)
+            if z_name:
+                z_entry = self.entry_validator.validate_signal(z_name, z_entry)
+        else:
+            x_entry = x_name if x_entry is None else x_entry
+            y_entry = y_name if y_entry is None else y_entry
+            z_entry = z_name if z_entry is None else z_entry
+        return x_entry, y_entry, z_entry
+
+    def _check_curve_id(self, val: Any, dict_to_check: dict) -> bool:
+        """
+        Check if val is in the values of the dict_to_check or in the values of the nested dictionaries.
+        Args:
+            val(Any): Value to check.
+            dict_to_check(dict): Dictionary to check.
+
+        Returns:
+            bool: True if val is in the values of the dict_to_check or in the values of the nested dictionaries, False otherwise.
+        """
+        if val in dict_to_check.keys():
+            return True
+        for key in dict_to_check:
+            if isinstance(dict_to_check[key], dict):
+                if self._check_curve_id(val, dict_to_check[key]):
+                    return True
+        return False
+
+    def remove_curve(self, *identifiers):
+        """
+        Remove a curve from the plot widget.
+        Args:
+            *identifiers: Identifier of the curve to be removed. Can be either an integer (index) or a string (curve_id).
+        """
+        for identifier in identifiers:
+            if isinstance(identifier, int):
+                self._remove_curve_by_order(identifier)
+            elif isinstance(identifier, str):
+                self._remove_curve_by_id(identifier)
+            else:
+                raise ValueError(
+                    "Each identifier must be either an integer (index) or a string (curve_id)."
+                )
+
+    def _remove_curve_by_id(self, curve_id):
+        """
+        Remove a curve by its ID from the plot widget.
+        Args:
+            curve_id(str): ID of the curve to be removed.
+        """
+        for source, curves in self._curves_data.items():
+            if curve_id in curves:
+                curve = curves.pop(curve_id)
+                self.plot_item.removeItem(curve)
+                del self.config.curves[curve_id]
+                if curve in self.plot_item.curves:
+                    self.plot_item.curves.remove(curve)
+                return
+        raise KeyError(f"Curve with ID '{curve_id}' not found.")
+
+    def _remove_curve_by_order(self, N):
+        """
+        Remove a curve by its order from the plot widget.
+        Args:
+            N(int): Order of the curve to be removed.
+        """
+        if N < len(self.plot_item.curves):
+            curve = self.plot_item.curves[N]
+            curve_id = curve.name()  # Assuming curve's name is used as its ID
+            self.plot_item.removeItem(curve)
+            del self.config.curves[curve_id]
+            # Remove from self.curve_data
+            for source, curves in self._curves_data.items():
+                if curve_id in curves:
+                    del curves[curve_id]
+                    break
+        else:
+            raise IndexError(f"Curve order {N} out of range.")
+
+    @pyqtSlot(dict, dict)
+    def on_scan_segment(self, msg: dict, metadata: dict):
+        """
+        Handle new scan segments and saves data to a dictionary. Linked through bec_dispatcher.
+
+        Args:
+            msg (dict): Message received with scan data.
+            metadata (dict): Metadata of the scan.
+        """
+        current_scan_id = msg.get("scan_id", None)
+        if current_scan_id is None:
+            return
+
+        if current_scan_id != self.scan_id:
+            self.scan_id = current_scan_id
+            self.scan_segment_data = self.queue.scan_storage.find_scan_by_ID(
+                self.scan_id
+            )  # TODO do scan access through BECFigure
+
+        self.scan_signal_update.emit()
+
+    def _update_scan_segment_plot(self):
+        """Update the plot with the data from the scan segment."""
+        data = self.scan_segment_data.data
+        self._update_scan_curves(data)
+
+    def _update_scan_curves(self, data: ScanData):
+        """
+        Update the scan curves with the data from the scan segment.
+        Args:
+            data(ScanData): Data from the scan segment.
+        """
+        data_x = None
+        data_y = None
+        data_z = None
+        for curve_id, curve in self._curves_data["scan_segment"].items():
+            x_name = curve.config.signals.x.name
+            x_entry = curve.config.signals.x.entry
+            y_name = curve.config.signals.y.name
+            y_entry = curve.config.signals.y.entry
+            if curve.config.signals.z:
+                z_name = curve.config.signals.z.name
+                z_entry = curve.config.signals.z.entry
+
+            try:
+                data_x = data[x_name][x_entry].val
+                data_y = data[y_name][y_entry].val
+                if curve.config.signals.z:
+                    data_z = data[z_name][z_entry].val
+                    color_z = self._make_z_gradient(
+                        data_z, curve.config.colormap
+                    )  # TODO decide how to implement custom gradient
+            except TypeError:
+                continue
+
+            if data_z is not None and color_z is not None:
+                curve.setData(x=data_x, y=data_y, symbolBrush=color_z)
+            else:
+                curve.setData(data_x, data_y)
+
+    def _make_z_gradient(self, data_z: list | np.ndarray, colormap: str) -> list | None:
+        """
+        Make a gradient color for the z values.
+        Args:
+            data_z(list|np.ndarray): Z values.
+            colormap(str): Colormap for the gradient color.
+
+        Returns:
+            list: List of colors for the z values.
+        """
+        # Normalize z_values for color mapping
+        z_min, z_max = np.min(data_z), np.max(data_z)
+
+        if z_max != z_min:  # Ensure that there is a range in the z values
+            z_values_norm = (data_z - z_min) / (z_max - z_min)
+            colormap = pg.colormap.get(colormap)  # using colormap from global settings
+            colors = [colormap.map(z, mode="qcolor") for z in z_values_norm]
+            return colors
+        else:
+            return None
+
+    def scan_history(self, scan_index: int = None, scan_id: str = None):
+        """
+        Update the scan curves with the data from the scan storage.
+        Provide only one of scan_id or scan_index.
+        Args:
+            scan_id(str, optional): ScanID of the scan to be updated. Defaults to None.
+            scan_index(int, optional): Index of the scan to be updated. Defaults to None.
+        """
+        if scan_index is not None and scan_id is not None:
+            raise ValueError("Only one of scan_id or scan_index can be provided.")
+
+        if scan_index is not None:
+            self.scan_id = self.queue.scan_storage.storage[scan_index].scan_id
+            data = self.queue.scan_storage.find_scan_by_ID(self.scan_id).data
+        elif scan_id is not None:
+            self.scan_id = scan_id
+            data = self.queue.scan_storage.find_scan_by_ID(self.scan_id).data
+
+        self._update_scan_curves(data)
+
+    def get_all_data(self, output: Literal["dict", "pandas"] = "dict") -> dict | pd.DataFrame:
+        """
+        Extract all curve data into a dictionary or a pandas DataFrame.
+        Args:
+            output (Literal["dict", "pandas"]): Format of the output data.
+        Returns:
+            dict | pd.DataFrame: Data of all curves in the specified format.
+        """
+
+        data = {}
+        try:
+            import pandas as pd
+        except ImportError:
+            pd = None
+            if output == "pandas":
+                print(
+                    "Pandas is not installed. "
+                    "Please install pandas using 'pip install pandas'."
+                    "Output will be dictionary instead."
+                )
+                output = "dict"
+
+        for curve in self.plot_item.curves:
+            x_data, y_data = curve.get_data()
+            if x_data is not None or y_data is not None:
+                if output == "dict":
+                    data[curve.name()] = {"x": x_data.tolist(), "y": y_data.tolist()}
+                elif output == "pandas" and pd is not None:
+                    data[curve.name()] = pd.DataFrame({"x": x_data, "y": y_data})
+
+        if output == "pandas" and pd is not None:
+            combined_data = pd.concat(
+                [data[curve.name()] for curve in self.plot_item.curves],
+                axis=1,
+                keys=[curve.name() for curve in self.plot_item.curves],
+            )
+            return combined_data
+        return data
+
+    def cleanup(self):
+        """Cleanup the widget connection from BECDispatcher."""
+        self.bec_dispatcher.disconnect_slot(self.on_scan_segment, MessageEndpoints.scan_segment())
