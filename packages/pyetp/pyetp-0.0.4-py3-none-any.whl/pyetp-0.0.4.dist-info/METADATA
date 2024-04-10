@@ -1,0 +1,58 @@
+Metadata-Version: 2.1
+Name: pyetp
+Version: 0.0.4
+Summary: Interface with OSDU RDDMS using ETP protocol
+Home-page: https://github.com/equinor/pyetp
+License: LGPL-3.0-only
+Author: Adam Cheng
+Author-email: 52572642+adamchengtkc@users.noreply.github.com
+Requires-Python: >=3.9,<3.12
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: async-lru (>=2.0.4,<3.0.0)
+Requires-Dist: async-timeout (>=4.0.3,<5.0.0)
+Requires-Dist: etpproto (>=1.0.5,<2.0.0)
+Requires-Dist: httpx (>=0.26.0,<0.27.0)
+Requires-Dist: lxml (>=4.9.4,<5.0.0)
+Requires-Dist: numpy (>=1.26.3,<2.0.0)
+Requires-Dist: pillow (>=10.3.0,<11.0.0)
+Requires-Dist: pyarrow (>=15.0.0,<16.0.0)
+Requires-Dist: pydantic (>=1.10,<2.0)
+Requires-Dist: redis (>=5.0.1,<6.0.0)
+Requires-Dist: resqpy (>=4.14.3,<5.0.0)
+Requires-Dist: websockets (>=12.0,<13.0)
+Requires-Dist: xsdata (>=24.3.1,<25.0.0)
+Requires-Dist: xtgeo (>=3.8.0,<4.0.0)
+Description-Content-Type: text/markdown
+
+![Build Status](https://github.com/equinor/pyetp/actions/workflows/ci.yml/badge.svg?branch=main)
+![Build Status](https://github.com/equinor/pyetp/actions/workflows/snyk.yml/badge.svg?branch=main)
+![codecov](https://codecov.io/gh/equinor/pyetp/graph/badge.svg?token=S2XDDKKI8U)
+![Python](https://img.shields.io/pypi/pyversions/pyetp)
+[![PyPI version](https://badge.fury.io/py/pyetp.svg)](https://badge.fury.io/py/pyetp)
+![License](https://img.shields.io/github/license/equinor/pyetp)
+# Install
+ `pip install pyetp`
+
+# RESQML versions
+The library is build and tested against RESQML v2.2. Spec can be downloaded [here](https://publications.opengroup.org/standards/energistics-standards/v231)
+
+# Generated Python objects from RESQML spec
+Under `resqml_objects` you will find Pythons objects generated from RESQML xml spec. It is used to ensure consistence data type is used in RESQML.
+
+# Documentation
+See `/examples` for 2D grid usage
+
+`tests/test_mesh.py` for Unstructured/structured mesh
+
+# Tests
+### Starting etp-test server
+`docker compose -f tests/compose.yml up --detach`
+### Running pytest from root folder
+`poetry run python -m pytest -rs -v`
+
+# This library is under active development and subject to breaking changes
+
