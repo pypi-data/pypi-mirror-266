@@ -1,0 +1,253 @@
+Metadata-Version: 2.1
+Name: eea.coremetadata
+Version: 3.7
+Summary: An add-on for Plone
+Home-page: https://github.com/eea/eea.coremetadata
+Author: European Environment Agency: IDM2 A-Team
+Author-email: eea-edw-a-team-alerts@googlegroups.com
+License: GPL version 2
+Keywords: EEA Add-ons Plone Zope
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Plone
+Classifier: Framework :: Plone :: Addon
+Classifier: Framework :: Plone :: 5.2
+Classifier: Framework :: Plone :: 6.0
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Operating System :: OS Independent
+Classifier: License :: OSI Approved :: GNU General Public License v2 (GPLv2)
+Description-Content-Type: text/x-rst
+Provides-Extra: test
+
+==========================
+eea.coremetadata
+==========================
+.. image:: https://ci.eionet.europa.eu/buildStatus/icon?job=eea/eea.coremetadata/develop
+  :target: https://ci.eionet.europa.eu/job/eea/job/eea.coremetadata/job/develop/display/redirect
+  :alt: Develop
+.. image:: https://ci.eionet.europa.eu/buildStatus/icon?job=eea/eea.coremetadata/master
+  :target: https://ci.eionet.europa.eu/job/eea/job/eea.coremetadata/job/master/display/redirect
+  :alt: Master
+
+The eea.coremetadata is a Plone add-on
+
+.. contents::
+
+
+Main features
+=============
+
+1. Easy to install/uninstall via Site Setup > Add-ons
+2.
+3.
+
+Install
+=======
+
+* Add eea.coremetadata to your eggs section in your buildout and
+  re-run buildout::
+
+    [buildout]
+    eggs +=
+      eea.coremetadata
+
+* You can download a sample buildout from:
+
+  - https://github.com/eea/eea.coremetadata/tree/master/buildouts/plone4
+  - https://github.com/eea/eea.coremetadata/tree/master/buildouts/plone5
+
+* Or via docker::
+
+    $ docker run --rm -p 8080:8080 -e ADDONS="eea.coremetadata" plone
+
+* Install *eea.coremetadata* within Site Setup > Add-ons
+
+
+Buildout installation
+=====================
+
+- `Plone 4+ <https://github.com/eea/eea.coremetadata/tree/master/buildouts/plone4>`_
+- `Plone 5+ <https://github.com/eea/eea.coremetadata/tree/master/buildouts/plone5>`_
+
+
+Source code
+===========
+
+- `Plone 4+ on github <https://github.com/eea/eea.coremetadata>`_
+- `Plone 5+ on github <https://github.com/eea/eea.coremetadata>`_
+
+
+Eggs repository
+===============
+
+- https://pypi.python.org/pypi/eea.coremetadata
+- http://eggrepo.eea.europa.eu/simple
+
+
+Plone versions
+==============
+It has been developed and tested for Plone 4 and 5. See buildouts section above.
+
+
+How to contribute
+=================
+See the `contribution guidelines (CONTRIBUTING.md) <https://github.com/eea/eea.coremetadata/blob/master/CONTRIBUTING.md>`_.
+
+Copyright and license
+=====================
+
+eea.coremetadata (the Original Code) is free software; you can
+redistribute it and/or modify it under the terms of the
+GNU General Public License as published by the Free Software Foundation;
+either version 2 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc., 59
+Temple Place, Suite 330, Boston, MA 02111-1307 USA.
+
+The Initial Owner of the Original Code is European Environment Agency (EEA).
+Portions created by Eau de Web are Copyright (C) 2009 by
+European Environment Agency. All Rights Reserved.
+
+
+Funding
+=======
+
+EEA_ - European Environment Agency (EU)
+
+.. _EEA: https://www.eea.europa.eu/
+.. _`EEA Web Systems Training`: http://www.youtube.com/user/eeacms/videos?view=1
+
+Changelog
+=========
+
+3.7 - (2024-04-09)
+---------------------------
+* Change: updated Organizations taxonomy, added EMA.
+  [alecghica refs #268171]
+
+3.6 - (2024-04-03)
+---------------------------
+* Change: updated Organizations taxonomy, fixed typo for ECHA.
+  [alecghica]
+
+3.5 - (2024-03-05)
+---------------------------
+* Feature: Expose rights field as metadata
+  [dobri1408 - refs #159551]
+
+3.4 - (2023-10-16)
+---------------------------
+* Fix: Fix data_provenance indexer
+  [avoinea - refs #258077]
+
+3.3 - (2023-10-16)
+---------------------------
+* Feature: Add data_provenance indexer
+  [dobri1408 - refs #258077]
+
+3.2 - (2023-07-19)
+---------------------------
+* Bug fix: Object is of wrong type
+  [nileshgulia1 - refs #254921]
+
+3.1 - (2023-04-26)
+---------------------------
+* Change: Develop refs #250426
+  [alecghica]
+
+3.0 - (2023-03-23)
+---------------------------
+* Change: Register indexes in portal_catalog and add indexer for temporal _coverage index
+  [razvanMiu]
+
+2.5 - (2022-12-16)
+---------------------------
+* Change: Distinct title for taxonomies to differentiate in search criteria
+  [avoinea]
+
+2.4 - (2022-12-08)
+---------------------------
+* Change: Added upgrade step that enables behavior indexer for topics taxonomy
+  [iulianpetchesi refs #157336]
+
+2.3 - (2022-10-21)
+---------------------------
+* Change: Develop #155903
+  [alecghica]
+
+2.2 - (2022-10-07)
+---------------------------
+* Change: Added the field rights back
+  [dobri1408]
+
+2.1 - (2022-10-05)
+---------------------------
+* Change: Update topics taxonomy with new info + upgrade step
+  [iulianpetchesi refs #154859]
+
+2.0 - (2022-09-08)
+---------------------------
+* Change: Fix constraint bug on env vars when empty string
+  [iulianpetchesi refs #153089]
+
+1.9 - (2022-08-30)
+---------------------------
+* Change: Convert env vars to list from string
+  [iulianpetchesi refs #153089]
+
+1.8 - (2022-08-29)
+---------------------------
+* Change: Enhanced the way env variables are retrieved and used
+  [iulianpetchesi refs #153089]
+
+1.7 - (2022-08-18)
+---------------------------
+* Change: Release
+  [nileshgulia1]
+
+1.6 - (2022-06-22)
+---------------------------
+* Change: Release: remove python 2.7
+  [nileshgulia1]
+
+1.5 - (2022-06-22)
+---------------------------
+* Change: Renamed contributors to other_organisations
+  [iulianpetchesi refs #142720]
+
+1.4 - (2022-06-22)
+---------------------------
+* Change: Updated topics taxonomy with new values
+  [iulianpetchesi refs #142720]
+* Change: Release
+  [nileshgulia1]
+
+1.3 - (2022-06-21)
+---------------------------
+* Change: Removed creation_date and word count
+  [iulianpetchesi refs #142720]
+
+1.2 - (2022-06-21)
+---------------------------
+* Change: Added topics taxonomy, updated descriptions and changed fields
+  requirements
+  [iulianpetchesi refs #142720]
+
+1.1 - (2022-06-13)
+---------------------------
+* Change: Fix history.txt
+  [iulianpetchesi refs #142720]
+
+1.0 - (2022-04-05)
+-----------------------
+
+* Initial release.
+  [eea]

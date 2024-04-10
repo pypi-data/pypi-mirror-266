@@ -1,0 +1,81 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+  i18n_domain="eea">
+
+  <genericsetup:upgradeSteps
+    source="*"
+    destination="1.0"
+    profile="eea.coremetadata:default">
+
+    <genericsetup:upgradeDepends
+       title="Import all steps from eea.coremetadata default profile"
+       import_profile="eea.coremetadata:default"
+      />
+
+  </genericsetup:upgradeSteps>
+
+  <genericsetup:upgradeStep
+    title="Remove topics taxonomy"
+    description=""
+    source="*"
+    destination="2.0"
+    handler=".to_20.to_20"
+    profile="eea.coremetadata:default"
+    />
+
+  <genericsetup:upgradeSteps
+    source="2.0"
+    destination="2.1"
+    profile="eea.coremetadata:default">
+
+    <genericsetup:upgradeDepends
+       title="Update topics taxonomy values"
+       import_profile="eea.coremetadata:default"
+      />
+
+  </genericsetup:upgradeSteps>
+
+  <genericsetup:upgradeStep
+    title="Add behavior indexers for taxonomies"
+    description=""
+    source="2.1"
+    destination="2.4"
+    handler=".to_24.to_24"
+    profile="eea.coremetadata:default"
+    />
+
+  <genericsetup:upgradeSteps
+    source="2.4"
+    destination="3.0"
+    profile="eea.coremetadata:default"
+  >
+    <genericsetup:upgradeDepends
+      title="Register indexes in portal_catalog and add indexer for temporal_coverage index"
+      import_steps="plone.app.registry catalog"
+    />
+  </genericsetup:upgradeSteps>
+
+  <genericsetup:upgradeSteps
+    source="3.0"
+    destination="3.1"
+    profile="eea.coremetadata:default"
+  >
+    <genericsetup:upgradeDepends
+      title="Register data_provenance index in portal_catalog and add indexer for data_provenance organisation"
+      import_steps="plone.app.registry catalog"
+    />
+  </genericsetup:upgradeSteps>
+
+  <genericsetup:upgradeSteps
+    source="3.1"
+    destination="3.5"
+    profile="eea.coremetadata:default"
+  >
+    <genericsetup:upgradeDepends
+      title="Register rights as metadata in portal_catalog"
+      import_steps="catalog"
+    />
+  </genericsetup:upgradeSteps>
+
+</configure>
