@@ -1,0 +1,20 @@
+[tool.poetry.scripts]
+gimme = "gimmetool.gimmetool:main"
+
+[tool.poetry]
+name = "gimmetool"
+version = "0.1.10"
+description = "The multi-repo manager"
+authors = ["Jeff <jhilton@qualtrics.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+argparse = "^1.4.0"
+gitpython = "^3.1.43"
+termcolor = "^2.4.0"
+setuptools = "^69.2.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
