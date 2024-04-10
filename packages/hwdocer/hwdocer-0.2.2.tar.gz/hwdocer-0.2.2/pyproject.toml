@@ -1,0 +1,61 @@
+[tool.poetry]
+name = "hwdocer"
+version = "0.2.2"
+description = "Wireviz, drawio and other documentation build tool"
+authors = ["Laurence DV <laurencedv@realee.tech>"]
+homepage = "https://gitlab.com/real-ee/public/hwdocer"
+repository = "https://gitlab.com/real-ee/public/hwdocer"
+documentation = "https://gitlab.com/real-ee/public/hwdocer/-/tree/master/doc"
+readme = "readme.md"
+license = "GPL-3.0-or-later"
+keywords = ["drawio", "wireviz", "toolchain", "automation", "documentation"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: Documentation",
+    "Topic :: Multimedia :: Graphics",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Software Development :: Documentation",
+    "Topic :: Utilities"
+]
+include = ["doc/release.md"]
+
+[tool.poetry.urls]
+"Issue" = "https://gitlab.com/real-ee/public/hwdocer/-/issues"
+"Changelog" = "https://gitlab.com/real-ee/public/hwdocer/-/blob/master/doc/release.md"
+"Roadmap" = "https://gitlab.com/real-ee/public/hwdocer/-/blob/master/doc/roadmap.md"
+"Contribution" = "https://gitlab.com/real-ee/public/hwdocer/-/blob/master/doc/contrib.md?ref_type=heads"
+
+[tool.poetry.scripts]
+hwdocer = "hwdocer.__main__:main"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+wireviz = "^0.3.2"
+drawio = "^0.0.10"
+pyyaml = "^6.0.1"
+rich = "^13.7.1"
+
+[tool.poetry.group.dev.dependencies]
+bumpver = "^2023.1129"
+pytest = "^7.4.0"
+
+[tool.bumpver]
+current_version = "0.2.2"
+version_pattern = "MAJOR.MINOR.PATCH"
+commit_message = "Version increase {old_version} -> {new_version}"
+commit = true
+tag = true
+push = true
+
+[tool.bumpver.file_patterns]
+"pyproject.toml" = ['current_version = "{version}"', 'version = "{version}"']
+"src/hwdocer/version.py" = ['version = "{version}"']
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
