@@ -1,0 +1,66 @@
+Metadata-Version: 2.1
+Name: datasette-metadata-editable
+Version: 0.0.1a15
+Author: Alex Garcia
+License: Apache-2.0
+Project-URL: Homepage, https://github.com/datasette/datasette-metadata-editable
+Project-URL: Changelog, https://github.com/datasette/datasette-metadata-editable/releases
+Project-URL: Issues, https://github.com/datasette/datasette-metadata-editable/issues
+Project-URL: CI, https://github.com/datasette/datasette-metadata-editable/actions
+Classifier: Framework :: Datasette
+Classifier: License :: OSI Approved :: Apache Software License
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: datasette >=1.0a13
+Requires-Dist: markdown2 >=2.4.10
+Requires-Dist: nh3 ==0.2.14
+Requires-Dist: sqlite-migrate >=0.1b0
+Provides-Extra: test
+Requires-Dist: pytest ; extra == 'test'
+Requires-Dist: pytest-asyncio ; extra == 'test'
+Requires-Dist: ruff ; extra == 'test'
+Requires-Dist: syrupy ; extra == 'test'
+
+# datasette-metadata-editable
+
+[![PyPI](https://img.shields.io/pypi/v/datasette-metadata-editable.svg)](https://pypi.org/project/datasette-metadata-editable/)
+[![Changelog](https://img.shields.io/github/v/release/datasette/datasette-metadata-editable?include_prereleases&label=changelog)](https://github.com/datasette/datasette-metadata-editable/releases)
+[![Tests](https://github.com/datasette/datasette-metadata-editable/workflows/Test/badge.svg)](https://github.com/datasette/datasette-metadata-editable/actions?query=workflow%3ATest)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/datasette/datasette-metadata-editable/blob/main/LICENSE)
+
+A Datasette plugin for editing metadata on-the-fly. Work in progress.
+
+## Installation
+
+Install this plugin in the same environment as Datasette.
+
+```bash
+datasette install datasette-metadata-editable
+```
+
+## Usage
+
+Usage instructions go here.
+
+## Development
+
+To set up this plugin locally, first checkout the code. Then create a new virtual environment:
+
+```bash
+cd datasette-metadata-editable
+python3 -m venv venv
+source venv/bin/activate
+```
+
+Now install the dependencies and test dependencies:
+
+```bash
+pip install -e '.[test]'
+```
+
+To run the tests:
+
+```bash
+pytest
+```
