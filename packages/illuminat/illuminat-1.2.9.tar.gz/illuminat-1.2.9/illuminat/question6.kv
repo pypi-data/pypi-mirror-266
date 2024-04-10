@@ -1,0 +1,112 @@
+MDScreen:
+    name: "question6"
+    MDFloatLayout:
+        MDLabel:
+            id: "questiontxt"
+            text: "Which ocean is the largest in terms of both area and volume?"
+            pos_hint: {"center_y": .75}
+            color: rgba(52, 0, 231, 255)
+            font_size: "17sp"
+            font_name: app.bahnscriptreplace()
+            halign: "center"
+
+        MDLabel:
+            text: "Q6/10"
+            pos_hint: {"center_y": .85}
+            color: rgba(169,169,169, 255)
+            font_size: "19sp"
+            font_name: app.bahnscriptreplace()
+            halign: "center"
+
+        Button:
+            id: questionbtn1
+            text: "A) Indian Ocean"
+            size_hint: .8, .08
+            background_color: 0, 0, 0, 0
+            pos_hint: {"center_x": .5, "center_y": .63}
+            font_name: app.bahnscriptreplace()
+            font_size: "15sp"
+            on_release:
+                app.btnclickornot_one()
+            canvas.before:
+                Color:
+                    rgb: rgba(52, 0, 231, 255)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [5]
+
+        Button:
+            id: questionbtn2
+            text: "B) Atlantic Ocean"
+            size_hint: .8, .08
+            background_color: 0, 0, 0, 0
+            pos_hint: {"center_x": .5, "center_y": .54}
+            font_name: app.bahnscriptreplace()
+            font_size: "15sp"
+            on_release:
+                app.btnclickornot_two()
+            canvas.before:
+                Color:
+                    rgb: rgba(52, 0, 231, 255)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [5]
+
+        Button:
+            id: questionbtn3
+            text: "C) Southern Ocean"
+            size_hint: .8, .08
+            background_color: 0, 0, 0, 0
+            pos_hint: {"center_x": .5, "center_y": .45}
+            font_name: app.bahnscriptreplace()
+            font_size: "15sp"
+            on_release:
+                app.btnclickornot_three()
+            canvas.before:
+                Color:
+                    rgb: rgba(52, 0, 231, 255)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [5]
+
+        Button:
+            id: questionbtn4
+            text: "D) Pacific Ocean"
+            size_hint: .8, .08
+            background_color: 0, 0, 0, 0
+            pos_hint: {"center_x": .5, "center_y": .36}
+            font_name: app.bahnscriptreplace()
+            font_size: "15sp"
+            on_release:
+                app.btnclickornot_four()
+            canvas.before:
+                Color:
+                    rgb: rgba(52, 0, 231, 255)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [5]
+
+        Button:
+            text: "N E X T"
+            size_hint: .66, .065
+            background_color: 0, 0, 0, 0
+            pos_hint: {"center_x": .505, "center_y": .2}
+            color: rgba(52, 0, 231, 255)
+            font_name: app.bahnscriptreplace()
+            on_release:
+                app.submitbtn_whattodo()
+                root.manager.transition.direction = "right"
+                root.manager.current = "question7"
+            canvas.before:
+                Color:
+                    rgb: rgba(52, 0, 231, 255)
+                Line:
+                    width: 1.2
+                    rounded_rectangle: self.x, self.y, self.width, self.height, 5, 5, 5, 5, 100
+
+
+

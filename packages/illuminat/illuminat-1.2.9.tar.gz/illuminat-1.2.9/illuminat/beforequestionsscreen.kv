@@ -1,0 +1,147 @@
+MDScreen:
+    name: "beforequestionsscreen"
+    MDFloatLayout:
+        md_bg_color: 1, 1, 1, 1
+        Image:
+            source: app.imageformainmainaaa()
+
+            size_hint: 1,1
+            pos_hint : {"center_x": .5, "center_y": .5}
+
+
+        MDLabel:
+            id: bqTxt
+            text: ""
+            pos_hint: {"center_y": .75}
+            color: rgba(52, 0, 231, 255)
+            font_size: "17sp"
+            font_name: app.notoreplaceforpath()
+            halign: "center"
+
+        Image:
+            id: bqImg
+            source: app.imageformainmainaaabqimg()
+            pos_hint: {"center_x": .50, "center_y": .50}
+            size_hint: 5,5
+            opacity: .175
+
+        MDLabel:
+            id: labelforTxt
+            text: "Are you ready to Illuminat yourself?"
+            pos_hint: {"center_y": .5}
+            color: rgba(52, 0, 231, 255)
+            font_size: "45sp"
+            font_name: app.bahnscriptreplace()
+            halign: "center"
+
+
+        MDLabel:
+            id: bqNo
+            text: ""
+            pos_hint: {"center_y": .85}
+            color: rgba(169,169,169, 255)
+            font_size: "19sp"
+            font_name: app.notoreplaceforpath()
+            halign: "center"
+
+
+        Button:
+            id: bqBtn1
+            text: ""
+            size_hint: .8, .08
+            background_color: 0, 0, 0, 0
+            pos_hint: {"center_x": .5, "center_y": .63}
+            font_name: app.notoreplaceforpath()
+            font_size: "15sp"
+            opacity: 1
+            on_release:
+                app.btnclickornot_one()
+            canvas.before:
+                Color:
+                    rgb: rgba(52, 0, 231, 255)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [5]
+
+        Button:
+            id: bqBtn2
+            text: ""
+            size_hint: .8, .08
+            background_color: 0, 0, 0, 0
+            pos_hint: {"center_x": .5, "center_y": .54}
+            font_name: app.notoreplaceforpath()
+            font_size: "15sp"
+            opacity: 1
+            on_release:
+                app.btnclickornot_two()
+            canvas.before:
+                Color:
+                    rgb: rgba(52, 0, 231, 255)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [5]
+
+        Button:
+            id: bqBtn3
+            text: ""
+            size_hint: .8, .08
+            background_color: 0, 0, 0, 0
+            pos_hint: {"center_x": .5, "center_y": .45}
+            font_name: app.notoreplaceforpath()
+            font_size: "15sp"
+            opacity: 1
+            on_release:
+                app.btnclickornot_three()
+            canvas.before:
+                Color:
+                    rgb: rgba(52, 0, 231, 255)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [5]
+
+        Button:
+            id: bqBtn4
+            text: ""
+            size_hint: .8, .08
+            background_color: 0, 0, 0, 0
+            pos_hint: {"center_x": .5, "center_y": .36}
+            font_name: app.notoreplaceforpath()
+            font_size: "15sp"
+            opacity: 1
+            on_release:
+                app.btnclickornot_four()
+            canvas.before:
+                Color:
+                    rgb: rgba(52, 0, 231, 255)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [5]
+
+        Button:
+            id: bgNxtBtn
+            text: "N E X T"
+            size_hint: .66, .065
+            background_color: 0, 0, 0, 0
+            pos_hint: {"center_x": .505, "center_y": .2}
+            color: rgba(52, 0, 231, 255)
+            font_name: app.notoreplaceforpath()
+            on_release:
+                app.submitbtn_whattodo()
+                app.setbeforequestions()
+                app.bqconvertlang()
+                app.destroytheimg()
+
+
+            canvas.before:
+                Color:
+                    rgb: rgba(52, 0, 231, 255)
+                Line:
+                    width: 1.2
+                    rounded_rectangle: self.x, self.y, self.width, self.height, 5, 5, 5, 5, 100
+
+
+
