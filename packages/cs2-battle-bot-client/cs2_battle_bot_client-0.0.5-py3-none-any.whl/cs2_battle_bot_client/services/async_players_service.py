@@ -1,0 +1,166 @@
+import json
+from typing import *
+
+import httpx
+
+from ..api_config import APIConfig, HTTPException
+from ..models import *
+
+
+async def players_list(
+    page: Optional[int] = None, api_config_override: Optional[APIConfig] = None
+) -> PaginatedPlayerList:
+    api_config = api_config_override if api_config_override else APIConfig()
+
+    base_path = api_config.base_path
+    path = f"/api/players/"
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Authorization": f"Bearer { api_config.get_access_token() }",
+    }
+    query_params: Dict[str, Any] = {"page": page}
+
+    query_params = {key: value for (key, value) in query_params.items() if value is not None}
+
+    async with httpx.AsyncClient(base_url=base_path, verify=api_config.verify) as client:
+        response = await client.request(
+            "get",
+            httpx.URL(path),
+            headers=headers,
+            params=query_params,
+        )
+
+    if response.status_code != 200:
+        raise HTTPException(response.status_code, f" failed with status code: {response.status_code}")
+
+    return PaginatedPlayerList(**response.json()) if response.json() is not None else PaginatedPlayerList()
+
+
+async def players_create(data: Player, api_config_override: Optional[APIConfig] = None) -> Player:
+    api_config = api_config_override if api_config_override else APIConfig()
+
+    base_path = api_config.base_path
+    path = f"/api/players/"
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Authorization": f"Bearer { api_config.get_access_token() }",
+    }
+    query_params: Dict[str, Any] = {}
+
+    query_params = {key: value for (key, value) in query_params.items() if value is not None}
+
+    async with httpx.AsyncClient(base_url=base_path, verify=api_config.verify) as client:
+        response = await client.request("post", httpx.URL(path), headers=headers, params=query_params, json=data.dict())
+
+    if response.status_code != 201:
+        raise HTTPException(response.status_code, f" failed with status code: {response.status_code}")
+
+    return Player(**response.json()) if response.json() is not None else Player()
+
+
+async def players_retrieve(id: str, api_config_override: Optional[APIConfig] = None) -> Player:
+    api_config = api_config_override if api_config_override else APIConfig()
+
+    base_path = api_config.base_path
+    path = f"/api/players/{id}/"
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Authorization": f"Bearer { api_config.get_access_token() }",
+    }
+    query_params: Dict[str, Any] = {}
+
+    query_params = {key: value for (key, value) in query_params.items() if value is not None}
+
+    async with httpx.AsyncClient(base_url=base_path, verify=api_config.verify) as client:
+        response = await client.request(
+            "get",
+            httpx.URL(path),
+            headers=headers,
+            params=query_params,
+        )
+
+    if response.status_code != 200:
+        raise HTTPException(response.status_code, f" failed with status code: {response.status_code}")
+
+    return Player(**response.json()) if response.json() is not None else Player()
+
+
+async def players_update(id: str, data: Player, api_config_override: Optional[APIConfig] = None) -> Player:
+    api_config = api_config_override if api_config_override else APIConfig()
+
+    base_path = api_config.base_path
+    path = f"/api/players/{id}/"
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Authorization": f"Bearer { api_config.get_access_token() }",
+    }
+    query_params: Dict[str, Any] = {}
+
+    query_params = {key: value for (key, value) in query_params.items() if value is not None}
+
+    async with httpx.AsyncClient(base_url=base_path, verify=api_config.verify) as client:
+        response = await client.request("put", httpx.URL(path), headers=headers, params=query_params, json=data.dict())
+
+    if response.status_code != 200:
+        raise HTTPException(response.status_code, f" failed with status code: {response.status_code}")
+
+    return Player(**response.json()) if response.json() is not None else Player()
+
+
+async def players_destroy(id: str, api_config_override: Optional[APIConfig] = None) -> None:
+    api_config = api_config_override if api_config_override else APIConfig()
+
+    base_path = api_config.base_path
+    path = f"/api/players/{id}/"
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Authorization": f"Bearer { api_config.get_access_token() }",
+    }
+    query_params: Dict[str, Any] = {}
+
+    query_params = {key: value for (key, value) in query_params.items() if value is not None}
+
+    async with httpx.AsyncClient(base_url=base_path, verify=api_config.verify) as client:
+        response = await client.request(
+            "delete",
+            httpx.URL(path),
+            headers=headers,
+            params=query_params,
+        )
+
+    if response.status_code != 204:
+        raise HTTPException(response.status_code, f" failed with status code: {response.status_code}")
+
+    return None
+
+
+async def players_partial_update(
+    id: str, data: PatchedPlayer, api_config_override: Optional[APIConfig] = None
+) -> Player:
+    api_config = api_config_override if api_config_override else APIConfig()
+
+    base_path = api_config.base_path
+    path = f"/api/players/{id}/"
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Authorization": f"Bearer { api_config.get_access_token() }",
+    }
+    query_params: Dict[str, Any] = {}
+
+    query_params = {key: value for (key, value) in query_params.items() if value is not None}
+
+    async with httpx.AsyncClient(base_url=base_path, verify=api_config.verify) as client:
+        response = await client.request(
+            "patch", httpx.URL(path), headers=headers, params=query_params, json=data.dict()
+        )
+
+    if response.status_code != 200:
+        raise HTTPException(response.status_code, f" failed with status code: {response.status_code}")
+
+    return Player(**response.json()) if response.json() is not None else Player()
