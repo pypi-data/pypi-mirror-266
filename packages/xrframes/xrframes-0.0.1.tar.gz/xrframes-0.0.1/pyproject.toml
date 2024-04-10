@@ -1,0 +1,36 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "xrframes"
+authors = [{name = "zmoon", email = "zmoon92@gmail.com"}]
+readme = "README.md"
+license = {file = "LICENSE"}
+classifiers = ["License :: OSI Approved :: MIT License"]
+dynamic = ["version", "description"]
+requires-python = "~=3.9"
+dependencies = [
+    "rich",  # TODO: optional
+]
+
+[project.urls]
+Home = "https://github.com/zmoon/xrframes"
+Source = "https://github.com/zmoon/xrframes"
+# Documentation = ""
+
+[tool.flit.sdist]
+exclude = [
+    ".flake8",
+    ".gitignore",
+    ".pre-commit-config.yaml",
+    "environment-dev.yml",
+    "test.py",
+]
+
+[tool.isort]
+line_length = 100
+profile = "black"
+
+[tool.black]
+line-length = 100
