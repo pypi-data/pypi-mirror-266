@@ -1,0 +1,78 @@
+# Trinnov Altitude Python Library
+
+A Python library for interacting with the [Trinnov Altitude processor](https://www.trinnov.com/en/products/altitude32/) via the
+[TCP/IP automation protocol](docs/Alititude%20Protocol.pdf) provided by the Trinnov Altitude.
+
+## Overview
+
+The Trinnov Altitude processor is an audio/video processor that exposes an
+automation protocol over TCP/IP for remote control.
+
+The interface is a two-way communication protocol. At any time the processor
+can broadcast messages to all connected clients reflecting the current
+processor state. For example, the user could turn the volume knob on the
+processor itself, which would broadcase volume change messages to all connected
+clients.
+
+Therefore, it's important to architect usage of this library to handle state
+changes asynchronously. You should not be polling the processor for state
+changes. Instead, you should register a callback that fires when changes are
+received.
+
+## Installation
+
+`pip install trinnov-altitude`
+
+## Setup
+
+### Connect
+
+```python
+from trinnov_altitude.trinnov_altitude import TrinnovAltitude
+
+# Instantiate the Trinnov Altitude client. Adjust the `host` and `client_id`
+# accordingly.
+altitude = TrinnovAltitude(host = "192.168.1.90", client_id = "my_altitude_integration")
+
+# Connect to the Trinnov Altitude processor
+await altitude.connect()
+
+# Disconnect
+await altitude.disconnect()
+```
+
+### Subscribe to updates
+
+```python
+from trinnov_altitude.trinnov_altitude import TrinnovAltitude
+
+altitude = TrinnovAltitude(host = "192.168.1.90", client_id = "my_altitude_integration")
+
+# Define your callback
+def callback(message):
+    # react to the change here
+    pass
+
+# Register the callback. It will be called each time a message is received
+# from the processor.
+altitude.register_callback(callback)
+
+await altitude.connect()
+```
+
+## Commands
+
+All commands assume you have [setup](#setup) your Trinnov Altitude client.
+
+### Change the volume
+
+```python
+# Get the current volume level
+altitude.volume
+
+# Change the processor's volume
+await altitude.set_volume(-45)
+
+# See the new volume level. Once sent, the processor
+altitude.volume
+```
