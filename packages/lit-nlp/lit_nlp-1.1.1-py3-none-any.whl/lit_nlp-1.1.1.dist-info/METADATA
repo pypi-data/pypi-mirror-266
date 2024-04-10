@@ -1,0 +1,539 @@
+Metadata-Version: 2.1
+Name: lit-nlp
+Version: 1.1.1
+Summary: 🔥LIT: The Learning Interpretability Tool
+Author-email: "Google, LLC" <lit-dev@google.com>
+License: 
+                                         Apache License
+                                   Version 2.0, January 2004
+                                http://www.apache.org/licenses/
+        
+           TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+        
+           1. Definitions.
+        
+              "License" shall mean the terms and conditions for use, reproduction,
+              and distribution as defined by Sections 1 through 9 of this document.
+        
+              "Licensor" shall mean the copyright owner or entity authorized by
+              the copyright owner that is granting the License.
+        
+              "Legal Entity" shall mean the union of the acting entity and all
+              other entities that control, are controlled by, or are under common
+              control with that entity. For the purposes of this definition,
+              "control" means (i) the power, direct or indirect, to cause the
+              direction or management of such entity, whether by contract or
+              otherwise, or (ii) ownership of fifty percent (50%) or more of the
+              outstanding shares, or (iii) beneficial ownership of such entity.
+        
+              "You" (or "Your") shall mean an individual or Legal Entity
+              exercising permissions granted by this License.
+        
+              "Source" form shall mean the preferred form for making modifications,
+              including but not limited to software source code, documentation
+              source, and configuration files.
+        
+              "Object" form shall mean any form resulting from mechanical
+              transformation or translation of a Source form, including but
+              not limited to compiled object code, generated documentation,
+              and conversions to other media types.
+        
+              "Work" shall mean the work of authorship, whether in Source or
+              Object form, made available under the License, as indicated by a
+              copyright notice that is included in or attached to the work
+              (an example is provided in the Appendix below).
+        
+              "Derivative Works" shall mean any work, whether in Source or Object
+              form, that is based on (or derived from) the Work and for which the
+              editorial revisions, annotations, elaborations, or other modifications
+              represent, as a whole, an original work of authorship. For the purposes
+              of this License, Derivative Works shall not include works that remain
+              separable from, or merely link (or bind by name) to the interfaces of,
+              the Work and Derivative Works thereof.
+        
+              "Contribution" shall mean any work of authorship, including
+              the original version of the Work and any modifications or additions
+              to that Work or Derivative Works thereof, that is intentionally
+              submitted to Licensor for inclusion in the Work by the copyright owner
+              or by an individual or Legal Entity authorized to submit on behalf of
+              the copyright owner. For the purposes of this definition, "submitted"
+              means any form of electronic, verbal, or written communication sent
+              to the Licensor or its representatives, including but not limited to
+              communication on electronic mailing lists, source code control systems,
+              and issue tracking systems that are managed by, or on behalf of, the
+              Licensor for the purpose of discussing and improving the Work, but
+              excluding communication that is conspicuously marked or otherwise
+              designated in writing by the copyright owner as "Not a Contribution."
+        
+              "Contributor" shall mean Licensor and any individual or Legal Entity
+              on behalf of whom a Contribution has been received by Licensor and
+              subsequently incorporated within the Work.
+        
+           2. Grant of Copyright License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              copyright license to reproduce, prepare Derivative Works of,
+              publicly display, publicly perform, sublicense, and distribute the
+              Work and such Derivative Works in Source or Object form.
+        
+           3. Grant of Patent License. Subject to the terms and conditions of
+              this License, each Contributor hereby grants to You a perpetual,
+              worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+              (except as stated in this section) patent license to make, have made,
+              use, offer to sell, sell, import, and otherwise transfer the Work,
+              where such license applies only to those patent claims licensable
+              by such Contributor that are necessarily infringed by their
+              Contribution(s) alone or by combination of their Contribution(s)
+              with the Work to which such Contribution(s) was submitted. If You
+              institute patent litigation against any entity (including a
+              cross-claim or counterclaim in a lawsuit) alleging that the Work
+              or a Contribution incorporated within the Work constitutes direct
+              or contributory patent infringement, then any patent licenses
+              granted to You under this License for that Work shall terminate
+              as of the date such litigation is filed.
+        
+           4. Redistribution. You may reproduce and distribute copies of the
+              Work or Derivative Works thereof in any medium, with or without
+              modifications, and in Source or Object form, provided that You
+              meet the following conditions:
+        
+              (a) You must give any other recipients of the Work or
+                  Derivative Works a copy of this License; and
+        
+              (b) You must cause any modified files to carry prominent notices
+                  stating that You changed the files; and
+        
+              (c) You must retain, in the Source form of any Derivative Works
+                  that You distribute, all copyright, patent, trademark, and
+                  attribution notices from the Source form of the Work,
+                  excluding those notices that do not pertain to any part of
+                  the Derivative Works; and
+        
+              (d) If the Work includes a "NOTICE" text file as part of its
+                  distribution, then any Derivative Works that You distribute must
+                  include a readable copy of the attribution notices contained
+                  within such NOTICE file, excluding those notices that do not
+                  pertain to any part of the Derivative Works, in at least one
+                  of the following places: within a NOTICE text file distributed
+                  as part of the Derivative Works; within the Source form or
+                  documentation, if provided along with the Derivative Works; or,
+                  within a display generated by the Derivative Works, if and
+                  wherever such third-party notices normally appear. The contents
+                  of the NOTICE file are for informational purposes only and
+                  do not modify the License. You may add Your own attribution
+                  notices within Derivative Works that You distribute, alongside
+                  or as an addendum to the NOTICE text from the Work, provided
+                  that such additional attribution notices cannot be construed
+                  as modifying the License.
+        
+              You may add Your own copyright statement to Your modifications and
+              may provide additional or different license terms and conditions
+              for use, reproduction, or distribution of Your modifications, or
+              for any such Derivative Works as a whole, provided Your use,
+              reproduction, and distribution of the Work otherwise complies with
+              the conditions stated in this License.
+        
+           5. Submission of Contributions. Unless You explicitly state otherwise,
+              any Contribution intentionally submitted for inclusion in the Work
+              by You to the Licensor shall be under the terms and conditions of
+              this License, without any additional terms or conditions.
+              Notwithstanding the above, nothing herein shall supersede or modify
+              the terms of any separate license agreement you may have executed
+              with Licensor regarding such Contributions.
+        
+           6. Trademarks. This License does not grant permission to use the trade
+              names, trademarks, service marks, or product names of the Licensor,
+              except as required for reasonable and customary use in describing the
+              origin of the Work and reproducing the content of the NOTICE file.
+        
+           7. Disclaimer of Warranty. Unless required by applicable law or
+              agreed to in writing, Licensor provides the Work (and each
+              Contributor provides its Contributions) on an "AS IS" BASIS,
+              WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+              implied, including, without limitation, any warranties or conditions
+              of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+              PARTICULAR PURPOSE. You are solely responsible for determining the
+              appropriateness of using or redistributing the Work and assume any
+              risks associated with Your exercise of permissions under this License.
+        
+           8. Limitation of Liability. In no event and under no legal theory,
+              whether in tort (including negligence), contract, or otherwise,
+              unless required by applicable law (such as deliberate and grossly
+              negligent acts) or agreed to in writing, shall any Contributor be
+              liable to You for damages, including any direct, indirect, special,
+              incidental, or consequential damages of any character arising as a
+              result of this License or out of the use or inability to use the
+              Work (including but not limited to damages for loss of goodwill,
+              work stoppage, computer failure or malfunction, or any and all
+              other commercial damages or losses), even if such Contributor
+              has been advised of the possibility of such damages.
+        
+           9. Accepting Warranty or Additional Liability. While redistributing
+              the Work or Derivative Works thereof, You may choose to offer,
+              and charge a fee for, acceptance of support, warranty, indemnity,
+              or other liability obligations and/or rights consistent with this
+              License. However, in accepting such obligations, You may act only
+              on Your own behalf and on Your sole responsibility, not on behalf
+              of any other Contributor, and only if You agree to indemnify,
+              defend, and hold each Contributor harmless for any liability
+              incurred by, or claims asserted against, such Contributor by reason
+              of your accepting any such warranty or additional liability.
+        
+           END OF TERMS AND CONDITIONS
+        
+           APPENDIX: How to apply the Apache License to your work.
+        
+              To apply the Apache License to your work, attach the following
+              boilerplate notice, with the fields enclosed by brackets "[]"
+              replaced with your own identifying information. (Don't include
+              the brackets!)  The text should be enclosed in the appropriate
+              comment syntax for the file format. We also recommend that a
+              file or class name and description of purpose be included on the
+              same "printed page" as the copyright notice for easier
+              identification within third-party archives.
+        
+           Copyright [yyyy] [name of copyright owner]
+        
+           Licensed under the Apache License, Version 2.0 (the "License");
+           you may not use this file except in compliance with the License.
+           You may obtain a copy of the License at
+        
+               http://www.apache.org/licenses/LICENSE-2.0
+        
+           Unless required by applicable law or agreed to in writing, software
+           distributed under the License is distributed on an "AS IS" BASIS,
+           WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+           See the License for the specific language governing permissions and
+           limitations under the License.
+        
+Project-URL: Homepage, https://github.com/pair-code/lit
+Project-URL: Repository, https://github.com/PAIR-code/lit
+Project-URL: Bug Tracker, https://github.com/PAIR-code/lit/issues
+Keywords: interpretability,interpretable artifical intelligence,explainable,explainable artifical intelligence,XAI,computer vision,natural language processing,artifical intelligence,machine learning,deep learning,visualization,visual analytics,tensorflow,tf,torch
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Framework :: Jupyter
+Classifier: Framework :: Pytest
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: JavaScript
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Classifier: Topic :: Scientific/Engineering :: Visualization
+Classifier: Typing :: Typed
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: absl-py >=1.4.0
+Requires-Dist: annoy >=1.17.3
+Requires-Dist: attrs >=22.1.0
+Requires-Dist: etils[epath] >=1.7.0
+Requires-Dist: filelock >=3.12.3
+Requires-Dist: google-cloud-translate >=3.11.1
+Requires-Dist: ipython >=7.34.0
+Requires-Dist: Levenshtein >=0.21.1
+Requires-Dist: matplotlib >=3.7.1
+Requires-Dist: ml-collections >=0.1.1
+Requires-Dist: numpy >=1.24.1
+Requires-Dist: pandas >=2.0.3
+Requires-Dist: Pillow >=10.0.0
+Requires-Dist: portpicker >=1.5.2
+Requires-Dist: requests >=2.31.0
+Requires-Dist: rouge-score >=0.1.2
+Requires-Dist: sacrebleu >=2.3.1
+Requires-Dist: saliency >=0.1.3
+Requires-Dist: scikit-learn >=1.0.2
+Requires-Dist: scipy >=1.10.1
+Requires-Dist: shap ==0.42.0
+Requires-Dist: six >=1.16.0
+Requires-Dist: termcolor >=2.3.0
+Requires-Dist: tqdm >=4.64.0
+Requires-Dist: umap-learn >=0.5.1
+Requires-Dist: werkzeug >=2.2.3
+Provides-Extra: examples
+Requires-Dist: gunicorn ==20.1.0 ; extra == 'examples'
+Requires-Dist: tensorflow ==2.10.0 ; extra == 'examples'
+Requires-Dist: tensorflow-datasets ==4.8.0 ; extra == 'examples'
+Requires-Dist: tensorflow-text ==2.10.0 ; extra == 'examples'
+Requires-Dist: torch >=2.0.0 ; extra == 'examples'
+Requires-Dist: transformers >=4.27.1 ; extra == 'examples'
+Provides-Extra: test
+Requires-Dist: lime ==0.2.0.1 ; extra == 'test'
+Requires-Dist: pytest <8.0.0,>=7.4.0 ; extra == 'test'
+
+# 🔥 Learning Interpretability Tool (LIT)
+
+<!--* freshness: { owner: 'lit-dev' reviewed: '2023-09-22' } *-->
+
+The Learning Interpretability Tool (🔥LIT, formerly known as the Language
+Interpretability Tool) is a visual, interactive ML model-understanding tool that
+supports text, image, and tabular data. It can be run as a standalone server, or
+inside of notebook environments such as Colab, Jupyter, and Google Cloud Vertex
+AI notebooks.
+
+LIT is built to answer questions such as:
+
+*   **What kind of examples** does my model perform poorly on?
+*   **Why did my model make this prediction?** Can this prediction be attributed
+    to adversarial behavior, or to undesirable priors in the training set?
+*   **Does my model behave consistently** if I change things like textual style,
+    verb tense, or pronoun gender?
+
+![Example of LIT UI](https://pair-code.github.io/lit/assets/images/readme-fig-1.png)
+
+LIT supports a variety of debugging workflows through a browser-based UI.
+Features include:
+
+*   **Local explanations** via salience maps, attention, and rich visualization
+    of model predictions.
+*   **Aggregate analysis** including custom metrics, slicing and binning, and
+    visualization of embedding spaces.
+*   **Counterfactual generation** via manual edits or generator plug-ins to
+    dynamically create and evaluate new examples.
+*   **Side-by-side mode** to compare two or more models, or one model on a pair
+    of examples.
+*   **Highly extensible** to new model types, including classification,
+    regression, span labeling, seq2seq, and language modeling. Supports
+    multi-head models and multiple input features out of the box.
+*   **Framework-agnostic** and compatible with TensorFlow, PyTorch, and more.
+
+LIT has a [website](https://pair-code.github.io/lit) with live demos, tutorials,
+a setup guide and more.
+
+Stay up to date on LIT by joining the
+[lit-announcements mailing list](https://groups.google.com/g/lit-annoucements).
+
+For a broader overview, check out [our paper](https://arxiv.org/abs/2008.05122) and the
+[user guide](https://pair-code.github.io/lit/documentation/ui_guide).
+
+## Documentation
+
+*   [Documentation index](https://pair-code.github.io/lit/documentation/)
+*   [FAQ](https://pair-code.github.io/lit/documentation/faq)
+*   [Release notes](./RELEASE.md)
+
+## Download and Installation
+
+LIT can be run via container image, installed via `pip` or built from source.
+Building from source is necessary if you update any of the front-end or core
+back-end code.
+
+### Build container image
+
+Build the image using `docker` or `podman`:
+```sh
+git clone https://github.com/PAIR-code/lit.git && cd lit
+docker build --file Dockerfile --tag lit-nlp .
+```
+
+See the [advanced guide](https://pair-code.github.io/lit/documentation/docker) for detailed instructions on using the
+default LIT Docker image, running LIT as a containerized web app in different
+scenarios, and how to creating your own LIT images.
+
+### pip installation
+
+```sh
+pip install lit-nlp
+```
+
+The `pip` installation will install all necessary prerequisite packages for use
+of the core LIT package.
+
+It **does not** install the prerequisites for the provided demos, so you need to
+install those yourself. See
+[requirements_examples.txt](./requirements_examples.txt) for the list of
+packages required to run the demos.
+
+### Install from source
+
+Clone the repo:
+
+```sh
+git clone https://github.com/PAIR-code/lit.git && cd lit
+```
+
+
+Note: be sure you are running Python 3.10. If you have a different version on  
+your system, use the `conda` instructions below to set up a Python 3.10 
+environment.
+
+Set up a Python environment with `venv`:
+
+```sh
+python -m venv .venv
+source .venv/bin/activate
+```
+
+Or set up a Python environment using `conda`:
+
+```sh
+conda create --name lit-nlp
+conda activate lit-nlp
+conda install python=3.10
+conda install pip
+```
+
+Once you have the environment, install LIT's dependencies:
+```sh
+python -m pip install -r requirements.txt
+python -m pip install cudnn cupti  # optional, for GPU support
+python -m pip install torch  # optional, for PyTorch
+
+# Build the frontend
+(cd lit_nlp; yarn && yarn build)
+```
+
+Note: Use the `-r requirements.txt` option to install every dependency required
+for the LIT library, its test suite, and the built-in examples. You can also
+install subsets of these using the `-r requirements_core.txt` (core library),
+`-r requirements_test.txt` (test suite), `-r requirements_examples.txt`
+(examples), and/or any combination thereof.
+
+Note: if you see [an error](https://github.com/yarnpkg/yarn/issues/2821)
+running `yarn` on Ubuntu/Debian, be sure you have the
+[correct version installed](https://yarnpkg.com/en/docs/install#linux-tab).
+
+
+## Running LIT
+
+Explore a collection of hosted demos on the
+[demos page](https://pair-code.github.io/lit/demos).
+
+### Quick-start: classification and regression
+
+To explore classification and regression models tasks from the popular
+[GLUE benchmark](https://gluebenchmark.com/):
+
+```sh
+python -m lit_nlp.examples.glue_demo --port=5432 --quickstart
+```
+
+Or, using `docker`:
+
+```sh
+docker run --rm -e DEMO_NAME=glue_demo -p 5432:5432 -t lit-nlp --quickstart
+```
+
+Navigate to http://localhost:5432 to access the LIT UI.
+
+Your default view will be a
+[small BERT-based model](https://arxiv.org/abs/1908.08962) fine-tuned on the
+[Stanford Sentiment Treebank](https://nlp.stanford.edu/sentiment/treebank.html),
+but you can switch to
+[STS-B](http://ixa2.si.ehu.es/stswiki/index.php/STSbenchmark) or
+[MultiNLI](https://cims.nyu.edu/~sbowman/multinli/) using the toolbar or the
+gear icon in the upper right.
+
+### Quick-start: language modeling
+
+To explore predictions from a pre-trained language model (BERT or GPT-2), run:
+
+```sh
+python -m lit_nlp.examples.lm_demo --models=bert-base-uncased --port=5432
+```
+
+Or, using `docker`:
+
+```sh
+docker run --rm -e DEMO_NAME=lm_demo -p 5432:5432 -t lit-nlp --models=bert-base-uncased
+```
+
+And navigate to http://localhost:5432 for the UI.
+
+### Notebook usage
+
+Colab notebooks showing the use of LIT inside of notebooks can be found at
+[lit_nlp/examples/notebooks](./lit_nlp/examples/notebooks).
+
+We provide a simple
+[Colab demo](https://colab.research.google.com/github/PAIR-code/lit/blob/main/lit_nlp/examples/notebooks/LIT_sentiment_classifier.ipynb).
+Run all the cells to see LIT on an example classification model in the notebook.
+
+### More Examples
+
+See [lit_nlp/examples](./lit_nlp/examples). Most are run similarly to the
+quickstart example above:
+
+```sh
+python -m lit_nlp.examples.<example_name> --port=5432 [optional --args]
+```
+
+## User Guide
+
+To learn about LIT's features, check out the [user guide](https://pair-code.github.io/lit/documentation/ui_guide), or
+watch this [video](https://www.youtube.com/watch?v=CuRI_VK83dU).
+
+## Adding your own models or data
+
+You can easily run LIT with your own model by creating a custom `demo.py`
+launcher, similar to those in [lit_nlp/examples](./lit_nlp/examples). The
+basic steps are:
+
+*   Write a data loader which follows the [`Dataset` API](https://pair-code.github.io/lit/documentation/api#datasets)
+*   Write a model wrapper which follows the [`Model` API](https://pair-code.github.io/lit/documentation/api#models)
+*   Pass models, datasets, and any additional
+    [components](https://pair-code.github.io/lit/documentation/api#interpretation-components) to the LIT server class
+
+For a full walkthrough, see
+[adding models and data](https://pair-code.github.io/lit/documentation/api#adding-models-and-data).
+
+## Extending LIT with new components
+
+LIT is easy to extend with new interpretability components, generators, and
+more, both on the frontend or the backend. See our [documentation](https://pair-code.github.io/lit/documentation/) to get
+started.
+
+## Pull Request Process
+
+To make code changes to LIT, please work off of the `dev` branch and
+[create pull requests](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request)
+(PRs) against that branch. The `main` branch is for stable releases, and it is
+expected that the `dev` branch will always be ahead of `main`.
+
+[Draft PRs](https://github.blog/2019-02-14-introducing-draft-pull-requests/) are
+encouraged, especially for first-time contributors or contributors working on
+complex tasks (e.g., Google Summer of Code contributors). Please use these to
+communicate ideas and implementations with the LIT team, in addition to issues.
+
+Prior to sending your PR or marking a Draft PR as "Ready for Review", please run
+the Python and TypeScript linters on your code to ensure compliance with
+Google's [Python](https://google.github.io/styleguide/pyguide.html) and
+[TypeScript](https://google.github.io/styleguide/tsguide.html) Style Guides.
+
+```sh
+# Run Pylint on your code using the following command from the root of this repo
+pushd lit_nlp & pylint & popd
+
+# Run ESLint on your code using the following command from the root of this repo
+pushd lit_nlp & yarn lint & popd
+```
+
+## Citing LIT
+
+If you use LIT as part of your work, please cite
+[our EMNLP paper](https://arxiv.org/abs/2008.05122):
+
+```
+@misc{tenney2020language,
+    title={The Language Interpretability Tool: Extensible, Interactive Visualizations and Analysis for {NLP} Models},
+    author={Ian Tenney and James Wexler and Jasmijn Bastings and Tolga Bolukbasi and Andy Coenen and Sebastian Gehrmann and Ellen Jiang and Mahima Pushkarna and Carey Radebaugh and Emily Reif and Ann Yuan},
+    booktitle = "Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing: System Demonstrations",
+    year = "2020",
+    publisher = "Association for Computational Linguistics",
+    pages = "107--118",
+    url = "https://www.aclweb.org/anthology/2020.emnlp-demos.15",
+}
+```
+
+## Disclaimer
+
+This is not an official Google product.
+
+LIT is a research project and under active development by a small team. There
+will be some bugs and rough edges, but we're releasing at an early stage because
+we think it's pretty useful already. We want LIT to be an open platform, not a
+walled garden, and we would love your suggestions and feedback - drop us a line
+in the [issues](https://github.com/pair-code/lit/issues).
