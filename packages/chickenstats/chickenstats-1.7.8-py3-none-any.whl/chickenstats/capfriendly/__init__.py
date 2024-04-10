@@ -1,0 +1,1 @@
+from chickenstats.capfriendly.scrape import scrape_capfriendly
