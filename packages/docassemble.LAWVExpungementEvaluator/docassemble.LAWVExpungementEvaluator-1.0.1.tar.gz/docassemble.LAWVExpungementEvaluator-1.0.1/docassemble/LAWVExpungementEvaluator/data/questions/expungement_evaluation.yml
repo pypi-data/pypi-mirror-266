@@ -1,0 +1,499 @@
+metadata:
+  title: |
+    LAWV Expungement Evaluation Tool
+  short title: |
+    WV Expungement Evaluation Tool
+  description: |
+    This interview determines whether a potential
+    petitioner is eligible for an expungement
+  authors:
+    - name: Dane W. Henry, Esq.
+      organization: Legal Aid of West Virginia, Inc.
+  revision_date: 2024-03-21
+  unlisted: True
+---
+imports:
+  - re
+  - itertools
+---
+include:
+  - docassemble.LAWVCommon:common_info.yml
+	- statutes.yml
+---
+features:
+  question back button: True
+  javascript: docassemble.LAWVCommon:data/static/force_lightmode.js
+  css: docassemble.LAWVCommon:data/static/lawv.css
+  cache documents: False
+  suppress autofill: True
+---
+objects:
+  - felony_statutes: DAList
+  - any_statutes: DAList
+  - charge_list: DAList.using(object_type=DAObject, complete_attribute='statute', there_are_any=True)
+  - endpoint: DADict
+  - plea_img: DAStaticFile.using(filename='dismissed_plea.png', alt_text='Disposition - Dismissed - Plea Agreement')
+---
+terms:
+  disposition: |
+    The result of your case (guilty, acquittal, dismissal, etc.)
+  court reporting form: |
+    This is the form used by WV Courts to summarize your charges and convictions.
+    
+    [FILE WVSP_29_1.png]
+  charge: |
+    A charge is the crime or statute you allegedly violated.
+  conviction: |
+    A conviction is a guilty verdict or plea, often resulting in incarceration or
+    probation.
+  convicted: |
+    To be convicted is to enter a guilty verdict or plea, often resulting in incarceration or
+    probation.
+  supervision: |
+    Supervision can be either probation or parole.
+	Common Statutes: |
+		* **60A-4-401** - Possession, delivery, distribution, trafficking, making, or manufacturing
+    a controlled substance such as marijuana, cocaine, heroin, methamphetamine.
+		* **61-2-9** - Assault; battery; malicious or unlawful assault
+		* **17C-5-2** - Driving Under the Influence, DUI, DWI.
+		* **61-5-17** - Obstructing officer; fleeing from officer
+---
+question: |
+  Welcome to Legal Aid of West Virginia's Expungement Tool
+subquestion: |
+  You had an issue with the criminal system. You have something on your criminal record. It 
+  is causing problems for you. If you meet certain requirements, you may be able to get your 
+  criminal record sealed through a process called expungement. 
+
+  This is a free online tool which can help you find out whether you may be eligible to 
+  expunge your criminal record.  The tool also suggests next steps which often means working
+  with a lawyer.
+  
+  ### Before you start
+  * Our eligibility tool can only help with expungement of *West Virginia* criminal
+  records, **not out-of-state or federal records**.
+  * Before beginning to answer these questions, you will need information about your
+  record, like the name of the offense(s) you were **charged** with, the name of the offense(s)
+  you were **{convicted}** of, the **{disposition}** of your case(s), and when your incaceration,
+  probation, or parole **ended**.  You need to provide accurate information.  If the information
+  you provide is not accurate, the results of the tool will not be correct.
+      * [West Virginia Magistrate Court Lookup](https://mcrsearch.courtswv.gov/)
+      * [West Virginia State Police Background Check Information](https://www.wvsp.gov/Criminal%20Records/Pages/default.aspx)
+  * If you decide to apply for expungement after answering these questions, a judge in the
+  county where you were convicted will decide whether to approve your request.  This site will
+  tell you if you *may* be eligible for expungement.  **Only a judge** can decide whether or not
+  to grant your request.
+  
+  Once you are ready, you can click on the button below to answer some questions about your record. When you are finished, we
+  will let you know if you may be eligible for expungement and what you can do next.
+
+  ***
+  ###Terms of Use:
+  ####<span style="color:black;font-weight:100;">Legal Aid of West Virginia is a non-profit law firm that provides free legal help.  This tool was developed by Legal Aid to provide information and to make it easier to fill out necessary forms.  This tool does not take the place of an attorney-client relationship. Legal Aid is not your attorney.  If you have questions about your specific situation, you should seek legal help.  The information on this tool is based on West Virginia law.  By using this tool, I agree that I have read and understand the information on this page.  If you wish to apply for Legal Aid of West Virginia's services, you may do so here: [https://legalaidwv.org](https://legalaidwv.org/)
+  
+  </span>
+  ***
+field: ready
+buttons: 
+  - OK, I understand. Let's get started!
+under: |
+  [Feedback](mailto:dhenry@lawv.net?subject=Expungement Tool Feedback)
+---
+question: |
+  Have you been {convicted} of a crime or pleaded guilty to a crime?
+yesno: charge_list.there_are_any
+under: |
+  [Feedback](mailto:dhenry@lawv.net?subject=Expungement Tool Feedback)
+---
+question: |
+  Please provide information for each {charge} that appears on your record.
+subquestion: |
+	{Common Statutes}
+fields:
+  - Crime/Offense: charge_list[i].statute
+    input type: combobox
+    code: statutes
+    hint: Search by statute name or number
+  - Attempted/Conspiracy Crime/Offense: charge_list[i].attempt
+    input type: combobox
+    code: statutes
+    hint: Enter the underlying charge for attempt or conspiracy
+    js show if: |
+      (val("charge_list[i].statute") == "61-11-8. Attempts" || val("charge_list[i].statute") == "61-10-31. Conspiracy" || val("charge_list[i].statute") == "60A-4-414. Conspiracy")
+  - Charge Type: charge_list[i].type
+    input type: radio
+    choices:
+      - Felony: Felony
+      - Misdemeanor: Misdemeanor
+  - Case Number: charge_list[i].case
+    hint: e.g., 06-M-18
+  - '{Disposition}/Verdict': charge_list[i].verdict
+    input type: dropdown
+    choices:
+      - No Contest
+      - Plea of Guilty
+      - Found Guilty
+      - Found Not Guilty
+      - Dismissed
+      - Withdrawn
+      - Assessed Fine & Cost
+      - Paid Fine & Cost
+  - Was the disposition part of a plea deal?: charge_list[i].plea
+    datatype: yesnoradio
+    help: |
+      [${ plea_img }](${ plea_img.url_for() })
+    js show if: |
+      val('charge_list[i].verdict') == "Found Not Guilty" || val('charge_list[i].verdict') == "Dismissed" || val('charge_list[i].verdict') == "Withdrawn"
+  - Disposition Date: charge_list[i].date
+    datatype: date
+  - County: charge_list[i].county
+    input type: dropdown
+    code: counties
+under: |
+  [Feedback](mailto:dhenry@lawv.net?subject=Expungement Tool Feedback)
+---
+question: |
+  So far, you have listed ${ charge_list.number_as_word() } charge(s).
+  They are:
+  % for charge in charge_list:
+  ## ${'\n'} * ${ charge.verdict } of ${ charge.type } §${ charge.statute } on ${ charge.date } in ${ charge.county } County
+  % endfor
+subquestion: |
+  Are there any others?
+yesno: charge_list.there_is_another
+under: |
+  [Feedback](mailto:dhenry@lawv.net?subject=Expungement Tool Feedback)
+---
+question: |
+  Were you incarcerated?
+fields:
+  - no label: incarceration
+    datatype: yesnoradio
+  - When did your most recent incarceration end?: incarceration_end
+    datatype: date
+    show if: incarceration
+under: |
+  [Feedback](mailto:dhenry@lawv.net?subject=Expungement Tool Feedback)
+---
+question: |
+  Did you have a period of {supervision}?
+fields:
+  - no label: probation
+    datatype: yesnoradio   
+  - When did your last {supervision} period end?: probation_end
+    datatype: date
+    show if: probation
+under: |
+  [Feedback](mailto:dhenry@lawv.net?subject=Expungement Tool Feedback)
+---
+question: |
+  Have you completed a Department of Education-approved
+  Job Readiness Adult Training course?
+subquestion: |
+  For more information, please see [Job & Hope Adult Training Courses](http://www.courtswv.gov/lower-courts/expungement/JobsHope_AdultTrainingCourses.pdf).
+fields:
+  - no label: adult_ed
+    datatype: yesnoradio   
+  - When did your recieve your certificate?: adult_date
+    datatype: date
+    show if: adult_ed
+under: |
+  [Feedback](mailto:dhenry@lawv.net?subject=Expungement Tool Feedback)
+---
+question: |
+  Have you completed an approved substance abuse
+  treatment and recovery and counseling program?
+subquestion: |
+  For more information, please see [WV Supreme Court Approved Programs List](http://www.courtswv.gov/lower-courts/expungement/MasterListEXPUNGEMENT8_19.pdf).
+fields:
+  - no label: substance_abuse
+    datatype: yesnoradio   
+  - When did your complete the program?: substance_date
+    datatype: date
+    show if: substance_abuse
+under: |
+  [Feedback](mailto:dhenry@lawv.net?subject=Expungement Tool Feedback)
+---
+question: |
+  Have you previously petitioned the court to reduce a felony to 
+  a misdemeanor under W. Va. Code § 61-11b-1 *et seq*?
+yesno: reduction
+under: |
+  [Feedback](mailto:dhenry@lawv.net?subject=Expungement Tool Feedback)
+---
+question: |
+  Have you ever been convicted of a felony?
+yesno: prior
+under: |
+  [Feedback](mailto:dhenry@lawv.net?subject=Expungement Tool Feedback)
+---
+question: |
+  Do you currently have any pending criminal charges?
+yesno: pending
+under: |
+  [Feedback](mailto:dhenry@lawv.net?subject=Expungement Tool Feedback)
+---
+question: |
+  Do you currently have any pending criminal charges **related to this incident**?
+yesno: pending_related
+under: |
+  [Feedback](mailto:dhenry@lawv.net?subject=Expungement Tool Feedback)
+---
+question: |
+  When were the charges dismissed?
+fields:
+  - no label: dismissal_date
+    datatype: date
+under: |
+  [Feedback](mailto:dhenry@lawv.net?subject=Expungement Tool Feedback)
+---
+question: |
+  It appears you are ineligible for an expungement
+subquestion: |  
+  Reason: ${ failure_reason }
+  
+  Even so, please do not hestiate to contact [Legal Aid of West Virginia](http://www.legalaidwv.org) 
+  or an attorney to review the details of your case.
+
+  The next screen will provide you with a summary of your information to discuss with an attorney.
+field: endpoint['ineligible']
+buttons: 
+  - Continue: continue
+under: |
+  [Feedback](mailto:dhenry@lawv.net?subject=Expungement Tool Feedback)
+---
+question: |
+  It appears you *may* be eligible for an expungement.
+subquestion: |  
+  We **strongly** recommend contacting Legal Aid of West Virginia or an attorney for help.
+  
+  Under West Virginia law, you are only permitted to file for only **one** expungement. Therefore, 
+  it is important to be certain that you include ALL convictions and charges and that it is 
+  the right time to file. You will not get a second chance at expungement.
+  
+  The next screen will provide you with a summary of your information to discuss with an attorney.
+field: endpoint['eligible']
+buttons: 
+  - Continue: continue
+under: |
+  [Feedback](mailto:dhenry@lawv.net?subject=Expungement Tool Feedback)
+---
+question: Final Information
+subquestion: |
+  You can download a PDF summary of your information below.  
+  
+  You can apply for Legal Aid of West Virginia's Services [here](http://www.lawv.net/Get-Help/Apply-for-Help).
+event: generate_worksheet
+attachment:
+  - name: LAWV Expungement Evaluation Worksheet
+    filename: LAWV Expungement Evaluation Worksheet
+    pdf template file: worksheet.pdf
+    editable: False
+    fields:
+      - charges: ${ compiled_charges }
+      - incarceration: ${ incarceration }
+      - incarceration_date: ${ incarceration_end }
+      - probation: ${ probation }
+      - probation_date: ${ probation_end }
+      - treatment: ${ substance_abuse }
+      - treatment_date: ${ substance_date }
+      - education: ${ adult_ed }
+      - education_date: ${ adult_date }
+      - eligibility_date: |
+          ${ eligible_date if eligibility == "Eligible" else "" }
+      - eligible: ${ eligibility }
+      - eligibility_notes: ${ failure_reason }
+under: |
+  [Feedback](mailto:dhenry@lawv.net?subject=Expungement Tool Feedback)
+---
+question: Final Information
+subquestion: |
+  You can download a PDF summary of your information below.  
+  
+  You can apply for Legal Aid of West Virginia's Services [here](http://www.lawv.net/Get-Help/Apply-for-Help).
+event: generate_dismissed_worksheet
+attachment:
+  - name: LAWV Expungement Evaluation Worksheet
+    filename: LAWV Expungement Evaluation Worksheet
+    pdf template file: worksheet.pdf
+    editable: False
+    fields:
+      - "charges": ${ compiled_charges }      
+      - "eligibility_date": ${ eligible_date }
+under: |
+  [Feedback](mailto:dhenry@lawv.net?subject=Expungement Tool Feedback)
+---
+mandatory: True
+code: |
+  #----------------------
+  # Variable Declaration
+  #----------------------
+  compiled_charges = ""
+  felony_conviction = False
+  misdemeanor_conviction = False
+  multiple_misdemeanor = False
+  multiple_felony = False
+  failure_reason = ""  
+  wildcard = r"(\(\w\))*"
+  felony_statutes = ["61-2-\d{1,3}[a-zA-Z]?","61-3[eE]-\d{1,2}","61-8[a-dA-D]?-\d{1,2}[a-zA-Z]?"]
+  any_statutes = ["61-8[bB]-\d{1,2}[a-zA-Z]?","61-7-11","61-7-15[aA]","61-2-28","61-2-29","17[cC]-5-2","17[bB]-4-3","61-8-12","61-8-19","61-2-9[aA]","61-3-11","15-12-2\([cC]\)","17[eE]-1-13\([gG]\)"]
+  state_police = "Superintendent, West Virginia State Police Headquarters, 725 Jefferson Road, South Charleston, WV 25309"
+
+	#**********************
+	# Begin Questions
+	#**********************
+	ready	
+  total_charges = charge_list.number()
+  if total_charges > 0:
+    # ----------------------
+    ## Look through our charges
+    # ----------------------
+    for charge in charge_list:
+      failed = False
+      if charge.statute == "61-11-8. Attempts" or charge.statute == "61-10-31. Conspiracy" or charge.statute == "60A-4-414. Conspiracy":
+        compiled_charges += "• " + charge.verdict + " of " + charge.type + " " + charge.statute + " to commit " + charge.attempt + " on " + charge.date + " in case " + charge.case + " in " + charge.county + " County.\n\n"
+      else:
+        compiled_charges += "• " + charge.verdict + " of " + charge.type + " " + charge.statute + " on " + charge.date + " in case " + charge.case + " in " + charge.county + " County.\n\n"
+      # ----------------------
+      ## Find the charges that are actually convictions
+      # ----------------------
+      if charge.verdict != "Found Not Guilty" and charge.verdict != "Dismissed" and charge.verdict != "Withdrawn":
+        if charge.type == "Felony":
+          if felony_conviction == False:
+            felony_conviction = True
+          else:
+            multiple_felony = True
+        else:
+          if misdemeanor_conviction == False:
+            misdemeanor_conviction = True
+          else:
+            multiple_misdemeanor = True        
+        # ----------------------
+        ## Test if conviction is eligible
+        # ----------------------
+        if charge.type == "Felony":
+          for statute in felony_statutes:
+            my_regex = statute + wildcard
+            if charge.statute == "61-11-8. Attempts" or charge.statute == "61-10-31. Conspiracy" or charge.statute == "60A-4-414. Conspiracy":
+              if re.match(my_regex, charge.attempt) and not failed:              
+                failure_reason += charge.type + " §" + charge.statute + " to commit §" + charge.attempt + " is not eligible for expungement.\n\n"
+                failed = True
+            else:
+              if re.match(my_regex, charge.statute) and not failed:              
+                failure_reason += charge.type + " §" + charge.statute + " is not eligible for expungement.\n\n"
+                failed = True
+        for statute in any_statutes:
+          my_regex = statute + wildcard
+          if charge.statute == "61-11-8. Attempts" or charge.statute == "61-10-31. Conspiracy" or charge.statute == "60A-4-414. Conspiracy":
+            if re.match(my_regex, charge.attempt) and not failed:              
+              failure_reason += charge.type + " §" + charge.statute + " to commit §" + charge.attempt + " is not eligible for expungement.\n\n"
+              failed = True
+          else:
+            if re.match(my_regex, charge.statute) and not failed:
+              failure_reason += charge.type + " §" + charge.statute + " is not eligible for expungement.\n\n"    
+              failed = True
+        for conviction_1, conviction_2 in itertools.combinations(charge_list, 2):
+          if conviction_1.type == 'Felony' and conviction_2.type == 'Felony':
+            if conviction_1.date != conviction_2.date:
+              failure_reason += conviction_1.type + " " + conviction_1.statute + " and " + conviction_2.type + " " + conviction_2.statute + " did not occur during the same transaction or occurrence.\n\n"
+            if conviction_1.county != conviction_2.county:
+              failure_reason += conviction_1.type + " " + conviction_1.statute + " and " + conviction_2.type + " " + conviction_2.statute + " did not occur during the same transaction or occurrence.\n\n"    
+    
+    if not felony_conviction and not multiple_felony and not misdemeanor_conviction and not multiple_misdemeanor:
+      # Dismissed charges only
+      for charge in charge_list:        
+        eligible_date = charge.date.plus(days=60)
+        if eligible_date > current_datetime():
+          failure_reason += "You have not waited enough time since your dismissal or acquittal on " + charge.date + " for " + charge.statute + ".\n"
+          failure_reason += "**Your eligible date is " + eligible_date + ".**\n\n"
+        if charge.plea:
+          failure_reason += "The dismissal or aquittal of " + charge.statute + " on " + charge.date + " cannot be as part of a guilty plea agreement.\n\n"
+      prior
+      if prior:
+        failure_reason += "You cannot have a felony conviction under W. Va. Code §61-11-25(a).\n\n"
+      pending_related
+      if pending_related:
+        failure_reason += "You cannot have any pending charges related to the incident that caused the charges that were dismissed.\n\n"
+      
+      # Setting info for PDF
+      incarceration = False
+      incarceration_end = ""
+      probation = False
+      probation_end = ""
+      adult_ed = False
+      adult_date = ""
+      substance_abuse = False
+      substance_date = ""
+    else:
+      # ----------------------            
+      ## If we get here, then no conviction was excluded by the statute and
+      ## no multiple convictions violated the 'same transaction' language.
+      # ----------------------
+      incarceration
+      probation
+      adult_ed
+      substance_abuse    
+    
+      # ----------------------
+      ## Get starting_date
+      # ----------------------
+      conviction_date = as_datetime('1/1/1930')
+      for charge in charge_list:
+        if charge.verdict != "Found Not Guilty" and charge.verdict != "Dismissed" and charge.verdict != "Withdrawn":
+          temp_date = charge.date
+          conviction_date = as_datetime(max(conviction_date, temp_date))        
+      if not incarceration:
+        incarceration_end = as_datetime('1/1/1931')
+      else:
+        incarceration_end = as_datetime(incarceration_end)
+      if not probation:
+        probation_end = as_datetime('1/1/1931')
+      else:
+        probation_end = as_datetime(probation_end)
+      starting_date = as_datetime(max(conviction_date, incarceration_end, probation_end))
+      if adult_ed or substance_abuse:
+        if felony_conviction:
+          eligible_date = starting_date.plus(years=3)
+        elif multiple_misdemeanor:
+          eligible_date = starting_date.plus(years=1)
+        else:
+          eligible_date = starting_date.plus(days=90)
+      else:
+        if felony_conviction:
+          eligible_date = starting_date.plus(years=5)
+        elif multiple_misdemeanor:
+          eligible_date = starting_date.plus(years=2)
+        else:
+          eligible_date = starting_date.plus(years=1)
+      if eligible_date > current_datetime():
+        failure_reason += "You have not waited enough time since your conviction, incarceration, or probation ended on " + starting_date + ".\n"
+        failure_reason += "**Your eligible date is " + eligible_date + ".**\n\n"
+        
+      # Setting dates for PDF
+      if not incarceration:
+        incarceration_end = ""
+      if not probation:
+        probation_end = ""
+      if not adult_ed:
+        adult_date = ""
+      if not substance_abuse:
+        substance_date = ""
+      # ----------------------
+      ## If we get here, then the time requirements have been met
+      # ----------------------
+      pending
+      if pending:
+        failure_reason += "You cannot seek an expungement with pending charges against you.\n"
+              
+      # -------------------
+      # Originally, the tool kicked the user out once it was determined they were ineligible.
+      # However, I wanted to go ahead and provide the user with the 1-page worksheet regardless
+      # in the event they wanted to speak with an attorney so that the work does not have to be duplicated
+      # -------------------
+    if failure_reason != "":
+      eligibility = "Not Eligible"
+      endpoint['ineligible']
+    else:
+      eligibility = "Eligible"
+      endpoint['eligible']
+    generate_worksheet
