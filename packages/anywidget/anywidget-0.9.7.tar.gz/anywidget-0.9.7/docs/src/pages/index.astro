@@ -1,0 +1,21 @@
+---
+import SplashLayout from "../layouts/SplashLayout.astro";
+import Hero from "../components/Hero.astro";
+import type { Frontmatter } from "../consts";
+
+let frontmatter: Frontmatter = {
+	title: "anywidget",
+	description: "juypyter widgets made easy",
+	layout: "splash"
+};
+---
+
+<SplashLayout frontmatter={frontmatter}>
+	<Hero />
+</SplashLayout>
+
+<script is:inline>
+	// Redirect your homepage to the first page of documentation.
+	// If you have a landing page, remove this script and add it here!
+	// window.location.pathname = `/en/getting-started`;
+</script>
