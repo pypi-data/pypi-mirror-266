@@ -1,0 +1,166 @@
+Metadata-Version: 2.3
+Name: naludaq_rs
+Version: 0.2.6
+License-File: LICENSE
+Summary: Rust backend for NaluDAQ
+Author: Mitchell Matsumori-Kelly <mitchell@naluscientific.com>, Marcus Luck <marcus@naluscientific.com>
+Author-email: Mitchell Matsumori-Kelly <mitchell@naluscientific.com>, Marcus Luck <marcus@naluscientific.com>
+Description-Content-Type: text/markdown; charset=UTF-8; variant=GFM
+
+# NaluDAQ_rs
+
+Rust backend for NaluDaq.
+
+
+## Setup
+
+Make sure the [Rust toolchain](https://rustup.rs/) is installed.
+
+Clone the repository to a suitable location:
+```sh
+git clone https://github.com/NaluScientific/naludaq_rs.git
+```
+
+Done!
+
+## Building the backend for python
+
+```sh
+pip install maturin
+maturin build
+```
+
+## Building the Backend
+
+The backend is easy to build:
+
+```sh
+cd naludaq_rs
+cargo build --release
+```
+
+Developers may ommit the `--release` flag for unoptimized builds.
+
+
+### Building for RPI4
+Building using docker:
+
+```sh
+docker build . -t cc/rpi4
+```
+to make the container, the build the app with:
+```sh
+docker run --rm -v ${pwd}:/app cc/rpi4
+```
+
+## Running the Backend
+To run the backend, run the following command:
+
+```sh
+cargo run  --release -- [<ROOT>] [--addr <ADDR>] [-d | --debug]  [--api]
+```
+
+Where the arguments are as follows:
+- `<ROOT>` is the root directory to run the server in. By default, it is the current working directory of the terminal it was run from.
+- `--addr <ADDR>` is the address to bind the server to in the format `IP:PORT`. If unspecified, the server is bound to an open port on the loopback address.
+- `-d | --debug` shows additional debug messages.
+- `--api` will open the Swagger UI in the system browser.
+
+## Documentation
+The documentation can be built using the following command:
+```sh
+cargo doc --document-private-items --no-deps
+```
+
+
+## The API
+NaluDAQ_rs is controlled through its [REST API](https://www.redhat.com/en/topics/api/what-is-a-rest-api) over
+[HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview). This allows it to be controlled from any
+machine connected to a network.
+
+The backend can be controlled on the fly via Swagger. Use the `--api` flag when starting the backend to display the Swagger UI.
+
+Alternatively, the (non-interactive) Swagger UI may be viewed without the backend by running the
+following command:
+
+```sh
+cargo run --bin api -- [--output OUTPUT_FILE]
+```
+
+If the `--output` argument is provided, the OpenAPI JSON data describing
+the API is written to the file and the program will immediately exit.
+
+
+## Developers
+
+### Profiling
+Use the build profile called `release-with-debug for building release mode with debug symbols.
+
+```sh
+cargo build --profile release-with-debug
+```
+
+On Windows machines with Intel processors you can use [Intel VTune](https://www.intel.com/content/www/us/en/developer/tools/oneapi/vtune-profiler.html#gs.q7qmtk)
+to profile the backend.
+
+
+### Building the Documentation
+
+```sh
+cargo doc --open
+```
+
+### Tweaking Dependencies
+
+The crate depends on a couple crates published to [crates.io](https://crates.io/). If you are touching these dependencies and wish to test out your changes without
+publishing the crates, clone the dependencies and change these lines in `Cargo.toml`:
+
+```toml
+# naluacq = "X.X.X"
+# ft60x_rs = "X.X.X"
+naluacq = { "path" = "path/to/naluacq" }
+ft60x_rs = { "path" = "path/to/ft60x-rs" }
+```
+
+### Architecture
+
+Below is a non-exhaustive diagram of the architecture of the backend highlighting only the main components and their interactions.
+
+```mermaid
+graph LR
+
+    Board[Board]
+    Connection[Connection]
+    Disk[Disk]
+    subgraph workers [Workers]
+        Worker_Connection[Connection Worker]
+        Worker_Package[Package Worker]
+        Worker_Storage[Storage Worker]
+        Worker_Answer[Answer Worker]
+        Worker_Answer_Buffer[Answer Buffer]
+    end
+    subgraph server [Server Endpoints]
+        Endpt_Configure_Workers[Configure Workers]
+        Endpt_Send_Command[Send Command]
+        Endpt_Recv_Answer[Receive Answer]
+        Endpt_Fetch_Event[Fetch Event]
+        Endpt_Manage_Connection[Manage Connection]
+    end
+    Board -->|Readout/Answer| Connection
+    Connection -->|Board Output| Worker_Connection
+    Connection -->|Command| Board
+    Worker_Connection -->|Board Output| Worker_Package
+    Worker_Package -->|Event| Worker_Storage
+    Worker_Package -->|Answer| Worker_Answer
+    Worker_Storage -->|Event| Disk
+    Worker_Answer -->|Answer| Worker_Answer_Buffer
+
+    Endpt_Send_Command -->|Command| Connection
+    Worker_Answer_Buffer -->|Answer| Endpt_Recv_Answer
+    Disk -->|Event| Endpt_Fetch_Event
+    Endpt_Manage_Connection -->|Configuration| Connection
+    Endpt_Configure_Workers -->|Configuration| Worker_Package
+    Endpt_Configure_Workers -->|Configuration| Worker_Storage
+    Endpt_Configure_Workers -->|Configuration| Worker_Answer
+```
+
