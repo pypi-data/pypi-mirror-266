@@ -1,0 +1,67 @@
+[feature]
+ai = false
+email = false
+raw_feedback = false
+
+
+[template]
+# feedback of one question
+one_separator = "\n"  # to join the list of feedback within a question
+one = '''
+## {question}
+
+{text}
+''' # support two keys: `question` and `text`
+
+# full feedback of all questions
+full_separator = "\n"  # to join the list of feedback of all question
+full = '''
+# Feedback
+
+{text}''' # support one key: `text`
+not_available = "{question}: automated feedback is not available" # support one key: `question`
+
+
+# =======================
+# Optional configurations
+# =======================
+
+[email]
+
+[email.account]
+account = 'account'  # the sender account of the mail server
+password = "pswd"  # the password to login to the mail server
+from = 'from@address.com'  # the email address to use under the account
+to = "to@address.com"  # to which address the email is sent, i.e., the expert email
+smtp_server = "smtp.server.com"  # the SMTP server to use
+
+[email.content]
+subject = "[SocAssess][Assignment 1] Human feedback needed"
+email_body = '''
+SocAssess is needing human feedback.
+The attached files contain relevant context of the submission.
+
+See attachments
+'''
+initial_reply = '''
+An instructor has been notified for questions where pre-coded feedback are not available.
+'''  # the initial feedback to be shown while waiting for human feedback
+
+
+[openai]
+openai_key = "<key>, if empty, use OPENAI_KEY environment variable"
+model = "gpt-3.5-turbo"
+temperature = 1
+max_tokens = 2048
+top_p = 1
+frequency_penalty = 0
+presence_penalty = 0
+system_prompt = """\
+You are an expert in assessing students' answers. Your message will be sent \
+directly to students. When the instructor provides you with a student's answer, \
+you will give a short feedback message to correct student's misunderstanding, \
+but without leaking any infomation of the canonical or correct answer directly. \
+       """  # per TOML spec, in "" string, "\" will be used to trim whitespaces and newlines
+template = '''
+AI generated feedback:
+{feedback}'''  # support one key: `feedback`; AI response will replace {feedback}
