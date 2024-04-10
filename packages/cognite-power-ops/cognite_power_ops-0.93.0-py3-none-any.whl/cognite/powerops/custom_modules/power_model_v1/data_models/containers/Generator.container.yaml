@@ -1,0 +1,53 @@
+space: "{{powerops_models}}"
+externalId: Generator
+name: Generator
+usedFor: node
+properties:
+  productionMin:
+    type:
+      type: float64
+      list: false
+    nullable: false
+    autoIncrement: false
+    name: productionMin
+  penstockNumber:
+    type:
+      type: int64
+      list: false
+    nullable: false
+    autoIncrement: false
+    name: penstockNumber
+  startCost:
+    type:
+      type: float64
+      list: false
+    nullable: false
+    autoIncrement: false
+    name: startCost
+  startStopCost:
+    type:
+      type: timeseries
+      list: false
+    nullable: false
+    autoIncrement: false
+    name: startStopCost
+  availabilityTimeSeries:
+    type:
+      type: timeseries
+      list: false
+    nullable: false
+    autoIncrement: false
+    name: availabilityTimeSeries
+  generatorEfficiencyCurve:
+    type:
+      type: direct
+      list: false
+    nullable: true
+    autoIncrement: false
+    name: generatorEfficiencyCurve
+# indexes:
+#   nameIndex:
+#     properties:
+#       - name
+#     indexType: btree
+#     cursorable: false
