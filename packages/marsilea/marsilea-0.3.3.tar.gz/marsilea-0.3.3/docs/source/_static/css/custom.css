@@ -1,0 +1,57 @@
+html[data-theme="light"] {
+    --pst-color-primary: #0098FF;
+    --pst-color-secondary: #57B77E;
+    --pst-color-link: rgba(0, 152, 255, 0.7);
+    --pst-color-inline-code: rgb(96, 141, 130);
+}
+
+html[data-theme="dark"] {
+    --pst-color-primary: #0098FF;
+    --pst-color-secondary: #57B77E;
+}
+
+/* Change the highlight color, increase contrast*/
+html[data-theme="light"] .highlight .hll {
+    background-color: #fcf427;
+}
+
+img.plot-directive {
+    max-height: 500px;
+}
+
+/* Use full page width without sidebars */
+.bd-content {
+  max-width: 100%;
+  flex-grow: 1;
+}
+
+.img-frame {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 250px;
+    width: 250px;
+    border: var(--pst-color-border) 1px solid;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.sd-card-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+}
+
+.flex-container {
+    display: flex;
+    gap: 10px;
+    flex-direction: row;
+}
+
+@media (max-width: 680px) {
+    .flex-container {
+        flex-direction: column;
+    }
+}
