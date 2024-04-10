@@ -1,0 +1,11 @@
+<div id="swagger-ui"
+	 tal:define="css tales:resource_path('pyams_zmi.zmi:swagger_css');
+				 js tales:resource_path('pyams_zmi.zmi:swagger_init');"
+	 data-ams-modules='{
+		"swagger": {
+			"css": "${css}",
+			"src": "${js}"
+		}
+	 }'
+	 data-ams-callback="MyAMS.swagger.initSwagger">
+</div>
