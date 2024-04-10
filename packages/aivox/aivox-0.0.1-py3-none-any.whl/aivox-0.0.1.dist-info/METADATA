@@ -1,0 +1,37 @@
+Metadata-Version: 2.1
+Name: aivox
+Version: 0.0.1
+Summary: A simple API client for AI-Music Generate
+Home-page: https://github.com/cropsun/aivox
+Author: Cropsun
+Author-email: martinsunshinesh@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+
+# AIVOX
+
+An easy-to-use API for generating music
+
+# SETUP
+
+pip install aivox
+
+# EXAMPLE
+
+import aivox
+
+client = aivox.APIClient(base_url,username,usertoken)
+
+client.login()   
+
+response = client.playing(api_type,song_quality,song_singer,song_source)
+
+print(response.text)
+
+
+
