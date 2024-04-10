@@ -1,0 +1,46 @@
+[tool.poetry]
+name = "socassess"
+version = "0.2.1"
+description = "make test-based assessment's feedback easy to setup"
+authors = ["Huanyi Chen <huanyi.chen@uwaterloo.ca>"]
+readme = "README.md"
+homepage = "https://github.com/h365chen/socassess"
+repository = "https://github.com/h365chen/socassess"
+keywords = ["automated", "feedback", "education"]
+classifiers = [
+    "Topic :: Education",
+    "Topic :: Education :: Testing",
+    "Topic :: Software Development :: Testing",
+]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+pytest = "^7.4.1"
+pytest-dependency = "^0.5.1"
+pytest-order = "^1.1.0"
+pytest-timeout = "^2.1.0"
+xmltodict = "^0.13.0"
+numpy = "^1.26.0"
+openai = "^1.13.3"
+colorama = "^0.4.6"
+tomli = { version = "^2.0.1", python = ">=3.9,<3.11" }
+
+[tool.poetry.group.dev.dependencies]
+python-lsp-server = {extras = ["all"], version = "^1.8.0"}
+ipython = "^8.15.0"
+ipdb = "^0.13.13"
+importmagic = "^0.1.7"
+epc = "^0.0.5"
+isort = "^5.12.0"
+pydocstyle = "^6.3.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pydocstyle]
+convention = "numpy"
+add_ignore = ["D100"]
+
+[tool.poetry.scripts]
+socassess = "socassess.console:main"
