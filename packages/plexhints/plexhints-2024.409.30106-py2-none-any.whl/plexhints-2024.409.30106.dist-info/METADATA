@@ -1,0 +1,190 @@
+Metadata-Version: 2.1
+Name: plexhints
+Version: 2024.409.30106
+Summary: Type hinting library for Plex plugin development.
+Home-page: https://github.com/LizardByte/plexhints
+Author: LizardByte
+Author-email: LizardByte@github.com
+License: UNKNOWN
+Keywords: plex,agent,plug-in,debug
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU Affero General Public License v3
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=2.7
+Description-Content-Type: text/x-rst
+Requires-Dist: deprecation (==2.1.0)
+Requires-Dist: future (==1.0.0)
+Requires-Dist: lxml (==4.9.4)
+Requires-Dist: simplejson (==3.19.2)
+Requires-Dist: BeautifulSoup4 (==4.9.3) ; python_version < "3"
+Requires-Dist: demjson (==2.2.4) ; python_version < "3"
+Requires-Dist: feedparser (==5.2.1) ; python_version < "3"
+Requires-Dist: PyYAML (==5.4.1) ; python_version < "3"
+Requires-Dist: requests (==2.27.1) ; python_version < "3"
+Requires-Dist: requests-cache (==0.5.2) ; python_version < "3"
+Requires-Dist: typing (==3.10.0.0) ; python_version < "3.5"
+Requires-Dist: BeautifulSoup4 (==4.12.2) ; python_version >= "3"
+Requires-Dist: demjson3 (==3.0.6) ; python_version >= "3"
+Requires-Dist: feedparser (==6.0.11) ; python_version >= "3"
+Requires-Dist: PyYAML (==6.0.1) ; python_version >= "3"
+Requires-Dist: requests (==2.31.0) ; python_version >= "3"
+Requires-Dist: requests-cache (==1.1.1) ; python_version >= "3"
+
+:github_url: https://github.com/LizardByte/plexhints/tree/nightly/README.rst
+
+Overview
+========
+LizardByte has the full documentation hosted on `Read the Docs <http://plexhints.readthedocs.io/>`__.
+
+About
+-----
+Plexhints is a set of tools to aid in the development of plugins for Plex Media Server. It is not a framework, but
+rather a set of tools that can be used to make your life easier.
+
+Features
+--------
+- Python library providing type hints to aid in the development of Plex plugins. Get rid of all those IDE warnings
+  and errors!
+- A GitHub Action that will install and bootstrap a Plex Media Server in a CI environment. The action can install
+  plugins and setup dummy libraries. Additionally the Plex token is provided as an output. This is useful for testing
+  your plugin or other Plex project in a CI environment.
+
+Integrations
+------------
+
+.. image:: https://img.shields.io/github/actions/workflow/status/lizardbyte/plexhints/CI.yml.svg?branch=master&label=CI%20build&logo=github&style=for-the-badge
+   :alt: GitHub Workflow Status (CI)
+   :target: https://github.com/LizardByte/plexhints/actions/workflows/CI.yml?query=branch%3Amaster
+
+.. image:: https://img.shields.io/readthedocs/plexhints.svg?label=Docs&style=for-the-badge&logo=readthedocs
+   :alt: Read the Docs
+   :target: http://plexhints.readthedocs.io/
+
+.. image:: https://img.shields.io/codecov/c/gh/LizardByte/plexhints.svg?token=1LYYVYWY9D&style=for-the-badge&logo=codecov&label=codecov
+   :alt: Codecov
+   :target: https://codecov.io/gh/LizardByte/plexhints
+
+.. image:: https://img.shields.io/github/downloads/lizardbyte/plexhints/total.svg?style=for-the-badge&logo=github
+   :alt: GitHub Releases
+   :target: https://github.com/LizardByte/plexhints/releases/latest
+
+.. image:: https://img.shields.io/pypi/v/plexhints.svg?style=for-the-badge&logo=pypi&label=pypi%20package
+   :alt: PyPI
+   :target: https://pypi.org/project/plexhints/
+
+:github_url: https://github.com/LizardByte/plexhints/tree/nightly/docs/source/about/installation.rst
+
+Installation
+============
+
+Python Package
+--------------
+This library is available on PyPI as ``plexhints``. It can be installed in several ways.
+
+**PyPI**
+
+.. code-block:: bash
+
+   python -m pip install plexhints
+
+**git**
+
+.. code-block:: bash
+
+   python -m pip install git+https://github.com/lizardbyte/plexhints.git@dist#egg=plexhints
+
+**github archive**
+
+.. code-block:: bash
+
+   python -m pip install https://github.com/lizardbyte/plexhints/archive/dist.zip#egg=plexhints
+
+:github_url: https://github.com/LizardByte/plexhints/tree/nightly/docs/source/about/usage.rst
+
+Usage
+=====
+Plexhints can be used by just importing the ``plexhints`` module and running a couple of functions. After doing so
+you can use plexhints in your IDE and run most of your code outside of Plex. This is useful for debugging and testing.
+
+Main Entry Point
+----------------
+Place this at the top of your ``Contents/Code/__init__.py`` file. It is important to only import these when running
+outside of Plex.
+
+.. code-block:: python
+
+   # plex debugging
+   try:
+       import plexhints  # noqa: F401
+   except ImportError:
+       pass
+   else:  # the code is running outside of Plex
+       from plexhints import plexhints_setup, update_sys_path
+       plexhints_setup()  # reads the plugin plist file and determine if plexhints should use elevated policy or not
+       update_sys_path()  # when running outside plex, append the path
+
+Submodules
+----------
+In files other than the main ``__init__.py`` file, you can simply import the ``plexhints`` module and use it as shown.
+
+.. code-block:: python
+
+   # plex debugging
+   try:
+       import plexhints  # noqa: F401
+   except ImportError:
+       pass
+   else:  # the code is running outside of Plex
+       from plexhints.log_kit import Log
+
+Available Imports
+-----------------
+
+.. code-block:: python
+
+   from plexhints.agent_kit import Agent, Media  # agent kit
+   from plexhints.core_kit import Core  # core kit
+   from plexhints.decorator_kit import handler, indirect, route  # decorator kit
+   from plexhints.exception_kit import Ex  # exception kit
+   from plexhints.locale_kit import Locale  # locale kit
+   from plexhints.log_kit import Log  # log kit
+   from plexhints.model_kit import Movie, VideoClip, VideoClipObject  # model kit
+   from plexhints.network_kit import HTTP  # network kit
+   from plexhints.object_kit import Callback, IndirectResponse, MediaObject, MessageContainer, MetadataItem, \
+       MetadataSearchResult, PartObject, SearchResult  # object kit
+   from plexhints.parse_kit import HTML, JSON, Plist, RSS, XML, YAML  # parse kit
+   from plexhints.prefs_kit import Prefs  # prefs kit
+   from plexhints.proxy_kit import Proxy  # proxy kit
+   from plexhints.resource_kit import Resource  # resource kit
+   from plexhints.shortcut_kit import L, E, D, R, S  # shortcut kit
+   from plexhints.util_kit import String, Util  # util kit
+
+   from plexhints.constant_kit import CACHE_1MINUTE, CACHE_1HOUR, CACHE_1DAY, CACHE_1WEEK, CACHE_1MONTH  # constant kit
+   from plexhints.constant_kit import ClientPlatforms, Protocols, OldProtocols, ServerPlatforms, ViewTypes, \
+       SummaryTextTypes, AudioCodecs, VideoCodecs, Containers, ContainerContents, \
+       StreamTypes  # constant kit, more commonly used in URL services
+
+   # extra objects
+   from plexhints.extras_kit import BehindTheScenesObject, \
+       ConcertVideoObject, \
+       DeletedSceneObject, \
+       FeaturetteObject, \
+       InterviewObject, \
+       LiveMusicVideoObject, \
+       LyricMusicVideoObject, \
+       MusicVideoObject, \
+       OtherObject, \
+       SceneOrSampleObject, \
+       ShortObject, \
+       TrailerObject
+
+
+
