@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fr-toolbelt"
+#dynamic = ["version"]
+version = "0.1.0"
+dependencies = [
+  "requests>=2.31",
+  "pandas>=1.5",
+  "progress>=1.6",
+  "cursor>=1.3",
+]
+requires-python = ">= 3.10"
+authors = [
+  {name = "Mark Febrizio", email = "mfebrizio@gwu.edu"},
+]
+maintainers = [
+  {name = "Mark Febrizio", email = "mfebrizio@gwu.edu"},
+  {name = "GW Regulatory Studies Center", email = "regulatorystudies@gwu.edu"}, 
+]
+description = "Toolbelt of classes and functions written in Python to use with the Federal Register (FR) API."
+readme = "README.md"
+license = {file = "LICENSE"}
+keywords = ["Federal Register", "government", "api", "regulation", "regulatory", ]
+classifiers = [
+  "Programming Language :: Python :: 3", 
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3 :: Only",
+]
+
+[project.urls]
+Repository = "https://github.com/regulatorystudies/fr-toolbelt.git"
+Issues = "https://github.com/regulatorystudies/fr-toolbelt/issues"
+
+[tool.setuptools.packages.find]
+include = ["fr*"]
+namespaces = false
