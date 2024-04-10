@@ -1,0 +1,135 @@
+Metadata-Version: 2.1
+Name: hwdocer
+Version: 0.2.2
+Summary: Wireviz, drawio and other documentation build tool
+Home-page: https://gitlab.com/real-ee/public/hwdocer
+License: GPL-3.0-or-later
+Keywords: drawio,wireviz,toolchain,automation,documentation
+Author: Laurence DV
+Author-email: laurencedv@realee.tech
+Requires-Python: >=3.8,<4.0
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Documentation
+Classifier: Topic :: Multimedia :: Graphics
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Software Development :: Documentation
+Classifier: Topic :: Utilities
+Requires-Dist: drawio (>=0.0.10,<0.0.11)
+Requires-Dist: pyyaml (>=6.0.1,<7.0.0)
+Requires-Dist: rich (>=13.7.1,<14.0.0)
+Requires-Dist: wireviz (>=0.3.2,<0.4.0)
+Project-URL: Changelog, https://gitlab.com/real-ee/public/hwdocer/-/blob/master/doc/release.md
+Project-URL: Contribution, https://gitlab.com/real-ee/public/hwdocer/-/blob/master/doc/contrib.md?ref_type=heads
+Project-URL: Documentation, https://gitlab.com/real-ee/public/hwdocer/-/tree/master/doc
+Project-URL: Issue, https://gitlab.com/real-ee/public/hwdocer/-/issues
+Project-URL: Repository, https://gitlab.com/real-ee/public/hwdocer
+Project-URL: Roadmap, https://gitlab.com/real-ee/public/hwdocer/-/blob/master/doc/roadmap.md
+Description-Content-Type: text/markdown
+
+# HWDOCER
+
+The [HardWare DOCumentation buildER][home_link] is a utility that help generating graphical documentations using [drawio][drawio_link] and [wireviz][wireviz_link]
+
+## Install
+
+### Stable version
+
+_Stable_ package are release on [pypi.org][pypi_link] and are installable simply via pip:
+
+```bash
+pip install hwdocer
+```
+
+You can also clone the specific tags from the [repo][repo_link]
+
+### Development version
+
+_Development version_ are only available on the [repo][repo_link], the suggested process is to add a **git submodule** to your project:
+
+1. Add the submodule  
+   simply open a **terminal** in the host repo and execute this:
+
+   ```bash
+   git submodule add https://gitlab.com/real-ee/public/hwdocer.git dep/hwdocer
+   ```
+
+2. Venv install
+   Then you need to [install](https://laurencedv.org/computing/python) the venv, by having [poetry][poetry_link] and [pyenv][pyenv_link].  
+   Open a **terminal** then execute this:
+
+   ```bash
+   poetry install
+   ```
+
+## Usage
+
+### Direct call
+
+If you installed the stable version (via [pypi](#stable-version)) you can call it directly like this:
+
+```bash
+hwdocer -vv -i "./" -o "./_build"
+```
+
+### Python module call
+
+When installed as a python module, you can invoke it
+
+```bash
+poetry run python -m hwdocer -vvvv -i "./doc" -o "./doc/build"
+```
+
+> NOTE: Currently all `*.yml` file in the _input search_ will match for **harness** drawing and all `*.drawio` files will match for **diagram** drawing
+
+### Adding source to be built
+
+This tool uses [drawio](#drawio) local software and [wireviz](#wireviz) defined file, use them to creat some source file which you pass as _input_ (**-i** argument) to hwdocer.
+
+#### Drawio
+
+To create diagram and drawing that will be then automatically drawn by this tool, you need to install [drawio][drawio_link] local executable by downloading the installer for your OS (only linux tested)
+
+#### Wireviz
+
+To create wire harness, install [wireviz][wireviz_link], which is a project based on [graphviz][graphviz_link] but aimed to specifically draw wire harnesses.
+
+## Contrib
+
+See the [contribution guideline][contrib_file]
+
+## Changelog
+
+See the [release][release_file] file and [roadmap file][roadmap_file]
+
+## License
+
+This software is released under [GPL3][license_file]
+
+<!-- links -->
+
+[home_link]: https://gitlab.com/realee-laurencedv/hwdocbuilder
+[poetry_link]: https://python-poetry.org/docs/
+[pyenv_link]: https://github.com/pyenv/pyenv
+[drawio_link]: https://github.com/jgraph/drawio-desktop/releases/
+[wireviz_link]: https://github.com/wireviz/WireViz
+[graphviz_link]: https://graphviz.org/
+[pypi_link]: https://pypi.org/project/hwdocer/
+[repo_link]: https://gitlab.com/realee-laurencedv/hwdocbuilder
+
+<!-- files -->
+
+[release_file]: doc/release.md
+[roadmap_file]: doc/roadmap.md
+[contrib_file]: doc/contrib.md
+[license_file]: license
+
